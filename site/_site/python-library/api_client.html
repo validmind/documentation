@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ValidMind – index</title>
+<title>ValidMind – api_client</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -255,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../python-library/index.html" class="sidebar-item-text sidebar-link active">Python library</a>
+            <a href="../python-library/index.html" class="sidebar-item-text sidebar-link">Python library</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -263,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../python-library/api_client.html" class="sidebar-item-text sidebar-link">validmind.api_client</a>
+  <a href="../python-library/api_client.html" class="sidebar-item-text sidebar-link active">validmind.api_client</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -316,11 +316,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#validmind" id="toc-validmind" class="nav-link active" data-scroll-target="#validmind">validmind</a>
-  <ul class="collapse">
-  <li><a href="#installing-the-client-library" id="toc-installing-the-client-library" class="nav-link" data-scroll-target="#installing-the-client-library">Installing the client library</a></li>
-  <li><a href="#initializing-the-client-library" id="toc-initializing-the-client-library" class="nav-link" data-scroll-target="#initializing-the-client-library">Initializing the client library</a></li>
-  </ul></li>
+  <li><a href="#validmind.api_client" id="toc-validmind.api_client" class="nav-link active" data-scroll-target="#validmind.api_client">validmind.api_client</a></li>
   </ul>
 </nav>
     </div>
@@ -329,59 +325,178 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p><a id="validmind"></a></p>
-<section id="validmind" class="level1">
-<h1>validmind</h1>
-<p>The ValidMind developer framework allows model developers and validators to automatically document different aspects of the model development lifecycle.</p>
-<p>This Python library provides the following high level features:</p>
+<p><a id="validmind.api_client"></a></p>
+<section id="validmind.api_client" class="level1">
+<h1>validmind.api_client</h1>
+<p>API Client</p>
+<p><a id="validmind.api_client.init"></a></p>
+<section id="init" class="level4">
+<h4 class="anchored" data-anchor-id="init">init</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init(project, api_key<span class="op">=</span><span class="va">None</span>, api_secret<span class="op">=</span><span class="va">None</span>, api_host<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Initializes the API client instances and calls the /ping endpoint to ensure the provided credentials are valid and we can connect to the ValidMind API.</p>
+<p>If the API key and secret are not provided, the client will attempt to retrieve them from the environment variables <code>VM_API_KEY</code> and <code>VM_API_SECRET</code>.</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>Log qualitative and quantitative data about datasets and models</li>
-<li>Log documentation metadata to be displayed on the ValidMind platform</li>
-<li>Run data and model validation test plans</li>
+<li><code>project</code> <em>str</em> - The project CUID</li>
+<li><code>api_key</code> <em>str, optional</em> - The API key. Defaults to None.</li>
+<li><code>api_secret</code> <em>str, optional</em> - The API secret. Defaults to None.</li>
+<li><code>api_host</code> <em>str, optional</em> - The API host. Defaults to None.</li>
 </ul>
-<section id="installing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="installing-the-client-library">Installing the client library</h2>
-<p>The Python library can be installed with the following command:</p>
-<pre><code>pip install validmind</code></pre>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>ValueError</code> - If the API key and secret are not provided</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the ping was successful</li>
+</ul>
+<p><a id="validmind.api_client.log_dataset"></a></p>
 </section>
-<section id="initializing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="initializing-the-client-library">Initializing the client library</h2>
-<p>Every validation project has a project identifier that allows the client library to associate documentation and tests with the appropriate project. In order to initialize the client, we need to provide the following arguments:</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>api_host</td>
-<td>Location of the ValidMind API.</td>
-</tr>
-<tr class="even">
-<td>api_key</td>
-<td>Account API key.</td>
-</tr>
-<tr class="odd">
-<td>api_secret</td>
-<td>Account Secret key.</td>
-</tr>
-<tr class="even">
-<td>project</td>
-<td>The project identifier.</td>
-</tr>
-</tbody>
-</table>
-<p>The following code snippet shows how to initialize a ValidMind client instance:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"&lt;API_HOST&gt;"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"&lt;API_KEY&gt;"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"&lt;API_SECRET&gt;"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"&lt;PROJECT_ID&gt;"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="log_dataset" class="level4">
+<h4 class="anchored" data-anchor-id="log_dataset">log_dataset</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_dataset(vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs metadata and statistics about a dataset to ValidMind API.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>vm_dataset</code> <em>validmind.VMDataset</em> - A VM dataset object</li>
+<li><code>dataset_type</code> <em>str, optional</em> - The type of dataset. Can be one of “training”, “test”, or “validation”. Defaults to “training”.</li>
+<li><code>dataset_options</code> <em>dict, optional</em> - Additional dataset options for analysis. Defaults to None.</li>
+<li><code>dataset_targets</code> <em>validmind.DatasetTargets, optional</em> - A list of targets for the dataset. Defaults to None.</li>
+<li><code>features</code> <em>list, optional</em> - Optional. A list of features metadata. Defaults to None.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>validmind.VMDataset</code> - The VMDataset object</li>
+</ul>
+<p><a id="validmind.api_client.log_metadata"></a></p>
+</section>
+<section id="log_metadata" class="level4">
+<h4 class="anchored" data-anchor-id="log_metadata">log_metadata</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_metadata(content_id, text<span class="op">=</span><span class="va">None</span>, extra_json<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs free-form metadata to ValidMind API.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>content_id</code> <em>str</em> - Unique content identifier for the metadata</li>
+<li><code>text</code> <em>str, optional</em> - Free-form text to assign to the metadata. Defaults to None.</li>
+<li><code>extra_json</code> <em>dict, optional</em> - Free-form key-value pairs to assign to the metadata. Defaults to None.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
+<p><a id="validmind.api_client.log_model"></a></p>
+</section>
+<section id="log_model" class="level4">
+<h4 class="anchored" data-anchor-id="log_model">log_model</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_model(vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs model metadata and hyperparameters to ValidMind API.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>vm_model</code> <em>validmind.VMModel</em> - A VM model object</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
+<p><a id="validmind.api_client.log_metrics"></a></p>
+</section>
+<section id="log_metrics" class="level4">
+<h4 class="anchored" data-anchor-id="log_metrics">log_metrics</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_metrics(metrics, run_cuid<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs metrics to ValidMind API.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>metrics</code> <em>list</em> - A list of Metric objects</li>
+<li><code>run_cuid</code> <em>str, optional</em> - The run CUID. If not provided, a new run will be created. Defaults to None.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
+<p><a id="validmind.api_client.log_test_result"></a></p>
+</section>
+<section id="log_test_result" class="level4">
+<h4 class="anchored" data-anchor-id="log_test_result">log_test_result</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_test_result(result, run_cuid<span class="op">=</span><span class="va">None</span>, dataset_type<span class="op">=</span><span class="st">"training"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs test results information. This method will be called automatically be any function running tests but can also be called directly if the user wants to run tests on their own.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>result</code> <em>validmind.TestResults</em> - A TestResults object</li>
+<li><code>run_cuid</code> <em>str, optional</em> - The run CUID. If not provided, a new run will be created. Defaults to None.</li>
+<li><code>dataset_type</code> <em>str, optional</em> - The type of dataset. Can be one of “training”, “test”, or “validation”. Defaults to “training”.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
+<p><a id="validmind.api_client.log_test_results"></a></p>
+</section>
+<section id="log_test_results" class="level4">
+<h4 class="anchored" data-anchor-id="log_test_results">log_test_results</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_test_results(results, run_cuid<span class="op">=</span><span class="va">None</span>, dataset_type<span class="op">=</span><span class="st">"training"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs test results information. This method will be called automatically be any function running tests but can also be called directly if the user wants to run tests on their own.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>results</code> <em>list</em> - A list of TestResults objects</li>
+<li><code>run_cuid</code> <em>str, optional</em> - The run CUID. If not provided, a new run will be created. Defaults to None.</li>
+<li><code>dataset_type</code> <em>str, optional</em> - The type of dataset. Can be one of “training”, “test”, or “validation”. Defaults to “training”.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
+<p><a id="validmind.api_client.start_run"></a></p>
+</section>
+<section id="start_run" class="level4">
+<h4 class="anchored" data-anchor-id="start_run">start_run</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start_run()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Starts a new test run. This method will return a test run CUID that needs to be passed to any functions logging test results to the ValidMind API.</p>
+<p>If “X-RUN-CUID” was already set as an HTTP header to the session, we reuse it</p>
+<p><a id="validmind.api_client.log_figure"></a></p>
+</section>
+<section id="log_figure" class="level4">
+<h4 class="anchored" data-anchor-id="log_figure">log_figure</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_figure(data_or_path, key, metadata, run_cuid<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Logs a figure</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>data_or_path</code> <em>str or matplotlib.figure.Figure</em> - The path of the image or the data of the plot</li>
+<li><code>key</code> <em>str</em> - Identifier of the figure</li>
+<li><code>metadata</code> <em>dict</em> - Python data structure</li>
+<li><code>run_cuid</code> <em>str, optional</em> - The run CUID. If not provided, a new run will be created. Defaults to None.</li>
+</ul>
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>Exception</code> - If the API call fails</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>bool</code> - True if the API call was successful</li>
+</ul>
 
 
 </section>

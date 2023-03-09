@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ValidMind – index</title>
+<title>ValidMind – data_validation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -255,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../python-library/index.html" class="sidebar-item-text sidebar-link active">Python library</a>
+            <a href="../python-library/index.html" class="sidebar-item-text sidebar-link">Python library</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -273,7 +273,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../python-library/data_validation.html" class="sidebar-item-text sidebar-link">validmind.data_validation</a>
+  <a href="../python-library/data_validation.html" class="sidebar-item-text sidebar-link active">validmind.data_validation</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -316,10 +316,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#validmind" id="toc-validmind" class="nav-link active" data-scroll-target="#validmind">validmind</a>
+  <li><a href="#validmind.data_validation" id="toc-validmind.data_validation" class="nav-link active" data-scroll-target="#validmind.data_validation">validmind.data_validation</a></li>
+  <li><a href="#validmind.data_validation.metrics" id="toc-validmind.data_validation.metrics" class="nav-link" data-scroll-target="#validmind.data_validation.metrics">validmind.data_validation.metrics</a>
   <ul class="collapse">
-  <li><a href="#installing-the-client-library" id="toc-installing-the-client-library" class="nav-link" data-scroll-target="#installing-the-client-library">Installing the client library</a></li>
-  <li><a href="#initializing-the-client-library" id="toc-initializing-the-client-library" class="nav-link" data-scroll-target="#initializing-the-client-library">Initializing the client library</a></li>
+  <li><a href="#datasetmetadata-objects" id="toc-datasetmetadata-objects" class="nav-link" data-scroll-target="#datasetmetadata-objects">DatasetMetadata Objects</a></li>
+  <li><a href="#datasetcorrelations-objects" id="toc-datasetcorrelations-objects" class="nav-link" data-scroll-target="#datasetcorrelations-objects">DatasetCorrelations Objects</a></li>
+  <li><a href="#datasetdescription-objects" id="toc-datasetdescription-objects" class="nav-link" data-scroll-target="#datasetdescription-objects">DatasetDescription Objects</a></li>
+  </ul></li>
+  <li><a href="#validmind.data_validation.threshold_tests" id="toc-validmind.data_validation.threshold_tests" class="nav-link" data-scroll-target="#validmind.data_validation.threshold_tests">validmind.data_validation.threshold_tests</a>
+  <ul class="collapse">
+  <li><a href="#classimbalancetest-objects" id="toc-classimbalancetest-objects" class="nav-link" data-scroll-target="#classimbalancetest-objects">ClassImbalanceTest Objects</a></li>
+  <li><a href="#duplicatestest-objects" id="toc-duplicatestest-objects" class="nav-link" data-scroll-target="#duplicatestest-objects">DuplicatesTest Objects</a></li>
+  <li><a href="#highcardinalitytest-objects" id="toc-highcardinalitytest-objects" class="nav-link" data-scroll-target="#highcardinalitytest-objects">HighCardinalityTest Objects</a></li>
+  <li><a href="#highpearsoncorrelationtest-objects" id="toc-highpearsoncorrelationtest-objects" class="nav-link" data-scroll-target="#highpearsoncorrelationtest-objects">HighPearsonCorrelationTest Objects</a></li>
+  <li><a href="#missingvaluestest-objects" id="toc-missingvaluestest-objects" class="nav-link" data-scroll-target="#missingvaluestest-objects">MissingValuesTest Objects</a></li>
+  <li><a href="#skewnesstest-objects" id="toc-skewnesstest-objects" class="nav-link" data-scroll-target="#skewnesstest-objects">SkewnessTest Objects</a></li>
+  <li><a href="#uniquerowstest-objects" id="toc-uniquerowstest-objects" class="nav-link" data-scroll-target="#uniquerowstest-objects">UniqueRowsTest Objects</a></li>
+  <li><a href="#zerostest-objects" id="toc-zerostest-objects" class="nav-link" data-scroll-target="#zerostest-objects">ZerosTest Objects</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -329,59 +342,109 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p><a id="validmind"></a></p>
-<section id="validmind" class="level1">
-<h1>validmind</h1>
-<p>The ValidMind developer framework allows model developers and validators to automatically document different aspects of the model development lifecycle.</p>
-<p>This Python library provides the following high level features:</p>
-<ul>
-<li>Log qualitative and quantitative data about datasets and models</li>
-<li>Log documentation metadata to be displayed on the ValidMind platform</li>
-<li>Run data and model validation test plans</li>
-</ul>
-<section id="installing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="installing-the-client-library">Installing the client library</h2>
-<p>The Python library can be installed with the following command:</p>
-<pre><code>pip install validmind</code></pre>
+<p><a id="validmind.data_validation"></a></p>
+<section id="validmind.data_validation" class="level1">
+<h1>validmind.data_validation</h1>
+<p>Data Validation module</p>
+<p><a id="validmind.data_validation.get_threshold_tests"></a></p>
+<section id="get_threshold_tests" class="level4">
+<h4 class="anchored" data-anchor-id="get_threshold_tests">get_threshold_tests</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_threshold_tests(pretty: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns a list of all available threshold tests</p>
+<p><a id="validmind.data_validation.metrics"></a></p>
 </section>
-<section id="initializing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="initializing-the-client-library">Initializing the client library</h2>
-<p>Every validation project has a project identifier that allows the client library to associate documentation and tests with the appropriate project. In order to initialize the client, we need to provide the following arguments:</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>api_host</td>
-<td>Location of the ValidMind API.</td>
-</tr>
-<tr class="even">
-<td>api_key</td>
-<td>Account API key.</td>
-</tr>
-<tr class="odd">
-<td>api_secret</td>
-<td>Account Secret key.</td>
-</tr>
-<tr class="even">
-<td>project</td>
-<td>The project identifier.</td>
-</tr>
-</tbody>
-</table>
-<p>The following code snippet shows how to initialize a ValidMind client instance:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"&lt;API_HOST&gt;"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"&lt;API_KEY&gt;"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"&lt;API_SECRET&gt;"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"&lt;PROJECT_ID&gt;"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="validmind.data_validation.metrics" class="level1">
+<h1>validmind.data_validation.metrics</h1>
+<p>Metrics functions for any Pandas-compatible datasets</p>
+<p><a id="validmind.data_validation.metrics.DatasetMetadata"></a></p>
+<section id="datasetmetadata-objects" class="level2">
+<h2 class="anchored" data-anchor-id="datasetmetadata-objects">DatasetMetadata Objects</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DatasetMetadata(TestContextUtils)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Custom class to collect a set of descriptive statistics for a dataset. This class will log dataset metadata via <code>log_dataset</code> instead of a metric. Dataset metadat is necessary to initialize dataset object that can be related to different metrics and test results</p>
+<p><a id="validmind.data_validation.metrics.DatasetMetadata.run"></a></p>
+<section id="run" class="level4">
+<h4 class="anchored" data-anchor-id="run">run</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Just set the dataset to the result attribute of the test plan result and it will be logged via the <code>log_dataset</code> function</p>
+<p><a id="validmind.data_validation.metrics.DatasetCorrelations"></a></p>
+</section>
+</section>
+<section id="datasetcorrelations-objects" class="level2">
+<h2 class="anchored" data-anchor-id="datasetcorrelations-objects">DatasetCorrelations Objects</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DatasetCorrelations(Metric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Extracts the correlation matrix for a dataset. The following coefficients are calculated: - Pearson’s R for numerical variables - Cramer’s V for categorical variables - Correlation ratios for categorical-numerical variables</p>
+<p><a id="validmind.data_validation.metrics.DatasetDescription"></a></p>
+</section>
+<section id="datasetdescription-objects" class="level2">
+<h2 class="anchored" data-anchor-id="datasetdescription-objects">DatasetDescription Objects</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DatasetDescription(Metric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Collects a set of descriptive statistics for a dataset</p>
+<p><a id="validmind.data_validation.threshold_tests"></a></p>
+</section>
+</section>
+<section id="validmind.data_validation.threshold_tests" class="level1">
+<h1>validmind.data_validation.threshold_tests</h1>
+<p>Threshold based tests</p>
+<p><a id="validmind.data_validation.threshold_tests.ClassImbalanceTest"></a></p>
+<section id="classimbalancetest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="classimbalancetest-objects">ClassImbalanceTest Objects</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ClassImbalanceTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the minority class does not represent more than a threshold of the total number of examples</p>
+<p><a id="validmind.data_validation.threshold_tests.DuplicatesTest"></a></p>
+</section>
+<section id="duplicatestest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="duplicatestest-objects">DuplicatesTest Objects</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DuplicatesTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the number of duplicates is less than a threshold</p>
+<p><a id="validmind.data_validation.threshold_tests.HighCardinalityTest"></a></p>
+</section>
+<section id="highcardinalitytest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="highcardinalitytest-objects">HighCardinalityTest Objects</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HighCardinalityTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the number of unique values in a column is less than a threshold</p>
+<p><a id="validmind.data_validation.threshold_tests.HighPearsonCorrelationTest"></a></p>
+</section>
+<section id="highpearsoncorrelationtest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="highpearsoncorrelationtest-objects">HighPearsonCorrelationTest Objects</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HighPearsonCorrelationTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the Pearson correlation between two columns is less than a threshold</p>
+<p>Inspired by: https://github.com/ydataai/pandas-profiling/blob/f8bad5dde27e3f87f11ac74fb8966c034bc22db8/src/pandas_profiling/model/correlations.py</p>
+<p><a id="validmind.data_validation.threshold_tests.MissingValuesTest"></a></p>
+</section>
+<section id="missingvaluestest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="missingvaluestest-objects">MissingValuesTest Objects</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MissingValuesTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the number of missing values is less than a threshold</p>
+<p><a id="validmind.data_validation.threshold_tests.SkewnessTest"></a></p>
+</section>
+<section id="skewnesstest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="skewnesstest-objects">SkewnessTest Objects</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SkewnessTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the skewness of a column is less than a threshold</p>
+<p><a id="validmind.data_validation.threshold_tests.UniqueRowsTest"></a></p>
+</section>
+<section id="uniquerowstest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="uniquerowstest-objects">UniqueRowsTest Objects</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UniqueRowsTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the number of unique rows is greater than a threshold</p>
+<p><a id="validmind.data_validation.threshold_tests.ZerosTest"></a></p>
+</section>
+<section id="zerostest-objects" class="level2">
+<h2 class="anchored" data-anchor-id="zerostest-objects">ZerosTest Objects</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ZerosTest(ThresholdTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test that the number of zeros is less than a threshold</p>
 
 
 </section>

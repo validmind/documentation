@@ -9,4 +9,4 @@ get-source:
     # Output from `mkdocstrings` converted to Markdown via Pandoc 
 	rm -rf python-library/
 	mkdir python-library
-	cp -r ../../validmind-python/site/. python-library/
+	cp -r ../../validmind-python/docs/. python-library/
