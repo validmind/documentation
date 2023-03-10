@@ -21,7 +21,7 @@ site
 
 **_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more.
 
-**index.qmd**, ***.qmd** — Quarto Markdown that contains our core docs.
+**index.qmd**, ***.qmd** — Quarto Markdown that contains our core docs and landing page.
 
 ***.ipynb** — Jyupiter notebooks sourced from validmind/validmind-python.
 
