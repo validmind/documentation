@@ -4,12 +4,13 @@ A home for our user-facing documentation and related infrastructure. If you need
 
 ## How our docs site is rendered
 
-We use [Quarto](https://quarto.org) to render our docs, an open-source docs framework based on Pandoc that has good support for multiple input formats. We source input from multiple repositories: 
+We use [Quarto](https://quarto.org) to render our docs, an open-source docs framework based on Pandoc that supports multiple input formats. Source content lives in `site/`, with HTML output rendered in `site/_site`:
 
 ```bash
 site
 ├── _site
 │   └── *.html, *.css, *.png, *.js ...
+├── _quarto.yml
 ├── index.qmd
 ├── *.qmd
 ├── notebooks
@@ -18,19 +19,18 @@ site
     └── *.md
 ```
 
-_quarto.yml
+**_quarto.yml**
 : Rendering options for the site, including navigation, search, footer, and more.
 
-*.qmd
-: Quarto Markdown that contains our core docs, including getting started information, how-to guides,  glue for generated content, and more. 
+**index.qmd**, ***.qmd**
+: Quarto Markdown that contains our main landing page, getting started information, how-to guides, glue for generated content, and more.
 
-*.ipynb
+***.ipynb**
 : Jyupiter notebooks sourced from validmind/validmind-python.
 
-*.md
+***.md**
 : Markdown for the VM developer framework generated from Python docstrings and sourced from validmind/validmind-python.
 
-Input files from 
 
 ## Prerequisites
 
