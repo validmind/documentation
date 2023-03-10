@@ -45,4 +45,6 @@ quarto preview
 
 ## Ship a static docs site
 
-Put the contents of `site/_site` into an AWS S3 bucket and open `index.html` in a browser, for example.
+The generated static site can be shipped or deployed as-is.
+
+For example, you should be able to deploy the contents of `site/_site` into an AWS S3 bucket that you point **docs.validmind.ai** to.
