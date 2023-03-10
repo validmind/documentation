@@ -4,7 +4,7 @@ A home for our user-facing documentation and related infrastructure. If you need
 
 ## How our docs site is rendered
 
-We use [Quarto](https://quarto.org) to render our docs, an open-source docs framework based on Pandoc that supports multiple input formats. Source content lives in `site/`, with HTML output rendered in `site/_site`:
+We use [Quarto](https://quarto.org) to render our docs, an open-source docs framework based on Pandoc that supports multiple formats. Source content lives in `site/`, with HTML output rendered in `site/_site`:
 
 ```bash
 site
@@ -19,17 +19,13 @@ site
     └── *.md
 ```
 
-**_quarto.yml**
-: Rendering options for the site, including navigation, search, footer, and more.
+**_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more.
 
-**index.qmd**, ***.qmd**
-: Quarto Markdown that contains our main landing page, getting started information, how-to guides, glue for generated content, and more.
+**index.qmd**, ***.qmd** — Quarto Markdown that contains our core docs.
 
-***.ipynb**
-: Jyupiter notebooks sourced from validmind/validmind-python.
+***.ipynb** — Jyupiter notebooks sourced from validmind/validmind-python.
 
-***.md**
-: Markdown for the VM developer framework generated from Python docstrings and sourced from validmind/validmind-python.
+***.md** — Developer framework sourced from validmind/validmind-python.
 
 
 ## Prerequisites
@@ -49,4 +45,4 @@ quarto preview
 
 ## Ship a static docs site
 
-Rendered HTML output lives in `site/_site`. You can place this site into an AWS S3 bucket, for example, and open it in a browser.
+Put the contents of `site/_site` into an AWS S3 bucket and open `index.html` in a browser, for example.
