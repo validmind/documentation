@@ -1,39 +1,41 @@
-# Documentation framework
+# Documentation
 
-A home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
+The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
 
-## How our docs site is rendered
-
-We use [Quarto](https://quarto.org) to render our docs, an open-source docs framework based on Pandoc that supports multiple formats. Source content lives in `site/`, with HTML output rendered in `site/_site`:
-
-```bash
-site
-├── _site
-│   └── *.html, *.css, *.png, *.js ...
-├── _quarto.yml
-├── index.qmd
-├── *.qmd
-├── notebooks
-│   └── *.ipynb
-└── python-library
-    └── *.md
-```
-
-**_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more.
-
-**index.qmd**, ***.qmd** — Quarto Markdown that contains our core docs and landing page.
-
-***.ipynb** — Jyupiter notebooks sourced from validmind/validmind-python.
-
-***.md** — Developer framework sourced from validmind/validmind-python.
-
+We use [Quarto](https://quarto.org) to render our docs site, an open-source docs framework based on Pandoc that supports multiple formats such as Quarto Markdown, Jupyter notebooks, and Markdown for content generated from Python docstrings. 
 
 ## Prerequisites
 
-To render or develop the docs locally, you need:
+To develop the docs site locally, you need:
 
 - [Quarto CLI](https://quarto.org/docs/get-started/), plus the Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto).
-- The https://github.com/validmind/validmind-python repo in parallel with this one so that we can fetch some source content from there.
+- The [validmind-python](https://github.com/validmind/validmind-python) repo cloned in parallel with this one to fetch some source content.
+
+## How our docs site is sourced
+
+The source files for our docs site live in:
+
+```bash
+site
+├── guide
+│   └── *.qmd, *.svg, *.png
+├── notebooks
+│   └── *.ipynb
+└── validmind
+│   └── *.md
+├── _quarto.yml
+└── index.qmd
+```
+
+**guide/** — Core docs sourced in Quarto Markdown
+
+**notebooks/** — Jyupiter notebooks source copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks)
+
+**validmind/** — Developer framework Markdown source copied from [validmind-python/validmind](https://github.com/validmind/validmind-python/tree/main/validmind)
+
+**_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more
+
+**index.qmd** — Main landing page sourced in Quarto Markdown
 
 ## Preview the docs site
 
@@ -45,6 +47,12 @@ quarto preview
 
 ## Ship a static docs site
 
-The generated static site can be shipped or deployed as-is.
+The rendered output HTML for our static site lives in:
 
-For example, you should be able to deploy the contents of `site/_site` into an AWS S3 bucket that you point **docs.validmind.ai** to.
+```bash
+site
+└── _site
+    └── *.html, *.css, *.png, *.js ...
+```
+
+You can ship the generated static site as-is to a customer or deploy it on AWS S3 and point **docs.validmind.ai** there.
