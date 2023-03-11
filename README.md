@@ -47,7 +47,15 @@ quarto preview
 
 ## Ship a static docs site
 
-The rendered output HTML for our static site lives in:
+Render the site with:
+
+```bash
+cd site
+make get-source
+quarto render
+```
+
+The rendered static HTML for the docs site lives in:
 
 ```bash
 site
