@@ -21,7 +21,7 @@ site
 │   └── *.qmd, *.svg, *.png
 ├── notebooks
 │   └── *.ipynb
-└── validmind
+├── validmind
 │   └── *.md
 ├── _quarto.yml
 └── index.qmd
