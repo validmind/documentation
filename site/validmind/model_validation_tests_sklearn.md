@@ -8,7 +8,7 @@ Metrics functions models trained with sklearn or that provide
 a sklearn-like API
 
 
-### _class_ validmind.model_validation.sklearn.metrics.AccuracyScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.AccuracyScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Accuracy Score
@@ -26,7 +26,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.CharacteristicStabilityIndex(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.CharacteristicStabilityIndex(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Characteristic Stability Index between two datasets
@@ -46,7 +46,7 @@ Calculates PSI for each of the dataset features
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.ConfusionMatrix(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.ConfusionMatrix(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Confusion Matrix
@@ -64,7 +64,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.F1Score(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.F1Score(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 F1 Score
@@ -82,7 +82,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.PermutationFeatureImportance(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.PermutationFeatureImportance(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Permutation Feature Importance
@@ -100,7 +100,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.PrecisionRecallCurve(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.PrecisionRecallCurve(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Precision Recall Curve
@@ -118,7 +118,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.PrecisionScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.PrecisionScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Precision Score
@@ -136,7 +136,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.RecallScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.RecallScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Recall Score
@@ -154,7 +154,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.ROCAUCScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.ROCAUCScore(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 ROC AUC Score
@@ -172,7 +172,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.ROCCurve(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.ROCCurve(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 ROC Curve
@@ -190,7 +190,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.model_validation.sklearn.metrics.SHAPGlobalImportance(test_context: TestContext, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.SHAPGlobalImportance(test_context: TestContext, result: Optional[TestPlanMetricResult] = None)
 Bases: `TestContextUtils`
 
 SHAP Global Importance. Custom metric
@@ -202,11 +202,11 @@ SHAP Global Importance. Custom metric
 
 #### name(_ = 'shap_ )
 
-#### result(_: TestPlanResul_ _ = Non_ )
+#### result(_: TestPlanMetricResul_ _ = Non_ )
 
 #### run()
 
-### _class_ validmind.model_validation.sklearn.metrics.PopulationStabilityIndex(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.model_validation.sklearn.metrics.PopulationStabilityIndex(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Population Stability Index between two datasets

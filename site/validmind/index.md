@@ -8,6 +8,9 @@ contain the root `toctree` directive. -->
 * [ValidMind Python Client](readme.md)
 
 
+    * [Installation](readme.md#installation)
+
+
     * [Contributing to ValidMind Developer Framework](readme.md#contributing-to-validmind-developer-framework)
 
 

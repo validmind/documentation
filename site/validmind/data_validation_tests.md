@@ -7,7 +7,7 @@
 Metrics functions for any Pandas-compatible datasets
 
 
-### _class_ validmind.data_validation.metrics.DatasetMetadata(test_context: TestContext, result: Optional[TestPlanResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetMetadata(test_context: TestContext, result: Optional[TestPlanDatasetResult] = None)
 Bases: `TestContextUtils`
 
 Custom class to collect a set of descriptive statistics for a dataset.
@@ -22,14 +22,14 @@ to different metrics and test results
 
 #### name(_ = 'dataset_metadata_ )
 
-#### result(_: TestPlanResul_ _ = Non_ )
+#### result(_: TestPlanDatasetResul_ _ = Non_ )
 
 #### run()
 Just set the dataset to the result attribute of the test plan result
 and it will be logged via the log_dataset function
 
 
-### _class_ validmind.data_validation.metrics.DatasetCorrelations(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetCorrelations(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Extracts the correlation matrix for a dataset. The following coefficients
@@ -49,7 +49,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.metrics.DatasetDescription(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetDescription(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `Metric`
 
 Collects a set of descriptive statistics for a dataset

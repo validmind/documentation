@@ -221,7 +221,7 @@ Dataset targets definition
 
 #### class_labels(_: dic_ _ = Non_ )
 
-### _class_ validmind.vm_models.Figure(key: str, metadata: dict, figure: object)
+### _class_ validmind.vm_models.Figure(key: str, metadata: dict, figure: object, extras: Optional[dict] = None)
 Bases: `object`
 
 Figure objects track the schema supported by the ValidMind API
@@ -233,11 +233,13 @@ Figure objects track the schema supported by the ValidMind API
 
 #### figure(_: objec_ )
 
+#### extras(_: Optional[dict_ _ = Non_ )
+
 #### serialize()
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.Metric(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.vm_models.Metric(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
@@ -259,7 +261,7 @@ Metric objects track the schema supported by the ValidMind API
 
 #### params(_: dic_ _ = Non_ )
 
-#### result(_: TestPlanResul_ _ = Non_ )
+#### result(_: TestPlanMetricResul_ _ = Non_ )
 
 #### _property_ name()
 
@@ -267,7 +269,7 @@ Metric objects track the schema supported by the ValidMind API
 Run the metric calculation and cache its results
 
 
-#### cache_results(metric_value: Union[dict, list, DataFrame], figures: Optional[object] = None)
+#### cache_results(metric_value: Union[dict, list, DataFrame], figures: Optional[List[Figure]] = None)
 Cache the results of the metric calculation and do any post-processing if needed
 
 
@@ -470,7 +472,7 @@ Returns a Pandas DataFrame for the dataset, first checking if
 we passed in a Dataset or a DataFrame
 
 
-### _class_ validmind.vm_models.TestPlan(config: {} = None, test_context: TestContext = None, dataset: Dataset = None, model: Model = None, train_ds: Dataset = None, test_ds: Dataset = None)
+### _class_ validmind.vm_models.TestPlan(config: {} = None, test_context: TestContext = None, dataset: Dataset = None, model: Model = None, train_ds: Dataset = None, test_ds: Dataset = None, pbar: tqdm = None)
 Bases: `object`
 
 Base class for test plans. Test plans are used to define any
@@ -485,7 +487,7 @@ arbitrary grouping of tests that will be run on a dataset or model.
 
 #### test_plans(_: ClassVar[List[object]_ _ = [_ )
 
-#### results(_: ClassVar[List[object]_ _ = [_ )
+#### results(_: ClassVar[List[TestPlanResult]_ _ = [_ )
 
 #### config(_: {_ _ = Non_ )
 
@@ -499,6 +501,8 @@ arbitrary grouping of tests that will be run on a dataset or model.
 
 #### test_ds(_: Datase_ _ = Non_ )
 
+#### pbar(_: tqd_ _ = Non_ )
+
 #### validate_context()
 Validates that the context elements are present
 in the instance so that the test plan can be run
@@ -511,24 +515,68 @@ Runs the test plan
 #### log_results()
 Logs the results of the test plan to ValidMind
 
-
-### _class_ validmind.vm_models.TestPlanResult(dataset: Optional[object] = None, metric: Optional[object] = None, model: Optional[object] = None, test_results: Optional[object] = None, figures: Optional[object] = None, plots: Optional[List[object]] = None)
-Bases: `object`
-
-Result wrapper tests that run as part of a test plan
+This method will be called after the test plan has been run and all results have been
+collected. This method will log the results to ValidMind.
 
 
-#### dataset(_: Optional[object_ _ = Non_ )
+#### summarize()
+Summarizes the results of the test plan
 
-#### metric(_: Optional[object_ _ = Non_ )
+This method will be called after the test plan has been run and all results have been
+logged to ValidMind. It will summarize the results of the test plan by creating an
+html table with the results of each test. This html table will be displayed in an
+VS Code, Jupyter or other notebook environment.
 
-#### model(_: Optional[object_ _ = Non_ )
 
-#### test_results(_: Optional[object_ _ = Non_ )
+### _class_ validmind.vm_models.TestPlanDatasetResult(dataset: Optional[Dataset] = None)
+Bases: `TestPlanResult`
 
-#### figures(_: Optional[object_ _ = Non_ )
+Result wrapper for datasets that run as part of a test plan
 
-#### plots(_: Optional[List[object]_ _ = Non_ )
+
+#### dataset(_: Datase_ _ = Non_ )
+
+#### log()
+Log the result… Must be overridden by subclasses
+
+
+### _class_ validmind.vm_models.TestPlanMetricResult(figures: Optional[List[Figure]] = None, metric: Optional[MetricResult] = None)
+Bases: `TestPlanResult`
+
+Result wrapper for metrics that run as part of a test plan
+
+
+#### figures(_: Optional[List[Figure]_ _ = Non_ )
+
+#### metric(_: Optional[MetricResult_ _ = Non_ )
+
+#### log()
+Log the result… Must be overridden by subclasses
+
+
+### _class_ validmind.vm_models.TestPlanModelResult(model: Optional[Model] = None)
+Bases: `TestPlanResult`
+
+Result wrapper for models that run as part of a test plan
+
+
+#### model(_: Mode_ _ = Non_ )
+
+#### log()
+Log the result… Must be overridden by subclasses
+
+
+### _class_ validmind.vm_models.TestPlanTestResult(test_results: Optional[TestResults] = None)
+Bases: `TestPlanResult`
+
+Result wrapper for test results produced by the tests that run as part of a test plan
+
+
+#### test_results(_: TestResult_ _ = Non_ )
+
+#### log()
+Log the result… Must be overridden by subclasses
+
 
 ### _class_ validmind.vm_models.TestResult(\*, test_name: Optional[str] = None, column: Optional[str] = None, passed: Optional[bool] = None, values: dict)
 Bases: `BaseResultModel`

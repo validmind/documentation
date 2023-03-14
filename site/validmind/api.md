@@ -593,7 +593,7 @@ Dataset targets definition
 
 #### class_labels(_: dic_ _ = Non_ )
 
-### _class_ validmind.Figure(key: str, metadata: dict, figure: object)
+### _class_ validmind.Figure(key: str, metadata: dict, figure: object, extras: Optional[dict] = None)
 Bases: `object`
 
 Figure objects track the schema supported by the ValidMind API
@@ -605,11 +605,13 @@ Figure objects track the schema supported by the ValidMind API
 
 #### figure(_: objec_ )
 
+#### extras(_: Optional[dict_ _ = Non_ )
+
 #### serialize()
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.Metric(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanResult] = None)
+### _class_ validmind.Metric(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
 Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
@@ -631,7 +633,7 @@ Metric objects track the schema supported by the ValidMind API
 
 #### params(_: dic_ _ = Non_ )
 
-#### result(_: TestPlanResul_ _ = Non_ )
+#### result(_: TestPlanMetricResul_ _ = Non_ )
 
 #### _property_ name()
 
@@ -639,7 +641,7 @@ Metric objects track the schema supported by the ValidMind API
 Run the metric calculation and cache its results
 
 
-#### cache_results(metric_value: Union[dict, list, DataFrame], figures: Optional[object] = None)
+#### cache_results(metric_value: Union[dict, list, DataFrame], figures: Optional[List[Figure]] = None)
 Cache the results of the metric calculation and do any post-processing if needed
 
 
