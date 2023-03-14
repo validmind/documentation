@@ -1,19 +1,22 @@
 # Documentation
 
-The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
-
-We use [Quarto](https://quarto.org) to render our docs site, an open-source docs framework based on Pandoc that supports multiple formats such as Quarto Markdown, Jupyter notebooks, and Markdown for content generated from Python docstrings. 
+The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place. 
 
 ## Prerequisites
 
-To develop the docs site locally, you need:
+We use [Quarto](https://quarto.org) to render our docs site, an open-source docs framework based on Pandoc that supports multiple input formats such as Quarto Markdown, Jupyter notebooks, and Markdown. Additionally, we use [Sphinx](https://www.sphinx-doc.org/en/master/) to source some Markdown content for our developer framework from Python docstrings.
 
-- [Quarto CLI](https://quarto.org/docs/get-started/), plus the Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto).
-- The [validmind-python](https://github.com/validmind/validmind-python) repo cloned in parallel with this one to fetch some source content.
+To develop the docs site, you need:
+
+- [Quarto CLI](https://quarto.org/docs/get-started/)
+- The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto).
+
+To run `make get-source`, you need:
+
+- Sphinx `docutils` 
+- Additional tooling, such as `sphinx_markdown_builder`, `myst_parser`, `dython`, `pandas_profiling`, and `shap`
 
 ## How our docs site is sourced
-
-The source files for our docs site live in:
 
 ```bash
 site
@@ -29,9 +32,9 @@ site
 
 **guide/** — Core docs sourced in Quarto Markdown
 
-**notebooks/** — Jyupiter notebooks source copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks)
+**notebooks/** — Jyupiter notebooks copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks)
 
-**validmind/** — Developer framework Markdown source copied from [validmind-python/validmind](https://github.com/validmind/validmind-python/tree/main/validmind)
+**validmind/** — Developer framework docs built from [validmind-python/validmind/docs/](https://github.com/validmind/validmind-python/tree/main/validmind)
 
 **_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more
 
@@ -41,13 +44,17 @@ site
 
 ```bash
 cd site
-make get-source
 quarto preview
 ```
 
-## Ship a static docs site
+## Update files sourced from other repos
 
-Render the site with:
+```bash
+cd site
+make get-source
+```
+
+## Generate a static docs site
 
 ```bash
 cd site
@@ -55,7 +62,7 @@ make get-source
 quarto render
 ```
 
-The rendered static HTML for the docs site lives in:
+Ship the rendered static HTML ooutput for the docs site located in:
 
 ```bash
 site
