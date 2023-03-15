@@ -63,7 +63,7 @@ cd site
 make docs-site
 ```
 
-The rendered static HTML output for the docs site located in:
+The rendered static HTML output lives in:
 
 ```bash
 site
