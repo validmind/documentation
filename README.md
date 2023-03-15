@@ -56,7 +56,7 @@ cd site
 make get-source
 ```
 
-## Generate a static docs site
+## Generate the docs site
 
 ```bash
 cd site
