@@ -1,21 +1,21 @@
 # Documentation
 
-The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place. 
+The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
 
 ## Prerequisites
 
-We use [Quarto](https://quarto.org) to develop our docs site, an open-source docs framework based on Pandoc that supports multiple input formats such as Quarto Markdown, Jupyter notebooks, and Markdown. 
+We use [Quarto](https://quarto.org) to develop our docs site, an open-source docs framework based on Pandoc that supports multiple input formats such as Quarto Markdown, Jupyter notebooks, and Markdown.
 
 You need:
 
 - [Quarto CLI](https://quarto.org/docs/get-started/)
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
 
-Additionally, we use [Sphinx](https://www.sphinx-doc.org/en/master/) to generate Markdown content for our developer framework from Python docstrings whenever you run `make get-source` or `make docs-site`. 
+Additionally, we use [Sphinx](https://www.sphinx-doc.org/en/master/) to generate Markdown content for our developer framework from Python docstrings whenever you run `make get-source` or `make docs-site`.
 
 You need:
 
-- Sphinx `docutils` 
+- Sphinx `docutils`
 - Supporting tools: `sphinx_markdown_builder`, `myst_parser`, `dython`, `pandas_profiling`, and `shap`
 
 ## How our docs site is sourced
