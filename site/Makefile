@@ -39,3 +39,8 @@ python-docs:
 
 # Get all source files
 get-source: clean clone notebooks python-docs
+
+# Get all source files
+docs-site: clean clone notebooks python-docs 
+	quarto render
+	
