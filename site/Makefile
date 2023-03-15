@@ -4,16 +4,17 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs
+.PHONY: help clean clone notebooks python-docs docs-site
 
 # Help section
 help:
 	@echo "Available targets:"
 	@echo "  clean        Remove the _source/ directory"
 	@echo "  clone        Clone the validmind-python repository into _source/"
-	@echo "  notebooks    Copy Jupyter notebooks to notebooks/"
+	@echo "  notebooks    Copy the Jupyter notebooks to notebooks/"
 	@echo "  python-docs  Build the Python library docs and copy to validmind/"
 	@echo "  get-source   Get all source files (clean, clone, notebooks, python-docs)"
+	@echo "  docs-site    Get all source files and render the docs site"
 	@echo "  help         Display this help message (default target)"
 
 # Clean up source directory
@@ -43,4 +44,4 @@ get-source: clean clone notebooks python-docs
 # Get all source files
 docs-site: clean clone notebooks python-docs 
 	quarto render
-	
+
