@@ -23,7 +23,7 @@ clean:
 
 # Clone the source repository we need
 clone:
-	git clone https://github.com/validmind/validmind-python.git $(SRC_DIR)
+	git clone git@github.com:validmind/validmind-python.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
 notebooks:
@@ -32,7 +32,7 @@ notebooks:
 	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
 
 # Make Python library docs & copy them over
-python-docs: 
+python-docs:
 	$(MAKE) -C $(SRC_DIR)/docs markdown
 	rm -rf $(DEST_DIR_PYTHON)
 	mkdir -p $(DEST_DIR_PYTHON)
@@ -42,6 +42,6 @@ python-docs:
 get-source: clean clone notebooks python-docs
 
 # Get all source files
-docs-site: clean clone notebooks python-docs 
+docs-site: clean clone notebooks python-docs
 	quarto render
 
