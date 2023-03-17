@@ -33,7 +33,6 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	$(MAKE) -C $(SRC_DIR)/docs markdown
 	rm -rf $(DEST_DIR_PYTHON)
 	mkdir -p $(DEST_DIR_PYTHON)
 	cp -r $(SRC_DIR)/docs/_build/markdown/. $(DEST_DIR_PYTHON)

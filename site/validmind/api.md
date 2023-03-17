@@ -375,7 +375,7 @@ running tests but can also be called directly if the user wants to run tests on 
 
 
 
-### _class_ validmind.Dataset(raw_dataset: object, fields: list, variables: list, sample: list, shape: dict, correlation_matrix: ~typing.Optional[object] = None, correlations: ~typing.Optional[dict] = None, type: ~typing.Optional[str] = None, options: ~typing.Optional[dict] = None, statistics: ~typing.Optional[dict] = None, targets: ~typing.Optional[dict] = None, target_column: str = '', class_labels: ~typing.Optional[dict] = None, _Dataset__feature_lookup: dict = <factory>, _Dataset__transformed_df: ~typing.Optional[object] = None)
+### _class_ validmind.Dataset(raw_dataset: object, fields: list, variables: list, sample: list, shape: dict, correlation_matrix: object | None = None, correlations: dict | None = None, type: str | None = None, options: dict | None = None, statistics: dict | None = None, targets: dict | None = None, target_column: str = '', class_labels: dict | None = None, _Dataset__feature_lookup: dict = <factory>, _Dataset__transformed_df: object | None = None)
 Bases: `object`
 
 Model class wrapper
@@ -581,7 +581,7 @@ Initializes a Dataset object from a pandas DataFrame
 
 
 
-### _class_ validmind.DatasetTargets(target_column: str, description: Optional[str] = None, class_labels: Optional[dict] = None)
+### _class_ validmind.DatasetTargets(target_column: str, description: str | None = None, class_labels: dict | None = None)
 Bases: `object`
 
 Dataset targets definition
@@ -593,7 +593,7 @@ Dataset targets definition
 
 #### class_labels(_: dic_ _ = Non_ )
 
-### _class_ validmind.Figure(key: str, metadata: dict, figure: object, extras: Optional[dict] = None)
+### _class_ validmind.Figure(key: str, metadata: dict, figure: object, extras: dict | None = None)
 Bases: `object`
 
 Figure objects track the schema supported by the ValidMind API
@@ -605,13 +605,13 @@ Figure objects track the schema supported by the ValidMind API
 
 #### figure(_: objec_ )
 
-#### extras(_: Optional[dict_ _ = Non_ )
+#### extras(_: dict | Non_ _ = Non_ )
 
 #### serialize()
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.Metric(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
+### _class_ validmind.Metric(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
 Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
@@ -627,7 +627,7 @@ Metric objects track the schema supported by the ValidMind API
 
 #### key(_: ClassVar[str_ _ = '_ )
 
-#### value_formatter(_: ClassVar[Optional[str]_ _ = Non_ )
+#### value_formatter(_: ClassVar[str | None_ _ = Non_ )
 
 #### default_params(_: ClassVar[dict_ _ = {_ )
 
@@ -641,7 +641,7 @@ Metric objects track the schema supported by the ValidMind API
 Run the metric calculation and cache its results
 
 
-#### cache_results(metric_value: Union[dict, list, DataFrame], figures: Optional[List[Figure]] = None)
+#### cache_results(metric_value: dict | list | DataFrame, figures: List[Figure] | None = None)
 Cache the results of the metric calculation and do any post-processing if needed
 
 
@@ -667,7 +667,7 @@ Cache the results of the metric calculation and do any post-processing if needed
 
 
 
-### _class_ validmind.Model(attributes: Optional[ModelAttributes] = None, task: Optional[str] = None, subtask: Optional[str] = None, params: Optional[dict] = None, model_id: str = 'main', model: Optional[object] = None)
+### _class_ validmind.Model(attributes: ModelAttributes | None = None, task: str | None = None, subtask: str | None = None, params: dict | None = None, model_id: str = 'main', model: object | None = None)
 Bases: `object`
 
 Model class wrapper
@@ -740,7 +740,7 @@ Creates a Model instance from a dictionary
 
 
 
-### _class_ validmind.ModelAttributes(architecture: Optional[str] = None, framework: Optional[str] = None, framework_version: Optional[str] = None)
+### _class_ validmind.ModelAttributes(architecture: str | None = None, framework: str | None = None, framework_version: str | None = None)
 Bases: `object`
 
 Model attributes definition
@@ -752,17 +752,17 @@ Model attributes definition
 
 #### framework_version(_: st_ _ = Non_ )
 
-### _class_ validmind.TestResult(\*, test_name: Optional[str] = None, column: Optional[str] = None, passed: Optional[bool] = None, values: dict)
+### _class_ validmind.TestResult(\*, test_name: str | None = None, column: str | None = None, passed: bool | None = None, values: dict)
 Bases: `BaseResultModel`
 
 TestResult model
 
 
-#### test_name(_: Optional[str_ )
+#### test_name(_: str | Non_ )
 
-#### column(_: Optional[str_ )
+#### column(_: str | Non_ )
 
-#### passed(_: Optional[bool_ )
+#### passed(_: bool | Non_ )
 
 #### values(_: dic_ )
 
@@ -782,7 +782,7 @@ TestResults model
 
 #### results(_: List[TestResult_ )
 
-### _class_ validmind.ThresholdTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.ThresholdTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `TestContextUtils`
 
 A threshold test is a combination of a metric/plot we track and a
