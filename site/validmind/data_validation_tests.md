@@ -7,7 +7,7 @@
 Metrics functions for any Pandas-compatible datasets
 
 
-### _class_ validmind.data_validation.metrics.DatasetMetadata(test_context: TestContext, result: Optional[TestPlanDatasetResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetMetadata(test_context: TestContext, result: TestPlanDatasetResult | None = None)
 Bases: `TestContextUtils`
 
 Custom class to collect a set of descriptive statistics for a dataset.
@@ -29,7 +29,7 @@ Just set the dataset to the result attribute of the test plan result
 and it will be logged via the log_dataset function
 
 
-### _class_ validmind.data_validation.metrics.DatasetCorrelations(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetCorrelations(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
 Bases: `Metric`
 
 Extracts the correlation matrix for a dataset. The following coefficients
@@ -49,7 +49,7 @@ Run the metric calculation and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.metrics.DatasetDescription(test_context: TestContext, params: Optional[dict] = None, result: Optional[TestPlanMetricResult] = None)
+### _class_ validmind.data_validation.metrics.DatasetDescription(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
 Bases: `Metric`
 
 Collects a set of descriptive statistics for a dataset
@@ -69,7 +69,7 @@ Run the metric calculation and cache its results
 Threshold based tests
 
 
-### _class_ validmind.data_validation.threshold_tests.ClassImbalanceTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.ClassImbalanceTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the minority class does not represent more than a threshold
@@ -88,7 +88,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.DuplicatesTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.DuplicatesTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the number of duplicates is less than a threshold
@@ -106,7 +106,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.HighCardinalityTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.HighCardinalityTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the number of unique values in a column is less than a threshold
@@ -124,7 +124,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.HighPearsonCorrelationTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.HighPearsonCorrelationTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the Pearson correlation between two columns is less than a threshold
@@ -144,7 +144,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.MissingValuesTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.MissingValuesTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the number of missing values is less than a threshold
@@ -162,7 +162,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.SkewnessTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.SkewnessTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the skewness of a column is less than a threshold
@@ -180,7 +180,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.UniqueRowsTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.UniqueRowsTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the number of unique rows is greater than a threshold
@@ -198,7 +198,7 @@ Run the test and cache its results
 
 #### test_context(_: TestContex_ )
 
-### _class_ validmind.data_validation.threshold_tests.ZerosTest(test_context: TestContext, params: Optional[dict] = None, test_results: Optional[TestResults] = None)
+### _class_ validmind.data_validation.threshold_tests.ZerosTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `ThresholdTest`
 
 Test that the number of zeros is less than a threshold
