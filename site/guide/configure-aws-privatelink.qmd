@@ -20,25 +20,52 @@ To learn more, check [Access an AWS service using an interface VPC endpoint](htt
 
 [Include a list of any prerequisites the user needs to complete before starting the task, such as having certain software installed, access to certain resources, or completing previous tasks.]
 
-### Service information
+### VPC service information
 
-[Table with info]
+| Service name                                            | DNS names                                                                                          | Region |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------- |
+| com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | vpce-Occ3b6ef6d4a34abe-fwzam2sm.vpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com            | us-west-2 |
+| com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | vpce-Occ3b6ef6d4a34abe-fwzam2sm-us-west-2cvpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com  | us-west-2 |
+| com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | vpce-Occ3b6ef6d4a34abe-fwzam2sm-us-west-2a.vpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com | us-west-2 |
 
 ## Steps
 
-1. Set up the network interface on AWS:
-   - Create your VPC endpoint
-   - Create DNS entries
-   - Copy the details for your VPC endpoint ID
-2. Add the private link rules to your environment:
-   - [Include any sub-steps or details needed to complete this step]
-   - [If applicable, include screenshots or images to illustrate the step]
-3. Test your AWS PrivateLink connection:
-   - [Include any sub-steps or details needed to complete this step]
-   - [If applicable, include screenshots or images to illustrate the step]
-4. [Step 4]
-   - [Include any sub-steps or details needed to complete this step]
+1. Set up a VPC:
+   a. Sign in to the AWS Management Console.
+   b. Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.
+   c. Create a new Virtual Private Cloud (VPC) or use an existing one.
+   d. Create at least one subnet within the VPC.
 
+2. Establish connectivity between your on-premises network and AWS VPC:
+   a. Set up a VPN connection or Direct Connect between your on-premises network and the AWS VPC.
+   b. Update the necessary routing tables to ensure traffic can flow between your on-premises network and the VPC.
+
+3. Create a VPC endpoint for ValidMind:
+   a. In the VPC console, choose **Endpoints** from the left navigation pane.
+   b. Click **Create Endpoint**.
+   c. Choose **Find service by name** and enter the service name provided by ValidMind.
+   d. Choose the VPC you want to create the endpoint in.
+   e. Select the subnets where you want to create the endpoint network interfaces.
+   f. Configure the security group for the VPC endpoint. Make sure it allows traffic between your network and the endpoint.
+   g. Click **Create endpoint**.
+
+4. Verify the endpoint:
+   a. In the VPC console, go to the **Endpoints** section.
+   b. Check the status of the endpoint you just created. Ensure it's in the **Available** state.
+
+5. Update routing tables:
+   a. Update the routing tables in your VPC and on-premises network to ensure traffic flows through the VPC endpoint.
+
+6. Test the connection:
+   a. From your on-premises network, attempt to access ValidMind's service using the provided DNS hostname or IP addresses associated with the VPC endpoint.
+   b. Confirm that you can successfully connect to ValidMind's service.
+
+7. Configure SaaS provider settings (optional):
+   Some SaaS providers may require additional configuration to enable access via AWS PrivateLink. Consult ValidMind's documentation for any specific settings or requirements.
+
+After completing these steps, your on-premises network should be connected to ValidMind via AWS PrivateLink. This will provide a secure, private connection between your network and ValidMind's service, without exposing your traffic to the public internet.
+
+<!---
 ## Troubleshooting
 
 [Include any common issues or errors that may arise during the task and how to resolve them.]
@@ -46,4 +73,4 @@ To learn more, check [Access an AWS service using an interface VPC endpoint](htt
 ## What's Next
 
 [Summarize the task and provide any next steps or resources for the user to continue their learning or work.]
-
+--->
