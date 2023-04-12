@@ -60,6 +60,12 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean"
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -270,11 +276,9 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a>
   <ul class="collapse">
-  <li><a href="#service-information" id="toc-service-information" class="nav-link" data-scroll-target="#service-information">Service information</a></li>
+  <li><a href="#vpc-service-information" id="toc-vpc-service-information" class="nav-link" data-scroll-target="#vpc-service-information">VPC service information</a></li>
   </ul></li>
   <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s Next</a></li>
   </ul>
 </nav>
     </div>
@@ -312,43 +316,92 @@ ul.task-list li input[type="checkbox"] {
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
 <p>[Include a list of any prerequisites the user needs to complete before starting the task, such as having certain software installed, access to certain resources, or completing previous tasks.]</p>
-<section id="service-information" class="level3">
-<h3 class="anchored" data-anchor-id="service-information">Service information</h3>
-<p>[Table with info]</p>
+<section id="vpc-service-information" class="level3">
+<h3 class="anchored" data-anchor-id="vpc-service-information">VPC service information</h3>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 60%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Service name</th>
+<th>DNS names</th>
+<th>Region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538</td>
+<td>vpce-Occ3b6ef6d4a34abe-fwzam2sm.vpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com</td>
+<td>us-west-2</td>
+</tr>
+<tr class="even">
+<td>com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538</td>
+<td>vpce-Occ3b6ef6d4a34abe-fwzam2sm-us-west-2cvpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com</td>
+<td>us-west-2</td>
+</tr>
+<tr class="odd">
+<td>com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538</td>
+<td>vpce-Occ3b6ef6d4a34abe-fwzam2sm-us-west-2a.vpce-svc-0b956fa3e03afa538.us-west-2.vpce.amazonaws.com</td>
+<td>us-west-2</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="steps" class="level2">
 <h2 class="anchored" data-anchor-id="steps">Steps</h2>
 <ol type="1">
-<li>Set up the network interface on AWS:
-<ul>
-<li>Create your VPC endpoint</li>
-<li>Create DNS entries</li>
-<li>Copy the details for your VPC endpoint ID</li>
-</ul></li>
-<li>Add the private link rules to your environment:
-<ul>
-<li>[Include any sub-steps or details needed to complete this step]</li>
-<li>[If applicable, include screenshots or images to illustrate the step]</li>
-</ul></li>
-<li>Test your AWS PrivateLink connection:
-<ul>
-<li>[Include any sub-steps or details needed to complete this step]</li>
-<li>[If applicable, include screenshots or images to illustrate the step]</li>
-</ul></li>
-<li>[Step 4]
-<ul>
-<li>[Include any sub-steps or details needed to complete this step]</li>
-</ul></li>
+<li>Set up a VPC:
+<ol type="a">
+<li>Sign in to the AWS Management Console.</li>
+<li>Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.</li>
+<li>Create a new Virtual Private Cloud (VPC) or use an existing one.</li>
+<li>Create at least one subnet within the VPC.</li>
+</ol></li>
+<li>Establish connectivity between your on-premises network and AWS VPC:
+<ol type="a">
+<li>Set up a VPN connection or Direct Connect between your on-premises network and the AWS VPC.</li>
+<li>Update the necessary routing tables to ensure traffic can flow between your on-premises network and the VPC.</li>
+</ol></li>
+<li>Create a VPC endpoint for ValidMind:
+<ol type="a">
+<li>In the VPC console, choose <strong>Endpoints</strong> from the left navigation pane.</li>
+<li>Click <strong>Create Endpoint</strong>.</li>
+<li>Choose <strong>Find service by name</strong> and enter the service name provided by ValidMind.</li>
+<li>Choose the VPC you want to create the endpoint in.</li>
+<li>Select the subnets where you want to create the endpoint network interfaces.</li>
+<li>Configure the security group for the VPC endpoint. Make sure it allows traffic between your network and the endpoint.</li>
+<li>Click <strong>Create endpoint</strong>.</li>
+</ol></li>
+<li>Verify the endpoint:
+<ol type="a">
+<li>In the VPC console, go to the <strong>Endpoints</strong> section.</li>
+<li>Check the status of the endpoint you just created. Ensure it’s in the <strong>Available</strong> state.</li>
+</ol></li>
+<li>Update routing tables:
+<ol type="a">
+<li>Update the routing tables in your VPC and on-premises network to ensure traffic flows through the VPC endpoint.</li>
+</ol></li>
+<li>Test the connection:
+<ol type="a">
+<li>From your on-premises network, attempt to access ValidMind’s service using the provided DNS hostname or IP addresses associated with the VPC endpoint.</li>
+<li>Confirm that you can successfully connect to ValidMind’s service.</li>
+</ol></li>
+<li>Configure SaaS provider settings (optional): Some SaaS providers may require additional configuration to enable access via AWS PrivateLink. Consult ValidMind’s documentation for any specific settings or requirements.</li>
 </ol>
-</section>
-<section id="troubleshooting" class="level2">
-<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<p>[Include any common issues or errors that may arise during the task and how to resolve them.]</p>
-</section>
-<section id="whats-next" class="level2">
-<h2 class="anchored" data-anchor-id="whats-next">What’s Next</h2>
-<p>[Summarize the task and provide any next steps or resources for the user to continue their learning or work.]</p>
+<p>After completing these steps, your on-premises network should be connected to ValidMind via AWS PrivateLink. This will provide a secure, private connection between your network and ValidMind’s service, without exposing your traffic to the public internet.</p>
+<!---
+## Troubleshooting
+
+[Include any common issues or errors that may arise during the task and how to resolve them.]
+
+## What's Next
+
+[Summarize the task and provide any next steps or resources for the user to continue their learning or work.]
+--->
 
 
 </section>
@@ -486,8 +539,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<script src="https://utteranc.es/client.js" repo="validmind/documentation" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 <footer class="footer">
