@@ -3,14 +3,22 @@ title: "Get started as a model developer"
 keywords: "developer, model risk management, ValidMind"
 ---
 
-<!---
-QMD: General getting started w/ initializing developer framework and runnning a simple test via intro notebook ()
-Then next steps will be getting started with their own model, for FR it will be time series notebook.
-Notebooks are tutorials or how-tos, they are NOT reference! So the notebooks need to move around in the docs
-    Could split the getting started up into sections for Developers, Validators, and Admins (and likely get rid of the Guide section)
---->
-
 The model developer is responsible for developing, implementing, and maintaining the model. They are typically subject matter experts in the domain of the model and are responsible for ensuring the model is fit-for-purpose, accurate, and aligned with the business requirements.
+
+The ValidMind Python client allows model developers to automatically document different aspects of the model development lifecycle.
+
+The client provides the following high level
+features:
+
+- Log qualitative data about the model's conceptual soundness
+- Log information about datasets and models
+- Log training and evaluation metrics about datasets and models
+- Run data quality checks
+- Run model evaluation tests
+
+For validators, the client also provides the ability to
+effectively challenge the model's performance according to its
+objective, use case and specific project's requirements.
 
 ## Prerequisites
 
@@ -18,17 +26,55 @@ The Developer Framework requires access to the data sources where datasets (trai
 
 Make sure Python and support for Jupyter notebooks is installed on your machine.
 
-## Steps
+## Installing the client library
 
-1. [Step 1]
-   - [Include any sub-steps or details needed to complete this step]
-2. [Step 2]
-   - [Include any sub-steps or details needed to complete this step]
-3. [Step 3]
-   - [Include any sub-steps or details needed to complete this step]
-   - [If applicable, include screenshots or images to illustrate the step]
-4. [Step 4]
-   - [Include any sub-steps or details needed to complete this step]
+The Python client can be installed with the following command:
+
+```shell
+{CONFIG.SDK_PIP_INSTALL_COMMAND}
+```
+
+## Initializing the client library
+
+Every validation project has a `project identifier` that allows
+the client library to associate documentation and tests with the
+appropriate project. In order to initialize the client, we need to
+provide the following arguments:
+
+- `api_host`: Location of the ValidMind API.
+- `api_key`: Account API key.
+- `api_secret`: Account Secret key.
+- `project`: The project identifier. {!project && (
+  This can be found in the dashboard URL when navigating to
+  a project page, e.g. for `/projects/cl1jyvh2c000909lg1rk0a0zb`
+  the project identifier is `cl1jyvh2c000909lg1rk0a0zb`
+)}
+
+The following code snippet can be pasted directly into the
+developer source and should initialize and successfully register
+with ValidMind when executed:
+
+```python
+{initSdkSnippet}
+```
+
+Copy to clipboard
+
+Once initialized, the cilent library can be used for logging,
+documenting and testing your models.
+
+Track your first event
+
+```python
+{sdkPingSnippet}
+```
+
+Initialize the SDK on your python code and track your first
+event with `vm.ping()`, if the event is tracked successfully you will see the message below
+
+```python
+Awaiting... Success!
+```
 
 ## Troubleshooting
 
@@ -38,3 +84,9 @@ Make sure Python and support for Jupyter notebooks is installed on your machine.
 
 [Summarize the task and provide any next steps or resources for the user to continue their learning or work.]
 
+<!---
+QMD: General getting started w/ initializing developer framework and runnning a simple test via intro notebook ()
+Then next steps will be getting started with their own model, for FR it will be time series notebook.
+Notebooks are tutorials or how-tos, they are NOT reference! So the notebooks need to move around in the docs
+    Could split the getting started up into sections for Developers, Validators, and Admins (and likely get rid of the Guide section)
+--->
