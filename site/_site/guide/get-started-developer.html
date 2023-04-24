@@ -211,10 +211,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#installing-the-client-library" id="toc-installing-the-client-library" class="nav-link" data-scroll-target="#installing-the-client-library">Installing the client library</a></li>
-  <li><a href="#initializing-the-client-library" id="toc-initializing-the-client-library" class="nav-link" data-scroll-target="#initializing-the-client-library">Initializing the client library</a></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s Next</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/validmind/documentation/edit/main/site/guide/get-started-developer.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -238,53 +236,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>The model developer is responsible for developing, implementing, and maintaining the model. They are typically subject matter experts in the domain of the model and are responsible for ensuring the model is fit-for-purpose, accurate, and aligned with the business requirements.</p>
-<p>The ValidMind Python client allows model developers to automatically document different aspects of the model development lifecycle.</p>
-<p>The client provides the following high level features:</p>
-<ul>
-<li>Log qualitative data about the model’s conceptual soundness</li>
-<li>Log information about datasets and models</li>
-<li>Log training and evaluation metrics about datasets and models</li>
-<li>Run data quality checks</li>
-<li>Run model evaluation tests</li>
-</ul>
-<p>For validators, the client also provides the ability to effectively challenge the model’s performance according to its objective, use case and specific project’s requirements.</p>
+<p>These steps show you how to get started with the ValidMind developer framework to document and test risk models with repeatability and consistency as part of your existing developer environment.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Don’t have a model you can use? Try our <a href="../notebooks/intro.html">Intro to ValidMind</a> Jupyter notebook.</p>
+</div>
+</div>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<p>The Developer Framework requires access to the data sources where datasets (training, test, and other applicable datasets) and trained model files are stored to run model documentation and validation tests, and to ValidMind’s SaaS platform to populate the model documentation and validation report.</p>
-<p>Make sure Python and support for Jupyter notebooks is installed on your machine.</p>
+<p>The developer framework requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the ValidMind SaaS platform to populate the model documentation and validation report.</p>
 </section>
-<section id="installing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="installing-the-client-library">Installing the client library</h2>
-<p>The Python client can be installed with the following command:</p>
-<pre class="shell"><code>{CONFIG.SDK_PIP_INSTALL_COMMAND}</code></pre>
-</section>
-<section id="initializing-the-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="initializing-the-client-library">Initializing the client library</h2>
-<p>Every validation project has a <code>project identifier</code> that allows the client library to associate documentation and tests with the appropriate project. In order to initialize the client, we need to provide the following arguments:</p>
+<section id="steps" class="level2">
+<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<ol type="1">
+<li><p>Install the client library:</p>
+<pre class="shell"><code>pip install validmind</code></pre></li>
+<li><p>Initialize the client library:</p>
+<p>Every validation project has a <code>project identifier</code> that allows the client library to associate documentation and tests with the right project. In order to initialize the client, you must provide the following arguments:</p>
 <ul>
-<li><code>api_host</code>: Location of the ValidMind API.</li>
-<li><code>api_key</code>: Account API key.</li>
-<li><code>api_secret</code>: Account Secret key.</li>
-<li><code>project</code>: The project identifier. {!project &amp;&amp; ( This can be found in the dashboard URL when navigating to a project page, e.g.&nbsp;for <code>/projects/cl1jyvh2c000909lg1rk0a0zb</code> the project identifier is <code>cl1jyvh2c000909lg1rk0a0zb</code> )}</li>
+<li><p><code>api_host</code>: Location of the ValidMind API.</p></li>
+<li><p><code>api_key</code>: Account API key.</p></li>
+<li><p><code>api_secret</code>: Account Secret key.</p></li>
+<li><p><code>project</code>: The project identifier. {!project &amp;&amp; (</p>
+<p>This can be found in the dashboard URL when navigating to a project page, e.g.&nbsp;for <code>/projects/cl1jyvh2c000909lg1rk0a0zb</code> the project identifier is <code>cl1jyvh2c000909lg1rk0a0zb</code></p></li>
 </ul>
 <p>The following code snippet can be pasted directly into the developer source and should initialize and successfully register with ValidMind when executed:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>{initSdkSnippet}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Copy to clipboard</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.dev.vm.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"&lt;project-identifier&gt;"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">What’s Next</h2>
 <p>Once initialized, the cilent library can be used for logging, documenting and testing your models.</p>
-<p>Track your first event</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>{sdkPingSnippet}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Initialize the SDK on your python code and track your first event with <code>vm.ping()</code>, if the event is tracked successfully you will see the message below</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Awaiting... Success<span class="op">!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="troubleshooting" class="level2">
-<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
-<p>[Include any common issues or errors that may arise during the task and how to resolve them.]</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>[Summarize the task and provide any next steps or resources for the user to continue their learning or work.]</p>
 <!---
+
+Track your first event
+
+
+```python
+{sdkPingSnippet}
+```
+
+Initialize the SDK on your python code and track your first
+event with `vm.ping()`, if the event is tracked successfully you will see the message below
+
+```python
+Awaiting... Success!
+```
+
+## Troubleshooting
+
+[Include any common issues or errors that may arise during the task and how to resolve them.]
+
+## Conclusion
+
+[Summarize the task and provide any next steps or resources for the user to continue their learning or work.]
+
+
 QMD: General getting started w/ initializing developer framework and runnning a simple test via intro notebook ()
 Then next steps will be getting started with their own model, for FR it will be time series notebook.
 Notebooks are tutorials or how-tos, they are NOT reference! So the notebooks need to move around in the docs

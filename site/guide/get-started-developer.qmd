@@ -3,67 +3,57 @@ title: "Get started as a model developer"
 keywords: "developer, model risk management, ValidMind"
 ---
 
-The model developer is responsible for developing, implementing, and maintaining the model. They are typically subject matter experts in the domain of the model and are responsible for ensuring the model is fit-for-purpose, accurate, and aligned with the business requirements.
+These steps show you how to get started with the ValidMind developer framework to document and test risk models with repeatability and consistency as part of your existing developer environment.
 
-The ValidMind Python client allows model developers to automatically document different aspects of the model development lifecycle.
-
-The client provides the following high level
-features:
-
-- Log qualitative data about the model's conceptual soundness
-- Log information about datasets and models
-- Log training and evaluation metrics about datasets and models
-- Run data quality checks
-- Run model evaluation tests
-
-For validators, the client also provides the ability to
-effectively challenge the model's performance according to its
-objective, use case and specific project's requirements.
+::: {.callout-tip}
+Don't have a model you can use? Try our [Intro to ValidMind](../notebooks/intro.ipynb) Jupyter notebook.
+:::
 
 ## Prerequisites
 
-The Developer Framework requires access to the data sources where datasets (training, test, and other applicable datasets) and trained model files are stored to run model documentation and validation tests, and to ValidMind’s SaaS platform to populate the model documentation and validation report.
+The developer framework requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the ValidMind SaaS platform to populate the model documentation and validation report.
 
-Make sure Python and support for Jupyter notebooks is installed on your machine.
+## Steps
 
-## Installing the client library
+1. Install the client library:
 
-The Python client can be installed with the following command:
+    ```shell
+    pip install validmind
+    ```
 
-```shell
-{CONFIG.SDK_PIP_INSTALL_COMMAND}
-```
+2. Initialize the client library:
 
-## Initializing the client library
+   Every validation project has a `project identifier` that allows the client library to associate documentation and tests with the right project. In order to initialize the client, you must provide the following arguments:
 
-Every validation project has a `project identifier` that allows
-the client library to associate documentation and tests with the
-appropriate project. In order to initialize the client, we need to
-provide the following arguments:
+    - `api_host`: Location of the ValidMind API.
+    - `api_key`: Account API key.
+    - `api_secret`: Account Secret key.
+    - `project`: The project identifier. {!project && (
 
-- `api_host`: Location of the ValidMind API.
-- `api_key`: Account API key.
-- `api_secret`: Account Secret key.
-- `project`: The project identifier. {!project && (
-  This can be found in the dashboard URL when navigating to
-  a project page, e.g. for `/projects/cl1jyvh2c000909lg1rk0a0zb`
-  the project identifier is `cl1jyvh2c000909lg1rk0a0zb`
-)}
+      This can be found in the dashboard URL when navigating to a project page, e.g. for `/projects/cl1jyvh2c000909lg1rk0a0zb` the project identifier is `cl1jyvh2c000909lg1rk0a0zb`
 
-The following code snippet can be pasted directly into the
-developer source and should initialize and successfully register
-with ValidMind when executed:
+    The following code snippet can be pasted directly into the developer source and should initialize and successfully register with ValidMind when executed:
 
-```python
-{initSdkSnippet}
-```
+    ```python
+    import validmind as vm
 
-Copy to clipboard
+    vm.init(
+      api_host = "https://api.dev.vm.validmind.ai/api/v1/tracking",
+      api_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      api_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      project = "<project-identifier>"
+    )
+    ```
+
+## What's Next
 
 Once initialized, the cilent library can be used for logging,
 documenting and testing your models.
 
+<!---
+
 Track your first event
+
 
 ```python
 {sdkPingSnippet}
@@ -84,7 +74,7 @@ Awaiting... Success!
 
 [Summarize the task and provide any next steps or resources for the user to continue their learning or work.]
 
-<!---
+
 QMD: General getting started w/ initializing developer framework and runnning a simple test via intro notebook ()
 Then next steps will be getting started with their own model, for FR it will be time series notebook.
 Notebooks are tutorials or how-tos, they are NOT reference! So the notebooks need to move around in the docs
