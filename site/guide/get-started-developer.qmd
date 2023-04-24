@@ -5,13 +5,21 @@ keywords: "developer, model risk management, ValidMind"
 
 These steps show you how to get started with the ValidMind developer framework to document and test risk models with repeatability and consistency as part of your existing developer environment.
 
-::: {.callout-tip}
-Don't have a model you can use? Try our [Intro to ValidMind](../notebooks/intro.ipynb) Jupyter notebook.
-:::
-
 ## Prerequisites
 
-The developer framework requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the ValidMind SaaS platform to populate the model documentation and validation report.
+ In order to initialize the developer framework and to be able to upload to the ValidMind SaaS platform, you must provide the following information:
+
+- `api_host`: The location of the ValidMind API
+- `api_key`: The account API key
+- `api_secret`: The account secret key
+- `project`: The project identifier
+
+This information can be found in the SaaS UI:
+
+ when navigating to a project page, e.g. for `/projects/cl1jyvh2c000909lg1rk0a0zb` the project identifier is `cl1jyvh2c000909lg1rk0a0zb`
+
+
+The developer framework also requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the ValidMind SaaS platform to populate the model documentation and validation reports.
 
 ## Steps
 
@@ -23,14 +31,7 @@ The developer framework requires access to the data sources where data sets used
 
 2. Initialize the client library:
 
-   Every validation project has a `project identifier` that allows the client library to associate documentation and tests with the right project. In order to initialize the client, you must provide the following arguments:
-
-    - `api_host`: Location of the ValidMind API.
-    - `api_key`: Account API key.
-    - `api_secret`: Account Secret key.
-    - `project`: The project identifier. {!project && (
-
-      This can be found in the dashboard URL when navigating to a project page, e.g. for `/projects/cl1jyvh2c000909lg1rk0a0zb` the project identifier is `cl1jyvh2c000909lg1rk0a0zb`
+   Every validation project has a `project identifier` that allows the client library to associate documentation and tests with the right project.
 
     The following code snippet can be pasted directly into the developer source and should initialize and successfully register with ValidMind when executed:
 
@@ -38,20 +39,20 @@ The developer framework requires access to the data sources where data sets used
     import validmind as vm
 
     vm.init(
-      api_host = "https://api.dev.vm.validmind.ai/api/v1/tracking",
+      api_host = "{{< var api_host >}}/tracking",
       api_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       api_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       project = "<project-identifier>"
     )
     ```
 
+Once initialized, the client library can be used for documenting and testing your models, and to upload to the ValidMind SaaS platform.
+
 ## What's Next
 
-Once initialized, the cilent library can be used for logging,
-documenting and testing your models.
+TO DO Switch to web user interface to track your first upload to the SaaS platform.
 
 <!---
-
 Track your first event
 
 
