@@ -319,7 +319,7 @@
     "href": "guide/glossary.html",
     "title": "Glossary",
     "section": "",
-    "text": "developer framework \n\nValidMind’s set of tools, guidelines, and standards designed to provide developers with a structured approach to documenting risk models. Includes our Python library, API endpoints, and other software components that simplify the model development process. Also see Saas Platform.\n\nfirst line of defense\n\nResponsible for developing risk models. Includes the model owners, developers, and users who ensure that the models are developed and documented appropriately and that associated risks are identified, assessed, and managed effectively. The first line of defense is accountable for implementing effective model risk management practices at the business unit level and plays a critical role in identifying and mitigating potential risks associated with models.\n\nmodel developer\n\nResponsible for developing, implementing, and maintaining risk models. Model developers are typically subject matter experts in their domain and are responsible for ensuring that the model is fit-for-purpose, accurate, and aligned with the business requirements.\n\n\nThe model developer is responsible for designing, building, and refining models to ensure their accuracy, reliability, and compliance with regulatory requirements in the context of model risk management. This involves selecting appropriate algorithms, managing data quality, addressing biases, and testing model performance across various scenarios. The developer also plays a crucial role in communicating model assumptions, limitations, and validation results to stakeholders, while continuously seeking opportunities for improvement and staying abreast of evolving industry standards and best practices.\n\nmodel risk management (MRM)\n\nThe process of identifying, assessing, and controlling risks associated with models used in financial institutions. Governance and risk management functions oversee the MRM process and ensure compliance with policies.\n\nmodel risk\n\nThe potential for financial loss, incorrect decisions or unintended consequences resulting from errors or inaccuracies in financial models.\n\nmodel governance\n\nThe policies, procedures, and controls put in place by financial institutions to manage and monitor the use of models.\n\nmonitoring\n\nThe process of identifying model performance issues, detecting model drift, and ensuring the continued accuracy and relevance of the model.\n\nSaaS platform \n\nValidMind’s hosted multi-tenant architecture that includes the cloud-based web interface, APIs, databases, documentation and validation engine, and various internal services. Also see developer framework.\n\nsecond line of defense\n\nResponsible for validating and challenging the risk models developed and used by the first line of defense. Ensures compliance with applicable regulations and guidelines, and monitors the effectiveness of the first line’s model risk management (MRM) practices and provides guidance to enhance the first line’s understanding of model risk management.\n\nvalidation, model validation\n\nThe process of evaluating and testing models to ensure that they are accurate, reliable, and effective with the help of our platform."
+    "text": "developer framework \n\nValidMind’s set of tools, guidelines, and standards designed to provide developers with a structured approach to documenting risk models. Includes our Python library, API endpoints, and other software components that simplify the model development process. Also see Saas Platform.\n\nfirst line of defense\n\nResponsible for developing risk models. Includes the model owners, developers, and users who ensure that the models are developed and documented appropriately and that associated risks are identified, assessed, and managed effectively. The first line of defense is accountable for implementing effective model risk management practices at the business unit level and plays a critical role in identifying and mitigating potential risks associated with models.\n\nmodel developer\n\nResponsible for developing, implementing, and maintaining risk models. Model developers are typically subject matter experts in their domain and are responsible for ensuring that the model is fit-for-purpose, accurate, and aligned with the business requirements.\n\n\nThe model developer is responsible for designing, building, and refining models to ensure their accuracy, reliability, and compliance with regulatory requirements in the context of model risk management. This involves selecting appropriate algorithms, managing data quality, addressing biases, and testing model performance across various scenarios. The developer also plays a crucial role in communicating model assumptions, limitations, and validation results to stakeholders, while continuously seeking opportunities for improvement and staying abreast of evolving industry standards and best practices.\n\nmodel risk management (MRM)\n\nThe process of identifying, assessing, and controlling risks associated with models used in financial institutions. Governance and risk management functions oversee the MRM process and ensure compliance with policies.\n\nmodel risk\n\nThe potential for financial loss, incorrect decisions or unintended consequences resulting from errors or inaccuracies in financial models.\n\nmodel governance\n\nThe policies, procedures, and controls put in place by financial institutions to manage and monitor the use of models.\n\nmonitoring\n\nThe process of identifying model performance issues, detecting model drift, and ensuring the continued accuracy and relevance of the model.\n\nproject\n\n\n\nSaaS platform \n\nValidMind’s hosted multi-tenant architecture that includes the cloud-based web interface, APIs, databases, documentation and validation engine, and various internal services. Also see developer framework.\n\nsecond line of defense\n\nResponsible for validating and challenging the risk models developed and used by the first line of defense. Ensures compliance with applicable regulations and guidelines, and monitors the effectiveness of the first line’s model risk management (MRM) practices and provides guidance to enhance the first line’s understanding of model risk management.\n\nvalidation, model validation\n\nThe process of evaluating and testing models to ensure that they are accurate, reliable, and effective with the help of our platform."
   },
   {
     "objectID": "guide/about.html",
@@ -380,49 +380,49 @@
   {
     "objectID": "guide/get-started-developer.html",
     "href": "guide/get-started-developer.html",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "",
-    "text": "These steps show how a model developer can initialize the developer framework, add documentation, run tests, and send the resulting information to the ValidMind SaaS platform."
+    "text": "These steps show how a model developer can:"
   },
   {
     "objectID": "guide/get-started-developer.html#prerequisites",
     "href": "guide/get-started-developer.html#prerequisites",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "Prerequisites",
     "text": "Prerequisites\nIn order to initialize the developer framework and to be able to upload to the ValidMind SaaS platform, you must provide the following information:\n\napi_host: The location of the ValidMind API\napi_key: The account API key\napi_secret: The account secret key\nproject: The project identifier\n\nFor existing projects, this information can be found in the SaaS UI:\n\nGo to the Projects page and select the project.\nClick CLIENT INTEGRATION and scroll down to “Initializing the client library”.\nClick Copy to clipboard.\n\nIf you do not have an existing project, you can create one.\nThe developer framework also requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the ValidMind SaaS platform to populate the model documentation and validation reports."
   },
   {
     "objectID": "guide/get-started-developer.html#initialize-the-developer-framework",
     "href": "guide/get-started-developer.html#initialize-the-developer-framework",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "Initialize the developer framework",
     "text": "Initialize the developer framework\n\nInstall the client library:\npip install validmind\nInitialize the client library:\nEvery validation project has a project identifier that allows the client library to associate documentation and tests with the right project.\nThe following code snippet can be pasted directly into the developer source and should initialize and successfully register with ValidMind when executed:\nimport validmind as vm\n\nvm.init(\n  api_host = \"https://api.dev.vm.validmind.ai/api/v1/tracking/tracking\",\n  api_key = \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  api_secret = \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  project = \"<project-identifier>\"\n)\n\nOnce initialized, the client library can be used for documenting and testing your models, and to upload to the ValidMind SaaS platform."
   },
   {
     "objectID": "guide/get-started-developer.html#add-documentation",
     "href": "guide/get-started-developer.html#add-documentation",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "Add documentation",
     "text": "Add documentation\nTBD"
   },
   {
     "objectID": "guide/get-started-developer.html#run-tests",
     "href": "guide/get-started-developer.html#run-tests",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "Run tests",
     "text": "Run tests\nTBD"
   },
   {
     "objectID": "guide/get-started-developer.html#upload-to-the-validmind-saas-platform",
     "href": "guide/get-started-developer.html#upload-to-the-validmind-saas-platform",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "Upload to the ValidMind SaaS platform",
     "text": "Upload to the ValidMind SaaS platform\nTBD"
   },
   {
     "objectID": "guide/get-started-developer.html#whats-next",
     "href": "guide/get-started-developer.html#whats-next",
-    "title": "Initialize the developer framework",
+    "title": "Get started as a developer",
     "section": "What’s Next",
     "text": "What’s Next\nTO DO Switch to web user interface to track your first upload to the SaaS platform."
   },

@@ -207,6 +207,10 @@ The policies, procedures, and controls put in place by financial institutions to
 <dd>
 The process of identifying model performance issues, detecting model drift, and ensuring the continued accuracy and relevance of the model.
 </dd>
+<dt>project</dt>
+<dd>
+
+</dd>
 <dt>SaaS platform <span id="saas-platform"></span></dt>
 <dd>
 ValidMind’s hosted multi-tenant architecture that includes the cloud-based web interface, APIs, databases, documentation and validation engine, and various internal services. Also see <a href="#developer-framework">developer framework</a>.
@@ -355,6 +359,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // default icon
+          link.classList.add("external");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->

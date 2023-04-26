@@ -8,7 +8,7 @@
 
 <meta name="keywords" content="get started, model developer, model risk management, ValidMind">
 
-<title>../ValidMind - Initialize the developer framework</title>
+<title>../ValidMind - Get started as a developer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -173,7 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Initialize the developer framework</h1>
+      <h1 class="quarto-secondary-nav-title">Get started as a developer</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -196,16 +196,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../guide/create-project.html" class="sidebar-item-text sidebar-link">Create a project</a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">DEVELOPERS</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guide/get-started-developer.html" class="sidebar-item-text sidebar-link active">As a developer</a>
+  <a href="../guide/get-started-developer.html" class="sidebar-item-text sidebar-link active">Get started</a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guide/get-started-validator.html" class="sidebar-item-text sidebar-link">As a validator</a>
+  <a href="../notebooks/time_series/cre_rate_model_demo.html" class="sidebar-item-text sidebar-link">CRE/MF Mortgage Rate Model On-ValidMind</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series/cre_rate_model_offvm.html" class="sidebar-item-text sidebar-link">CRE/MF Mortgage Rate Model Off-ValidMind</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">VALIDATORS</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/get-started-validator.html" class="sidebar-item-text sidebar-link">Get started</a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -229,7 +259,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Initialize the developer framework</h1>
+<h1 class="title d-none d-lg-block">Get started as a developer</h1>
 </div>
 
 
@@ -244,7 +274,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>These steps show how a model developer can initialize the developer framework, add documentation, run tests, and send the resulting information to the ValidMind SaaS platform.</p>
+<p>These steps show how a model developer can:</p>
+<ul>
+<li>Initialize the developer framework</li>
+<li>Add documentation</li>
+<li>Run tests and generate metrics</li>
+<li>Send the resulting information to the ValidMind SaaS platform.</li>
+</ul>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
 <p>In order to initialize the developer framework and to be able to upload to the ValidMind SaaS platform, you must provide the following information:</p>
@@ -462,6 +498,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // default icon
+          link.classList.add("external");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
