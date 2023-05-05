@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ValidMind – lending_club_regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../validmind.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/overview.html">
+ <span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/get-started.html">
+ <span class="menu-text">Get started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../guide/guide.html" aria-current="page">
+ <span class="menu-text">How-To Guides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/reference.html">
+ <span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/faq.html">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/guide.html" class="sidebar-item-text sidebar-link">How-To Guides</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">Configuration</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-aws-privatelink.html" class="sidebar-item-text sidebar-link">Configure AWS PrivateLink</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-workflows.html" class="sidebar-item-text sidebar-link">Configure workflows</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-templates.html" class="sidebar-item-text sidebar-link">Configure templates</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/manage-users-and-roles.html" class="sidebar-item-text sidebar-link">Manage users and roles</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">Developer framework</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/initialize-developer-framework.html" class="sidebar-item-text sidebar-link">Initialize the developer framework</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/add-documentation.html" class="sidebar-item-text sidebar-link">Add documentation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/run-test-plans.html" class="sidebar-item-text sidebar-link">Run test plans</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/jupyter-notebooks.html" class="sidebar-item-text sidebar-link">Jupyter notebooks</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/library_intro_demos.html" class="sidebar-item-text sidebar-link">Library intro demo</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lending_club.html" class="sidebar-item-text sidebar-link">Lending club</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lending_club_regression.html" class="sidebar-item-text sidebar-link active">Lending club regression</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/send_custom_results.html" class="sidebar-item-text sidebar-link">Send Custom Metrics and Test Results</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/run_individual_tests.html" class="sidebar-item-text sidebar-link">Running Individual Tests</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/explore_x_train_lc.html" class="sidebar-item-text sidebar-link">Explore x to train LC</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/log_image.html" class="sidebar-item-text sidebar-link">Log images</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series/cre_rate_model_demo.html" class="sidebar-item-text sidebar-link">CRE/MF Mortgage Rate Model On-ValidMind</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series/loan_rates_forecast_poc.html" class="sidebar-item-text sidebar-link">POC Loan Rates Forecast Model</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">SaaS platform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/generate-validation-reports.html" class="sidebar-item-text sidebar-link">Generate validation reports</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lending-club-regression" id="toc-lending-club-regression" class="nav-link active" data-scroll-target="#lending-club-regression">Lending club regression</a>
+  <ul class="collapse">
+  <li><a href="#environment-preparation" id="toc-environment-preparation" class="nav-link" data-scroll-target="#environment-preparation">Environment Preparation</a></li>
+  <li><a href="#validmind-sdk-introduction" id="toc-validmind-sdk-introduction" class="nav-link" data-scroll-target="#validmind-sdk-introduction">ValidMind SDK Introduction</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/validmind/documentation/blob/main/site/notebooks/lending_club_regression.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="lending-club-regression" class="level1">
+<h1>Lending club regression</h1>
+<section id="environment-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="environment-preparation">Environment Preparation</h2>
+<ul>
+<li>Load the SDK code from the local package directory</li>
+<li>Load the API key and secret in the .env file</li>
+</ul>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick hack to load local SDK code</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>os.chdir(os.path.join(os.getcwd(), <span class="st">".."</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load API key and secret from environment variables</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>True</code></pre>
+</div>
+</div>
+</section>
+<section id="validmind-sdk-introduction" class="level2">
+<h2 class="anchored" data-anchor-id="validmind-sdk-introduction">ValidMind SDK Introduction</h2>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_rows <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize ValidMind SDK</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For test environment use api_host="https://api.test.vm.validmind.ai/api/v1/tracking"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># vm.init(project="cl2r3k1ri000009jweny7ba1g")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"./notebooks/datasets/_temp/loan_data_2007_2014_preprocessed.csv"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># targets = vm.DatasetTargets(</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     target_column="loan_status",</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     class_labels={</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#         "Fully Paid": "Fully Paid",</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#         "Charged Off": "Charged Off",</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># vm_dataset = vm.log_dataset(df, "training", analyze=True, targets=targets)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Columns (21,49) have mixed types.Specify dtype option on import or set low_memory=False.</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>loan_data_defaults <span class="op">=</span> df[df[<span class="st">'loan_status'</span>].isin([<span class="st">'Charged Off'</span>,<span class="st">'Does not meet the credit policy. Status:Charged Off'</span>])]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>loan_data_defaults.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(43236, 209)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>loan_data_defaults[<span class="st">'mths_since_last_delinq'</span>].fillna(<span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>loan_data_defaults[<span class="st">'mths_since_last_record'</span>].fillna(<span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We calculate the dependent variable for the EAD model: credit conversion factor.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># It is the ratio of the difference of the amount used at the moment of default to the total funded amount.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>loan_data_defaults[<span class="st">'CCF'</span>] <span class="op">=</span> (loan_data_defaults[<span class="st">'funded_amnt'</span>] <span class="op">-</span> loan_data_defaults[<span class="st">'total_rec_prncp'</span>]) <span class="op">/</span> loan_data_defaults[<span class="st">'funded_amnt'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>loan_data_defaults[<span class="st">'CCF'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>count    43236.000000
+mean         0.735952
+std          0.200742
+min          0.000438
+25%          0.632088
+50%          0.789908
+75%          0.888543
+max          1.000000
+Name: CCF, dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.hist(loan_data_defaults[<span class="st">'CCF'</span>], bins <span class="op">=</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>(array([   3.,   17.,   16.,   44.,   16.,   13.,   71.,   26.,    7.,
+          63.,   67.,   17.,   60.,   90.,   23.,   55.,   82.,   42.,
+          47.,  123.,   82.,   70.,  122.,   86.,   89.,  110.,  117.,
+         111.,  122.,  120.,  135.,  141.,  154.,  146.,  160.,  175.,
+         152.,  187.,  202.,  174.,  204.,  208.,  210.,  211.,  241.,
+         264.,  281.,  224.,  308.,  267.,  287.,  296.,  340.,  274.,
+         365.,  370.,  392.,  364.,  393.,  419.,  411.,  429.,  445.,
+         497.,  481.,  478.,  569.,  568.,  599.,  618.,  727.,  691.,
+         626.,  805.,  804.,  776.,  881.,  851.,  916.,  934.,  925.,
+        1078.,  933., 1218., 1041., 1082., 1336., 1040., 1374., 1073.,
+        1406., 1287.,  952., 1414.,  795., 1320.,  578.,  949.,  343.,
+         531.]),
+ array([4.3800000e-04, 1.0433620e-02, 2.0429240e-02, 3.0424860e-02,
+        4.0420480e-02, 5.0416100e-02, 6.0411720e-02, 7.0407340e-02,
+        8.0402960e-02, 9.0398580e-02, 1.0039420e-01, 1.1038982e-01,
+        1.2038544e-01, 1.3038106e-01, 1.4037668e-01, 1.5037230e-01,
+        1.6036792e-01, 1.7036354e-01, 1.8035916e-01, 1.9035478e-01,
+        2.0035040e-01, 2.1034602e-01, 2.2034164e-01, 2.3033726e-01,
+        2.4033288e-01, 2.5032850e-01, 2.6032412e-01, 2.7031974e-01,
+        2.8031536e-01, 2.9031098e-01, 3.0030660e-01, 3.1030222e-01,
+        3.2029784e-01, 3.3029346e-01, 3.4028908e-01, 3.5028470e-01,
+        3.6028032e-01, 3.7027594e-01, 3.8027156e-01, 3.9026718e-01,
+        4.0026280e-01, 4.1025842e-01, 4.2025404e-01, 4.3024966e-01,
+        4.4024528e-01, 4.5024090e-01, 4.6023652e-01, 4.7023214e-01,
+        4.8022776e-01, 4.9022338e-01, 5.0021900e-01, 5.1021462e-01,
+        5.2021024e-01, 5.3020586e-01, 5.4020148e-01, 5.5019710e-01,
+        5.6019272e-01, 5.7018834e-01, 5.8018396e-01, 5.9017958e-01,
+        6.0017520e-01, 6.1017082e-01, 6.2016644e-01, 6.3016206e-01,
+        6.4015768e-01, 6.5015330e-01, 6.6014892e-01, 6.7014454e-01,
+        6.8014016e-01, 6.9013578e-01, 7.0013140e-01, 7.1012702e-01,
+        7.2012264e-01, 7.3011826e-01, 7.4011388e-01, 7.5010950e-01,
+        7.6010512e-01, 7.7010074e-01, 7.8009636e-01, 7.9009198e-01,
+        8.0008760e-01, 8.1008322e-01, 8.2007884e-01, 8.3007446e-01,
+        8.4007008e-01, 8.5006570e-01, 8.6006132e-01, 8.7005694e-01,
+        8.8005256e-01, 8.9004818e-01, 9.0004380e-01, 9.1003942e-01,
+        9.2003504e-01, 9.3003066e-01, 9.4002628e-01, 9.5002190e-01,
+        9.6001752e-01, 9.7001314e-01, 9.8000876e-01, 9.9000438e-01,
+        1.0000000e+00]),
+ &lt;BarContainer object of 100 artists&gt;)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lending_club_regression_files/figure-html/cell-11-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ead_inputs_train, ead_inputs_test, ead_targets_train, ead_targets_test <span class="op">=</span> train_test_split(loan_data_defaults.drop([<span class="st">'good_bad'</span>, <span class="st">'CCF'</span>], axis <span class="op">=</span> <span class="dv">1</span>), loan_data_defaults[<span class="st">'CCF'</span>], test_size <span class="op">=</span> <span class="fl">0.2</span>, random_state <span class="op">=</span> <span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>features_all <span class="op">=</span> [<span class="st">'grade:A'</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:B'</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:C'</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:D'</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:E'</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:F'</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">'grade:G'</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:MORTGAGE'</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:NONE'</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:OTHER'</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:OWN'</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:RENT'</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">'verification_status:Not Verified'</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">'verification_status:Source Verified'</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">'verification_status:Verified'</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:car'</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:credit_card'</span>,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:debt_consolidation'</span>,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:educational'</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:home_improvement'</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:house'</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:major_purchase'</span>,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:medical'</span>,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:moving'</span>,</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:other'</span>,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:renewable_energy'</span>,</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:small_business'</span>,</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:vacation'</span>,</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:wedding'</span>,</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="st">'initial_list_status:f'</span>,</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="st">'initial_list_status:w'</span>,</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="st">'term_int'</span>,</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="st">'emp_length_int'</span>,</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="st">'mths_since_issue_d'</span>,</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="st">'mths_since_earliest_cr_line'</span>,</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="st">'funded_amnt'</span>,</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="st">'int_rate'</span>,</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="st">'installment'</span>,</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="st">'annual_inc'</span>,</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="st">'dti'</span>,</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="st">'delinq_2yrs'</span>,</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="st">'inq_last_6mths'</span>,</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="st">'mths_since_last_delinq'</span>,</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="st">'mths_since_last_record'</span>,</span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="st">'open_acc'</span>,</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="st">'pub_rec'</span>,</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="st">'total_acc'</span>,</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="st">'acc_now_delinq'</span>,</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="st">'total_rev_hi_lim'</span>]</span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a><span class="co"># List of all independent variables for the models.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>features_reference_cat <span class="op">=</span> [<span class="st">'grade:G'</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="st">'home_ownership:RENT'</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="st">'verification_status:Verified'</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="st">'purpose:credit_card'</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="st">'initial_list_status:f'</span>]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># List of the dummy variable reference categories. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ead_inputs_train <span class="op">=</span> ead_inputs_train[features_all]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ead_inputs_train <span class="op">=</span> ead_inputs_train.drop(features_reference_cat, axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we remove the dummy variable reference categories.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> linear_model</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LinearRegression(linear_model.LinearRegression):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">    LinearRegression class after sklearn's, but calculate t-statistics</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">    and p-values for model coefficients (betas).</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Additional attributes available after .fit()</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">    are `t` and `p` which are of the shape (y.shape[1], X.shape[1])</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">    which is (n_features, n_coefs)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">    This class sets the intercept to 0 by default, since usually we include it</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">    in X.</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># nothing changes in __init__</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, fit_intercept<span class="op">=</span><span class="va">True</span>, normalize<span class="op">=</span><span class="va">False</span>, copy_X<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>                 n_jobs<span class="op">=</span><span class="dv">1</span>, positive<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fit_intercept <span class="op">=</span> fit_intercept</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.normalize <span class="op">=</span> normalize</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.copy_X <span class="op">=</span> copy_X</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_jobs <span class="op">=</span> n_jobs</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.positive <span class="op">=</span> positive</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y, n_jobs<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span> <span class="op">=</span> <span class="bu">super</span>(LinearRegression, <span class="va">self</span>).fit(X, y, n_jobs)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate SSE (sum of squared errors)</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># and SE (standard error)</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>        sse <span class="op">=</span> np.<span class="bu">sum</span>((<span class="va">self</span>.predict(X) <span class="op">-</span> y) <span class="op">**</span> <span class="dv">2</span>, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="bu">float</span>(X.shape[<span class="dv">0</span>] <span class="op">-</span> X.shape[<span class="dv">1</span>])</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        se <span class="op">=</span> np.array([np.sqrt(np.diagonal(sse <span class="op">*</span> np.linalg.inv(np.dot(X.T, X))))])</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># compute the t-statistic for each feature</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.t <span class="op">=</span> <span class="va">self</span>.coef_ <span class="op">/</span> se</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find the p-value for each feature</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.p <span class="op">=</span> np.squeeze(<span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> stat.t.cdf(np.<span class="bu">abs</span>(<span class="va">self</span>.t), y.shape[<span class="dv">0</span>] <span class="op">-</span> X.shape[<span class="dv">1</span>])))</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>reg_ead <span class="op">=</span> LinearRegression()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We create an instance of an object from the 'LogisticRegression' class.</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>reg_ead.fit(ead_inputs_train, ead_targets_train)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimates the coefficients of the object from the 'LogisticRegression' class</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># with inputs (independent variables) contained in the first dataframe</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># and targets (dependent variables) contained in the second dataframe.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>'normalize' was deprecated in version 1.0 and will be removed in 1.2. Please leave the normalize parameter to its default value to silence this warning. The default behavior of this estimator is to not do any normalization. If normalization is needed please use sklearn.preprocessing.StandardScaler instead.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>LinearRegression()</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>feature_name <span class="op">=</span> ead_inputs_train.columns.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>summary_table <span class="op">=</span> pd.DataFrame(columns <span class="op">=</span> [<span class="st">'Feature name'</span>], data <span class="op">=</span> feature_name)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Creates a dataframe with a column titled 'Feature name' and row values contained in the 'feature_name' variable.</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>summary_table[<span class="st">'Coefficients'</span>] <span class="op">=</span> np.transpose(reg_ead.coef_)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creates a new column in the dataframe, called 'Coefficients',</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># with row values the transposed coefficients from the 'LogisticRegression' object.</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>summary_table.index <span class="op">=</span> summary_table.index <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Increases the index of every row of the dataframe with 1.</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>summary_table.loc[<span class="dv">0</span>] <span class="op">=</span> [<span class="st">'Intercept'</span>, reg_ead.intercept_]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Assigns values of the row with index 0 of the dataframe.</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>summary_table <span class="op">=</span> summary_table.sort_index()</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorts the dataframe by index.</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>p_values <span class="op">=</span> reg_ead.p</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># We take the result of the newly added method 'p_values' and store it in a variable 'p_values'.</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>p_values <span class="op">=</span> np.append(np.nan,np.array(p_values))</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># We add the value 'NaN' in the beginning of the variable with p-values.</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>summary_table[<span class="st">'p_values'</span>] <span class="op">=</span> p_values</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># In the 'summary_table' dataframe, we add a new column, called 'p_values', containing the values from the 'p_values' variable.</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>summary_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Feature name</th>
+      <th>Coefficients</th>
+      <th>p_values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Intercept</td>
+      <td>1.109746e+00</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>grade:A</td>
+      <td>-3.030033e-01</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>grade:B</td>
+      <td>-2.364277e-01</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>grade:C</td>
+      <td>-1.720232e-01</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>grade:D</td>
+      <td>-1.198470e-01</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>grade:E</td>
+      <td>-6.768713e-02</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>grade:F</td>
+      <td>-2.045907e-02</td>
+      <td>4.428795e-03</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>home_ownership:MORTGAGE</td>
+      <td>-6.343341e-03</td>
+      <td>2.632464e-03</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>home_ownership:NONE</td>
+      <td>-5.539064e-03</td>
+      <td>9.318931e-01</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>home_ownership:OTHER</td>
+      <td>-2.426052e-03</td>
+      <td>9.335820e-01</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>home_ownership:OWN</td>
+      <td>-1.619582e-03</td>
+      <td>6.366112e-01</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>verification_status:Not Verified</td>
+      <td>5.339510e-05</td>
+      <td>9.828295e-01</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>verification_status:Source Verified</td>
+      <td>8.967822e-03</td>
+      <td>7.828941e-05</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>purpose:car</td>
+      <td>7.904787e-04</td>
+      <td>9.330252e-01</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>purpose:debt_consolidation</td>
+      <td>1.264922e-02</td>
+      <td>5.898438e-07</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>purpose:educational</td>
+      <td>9.643587e-02</td>
+      <td>1.801025e-06</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>purpose:home_improvement</td>
+      <td>1.923044e-02</td>
+      <td>4.873543e-05</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>purpose:house</td>
+      <td>1.607120e-02</td>
+      <td>1.653651e-01</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>purpose:major_purchase</td>
+      <td>2.984917e-02</td>
+      <td>2.197793e-05</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>purpose:medical</td>
+      <td>3.962479e-02</td>
+      <td>5.238263e-06</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>purpose:moving</td>
+      <td>4.577630e-02</td>
+      <td>2.987383e-06</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>purpose:other</td>
+      <td>3.706744e-02</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>purpose:renewable_energy</td>
+      <td>7.212969e-02</td>
+      <td>8.889877e-03</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>purpose:small_business</td>
+      <td>5.128674e-02</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>purpose:vacation</td>
+      <td>1.874863e-02</td>
+      <td>1.152702e-01</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>purpose:wedding</td>
+      <td>4.350522e-02</td>
+      <td>2.032121e-04</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>initial_list_status:w</td>
+      <td>1.318126e-02</td>
+      <td>6.115181e-09</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>term_int</td>
+      <td>4.551882e-03</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>emp_length_int</td>
+      <td>-1.591478e-03</td>
+      <td>4.404626e-10</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>mths_since_issue_d</td>
+      <td>-4.305274e-03</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>mths_since_earliest_cr_line</td>
+      <td>-3.634030e-05</td>
+      <td>2.742071e-03</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>funded_amnt</td>
+      <td>2.212126e-06</td>
+      <td>7.225181e-03</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>int_rate</td>
+      <td>-1.172652e-02</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>installment</td>
+      <td>-6.865607e-05</td>
+      <td>7.429261e-03</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>annual_inc</td>
+      <td>5.021817e-09</td>
+      <td>8.574696e-01</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>dti</td>
+      <td>2.832769e-04</td>
+      <td>3.632507e-02</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>delinq_2yrs</td>
+      <td>4.833234e-04</td>
+      <td>6.946456e-01</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>inq_last_6mths</td>
+      <td>1.131678e-02</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>mths_since_last_delinq</td>
+      <td>-1.965980e-04</td>
+      <td>3.220434e-06</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>mths_since_last_record</td>
+      <td>-5.085639e-05</td>
+      <td>3.291896e-01</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>open_acc</td>
+      <td>-2.142130e-03</td>
+      <td>4.218847e-15</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>pub_rec</td>
+      <td>6.782062e-03</td>
+      <td>4.252750e-02</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>total_acc</td>
+      <td>4.518110e-04</td>
+      <td>1.902931e-04</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>acc_now_delinq</td>
+      <td>9.974801e-03</td>
+      <td>5.012787e-01</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>total_rev_hi_lim</td>
+      <td>2.166527e-07</td>
+      <td>8.196014e-05</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ead_inputs_test <span class="op">=</span> ead_inputs_test[features_all]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we keep only the variables we need for the model.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ead_inputs_test <span class="op">=</span> ead_inputs_test.drop(features_reference_cat, axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we remove the dummy variable reference categories.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>y_hat_test_ead <span class="op">=</span> reg_ead.predict(ead_inputs_test)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculates the predicted values for the dependent variable (targets)</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># based on the values of the independent variables (inputs) supplied as an argument.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ead_targets_test_temp <span class="op">=</span> ead_targets_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ead_targets_test_temp <span class="op">=</span> ead_targets_test_temp.reset_index(drop <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We reset the index of a dataframe.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pd.concat([ead_targets_test_temp, pd.DataFrame(y_hat_test_ead)], axis <span class="op">=</span> <span class="dv">1</span>).corr()</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We calculate the correlation between actual and predicted values.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>CCF</th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CCF</th>
+      <td>1.000000</td>
+      <td>0.530654</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.530654</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sns.distplot(ead_targets_test <span class="op">-</span> y_hat_test_ead)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We plot the distribution of the residuals.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`distplot` is a deprecated function and will be removed in a future version. Please adapt your code to use either `displot` (a figure-level function with similar flexibility) or `histplot` (an axes-level function for histograms).</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>&lt;AxesSubplot:xlabel='CCF', ylabel='Density'&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lending_club_regression_files/figure-html/cell-28-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(y_hat_test_ead).describe()</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows some descriptive statisics for the values of a column.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>8648.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.736013</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.105194</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.384774</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.661553</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.731750</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.810625</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.161088</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>y_hat_test_ead <span class="op">=</span> np.where(y_hat_test_ead <span class="op">&lt;</span> <span class="dv">0</span>, <span class="dv">0</span>, y_hat_test_ead)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>y_hat_test_ead <span class="op">=</span> np.where(y_hat_test_ead <span class="op">&gt;</span> <span class="dv">1</span>, <span class="dv">1</span>, y_hat_test_ead)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We set predicted values that are greater than 1 to 1 and predicted values that are less than 0 to 0.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(y_hat_test_ead).describe()</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows some descriptive statisics for the values of a column.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>8648.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.735992</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.105127</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.384774</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.661553</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.731750</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.810625</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mean_squared_error(ead_targets_test, y_hat_test_ead)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>0.0291749760949319</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>r2_score(ead_targets_test, y_hat_test_ead)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>0.2822776667644732</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBRegressor()</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>xgb_model.set_params(</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    booster<span class="op">=</span><span class="st">'gblinear'</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>mean_squared_error,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>XGBRegressor(base_score=None, booster='gblinear', callbacks=None,
+             colsample_bylevel=None, colsample_bynode=None,
+             colsample_bytree=None, early_stopping_rounds=None,
+             enable_categorical=False,
+             eval_metric=&lt;function mean_squared_error at 0x169861310&gt;,
+             gamma=None, gpu_id=None, grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=None, max_bin=None,
+             max_cat_to_onehot=None, max_delta_step=None, max_depth=None,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=100, n_jobs=None,
+             num_parallel_tree=None, predictor=None, random_state=None,
+             reg_alpha=None, reg_lambda=None, ...)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>xgb_model.fit(ead_inputs_train, ead_targets_train, eval_set<span class="op">=</span>[(ead_inputs_train, ead_targets_train), (ead_inputs_test, ead_targets_test)],)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0] validation_0-rmse:0.18787   validation_0-mean_squared_error:0.03529 validation_1-rmse:0.18834   validation_1-mean_squared_error:0.03547
+[1] validation_0-rmse:0.18491   validation_0-mean_squared_error:0.03419 validation_1-rmse:0.18507   validation_1-mean_squared_error:0.03425
+[2] validation_0-rmse:0.18372   validation_0-mean_squared_error:0.03375 validation_1-rmse:0.18379   validation_1-mean_squared_error:0.03378
+[3] validation_0-rmse:0.18299   validation_0-mean_squared_error:0.03348 validation_1-rmse:0.18312   validation_1-mean_squared_error:0.03353
+[4] validation_0-rmse:0.18238   validation_0-mean_squared_error:0.03326 validation_1-rmse:0.18246   validation_1-mean_squared_error:0.03329
+[5] validation_0-rmse:0.18177   validation_0-mean_squared_error:0.03304 validation_1-rmse:0.18202   validation_1-mean_squared_error:0.03313
+[6] validation_0-rmse:0.18120   validation_0-mean_squared_error:0.03283 validation_1-rmse:0.18152   validation_1-mean_squared_error:0.03295
+[7] validation_0-rmse:0.18075   validation_0-mean_squared_error:0.03267 validation_1-rmse:0.18116   validation_1-mean_squared_error:0.03282
+[8] validation_0-rmse:0.18032   validation_0-mean_squared_error:0.03251 validation_1-rmse:0.18073   validation_1-mean_squared_error:0.03266
+[9] validation_0-rmse:0.17989   validation_0-mean_squared_error:0.03236 validation_1-rmse:0.18038   validation_1-mean_squared_error:0.03254
+[10]    validation_0-rmse:0.17948   validation_0-mean_squared_error:0.03221 validation_1-rmse:0.17992   validation_1-mean_squared_error:0.03237
+[11]    validation_0-rmse:0.17909   validation_0-mean_squared_error:0.03207 validation_1-rmse:0.17954   validation_1-mean_squared_error:0.03224
+[12]    validation_0-rmse:0.17873   validation_0-mean_squared_error:0.03195 validation_1-rmse:0.17920   validation_1-mean_squared_error:0.03211
+[13]    validation_0-rmse:0.17841   validation_0-mean_squared_error:0.03183 validation_1-rmse:0.17896   validation_1-mean_squared_error:0.03202
+[14]    validation_0-rmse:0.17809   validation_0-mean_squared_error:0.03172 validation_1-rmse:0.17858   validation_1-mean_squared_error:0.03189
+[15]    validation_0-rmse:0.17779   validation_0-mean_squared_error:0.03161 validation_1-rmse:0.17825   validation_1-mean_squared_error:0.03177
+[16]    validation_0-rmse:0.17751   validation_0-mean_squared_error:0.03151 validation_1-rmse:0.17789   validation_1-mean_squared_error:0.03164
+[17]    validation_0-rmse:0.17717   validation_0-mean_squared_error:0.03139 validation_1-rmse:0.17761   validation_1-mean_squared_error:0.03155
+[18]    validation_0-rmse:0.17689   validation_0-mean_squared_error:0.03129 validation_1-rmse:0.17730   validation_1-mean_squared_error:0.03144
+[19]    validation_0-rmse:0.17664   validation_0-mean_squared_error:0.03120 validation_1-rmse:0.17706   validation_1-mean_squared_error:0.03135
+[20]    validation_0-rmse:0.17641   validation_0-mean_squared_error:0.03112 validation_1-rmse:0.17678   validation_1-mean_squared_error:0.03125
+[21]    validation_0-rmse:0.17619   validation_0-mean_squared_error:0.03104 validation_1-rmse:0.17656   validation_1-mean_squared_error:0.03117
+[22]    validation_0-rmse:0.17598   validation_0-mean_squared_error:0.03097 validation_1-rmse:0.17634   validation_1-mean_squared_error:0.03110
+[23]    validation_0-rmse:0.17580   validation_0-mean_squared_error:0.03090 validation_1-rmse:0.17614   validation_1-mean_squared_error:0.03102
+[24]    validation_0-rmse:0.17560   validation_0-mean_squared_error:0.03083 validation_1-rmse:0.17592   validation_1-mean_squared_error:0.03095
+[25]    validation_0-rmse:0.17542   validation_0-mean_squared_error:0.03077 validation_1-rmse:0.17574   validation_1-mean_squared_error:0.03088
+[26]    validation_0-rmse:0.17525   validation_0-mean_squared_error:0.03071 validation_1-rmse:0.17553   validation_1-mean_squared_error:0.03081
+[27]    validation_0-rmse:0.17507   validation_0-mean_squared_error:0.03065 validation_1-rmse:0.17533   validation_1-mean_squared_error:0.03074
+[28]    validation_0-rmse:0.17491   validation_0-mean_squared_error:0.03060 validation_1-rmse:0.17515   validation_1-mean_squared_error:0.03068
+[29]    validation_0-rmse:0.17481   validation_0-mean_squared_error:0.03056 validation_1-rmse:0.17505   validation_1-mean_squared_error:0.03064
+[30]    validation_0-rmse:0.17469   validation_0-mean_squared_error:0.03052 validation_1-rmse:0.17487   validation_1-mean_squared_error:0.03058
+[31]    validation_0-rmse:0.17455   validation_0-mean_squared_error:0.03047 validation_1-rmse:0.17470   validation_1-mean_squared_error:0.03052
+[32]    validation_0-rmse:0.17443   validation_0-mean_squared_error:0.03043 validation_1-rmse:0.17451   validation_1-mean_squared_error:0.03045
+[33]    validation_0-rmse:0.17431   validation_0-mean_squared_error:0.03038 validation_1-rmse:0.17443   validation_1-mean_squared_error:0.03043
+[34]    validation_0-rmse:0.17420   validation_0-mean_squared_error:0.03035 validation_1-rmse:0.17426   validation_1-mean_squared_error:0.03037
+[35]    validation_0-rmse:0.17412   validation_0-mean_squared_error:0.03032 validation_1-rmse:0.17418   validation_1-mean_squared_error:0.03034
+[36]    validation_0-rmse:0.17403   validation_0-mean_squared_error:0.03029 validation_1-rmse:0.17399   validation_1-mean_squared_error:0.03027
+[37]    validation_0-rmse:0.17393   validation_0-mean_squared_error:0.03025 validation_1-rmse:0.17388   validation_1-mean_squared_error:0.03024
+[38]    validation_0-rmse:0.17386   validation_0-mean_squared_error:0.03023 validation_1-rmse:0.17376   validation_1-mean_squared_error:0.03019
+[39]    validation_0-rmse:0.17377   validation_0-mean_squared_error:0.03020 validation_1-rmse:0.17370   validation_1-mean_squared_error:0.03017
+[40]    validation_0-rmse:0.17370   validation_0-mean_squared_error:0.03017 validation_1-rmse:0.17363   validation_1-mean_squared_error:0.03015
+[41]    validation_0-rmse:0.17363   validation_0-mean_squared_error:0.03015 validation_1-rmse:0.17358   validation_1-mean_squared_error:0.03013
+[42]    validation_0-rmse:0.17357   validation_0-mean_squared_error:0.03012 validation_1-rmse:0.17350   validation_1-mean_squared_error:0.03010
+[43]    validation_0-rmse:0.17350   validation_0-mean_squared_error:0.03010 validation_1-rmse:0.17346   validation_1-mean_squared_error:0.03009
+[44]    validation_0-rmse:0.17345   validation_0-mean_squared_error:0.03009 validation_1-rmse:0.17340   validation_1-mean_squared_error:0.03007
+[45]    validation_0-rmse:0.17339   validation_0-mean_squared_error:0.03007 validation_1-rmse:0.17334   validation_1-mean_squared_error:0.03005
+[46]    validation_0-rmse:0.17335   validation_0-mean_squared_error:0.03005 validation_1-rmse:0.17327   validation_1-mean_squared_error:0.03002
+[47]    validation_0-rmse:0.17329   validation_0-mean_squared_error:0.03003 validation_1-rmse:0.17320   validation_1-mean_squared_error:0.03000
+[48]    validation_0-rmse:0.17325   validation_0-mean_squared_error:0.03001 validation_1-rmse:0.17311   validation_1-mean_squared_error:0.02997
+[49]    validation_0-rmse:0.17321   validation_0-mean_squared_error:0.03000 validation_1-rmse:0.17311   validation_1-mean_squared_error:0.02997
+[50]    validation_0-rmse:0.17316   validation_0-mean_squared_error:0.02998 validation_1-rmse:0.17304   validation_1-mean_squared_error:0.02994
+[51]    validation_0-rmse:0.17312   validation_0-mean_squared_error:0.02997 validation_1-rmse:0.17302   validation_1-mean_squared_error:0.02994
+[52]    validation_0-rmse:0.17309   validation_0-mean_squared_error:0.02996 validation_1-rmse:0.17299   validation_1-mean_squared_error:0.02993
+[53]    validation_0-rmse:0.17305   validation_0-mean_squared_error:0.02995 validation_1-rmse:0.17293   validation_1-mean_squared_error:0.02991
+[54]    validation_0-rmse:0.17301   validation_0-mean_squared_error:0.02993 validation_1-rmse:0.17290   validation_1-mean_squared_error:0.02989
+[55]    validation_0-rmse:0.17298   validation_0-mean_squared_error:0.02992 validation_1-rmse:0.17285   validation_1-mean_squared_error:0.02988
+[56]    validation_0-rmse:0.17296   validation_0-mean_squared_error:0.02991 validation_1-rmse:0.17278   validation_1-mean_squared_error:0.02985
+[57]    validation_0-rmse:0.17292   validation_0-mean_squared_error:0.02990 validation_1-rmse:0.17276   validation_1-mean_squared_error:0.02985
+[58]    validation_0-rmse:0.17289   validation_0-mean_squared_error:0.02989 validation_1-rmse:0.17273   validation_1-mean_squared_error:0.02984
+[59]    validation_0-rmse:0.17287   validation_0-mean_squared_error:0.02988 validation_1-rmse:0.17269   validation_1-mean_squared_error:0.02982
+[60]    validation_0-rmse:0.17284   validation_0-mean_squared_error:0.02987 validation_1-rmse:0.17267   validation_1-mean_squared_error:0.02982
+[61]    validation_0-rmse:0.17282   validation_0-mean_squared_error:0.02987 validation_1-rmse:0.17264   validation_1-mean_squared_error:0.02981
+[62]    validation_0-rmse:0.17280   validation_0-mean_squared_error:0.02986 validation_1-rmse:0.17262   validation_1-mean_squared_error:0.02980
+[63]    validation_0-rmse:0.17278   validation_0-mean_squared_error:0.02985 validation_1-rmse:0.17257   validation_1-mean_squared_error:0.02978
+[64]    validation_0-rmse:0.17275   validation_0-mean_squared_error:0.02984 validation_1-rmse:0.17256   validation_1-mean_squared_error:0.02978
+[65]    validation_0-rmse:0.17274   validation_0-mean_squared_error:0.02984 validation_1-rmse:0.17256   validation_1-mean_squared_error:0.02978
+[66]    validation_0-rmse:0.17272   validation_0-mean_squared_error:0.02983 validation_1-rmse:0.17254   validation_1-mean_squared_error:0.02977
+[67]    validation_0-rmse:0.17270   validation_0-mean_squared_error:0.02983 validation_1-rmse:0.17249   validation_1-mean_squared_error:0.02975
+[68]    validation_0-rmse:0.17268   validation_0-mean_squared_error:0.02982 validation_1-rmse:0.17248   validation_1-mean_squared_error:0.02975
+[69]    validation_0-rmse:0.17267   validation_0-mean_squared_error:0.02981 validation_1-rmse:0.17246   validation_1-mean_squared_error:0.02974
+[70]    validation_0-rmse:0.17265   validation_0-mean_squared_error:0.02981 validation_1-rmse:0.17244   validation_1-mean_squared_error:0.02974
+[71]    validation_0-rmse:0.17264   validation_0-mean_squared_error:0.02980 validation_1-rmse:0.17240   validation_1-mean_squared_error:0.02972
+[72]    validation_0-rmse:0.17262   validation_0-mean_squared_error:0.02980 validation_1-rmse:0.17239   validation_1-mean_squared_error:0.02972
+[73]    validation_0-rmse:0.17261   validation_0-mean_squared_error:0.02979 validation_1-rmse:0.17237   validation_1-mean_squared_error:0.02971
+[74]    validation_0-rmse:0.17259   validation_0-mean_squared_error:0.02979 validation_1-rmse:0.17236   validation_1-mean_squared_error:0.02971
+[75]    validation_0-rmse:0.17258   validation_0-mean_squared_error:0.02978 validation_1-rmse:0.17234   validation_1-mean_squared_error:0.02970
+[76]    validation_0-rmse:0.17257   validation_0-mean_squared_error:0.02978 validation_1-rmse:0.17232   validation_1-mean_squared_error:0.02969
+[77]    validation_0-rmse:0.17256   validation_0-mean_squared_error:0.02978 validation_1-rmse:0.17230   validation_1-mean_squared_error:0.02969
+[78]    validation_0-rmse:0.17255   validation_0-mean_squared_error:0.02977 validation_1-rmse:0.17228   validation_1-mean_squared_error:0.02968
+[79]    validation_0-rmse:0.17254   validation_0-mean_squared_error:0.02977 validation_1-rmse:0.17226   validation_1-mean_squared_error:0.02967
+[80]    validation_0-rmse:0.17253   validation_0-mean_squared_error:0.02977 validation_1-rmse:0.17224   validation_1-mean_squared_error:0.02967
+[81]    validation_0-rmse:0.17252   validation_0-mean_squared_error:0.02976 validation_1-rmse:0.17223   validation_1-mean_squared_error:0.02966
+[82]    validation_0-rmse:0.17251   validation_0-mean_squared_error:0.02976 validation_1-rmse:0.17222   validation_1-mean_squared_error:0.02966
+[83]    validation_0-rmse:0.17250   validation_0-mean_squared_error:0.02976 validation_1-rmse:0.17221   validation_1-mean_squared_error:0.02966
+[84]    validation_0-rmse:0.17249   validation_0-mean_squared_error:0.02975 validation_1-rmse:0.17221   validation_1-mean_squared_error:0.02966
+[85]    validation_0-rmse:0.17249   validation_0-mean_squared_error:0.02975 validation_1-rmse:0.17219   validation_1-mean_squared_error:0.02965
+[86]    validation_0-rmse:0.17248   validation_0-mean_squared_error:0.02975 validation_1-rmse:0.17219   validation_1-mean_squared_error:0.02965
+[87]    validation_0-rmse:0.17247   validation_0-mean_squared_error:0.02975 validation_1-rmse:0.17218   validation_1-mean_squared_error:0.02965
+[88]    validation_0-rmse:0.17247   validation_0-mean_squared_error:0.02975 validation_1-rmse:0.17217   validation_1-mean_squared_error:0.02964
+[89]    validation_0-rmse:0.17246   validation_0-mean_squared_error:0.02974 validation_1-rmse:0.17217   validation_1-mean_squared_error:0.02964
+[90]    validation_0-rmse:0.17246   validation_0-mean_squared_error:0.02974 validation_1-rmse:0.17216   validation_1-mean_squared_error:0.02964
+[91]    validation_0-rmse:0.17245   validation_0-mean_squared_error:0.02974 validation_1-rmse:0.17216   validation_1-mean_squared_error:0.02964
+[92]    validation_0-rmse:0.17244   validation_0-mean_squared_error:0.02974 validation_1-rmse:0.17215   validation_1-mean_squared_error:0.02964
+[93]    validation_0-rmse:0.17244   validation_0-mean_squared_error:0.02974 validation_1-rmse:0.17214   validation_1-mean_squared_error:0.02963
+[94]    validation_0-rmse:0.17243   validation_0-mean_squared_error:0.02973 validation_1-rmse:0.17213   validation_1-mean_squared_error:0.02963
+[95]    validation_0-rmse:0.17243   validation_0-mean_squared_error:0.02973 validation_1-rmse:0.17211   validation_1-mean_squared_error:0.02962
+[96]    validation_0-rmse:0.17242   validation_0-mean_squared_error:0.02973 validation_1-rmse:0.17212   validation_1-mean_squared_error:0.02962
+[97]    validation_0-rmse:0.17242   validation_0-mean_squared_error:0.02973 validation_1-rmse:0.17211   validation_1-mean_squared_error:0.02962
+[98]    validation_0-rmse:0.17241   validation_0-mean_squared_error:0.02973 validation_1-rmse:0.17210   validation_1-mean_squared_error:0.02962
+[99]    validation_0-rmse:0.17241   validation_0-mean_squared_error:0.02972 validation_1-rmse:0.17209   validation_1-mean_squared_error:0.02962</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>XGBRegressor(base_score=0.5, booster='gblinear', callbacks=None,
+             colsample_bylevel=None, colsample_bynode=None,
+             colsample_bytree=None, early_stopping_rounds=None,
+             enable_categorical=False,
+             eval_metric=&lt;function mean_squared_error at 0x169861310&gt;,
+             gamma=None, gpu_id=-1, grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.5, max_bin=None,
+             max_cat_to_onehot=None, max_delta_step=None, max_depth=None,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=100, n_jobs=0,
+             num_parallel_tree=None, predictor=None, random_state=0,
+             reg_alpha=0, reg_lambda=0, ...)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>y_hat_test_ead_xgb <span class="op">=</span> xgb_model.predict(ead_inputs_test)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculates the predicted values for the dependent variable (targets)</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># based on the values of the independent variables (inputs) supplied as an argument.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>pd.concat([ead_targets_test_temp, pd.DataFrame(y_hat_test_ead_xgb)], axis <span class="op">=</span> <span class="dv">1</span>).corr()</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We calculate the correlation between actual and predicted values.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>CCF</th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CCF</th>
+      <td>1.00000</td>
+      <td>0.52144</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.52144</td>
+      <td>1.00000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sns.distplot(ead_targets_test <span class="op">-</span> y_hat_test_ead_xgb)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We plot the distribution of the residuals.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`distplot` is a deprecated function and will be removed in a future version. Please adapt your code to use either `displot` (a figure-level function with similar flexibility) or `histplot` (an axes-level function for histograms).</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre><code>&lt;AxesSubplot:xlabel='CCF', ylabel='Density'&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lending_club_regression_files/figure-html/cell-38-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(y_hat_test_ead_xgb).describe()</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows some descriptive statisics for the values of a column.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>8648.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.735745</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.101577</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.408254</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.664853</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.728506</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.811329</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.310113</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>mean_squared_error(ead_targets_test, y_hat_test_ead_xgb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="39">
+<pre><code>0.029612655435575855</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>r2_score(ead_targets_test, y_hat_test_ead_xgb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>0.2715104861315287</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/validmind/documentation">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
