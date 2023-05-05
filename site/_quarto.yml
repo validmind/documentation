@@ -1,65 +1,118 @@
 project:
   type: website
-#  pre-render: make get-source
 
 website:
   favicon: validmind.png
   title: "ValidMind"
-  comments:
-    hypothesis: 
-      theme: clean
+
+#  comments:
+#    hypothesis: 
+#      theme: clean
+  
   repo-url: https://github.com/validmind/documentation/
   repo-subdir: site/
   repo-actions: [edit, issue]
-  sidebar:
+
+  navbar:
     logo: guide/ValidMind-logo-color.svg
-    style: docked
-    background: light
-    collapse-level: 2
+    background: white
     search: true
-    contents:
-    - text: "Home"
-      file: index.qmd
+    title: false
+    pinned: true
+    left:
+      - text: "Overview"
+        file: guide/overview.qmd
+      - text: "Get started"
+        file: guide/get-started.qmd
+      - text: "How-To Guides"
+        file: guide/guide.qmd
+      - text: "Reference"
+        file: guide/reference.qmd
+      - text: "FAQ"
+        file: guide/faq.qmd
 
-    - text: "Overview"
-      file: guide/overview.qmd
+  sidebar: 
+    - title: "Home"
+      style: docked
+      collapse-level: 3
       contents:
-      - guide/about.qmd
+        - index.qmd
 
-    - text: "Get started"
-      file: guide/getstarted.qmd
+    - title: "Overview"
       contents:
-      - file: guide/getstarteddeveloper.qmd
-        text: "As a developer"
-      - href: guide/getstartedvalidator.qmd
-        text: "As a validator"
-#      - href: guide/getstartedauditor.qmd
-#        text: "As an auditor"
+        - guide/overview.qmd
+        - guide/release-pilot.qmd
+#        - guide/release-notes.qmd
+        - guide/support.qmd
+        - guide/about.qmd
+        - guide/glossary.qmd
 
-    - text: "Guide"
-      file: guide/guide.qmd
 
-    - text: "Reference"
-      file: guide/reference.qmd
+    - title: "Get started"
       contents:
-      - section: "Jupyter notebooks"
-        file: guide/jupyternotebooks.qmd
-        contents: notebooks/*.ipynb
-      - section: "Developer framework"
-        file: guide/developerframework.qmd
-        contents:
-        - validmind/api.md
-        - validmind/data_validation_tests.md
-        - validmind/model_validation_tests_sklearn.md
-        - validmind/test_plans.md
-        - validmind/vm_models.md
-#      - guide/restapi.qmd
+        - guide/get-started.qmd
+        - text: "Developer framework"
+          contents:
+          - notebooks/intro.ipynb
+          - notebooks/intro-r.ipynb
+        - text: "SaaS platform"
+          contents:
+          - guide/login.qmd
+          - guide/verify-developer-framework-uploads.qmd
+          - guide/create-project.qmd
+          - guide/review-model-documentation.qmd
 
-    - guide/support.qmd
+    - title: "How-To Guides"
+      contents:
+        - guide/guide.qmd
+        - text: "Configuration"
+          contents:
+          - guide/configure-aws-privatelink.qmd
+          - guide/configure-workflows.qmd
+          - guide/configure-templates.qmd
+          - guide/manage-users-and-roles.qmd
+        - text: "Developer framework"
+          contents:
+          - guide/initialize-developer-framework.qmd 
+          - guide/add-documentation.qmd
+          - guide/run-test-plans.qmd
+          - text: "Jupyter notebooks"
+            file: guide/jupyter-notebooks.qmd
+            contents:
+            - notebooks/library_intro_demos.ipynb
+            - notebooks/lending_club.ipynb
+            - notebooks/lending_club_regression.ipynb
+            - notebooks/send_custom_results.ipynb
+            - notebooks/run_individual_tests.ipynb
+            - notebooks/explore_x_train_lc.ipynb
+            - notebooks/log_image.ipynb
+            - notebooks/time_series/cre_rate_model_demo.ipynb
+            - notebooks/time_series/loan_rates_forecast_poc.ipynb
+        - text: "SaaS platform"
+          contents:
+          - guide/generate-validation-reports.qmd
 
-    - guide/glossary.qmd
+    - title: "Reference"
+      contents:
+        - guide/reference.qmd
+        - section: "Developer framework"
+          file: guide/developer-framework.qmd
+          contents:
+          - validmind/api.md
+          - validmind/vm_models.md
+          - validmind/test_plans.md
+          - validmind/data_validation_tests.md
+          - validmind/model_validation_tests_sklearn.md
 
-    - guide/releasenotes.qmd
+    - title: "FAQ"
+      contents:
+        - guide/faq.qmd
+        - guide/faq-models.qmd
+        - guide/faq-inventory.qmd
+        - guide/faq-documentation.qmd
+        - guide/faq-testing.qmd
+        - guide/faq-integrations.qmd
+        - guide/faq-privacy.qmd
 
   page-footer:
     background: "#DE257E"
@@ -74,7 +127,6 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    link-external-newwindow: true
     toc: true
-
-
-
+    toc-expand: 3

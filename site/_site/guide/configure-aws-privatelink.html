@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="keywords" content="configuring, AWS PrivateLink, administrator tasks, model risk management, ValidMind">
+
+<title>../ValidMind - Configure AWS PrivateLink</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../validmind.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/overview.html">
+ <span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/get-started.html">
+ <span class="menu-text">Get started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../guide/guide.html" aria-current="page">
+ <span class="menu-text">How-To Guides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/reference.html">
+ <span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/faq.html">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Configure AWS PrivateLink</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/guide.html" class="sidebar-item-text sidebar-link">How-To Guides</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">Configuration</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-aws-privatelink.html" class="sidebar-item-text sidebar-link active">Configure AWS PrivateLink</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-workflows.html" class="sidebar-item-text sidebar-link">Configure workflows</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/configure-templates.html" class="sidebar-item-text sidebar-link">Configure templates</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/manage-users-and-roles.html" class="sidebar-item-text sidebar-link">Manage users and roles</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">Developer framework</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/initialize-developer-framework.html" class="sidebar-item-text sidebar-link">Initialize the developer framework</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/add-documentation.html" class="sidebar-item-text sidebar-link">Add documentation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/run-test-plans.html" class="sidebar-item-text sidebar-link">Run test plans</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/jupyter-notebooks.html" class="sidebar-item-text sidebar-link">Jupyter notebooks</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/library_intro_demos.html" class="sidebar-item-text sidebar-link">Library intro demo</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lending_club.html" class="sidebar-item-text sidebar-link">Lending club</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lending_club_regression.html" class="sidebar-item-text sidebar-link">Lending club regression</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/send_custom_results.html" class="sidebar-item-text sidebar-link">Send Custom Metrics and Test Results</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/run_individual_tests.html" class="sidebar-item-text sidebar-link">Running Individual Tests</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/explore_x_train_lc.html" class="sidebar-item-text sidebar-link">Explore x to train LC</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/log_image.html" class="sidebar-item-text sidebar-link">Log images</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series/cre_rate_model_demo.html" class="sidebar-item-text sidebar-link">CRE/MF Mortgage Rate Model On-ValidMind</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series/loan_rates_forecast_poc.html" class="sidebar-item-text sidebar-link">POC Loan Rates Forecast Model</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">SaaS platform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/generate-validation-reports.html" class="sidebar-item-text sidebar-link">Generate validation reports</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a>
+  <ul class="collapse">
+  <li><a href="#vpc-service-information" id="toc-vpc-service-information" class="nav-link" data-scroll-target="#vpc-service-information">VPC service information</a></li>
+  </ul></li>
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s Next</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/validmind/documentation/edit/main/site/guide/configure-aws-privatelink.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Configure AWS PrivateLink</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Learn how to configure AWS PrivateLink to establish a private connection between ValidMind and your company network without exposing traffic to the public internet. Using PrivateLink can improve the security and compliance of your applications and data by keeping traffic private and reducing the attack surface of your network.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="aws-privatelink.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">AWS PrivateLink</figcaption><p></p>
+</figure>
+</div>
+<p>AWS PrivateLink is a networking service that allows secure and private communication between Amazon Virtual Private Cloud (VPC) resources and services hosted in other VPCs or in AWS partner services, such as ValidMind. With AWS PrivateLink, you can connect to services over the Amazon network, without needing to expose your network traffic to the public internet.</p>
+<p>PrivateLink works by creating a private <em>VPC endpoint</em> for a supported AWS service within your virtual private cloud. This endpoint acts as a proxy between your VPC and ValidMind, allowing traffic to be routed privately over the AWS network. To make the endpoint easier to use, ValidMind provides a <em>private DNS name</em> that model developers and validators can connect to in a browser.</p>
+<p>The responsibility of setting up a VPC endpoint for AWS PrivateLink falls to your IT department, such as the cloud engineering, infrastructure, or security teams. To learn more, check <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html#create-interface-endpoint">Access an AWS service using an interface VPC endpoint</a>.</p>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<p>You must have access to the AWS Console for your company and the necessary expertise to set up, configure, and maintain AWS services.</p>
+<p>These steps assume that you already have established connectivity between your own company network and AWS VPC and know which company VPC you want to connect to.</p>
+<section id="vpc-service-information" class="level3">
+<h3 class="anchored" data-anchor-id="vpc-service-information">VPC service information</h3>
+<!-- VM will provide one endpoint per region: us-east-1, us-west-2; eu-west-1; eu-central-1 
+private.dev.vm.validmind.ai
+private.prod.vm.validmind.ai
+
+SOC 2 requires tracking access request for VPC endpoint
+Recording: 46:00 FR InfoSec log in and set up endpoint > request pending, need to send endpoint ID and Owner (Account ID) to VM
+51:00 VM login accept request pending for endpoint ID after verifying endpoint ID and Owner
+56:00 FR InfoSec login
+58:55 VM login to verify "Owner"
+59:30 FR InfoSec login, verify the endpoint is available, enable private DNS names
+1:03 FR Murat private DNS name is availabe, can log into SaaS UI
+--->
+<table class="table">
+<thead>
+<tr class="header">
+<th>Region</th>
+<th>Service name</th>
+<th>Private DNS name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>us-west-2</td>
+<td>com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538</td>
+<td><a href="private.prod.vm.validmind.ai">private.prod.vm.validmind.ai</a></td>
+</tr>
+</tbody>
+</table>
+<!--- | us-east-1    | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+<!--- | eu-west-1    | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+<!--- | eu-central-1 | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+</section>
+</section>
+<section id="steps" class="level2">
+<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<ol type="1">
+<li><p>Create a VPC endpoint for ValidMind:</p>
+<ol type="a">
+<li>Log into the <a href="https://aws.amazon.com/console/">AWS Console</a>.</li>
+<li>In the VPC dashboard, click <strong>Endpoints</strong> in the navigation pane.</li>
+<li>Click <strong>Create endpoint</strong>.</li>
+<li>Select <strong>Other endpoint services</strong>.</li>
+<li>Enter the service name from the <a href="#vpc-service-information">VPC service information</a> and click <strong>Verify service</strong>.</li>
+<li>Select the company VPC that you want to create the endpoint in.</li>
+<li>Select the subnets where you want to create the endpoint network interfaces.</li>
+<li>Configure the security group for the VPC endpoint. Make sure to allow traffic between your network and the endpoint.</li>
+<li>Click <strong>Create endpoint</strong>.</li>
+</ol>
+<p>The status for the endpoint should show <code>Pending</code>.</p></li>
+<li><p>Contact ValidMind at <a href="mailto:support@validmind.ai?subject=VPC%20Endpoint%20Connection%20Request">support@validmind.ai</a> to get your new VPC endpoint connection request accepted. Include the following information:</p>
+<ul>
+<li>The owner or account ID</li>
+<li>The VPC endpoint ID</li>
+</ul></li>
+<li><p>After ValidMind has accepted your endpoint connection request, verify the endpoint is available:</p>
+<ol type="a">
+<li>In the VPC console, go to the <strong>Endpoints</strong> section.</li>
+<li>Verify that status for the endpoint shows <code>Available</code>.</li>
+</ol></li>
+<li><p>Enable the private DNS name:</p>
+<ol type="a">
+<li>Check the VPC endpoint you created, click the <strong>Actions</strong> menu, and select <strong>Modify private DNS name</strong>.</li>
+<li>Select <strong>Enable for this endpoint</strong>.</li>
+<li>Click <strong>Save changes</strong>.</li>
+<li>Verify that <strong>Private DNS names</strong> shows the name shown in the <a href="#vpc-service-information">VPC service information</a>.</li>
+</ol></li>
+<li><p>Test the connection:</p>
+<ol type="a">
+<li>From your company network, access ValidMind using the private DNS name from the <a href="#vpc-service-information">VPC service information</a>.</li>
+<li>In a browser, confirm that you can successfully connect to ValidMind and log in.</li>
+<li>From your developer environment, confirm that you can connect to ValidMind with the developer framework.</li>
+</ol></li>
+</ol>
+<!---
+## Troubleshooting
+
+[Include any common issues or errors that may arise during the task and how to resolve them.]
+
+--->
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">What’s Next</h2>
+<p>After completing these steps, users on your company network can connect to ValidMind via AWS PrivateLink using the private DNS name from the <a href="#vpc-service-information">VPC service information</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/validmind/documentation">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
