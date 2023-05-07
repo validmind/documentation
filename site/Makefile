@@ -4,18 +4,19 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site
+.PHONY: help clean clone notebooks python-docs docs-site interim-deploy
 
 # Help section
 help:
 	@echo "Available targets:"
-	@echo "  clean        Remove the _source/ directory"
-	@echo "  clone        Clone the validmind-python repository into _source/"
-	@echo "  notebooks    Copy the Jupyter notebooks to notebooks/"
-	@echo "  python-docs  Build the Python library docs and copy to validmind/"
-	@echo "  get-source   Get all source files (clean, clone, notebooks, python-docs)"
-	@echo "  docs-site    Get all source files and render the docs site"
-	@echo "  help         Display this help message (default target)"
+	@echo "  clean          Remove the _source/ directory"
+	@echo "  clone          Clone the validmind-python repository into _source/"
+	@echo "  notebooks      Copy the Jupyter notebooks to notebooks/"
+	@echo "  python-docs    Build the Python library docs and copy to validmind/"
+	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
+	@echo "  docs-site      Get all source files and render the docs site"
+	@echo "  interim-deploy Generate & deploy the docs site and clear cache"
+	@echo "  help           Display this help message (default target)"
 
 # Clean up source directory
 clean:
@@ -44,3 +45,10 @@ get-source: clean clone notebooks python-docs
 docs-site: clean clone notebooks python-docs
 	quarto render
 
+# Interim deployment to https://docs-demo.vm.validmind.ai/
+interim-deploy:
+	quarto render && \
+	aws s3 cp ./_site s3://docs-ci-cd-demo/site/ --recursive
+	aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
+	aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null
+	aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null
