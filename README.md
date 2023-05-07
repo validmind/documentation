@@ -70,3 +70,14 @@ site
 └── _site
     └── *.html, *.css, *.png, *.js ...
 ```
+
+## Deploy the docs demo site (interim)
+
+```bash
+cd site
+make interim-deploy
+```
+
+Until we sort out [Add docs pipeline to Terraform and CI/CD #13](https://github.com/validmind/infra/issues/13), this command renders and deploys the docs to: 
+
+- https://docs-demo.vm.validmind.ai/
