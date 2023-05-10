@@ -129,17 +129,17 @@ Initializes a VM Model for an R model
 R models must be saved to disk and the filetype depends on the model type…
 Currently we support the following model types:
 
-> 
-> * LogisticRegression glm model in R: saved as an RDS file with saveRDS
+
+* LogisticRegression glm model in R: saved as an RDS file with saveRDS
 
 
-> * LinearRegression lm model in R: saved as an RDS file with saveRDS
+* LinearRegression lm model in R: saved as an RDS file with saveRDS
 
 
-> * XGBClassifier: saved as a .json or .bin file with xgb.save
+* XGBClassifier: saved as a .json or .bin file with xgb.save
 
 
-> * XGBRegressor: saved as a .json or .bin file with xgb.save
+* XGBRegressor: saved as a .json or .bin file with xgb.save
 
 LogisticRegression and LinearRegression models are converted to sklearn models by extracting
 the coefficients and intercept from the R model. XGB models are loaded using the xgboost
@@ -268,41 +268,6 @@ Logs a figure
 
 
     * **run_cuid** (*str**, **optional*) – The run CUID. If not provided, a new run will be created. Defaults to None.
-
-
-
-* **Raises**
-
-    **Exception** – If the API call fails
-
-
-
-* **Returns**
-
-    True if the API call was successful
-
-
-
-* **Return type**
-
-    bool
-
-
-
-### validmind.log_metadata(content_id, text=None, extra_json=None)
-Logs free-form metadata to ValidMind API.
-
-
-* **Parameters**
-
-    
-    * **content_id** (*str*) – Unique content identifier for the metadata
-
-
-    * **text** (*str**, **optional*) – Free-form text to assign to the metadata. Defaults to None.
-
-
-    * **extra_json** (*dict**, **optional*) – Free-form key-value pairs to assign to the metadata. Defaults to None.
 
 
 
@@ -513,6 +478,38 @@ Returns the type of the feature with the given id
 
 
 
+#### get_numeric_features_columns()
+Returns list of numeric features columns
+
+
+* **Returns**
+
+    The list of numberic features columns
+
+
+
+* **Return type**
+
+    list
+
+
+
+#### get_categorical_features_columns()
+Returns list of categorical features columns
+
+
+* **Returns**
+
+    The list of categorical features columns
+
+
+
+* **Return type**
+
+    list
+
+
+
 #### serialize()
 Serializes the model to a dictionary so it can be sent to the API
 
@@ -663,6 +660,8 @@ Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
 
+TODO: Metric should validate required context too
+
 
 #### test_context(_: TestContex_ )
 
@@ -683,6 +682,19 @@ Metric objects track the schema supported by the ValidMind API
 #### result(_: TestPlanMetricResul_ _ = Non_ )
 
 #### _property_ name()
+
+#### description()
+Return the metric description. Should be overridden by subclasses. Defaults
+to returning the class’ docstring
+
+
+#### summary(metric_value: dict | list | DataFrame | None = None)
+Return the metric summary. Should be overridden by subclasses. Defaults to None.
+The metric summary allows renderers (e.g. Word and ValidMind UI) to display a
+short summary of the metric results.
+
+We return None here because the metric summary is optional.
+
 
 #### run(\*args, \*\*kwargs)
 Run the metric calculation and cache its results
@@ -799,22 +811,26 @@ Model attributes definition
 
 #### framework_version(_: st_ _ = Non_ )
 
-### _class_ validmind.TestResult(\*, test_name: str | None = None, column: str | None = None, passed: bool | None = None, values: dict)
-Bases: `BaseResultModel`
+### _class_ validmind.TestResult(values: dict, test_name: str | None = None, column: str | None = None, passed: bool | None = None)
+Bases: `object`
 
 TestResult model
 
 
-#### test_name(_: str | Non_ )
-
-#### column(_: str | Non_ )
-
-#### passed(_: bool | Non_ )
-
 #### values(_: dic_ )
 
-### _class_ validmind.TestResults(\*, category: str, test_name: str, params: dict, passed: bool, results: List[TestResult])
-Bases: `BaseResultModel`
+#### test_name(_: str | Non_ _ = Non_ )
+
+#### column(_: str | Non_ _ = Non_ )
+
+#### passed(_: bool | Non_ _ = Non_ )
+
+#### serialize()
+Serializes the TestResult to a dictionary so it can be sent to the API
+
+
+### _class_ validmind.TestResults(category: str, test_name: str, params: dict, passed: bool, results: List[TestResult], summary: ResultSummary | None)
+Bases: `object`
 
 TestResults model
 
@@ -829,12 +845,20 @@ TestResults model
 
 #### results(_: List[TestResult_ )
 
+#### summary(_: ResultSummary | Non_ )
+
+#### serialize()
+Serializes the TestResults to a dictionary so it can be sent to the API
+
+
 ### _class_ validmind.ThresholdTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
 Bases: `TestContextUtils`
 
 A threshold test is a combination of a metric/plot we track and a
 corresponding set of parameters and thresholds values that allow
 us to determine whether the metric/plot passes or fails.
+
+TODO: ThresholdTest should validate required context too
 
 
 #### test_context(_: TestContex_ )
@@ -850,6 +874,19 @@ us to determine whether the metric/plot passes or fails.
 #### params(_: dic_ _ = Non_ )
 
 #### test_results(_: TestResult_ _ = Non_ )
+
+#### description()
+Return the test description. Should be overridden by subclasses. Defaults
+to returning the class’ docstring
+
+
+#### summary(test_results: TestResults | None = None)
+Return the threshold test summary. Should be overridden by subclasses. Defaults to None.
+The test summary allows renderers (e.g. Word and ValidMind UI) to display a
+short summary of the test results.
+
+We return None here because the test summary is optional.
+
 
 #### run(\*args, \*\*kwargs)
 Run the test and cache its results
