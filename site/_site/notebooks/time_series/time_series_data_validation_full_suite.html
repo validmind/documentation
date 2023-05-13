@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ValidMind – time_series_data_validation_full_suite</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../validmind.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/get-started.html">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/guide.html">
+ <span class="menu-text">Guides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/developer-framework.html">
+ <span class="menu-text">Developer Framework</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/faq.html">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/support.html">
+ <span class="menu-text">Support</span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#time-series-data-validation-full-suite" id="toc-time-series-data-validation-full-suite" class="nav-link active" data-scroll-target="#time-series-data-validation-full-suite">Time Series Data Validation Full Suite</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">1. Introduction</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">2. Setup</a>
+  <ul class="collapse">
+  <li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import Libraries</a></li>
+  <li><a href="#connect-to-the-validmind-library" id="toc-connect-to-the-validmind-library" class="nav-link" data-scroll-target="#connect-to-the-validmind-library">Connect to the ValidMind Library</a></li>
+  <li><a href="#find-all-test-plans-available-in-the-developer-framework" id="toc-find-all-test-plans-available-in-the-developer-framework" class="nav-link" data-scroll-target="#find-all-test-plans-available-in-the-developer-framework">Find All Test Plans Available in the Developer Framework</a></li>
+  </ul></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">3. Load Data</a></li>
+  <li><a href="#data-description" id="toc-data-description" class="nav-link" data-scroll-target="#data-description">4. Data Description</a></li>
+  <li><a href="#data-validation" id="toc-data-validation" class="nav-link" data-scroll-target="#data-validation">5. Data Validation</a>
+  <ul class="collapse">
+  <li><a href="#validation-of-raw-dataset" id="toc-validation-of-raw-dataset" class="nav-link" data-scroll-target="#validation-of-raw-dataset">Validation of Raw Dataset</a></li>
+  <li><a href="#handle-frequency-missmatches" id="toc-handle-frequency-missmatches" class="nav-link" data-scroll-target="#handle-frequency-missmatches">Handle Frequency Missmatches</a></li>
+  <li><a href="#handle-missing-values" id="toc-handle-missing-values" class="nav-link" data-scroll-target="#handle-missing-values">Handle Missing Values</a></li>
+  <li><a href="#handle-stationarity" id="toc-handle-stationarity" class="nav-link" data-scroll-target="#handle-stationarity">Handle Stationarity</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/validmind/documentation/blob/main/site/notebooks/time_series/time_series_data_validation_full_suite.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="time-series-data-validation-full-suite" class="level1">
+<h1>Time Series Data Validation Full Suite</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
+<p>The Time Series Data Validation Demo notebook aims to demonstrate the application of various data validation tests using the <strong>ValidMind MRM Platform</strong> and <strong>Developer Framework</strong>. Ensuring the quality and an a robust exploratory data analysis of time series data is essential for accurate model predictions and robust decision-making processes.</p>
+<p>In this demo, we will walk through different <strong>data validation suites of tests</strong> tailored for time series data, showcasing how these tools can assist you in identifying potential issues and inconsistencies in the data.</p>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">2. Setup</h2>
+<p>Prepare the environment for our analysis. First, <strong>import</strong> all necessary libraries and modules required for our analysis. Next, <strong>connect</strong> to the ValidMind MRM platform, which provides a comprehensive suite of tools and services for model validation.</p>
+<p>Finally, define and <strong>configure</strong> the specific use case we are working on by setting up any required parameters, data sources, or other settings that will be used throughout the analysis.</p>
+<section id="import-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="import-libraries">Import Libraries</h3>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load API key and secret from environment variables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext dotenv</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>dotenv .env</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ValidMind libraries </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.regression <span class="im">import</span> (</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    identify_frequencies, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    resample_to_common_frequency</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="connect-to-the-validmind-library" class="level3">
+<h3 class="anchored" data-anchor-id="connect-to-the-validmind-library">Connect to the ValidMind Library</h3>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"http://localhost:3000/api/v1/tracking"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhhz04x40000wcy6shay2oco"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Connected to ValidMind. Project: Customer Churn Model - Initial Validation (clhhz04x40000wcy6shay2oco)</code></pre>
+</div>
+</div>
+</section>
+<section id="find-all-test-plans-available-in-the-developer-framework" class="level3">
+<h3 class="anchored" data-anchor-id="find-all-test-plans-available-in-the-developer-framework">Find All Test Plans Available in the Developer Framework</h3>
+<p>We can find all the test plans available in the developer framework by calling the following functions:</p>
+<ul>
+<li>All test plans: <code>vm.test_plans.list_plans()</code></li>
+<li>Describe a test plan: <code>vm.test_plans.describe_plan("time_series_data_quality")</code></li>
+<li>List all available tests: <code>vm.test_plans.list_tests()</code></li>
+</ul>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<table>
+<thead>
+<tr><th>ID                               </th><th>Name                       </th><th>Description                                                                </th></tr>
+</thead>
+<tbody>
+<tr><td>binary_classifier_metrics        </td><td>BinaryClassifierMetrics    </td><td>Test plan for sklearn classifier metrics                                   </td></tr>
+<tr><td>binary_classifier_validation     </td><td>BinaryClassifierPerformance</td><td>Test plan for sklearn classifier models                                    </td></tr>
+<tr><td>binary_classifier_model_diagnosis</td><td>BinaryClassifierDiagnosis  </td><td>Test plan for sklearn classifier model diagnosis tests                     </td></tr>
+<tr><td>tabular_dataset_description      </td><td>TabularDatasetDescription  </td><td>Test plan to extract metadata and descriptive
+    statistics from a tabular dataset                                                                            </td></tr>
+<tr><td>tabular_data_quality             </td><td>TabularDataQuality         </td><td>Test plan for data quality on tabular datasets                             </td></tr>
+<tr><td>normality_test_plan              </td><td>NormalityTestPlan          </td><td>Test plan to perform normality tests.                                      </td></tr>
+<tr><td>autocorrelation_test_plan        </td><td>AutocorrelationTestPlan    </td><td>Test plan to perform autocorrelation tests.                                </td></tr>
+<tr><td>seasonality_test_plan            </td><td>SesonalityTestPlan         </td><td>Test plan to perform seasonality tests.                                    </td></tr>
+<tr><td>unit_root                        </td><td>UnitRoot                   </td><td>Test plan to perform unit root tests.                                      </td></tr>
+<tr><td>stationarity_test_plan           </td><td>StationarityTestPlan       </td><td>Test plan to perform stationarity tests.                                   </td></tr>
+<tr><td>timeseries                       </td><td>TimeSeries                 </td><td>Test plan for time series statsmodels that includes
+    both metrics and validation tests                                                                            </td></tr>
+<tr><td>time_series_data_quality         </td><td>TimeSeriesDataQuality      </td><td>Test plan for data quality on time series datasets                         </td></tr>
+<tr><td>time_series_dataset              </td><td>TimeSeriesDataset          </td><td>Test plan for time series  datasets                                        </td></tr>
+<tr><td>time_series_univariate           </td><td>TimeSeriesUnivariate       </td><td>Test plan to perform time series univariate analysis.                      </td></tr>
+<tr><td>time_series_multivariate         </td><td>TimeSeriesMultivariate     </td><td>Test plan to perform time series multivariate analysis.                    </td></tr>
+<tr><td>time_series_forecast             </td><td>TimeSeriesForecast         </td><td>Test plan to perform time series forecast tests.                           </td></tr>
+<tr><td>regression_model_performance     </td><td>RegressionModelPerformance </td><td>Test plan for performance metric of regression model of statsmodels library</td></tr>
+<tr><td>regression_models_comparison     </td><td>RegressionModelsComparison </td><td>Test plan for metrics comparison of regression model of statsmodels library</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">3. Load Data</h2>
+<p>Conigure your use case.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from validmind.datasets.classification import lending_club as demo_dataset</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.regression <span class="im">import</span> fred <span class="im">as</span> demo_dataset</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>target_column <span class="op">=</span> demo_dataset.target_column</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> demo_dataset.feature_columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into test and training </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>frequencies <span class="op">=</span> identify_frequencies(df)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>display(frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Variable</th>
+      <th>Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>MORTGAGE30US</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FEDFUNDS</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>GS10</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>UNRATE</td>
+      <td>MS</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="data-description" class="level2">
+<h2 class="anchored" data-anchor-id="data-description">4. Data Description</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>MORTGAGE30US</th>
+      <th>FEDFUNDS</th>
+      <th>GS10</th>
+      <th>UNRATE</th>
+    </tr>
+    <tr>
+      <th>DATE</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1947-01-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1947-02-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1947-03-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1947-04-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1947-05-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-04-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3.46</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-04-06</th>
+      <td>6.28</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-04-13</th>
+      <td>6.27</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-04-20</th>
+      <td>6.39</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-04-27</th>
+      <td>6.43</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>3551 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+DatetimeIndex: 3551 entries, 1947-01-01 to 2023-04-27
+Data columns (total 4 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   MORTGAGE30US  2718 non-null   float64
+ 1   FEDFUNDS      825 non-null    float64
+ 2   GS10          841 non-null    float64
+ 3   UNRATE        903 non-null    float64
+dtypes: float64(4)
+memory usage: 138.7 KB</code></pre>
+</div>
+</div>
+</section>
+<section id="data-validation" class="level2">
+<h2 class="anchored" data-anchor-id="data-validation">5. Data Validation</h2>
+<section id="validation-of-raw-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="validation-of-raw-dataset">Validation of Raw Dataset</h3>
+<section id="run-time-series-data-validation-full-suite" class="level4">
+<h4 class="anchored" data-anchor-id="run-time-series-data-validation-full-suite"><strong>Run Time Series Data Validation Full Suite</strong></h4>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_series_data_validation"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pandas dataset detected. Initializing VM Dataset instance...
+Inferring dataset types...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"1bc7e13ad9234f4b81161b2d1508c83a","version_major":2,"version_minor":0}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.
+No frequency could be inferred for variable 'MORTGAGE30US'. Skipping seasonal decomposition and plots for this variable.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of FEDFUNDS: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of GS10: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of UNRATE: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
+Warning: GS10 is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: MORTGAGE30US is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: GS10 is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.
+No frequency information was provided, so inferred frequency MS will be used.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"5e71cff9143f451f9ec651b01f5b3fa7","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+<p>Show the frequencies of each variable in the raw dataset.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>frequencies <span class="op">=</span> identify_frequencies(df)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>display(frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Variable</th>
+      <th>Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>MORTGAGE30US</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FEDFUNDS</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>GS10</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>UNRATE</td>
+      <td>MS</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="handle-frequency-missmatches" class="level3">
+<h3 class="anchored" data-anchor-id="handle-frequency-missmatches">Handle Frequency Missmatches</h3>
+<p>Handle frequencies by resampling all variables to a common frequency.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>preprocessed_df <span class="op">=</span> resample_to_common_frequency(df, common_frequency<span class="op">=</span>demo_dataset.frequency)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>frequencies <span class="op">=</span> identify_frequencies(preprocessed_df)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>display(frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Variable</th>
+      <th>Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>MORTGAGE30US</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FEDFUNDS</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>GS10</td>
+      <td>MS</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>UNRATE</td>
+      <td>MS</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="run-the-time-series-data-validation-suite" class="level4">
+<h4 class="anchored" data-anchor-id="run-the-time-series-data-validation-suite"><strong>Run the Time Series Data Validation Suite</strong></h4>
+<p>Run the same suite again after handling frequencies.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>preprocessed_df,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_series_data_validation"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pandas dataset detected. Initializing VM Dataset instance...
+Inferring dataset types...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"54ba8bc7f8ea427eaddff9c03807a6f9","version_major":2,"version_minor":0}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of MORTGAGE30US: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of FEDFUNDS: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of GS10: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of UNRATE: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
+Warning: GS10 is not stationary. Results may be inaccurate.
+Warning: MORTGAGE30US is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-invertible starting MA parameters found. Using zeros as starting parameters.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: GS10 is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-invertible starting MA parameters found. Using zeros as starting parameters.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"4ea2552c089b4c089a2bd4d297184114","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+</section>
+</section>
+<section id="handle-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="handle-missing-values">Handle Missing Values</h3>
+<p>Handle the missing values by droping all the <code>nan</code> values.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>preprocessed_df <span class="op">=</span> preprocessed_df.dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="run-the-time-series-data-validation-suite-1" class="level4">
+<h4 class="anchored" data-anchor-id="run-the-time-series-data-validation-suite-1"><strong>Run the Time Series Data Validation Suite</strong></h4>
+<p>Run the same test suite to check there are no missing values and frequencies of all variables are the same.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>preprocessed_df,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_series_data_validation"</span>,</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pandas dataset detected. Initializing VM Dataset instance...
+Inferring dataset types...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"16a4e1a248614fa1a70628c220704b16","version_major":2,"version_minor":0}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of MORTGAGE30US: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of FEDFUNDS: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of GS10: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of UNRATE: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
+Warning: FEDFUNDS is not stationary. Results may be inaccurate.
+Warning: GS10 is not stationary. Results may be inaccurate.
+Warning: MORTGAGE30US is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: FEDFUNDS is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: GS10 is not stationary. Results may be inaccurate.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-invertible starting MA parameters found. Using zeros as starting parameters.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"fad6409ec2ef4c7a9f8453545f384636","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+</section>
+</section>
+<section id="handle-stationarity" class="level3">
+<h3 class="anchored" data-anchor-id="handle-stationarity">Handle Stationarity</h3>
+<p>Handle stationarity by taking the first difference.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>preprocessed_df <span class="op">=</span> preprocessed_df.diff().fillna(method<span class="op">=</span><span class="st">'bfill'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="run-the-time-series-data-validation-suite-2" class="level4">
+<h4 class="anchored" data-anchor-id="run-the-time-series-data-validation-suite-2"><strong>Run the Time Series Data Validation Suite</strong></h4>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>preprocessed_df,</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_series_data_validation"</span>,</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pandas dataset detected. Initializing VM Dataset instance...
+Inferring dataset types...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"65d045fca2c745d888c1b8683a801303","version_major":2,"version_minor":0}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of MORTGAGE30US: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of FEDFUNDS: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of GS10: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequency of UNRATE: MS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"9b776e2d515149f89a4143804b4ef873","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/validmind/documentation">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
