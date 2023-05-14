@@ -15,7 +15,8 @@ help:
 	@echo "  python-docs    Build the Python library docs and copy to validmind/"
 	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
 	@echo "  docs-site      Get all source files and render the docs site"
-	@echo "  interim-deploy Generate & deploy the docs site and clear cache"
+	@echo "  deploy-demo    Generate & deploy to docs-ci-cd-demo and clear cache"
+	@echo "  deploy-prod    Generate & deploy to docs-ci-cd-prod and clear cache"
 	@echo "  help           Display this help message (default target)"
 
 # Clean up source directory
@@ -46,9 +47,23 @@ docs-site: clean clone notebooks python-docs
 	quarto render
 
 # Interim deployment to https://docs-demo.vm.validmind.ai/
-interim-deploy:
+interim-deploy-demo:
 	quarto render && \
 	aws s3 cp ./_site s3://docs-ci-cd-demo/site/ --recursive
 	aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
 	aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null
 	aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null
+
+# Deployment to https://docs-demo.vm.validmind.ai/
+deploy-demo:
+	quarto render && \
+	aws s3 cp ./_site s3://docs-ci-cd-demo/site/ --recursive
+	aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
+	aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null
+	aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null
+
+# Deployment to https://docs.validmind.ai/
+deploy-prod:
+	quarto render && \
+	aws s3 cp ./_site s3://docs-ci-cd-prod/site/ --recursive
+	aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null
