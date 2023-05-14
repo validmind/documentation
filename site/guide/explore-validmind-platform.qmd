@@ -10,14 +10,6 @@ Learn how to get started with the ValidMind Platform. The ValidMind Platform is 
 
 [![The ValidMind main dashboard](dashboard.png){width=95% fig-align="left" fig-alt="An image showing the ValidMind UI main dashboard"}]({{< var vm_ui >}})
 
-::: {.column-margin}
-::: {.callout-important}
-## Using a company VPC?
-Log in through AWS PrivateLink:
-[{{< var vm_ui_privatelink >}}]({{< var vm_ui_privatelink >}})
-:::
-:::
-
 ## Explore how documentation and test results get uploaded 
 
 Get a walk-through for how uploads to the ValidMind Platform appear. These steps use an existing project that goes with our intro notebook, but they demonstrate how the Developer Framework and the ValidMind Platform work hand-in-hand. 
@@ -52,41 +44,69 @@ Get a walk-through for how uploads to the ValidMind Platform appear. These steps
 
    Sections that need your attention get flagged with `Requires Attention`.
 
-6. Select **3. Model Training** and any of the subsection to see information about:
+6. Select **3. Model Training** and any of the subsection to see information that has been uploaded by the Developer Framework about:
 
    - Model training
    - Model evaluation
    - Model explainability and interpretability
 
+<!--- NR do we need to do anything else here? --->
 
 ## Create a new documentation project
 
-Next, let's learn how to create a new documentation project in the ValidMind Platform which you can use to upload tests and documentation, review and validate models, and generate validation reports.
+Next, let's learn how to create your own documentation project, which you can use to upload tests and documentation, and then add that to your own copy of the intro notebook you looked at earlier.
 
 1. [Log in to the ValidMind UI]({{< var vm_ui >}}).
    
 2. On the **Documentation Projects** page, click **Create new project**.
    
-3. Select the relevant details in the form:
+3. Select the right options in the form:
 
-   - Select the relevant model 
-   - Select the relevant type of documentation you are looking to generate 
-   - Enter a name for the project 
+   - **Model**: `Customer Churn Model`
+   - **Type**: `Initial validation`
+   - **Model Use Case**: `Attrition/Churn Management` (under `Marketing/Sales`)
+   - **Preliminary Risk Rating**: Pick one
+   - **Documentation Template**: `Binary classification`
+   - And optionally any of the other options you want to include, such as comments and any of the checkboxes.
 
 4. Click **Create Project**.
 
-ValidMind has now created an empty documentation project associated with the model. You can access this project from the UI on the **Documentation Projects** page or by navigating to the relevant model details page in the **Model Inventory** page.
-
-4. Locating the project identifier, API key and secret:
+   ValidMind will create an empty documentation project associated with the customer churn model. 
    
-   On the **Client Integration** page of the newly created project, you can find the initialization code that enables the client library to associate documentation and tests with the appropriate project. The initialization code configures the following arguments: 
+   You can now access this project from the UI on the **Documentation Projects** page or by navigating to the relevant model details page in the **Model Inventory** page.
 
-- `api_host`: The location of the ValidMind API
-- `api_key`: The account API key
-- `api_secret`: The account secret key
-- `project`: The project identifier
+5. On the **Client Integration** page of the newly created project, locate the project identifier, API key and secret:
+   
+   - `api_host`: The location of the ValidMind API
+   - `api_key`: The account API key
+   - `api_secret`: The account secret key
+   - `project`: The project identifier
 
-The code snippet can be copied and pasted directly into your developer source code to integrate the ValidMind Developer Framework and to be able to upload to the ValidMind Platform.
+
+   The code snippet can be copied and pasted directly into your developer source code to integrate the ValidMind Developer Framework and to be able to upload to the ValidMind Platform or you can store it in a `.env` file and pass in the secrets via environment variables to follow security best practices
+
+6. Reopen the Quickstart notebook you looked at earlier: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1NLtjCFUZV2I_ttGUkiAL9uwGZK_SGUlw?usp=share_link)
+  
+   If you recall, Google Colaboratory (Colab) is a cloud environment that lets you work with Jupyter notebooks for free.
+
+7. In Colab, click **File** > **Save a copy in Drive** > make your own copy in Google Drive so that you can modify the notebook. Alternatively, you can download the notebook source and work with it in your own developer environment.
+
+8. Install the ValidMind Python library so that you can run your notebook:
+
+  a. Locate the top of the **Initializing the ValidMind Client Library** cell and click the **+ Code** button when it appears. 
+  b. Enter `!pip install validmind` into the new cell. 
+
+9 In the Quickstart notebook, replace the `vm.init()` lines that look like the following with your own client integration information from the earlier step when you created your new project:
+
+   [![The Quickstart notebook in Colab](google-colab-secrets.png){width=95% fig-align="left" fig-alt="The Quickstart notebook in Colab with the section showing that you need to replace"}]({{< var vm_ui >}})
+
+9. From the **Runtime** drop-down menu at the top, select **Run all**.
+   
+   The Quickstart notebook will install the ValidMind library and then prompt you to restart the runtime.
+
+10. From the **Runtime** drop-down menu, select **Restart and run all**.
+
+The Quickstart notebook will install the ValidMind library and then run the notebook with your own project's credentials, connecting to the ValidMind Platform. 
 
 ## Related topics
 
