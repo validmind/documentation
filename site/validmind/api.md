@@ -93,7 +93,7 @@ DataFrames at the moment.
 
 
 
-### validmind.init_model(model: object)
+### validmind.init_model(model: object, train_ds: Dataset | None = None, test_ds: Dataset | None = None, validation_ds: Dataset | None = None)
 Initializes a VM Model, which can then be passed to other functions
 that can perform additional analysis and tests on the data. This function
 also ensures we are reading a supported model type.
@@ -180,7 +180,7 @@ run it.
 * **Parameters**
 
     
-    * **test_plan_name** (*str*) – The test plan name (e.g. ‘sklearn_classifier’)
+    * **test_plan_name** (*str*) – The test plan name (e.g. ‘binary_classifier’)
 
 
     * **send** (*bool**, **optional*) – Whether to post the test results to the API. send=False is useful for testing. Defaults to True.
@@ -207,6 +207,47 @@ run it.
 * **Return type**
 
     dict
+
+
+
+### validmind.run_test_suite(test_suite_name, send=True, \*\*kwargs)
+High Level function for running a test suite
+
+This function provides a high level interface for running a test suite. A test suite is
+a collection of test plans. This function will automatically find the correct test suite
+class based on the test_suite_name, initialize each of the test plans, and run them.
+
+
+* **Parameters**
+
+    
+    * **test_suite_name** (*str*) – The test suite name (e.g. ‘binary_classifier_full_suite’)
+
+
+    * **send** (*bool**, **optional*) – Whether to post the test results to the API. send=False is useful for testing. Defaults to True.
+
+
+    * **\*\*kwargs** – Additional keyword arguments to pass to the test suite. These will provide
+    the TestSuite instance with the necessary context to run the tests. e.g. dataset, model etc.
+    See the documentation for the specific test plan, metric or threshold test for more details.
+
+
+
+* **Raises**
+
+    **ValueError** – If the test suite name is not found or if there is an error initializing the test suite
+
+
+
+* **Returns**
+
+    the TestSuite instance
+
+
+
+* **Return type**
+
+    TestSuite
 
 
 
@@ -385,7 +426,7 @@ running tests but can also be called directly if the user wants to run tests on 
 
 
 
-### _class_ validmind.Dataset(raw_dataset: object, fields: list, sample: list, shape: dict, correlation_matrix: object | None = None, correlations: dict | None = None, type: str | None = None, options: dict | None = None, statistics: dict | None = None, targets: dict | None = None, target_column: str = '', class_labels: dict | None = None, _Dataset__feature_lookup: dict = <factory>, _Dataset__transformed_df: object | None = None)
+### _class_ validmind.Dataset(raw_dataset: object, fields: list, sample: list, shape: dict, correlation_matrix: object | None = None, correlations: dict | None = None, type: str | None = None, options: dict | None = None, statistics: dict | None = None, targets: dict | None = None, target_column: str = '', class_labels: dict | None = None, _feature_lookup: dict | None = None, _transformed_df: object | None = None)
 Bases: `object`
 
 Model class wrapper
@@ -425,6 +466,10 @@ Returns the dataset’s features
 
 #### _property_ y()
 Returns the dataset’s target column
+
+
+#### _property_ index()
+Returns the dataset’s index.
 
 
 #### get_feature_by_id(feature_id)
@@ -726,10 +771,130 @@ Cache the results of the metric calculation and do any post-processing if needed
 
 
 
-### _class_ validmind.Model(attributes: ModelAttributes | None = None, task: str | None = None, subtask: str | None = None, params: dict | None = None, model_id: str = 'main', model: object | None = None)
+### _class_ validmind.Model(attributes: ModelAttributes | None = None, task: str | None = None, subtask: str | None = None, params: dict | None = None, model_id: str = 'main', model: object | None = None, train_ds: Dataset | None = None, test_ds: Dataset | None = None, validation_ds: Dataset | None = None, y_train_predict: object | None = None, y_test_predict: object | None = None, y_validation_predict: object | None = None)
 Bases: `object`
 
-Model class wrapper
+A class that wraps a trained model instance and its associated data.
+
+
+#### attributes()
+The attributes of the model. Defaults to None.
+
+
+* **Type**
+
+    ModelAttributes, optional
+
+
+
+#### task()
+The task that the model is intended to solve. Defaults to None.
+
+
+* **Type**
+
+    str, optional
+
+
+
+#### subtask()
+The subtask that the model is intended to solve. Defaults to None.
+
+
+* **Type**
+
+    str, optional
+
+
+
+#### params()
+The parameters of the model. Defaults to None.
+
+
+* **Type**
+
+    dict, optional
+
+
+
+#### model_id()
+The identifier of the model. Defaults to “main”.
+
+
+* **Type**
+
+    str
+
+
+
+#### model()
+The trained model instance. Defaults to None.
+
+
+* **Type**
+
+    object, optional
+
+
+
+#### train_ds()
+The training dataset. Defaults to None.
+
+
+* **Type**
+
+    Dataset, optional
+
+
+
+#### test_ds()
+The test dataset. Defaults to None.
+
+
+* **Type**
+
+    Dataset, optional
+
+
+
+#### validation_ds()
+The validation dataset. Defaults to None.
+
+
+* **Type**
+
+    Dataset, optional
+
+
+
+#### y_train_predict()
+The predicted outputs for the training dataset. Defaults to None.
+
+
+* **Type**
+
+    object, optional
+
+
+
+#### y_test_predict()
+The predicted outputs for the test dataset. Defaults to None.
+
+
+* **Type**
+
+    object, optional
+
+
+
+#### y_validation_predict()
+The predicted outputs for the validation dataset. Defaults to None.
+
+
+* **Type**
+
+    object, optional
+
 
 
 #### attributes(_: ModelAttribute_ _ = Non_ )
@@ -744,8 +909,42 @@ Model class wrapper
 
 #### model(_: objec_ _ = Non_ )
 
+#### train_ds(_: Datase_ _ = Non_ )
+
+#### test_ds(_: Datase_ _ = Non_ )
+
+#### validation_ds(_: Datase_ _ = Non_ )
+
+#### y_train_predict(_: objec_ _ = Non_ )
+
+#### y_test_predict(_: objec_ _ = Non_ )
+
+#### y_validation_predict(_: objec_ _ = Non_ )
+
 #### serialize()
 Serializes the model to a dictionary so it can be sent to the API
+
+
+#### class_predictions(y_predict)
+Converts a set of probability predictions to class predictions
+
+
+* **Parameters**
+
+    **y_predict** (*np.array**, **pd.DataFrame*) – Predictions to convert
+
+
+
+* **Returns**
+
+    Class predictions
+
+
+
+* **Return type**
+
+    (np.array, pd.DataFrame)
+
 
 
 #### predict(\*args, \*\*kwargs)
@@ -753,6 +952,14 @@ Predict method for the model. This is a wrapper around the model’s
 predict_proba (for classification) or predict (for regression) method
 
 NOTE: This only works for sklearn or xgboost models at the moment
+
+
+#### _static_ model_library(model)
+Returns the model library name
+
+
+#### _static_ model_class(model)
+Returns the model class name
 
 
 #### _static_ is_supported_model(model)
@@ -775,6 +982,10 @@ Checks if the model is supported by the API
 
     bool
 
+
+
+#### _classmethod_ init_vm_model(model, train_ds, test_ds, validation_ds, attributes)
+Initializes a model instance from the provided data.
 
 
 #### _classmethod_ create_from_dict(dict_)
