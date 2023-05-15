@@ -121,6 +121,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
+</script>
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -300,18 +309,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#introduction---customer-churn-model-documentation-data-and-model" id="toc-introduction---customer-churn-model-documentation-data-and-model" class="nav-link active" data-scroll-target="#introduction---customer-churn-model-documentation-data-and-model">Introduction - Customer Churn Model Documentation (Data and Model)</a>
   <ul class="collapse">
-  <li><a href="#validmind-python-library-introduction" id="toc-validmind-python-library-introduction" class="nav-link" data-scroll-target="#validmind-python-library-introduction">ValidMind Python Library Introduction</a></li>
-  <li><a href="#training-an-example-model" id="toc-training-an-example-model" class="nav-link" data-scroll-target="#training-an-example-model">Training an Example Model</a>
+  <li><a href="#validmind-python-library-introduction" id="toc-validmind-python-library-introduction" class="nav-link" data-scroll-target="#validmind-python-library-introduction">ValidMind Python Library Introduction</a>
   <ul class="collapse">
   <li><a href="#initializing-python-environment" id="toc-initializing-python-environment" class="nav-link" data-scroll-target="#initializing-python-environment">Initializing Python environment</a></li>
-  <li><a href="#loading-demo-dataset" id="toc-loading-demo-dataset" class="nav-link" data-scroll-target="#loading-demo-dataset">Loading demo dataset</a></li>
-  <li><a href="#preparing-the-training-dataset" id="toc-preparing-the-training-dataset" class="nav-link" data-scroll-target="#preparing-the-training-dataset">Preparing the training dataset</a></li>
-  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training">Model training</a></li>
   </ul></li>
-  <li><a href="#initializing-the-validmind-client-library" id="toc-initializing-the-validmind-client-library" class="nav-link" data-scroll-target="#initializing-the-validmind-client-library">Initializing the ValidMind Client Library</a>
+  <li><a href="#create-a-new-document-project-and-initialize-the-validmind-client-library" id="toc-create-a-new-document-project-and-initialize-the-validmind-client-library" class="nav-link" data-scroll-target="#create-a-new-document-project-and-initialize-the-validmind-client-library">Create a new Document Project and Initialize the ValidMind Client Library</a>
   <ul class="collapse">
   <li><a href="#creating-a-new-documentation-project" id="toc-creating-a-new-documentation-project" class="nav-link" data-scroll-target="#creating-a-new-documentation-project">Creating a new Documentation Project</a></li>
   <li><a href="#finding-the-project-api-key-and-secret" id="toc-finding-the-project-api-key-and-secret" class="nav-link" data-scroll-target="#finding-the-project-api-key-and-secret">Finding the project API key and secret</a></li>
+  </ul></li>
+  <li><a href="#training-an-example-model" id="toc-training-an-example-model" class="nav-link" data-scroll-target="#training-an-example-model">Training an Example Model</a>
+  <ul class="collapse">
+  <li><a href="#loading-demo-dataset" id="toc-loading-demo-dataset" class="nav-link" data-scroll-target="#loading-demo-dataset">Loading demo dataset</a></li>
+  <li><a href="#preparing-the-training-dataset" id="toc-preparing-the-training-dataset" class="nav-link" data-scroll-target="#preparing-the-training-dataset">Preparing the training dataset</a></li>
+  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training">Model training</a></li>
   <li><a href="#viewing-all-test-plans-available-in-the-developer-framework" id="toc-viewing-all-test-plans-available-in-the-developer-framework" class="nav-link" data-scroll-target="#viewing-all-test-plans-available-in-the-developer-framework">Viewing all test plans available in the developer framework</a></li>
   <li><a href="#running-a-data-quality-test-plan" id="toc-running-a-data-quality-test-plan" class="nav-link" data-scroll-target="#running-a-data-quality-test-plan">Running a data quality test plan</a></li>
   <li><a href="#running-a-model-evaluation-test-plan" id="toc-running-a-model-evaluation-test-plan" class="nav-link" data-scroll-target="#running-a-model-evaluation-test-plan">Running a model evaluation test plan</a></li>
@@ -339,26 +350,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Logging training metrics for a model</li>
 <li>Running model evaluation tests</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install validmind <span class="op">-</span>q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="initializing-python-environment" class="level3">
+<h3 class="anchored" data-anchor-id="initializing-python-environment">Initializing Python environment</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="create-a-new-document-project-and-initialize-the-validmind-client-library" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-new-document-project-and-initialize-the-validmind-client-library">Create a new Document Project and Initialize the ValidMind Client Library</h2>
+<p>Log in to the ValidMind platform with your registered email address, and navigate to the Documentation Projects page.</p>
+<section id="creating-a-new-documentation-project" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-new-documentation-project">Creating a new Documentation Project</h3>
+<p><strong><em>(Note: if a documentation project has already been created, you can skip this section and head directly “Finding Project API key and secret”)</em></strong></p>
+<p>Clicking on “Create a new project” allows to you to register a new documentation project for our demo model.</p>
+<p>Select “Customer Churn model” from the Model drop-down, and “Initial Validation” as Type. Finally, click on “Create Project”.</p>
+</section>
+<section id="finding-the-project-api-key-and-secret" class="level3">
+<h3 class="anchored" data-anchor-id="finding-the-project-api-key-and-secret">Finding the project API key and secret</h3>
+<p>In the “Client Integration” page of the newly created project, you will find the initialization code that allows the client library to associate documentation and tests with the appropriate project. The initialization code configures the following arguments:</p>
+<ul>
+<li>api_host: Location of the ValidMind API.</li>
+<li>api_key: Account API key.</li>
+<li>api_secret: Account Secret key.</li>
+<li>project: The project identifier. The <code>project</code> argument is mandatory since it allows the library to associate all data collected with a specific account project.</li>
+</ul>
+<p>The code snippet can be copied and pasted directly in the cell below to initialize the ValidMind Developer Framework when run:</p>
+<div class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1684118496888,&quot;user_tz&quot;:240,&quot;elapsed&quot;:760,&quot;user&quot;:{&quot;displayName&quot;:&quot;Mehdi Esmail&quot;,&quot;userId&quot;:&quot;16245158322318459916&quot;}}" data-outputid="92992d76-7705-4246-ff13-e4f41e9a81b4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"3b481c4935130773c825014129d62c02"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"61ba7b6d80e1e7b162646d3a29374807dab6b3613757942f12ca11eab7530dcc"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhny5uil00071ojtaomas47g"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Connected to ValidMind. Project: Mehdi's test model - Initial Validation (clhny5uil00071ojtaomas47g)</code></pre>
+</div>
+</div>
+<p>The Developer Framework is now initialized and connected to the correct project on the platform.</p>
+</section>
 </section>
 <section id="training-an-example-model" class="level2">
 <h2 class="anchored" data-anchor-id="training-an-example-model">Training an Example Model</h2>
 <p>We will now train an example model that will be used to demonstrate the ValidMind Developer Framework functions. The following demo datasets are available to use, and on this notebook we’ll train a model for the Bank Customer Churn dataset.</p>
-<section id="initializing-python-environment" class="level3">
-<h3 class="anchored" data-anchor-id="initializing-python-environment">Initializing Python environment</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="loading-demo-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="loading-demo-dataset">Loading demo dataset</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"./datasets/bank_customer_churn.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="preparing-the-training-dataset" class="level3">
@@ -378,7 +432,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>CreditScore</code>: we didn’t observer any correlation between <code>CreditScore</code> and our target column <code>Exited</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">"RowNumber"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"CreditScore"</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">"RowNumber"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"CreditScore"</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="encoding-categorical-variables" class="level4">
@@ -389,15 +443,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>Gender</code>: convert from string to integer</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>genders <span class="op">=</span> {<span class="st">"Male"</span>: <span class="dv">0</span>, <span class="st">"Female"</span>: <span class="dv">1</span>}</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df.replace({<span class="st">"Gender"</span>: genders}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df, pd.get_dummies(df[<span class="st">"Geography"</span>], prefix<span class="op">=</span><span class="st">"Geography"</span>)], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df.drop(<span class="st">"Geography"</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>genders <span class="op">=</span> {<span class="st">"Male"</span>: <span class="dv">0</span>, <span class="st">"Female"</span>: <span class="dv">1</span>}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.replace({<span class="st">"Gender"</span>: genders}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df, pd.get_dummies(df[<span class="st">"Geography"</span>], prefix<span class="op">=</span><span class="st">"Geography"</span>)], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df.drop(<span class="st">"Geography"</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We are now ready to train our model with the preprocessed dataset:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="dataset-preparation" class="level4">
@@ -410,20 +464,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>The <code>test</code> dataset will be our held out dataset for model evaluation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.20</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This guarantees a 60/20/20 split</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>train_ds, val_ds <span class="op">=</span> train_test_split(train_df, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For training</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> val_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> val_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># For testing</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> test_df.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This guarantees a 60/20/20 split</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>train_ds, val_ds <span class="op">=</span> train_test_split(train_df, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For training</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> val_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> val_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># For testing</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> test_df.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -431,74 +485,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="model-training">Model training</h3>
 <p>We will train a simple XGBoost model and set its <code>eval_set</code> to <code>[(x_train, y_train), (x_val, y_val)]</code> in order to collect validation datasets metrics on every round. The ValidMind library supports collecting any type of “in training” metrics so model developers can provide additional context to model validators if necessary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model.set_params(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>model.fit(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_train, y_train), (x_val, y_val)],</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model.set_params(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>model.fit(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_train, y_train), (x_val, y_val)],</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict_proba(x_val)[:, <span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [<span class="bu">round</span>(value) <span class="cf">for</span> value <span class="kw">in</span> y_pred]</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_val, predictions)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict_proba(x_val)[:, <span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [<span class="bu">round</span>(value) <span class="cf">for</span> value <span class="kw">in</span> y_pred]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_val, predictions)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we are satisfied with our model, we can begin using the ValidMind Library to generate test and document it.</p>
-</section>
-</section>
-<section id="initializing-the-validmind-client-library" class="level2">
-<h2 class="anchored" data-anchor-id="initializing-the-validmind-client-library">Initializing the ValidMind Client Library</h2>
-<p>Log in to the ValidMind platform with your registered email address, and navigate to the Documentation Projects page.</p>
-<section id="creating-a-new-documentation-project" class="level3">
-<h3 class="anchored" data-anchor-id="creating-a-new-documentation-project">Creating a new Documentation Project</h3>
-<p><strong><em>(Note: if a documentation project has already been created, you can skip this section and head directly “Finding Project API key and secret”)</em></strong></p>
-<p>Clicking on “Create a new project” allows to you to register a new documentation project for our demo model.</p>
-<p>Select “Customer Churn model” from the Model drop-down, and “Initial Validation” as Type. Finally, click on “Create Project”.</p>
-</section>
-<section id="finding-the-project-api-key-and-secret" class="level3">
-<h3 class="anchored" data-anchor-id="finding-the-project-api-key-and-secret">Finding the project API key and secret</h3>
-<p>In the “Client Integration” page of the newly created project, you will find the initialization code that allows the client library to associate documentation and tests with the appropriate project. The initialization code configures the following arguments:</p>
-<ul>
-<li>api_host: Location of the ValidMind API.</li>
-<li>api_key: Account API key.</li>
-<li>api_secret: Account Secret key.</li>
-<li>project: The project identifier. The <code>project</code> argument is mandatory since it allows the library to associate all data collected with a specific account project.</li>
-</ul>
-<p>The code snippet can be copied and pasted directly in the cell below to initialize the ValidMind Developer Framework when run:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.staging.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"e22b89a6b9c2a27da47cb0a09febc001"</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"a61be901b5596e3c528d94231e4a3c504ef0bb803d16815f8dfd6857fac03e57"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"cl1jyv16o000809lg98gi9tie"</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The Developer Framework is now initialized and connected to the correct project on the platform.</p>
 </section>
 <section id="viewing-all-test-plans-available-in-the-developer-framework" class="level3">
 <h3 class="anchored" data-anchor-id="viewing-all-test-plans-available-in-the-developer-framework">Viewing all test plans available in the developer framework</h3>
 <p>We can find all the test plans and tests available in the developer framework by calling the following functions:</p>
 <ul>
 <li>All test plans: <code>vm.test_plans.list_plans()</code></li>
-<li>Describe a test plan: <code>vm.test_plans.describe_plan("tabular_dataset")</code></li>
 <li>List all available tests: <code>vm.test_plans.list_tests()</code></li>
+<li>Describe a test plan: <code>vm.test_plans.describe_plan("tabular_data_quality")</code></li>
 </ul>
-<p>As an example, here’s the output <code>list_plans()</code> and <code>list_tests()</code>:</p>
+<p>Here is an example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_tests()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_tests()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"tabular_data_quality"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="running-a-data-quality-test-plan" class="level3">
@@ -523,21 +546,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="initialize-a-dataset-object-for-validmind">Initialize a dataset object for ValidMind</h4>
 <p>Before running the test plan, we must first initialize a ValidMind dataset object using the <code>init_dataset</code> function from the <code>vm</code> module. This function takes in arguements: <code>dataset</code> which is the dataset that we want to analyze; <code>target_column</code> which is used to identify the target variable; <code>class_labels</code> which is used to identify the labels used for classification model training.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    class_labels<span class="op">=</span>{</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0"</span>: <span class="st">"Did not exit"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"1"</span>: <span class="st">"Exited"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    class_labels<span class="op">=</span>{</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0"</span>: <span class="st">"Did not exit"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"1"</span>: <span class="st">"Exited"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initialize-and-run-the-tabulardataset-test-plan" class="level4">
 <h4 class="anchored" data-anchor-id="initialize-and-run-the-tabulardataset-test-plan">Initialize and run the TabularDataset test plan</h4>
-<p>We can now initialize the <code>TabularDataset</code> test plan. The primary method of doing this is with the <code>run_test_plan</code> function from the <code>vm</code> module. This function takes in a test plan name (in this case <code>tabular_dataset</code>) and a <code>dataset</code> keyword argument (the <code>vm_dataset</code> object we created earlier):</p>
+<p>We can now initialize the <code>TabularDataset</code> test suite. The primary method of doing this is with the <code>run_test_suite</code> function from the <code>vm</code> module. This function takes in a test suite name (in this case <code>tabular_dataset</code>) and a <code>dataset</code> keyword argument (the <code>vm_dataset</code> object we created earlier):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vm.run_test_plan(<span class="st">"tabular_dataset"</span>, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tabular_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"tabular_dataset"</span>, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can access and review the resulting documentation in the ValidMind UI, in the “Data Preparation” section of the model documentation.</p>
 </section>
@@ -568,13 +591,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="initialize-vm-model-object-and-traintest-datasets">Initialize VM model object and train/test datasets</h4>
 <p>In order to run our SKLearnClassifier test plan, we need to initialize ValidMind object instances for the trained model and the training and test datasets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(model)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>train_ds, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"Exited"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>test_df, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"Exited"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can now run the <code>SKLearnClassifier</code> test plan:</p>
+<p>We can now run the <code>BinaryClassifierModelValidation</code> test plan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vm.run_test_plan(<span class="st">"sklearn_classifier"</span>, model<span class="op">=</span>vm_model, train_ds<span class="op">=</span>vm_train_ds, test_ds<span class="op">=</span>vm_test_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"binary_classifier_model_validation"</span>, model<span class="op">=</span>vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can access and review the resulting documentation in the ValidMind UI, in the “Model Development” section of the model documentation.</p>
 
