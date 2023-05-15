@@ -3,23 +3,23 @@
 Test Plans entry point
 
 
-### validmind.test_plans.list_plans(pretty: bool = True)
+### validmind.test_plans.list_plans
 Returns a list of all available test plans
 
 
-### validmind.test_plans.list_tests(test_type: str = 'all', pretty: bool = True)
+### validmind.test_plans.list_tests
 Returns a list of all available tests.
 
 
-### validmind.test_plans.get_by_name(name: str)
+### validmind.test_plans.get_by_name
 Returns the test plan by name
 
 
-### validmind.test_plans.describe_plan(plan_id: str)
+### validmind.test_plans.describe_plan
 Returns a description of the test plan
 
 
-### validmind.test_plans.register_test_plan(plan_id: str, plan: TestPlan)
+### validmind.test_plans.register_test_plan
 Registers a custom test plan
 
 ## Test Plans for SKLearn-Compatible Classifiers
@@ -32,7 +32,7 @@ Ideal setup is to have the API client to read a
 custom test plan from the project’s configuration
 
 
-### _class_ validmind.test_plans.tabular_datasets.TabularDatasetDescription(config: {} = None, test_context: TestContext = None, _test_plan_instances: List[object] = None, dataset: Dataset = None, model: Model = None, models: List[Model] = None, pbar: IntProgress = None, pbar_description: Label = None, pbar_box: HBox = None, summary: str = None)
+### _class_ validmind.test_plans.tabular_datasets.TabularDatasetDescription
 Bases: `TestPlan`
 
 Test plan to extract metadata and descriptive
@@ -45,7 +45,7 @@ statistics from a tabular dataset
 
 #### tests(_: ClassVar[List[object]_ _ = [<class 'validmind.data_validation.metrics.DatasetMetadata'>, <class 'validmind.data_validation.metrics.DatasetDescription'>, <class 'validmind.data_validation.metrics.DescriptiveStatistics'>, <class 'validmind.data_validation.metrics.DatasetCorrelations'>_ )
 
-### _class_ validmind.test_plans.tabular_datasets.TabularDataQuality(config: {} = None, test_context: TestContext = None, _test_plan_instances: List[object] = None, dataset: Dataset = None, model: Model = None, models: List[Model] = None, pbar: IntProgress = None, pbar_description: Label = None, pbar_box: HBox = None, summary: str = None)
+### _class_ validmind.test_plans.tabular_datasets.TabularDataQuality
 Bases: `TestPlan`
 
 Test plan for data quality on tabular datasets
@@ -57,7 +57,7 @@ Test plan for data quality on tabular datasets
 
 #### tests(_: ClassVar[List[object]_ _ = [<class 'validmind.data_validation.threshold_tests.ClassImbalance'>, <class 'validmind.data_validation.threshold_tests.Duplicates'>, <class 'validmind.data_validation.threshold_tests.HighCardinality'>, <class 'validmind.data_validation.threshold_tests.HighPearsonCorrelation'>, <class 'validmind.data_validation.threshold_tests.MissingValues'>, <class 'validmind.data_validation.threshold_tests.Skewness'>, <class 'validmind.data_validation.threshold_tests.UniqueRows'>, <class 'validmind.data_validation.threshold_tests.TooManyZeroValues'>_ )
 
-### _class_ validmind.test_plans.tabular_datasets.TimeSeriesDataQuality(config: {} = None, test_context: TestContext = None, _test_plan_instances: List[object] = None, dataset: Dataset = None, model: Model = None, models: List[Model] = None, pbar: IntProgress = None, pbar_description: Label = None, pbar_box: HBox = None, summary: str = None)
+### _class_ validmind.test_plans.tabular_datasets.TimeSeriesDataQuality
 Bases: `TestPlan`
 
 Test plan for data quality on time series datasets

@@ -3,7 +3,7 @@
 Main entrypoint to the ValidMind Python Library
 
 
-### validmind.init(project, api_key=None, api_secret=None, api_host=None)
+### validmind.init
 Initializes the API client instances and calls the /ping endpoint to ensure
 the provided credentials are valid and we can connect to the ValidMind API.
 
@@ -45,7 +45,7 @@ retrieve them from the environment variables VM_API_KEY and VM_API_SECRET.
 
 
 
-### validmind.init_dataset(dataset: DataFrame, type: str = 'training', options: dict | None = None, targets: DatasetTargets | None = None, target_column: str | None = None, class_labels: dict | None = None)
+### validmind.init_dataset
 Initializes a VM Dataset, which can then be passed to other functions
 that can perform additional analysis and tests on the data. This function
 also ensures we are reading a valid dataset type. We only support Pandas
@@ -93,7 +93,7 @@ DataFrames at the moment.
 
 
 
-### validmind.init_model(model: object, train_ds: Dataset | None = None, test_ds: Dataset | None = None, validation_ds: Dataset | None = None)
+### validmind.init_model
 Initializes a VM Model, which can then be passed to other functions
 that can perform additional analysis and tests on the data. This function
 also ensures we are reading a supported model type.
@@ -123,7 +123,7 @@ also ensures we are reading a supported model type.
 
 
 
-### validmind.init_r_model(model_path: str, model_type: str)
+### validmind.init_r_model
 Initializes a VM Model for an R model
 
 R models must be saved to disk and the filetype depends on the model type…
@@ -168,7 +168,7 @@ since xgb models saved in .json or .bin format can be loaded directly with eithe
 
 
 
-### validmind.run_test_plan(test_plan_name, send=True, \*\*kwargs)
+### validmind.run_test_plan
 High Level function for running a test plan
 
 This function provides a high level interface for running a test plan. It removes the need
@@ -210,7 +210,7 @@ run it.
 
 
 
-### validmind.run_test_suite(test_suite_name, send=True, \*\*kwargs)
+### validmind.run_test_suite
 High Level function for running a test suite
 
 This function provides a high level interface for running a test suite. A test suite is
@@ -251,7 +251,7 @@ class based on the test_suite_name, initialize each of the test plans, and run t
 
 
 
-### validmind.log_dataset(vm_dataset)
+### validmind.log_dataset
 Logs metadata and statistics about a dataset to ValidMind API.
 
 
@@ -292,7 +292,7 @@ Logs metadata and statistics about a dataset to ValidMind API.
 
 
 
-### validmind.log_figure(data_or_path, key, metadata, run_cuid=None)
+### validmind.log_figure
 Logs a figure
 
 
@@ -330,7 +330,7 @@ Logs a figure
 
 
 
-### validmind.log_metrics(metrics, run_cuid=None)
+### validmind.log_metrics
 Logs metrics to ValidMind API.
 
 
@@ -362,7 +362,7 @@ Logs metrics to ValidMind API.
 
 
 
-### validmind.log_model(vm_model)
+### validmind.log_model
 Logs model metadata and hyperparameters to ValidMind API.
 
 
@@ -390,7 +390,7 @@ Logs model metadata and hyperparameters to ValidMind API.
 
 
 
-### validmind.log_test_results(results, run_cuid=None, dataset_type='training')
+### validmind.log_test_results
 Logs test results information. This method will be called automatically be any function
 running tests but can also be called directly if the user wants to run tests on their own.
 
@@ -426,7 +426,7 @@ running tests but can also be called directly if the user wants to run tests on 
 
 
 
-### _class_ validmind.Dataset(raw_dataset: object, fields: list, sample: list, shape: dict, correlation_matrix: object | None = None, correlations: dict | None = None, type: str | None = None, options: dict | None = None, statistics: dict | None = None, targets: dict | None = None, target_column: str = '', class_labels: dict | None = None, _feature_lookup: dict | None = None, _transformed_df: object | None = None)
+### _class_ validmind.Dataset
 Bases: `object`
 
 Model class wrapper
@@ -670,7 +670,7 @@ Initializes a Dataset object from a pandas DataFrame
 
 
 
-### _class_ validmind.DatasetTargets(target_column: str, description: str | None = None, class_labels: dict | None = None)
+### _class_ validmind.DatasetTargets
 Bases: `object`
 
 Dataset targets definition
@@ -682,7 +682,7 @@ Dataset targets definition
 
 #### class_labels(_: dic_ _ = Non_ )
 
-### _class_ validmind.Figure(key: str, metadata: dict, figure: object, extras: dict | None = None)
+### _class_ validmind.Figure
 Bases: `object`
 
 Figure objects track the schema supported by the ValidMind API
@@ -700,7 +700,7 @@ Figure objects track the schema supported by the ValidMind API
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.Metric(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.Metric
 Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
@@ -771,7 +771,7 @@ Cache the results of the metric calculation and do any post-processing if needed
 
 
 
-### _class_ validmind.Model(attributes: ModelAttributes | None = None, task: str | None = None, subtask: str | None = None, params: dict | None = None, model_id: str = 'main', model: object | None = None, train_ds: Dataset | None = None, test_ds: Dataset | None = None, validation_ds: Dataset | None = None, y_train_predict: object | None = None, y_test_predict: object | None = None, y_validation_predict: object | None = None)
+### _class_ validmind.Model
 Bases: `object`
 
 A class that wraps a trained model instance and its associated data.
@@ -1010,7 +1010,7 @@ Creates a Model instance from a dictionary
 
 
 
-### _class_ validmind.ModelAttributes(architecture: str | None = None, framework: str | None = None, framework_version: str | None = None)
+### _class_ validmind.ModelAttributes
 Bases: `object`
 
 Model attributes definition
@@ -1022,7 +1022,7 @@ Model attributes definition
 
 #### framework_version(_: st_ _ = Non_ )
 
-### _class_ validmind.TestResult(values: dict, test_name: str | None = None, column: str | None = None, passed: bool | None = None)
+### _class_ validmind.TestResult
 Bases: `object`
 
 TestResult model
@@ -1040,7 +1040,7 @@ TestResult model
 Serializes the TestResult to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.TestResults(category: str, test_name: str, params: dict, passed: bool, results: List[TestResult], summary: ResultSummary | None)
+### _class_ validmind.TestResults
 Bases: `object`
 
 TestResults model
@@ -1062,7 +1062,7 @@ TestResults model
 Serializes the TestResults to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.ThresholdTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.ThresholdTest
 Bases: `TestContextUtils`
 
 A threshold test is a combination of a metric/plot we track and a
