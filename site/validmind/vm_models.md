@@ -3,7 +3,7 @@
 Models entrypoint
 
 
-### _class_ validmind.vm_models.Dataset(raw_dataset: object, fields: list, sample: list, shape: dict, correlation_matrix: object | None = None, correlations: dict | None = None, type: str | None = None, options: dict | None = None, statistics: dict | None = None, targets: dict | None = None, target_column: str = '', class_labels: dict | None = None, _feature_lookup: dict | None = None, _transformed_df: object | None = None)
+### _class_ validmind.vm_models.Dataset
 Bases: `object`
 
 Model class wrapper
@@ -247,7 +247,7 @@ Initializes a Dataset object from a pandas DataFrame
 
 
 
-### _class_ validmind.vm_models.DatasetTargets(target_column: str, description: str | None = None, class_labels: dict | None = None)
+### _class_ validmind.vm_models.DatasetTargets
 Bases: `object`
 
 Dataset targets definition
@@ -259,7 +259,7 @@ Dataset targets definition
 
 #### class_labels(_: dic_ _ = Non_ )
 
-### _class_ validmind.vm_models.Figure(key: str, metadata: dict, figure: object, extras: dict | None = None)
+### _class_ validmind.vm_models.Figure
 Bases: `object`
 
 Figure objects track the schema supported by the ValidMind API
@@ -277,7 +277,7 @@ Figure objects track the schema supported by the ValidMind API
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.Metric(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.vm_models.Metric
 Bases: `TestContextUtils`
 
 Metric objects track the schema supported by the ValidMind API
@@ -350,7 +350,7 @@ Cache the results of the metric calculation and do any post-processing if needed
 
 #### required_context(_: ClassVar[List[str]_ )
 
-### _class_ validmind.vm_models.MetricResult(type: str, scope: str, key: dict, value: dict | list | DataFrame, summary: ResultSummary | None = None, value_formatter: str | None = None)
+### _class_ validmind.vm_models.MetricResult
 Bases: `object`
 
 MetricResult class definition. A MetricResult is returned by any internal method
@@ -374,7 +374,7 @@ objects that can be sent to the API and 2) and plots and metadata for display pu
 Serializes the Metric to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.Model(attributes: ModelAttributes | None = None, task: str | None = None, subtask: str | None = None, params: dict | None = None, model_id: str = 'main', model: object | None = None, train_ds: Dataset | None = None, test_ds: Dataset | None = None, validation_ds: Dataset | None = None, y_train_predict: object | None = None, y_test_predict: object | None = None, y_validation_predict: object | None = None)
+### _class_ validmind.vm_models.Model
 Bases: `object`
 
 A class that wraps a trained model instance and its associated data.
@@ -613,7 +613,7 @@ Creates a Model instance from a dictionary
 
 
 
-### _class_ validmind.vm_models.ModelAttributes(architecture: str | None = None, framework: str | None = None, framework_version: str | None = None)
+### _class_ validmind.vm_models.ModelAttributes
 Bases: `object`
 
 Model attributes definition
@@ -625,7 +625,7 @@ Model attributes definition
 
 #### framework_version(_: st_ _ = Non_ )
 
-### _class_ validmind.vm_models.ResultSummary(results: List[ResultTable])
+### _class_ validmind.vm_models.ResultSummary
 Bases: `object`
 
 A dataclass that holds the summary of a metric or threshold test results
@@ -641,7 +641,7 @@ Adds a result to the list of results
 Serializes the ResultSummary to a list of results
 
 
-### _class_ validmind.vm_models.ResultTable(data: Dict[str, Any] | DataFrame, type: str = 'table', metadata: ResultTableMetadata | None = None)
+### _class_ validmind.vm_models.ResultTable
 Bases: `object`
 
 A dataclass that holds the table summary of result
@@ -657,7 +657,7 @@ A dataclass that holds the table summary of result
 Serializes the Figure to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.ResultTableMetadata(title: str)
+### _class_ validmind.vm_models.ResultTableMetadata
 Bases: `object`
 
 A dataclass that holds the metadata of a table summary
@@ -665,7 +665,7 @@ A dataclass that holds the metadata of a table summary
 
 #### title(_: st_ )
 
-### _class_ validmind.vm_models.TestContext(dataset: Dataset | None = None, model: Model | None = None, models: List[Model] | None = None, context_data: dict | None = None)
+### _class_ validmind.vm_models.TestContext
 Bases: `object`
 
 Holds context that can be used by tests to run.
@@ -685,7 +685,7 @@ across different tests/metrics such as shared dataset metrics, etc.
 
 #### get_context_data(key)
 
-### _class_ validmind.vm_models.TestContextUtils()
+### _class_ validmind.vm_models.TestContextUtils
 Bases: `object`
 
 Utility methods for classes that receive a TestContext
@@ -713,7 +713,7 @@ Validates that the context elements are present
 in the instance so that the test plan can be run
 
 
-### _class_ validmind.vm_models.TestPlan(config: {} = None, test_context: TestContext = None, _test_plan_instances: List[object] = None, dataset: Dataset = None, model: Model = None, models: List[Model] = None, pbar: tqdm = None)
+### _class_ validmind.vm_models.TestPlan
 Bases: `object`
 
 Base class for test plans. Test plans are used to define any
@@ -802,7 +802,7 @@ Returns one or more results of the test plan. Includes results from
 sub test plans.
 
 
-### _class_ validmind.vm_models.TestPlanDatasetResult(result_id: str | None = None, result_metadata: List[dict] | None = None, dataset: Dataset | None = None)
+### _class_ validmind.vm_models.TestPlanDatasetResult
 Bases: `TestPlanResult`
 
 Result wrapper for datasets that run as part of a test plan
@@ -814,7 +814,7 @@ Result wrapper for datasets that run as part of a test plan
 Log the result… Must be overridden by subclasses
 
 
-### _class_ validmind.vm_models.TestPlanMetricResult(result_id: str | None = None, result_metadata: List[dict] | None = None, figures: List[Figure] | None = None, metric: MetricResult | None = None)
+### _class_ validmind.vm_models.TestPlanMetricResult
 Bases: `TestPlanResult`
 
 Result wrapper for metrics that run as part of a test plan
@@ -828,7 +828,7 @@ Result wrapper for metrics that run as part of a test plan
 Log the result… Must be overridden by subclasses
 
 
-### _class_ validmind.vm_models.TestPlanModelResult(result_id: str | None = None, result_metadata: List[dict] | None = None, model: Model | None = None)
+### _class_ validmind.vm_models.TestPlanModelResult
 Bases: `TestPlanResult`
 
 Result wrapper for models that run as part of a test plan
@@ -840,7 +840,7 @@ Result wrapper for models that run as part of a test plan
 Log the result… Must be overridden by subclasses
 
 
-### _class_ validmind.vm_models.TestPlanTestResult(result_id: str | None = None, result_metadata: List[dict] | None = None, figures: List[Figure] | None = None, test_results: TestResults | None = None)
+### _class_ validmind.vm_models.TestPlanTestResult
 Bases: `TestPlanResult`
 
 Result wrapper for test results produced by the tests that run as part of a test plan
@@ -854,7 +854,7 @@ Result wrapper for test results produced by the tests that run as part of a test
 Log the result… Must be overridden by subclasses
 
 
-### _class_ validmind.vm_models.TestResult(values: dict, test_name: str | None = None, column: str | None = None, passed: bool | None = None)
+### _class_ validmind.vm_models.TestResult
 Bases: `object`
 
 TestResult model
@@ -872,7 +872,7 @@ TestResult model
 Serializes the TestResult to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.TestResults(category: str, test_name: str, params: dict, passed: bool, results: List[TestResult], summary: ResultSummary | None)
+### _class_ validmind.vm_models.TestResults
 Bases: `object`
 
 TestResults model
@@ -894,7 +894,7 @@ TestResults model
 Serializes the TestResults to a dictionary so it can be sent to the API
 
 
-### _class_ validmind.vm_models.TestSuite(config: {} = None, test_context: TestContext = None, _test_plan_instances: List[object] = None, dataset: Dataset = None, model: Model = None, models: List[Model] = None, pbar: tqdm = None)
+### _class_ validmind.vm_models.TestSuite
 Bases: `TestPlan`
 
 Base class for test suites. Test suites are used to define any
@@ -911,7 +911,7 @@ Runs the test suite.
 Returns the results of the test suite.
 
 
-### _class_ validmind.vm_models.ThresholdTest(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.vm_models.ThresholdTest
 Bases: `TestContextUtils`
 
 A threshold test is a combination of a metric/plot we track and a

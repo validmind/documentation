@@ -7,7 +7,7 @@
 Metrics functions for any Pandas-compatible datasets
 
 
-### _class_ validmind.data_validation.metrics.DatasetMetadata(test_context: TestContext, params: dict | None = None, result: TestPlanDatasetResult | None = None)
+### _class_ validmind.data_validation.metrics.DatasetMetadata
 Bases: `TestContextUtils`
 
 Custom class to collect a set of descriptive statistics for a dataset.
@@ -33,7 +33,7 @@ Just set the dataset to the result attribute of the test plan result
 and it will be logged via the log_dataset function
 
 
-### _class_ validmind.data_validation.metrics.DatasetCorrelations(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.DatasetCorrelations
 Bases: `Metric`
 
 Extracts the correlation matrix for a dataset. The following coefficients
@@ -53,7 +53,7 @@ are calculated:
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.DatasetDescription(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.DatasetDescription
 Bases: `Metric`
 
 Collects a set of descriptive statistics for a dataset
@@ -69,7 +69,7 @@ Collects a set of descriptive statistics for a dataset
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.DescriptiveStatistics(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.DescriptiveStatistics
 Bases: `Metric`
 
 Collects a set of descriptive statistics for a dataset, both for
@@ -94,7 +94,7 @@ Build two tables: one for summarizing numerical variables and one for categorica
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.DatasetSplit(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.DatasetSplit
 Bases: `Metric`
 
 Attempts to extract information about the dataset split from the
@@ -122,7 +122,7 @@ Returns a summarized representation of the dataset split information
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.TimeSeriesLinePlot(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.TimeSeriesLinePlot
 Bases: `Metric`
 
 Generates a visual analysis of time series data by plotting the
@@ -140,7 +140,7 @@ if necessary. In this case we produce a separate plot for each time series.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.TimeSeriesHistogram(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.TimeSeriesHistogram
 Bases: `Metric`
 
 Generates a visual analysis of time series data by plotting the
@@ -158,7 +158,7 @@ necessary. In this case we produce a separate plot for each time series.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.ScatterPlot(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.ScatterPlot
 Bases: `Metric`
 
 Generates a visual analysis of data by plotting a scatter plot matrix for all columns
@@ -175,7 +175,7 @@ in the dataset. The input dataset can have multiple columns (features) if necess
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.LaggedCorrelationHeatmap(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.LaggedCorrelationHeatmap
 Bases: `Metric`
 
 Generates a heatmap of correlations between the target variable and the lags of independent variables in the dataset.
@@ -191,7 +191,7 @@ Generates a heatmap of correlations between the target variable and the lags of 
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.AutoAR(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.AutoAR
 Bases: `Metric`
 
 Automatically detects the AR order of a time series using both BIC and AIC.
@@ -207,7 +207,7 @@ Automatically detects the AR order of a time series using both BIC and AIC.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.AutoMA(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.AutoMA
 Bases: `Metric`
 
 Automatically detects the MA order of a time series using both BIC and AIC.
@@ -223,7 +223,7 @@ Automatically detects the MA order of a time series using both BIC and AIC.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.SeasonalDecompose(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.SeasonalDecompose
 Bases: `Metric`
 
 Calculates seasonal_decompose metric for each of the dataset features
@@ -252,7 +252,7 @@ JSON serializable format that can be sent to the API.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.AutoSeasonality(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.AutoSeasonality
 Bases: `Metric`
 
 Automatically detects the optimal seasonal order for a time series dataset
@@ -273,7 +273,7 @@ using the seasonal_decompose method.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.ACFandPACFPlot(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.ACFandPACFPlot
 Bases: `Metric`
 
 Plots ACF and PACF for a given time series dataset.
@@ -289,7 +289,7 @@ Plots ACF and PACF for a given time series dataset.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.AutoStationarity(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.AutoStationarity
 Bases: `Metric`
 
 Automatically detects stationarity for each time series in a DataFrame
@@ -308,7 +308,7 @@ using the Augmented Dickey-Fuller (ADF) test.
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.RollingStatsPlot(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.RollingStatsPlot
 Bases: `Metric`
 
 This class provides a metric to visualize the stationarity of a given time series dataset by plotting the rolling mean and rolling standard deviation. The rolling mean represents the average of the time series data over a fixed-size sliding window, which helps in identifying trends in the data. The rolling standard deviation measures the variability of the data within the sliding window, showing any changes in volatility over time. By analyzing these plots, users can gain insights into the stationarity of the time series data and determine if any transformations or differencing operations are required before applying time series models.
@@ -346,7 +346,7 @@ Plot rolling mean and rolling standard deviation in different subplots for a giv
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.EngleGrangerCoint(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.EngleGrangerCoint
 Bases: `Metric`
 
 Test for cointegration between pairs of time series variables in a given dataset using the Engle-Granger test.
@@ -364,7 +364,7 @@ Test for cointegration between pairs of time series variables in a given dataset
 Run the metric calculation and cache its results
 
 
-### _class_ validmind.data_validation.metrics.SpreadPlot(test_context: TestContext, params: dict | None = None, result: TestPlanMetricResult | None = None)
+### _class_ validmind.data_validation.metrics.SpreadPlot
 Bases: `Metric`
 
 This class provides a metric to visualize the spread between pairs of time series variables in a given dataset. By plotting the spread of each pair of variables in separate figures, users can assess the relationship between the variables and determine if any cointegration or other time series relationships exist between them.
@@ -401,7 +401,7 @@ Run the metric calculation and cache its results
 Threshold based tests
 
 
-### _class_ validmind.data_validation.threshold_tests.ClassImbalance(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.ClassImbalance
 Bases: `ThresholdTest`
 
 The class imbalance test measures the disparity between the majority
@@ -420,7 +420,7 @@ class and the minority class in the target column.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.Duplicates(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.Duplicates
 Bases: `ThresholdTest`
 
 The duplicates test measures the number of duplicate rows found in
@@ -440,7 +440,7 @@ checked for duplicate primary keys as well.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.HighCardinality(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.HighCardinality
 Bases: `ThresholdTest`
 
 The high cardinality test measures the number of unique
@@ -459,7 +459,7 @@ values found in categorical columns.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.HighPearsonCorrelation(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.HighPearsonCorrelation
 Bases: `ThresholdTest`
 
 Test that the pairwise Pearson correlation coefficients between the
@@ -478,7 +478,7 @@ features in the dataset do not exceed a specified threshold.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.MissingValues(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.MissingValues
 Bases: `ThresholdTest`
 
 Test that the number of missing values in the dataset across all features
@@ -497,7 +497,7 @@ is less than a threshold
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.Skewness(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.Skewness
 Bases: `ThresholdTest`
 
 The skewness test measures the extent to which a distribution of
@@ -518,7 +518,7 @@ longer tail of values in the left.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.UniqueRows(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.UniqueRows
 Bases: `ThresholdTest`
 
 Test that the number of unique rows is greater than a threshold
@@ -536,7 +536,7 @@ Test that the number of unique rows is greater than a threshold
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.TooManyZeroValues(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.TooManyZeroValues
 Bases: `ThresholdTest`
 
 The zeros test finds columns that have too many zero values.
@@ -554,7 +554,7 @@ The zeros test finds columns that have too many zero values.
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.TimeSeriesOutliers(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.TimeSeriesOutliers
 Bases: `ThresholdTest`
 
 Test that find outliers for time series data using the z-score method
@@ -572,7 +572,7 @@ Test that find outliers for time series data using the z-score method
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.TimeSeriesMissingValues(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.TimeSeriesMissingValues
 Bases: `ThresholdTest`
 
 Test that the number of missing values is less than a threshold
@@ -590,7 +590,7 @@ Test that the number of missing values is less than a threshold
 Run the test and cache its results
 
 
-### _class_ validmind.data_validation.threshold_tests.TimeSeriesFrequency(test_context: TestContext, params: dict | None = None, test_results: TestResults | None = None)
+### _class_ validmind.data_validation.threshold_tests.TimeSeriesFrequency
 Bases: `ThresholdTest`
 
 Test that detect frequencies in the data
