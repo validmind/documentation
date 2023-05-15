@@ -252,12 +252,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/time_series_data_validation_full_suite.html" class="sidebar-item-text sidebar-link">Time Series Dataset Test Suite</a>
+  <a href="../notebooks/time_series_data_validation_full_suite.html" class="sidebar-item-text sidebar-link">Time Series Data Validation Full Suite</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/time_series_model_validation_full_suite.html" class="sidebar-item-text sidebar-link">Time Series Model Validation Test Suite</a>
+  <a href="../notebooks/time_series_model_validation_full_suite.html" class="sidebar-item-text sidebar-link">Time Series Model Validation Full Suite</a>
   </div>
 </li>
       </ul>
@@ -309,7 +309,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <ul>
   <li><a href="#introduction---customer-churn-model-documentation-data-and-model" id="toc-introduction---customer-churn-model-documentation-data-and-model" class="nav-link active" data-scroll-target="#introduction---customer-churn-model-documentation-data-and-model">Introduction - Customer Churn Model Documentation (Data and Model)</a>
   <ul class="collapse">
-  <li><a href="#validmind-python-library-introduction" id="toc-validmind-python-library-introduction" class="nav-link" data-scroll-target="#validmind-python-library-introduction">ValidMind Python Library Introduction</a>
+  <li><a href="#validmind-python-library-introduction" id="toc-validmind-python-library-introduction" class="nav-link" data-scroll-target="#validmind-python-library-introduction">ValidMind Python Library Introduction</a></li>
+  <li><a href="#before-starting-important" id="toc-before-starting-important" class="nav-link" data-scroll-target="#before-starting-important">Before Starting (Important)</a>
   <ul class="collapse">
   <li><a href="#initializing-python-environment" id="toc-initializing-python-environment" class="nav-link" data-scroll-target="#initializing-python-environment">Initializing Python environment</a></li>
   </ul></li>
@@ -350,19 +351,29 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li>Logging training metrics for a model</li>
 <li>Running model evaluation tests</li>
 </ul>
+</section>
+<section id="before-starting-important" class="level2">
+<h2 class="anchored" data-anchor-id="before-starting-important">Before Starting (Important)</h2>
+<p>Click File &gt; Save a copy in Drive &gt; to make your own copy in Google Drive so that you can modify the notebook.</p>
+<p>Alternatively, you can download the notebook source and work with it in your own developer environment.</p>
+<p>##Install ValidMind Developer Framework</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install validmind <span class="op">-</span>q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><em>Note: Colab may generate the following warning after running the first cell</em>:</p>
+<pre><code>WARNING [...]
+You must restart the runtime in order to use newly installed versions</code></pre>
+<p><em>If you see this, please click on <strong>“Restart runtime”</strong> and continue on to the next cell.</em></p>
 <section id="initializing-python-environment" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-python-environment">Initializing Python environment</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -385,21 +396,18 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li>project: The project identifier. The <code>project</code> argument is mandatory since it allows the library to associate all data collected with a specific account project.</li>
 </ul>
 <p>The code snippet can be copied and pasted directly in the cell below to initialize the ValidMind Developer Framework when run:</p>
-<div class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1684118496888,&quot;user_tz&quot;:240,&quot;elapsed&quot;:760,&quot;user&quot;:{&quot;displayName&quot;:&quot;Mehdi Esmail&quot;,&quot;userId&quot;:&quot;16245158322318459916&quot;}}" data-outputid="92992d76-7705-4246-ff13-e4f41e9a81b4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"3b481c4935130773c825014129d62c02"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"61ba7b6d80e1e7b162646d3a29374807dab6b3613757942f12ca11eab7530dcc"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhny5uil00071ojtaomas47g"</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Connected to ValidMind. Project: Mehdi's test model - Initial Validation (clhny5uil00071ojtaomas47g)</code></pre>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"3b481c4935130773c825014129d62c02"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"61ba7b6d80e1e7b162646d3a29374807dab6b3613757942f12ca11eab7530dcc"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhny5uil00071ojtaomas47g"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The Developer Framework is now initialized and connected to the correct project on the platform.</p>
 </section>
