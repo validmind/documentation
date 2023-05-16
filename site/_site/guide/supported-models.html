@@ -260,79 +260,114 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </header>
 
 <p>As of the current release (v1.9.3), the Developer Framework supports the following model types:</p>
+<p>The following table presents an overview of libraries supported by each test plan, as well as the tests which comprise each test plan as of the current Developer Framework release.</p>
 <table class="table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 25%">
-<col style="width: 14%">
-<col style="width: 24%">
-<col style="width: 12%">
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 29%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Modeling task</th>
-<th>Model technique</th>
-<th>Python framework</th>
-<th>Python Class</th>
-<th>Comments</th>
+<th>Problem type</th>
+<th>Goal</th>
+<th>Test Suite</th>
+<th>Test plans</th>
+<th>Supported Libraries</th>
+<th>Tests</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Binary Classification</td>
-<td>Extreme Gradient Boosted trees</td>
-<td>XGBoost</td>
-<td>XGBoost classifier</td>
-<td>Fully supported</td>
+<td>Binary classification</td>
+<td>Data validation</td>
+<td>tabular_dataset</td>
+<td>tabular_dataset_description</td>
+<td>numpy, pandas</td>
+<td>DatasetMetadata, DatasetDescription, DescriptiveStatistics, DatasetCorrelations</td>
 </tr>
 <tr class="even">
-<td>Binary Classification</td>
-<td>Logistic Regression</td>
-<td>scikit-learn</td>
-<td>LogisticRegression</td>
-<td>Fully supported</td>
+<td>Binary classification</td>
+<td>Data validation</td>
+<td>tabular_dataset</td>
+<td>tabular_data_quality</td>
+<td>numpy, pandas</td>
+<td>ClassImbalance, Duplicates, HighCardinality, HighPearsonCorrelation, MissingValues, Skewness, UniqueRows, TooManyZeroValues</td>
 </tr>
 <tr class="odd">
-<td>Binary Classification</td>
-<td>Random Forests</td>
-<td>scikit-learn</td>
-<td>RandomForest</td>
-<td>Fully supported</td>
+<td>Binary classification</td>
+<td>Model validation</td>
+<td>binary_classifier_model_validation</td>
+<td>binary_classifier_metrics</td>
+<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
+<td>ModelMetadata, DatasetSplit, ConfusionMatrix, ClassifierInSamplePerformance, ClassifierOutOfSamplePerformance, PermutationFeatureImportance, PrecisionRecallCurve, ROCCurve, CharacteristicStabilityIndex, PopulationStabilityIndex, SHAPGlobalImportance</td>
 </tr>
 <tr class="even">
-<td>Forecasting</td>
-<td>Linear Regression</td>
-<td>statsmodels</td>
-<td>regression.linear_model.OLS</td>
-<td>Fully supported</td>
+<td>Binary classification</td>
+<td>Model validation</td>
+<td>binary_classifier_model_validation</td>
+<td>binary_classifier_validation</td>
+<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
+<td>MinimumAccuracy, MinimumF1Score, MinimumROCAUCScore, TrainingTestDegradation</td>
 </tr>
 <tr class="odd">
-<td>Forecasting</td>
-<td>Linear Regression</td>
-<td>statsmodels</td>
-<td>regression.linear_model.GLS</td>
-<td>Fully supported</td>
+<td>Binary classification</td>
+<td>Model validation</td>
+<td>binary_classifier_model_validation</td>
+<td>binary_classifier_model_diagnosis</td>
+<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
+<td>OverfitDiagnosis, WeakspotsDiagnosis, RobustnessDiagnosis</td>
 </tr>
 <tr class="even">
-<td>Forecasting</td>
-<td>Linear Regression</td>
-<td>scikit-learn</td>
-<td>linear_model.LinearRegression</td>
-<td>Fully supported</td>
+<td>Time series</td>
+<td>Data validation</td>
+<td>time_series_dataset</td>
+<td>time_series_data_quality</td>
+<td>numpy, pandas</td>
+<td>TimeSeriesOutliers, TimeSeriesMissingValues, TimeSeriesFrequency</td>
 </tr>
 <tr class="odd">
-<td>Binary Classification</td>
-<td>Logistic Regression</td>
-<td>statsmodels</td>
-<td>statsmodels Logit</td>
-<td>Partial support (PFI, CSI, PSI, and SHAP not yet supported)</td>
+<td>Time series</td>
+<td>Data validation</td>
+<td>time_series_dataset</td>
+<td>time_series_univariate</td>
+<td>numpy, pandas</td>
+<td>TimeSeriesLinePlot, TimeSeriesHistogram, ACFandPACFPlot, SeasonalDecompose, AutoSeasonality, AutoStationarity, RollingStatsPlot, AutoAR, AutoMA</td>
 </tr>
 <tr class="even">
-<td>Binary Classification</td>
-<td>Neural Networks</td>
-<td>PyTorch</td>
-<td>nn.module</td>
-<td>Partial support (PFI, CSI, PSI, and SHAP not yet supported)</td>
+<td>Time series</td>
+<td>Data validation</td>
+<td>time_series_dataset</td>
+<td>time_series_multivariate</td>
+<td>numpy, pandas</td>
+<td>ScatterPlot, LaggedCorrelationHeatmap, EngleGrangerCoint, SpreadPlot</td>
+</tr>
+<tr class="odd">
+<td>Time series</td>
+<td>Model validation</td>
+<td>time_series_model_validation</td>
+<td>regression_model_performance</td>
+<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
+<td>RegressionModelSummary</td>
+</tr>
+<tr class="even">
+<td>Time series</td>
+<td>Model validation</td>
+<td>time_series_model_validation</td>
+<td>regression_models_comparison</td>
+<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
+<td>RegressionModelInsampleComparison, RegressionModelOutsampleComparison</td>
+</tr>
+<tr class="odd">
+<td>Time series</td>
+<td>Model validation</td>
+<td>time_series_model_validation</td>
+<td>time_series_forecast</td>
+<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
+<td>RegressionModelForecastPlot</td>
 </tr>
 </tbody>
 </table>
