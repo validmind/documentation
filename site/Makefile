@@ -57,7 +57,7 @@ interim-deploy-demo:
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
 	quarto render && \
-	aws s3 cp ./_site s3://docs-ci-cd-demo/site/ --recursive
+	aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete
 	aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
 	aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null
 	aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null
@@ -65,5 +65,5 @@ deploy-demo:
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
 	quarto render && \
-	aws s3 cp ./_site s3://docs-ci-cd-prod/site/ --recursive
+	aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete
 	aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null
