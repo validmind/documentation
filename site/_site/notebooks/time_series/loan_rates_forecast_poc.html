@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ValidMind – loan_rates_forecast_poc</title>
+<title>ValidMind - POC Loan Rates Forecast Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -155,26 +126,28 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/get-started.html">
+    <a class="nav-link" href="../../guide/get-started.html" rel="" target="">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/guide.html">
+    <a class="nav-link" href="../../guide/guide.html" rel="" target="">
  <span class="menu-text">Guides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/developer-framework.html">
+    <a class="nav-link" href="../../guide/developer-framework.html" rel="" target="">
  <span class="menu-text">Developer Framework</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/faq.html">
+    <a class="nav-link" href="../../guide/faq.html" rel="" target="">
  <span class="menu-text">FAQ</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/support.html">
+    <a class="nav-link" href="../../guide/support.html" rel="" target="">
  <span class="menu-text">Support</span></a>
   </li>  
 </ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -184,12 +157,11 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#poc-loan-rates-forecast-model" id="toc-poc-loan-rates-forecast-model" class="nav-link active" data-scroll-target="#poc-loan-rates-forecast-model">POC Loan Rates Forecast Model</a></li>
-  <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link" data-scroll-target="#executive-summary">1. Executive Summary</a></li>
+  <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link active" data-scroll-target="#executive-summary">1. Executive Summary</a></li>
   <li><a href="#model-information" id="toc-model-information" class="nav-link" data-scroll-target="#model-information">2. Model Information</a></li>
   <li><a href="#conceptual-soundness" id="toc-conceptual-soundness" class="nav-link" data-scroll-target="#conceptual-soundness">3. Conceptual Soundness</a></li>
   <li><a href="#model-development" id="toc-model-development" class="nav-link" data-scroll-target="#model-development">4. Model Development</a>
@@ -234,11 +206,23 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">POC Loan Rates Forecast Model</h1>
+</div>
 
 
-<section id="poc-loan-rates-forecast-model" class="level1">
-<h1>POC Loan Rates Forecast Model</h1>
-</section>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
 <section id="executive-summary" class="level1">
 <h1>1. Executive Summary</h1>
 </section>
@@ -310,171 +294,172 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> merge_fred_csv_files(file_pattern)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>GDPC1</th>
-      <th>GS5</th>
-      <th>GS10</th>
-      <th>GS3</th>
-      <th>MORTGAGE30US</th>
-      <th>UNRATE</th>
-      <th>CPIAUCSL</th>
-      <th>FEDFUNDS</th>
-      <th>GDP</th>
-    </tr>
-    <tr>
-      <th>DATE</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1947-01-01</th>
-      <td>2034.450</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.48</td>
-      <td>NaN</td>
-      <td>243.164</td>
-    </tr>
-    <tr>
-      <th>1947-02-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.62</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1947-03-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>22.00</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1947-04-01</th>
-      <td>2029.024</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>22.00</td>
-      <td>NaN</td>
-      <td>245.968</td>
-    </tr>
-    <tr>
-      <th>1947-05-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.95</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2023-04-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.46</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-06</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.28</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-13</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.27</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-20</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.39</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-27</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.43</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">GDPC1</th>
+<th data-quarto-table-cell-role="th">GS5</th>
+<th data-quarto-table-cell-role="th">GS10</th>
+<th data-quarto-table-cell-role="th">GS3</th>
+<th data-quarto-table-cell-role="th">MORTGAGE30US</th>
+<th data-quarto-table-cell-role="th">UNRATE</th>
+<th data-quarto-table-cell-role="th">CPIAUCSL</th>
+<th data-quarto-table-cell-role="th">FEDFUNDS</th>
+<th data-quarto-table-cell-role="th">GDP</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">DATE</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-01-01</td>
+<td>2034.450</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.48</td>
+<td>NaN</td>
+<td>243.164</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1947-02-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.62</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-03-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>22.00</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1947-04-01</td>
+<td>2029.024</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>22.00</td>
+<td>NaN</td>
+<td>245.968</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-05-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.95</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>3.46</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2023-04-06</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.28</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-13</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.27</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2023-04-20</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.39</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-27</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.43</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
 </table>
+
 <p>3551 rows × 9 columns</p>
 </div>
 </div>
@@ -604,40 +589,41 @@ memory usage: 138.7 KB</code></pre>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>frequencies <span class="op">=</span> identify_frequencies(df)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>display(frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>Frequency</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>UNRATE</td>
-      <td>Monthly</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>GS10</td>
-      <td>Monthly</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FEDFUNDS</td>
-      <td>Monthly</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>UNRATE</td>
+<td>Monthly</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>GS10</td>
+<td>Monthly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>FEDFUNDS</td>
+<td>Monthly</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -647,40 +633,41 @@ memory usage: 138.7 KB</code></pre>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>frequencies <span class="op">=</span> identify_frequencies(df)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>display(frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>Frequency</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>Monthly</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>UNRATE</td>
-      <td>Monthly</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>GS10</td>
-      <td>Monthly</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FEDFUNDS</td>
-      <td>Monthly</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>Monthly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>UNRATE</td>
+<td>Monthly</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>GS10</td>
+<td>Monthly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>FEDFUNDS</td>
+<td>Monthly</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -798,113 +785,114 @@ memory usage: 138.7 KB</code></pre>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>outliers_table <span class="op">=</span> identify_outliers(df, threshold<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>display(outliers_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>z-score</th>
-      <th>Threshold</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>FEDFUNDS</td>
-      <td>3.106442</td>
-      <td>3</td>
-      <td>1980-03-01</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>FEDFUNDS</td>
-      <td>3.212296</td>
-      <td>3</td>
-      <td>1980-04-01</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>FEDFUNDS</td>
-      <td>3.537417</td>
-      <td>3</td>
-      <td>1980-12-01</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FEDFUNDS</td>
-      <td>3.582783</td>
-      <td>3</td>
-      <td>1981-01-01</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>FEDFUNDS</td>
-      <td>3.441645</td>
-      <td>3</td>
-      <td>1981-05-01</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>FEDFUNDS</td>
-      <td>3.587823</td>
-      <td>3</td>
-      <td>1981-06-01</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>FEDFUNDS</td>
-      <td>3.572701</td>
-      <td>3</td>
-      <td>1981-07-01</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>FEDFUNDS</td>
-      <td>3.265222</td>
-      <td>3</td>
-      <td>1981-08-01</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>MORTGAGE30US</td>
-      <td>3.246766</td>
-      <td>3</td>
-      <td>1981-09-01</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>MORTGAGE30US</td>
-      <td>3.271251</td>
-      <td>3</td>
-      <td>1981-10-01</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>MORTGAGE30US</td>
-      <td>3.011098</td>
-      <td>3</td>
-      <td>1982-01-01</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>UNRATE</td>
-      <td>5.011303</td>
-      <td>3</td>
-      <td>2020-04-01</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>UNRATE</td>
-      <td>4.128421</td>
-      <td>3</td>
-      <td>2020-05-01</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">z-score</th>
+<th data-quarto-table-cell-role="th">Threshold</th>
+<th data-quarto-table-cell-role="th">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>FEDFUNDS</td>
+<td>3.106442</td>
+<td>3</td>
+<td>1980-03-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>FEDFUNDS</td>
+<td>3.212296</td>
+<td>3</td>
+<td>1980-04-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>FEDFUNDS</td>
+<td>3.537417</td>
+<td>3</td>
+<td>1980-12-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>FEDFUNDS</td>
+<td>3.582783</td>
+<td>3</td>
+<td>1981-01-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>FEDFUNDS</td>
+<td>3.441645</td>
+<td>3</td>
+<td>1981-05-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>FEDFUNDS</td>
+<td>3.587823</td>
+<td>3</td>
+<td>1981-06-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>FEDFUNDS</td>
+<td>3.572701</td>
+<td>3</td>
+<td>1981-07-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>FEDFUNDS</td>
+<td>3.265222</td>
+<td>3</td>
+<td>1981-08-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>MORTGAGE30US</td>
+<td>3.246766</td>
+<td>3</td>
+<td>1981-09-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>MORTGAGE30US</td>
+<td>3.271251</td>
+<td>3</td>
+<td>1981-10-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>MORTGAGE30US</td>
+<td>3.011098</td>
+<td>3</td>
+<td>1982-01-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>UNRATE</td>
+<td>5.011303</td>
+<td>3</td>
+<td>2020-04-01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>UNRATE</td>
+<td>4.128421</td>
+<td>3</td>
+<td>2020-05-01</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -1178,125 +1166,126 @@ memory usage: 138.7 KB</code></pre>
 <div class="cell" data-execution_count="136">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>auto_stationarity(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="136">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>Integration Order</th>
-      <th>Test</th>
-      <th>p-value</th>
-      <th>Threshold</th>
-      <th>Pass/Fail</th>
-      <th>Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>0</td>
-      <td>ADF</td>
-      <td>6.719476e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>MORTGAGE30US</td>
-      <td>1</td>
-      <td>ADF</td>
-      <td>6.719476e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>MORTGAGE30US</td>
-      <td>2</td>
-      <td>ADF</td>
-      <td>2.156453e-30</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Stationary</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>UNRATE</td>
-      <td>0</td>
-      <td>ADF</td>
-      <td>1.939529e-02</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Stationary</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>GS10</td>
-      <td>0</td>
-      <td>ADF</td>
-      <td>7.099537e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>GS10</td>
-      <td>1</td>
-      <td>ADF</td>
-      <td>7.099537e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>GS10</td>
-      <td>2</td>
-      <td>ADF</td>
-      <td>2.036674e-09</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Stationary</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>FEDFUNDS</td>
-      <td>0</td>
-      <td>ADF</td>
-      <td>1.058010e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>FEDFUNDS</td>
-      <td>1</td>
-      <td>ADF</td>
-      <td>1.058010e-01</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Non-stationary</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>FEDFUNDS</td>
-      <td>2</td>
-      <td>ADF</td>
-      <td>6.632874e-05</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Stationary</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">Integration Order</th>
+<th data-quarto-table-cell-role="th">Test</th>
+<th data-quarto-table-cell-role="th">p-value</th>
+<th data-quarto-table-cell-role="th">Threshold</th>
+<th data-quarto-table-cell-role="th">Pass/Fail</th>
+<th data-quarto-table-cell-role="th">Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>0</td>
+<td>ADF</td>
+<td>6.719476e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MORTGAGE30US</td>
+<td>1</td>
+<td>ADF</td>
+<td>6.719476e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>MORTGAGE30US</td>
+<td>2</td>
+<td>ADF</td>
+<td>2.156453e-30</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Stationary</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>UNRATE</td>
+<td>0</td>
+<td>ADF</td>
+<td>1.939529e-02</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Stationary</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>GS10</td>
+<td>0</td>
+<td>ADF</td>
+<td>7.099537e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>GS10</td>
+<td>1</td>
+<td>ADF</td>
+<td>7.099537e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>GS10</td>
+<td>2</td>
+<td>ADF</td>
+<td>2.036674e-09</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Stationary</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>FEDFUNDS</td>
+<td>0</td>
+<td>ADF</td>
+<td>1.058010e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>FEDFUNDS</td>
+<td>1</td>
+<td>ADF</td>
+<td>1.058010e-01</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Non-stationary</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>FEDFUNDS</td>
+<td>2</td>
+<td>ADF</td>
+<td>6.632874e-05</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Stationary</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -1388,134 +1377,135 @@ memory usage: 138.7 KB</code></pre>
 <div class="cell" data-execution_count="141">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>calculate_ar_orders(df_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="141">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>AR order</th>
-      <th>AIC</th>
-      <th>BIC</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>0</td>
-      <td>291.177506</td>
-      <td>300.046599</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>MORTGAGE30US</td>
-      <td>1</td>
-      <td>246.637029</td>
-      <td>259.935849</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>MORTGAGE30US</td>
-      <td>2</td>
-      <td>223.310101</td>
-      <td>241.035426</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>MORTGAGE30US</td>
-      <td>3</td>
-      <td>225.331792</td>
-      <td>247.480389</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>UNRATE</td>
-      <td>0</td>
-      <td>835.075578</td>
-      <td>843.944671</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>UNRATE</td>
-      <td>1</td>
-      <td>835.941726</td>
-      <td>849.240546</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>UNRATE</td>
-      <td>2</td>
-      <td>833.607234</td>
-      <td>851.332559</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>UNRATE</td>
-      <td>3</td>
-      <td>835.222318</td>
-      <td>857.370915</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>GS10</td>
-      <td>0</td>
-      <td>243.604950</td>
-      <td>252.474043</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>GS10</td>
-      <td>1</td>
-      <td>179.889575</td>
-      <td>193.188396</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>GS10</td>
-      <td>2</td>
-      <td>155.917382</td>
-      <td>173.642706</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>GS10</td>
-      <td>3</td>
-      <td>155.305036</td>
-      <td>177.453633</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>FEDFUNDS</td>
-      <td>0</td>
-      <td>992.528777</td>
-      <td>1001.397870</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>FEDFUNDS</td>
-      <td>1</td>
-      <td>879.316228</td>
-      <td>892.615048</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>FEDFUNDS</td>
-      <td>2</td>
-      <td>858.467020</td>
-      <td>876.192344</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>FEDFUNDS</td>
-      <td>3</td>
-      <td>858.142003</td>
-      <td>880.290601</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">AR order</th>
+<th data-quarto-table-cell-role="th">AIC</th>
+<th data-quarto-table-cell-role="th">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>0</td>
+<td>291.177506</td>
+<td>300.046599</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MORTGAGE30US</td>
+<td>1</td>
+<td>246.637029</td>
+<td>259.935849</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>MORTGAGE30US</td>
+<td>2</td>
+<td>223.310101</td>
+<td>241.035426</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>MORTGAGE30US</td>
+<td>3</td>
+<td>225.331792</td>
+<td>247.480389</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>UNRATE</td>
+<td>0</td>
+<td>835.075578</td>
+<td>843.944671</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>UNRATE</td>
+<td>1</td>
+<td>835.941726</td>
+<td>849.240546</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>UNRATE</td>
+<td>2</td>
+<td>833.607234</td>
+<td>851.332559</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>UNRATE</td>
+<td>3</td>
+<td>835.222318</td>
+<td>857.370915</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>GS10</td>
+<td>0</td>
+<td>243.604950</td>
+<td>252.474043</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>GS10</td>
+<td>1</td>
+<td>179.889575</td>
+<td>193.188396</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>GS10</td>
+<td>2</td>
+<td>155.917382</td>
+<td>173.642706</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>GS10</td>
+<td>3</td>
+<td>155.305036</td>
+<td>177.453633</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>FEDFUNDS</td>
+<td>0</td>
+<td>992.528777</td>
+<td>1001.397870</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>FEDFUNDS</td>
+<td>1</td>
+<td>879.316228</td>
+<td>892.615048</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>FEDFUNDS</td>
+<td>2</td>
+<td>858.467020</td>
+<td>876.192344</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>FEDFUNDS</td>
+<td>3</td>
+<td>858.142003</td>
+<td>880.290601</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -1562,134 +1552,135 @@ memory usage: 138.7 KB</code></pre>
 <div class="cell" data-execution_count="143">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>calculate_ma_orders(df_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="143">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable</th>
-      <th>MA order</th>
-      <th>AIC</th>
-      <th>BIC</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>0</td>
-      <td>291.177507</td>
-      <td>300.046600</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>MORTGAGE30US</td>
-      <td>1</td>
-      <td>228.313186</td>
-      <td>241.616825</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>MORTGAGE30US</td>
-      <td>2</td>
-      <td>227.394618</td>
-      <td>245.132804</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>MORTGAGE30US</td>
-      <td>3</td>
-      <td>225.782939</td>
-      <td>247.955672</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>UNRATE</td>
-      <td>0</td>
-      <td>835.075578</td>
-      <td>843.944671</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>UNRATE</td>
-      <td>1</td>
-      <td>836.126269</td>
-      <td>849.429909</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>UNRATE</td>
-      <td>2</td>
-      <td>833.512857</td>
-      <td>851.251043</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>UNRATE</td>
-      <td>3</td>
-      <td>835.509496</td>
-      <td>857.682228</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>GS10</td>
-      <td>0</td>
-      <td>243.604950</td>
-      <td>252.474043</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>GS10</td>
-      <td>1</td>
-      <td>155.604373</td>
-      <td>168.908013</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>GS10</td>
-      <td>2</td>
-      <td>152.550224</td>
-      <td>170.288410</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>GS10</td>
-      <td>3</td>
-      <td>154.471588</td>
-      <td>176.644321</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>FEDFUNDS</td>
-      <td>0</td>
-      <td>992.528777</td>
-      <td>1001.397870</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>FEDFUNDS</td>
-      <td>1</td>
-      <td>865.158571</td>
-      <td>878.462211</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>FEDFUNDS</td>
-      <td>2</td>
-      <td>864.192973</td>
-      <td>881.931159</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>FEDFUNDS</td>
-      <td>3</td>
-      <td>865.935637</td>
-      <td>888.108370</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable</th>
+<th data-quarto-table-cell-role="th">MA order</th>
+<th data-quarto-table-cell-role="th">AIC</th>
+<th data-quarto-table-cell-role="th">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>0</td>
+<td>291.177507</td>
+<td>300.046600</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MORTGAGE30US</td>
+<td>1</td>
+<td>228.313186</td>
+<td>241.616825</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>MORTGAGE30US</td>
+<td>2</td>
+<td>227.394618</td>
+<td>245.132804</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>MORTGAGE30US</td>
+<td>3</td>
+<td>225.782939</td>
+<td>247.955672</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>UNRATE</td>
+<td>0</td>
+<td>835.075578</td>
+<td>843.944671</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>UNRATE</td>
+<td>1</td>
+<td>836.126269</td>
+<td>849.429909</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>UNRATE</td>
+<td>2</td>
+<td>833.512857</td>
+<td>851.251043</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>UNRATE</td>
+<td>3</td>
+<td>835.509496</td>
+<td>857.682228</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>GS10</td>
+<td>0</td>
+<td>243.604950</td>
+<td>252.474043</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>GS10</td>
+<td>1</td>
+<td>155.604373</td>
+<td>168.908013</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>GS10</td>
+<td>2</td>
+<td>152.550224</td>
+<td>170.288410</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>GS10</td>
+<td>3</td>
+<td>154.471588</td>
+<td>176.644321</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>FEDFUNDS</td>
+<td>0</td>
+<td>992.528777</td>
+<td>1001.397870</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>FEDFUNDS</td>
+<td>1</td>
+<td>865.158571</td>
+<td>878.462211</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>FEDFUNDS</td>
+<td>2</td>
+<td>864.192973</td>
+<td>881.931159</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>FEDFUNDS</td>
+<td>3</td>
+<td>865.935637</td>
+<td>888.108370</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -1844,85 +1835,86 @@ memory usage: 138.7 KB</code></pre>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>coint_results <span class="op">=</span> calculate_cointegration(df)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>display(coint_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Variable 1</th>
-      <th>Variable 2</th>
-      <th>Test</th>
-      <th>p-value</th>
-      <th>Threshold</th>
-      <th>Pass/Fail</th>
-      <th>Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>MORTGAGE30US</td>
-      <td>UNRATE</td>
-      <td>Engle-Granger</td>
-      <td>0.627876</td>
-      <td>0.05</td>
-      <td>Fail</td>
-      <td>Not Cointegrated</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>MORTGAGE30US</td>
-      <td>GS10</td>
-      <td>Engle-Granger</td>
-      <td>0.008688</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Cointegrated</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>MORTGAGE30US</td>
-      <td>FEDFUNDS</td>
-      <td>Engle-Granger</td>
-      <td>0.020417</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Cointegrated</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>UNRATE</td>
-      <td>GS10</td>
-      <td>Engle-Granger</td>
-      <td>0.013242</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Cointegrated</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>UNRATE</td>
-      <td>FEDFUNDS</td>
-      <td>Engle-Granger</td>
-      <td>0.027579</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Cointegrated</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>GS10</td>
-      <td>FEDFUNDS</td>
-      <td>Engle-Granger</td>
-      <td>0.005832</td>
-      <td>0.05</td>
-      <td>Pass</td>
-      <td>Cointegrated</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Variable 1</th>
+<th data-quarto-table-cell-role="th">Variable 2</th>
+<th data-quarto-table-cell-role="th">Test</th>
+<th data-quarto-table-cell-role="th">p-value</th>
+<th data-quarto-table-cell-role="th">Threshold</th>
+<th data-quarto-table-cell-role="th">Pass/Fail</th>
+<th data-quarto-table-cell-role="th">Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>MORTGAGE30US</td>
+<td>UNRATE</td>
+<td>Engle-Granger</td>
+<td>0.627876</td>
+<td>0.05</td>
+<td>Fail</td>
+<td>Not Cointegrated</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MORTGAGE30US</td>
+<td>GS10</td>
+<td>Engle-Granger</td>
+<td>0.008688</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Cointegrated</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>MORTGAGE30US</td>
+<td>FEDFUNDS</td>
+<td>Engle-Granger</td>
+<td>0.020417</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Cointegrated</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>UNRATE</td>
+<td>GS10</td>
+<td>Engle-Granger</td>
+<td>0.013242</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Cointegrated</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>UNRATE</td>
+<td>FEDFUNDS</td>
+<td>Engle-Granger</td>
+<td>0.027579</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Cointegrated</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>GS10</td>
+<td>FEDFUNDS</td>
+<td>Engle-Granger</td>
+<td>0.005832</td>
+<td>0.05</td>
+<td>Pass</td>
+<td>Cointegrated</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -2269,69 +2261,70 @@ Notes:
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> in_sample_performance_ols(models)</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>display(results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Model</th>
-      <th>Independent Variables</th>
-      <th>R-Squared</th>
-      <th>Adjusted R-Squared</th>
-      <th>MSE</th>
-      <th>RMSE</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Model_1</td>
-      <td>FEDFUNDS</td>
-      <td>0.285734</td>
-      <td>0.284296</td>
-      <td>0.073824</td>
-      <td>0.271706</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Model_2</td>
-      <td>const, FEDFUNDS</td>
-      <td>0.285602</td>
-      <td>0.284162</td>
-      <td>0.073943</td>
-      <td>0.271925</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Model_3</td>
-      <td>GS10</td>
-      <td>0.528954</td>
-      <td>0.528007</td>
-      <td>0.048686</td>
-      <td>0.220649</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Model_4</td>
-      <td>GS10, FEDFUNDS</td>
-      <td>0.621400</td>
-      <td>0.619873</td>
-      <td>0.039210</td>
-      <td>0.198015</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Model_5</td>
-      <td>GS10, FEDFUNDS, UNRATE</td>
-      <td>0.621597</td>
-      <td>0.619304</td>
-      <td>0.039269</td>
-      <td>0.198163</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">Independent Variables</th>
+<th data-quarto-table-cell-role="th">R-Squared</th>
+<th data-quarto-table-cell-role="th">Adjusted R-Squared</th>
+<th data-quarto-table-cell-role="th">MSE</th>
+<th data-quarto-table-cell-role="th">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Model_1</td>
+<td>FEDFUNDS</td>
+<td>0.285734</td>
+<td>0.284296</td>
+<td>0.073824</td>
+<td>0.271706</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Model_2</td>
+<td>const, FEDFUNDS</td>
+<td>0.285602</td>
+<td>0.284162</td>
+<td>0.073943</td>
+<td>0.271925</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Model_3</td>
+<td>GS10</td>
+<td>0.528954</td>
+<td>0.528007</td>
+<td>0.048686</td>
+<td>0.220649</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Model_4</td>
+<td>GS10, FEDFUNDS</td>
+<td>0.621400</td>
+<td>0.619873</td>
+<td>0.039210</td>
+<td>0.198015</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Model_5</td>
+<td>GS10, FEDFUNDS, UNRATE</td>
+<td>0.621597</td>
+<td>0.619304</td>
+<td>0.039269</td>
+<td>0.198163</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -2530,33 +2523,34 @@ Notes:
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> out_of_sample_performance(model_list, model_names<span class="op">=</span>model_names, test_data<span class="op">=</span>df_test_diff, target_col<span class="op">=</span><span class="st">'MORTGAGE30US'</span>)</span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>display(results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Model</th>
-      <th>MSE</th>
-      <th>RMSE</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>model_3 (GS10)</td>
-      <td>0.024310</td>
-      <td>0.155916</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>model_4 (GS10, FEDFUNDS)</td>
-      <td>0.027384</td>
-      <td>0.165482</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">MSE</th>
+<th data-quarto-table-cell-role="th">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>model_3 (GS10)</td>
+<td>0.024310</td>
+<td>0.155916</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>model_4 (GS10, FEDFUNDS)</td>
+<td>0.027384</td>
+<td>0.165482</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
@@ -2781,9 +2775,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -2848,6 +2856,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -2891,6 +2985,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

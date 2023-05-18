@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ValidMind – time_series_forecast_wls_algo</title>
+<title>ValidMind - Statsmodels - WLS algorithm - Loan Rates Forecast Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -156,26 +127,28 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/get-started.html">
+    <a class="nav-link" href="../../guide/get-started.html" rel="" target="">
  <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/guide.html">
+    <a class="nav-link" href="../../guide/guide.html" rel="" target="">
  <span class="menu-text">Guides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/developer-framework.html">
+    <a class="nav-link" href="../../guide/developer-framework.html" rel="" target="">
  <span class="menu-text">Developer Framework</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/faq.html">
+    <a class="nav-link" href="../../guide/faq.html" rel="" target="">
  <span class="menu-text">FAQ</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../guide/support.html">
+    <a class="nav-link" href="../../guide/support.html" rel="" target="">
  <span class="menu-text">Support</span></a>
   </li>  
 </ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -185,13 +158,11 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#statsmodels---wls-algorithm---loan-rates-forecast-model" id="toc-statsmodels---wls-algorithm---loan-rates-forecast-model" class="nav-link active" data-scroll-target="#statsmodels---wls-algorithm---loan-rates-forecast-model">Statsmodels - WLS algorithm - Loan Rates Forecast Model</a>
-  <ul class="collapse">
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality">Data Quality</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link active" data-scroll-target="#data-quality">Data Quality</a></li>
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a>
   <ul class="collapse">
   <li><a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis">Univariate Analysis</a></li>
@@ -213,17 +184,29 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <li><a href="#model-comparison-test-plan" id="toc-model-comparison-test-plan" class="nav-link" data-scroll-target="#model-comparison-test-plan">Model Comparison Test plan</a></li>
   <li><a href="#model-forecasting-test-plan" id="toc-model-forecasting-test-plan" class="nav-link" data-scroll-target="#model-forecasting-test-plan">Model Forecasting Test plan</a></li>
   </ul></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statsmodels - WLS algorithm - Loan Rates Forecast Model</h1>
+</div>
 
 
-<section id="statsmodels---wls-algorithm---loan-rates-forecast-model" class="level1">
-<h1>Statsmodels - WLS algorithm - Loan Rates Forecast Model</h1>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
 <section id="setup" class="level4">
 <h4 class="anchored" data-anchor-id="setup">Setup</h4>
 <div class="cell" data-execution_count="1">
@@ -292,171 +275,172 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> merge_fred_csv_files(file_pattern)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>GDPC1</th>
-      <th>GS5</th>
-      <th>GS10</th>
-      <th>GS3</th>
-      <th>MORTGAGE30US</th>
-      <th>UNRATE</th>
-      <th>CPIAUCSL</th>
-      <th>FEDFUNDS</th>
-      <th>GDP</th>
-    </tr>
-    <tr>
-      <th>DATE</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1947-01-01</th>
-      <td>2034.450</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.48</td>
-      <td>NaN</td>
-      <td>243.164</td>
-    </tr>
-    <tr>
-      <th>1947-02-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.62</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1947-03-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>22.00</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1947-04-01</th>
-      <td>2029.024</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>22.00</td>
-      <td>NaN</td>
-      <td>245.968</td>
-    </tr>
-    <tr>
-      <th>1947-05-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>21.95</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2023-04-01</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.46</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-06</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.28</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-13</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.27</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-20</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.39</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2023-04-27</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.43</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">GDPC1</th>
+<th data-quarto-table-cell-role="th">GS5</th>
+<th data-quarto-table-cell-role="th">GS10</th>
+<th data-quarto-table-cell-role="th">GS3</th>
+<th data-quarto-table-cell-role="th">MORTGAGE30US</th>
+<th data-quarto-table-cell-role="th">UNRATE</th>
+<th data-quarto-table-cell-role="th">CPIAUCSL</th>
+<th data-quarto-table-cell-role="th">FEDFUNDS</th>
+<th data-quarto-table-cell-role="th">GDP</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">DATE</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-01-01</td>
+<td>2034.450</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.48</td>
+<td>NaN</td>
+<td>243.164</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1947-02-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.62</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-03-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>22.00</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1947-04-01</td>
+<td>2029.024</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>22.00</td>
+<td>NaN</td>
+<td>245.968</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1947-05-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>21.95</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-01</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>3.46</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2023-04-06</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.28</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-13</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.27</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2023-04-20</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.39</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2023-04-27</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6.43</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
 </table>
+
 <p>3551 rows × 9 columns</p>
 </div>
 </div>
@@ -537,75 +521,74 @@ memory usage: 138.7 KB</code></pre>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-
 <style type="text/css">
 </style>
-<table id="T_6dfbc">
-  <thead>
-    <tr>
-      <th id="T_6dfbc_level0_col0" class="col_heading level0 col0">ID</th>
-      <th id="T_6dfbc_level0_col1" class="col_heading level0 col1">Name</th>
-      <th id="T_6dfbc_level0_col2" class="col_heading level0 col2">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td id="T_6dfbc_row0_col0" class="data row0 col0">binary_classifier_metrics</td>
-      <td id="T_6dfbc_row0_col1" class="data row0 col1">BinaryClassifierMetrics</td>
-      <td id="T_6dfbc_row0_col2" class="data row0 col2">Test plan for sklearn classifier metrics</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row1_col0" class="data row1 col0">binary_classifier_validation</td>
-      <td id="T_6dfbc_row1_col1" class="data row1 col1">BinaryClassifierPerformance</td>
-      <td id="T_6dfbc_row1_col2" class="data row1 col2">Test plan for sklearn classifier models</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row2_col0" class="data row2 col0">binary_classifier_model_diagnosis</td>
-      <td id="T_6dfbc_row2_col1" class="data row2 col1">BinaryClassifierDiagnosis</td>
-      <td id="T_6dfbc_row2_col2" class="data row2 col2">Test plan for sklearn classifier model diagnosis tests</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row3_col0" class="data row3 col0">tabular_dataset_description</td>
-      <td id="T_6dfbc_row3_col1" class="data row3 col1">TabularDatasetDescription</td>
-      <td id="T_6dfbc_row3_col2" class="data row3 col2">Test plan to extract metadata and descriptive
-    statistics from a tabular dataset</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row4_col0" class="data row4 col0">tabular_data_quality</td>
-      <td id="T_6dfbc_row4_col1" class="data row4 col1">TabularDataQuality</td>
-      <td id="T_6dfbc_row4_col2" class="data row4 col2">Test plan for data quality on tabular datasets</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row5_col0" class="data row5 col0">time_series_data_quality</td>
-      <td id="T_6dfbc_row5_col1" class="data row5 col1">TimeSeriesDataQuality</td>
-      <td id="T_6dfbc_row5_col2" class="data row5 col2">Test plan for data quality on time series datasets</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row6_col0" class="data row6 col0">time_series_univariate</td>
-      <td id="T_6dfbc_row6_col1" class="data row6 col1">TimeSeriesUnivariate</td>
-      <td id="T_6dfbc_row6_col2" class="data row6 col2">Test plan to perform time series univariate analysis.</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row7_col0" class="data row7 col0">time_series_multivariate</td>
-      <td id="T_6dfbc_row7_col1" class="data row7 col1">TimeSeriesMultivariate</td>
-      <td id="T_6dfbc_row7_col2" class="data row7 col2">Test plan to perform time series multivariate analysis.</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row8_col0" class="data row8 col0">time_series_forecast</td>
-      <td id="T_6dfbc_row8_col1" class="data row8 col1">TimeSeriesForecast</td>
-      <td id="T_6dfbc_row8_col2" class="data row8 col2">Test plan to perform time series forecast tests.</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row9_col0" class="data row9 col0">regression_model_performance</td>
-      <td id="T_6dfbc_row9_col1" class="data row9 col1">RegressionModelPerformance</td>
-      <td id="T_6dfbc_row9_col2" class="data row9 col2">Test plan for performance metric of regression model of statsmodels library</td>
-    </tr>
-    <tr>
-      <td id="T_6dfbc_row10_col0" class="data row10 col0">regression_models_comparison</td>
-      <td id="T_6dfbc_row10_col1" class="data row10 col1">RegressionModelsComparison</td>
-      <td id="T_6dfbc_row10_col2" class="data row10 col2">Test plan for metrics comparison of regression model of statsmodels library</td>
-    </tr>
-  </tbody>
+
+<table id="T_6dfbc" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_6dfbc_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">ID</th>
+<th id="T_6dfbc_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Name</th>
+<th id="T_6dfbc_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_6dfbc_row0_col0" class="data row0 col0">binary_classifier_metrics</td>
+<td id="T_6dfbc_row0_col1" class="data row0 col1">BinaryClassifierMetrics</td>
+<td id="T_6dfbc_row0_col2" class="data row0 col2">Test plan for sklearn classifier metrics</td>
+</tr>
+<tr class="even">
+<td id="T_6dfbc_row1_col0" class="data row1 col0">binary_classifier_validation</td>
+<td id="T_6dfbc_row1_col1" class="data row1 col1">BinaryClassifierPerformance</td>
+<td id="T_6dfbc_row1_col2" class="data row1 col2">Test plan for sklearn classifier models</td>
+</tr>
+<tr class="odd">
+<td id="T_6dfbc_row2_col0" class="data row2 col0">binary_classifier_model_diagnosis</td>
+<td id="T_6dfbc_row2_col1" class="data row2 col1">BinaryClassifierDiagnosis</td>
+<td id="T_6dfbc_row2_col2" class="data row2 col2">Test plan for sklearn classifier model diagnosis tests</td>
+</tr>
+<tr class="even">
+<td id="T_6dfbc_row3_col0" class="data row3 col0">tabular_dataset_description</td>
+<td id="T_6dfbc_row3_col1" class="data row3 col1">TabularDatasetDescription</td>
+<td id="T_6dfbc_row3_col2" class="data row3 col2">Test plan to extract metadata and descriptive statistics from a tabular dataset</td>
+</tr>
+<tr class="odd">
+<td id="T_6dfbc_row4_col0" class="data row4 col0">tabular_data_quality</td>
+<td id="T_6dfbc_row4_col1" class="data row4 col1">TabularDataQuality</td>
+<td id="T_6dfbc_row4_col2" class="data row4 col2">Test plan for data quality on tabular datasets</td>
+</tr>
+<tr class="even">
+<td id="T_6dfbc_row5_col0" class="data row5 col0">time_series_data_quality</td>
+<td id="T_6dfbc_row5_col1" class="data row5 col1">TimeSeriesDataQuality</td>
+<td id="T_6dfbc_row5_col2" class="data row5 col2">Test plan for data quality on time series datasets</td>
+</tr>
+<tr class="odd">
+<td id="T_6dfbc_row6_col0" class="data row6 col0">time_series_univariate</td>
+<td id="T_6dfbc_row6_col1" class="data row6 col1">TimeSeriesUnivariate</td>
+<td id="T_6dfbc_row6_col2" class="data row6 col2">Test plan to perform time series univariate analysis.</td>
+</tr>
+<tr class="even">
+<td id="T_6dfbc_row7_col0" class="data row7 col0">time_series_multivariate</td>
+<td id="T_6dfbc_row7_col1" class="data row7 col1">TimeSeriesMultivariate</td>
+<td id="T_6dfbc_row7_col2" class="data row7 col2">Test plan to perform time series multivariate analysis.</td>
+</tr>
+<tr class="odd">
+<td id="T_6dfbc_row8_col0" class="data row8 col0">time_series_forecast</td>
+<td id="T_6dfbc_row8_col1" class="data row8 col1">TimeSeriesForecast</td>
+<td id="T_6dfbc_row8_col2" class="data row8 col2">Test plan to perform time series forecast tests.</td>
+</tr>
+<tr class="even">
+<td id="T_6dfbc_row9_col0" class="data row9 col0">regression_model_performance</td>
+<td id="T_6dfbc_row9_col1" class="data row9 col1">RegressionModelPerformance</td>
+<td id="T_6dfbc_row9_col2" class="data row9 col2">Test plan for performance metric of regression model of statsmodels library</td>
+</tr>
+<tr class="odd">
+<td id="T_6dfbc_row10_col0" class="data row10 col0">regression_models_comparison</td>
+<td id="T_6dfbc_row10_col1" class="data row10 col1">RegressionModelsComparison</td>
+<td id="T_6dfbc_row10_col2" class="data row10 col2">Test plan for metrics comparison of regression model of statsmodels library</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
@@ -631,12 +614,12 @@ Inferring dataset types...</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"5dda2d04c070491c8eab2d4768fbbe79","version_major":2,"version_minor":0}
+{"model_id":"5dda2d04c070491c8eab2d4768fbbe79","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"950585ba1d38470abcb5fd323893b269","version_major":2,"version_minor":0}
+{"model_id":"950585ba1d38470abcb5fd323893b269","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -688,24 +671,26 @@ Inferring dataset types...</code></pre>
 <span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>univariate_testplan <span class="op">=</span> vm.run_test_plan(<span class="st">"time_series_univariate"</span>, config<span class="op">=</span>test_plan_config, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Pandas dataset detected. Initializing VM Dataset instance...
-Inferring dataset types...</code></pre>
+Inferring dataset types...
+Frequency of MORTGAGE30US: MS
+Frequency of UNRATE: MS
+Frequency of GS10: MS
+Frequency of FEDFUNDS: MS
+Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
+Warning: GS10 is not stationary. Results may be inaccurate.
+Warning: FEDFUNDS is not stationary. Results may be inaccurate.
+Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
+Warning: GS10 is not stationary. Results may be inaccurate.
+Warning: FEDFUNDS is not stationary. Results may be inaccurate.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"be2408f4477b463d9a439e6cfa0d4714","version_major":2,"version_minor":0}
+{"model_id":"be2408f4477b463d9a439e6cfa0d4714","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Frequency of MORTGAGE30US: MS
-Frequency of UNRATE: MS
-Frequency of GS10: MS
-Frequency of FEDFUNDS: MS</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>iteritems is deprecated and will be removed in a future version. Use .items instead.
+<pre><code>The default method 'yw' can produce PACF values outside of the [-1,1] interval. After 0.13, the default will change tounadjusted Yule-Walker ('ywm'). You can use this method now by setting method='ywm'.
+iteritems is deprecated and will be removed in a future version. Use .items instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
@@ -731,16 +716,8 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: MORTGAGE30US is not stationary. Results may be inaccurate.
-Warning: GS10 is not stationary. Results may be inaccurate.
-Warning: FEDFUNDS is not stationary. Results may be inaccurate.
-Warning: MORTGAGE30US is not stationary. Results may be inaccurate.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
@@ -770,23 +747,13 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 Non-invertible starting MA parameters found. Using zeros as starting parameters.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-Non-invertible starting MA parameters found. Using zeros as starting parameters.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: GS10 is not stationary. Results may be inaccurate.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 Non-invertible starting MA parameters found. Using zeros as starting parameters.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 Non-invertible starting MA parameters found. Using zeros as starting parameters.
-The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: FEDFUNDS is not stationary. Results may be inaccurate.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+Non-invertible starting MA parameters found. Using zeros as starting parameters.
+The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 Non-invertible starting MA parameters found. Using zeros as starting parameters.
 The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
 Non-invertible starting MA parameters found. Using zeros as starting parameters.
@@ -796,7 +763,7 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"b164ac7dc28145738ba88218515a3844","version_major":2,"version_minor":0}
+{"model_id":"b164ac7dc28145738ba88218515a3844","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -804,24 +771,24 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 <section id="multivariate-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="multivariate-analysis">Multivariate Analysis</h3>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"time_series_multivariate"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>test_plan_config <span class="op">=</span> {</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scatter_plot"</span>: {</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"columns"</span>: df.columns</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lagged_correlation_heatmap"</span>: {</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"target_col"</span>: <span class="st">'MORTGAGE30US'</span>,</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"independent_vars"</span>: [<span class="st">"GS10"</span>, <span class="st">"FEDFUNDS"</span>, <span class="st">"UNRATE"</span>]</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"engle_granger_coint"</span>: {</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"threshold"</span>: <span class="fl">0.05</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>multivariate_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"time_series_multivariate"</span>, config<span class="op">=</span>test_plan_config, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"time_series_multivariate"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>test_plan_config <span class="op">=</span> {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scatter_plot"</span>: {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"columns"</span>: df.columns</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lagged_correlation_heatmap"</span>: {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"target_col"</span>: <span class="st">'MORTGAGE30US'</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"independent_vars"</span>: [<span class="st">"GS10"</span>, <span class="st">"FEDFUNDS"</span>, <span class="st">"UNRATE"</span>]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"engle_granger_coint"</span>: {</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"threshold"</span>: <span class="fl">0.05</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>multivariate_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"time_series_multivariate"</span>, config<span class="op">=</span>test_plan_config, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"81ad15b9ef6b411db1ec16b1ff1775b8","version_major":2,"version_minor":0}
+{"model_id":"81ad15b9ef6b411db1ec16b1ff1775b8","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -834,7 +801,7 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"420c3ff859484f31b1e2055221013fe7","version_major":2,"version_minor":0}
+{"model_id":"420c3ff859484f31b1e2055221013fe7","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -849,14 +816,14 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 <h3 class="anchored" data-anchor-id="sampling">Sampling</h3>
 <p><strong>Step 1: Split dataset into Training and Test</strong></p>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>split_index <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(df) <span class="op">*</span> <span class="fl">0.8</span>)   <span class="co"># use 80% of the data for training</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df_train, df_test <span class="op">=</span> df[:split_index], df[split_index:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>split_index <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(df) <span class="op">*</span> <span class="fl">0.8</span>)   <span class="co"># use 80% of the data for training</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df_train, df_test <span class="op">=</span> df[:split_index], df[split_index:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Step 2: Create a Stationary Train and Test Dataset</strong></p>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply first difference to both training and test df</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>df_train_diff <span class="op">=</span> df_train.diff().dropna()</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>df_test_diff <span class="op">=</span> df_test.diff().dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply first difference to both training and test df</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df_train_diff <span class="op">=</span> df_train.diff().dropna()</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>df_test_diff <span class="op">=</span> df_test.diff().dropna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -866,20 +833,20 @@ The frame.append method is deprecated and will be removed from pandas in a futur
 <h3 class="anchored" data-anchor-id="model-1-loan-rates-and-fedfunds">Model 1: Loan Rates and FEDFUNDS</h3>
 <p><strong>Step 1: Fit Model</strong></p>
 <div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>m1_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>m1_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the independent variables with no intercept</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>X_1 <span class="op">=</span> df_train_diff[<span class="st">'FEDFUNDS'</span>]</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>y_1 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>model_1 <span class="op">=</span> sm.WLS(y_1, X_1).fit()</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_1.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>m1_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>m1_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the independent variables with no intercept</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>X_1 <span class="op">=</span> df_train_diff[<span class="st">'FEDFUNDS'</span>]</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>y_1 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>model_1 <span class="op">=</span> sm.WLS(y_1, X_1).fit()</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_1.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                 WLS Regression Results                                
 =======================================================================================
@@ -914,22 +881,22 @@ Notes:
 <h3 class="anchored" data-anchor-id="model-2-loan-rates-constant-and-fedfunds">Model 2: Loan Rates, constant and FEDFUNDS</h3>
 <p><strong>Step 1: Fit Model</strong></p>
 <div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m2_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>m2_training_dataset[<span class="st">'const'</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>m2_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>m2_test_dataset[<span class="st">'const'</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>X_2 <span class="op">=</span> sm.add_constant(df_train_diff[<span class="st">'FEDFUNDS'</span>])</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>y_2 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>model_2 <span class="op">=</span> sm.WLS(y_2, X_2).fit()</span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_2.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m2_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>m2_training_dataset[<span class="st">'const'</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>m2_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'FEDFUNDS'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>m2_test_dataset[<span class="st">'const'</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>X_2 <span class="op">=</span> sm.add_constant(df_train_diff[<span class="st">'FEDFUNDS'</span>])</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>y_2 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>model_2 <span class="op">=</span> sm.WLS(y_2, X_2).fit()</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_2.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            WLS Regression Results                            
 ==============================================================================
@@ -975,20 +942,20 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <section id="model-3-loan-rates-and-gs10" class="level3">
 <h3 class="anchored" data-anchor-id="model-3-loan-rates-and-gs10">Model 3: Loan Rates and GS10</h3>
 <div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>m3_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>m3_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'GS10'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>X_3 <span class="op">=</span> df_train_diff[<span class="st">'GS10'</span>]</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>y_3 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>model_3 <span class="op">=</span> sm.WLS(y_3, X_3).fit()</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_3.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>m3_training_dataset <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>m3_test_dataset <span class="op">=</span> df_test_diff[[<span class="st">'GS10'</span>,<span class="st">'MORTGAGE30US'</span>]]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>X_3 <span class="op">=</span> df_train_diff[<span class="st">'GS10'</span>]</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>y_3 <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>model_3 <span class="op">=</span> sm.WLS(y_3, X_3).fit()</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_3.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                 WLS Regression Results                                
 =======================================================================================
@@ -1022,17 +989,17 @@ Notes:
 <h3 class="anchored" data-anchor-id="model-4-loan-rates-fedfunds-and-gs10">Model 4: Loan Rates, FEDFUNDS and GS10</h3>
 <p><strong>Step 1: Fit Model</strong></p>
 <div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>, <span class="st">'FEDFUNDS'</span>]]</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>model_4 <span class="op">=</span> sm.WLS(y, X).fit()</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_4.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>, <span class="st">'FEDFUNDS'</span>]]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>model_4 <span class="op">=</span> sm.WLS(y, X).fit()</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_4.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                 WLS Regression Results                                
 =======================================================================================
@@ -1068,17 +1035,17 @@ Notes:
 <h3 class="anchored" data-anchor-id="model-5-loan-rates-fedfunds-gs10-and-unrate">Model 5: Loan Rates, FEDFUNDS, GS10 and UNRATE</h3>
 <p><strong>Step 1: Fit Model</strong></p>
 <div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>, <span class="st">'FEDFUNDS'</span>, <span class="st">'UNRATE'</span>]]</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>model_5 <span class="op">=</span> sm.WLS(y, X).fit()</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_5.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the linear regression model</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_train_diff[[<span class="st">'GS10'</span>, <span class="st">'FEDFUNDS'</span>, <span class="st">'UNRATE'</span>]]</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable </span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_train_diff[<span class="st">'MORTGAGE30US'</span>]</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear regression model</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>model_5 <span class="op">=</span> sm.WLS(y, X).fit()</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model summary</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_5.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                 WLS Regression Results                                
 =======================================================================================
@@ -1112,77 +1079,76 @@ Notes:
 <section id="model-selection" class="level4">
 <h4 class="anchored" data-anchor-id="model-selection">Model Selection</h4>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
-
 <style type="text/css">
 </style>
-<table id="T_2d006">
-  <thead>
-    <tr>
-      <th id="T_2d006_level0_col0" class="col_heading level0 col0">ID</th>
-      <th id="T_2d006_level0_col1" class="col_heading level0 col1">Name</th>
-      <th id="T_2d006_level0_col2" class="col_heading level0 col2">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td id="T_2d006_row0_col0" class="data row0 col0">binary_classifier_metrics</td>
-      <td id="T_2d006_row0_col1" class="data row0 col1">BinaryClassifierMetrics</td>
-      <td id="T_2d006_row0_col2" class="data row0 col2">Test plan for sklearn classifier metrics</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row1_col0" class="data row1 col0">binary_classifier_validation</td>
-      <td id="T_2d006_row1_col1" class="data row1 col1">BinaryClassifierPerformance</td>
-      <td id="T_2d006_row1_col2" class="data row1 col2">Test plan for sklearn classifier models</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row2_col0" class="data row2 col0">binary_classifier_model_diagnosis</td>
-      <td id="T_2d006_row2_col1" class="data row2 col1">BinaryClassifierDiagnosis</td>
-      <td id="T_2d006_row2_col2" class="data row2 col2">Test plan for sklearn classifier model diagnosis tests</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row3_col0" class="data row3 col0">tabular_dataset_description</td>
-      <td id="T_2d006_row3_col1" class="data row3 col1">TabularDatasetDescription</td>
-      <td id="T_2d006_row3_col2" class="data row3 col2">Test plan to extract metadata and descriptive
-    statistics from a tabular dataset</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row4_col0" class="data row4 col0">tabular_data_quality</td>
-      <td id="T_2d006_row4_col1" class="data row4 col1">TabularDataQuality</td>
-      <td id="T_2d006_row4_col2" class="data row4 col2">Test plan for data quality on tabular datasets</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row5_col0" class="data row5 col0">time_series_data_quality</td>
-      <td id="T_2d006_row5_col1" class="data row5 col1">TimeSeriesDataQuality</td>
-      <td id="T_2d006_row5_col2" class="data row5 col2">Test plan for data quality on time series datasets</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row6_col0" class="data row6 col0">time_series_univariate</td>
-      <td id="T_2d006_row6_col1" class="data row6 col1">TimeSeriesUnivariate</td>
-      <td id="T_2d006_row6_col2" class="data row6 col2">Test plan to perform time series univariate analysis.</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row7_col0" class="data row7 col0">time_series_multivariate</td>
-      <td id="T_2d006_row7_col1" class="data row7 col1">TimeSeriesMultivariate</td>
-      <td id="T_2d006_row7_col2" class="data row7 col2">Test plan to perform time series multivariate analysis.</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row8_col0" class="data row8 col0">time_series_forecast</td>
-      <td id="T_2d006_row8_col1" class="data row8 col1">TimeSeriesForecast</td>
-      <td id="T_2d006_row8_col2" class="data row8 col2">Test plan to perform time series forecast tests.</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row9_col0" class="data row9 col0">regression_model_performance</td>
-      <td id="T_2d006_row9_col1" class="data row9 col1">RegressionModelPerformance</td>
-      <td id="T_2d006_row9_col2" class="data row9 col2">Test plan for performance metric of regression model of statsmodels library</td>
-    </tr>
-    <tr>
-      <td id="T_2d006_row10_col0" class="data row10 col0">regression_models_comparison</td>
-      <td id="T_2d006_row10_col1" class="data row10 col1">RegressionModelsComparison</td>
-      <td id="T_2d006_row10_col2" class="data row10 col2">Test plan for metrics comparison of regression model of statsmodels library</td>
-    </tr>
-  </tbody>
+
+<table id="T_2d006" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_2d006_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">ID</th>
+<th id="T_2d006_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Name</th>
+<th id="T_2d006_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_2d006_row0_col0" class="data row0 col0">binary_classifier_metrics</td>
+<td id="T_2d006_row0_col1" class="data row0 col1">BinaryClassifierMetrics</td>
+<td id="T_2d006_row0_col2" class="data row0 col2">Test plan for sklearn classifier metrics</td>
+</tr>
+<tr class="even">
+<td id="T_2d006_row1_col0" class="data row1 col0">binary_classifier_validation</td>
+<td id="T_2d006_row1_col1" class="data row1 col1">BinaryClassifierPerformance</td>
+<td id="T_2d006_row1_col2" class="data row1 col2">Test plan for sklearn classifier models</td>
+</tr>
+<tr class="odd">
+<td id="T_2d006_row2_col0" class="data row2 col0">binary_classifier_model_diagnosis</td>
+<td id="T_2d006_row2_col1" class="data row2 col1">BinaryClassifierDiagnosis</td>
+<td id="T_2d006_row2_col2" class="data row2 col2">Test plan for sklearn classifier model diagnosis tests</td>
+</tr>
+<tr class="even">
+<td id="T_2d006_row3_col0" class="data row3 col0">tabular_dataset_description</td>
+<td id="T_2d006_row3_col1" class="data row3 col1">TabularDatasetDescription</td>
+<td id="T_2d006_row3_col2" class="data row3 col2">Test plan to extract metadata and descriptive statistics from a tabular dataset</td>
+</tr>
+<tr class="odd">
+<td id="T_2d006_row4_col0" class="data row4 col0">tabular_data_quality</td>
+<td id="T_2d006_row4_col1" class="data row4 col1">TabularDataQuality</td>
+<td id="T_2d006_row4_col2" class="data row4 col2">Test plan for data quality on tabular datasets</td>
+</tr>
+<tr class="even">
+<td id="T_2d006_row5_col0" class="data row5 col0">time_series_data_quality</td>
+<td id="T_2d006_row5_col1" class="data row5 col1">TimeSeriesDataQuality</td>
+<td id="T_2d006_row5_col2" class="data row5 col2">Test plan for data quality on time series datasets</td>
+</tr>
+<tr class="odd">
+<td id="T_2d006_row6_col0" class="data row6 col0">time_series_univariate</td>
+<td id="T_2d006_row6_col1" class="data row6 col1">TimeSeriesUnivariate</td>
+<td id="T_2d006_row6_col2" class="data row6 col2">Test plan to perform time series univariate analysis.</td>
+</tr>
+<tr class="even">
+<td id="T_2d006_row7_col0" class="data row7 col0">time_series_multivariate</td>
+<td id="T_2d006_row7_col1" class="data row7 col1">TimeSeriesMultivariate</td>
+<td id="T_2d006_row7_col2" class="data row7 col2">Test plan to perform time series multivariate analysis.</td>
+</tr>
+<tr class="odd">
+<td id="T_2d006_row8_col0" class="data row8 col0">time_series_forecast</td>
+<td id="T_2d006_row8_col1" class="data row8 col1">TimeSeriesForecast</td>
+<td id="T_2d006_row8_col2" class="data row8 col2">Test plan to perform time series forecast tests.</td>
+</tr>
+<tr class="even">
+<td id="T_2d006_row9_col0" class="data row9 col0">regression_model_performance</td>
+<td id="T_2d006_row9_col1" class="data row9 col1">RegressionModelPerformance</td>
+<td id="T_2d006_row9_col2" class="data row9 col2">Test plan for performance metric of regression model of statsmodels library</td>
+</tr>
+<tr class="odd">
+<td id="T_2d006_row10_col0" class="data row10 col0">regression_models_comparison</td>
+<td id="T_2d006_row10_col1" class="data row10 col1">RegressionModelsComparison</td>
+<td id="T_2d006_row10_col2" class="data row10 col2">Test plan for metrics comparison of regression model of statsmodels library</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
@@ -1191,14 +1157,14 @@ Notes:
 <section id="model-performace-test-plan" class="level3">
 <h3 class="anchored" data-anchor-id="model-performace-test-plan">Model performace Test plan</h3>
 <div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds_1 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m1_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds_1 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m1_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>vm_model_1 <span class="op">=</span> vm.init_model(model_1, train_ds<span class="op">=</span>vm_train_ds_1, test_ds<span class="op">=</span>vm_test_ds_1, validation_ds<span class="op">=</span>vm_test_ds_1)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>model_performance_test_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"regression_model_performance"</span>, </span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                                             model<span class="op">=</span>vm_model_1</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>                                            )</span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds_1 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m1_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds_1 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m1_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>vm_model_1 <span class="op">=</span> vm.init_model(model_1, train_ds<span class="op">=</span>vm_train_ds_1, test_ds<span class="op">=</span>vm_test_ds_1, validation_ds<span class="op">=</span>vm_test_ds_1)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>model_performance_test_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"regression_model_performance"</span>, </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                                             model<span class="op">=</span>vm_model_1</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                                            )</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Pandas dataset detected. Initializing VM Dataset instance...
 Inferring dataset types...
@@ -1207,12 +1173,12 @@ Inferring dataset types...</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"588509f837af4c77be8d4cef93d0917c","version_major":2,"version_minor":0}
+{"model_id":"588509f837af4c77be8d4cef93d0917c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"db8273ad4b21472ab19a8cfd87623947","version_major":2,"version_minor":0}
+{"model_id":"db8273ad4b21472ab19a8cfd87623947","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -1220,20 +1186,20 @@ Inferring dataset types...</code></pre>
 <section id="model-comparison-test-plan" class="level3">
 <h3 class="anchored" data-anchor-id="model-comparison-test-plan">Model Comparison Test plan</h3>
 <div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds_2 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m2_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds_2 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m2_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>vm_model_2 <span class="op">=</span> vm.init_model(model_2, train_ds<span class="op">=</span>vm_train_ds_2, test_ds<span class="op">=</span>vm_test_ds_2, validation_ds<span class="op">=</span>vm_test_ds_2)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>vm_train_ds_3 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m3_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds_3 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m3_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>vm_model_3 <span class="op">=</span> vm.init_model(model_3, train_ds<span class="op">=</span>vm_train_ds_3, test_ds<span class="op">=</span>vm_test_ds_3, validation_ds<span class="op">=</span>vm_test_ds_3)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>model_comparison_test_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"regression_models_comparison"</span>, </span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>                                             model <span class="op">=</span> vm_model_1,</span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>                                             models<span class="op">=</span> [vm_model_2, vm_model_3],</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>                                            )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds_2 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m2_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds_2 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m2_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>vm_model_2 <span class="op">=</span> vm.init_model(model_2, train_ds<span class="op">=</span>vm_train_ds_2, test_ds<span class="op">=</span>vm_test_ds_2, validation_ds<span class="op">=</span>vm_test_ds_2)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>vm_train_ds_3 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m3_training_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds_3 <span class="op">=</span> vm.init_dataset(dataset<span class="op">=</span>m3_test_dataset, <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>, target_column<span class="op">=</span><span class="st">"MORTGAGE30US"</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>vm_model_3 <span class="op">=</span> vm.init_model(model_3, train_ds<span class="op">=</span>vm_train_ds_3, test_ds<span class="op">=</span>vm_test_ds_3, validation_ds<span class="op">=</span>vm_test_ds_3)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>model_comparison_test_plan <span class="op">=</span> vm.run_test_plan(<span class="st">"regression_models_comparison"</span>, </span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>                                             model <span class="op">=</span> vm_model_1,</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>                                             models<span class="op">=</span> [vm_model_2, vm_model_3],</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>                                            )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Pandas dataset detected. Initializing VM Dataset instance...
 Inferring dataset types...
@@ -1246,12 +1212,12 @@ Inferring dataset types...</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"1630e1cb07794566bdd1cedb1b937a4d","version_major":2,"version_minor":0}
+{"model_id":"1630e1cb07794566bdd1cedb1b937a4d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"ea152d4460ee4d40b5dd72dcbde9ca13","version_major":2,"version_minor":0}
+{"model_id":"ea152d4460ee4d40b5dd72dcbde9ca13","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -1259,30 +1225,29 @@ Inferring dataset types...</code></pre>
 <section id="model-forecasting-test-plan" class="level3">
 <h3 class="anchored" data-anchor-id="model-forecasting-test-plan">Model Forecasting Test plan</h3>
 <div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>config<span class="op">=</span> {</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regression_forecast_plot"</span>: {</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"start_date"</span>: <span class="st">'2010-01-01'</span>,</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"end_date"</span>: <span class="st">'2022-01-01'</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>forcasting_testplan <span class="op">=</span> vm.run_test_plan(<span class="st">"time_series_forecast"</span>,</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>                                        models<span class="op">=</span>[vm_model_1],</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>                                        config<span class="op">=</span>config)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>config<span class="op">=</span> {</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regression_forecast_plot"</span>: {</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"start_date"</span>: <span class="st">'2010-01-01'</span>,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"end_date"</span>: <span class="st">'2022-01-01'</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>forcasting_testplan <span class="op">=</span> vm.run_test_plan(<span class="st">"time_series_forecast"</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>                                        models<span class="op">=</span>[vm_model_1],</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>                                        config<span class="op">=</span>config)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"b2a73b07e65844298c135cf7247a9c53","version_major":2,"version_minor":0}
+{"model_id":"b2a73b07e65844298c135cf7247a9c53","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"e7a581c7021b47329583d11cca25c1ff","version_major":2,"version_minor":0}
+{"model_id":"e7a581c7021b47329583d11cca25c1ff","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
 
 
-</section>
 </section>
 </section>
 
@@ -1314,9 +1279,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1381,6 +1360,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1424,6 +1489,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
