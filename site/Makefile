@@ -4,7 +4,7 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site interim-deploy
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod 
 
 # Help section
 help:
@@ -14,9 +14,9 @@ help:
 	@echo "  notebooks      Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs    Copy the Python library docs into _site/validmind"
 	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
-	@echo "  docs-site      Get all source files and render the docs site"
-	@echo "  deploy-demo    Generate & deploy to docs-ci-cd-demo and clear cache"
-	@echo "  deploy-prod    Generate & deploy to docs-ci-cd-prod and clear cache"
+	@echo "  docs-site      Get all source files and render the docs site with Quarto"
+	@echo "  deploy-demo    Render the docs site & deploy to docs-ci-cd-demo and clear cache"
+	@echo "  deploy-prod    Render the docs site & deploy to docs-ci-cd-prod and clear cache"
 	@echo "  help           Display this help message (default target)"
 
 # Clean up source directory
