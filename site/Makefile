@@ -29,9 +29,10 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	rm -rf $(DEST_DIR_NB)
-	mkdir -p $(DEST_DIR_NB)
-	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
+	@echo "Currently not available, no action taken."
+#	rm -rf $(DEST_DIR_NB)
+#	mkdir -p $(DEST_DIR_NB)
+#	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
 
 # Make Python library docs & copy them over
 python-docs:
