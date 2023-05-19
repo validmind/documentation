@@ -37,7 +37,7 @@ notebooks:
 python-docs:
 	rm -rf $(DEST_DIR_PYTHON)
 	mkdir -p $(DEST_DIR_PYTHON)
-	cp -r $(SRC_DIR)/docs/_build/markdown/. $(DEST_DIR_PYTHON)
+	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
 
 # Get all source files
 get-source: clean clone notebooks python-docs
