@@ -238,7 +238,20 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 </header>
 
-<p><strong>To try out ValidMind, you need to be a registered user on the ValidMind Platform.</strong> If you don’t already have access, <a href="https://validmind.com/demo">you can request it</a>.</p>
+<p>To try out ValidMind, you need to be a registered user on the ValidMind Platform.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t have access?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are you interested in trying out ValidMind, please <a href="https://validmind.com/demo">contact us</a>.</p>
+</div>
+</div>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
 <p>To connect ValidMind’s Developer Framework to the ValidMind platform and to access the ValidMind platform User Interface (Web UI), you must be able to access our domain - <code>validmind.ai</code> . If necessary, ask a network administrator to add this domain to your company’s firewall allowlist (whitelist).</p>
@@ -488,6 +501,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
