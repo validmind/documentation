@@ -1,7 +1,7 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := validmind
+DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
 .PHONY: help clean clone notebooks python-docs docs-site interim-deploy
