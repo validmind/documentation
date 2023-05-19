@@ -29,7 +29,7 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	@echo "Currently not available, no action taken."
+	@echo "Target notebook disabled, no action taken."
 #	rm -rf $(DEST_DIR_NB)
 #	mkdir -p $(DEST_DIR_NB)
 #	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
