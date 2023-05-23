@@ -174,9 +174,27 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Next steps</span></a>
   </div>
 </li>
-          <li class="px-0"><hr class="sidebar-divider hi "></li>
       </ul>
   </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/tutorials.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/try-developer-framework-with-docker.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try the Developer Framework with Docker</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../guide/overview.html" class="sidebar-item-text sidebar-link">
@@ -211,6 +229,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#steps" id="toc-steps" class="nav-link active" data-scroll-target="#steps">Steps</a></li>
+  <li><a href="#related-topics" id="toc-related-topics" class="nav-link" data-scroll-target="#related-topics">Related topics</a></li>
   </ul>
 </nav>
     </div>
@@ -242,10 +261,14 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li><p><a href="../guide/before-you-begin.html">Before you begin</a></p>
 <p>Check the prerequisites for the Developer Framework and ValidMind Platform UI.</p></li>
 <li><p><a href="../guide/explore-validmind.html">Explore ValidMind</a></p>
-<p>Try our introductory Jupyter notebook to see the Developer Framework in action and explore our Platform UI to work with a documentation projects.</p></li>
+<p>Try our introductory Jupyter notebook in Google Colaboratory to see the Developer Framework in action and explore our Platform UI to work with a documentation projects.</p></li>
 <li><p><a href="../guide/next-steps.html">Next steps</a></p>
 <p>Try some more advanced sample notebooks or set up ValidMind for production with your own use cases.</p></li>
 </ol>
+</section>
+<section id="related-topics" class="level2">
+<h2 class="anchored" data-anchor-id="related-topics">Related topics</h2>
+<p>If you prefer using Docker images over using Google Colaboratory as shown in this Quickstart, take a look at our tutorial <a href="../guide/try-developer-framework-with-docker.html">Try the Developer Framework with Docker</a>.</p>
 
 
 </section>
@@ -482,6 +505,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->

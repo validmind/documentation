@@ -1,22 +1,22 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := validmind
+DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site interim-deploy
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod 
 
 # Help section
 help:
 	@echo "Available targets:"
 	@echo "  clean          Remove the _source/ directory"
 	@echo "  clone          Clone the validmind-python repository into _source/"
-	@echo "  notebooks      Copy the Jupyter notebooks to notebooks/"
-	@echo "  python-docs    Build the Python library docs and copy to validmind/"
+	@echo "  notebooks      Copy Jupyter notebooks into notebooks/"
+	@echo "  python-docs    Copy the Python library docs into _site/validmind"
 	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
-	@echo "  docs-site      Get all source files and render the docs site"
-	@echo "  deploy-demo    Generate & deploy to docs-ci-cd-demo and clear cache"
-	@echo "  deploy-prod    Generate & deploy to docs-ci-cd-prod and clear cache"
+	@echo "  docs-site      Get all source files and render the docs site with Quarto"
+	@echo "  deploy-demo    Render the docs site & deploy to docs-ci-cd-demo and clear cache"
+	@echo "  deploy-prod    Render the docs site & deploy to docs-ci-cd-prod and clear cache"
 	@echo "  help           Display this help message (default target)"
 
 # Clean up source directory
@@ -29,15 +29,16 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	rm -rf $(DEST_DIR_NB)
-	mkdir -p $(DEST_DIR_NB)
-	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
+	@echo "Target notebook disabled, no action taken."
+#	rm -rf $(DEST_DIR_NB)
+#	mkdir -p $(DEST_DIR_NB)
+#	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
 
 # Make Python library docs & copy them over
 python-docs:
 	rm -rf $(DEST_DIR_PYTHON)
 	mkdir -p $(DEST_DIR_PYTHON)
-	cp -r $(SRC_DIR)/docs/_build/markdown/. $(DEST_DIR_PYTHON)
+	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
 
 # Get all source files
 get-source: clean clone notebooks python-docs

@@ -210,9 +210,27 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Next steps</span></a>
   </div>
 </li>
-          <li class="px-0"><hr class="sidebar-divider hi "></li>
       </ul>
   </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/tutorials.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/try-developer-framework-with-docker.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try the Developer Framework with Docker</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../guide/overview.html" class="sidebar-item-text sidebar-link">
@@ -308,29 +326,14 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-“Warning: This notebook was not authored by Google”
+About our Jupyter notebooks
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Notebooks from ValidMind are safe to run. You can inspect the notebook source yourself.</p>
+<p><strong>Don’t have access to Google Colaboratory?</strong> — You can also <a href="../guide/try-developer-framework-with-docker.html">try the Developer Framework with Docker</a>. <br><br> <strong>Notebooks from ValidMind are safe to run</strong> —&nbsp;If you get a warning that this notebook was not authored by Google, we welcome you to inspect the notebook source to make sure. <br><br> <strong>Runtime errors</strong> — We recommend that you not use the <em>Run all</em> option. Run each cell individually to see what is happening in the notebook. If you do see errors, re-run the notebook cells.</p>
 </div>
 </div>
-</div><div class="">
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Getting runtime errors in Google Colaboratory?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>We recommend that you NOT use the <em>Run all</em> option. Stepping through each cell individually enables you to see what is happening in the notebook. If you run into errors, re-run the notebook cells.</p>
-</div>
-</div>
-</div></div>
-<ol start="3" type="1">
+</div></div><ol start="3" type="1">
 <li><p>Run each cell in the notebook:</p>
 <ul>
 <li>Hover over each cell and click the <i class="fa-solid fa-circle-play" aria-label="circle-play"></i> <strong>icon</strong>; OR</li>
@@ -725,6 +728,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
