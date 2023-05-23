@@ -49,11 +49,16 @@ docs-site: clean clone notebooks python-docs
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
-	quarto render && \
-	aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete
-	aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
-	aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null
-	aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
+		echo "You're not on the docs-demo branch, no action taken."; \
+	else \
+		echo "You're on the docs-demo branch. Deploying docs-demo site ..."; \
+        quarto render && \
+        aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && \
+        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null && \
+        aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null && \
+        aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null; \
+    fi
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
