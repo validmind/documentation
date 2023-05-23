@@ -1,6 +1,6 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
-DEST_DIR_NB := notebooks
+DEST_DIR_NB := notebooks/how_to
 DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
@@ -29,10 +29,9 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	@echo "Target notebook disabled, no action taken."
-#	rm -rf $(DEST_DIR_NB)
-#	mkdir -p $(DEST_DIR_NB)
-#	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
+	rm -rf $(DEST_DIR_NB)
+	mkdir -p $(DEST_DIR_NB)
+	cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)
 
 # Make Python library docs & copy them over
 python-docs:
