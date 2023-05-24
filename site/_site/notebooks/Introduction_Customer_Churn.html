@@ -240,6 +240,18 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Introduction - Customer Churn Model Documentation (Data and Model)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series_data_validation_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Data Validation Full Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/time_series_model_validation_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Model Validation Full Suite</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
@@ -330,8 +342,239 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <p>Click File &gt; Save a copy in Drive &gt; to make your own copy in Google Drive so that you can modify the notebook.</p>
 <p>Alternatively, you can download the notebook source and work with it in your own developer environment.</p>
 <p>##Install ValidMind Developer Framework</p>
-<div class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1684247483250,&quot;user_tz&quot;:240,&quot;elapsed&quot;:4,&quot;user&quot;:{&quot;displayName&quot;:&quot;Mehdi Esmail&quot;,&quot;userId&quot;:&quot;16245158322318459916&quot;}}" data-execution_count="1">
+<div class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1684256296427,&quot;user_tz&quot;:240,&quot;elapsed&quot;:80263,&quot;user&quot;:{&quot;displayName&quot;:&quot;Mehdi Esmail&quot;,&quot;userId&quot;:&quot;16245158322318459916&quot;}}" data-outputid="8226a77a-f9a2-43f6-c2b4-776716d881bb">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+Collecting validmind
+  Downloading validmind-1.11.7-py3-none-any.whl (1.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 11.9 MB/s eta 0:00:00
+Collecting arch&lt;6.0.0,&gt;=5.4.0 (from validmind)
+  Downloading arch-5.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (918 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 918.2/918.2 kB 67.3 MB/s eta 0:00:00
+Collecting catboost&lt;2.0,&gt;=1.2 (from validmind)
+  Downloading catboost-1.2-cp310-cp310-manylinux2014_x86_64.whl (98.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.6/98.6 MB 8.2 MB/s eta 0:00:00
+Requirement already satisfied: click&lt;9.0.0,&gt;=8.0.4 in /usr/local/lib/python3.10/dist-packages (from validmind) (8.1.3)
+Collecting dython&lt;0.8.0,&gt;=0.7.1 (from validmind)
+  Downloading dython-0.7.4-py3-none-any.whl (24 kB)
+Requirement already satisfied: ipython==7.34.0 in /usr/local/lib/python3.10/dist-packages (from validmind) (7.34.0)
+Requirement already satisfied: markdown&lt;4.0.0,&gt;=3.4.3 in /usr/local/lib/python3.10/dist-packages (from validmind) (3.4.3)
+Collecting myst-parser&lt;2.0.0,&gt;=1.0.0 (from validmind)
+  Downloading myst_parser-1.0.0-py3-none-any.whl (77 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.3/77.3 kB 8.5 MB/s eta 0:00:00
+Collecting numpy==1.22.3 (from validmind)
+  Downloading numpy-1.22.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.8/16.8 MB 83.5 MB/s eta 0:00:00
+Requirement already satisfied: pandas==1.5.3 in /usr/local/lib/python3.10/dist-packages (from validmind) (1.5.3)
+Collecting pandas-profiling&lt;4.0.0,&gt;=3.6.6 (from validmind)
+  Downloading pandas_profiling-3.6.6-py2.py3-none-any.whl (324 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 324.4/324.4 kB 24.5 MB/s eta 0:00:00
+Requirement already satisfied: pydantic&lt;2.0.0,&gt;=1.9.1 in /usr/local/lib/python3.10/dist-packages (from validmind) (1.10.7)
+Collecting pypmml&lt;0.10.0,&gt;=0.9.17 (from validmind)
+  Downloading pypmml-0.9.17.tar.gz (14.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.2/14.2 MB 93.2 MB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+Collecting python-dotenv&lt;0.21.0,&gt;=0.20.0 (from validmind)
+  Downloading python_dotenv-0.20.0-py3-none-any.whl (17 kB)
+Requirement already satisfied: requests&lt;3.0.0,&gt;=2.27.1 in /usr/local/lib/python3.10/dist-packages (from validmind) (2.27.1)
+Requirement already satisfied: scikit-learn&lt;2.0.0,&gt;=1.0.2 in /usr/local/lib/python3.10/dist-packages (from validmind) (1.2.2)
+Collecting seaborn&lt;0.12.0,&gt;=0.11.2 (from validmind)
+  Downloading seaborn-0.11.2-py3-none-any.whl (292 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 292.8/292.8 kB 32.6 MB/s eta 0:00:00
+Collecting shap&lt;0.42.0,&gt;=0.41.0 (from validmind)
+  Downloading shap-0.41.0-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (572 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 572.6/572.6 kB 53.1 MB/s eta 0:00:00
+Collecting sphinx&lt;7.0.0,&gt;=6.1.3 (from validmind)
+  Downloading sphinx-6.2.1-py3-none-any.whl (3.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 84.8 MB/s eta 0:00:00
+Collecting sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5 (from validmind)
+  Downloading sphinx_markdown_builder-0.5.5-py2.py3-none-any.whl (15 kB)
+Collecting sphinx-rtd-theme&lt;2.0.0,&gt;=1.2.0 (from validmind)
+  Downloading sphinx_rtd_theme-1.2.0-py2.py3-none-any.whl (2.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.8/2.8 MB 85.9 MB/s eta 0:00:00
+Requirement already satisfied: statsmodels&lt;0.14.0,&gt;=0.13.5 in /usr/local/lib/python3.10/dist-packages (from validmind) (0.13.5)
+Requirement already satisfied: tabulate&lt;0.9.0,&gt;=0.8.9 in /usr/local/lib/python3.10/dist-packages (from validmind) (0.8.10)
+Requirement already satisfied: tqdm&lt;5.0.0,&gt;=4.64.0 in /usr/local/lib/python3.10/dist-packages (from validmind) (4.65.0)
+Requirement already satisfied: xgboost&lt;2.0.0,&gt;=1.5.2 in /usr/local/lib/python3.10/dist-packages (from validmind) (1.7.5)
+Requirement already satisfied: setuptools&gt;=18.5 in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (67.7.2)
+Collecting jedi&gt;=0.16 (from ipython==7.34.0-&gt;validmind)
+  Downloading jedi-0.18.2-py2.py3-none-any.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 87.6 MB/s eta 0:00:00
+Requirement already satisfied: decorator in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (4.4.2)
+Requirement already satisfied: pickleshare in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (0.7.5)
+Requirement already satisfied: traitlets&gt;=4.2 in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (5.7.1)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (3.0.38)
+Requirement already satisfied: pygments in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (2.14.0)
+Requirement already satisfied: backcall in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (0.2.0)
+Requirement already satisfied: matplotlib-inline in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (0.1.6)
+Requirement already satisfied: pexpect&gt;4.3 in /usr/local/lib/python3.10/dist-packages (from ipython==7.34.0-&gt;validmind) (4.8.0)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /usr/local/lib/python3.10/dist-packages (from pandas==1.5.3-&gt;validmind) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas==1.5.3-&gt;validmind) (2022.7.1)
+Requirement already satisfied: scipy&gt;=1.3 in /usr/local/lib/python3.10/dist-packages (from arch&lt;6.0.0,&gt;=5.4.0-&gt;validmind) (1.10.1)
+Collecting property-cached&gt;=1.6.4 (from arch&lt;6.0.0,&gt;=5.4.0-&gt;validmind)
+  Downloading property_cached-1.6.4-py2.py3-none-any.whl (7.8 kB)
+Requirement already satisfied: graphviz in /usr/local/lib/python3.10/dist-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (0.20.1)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.10/dist-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (3.7.1)
+Requirement already satisfied: plotly in /usr/local/lib/python3.10/dist-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (5.13.1)
+Requirement already satisfied: six in /usr/local/lib/python3.10/dist-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.16.0)
+INFO: pip is looking at multiple versions of dython to determine which version is compatible with other requirements. This could take a while.
+Collecting dython&lt;0.8.0,&gt;=0.7.1 (from validmind)
+  Downloading dython-0.7.3-py3-none-any.whl (23 kB)
+  Downloading dython-0.7.2-py3-none-any.whl (22 kB)
+Collecting scikit-plot&gt;=0.3.7 (from dython&lt;0.8.0,&gt;=0.7.1-&gt;validmind)
+  Downloading scikit_plot-0.3.7-py3-none-any.whl (33 kB)
+Requirement already satisfied: psutil&gt;=5.9.1 in /usr/local/lib/python3.10/dist-packages (from dython&lt;0.8.0,&gt;=0.7.1-&gt;validmind) (5.9.5)
+Requirement already satisfied: docutils&lt;0.20,&gt;=0.15 in /usr/local/lib/python3.10/dist-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (0.16)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (3.1.2)
+Requirement already satisfied: markdown-it-py&lt;3.0.0,&gt;=1.0.0 in /usr/local/lib/python3.10/dist-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (2.2.0)
+Collecting mdit-py-plugins~=0.3.4 (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind)
+  Downloading mdit_py_plugins-0.3.5-py3-none-any.whl (52 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.1/52.1 kB 6.6 MB/s eta 0:00:00
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.10/dist-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (6.0)
+Collecting ydata-profiling (from pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading ydata_profiling-4.1.2-py2.py3-none-any.whl (345 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 345.9/345.9 kB 39.2 MB/s eta 0:00:00
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in /usr/local/lib/python3.10/dist-packages (from pydantic&lt;2.0.0,&gt;=1.9.1-&gt;validmind) (4.5.0)
+Requirement already satisfied: py4j&gt;=0.10.7 in /usr/local/lib/python3.10/dist-packages (from pypmml&lt;0.10.0,&gt;=0.9.17-&gt;validmind) (0.10.9.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (1.26.15)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (2022.12.7)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (2.0.12)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (3.4)
+Requirement already satisfied: joblib&gt;=1.1.1 in /usr/local/lib/python3.10/dist-packages (from scikit-learn&lt;2.0.0,&gt;=1.0.2-&gt;validmind) (1.2.0)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn&lt;2.0.0,&gt;=1.0.2-&gt;validmind) (3.1.0)
+Requirement already satisfied: packaging&gt;20.9 in /usr/local/lib/python3.10/dist-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (23.1)
+Collecting slicer==0.0.7 (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind)
+  Downloading slicer-0.0.7-py3-none-any.whl (14 kB)
+Requirement already satisfied: numba in /usr/local/lib/python3.10/dist-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (0.56.4)
+Requirement already satisfied: cloudpickle in /usr/local/lib/python3.10/dist-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (2.2.1)
+Requirement already satisfied: sphinxcontrib-applehelp in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.4)
+Requirement already satisfied: sphinxcontrib-devhelp in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.2)
+Requirement already satisfied: sphinxcontrib-jsmath in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.1)
+Requirement already satisfied: sphinxcontrib-htmlhelp&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.0.1)
+Requirement already satisfied: sphinxcontrib-serializinghtml&gt;=1.1.5 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.1.5)
+Requirement already satisfied: sphinxcontrib-qthelp in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.3)
+Collecting docutils&lt;0.20,&gt;=0.15 (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind)
+  Downloading docutils-0.19-py3-none-any.whl (570 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 570.5/570.5 kB 43.3 MB/s eta 0:00:00
+Requirement already satisfied: snowballstemmer&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.2.0)
+Requirement already satisfied: babel&gt;=2.9 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.12.1)
+Requirement already satisfied: alabaster&lt;0.8,&gt;=0.7 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (0.7.13)
+Requirement already satisfied: imagesize&gt;=1.3 in /usr/local/lib/python3.10/dist-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.4.1)
+Collecting html2text (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind)
+  Downloading html2text-2020.1.16-py3-none-any.whl (32 kB)
+Collecting pydash (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind)
+  Downloading pydash-7.0.3-py3-none-any.whl (109 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.5/109.5 kB 13.0 MB/s eta 0:00:00
+Collecting unify (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind)
+  Downloading unify-0.5.tar.gz (4.4 kB)
+  Preparing metadata (setup.py) ... done
+Collecting yapf (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind)
+  Downloading yapf-0.33.0-py2.py3-none-any.whl (200 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 200.9/200.9 kB 1.4 MB/s eta 0:00:00
+Collecting docutils&lt;0.20,&gt;=0.15 (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind)
+  Downloading docutils-0.18.1-py2.py3-none-any.whl (570 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 570.0/570.0 kB 33.8 MB/s eta 0:00:00
+Collecting sphinxcontrib-jquery!=3.0.0,&gt;=2.0.0 (from sphinx-rtd-theme&lt;2.0.0,&gt;=1.2.0-&gt;validmind)
+  Downloading sphinxcontrib_jquery-4.1-py2.py3-none-any.whl (121 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 121.1/121.1 kB 15.4 MB/s eta 0:00:00
+Requirement already satisfied: patsy&gt;=0.5.2 in /usr/local/lib/python3.10/dist-packages (from statsmodels&lt;0.14.0,&gt;=0.13.5-&gt;validmind) (0.5.3)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.0 in /usr/local/lib/python3.10/dist-packages (from jedi&gt;=0.16-&gt;ipython==7.34.0-&gt;validmind) (0.8.3)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2-&gt;myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (2.1.2)
+Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.10/dist-packages (from markdown-it-py&lt;3.0.0,&gt;=1.0.0-&gt;myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (0.1.2)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.0.7)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (4.39.3)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (8.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (3.0.9)
+Requirement already satisfied: ptyprocess&gt;=0.5 in /usr/local/lib/python3.10/dist-packages (from pexpect&gt;4.3-&gt;ipython==7.34.0-&gt;validmind) (0.7.0)
+Requirement already satisfied: wcwidth in /usr/local/lib/python3.10/dist-packages (from prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0-&gt;ipython==7.34.0-&gt;validmind) (0.2.6)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/local/lib/python3.10/dist-packages (from numba-&gt;shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (0.39.1)
+Requirement already satisfied: tenacity&gt;=6.2.0 in /usr/local/lib/python3.10/dist-packages (from plotly-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (8.2.2)
+Collecting untokenize (from unify-&gt;sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind)
+  Downloading untokenize-0.1.1.tar.gz (3.1 kB)
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: tomli&gt;=2.0.1 in /usr/local/lib/python3.10/dist-packages (from yapf-&gt;sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (2.0.1)
+Collecting scipy&gt;=1.3 (from arch&lt;6.0.0,&gt;=5.4.0-&gt;validmind)
+  Downloading scipy-1.9.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (33.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 33.7/33.7 MB 43.5 MB/s eta 0:00:00
+Collecting matplotlib (from catboost&lt;2.0,&gt;=1.2-&gt;validmind)
+  Downloading matplotlib-3.6.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.8/11.8 MB 93.9 MB/s eta 0:00:00
+Collecting visions[type_image_path]==0.7.5 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading visions-0.7.5-py3-none-any.whl (102 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 102.7/102.7 kB 13.8 MB/s eta 0:00:00
+Collecting htmlmin==0.1.12 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading htmlmin-0.1.12.tar.gz (19 kB)
+  Preparing metadata (setup.py) ... done
+Collecting phik&lt;0.13,&gt;=0.11.1 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading phik-0.12.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (679 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 679.5/679.5 kB 56.2 MB/s eta 0:00:00
+Collecting tqdm&lt;5.0.0,&gt;=4.64.0 (from validmind)
+  Downloading tqdm-4.64.1-py2.py3-none-any.whl (78 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.5/78.5 kB 9.7 MB/s eta 0:00:00
+Collecting multimethod&lt;1.10,&gt;=1.4 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading multimethod-1.9.1-py3-none-any.whl (10 kB)
+Collecting typeguard&lt;2.14,&gt;=2.13.2 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading typeguard-2.13.3-py3-none-any.whl (17 kB)
+Collecting imagehash==4.3.1 (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading ImageHash-4.3.1-py2.py3-none-any.whl (296 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 296.5/296.5 kB 35.5 MB/s eta 0:00:00
+Requirement already satisfied: PyWavelets in /usr/local/lib/python3.10/dist-packages (from imagehash==4.3.1-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (1.4.1)
+Requirement already satisfied: attrs&gt;=19.3.0 in /usr/local/lib/python3.10/dist-packages (from visions[type_image_path]==0.7.5-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (23.1.0)
+Requirement already satisfied: networkx&gt;=2.4 in /usr/local/lib/python3.10/dist-packages (from visions[type_image_path]==0.7.5-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (3.1)
+Collecting tangled-up-in-unicode&gt;=0.0.4 (from visions[type_image_path]==0.7.5-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind)
+  Downloading tangled_up_in_unicode-0.2.0-py3-none-any.whl (4.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 102.3 MB/s eta 0:00:00
+Building wheels for collected packages: pypmml, unify, htmlmin, untokenize
+  Building wheel for pypmml (setup.py) ... done
+  Created wheel for pypmml: filename=pypmml-0.9.17-py3-none-any.whl size=14215036 sha256=b063498209ef70ccfff6e68ff2443587e5783d68ee64efa51b180fd989759977
+  Stored in directory: /root/.cache/pip/wheels/8c/74/f1/946a04acaa6de2e9df0f02739511aba5a7aac52383c52ac900
+  Building wheel for unify (setup.py) ... done
+  Created wheel for unify: filename=unify-0.5-py3-none-any.whl size=5224 sha256=e90e221dffdeb63d42f729d865afa7754af0586422ac5ec5e53e897e22e9f0cf
+  Stored in directory: /root/.cache/pip/wheels/f1/d3/32/7f86dc94d89d1775b69018f1cb94e1ff77691cd676b1d6e99a
+  Building wheel for htmlmin (setup.py) ... done
+  Created wheel for htmlmin: filename=htmlmin-0.1.12-py3-none-any.whl size=27081 sha256=342eecb3263f09426ad33a7f390ace1b4947999829e532973402b9de2cac8507
+  Stored in directory: /root/.cache/pip/wheels/dd/91/29/a79cecb328d01739e64017b6fb9a1ab9d8cb1853098ec5966d
+  Building wheel for untokenize (setup.py) ... done
+  Created wheel for untokenize: filename=untokenize-0.1.1-py3-none-any.whl size=2874 sha256=7726ac802ce0b6b6f57dd42d85e9a125c96ee99d0b8e780ac96de3bc00065728
+  Stored in directory: /root/.cache/pip/wheels/dd/b6/d4/187059c19a28026b81e54afd260a63aab2e7ccddf2e05977eb
+Successfully built pypmml unify htmlmin untokenize
+Installing collected packages: untokenize, htmlmin, yapf, unify, typeguard, tqdm, tangled-up-in-unicode, slicer, python-dotenv, pypmml, pydash, property-cached, numpy, multimethod, jedi, html2text, docutils, sphinx, scipy, mdit-py-plugins, visions, sphinxcontrib-jquery, sphinx-markdown-builder, myst-parser, matplotlib, imagehash, sphinx-rtd-theme, shap, seaborn, scikit-plot, phik, catboost, arch, ydata-profiling, dython, pandas-profiling, validmind
+  Attempting uninstall: tqdm
+    Found existing installation: tqdm 4.65.0
+    Uninstalling tqdm-4.65.0:
+      Successfully uninstalled tqdm-4.65.0
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.22.4
+    Uninstalling numpy-1.22.4:
+      Successfully uninstalled numpy-1.22.4
+  Attempting uninstall: docutils
+    Found existing installation: docutils 0.16
+    Uninstalling docutils-0.16:
+      Successfully uninstalled docutils-0.16
+  Attempting uninstall: sphinx
+    Found existing installation: Sphinx 3.5.4
+    Uninstalling Sphinx-3.5.4:
+      Successfully uninstalled Sphinx-3.5.4
+  Attempting uninstall: scipy
+    Found existing installation: scipy 1.10.1
+    Uninstalling scipy-1.10.1:
+      Successfully uninstalled scipy-1.10.1
+  Attempting uninstall: matplotlib
+    Found existing installation: matplotlib 3.7.1
+    Uninstalling matplotlib-3.7.1:
+      Successfully uninstalled matplotlib-3.7.1
+  Attempting uninstall: seaborn
+    Found existing installation: seaborn 0.12.2
+    Uninstalling seaborn-0.12.2:
+      Successfully uninstalled seaborn-0.12.2
+Successfully installed arch-5.5.0 catboost-1.2 docutils-0.18.1 dython-0.7.2 html2text-2020.1.16 htmlmin-0.1.12 imagehash-4.3.1 jedi-0.18.2 matplotlib-3.6.3 mdit-py-plugins-0.3.5 multimethod-1.9.1 myst-parser-1.0.0 numpy-1.22.3 pandas-profiling-3.6.6 phik-0.12.3 property-cached-1.6.4 pydash-7.0.3 pypmml-0.9.17 python-dotenv-0.20.0 scikit-plot-0.3.7 scipy-1.9.3 seaborn-0.11.2 shap-0.41.0 slicer-0.0.7 sphinx-6.2.1 sphinx-markdown-builder-0.5.5 sphinx-rtd-theme-1.2.0 sphinxcontrib-jquery-4.1 tangled-up-in-unicode-0.2.0 tqdm-4.64.1 typeguard-2.13.3 unify-0.5 untokenize-0.1.1 validmind-1.11.7 visions-0.7.5 yapf-0.33.0 ydata-profiling-4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.colab-display-data+json</code></pre>
+</div>
 </div>
 <p><em>Note: Colab may generate the following warning after running the first cell</em>:</p>
 <pre><code>WARNING [...]
@@ -340,13 +583,13 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <section id="initializing-python-environment" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-python-environment">Initializing Python environment</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -370,17 +613,17 @@ You must restart the runtime in order to use newly installed versions</code></pr
 </ul>
 <p>The code snippet can be copied and pasted directly in the cell below to initialize the ValidMind Developer Framework when run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"3b481c4935130773c825014129d62c02"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"61ba7b6d80e1e7b162646d3a29374807dab6b3613757942f12ca11eab7530dcc"</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhny5uil00071ojtaomas47g"</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ## </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"3b481c4935130773c825014129d62c02"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"61ba7b6d80e1e7b162646d3a29374807dab6b3613757942f12ca11eab7530dcc"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"clhny5uil00071ojtaomas47g"</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The Developer Framework is now initialized and connected to the correct project on the platform.</p>
 </section>
@@ -391,9 +634,9 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <section id="loading-demo-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="loading-demo-dataset">Loading demo dataset</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="preparing-the-training-dataset" class="level3">
@@ -413,7 +656,7 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <li><code>CreditScore</code>: we didn’t observer any correlation between <code>CreditScore</code> and our target column <code>Exited</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">"RowNumber"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"CreditScore"</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">"RowNumber"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"CreditScore"</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="encoding-categorical-variables" class="level4">
@@ -424,15 +667,15 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <li><code>Gender</code>: convert from string to integer</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>genders <span class="op">=</span> {<span class="st">"Male"</span>: <span class="dv">0</span>, <span class="st">"Female"</span>: <span class="dv">1</span>}</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.replace({<span class="st">"Gender"</span>: genders}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df, pd.get_dummies(df[<span class="st">"Geography"</span>], prefix<span class="op">=</span><span class="st">"Geography"</span>)], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df.drop(<span class="st">"Geography"</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>genders <span class="op">=</span> {<span class="st">"Male"</span>: <span class="dv">0</span>, <span class="st">"Female"</span>: <span class="dv">1</span>}</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df.replace({<span class="st">"Gender"</span>: genders}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df, pd.get_dummies(df[<span class="st">"Geography"</span>], prefix<span class="op">=</span><span class="st">"Geography"</span>)], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>df.drop(<span class="st">"Geography"</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We are now ready to train our model with the preprocessed dataset:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="dataset-preparation" class="level4">
@@ -445,20 +688,20 @@ You must restart the runtime in order to use newly installed versions</code></pr
 </ul>
 <p>The <code>test</code> dataset will be our held out dataset for model evaluation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.20</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This guarantees a 60/20/20 split</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>train_ds, val_ds <span class="op">=</span> train_test_split(train_df, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For training</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> val_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> val_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># For testing</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> test_df.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This guarantees a 60/20/20 split</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>train_ds, val_ds <span class="op">=</span> train_test_split(train_df, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For training</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> val_ds.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> val_ds.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># For testing</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> test_df.drop(<span class="st">"Exited"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df.loc[:, <span class="st">"Exited"</span>].astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -466,23 +709,23 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <h3 class="anchored" data-anchor-id="model-training">Model training</h3>
 <p>We will train a simple XGBoost model and set its <code>eval_set</code> to <code>[(x_train, y_train), (x_val, y_val)]</code> in order to collect validation datasets metrics on every round. The ValidMind library supports collecting any type of “in training” metrics so model developers can provide additional context to model validators if necessary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model.set_params(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>model.fit(</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_train, y_train), (x_val, y_val)],</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model.set_params(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>model.fit(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_train, y_train), (x_val, y_val)],</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict_proba(x_val)[:, <span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [<span class="bu">round</span>(value) <span class="cf">for</span> value <span class="kw">in</span> y_pred]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_val, predictions)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict_proba(x_val)[:, <span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [<span class="bu">round</span>(value) <span class="cf">for</span> value <span class="kw">in</span> y_pred]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_val, predictions)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we are satisfied with our model, we can begin using the ValidMind Library to generate test and document it.</p>
 </section>
@@ -496,13 +739,13 @@ You must restart the runtime in order to use newly installed versions</code></pr
 </ul>
 <p>Here is an example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_plans()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_tests()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_tests()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"tabular_data_quality"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"tabular_data_quality"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="running-a-data-quality-test-plan" class="level3">
@@ -527,21 +770,21 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <h4 class="anchored" data-anchor-id="initialize-a-dataset-object-for-validmind">Initialize a dataset object for ValidMind</h4>
 <p>Before running the test plan, we must first initialize a ValidMind dataset object using the <code>init_dataset</code> function from the <code>vm</code> module. This function takes in arguements: <code>dataset</code> which is the dataset that we want to analyze; <code>target_column</code> which is used to identify the target variable; <code>class_labels</code> which is used to identify the labels used for classification model training.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    class_labels<span class="op">=</span>{</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0"</span>: <span class="st">"Did not exit"</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"1"</span>: <span class="st">"Exited"</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    class_labels<span class="op">=</span>{</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0"</span>: <span class="st">"Did not exit"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"1"</span>: <span class="st">"Exited"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initialize-and-run-the-tabulardataset-test-plan" class="level4">
 <h4 class="anchored" data-anchor-id="initialize-and-run-the-tabulardataset-test-plan">Initialize and run the TabularDataset test plan</h4>
 <p>We can now initialize the <code>TabularDataset</code> test suite. The primary method of doing this is with the <code>run_test_suite</code> function from the <code>vm</code> module. This function takes in a test suite name (in this case <code>tabular_dataset</code>) and a <code>dataset</code> keyword argument (the <code>vm_dataset</code> object we created earlier):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tabular_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"tabular_dataset"</span>, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tabular_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"tabular_dataset"</span>, dataset<span class="op">=</span>vm_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can access and review the resulting documentation in the ValidMind UI, in the “Data Preparation” section of the model documentation.</p>
 </section>
@@ -572,27 +815,27 @@ You must restart the runtime in order to use newly installed versions</code></pr
 <h4 class="anchored" data-anchor-id="initialize-vm-model-object-and-traintest-datasets">Initialize VM model object and train/test datasets</h4>
 <p>In order to run our SKLearnClassifier test plan, we need to initialize ValidMind object instances for the trained model and the training and test datasets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    model,</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Exited"</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now run the <code>BinaryClassifierModelValidation</code> test plan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"binary_classifier_model_validation"</span>, model<span class="op">=</span>vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_suite <span class="op">=</span> vm.run_test_suite(<span class="st">"binary_classifier_model_validation"</span>, model<span class="op">=</span>vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can access and review the resulting documentation in the ValidMind UI, in the “Model Development” section of the model documentation.</p>
 
