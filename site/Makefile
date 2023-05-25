@@ -54,7 +54,7 @@ deploy-demo:
 		echo "Deploying docs-demo site ..."; \
         quarto render && \
         aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && \
-        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null && \
+        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
     fi
 
 # Deployment to https://docs.validmind.ai/
