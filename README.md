@@ -11,36 +11,34 @@ You need:
 - [Quarto CLI](https://quarto.org/docs/get-started/)
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
 
-Additionally, we use [Sphinx](https://www.sphinx-doc.org/en/master/) to generate Markdown content for our developer framework from Python docstrings whenever you run `make get-source` or `make docs-site`.
-
-You need:
-
-- Sphinx `docutils`
-- Supporting tools: `sphinx_markdown_builder`, `myst_parser`, `dython`, `pandas_profiling`, and `shap`
-
 ## How our docs site is sourced
 
 ```bash
 site
+├── _source
+|   └── validmind-python
+|       └── docs
+|           └── _build
+|               └── validmind
+|                   └── *.html, *.js
 ├── guide
 │   └── *.qmd, *.svg, *.png
 ├── notebooks
+|   ├── how_to
+|   |   └── *.ipynb
 │   └── *.ipynb
-├── validmind
-│   └── *.md
 ├── _quarto.yml
 └── index.qmd
 ```
+**_source/ ... validmind/** — Built Developer Framework API docs
 
 **guide/** — Core docs sourced in Quarto Markdown
 
-**notebooks/** — Jyupiter notebooks copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks)
-
-**validmind/** — Developer framework docs built from [validmind-python/validmind/docs/](https://github.com/validmind/validmind-python/tree/main/validmind)
+**notebooks/** — Jyupiter notebooks copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks) or Google Drive
 
 **_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more
 
-**index.qmd** — Main landing page sourced in Quarto Markdown
+**index.qmd** — Main landing page sourced in Quarto Markdown and HTML
 
 ## Preview the docs site
 
@@ -56,28 +54,48 @@ cd site
 make get-source
 ```
 
+Important: This action doesn't copy the Jupyter notebooks sourced from [Google Drive](https://drive.google.com/drive/folders/1o2TcY9PM-OkjBKdfenymuaeAIqarY4T2). You need to update these notebooks _manually_. 
+
 ## Generate the docs site
+
+Including fetching the source from other repos:
 
 ```bash
 cd site
 make docs-site
 ```
 
+Just render the site:
+
+```bash
+cd site
+quarto render
+```
+
 The rendered static HTML output lives in:
 
 ```bash
 site
-└── _site
+└── _site ...
     └── *.html, *.css, *.png, *.js ...
 ```
 
-## Deploy the docs demo site (interim)
+## Deploy the production docs site
+
+Automatically from the `prod` branch: merge a commit into the branch with the latest changes from `main`.
+
+Manually from the `main` or `prod` branches:
 
 ```bash
-cd site
-make interim-deploy
+make deploy-prod
 ```
 
-Until we sort out [Add docs pipeline to Terraform and CI/CD #13](https://github.com/validmind/infra/issues/13), this command renders and deploys the docs to: 
+## Deploy the docs demo site
 
-- https://docs-demo.vm.validmind.ai/
+Automatically from the `docs-demo` branch: merge a commit into the branch, e.g. with the files you want to deploy.
+
+Manually from the `docs-demo` branch:
+
+```bash
+make deploy-demo
+```

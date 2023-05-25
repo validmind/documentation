@@ -1,6 +1,6 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
-DEST_DIR_NB := notebooks
+DEST_DIR_NB := notebooks/how_to
 DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
@@ -29,10 +29,9 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	@echo "Target notebook disabled, no action taken."
-#	rm -rf $(DEST_DIR_NB)
-#	mkdir -p $(DEST_DIR_NB)
-#	cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)
+	rm -rf $(DEST_DIR_NB)
+	mkdir -p $(DEST_DIR_NB)
+	cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)
 
 # Make Python library docs & copy them over
 python-docs:
@@ -55,13 +54,16 @@ deploy-demo:
 		echo "You're on the docs-demo branch. Deploying docs-demo site ..."; \
         quarto render && \
         aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && \
-        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null && \
-        aws cloudfront create-invalidation --distribution-id E1JZ9G56WF01P9 --paths "/*" --no-cli-pager > /dev/null && \
-        aws cloudfront create-invalidation --distribution-id E3OYBX7DHEHI6Y --paths "/*" --no-cli-pager > /dev/null; \
+        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
     fi
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	quarto render && \
-	aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete
-	aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "main" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+		echo "You're not on the main or prod branches, no action taken."; \
+	else \
+		echo "You're on the main or prod branch. Deploying prod site ..."; \
+		quarto render && \
+		aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && \
+		aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+	fi
