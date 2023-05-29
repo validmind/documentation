@@ -1,6 +1,6 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
-DEST_DIR_NB := notebooks/how_to
+DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
@@ -29,9 +29,12 @@ clone:
 
 # Copy over Jupyter notebooks
 notebooks:
-	rm -rf $(DEST_DIR_NB)
-	mkdir -p $(DEST_DIR_NB)
-	cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)
+	rm -rf $(DEST_DIR_NB)/how_to
+	mkdir -p $(DEST_DIR_NB)/how_to
+	cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)/how_to
+	rm -rf $(DEST_DIR_NB)/time_series
+	mkdir -p $(DEST_DIR_NB)/time_series
+	cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
 
 # Make Python library docs & copy them over
 python-docs:
