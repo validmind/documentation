@@ -478,23 +478,23 @@
   {
     "objectID": "guide/edit-templates.html",
     "href": "guide/edit-templates.html",
-    "title": "Editing templates",
+    "title": "Edit templates",
     "section": "",
-    "text": "Learn how to edit a template. This topic is relevant for administrators who need to need to configure how models get documented for specific use cases."
+    "text": "Learn how to edit templates that get used for model documentation or for validation reports. This topic is relevant for administrators who need to configure templates for specific use cases or where the existing templates supplied by ValidMind need to be customized.\nDocumentation templates are stored as YAML files that you edit directly in the online editor. These templates are versioned and saving a documentation template after making changes or reverting to a previous version state will create a new version."
   },
   {
     "objectID": "guide/edit-templates.html#steps",
     "href": "guide/edit-templates.html#steps",
-    "title": "Editing templates",
+    "title": "Edit templates",
     "section": "Steps",
-    "text": "Steps\nTo edit a template, send an email to support@validmind.com including:\n\nWhich template you’re working with\nWhat specific changes that need to be made"
+    "text": "Steps\n\nLog in to the ValidMind UI.\nFrom the side navigation, select Templates.\nSelect one of the tabs for the type of template you want to edit:\n\nDocumentation Templates\nValidation Report Templates\n\nLocate the template to edit and, at the bottom of the template card, click Edit Template.\nIn the YAML editor that opens, make your changes.\nClick Prepare new version to save your changes.\n\nAfter you have saved a new version, it becomes available for use with model documentation or validation reports."
   },
   {
     "objectID": "guide/edit-templates.html#whats-next",
     "href": "guide/edit-templates.html#whats-next",
-    "title": "Editing templates",
+    "title": "Edit templates",
     "section": "What’s Next",
-    "text": "What’s Next\nThe ValidMind Support Team will review your request and work with you to update the template."
+    "text": "What’s Next\nYou can see which version of a template is used in the Project Overview page of each documentation project."
   },
   {
     "objectID": "guide/try-developer-framework-with-colab.html",
@@ -1622,5 +1622,19 @@
     "title": "Time Series Forecasting Model Tutorial",
     "section": "Step 7: Run Model Validation Test Suite on Models",
     "text": "Step 7: Run Model Validation Test Suite on Models\n\nExplore the Time Series Model Validation Test Suite\n\nvm.test_suites.describe_test_suite(\"time_series_model_validation\")\n\n\n\n\n\n\nID\nName\nDescription\nTest Plans\n\n\n\n\ntime_series_model_validation\nTimeSeriesModelValidation\nTest suite for time series model validation.\nregression_model_description, regression_models_evaluation, time_series_forecast, time_series_sensitivity\n\n\n\n\n\n\n\nExplore Test Plans\n\nvm.test_plans.describe_plan(\"regression_model_description\")\n\n\n\n\n\n\nID\nName\nDescription\nRequired Context\nTests\n\n\n\n\nregression_model_description\nRegressionModelDescription\nTest plan for performance metric of regression model of statsmodels library\nmodel\nDatasetSplit (Metric), ModelMetadata (Metric)\n\n\n\n\n\n\nvm.test_plans.describe_plan(\"regression_models_evaluation\")\n\n\n\n\n\n\nID\nName\nDescription\nRequired Context\nTests\n\n\n\n\nregression_models_evaluation\nRegressionModelsEvaluation\nTest plan for metrics comparison of regression model of statsmodels library\nmodels\nRegressionModelsCoeffs (Metric), RegressionModelsPerformance (Metric)\n\n\nregression_models_evaluation\nRegressionModelsEvaluation\nTest plan for metrics comparison of regression model of statsmodels library\nmodel\nRegressionModelsCoeffs (Metric), RegressionModelsPerformance (Metric)\n\n\n\n\n\n\nvm.test_plans.describe_plan(\"time_series_forecast\")\n\n\n\n\n\n\nID\nName\nDescription\nRequired Context\nTests\n\n\n\n\ntime_series_forecast\nTimeSeriesForecast\nTest plan to perform time series forecast tests.\nmodels\nRegressionModelForecastPlotLevels (Metric)\n\n\n\n\n\n\nvm.test_plans.describe_plan(\"time_series_sensitivity\")\n\n\n\n\n\n\nID\nName\nDescription\nRequired Context\nTests\n\n\n\n\ntime_series_sensitivity\nTimeSeriesSensitivity\nTest plan to perform time series forecast tests.\nmodels\nRegressionModelSensitivityPlot (Metric)\n\n\n\n\n\n\n\nRun Model Validation Test Suite on a List of Models\n\nconfig= {\n    \"regression_forecast_plot_levels\": {\n        \"transformation\": \"integrate\",\n    },\n    \"regression_sensitivity_plot\": {\n        \"transformation\": \"integrate\",\n        \"shocks\": [0.3],\n    }\n}\n\nfull_suite = vm.run_test_suite(\n    \"time_series_model_validation\",\n    model = vm_model_B,\n    models = list_of_models,\n    config = config,\n)\n\n\n\n\n{'regression_forecast_plot_levels': {'transformation': 'integrate'}, 'transformation': 'integrate', 'shocks': [0.3]}\nregression_sensitivity_plot:0\nregression_sensitivity_plot:1"
+  },
+  {
+    "objectID": "guide/edit-templates.html#prerequisites",
+    "href": "guide/edit-templates.html#prerequisites",
+    "title": "Edit templates",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nThe template you want to edit must have been added to the ValidMind Platform already.\nIf you are not sure which template or which version of a template a documentation project is using, check the Project Overview page of your documentation project. The Documentation Template section in the right sidebar lists the information."
+  },
+  {
+    "objectID": "guide/edit-templates.html#troubleshooting",
+    "href": "guide/edit-templates.html#troubleshooting",
+    "title": "Edit templates",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\nThe documentation template editor validates the YAML changes you make and flags any errors that it finds. If you make a change that the editor cannot parse correctly, the editor will not let you save the changes until you correct the YAML.\nCommon issues with YAML include incorrect indenting, imbalanced quotes, or missing colons between keys and values. If you run into issues with incorrect YAML, check the error message provided by the template editor, as it might provide a line and column number where the error occurs."
   }
 ]
