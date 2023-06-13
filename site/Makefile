@@ -25,7 +25,7 @@ clean:
 
 # Clone the source repository we need
 clone:
-	git clone git@github.com:validmind/validmind-python.git $(SRC_DIR)
+	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
 notebooks:
