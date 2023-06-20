@@ -1,5 +1,8 @@
 # Define source and destination directories
 SRC_DIR := _source/validmind-python
+SRC_DIR_DOC := _source/documentation
+SRC_DIR_FRONTEND := _source/frontend
+SRC_DIR_BACKEND := _source/backend
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
@@ -22,10 +25,16 @@ help:
 # Clean up source directory
 clean:
 	rm -rf $(SRC_DIR)
+	rm -rf $(SRC_DIR_DOC)
+	rm -rf $(SRC_DIR_FRONTEND)
+	rm -rf $(SRC_DIR_BACKEND)
 
 # Clone the source repository we need
 clone:
 	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
+	git clone -b prod git@github.com:validmind/documentation.git $(SRC_DIR_DOC)
+	git clone -b prod git@github.com:validmind/frontend.git $(SRC_DIR_FRONTEND)
+	git clone -b prod git@github.com:validmind/backend.git $(SRC_DIR_BACKEND)
 
 # Copy over Jupyter notebooks
 notebooks:
