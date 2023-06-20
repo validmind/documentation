@@ -1,4 +1,4 @@
-## Internal notes for reviewers
+## Internal Notes for Reviewers
 
 <!--start release notes section -->
 ## External Release Notes
