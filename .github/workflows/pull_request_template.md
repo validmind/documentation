@@ -1,9 +1,5 @@
 ## Internal notes for reviewers
 
-### Shortcut story
-
-### Screenshots
-
 <!--start release notes section -->
 ## External Release Notes
 Please provide a description that allows an external user to understand the changes made, even without access to the original pull request.
