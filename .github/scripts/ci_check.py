@@ -1,6 +1,7 @@
 from github import Github
 import yaml
 import os
+import sys
 
 def ci_check(pr_number, access_token):
     g = Github(access_token)
@@ -35,7 +36,7 @@ if __name__ == '__main__':
         'repository_owner': os.environ['GITHUB_REPOSITORY_OWNER'],
         'repository': os.environ['GITHUB_REPOSITORY']
     }
-    pr_number = os.environ['GITHUB_EVENT_PULL_REQUEST_NUMBER']
+    pr_number = sys.argv[1]
     access_token = os.environ['GITHUB_TOKEN']
 
     result = ci_check(pr_number, access_token)
