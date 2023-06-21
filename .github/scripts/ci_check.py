@@ -36,7 +36,7 @@ if __name__ == '__main__':
         'repository': os.environ['GITHUB_REPOSITORY']
     }
     pr_number = os.environ['GITHUB_EVENT_PULL_REQUEST_NUMBER']
-    access_token = config['access_token']
+    access_token = os.environ['GITHUB_TOKEN']
 
     result = ci_check(pr_number, access_token)
     if result:
