@@ -2,9 +2,7 @@ name: CI Check
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    types: [opened, synchronize]
 
 jobs:
   ci_check:
@@ -23,4 +21,6 @@ jobs:
         run: pip install PyGithub pyyaml
 
       - name: Run CI Check
-        run: python .github/scripts/ci_check.py
+        run: python .github/scripts/ci_check.py ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
