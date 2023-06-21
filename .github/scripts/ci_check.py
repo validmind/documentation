@@ -2,6 +2,7 @@ from github import Github
 import yaml
 import os
 import re
+import sys
 
 def ci_check(pr_number, access_token):
     g = Github(access_token)
