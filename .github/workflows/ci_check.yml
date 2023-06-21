@@ -20,11 +20,7 @@ jobs:
       - name: Install dependencies
         run: pip install PyGithub pyyaml
 
-      - name: Get pull request number
-        id: pr
-        run: echo "::set-output name=pr_number::${{ github.event.pull_request.number }}"
-
       - name: Run CI Check
-        run: python .github/scripts/ci_check.py ${{ steps.pr.outputs.pr_number }}
+        run: python .github/scripts/ci_check.py ${{ github.event.pull_request.html_url }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

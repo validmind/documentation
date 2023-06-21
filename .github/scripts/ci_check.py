@@ -1,7 +1,7 @@
 from github import Github
 import yaml
 import os
-import sys
+import re
 
 def ci_check(pr_number, access_token):
     g = Github(access_token)
@@ -32,14 +32,10 @@ def ci_check(pr_number, access_token):
                 return False
 
 if __name__ == '__main__':
-    github = {
-        'repository_owner': os.environ['GITHUB_REPOSITORY_OWNER'],
-        'repository': os.environ['GITHUB_REPOSITORY']
-    }
-    pr_number = sys.argv[1]
+    pr_url = sys.argv[1]
     access_token = os.environ['GITHUB_TOKEN']
 
-    result = ci_check(pr_number, access_token)
+    result = ci_check(pr_url, access_token)
     if result:
         print('CI check passed.')
         exit(0)
