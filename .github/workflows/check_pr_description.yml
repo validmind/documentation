@@ -1,0 +1,33 @@
+name: Check PR Description
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Print event payload
+        run: |
+          echo '${{ toJson(github.event) }}'
+        
+      - name: Check PR description
+        run: python .github/scripts/check_pr_description.py
+        
+        env:
+          PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
