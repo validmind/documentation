@@ -7,7 +7,7 @@ def ci_check(pr_number, access_token):
     g = Github(access_token)
 
     # Get repository, pull request, and labels
-    repo = g.get_repo(f'{github.repository_owner}/{github.repository}')
+    repo = g.get_repo(os.environ['GITHUB_REPOSITORY'])
     pr = repo.get_pull(pr_number)
     labels = [label.name for label in pr.labels]
     description = pr.body
