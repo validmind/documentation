@@ -31,9 +31,6 @@ def ci_check(pr_number, access_token):
                 return False
 
 if __name__ == '__main__':
-    with open('.github/ci_config.yml', 'r') as config_file:
-        config = yaml.safe_load(config_file)
-
     github = {
         'repository_owner': os.environ['GITHUB_REPOSITORY_OWNER'],
         'repository': os.environ['GITHUB_REPOSITORY']
