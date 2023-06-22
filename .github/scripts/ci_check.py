@@ -20,8 +20,9 @@ def ci_check(pr_number, access_token):
     labels = [label.name for label in pr.labels]
     description = pr.body
 
-    # Check for the presence of a label
-    if not labels:
+    # Check for the presence of at least one label
+    required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
+    if not any(label in labels for label in required_labels):
         print('Pull requests must include at least one label.')
         return False
         
