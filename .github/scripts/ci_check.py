@@ -30,7 +30,7 @@ def ci_check(pr_number, access_token):
          return True
         
     # Check for description of external change
-    release_notes_pattern = r'## External Release Notes\n(?!<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->)(.*?)\S'
+    release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
     release_notes_match = re.search(release_notes_pattern, description, re.DOTALL)
     if release_notes_match:
         release_notes_text = release_notes_match.group(1).strip()
