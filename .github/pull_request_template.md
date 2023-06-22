@@ -1,11 +1,20 @@
 ## Internal Notes for Reviewers
 
-<!--start release notes section -->
+<!--
+PR instructions for release notes:
+
+1. Pick at least one label:
+
+- `internal` (no release notes required)
+- `highlight`
+- `enhancement`
+- `bug`
+- `deprecation`
+- `documentation`
+
+2. In the next section, describe the changes so that an external user can understand them. Keep it simple and link to the docs with [Learn more ...](<relative-link>), if available. 
+-->
+
 ## External Release Notes
 
-Please provide a description that allows an external user to understand the changes made, even without access to the original pull request.
-
-If this is an internal-only change, add the `internal` label to omit the changes from the external release notes. 
-
-Is this a cool new feature we should curate for our users? Add the `highlight` label. 
-<!-- end release notes section -->
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
