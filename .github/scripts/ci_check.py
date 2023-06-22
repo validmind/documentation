@@ -22,7 +22,7 @@ def ci_check(pr_number, access_token):
 
     # Check for the presence of a label
     if not labels:
-        print('Pull request must include a label.')
+        print('Pull requests must include at least one label.')
         return False
         
     # Check for the presence of 'internal' label
