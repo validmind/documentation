@@ -2,6 +2,7 @@ import os
 import re
 import json
 import sys
+import requests
 from github import Github
 
 def get_pull_request_number(pr_url):
@@ -23,7 +24,8 @@ def ci_check(pr_number, access_token):
     # Check for the presence of at least one label
     required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
-        print('Pull requests must include at least one label.')
+        comment = "Pull requests must include at least one of the required labels."
+        pr.create_issue_comment(comment)
         return False
         
     # Check for the presence of 'internal' label
@@ -38,7 +40,8 @@ def ci_check(pr_number, access_token):
         if release_notes_text and release_notes_text != '<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->':
             return True
 
-    print('Pull requests must include a description in the release notes section.')
+    comment = "Pull requests must include a description in the release notes section."
+    pr.create_issue_comment(comment)
     return False
 
 if __name__ == '__main__':
@@ -52,7 +55,16 @@ if __name__ == '__main__':
     result = ci_check(pr_number, access_token)
 
     if result:
-        print('CI check passed.')
+        comment = "CI check passed."
+    else:
+        comment = "CI check failed."
+
+    g = Github(access_token)
+    repo = g.get_repo(os.environ['GITHUB_REPOSITORY'])
+    pr = repo.get_pull(pr_number)
+    pr.create_issue_comment(comment)
+
+    if result:
         exit(0)
     else:
         exit(1)
