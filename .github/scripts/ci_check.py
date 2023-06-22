@@ -37,7 +37,7 @@ def ci_check(pr_number, access_token):
         if release_notes_text and release_notes_text != '<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->':
             return True
 
-    print('Pull request must include description in Release Notes section.')
+    print('Pull requests must include a description in the release notes section.')
     return False
 
 def create_check_run(repo, pr_number, conclusion, output):
