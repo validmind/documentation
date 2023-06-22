@@ -1,6 +1,6 @@
 import os
 import re
-import requests
+import json
 import sys
 from github import Github
 
@@ -41,12 +41,15 @@ def ci_check(pr_number, access_token):
     return False
 
 if __name__ == '__main__':
-    pr_url = sys.argv[1]
+    event_path = os.environ['GITHUB_EVENT_PATH']
+    with open(event_path, 'r') as f:
+        event_payload = json.load(f)
+        pr_number = event_payload['pull_request']['number']
+    
     access_token = os.environ['GITHUB_TOKEN']
 
-    pr_number = get_pull_request_number(pr_url)
+    result = ci_check(pr_number, access_token)
 
-    result = ci_check(pr_url, access_token)
     if result:
         print('CI check passed.')
         exit(0)
