@@ -25,7 +25,7 @@ def ci_check(pr_number, access_token):
          return True
 
     # Check if root comment is empty
-    if not description.strip():
+    if description is None or not description.strip():
         if not any(label in labels for label in required_labels):
             comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Except for `internal`, pull requests must also include a description in the release notes section."
             pr.create_issue_comment(comment)
