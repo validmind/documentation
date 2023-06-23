@@ -23,6 +23,8 @@ def ci_check(pr_number, access_token):
     # Check for the presence of 'internal' label
     if 'internal' in labels:
          return True
+    
+    required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
 
     # Check if root comment is empty
     if description is None or not description.strip():
@@ -35,7 +37,6 @@ def ci_check(pr_number, access_token):
         return False
 
     # Check for the presence of at least one label
-    required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
         # Check for description of external change
         release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
