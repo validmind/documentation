@@ -5,7 +5,7 @@ PR instructions for release notes:
 
 1. Pick at least one label:
 
-- `internal` (no release notes required)
+- `internal` (no release notes required, skip Step 2.)
 - `highlight`
 - `enhancement`
 - `bug`
