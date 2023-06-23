@@ -20,8 +20,12 @@ def ci_check(pr_number, access_token):
     labels = [label.name for label in pr.labels]
     description = pr.body
 
+    # Check for the presence of 'internal' label
+    if 'internal' in labels:
+         return True
+
     # Check for the presence of at least one label
-    required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
+    required_labels = ['internal','highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
         # Check for description of external change
         release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
@@ -33,13 +37,9 @@ def ci_check(pr_number, access_token):
                 pr.create_issue_comment(comment)
                 return False
         # Pull request has neither a label or a description   
-        comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Pull requests must also include a description in the release notes section.."
+        comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Pull requests must also include a description in the release notes section."
         pr.create_issue_comment(comment)
         return False
-        
-    # Check for the presence of 'internal' label
-    if 'internal' in labels:
-         return True
         
     # Check for description of external change
     release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
