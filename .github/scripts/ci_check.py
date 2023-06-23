@@ -23,15 +23,18 @@ def ci_check(pr_number, access_token):
     # Check for the presence of at least one label
     required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
-        # Check if description is also missing
+        # Check for description of external change
         release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
         release_notes_match = re.search(release_notes_pattern, description, re.DOTALL)
-        if not release_notes_match:
-            comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Pull requests must also include a description in the release notes section."
-            pr.create_issue_comment(comment)
-        else:
-            comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`."
-            pr.create_issue_comment(comment)
+        if release_notes_match:
+            release_notes_text = release_notes_match.group(1).strip()
+            if release_notes_text and release_notes_text != '<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->':
+                comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`."
+                pr.create_issue_comment(comment)
+                return False
+        # Pull request has neither a label or a description   
+        comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Pull requests must also include a description in the release notes section.."
+        pr.create_issue_comment(comment)
         return False
         
     # Check for the presence of 'internal' label
