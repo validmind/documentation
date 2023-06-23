@@ -5,34 +5,8 @@ on:
     types: [opened, synchronize, labeled, unlabeled, edited]
 
 jobs:
-  check_changes:
-    runs-on: ubuntu-latest
-    outputs:
-      description_changed: ${{ steps.check_changes.outputs.description_changed }}
-      labels_changed: ${{ steps.check_changes.outputs.labels_changed }}
-
-    steps:
-      - name: Check if description changed
-        id: check_changes
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            python .github/scripts/check_changes.py description
-          fi
-          echo "::set-output name=description_changed::${{ success() }}"
-
-
-      - name: Check if labels changed
-        id: check_changes_labels
-        if: ${{ steps.check_changes.outputs.description_changed == 'false' }}
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            python .github/scripts/check_changes.py labels
-          fi
-          echo "::set-output name=labels_changed::${{ success() }}"
   ci_check:
-    needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.description_changed == 'false' || needs.check_changes_labels.outputs.labels_changed == 'false' }}
 
     steps:
       - name: Checkout repository
