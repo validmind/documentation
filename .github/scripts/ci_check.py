@@ -1,7 +1,6 @@
 import os
 import re
 import json
-import sys
 import requests
 from github import Github
 
@@ -54,17 +53,13 @@ if __name__ == '__main__':
 
     result = ci_check(pr_number, access_token)
 
-    if result:
-        comment = "CI check passed."
-    else:
+    if not result:
         comment = "CI check failed."
 
-    g = Github(access_token)
-    repo = g.get_repo(os.environ['GITHUB_REPOSITORY'])
-    pr = repo.get_pull(pr_number)
-    pr.create_issue_comment(comment)
-
-    if result:
-        exit(0)
-    else:
+        g = Github(access_token)
+        repo = g.get_repo(os.environ['GITHUB_REPOSITORY'])
+        pr = repo.get_pull(pr_number)
+        pr.create_issue_comment(comment)
         exit(1)
+
+    exit(0)
