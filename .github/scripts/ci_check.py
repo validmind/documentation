@@ -24,7 +24,7 @@ def ci_check(pr_number, access_token):
     # Check for the presence of at least one label
     required_labels = ['highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
-        comment = "Pull requests must include at least one of the required labels."
+        comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`."
         pr.create_issue_comment(comment)
         return False
         
