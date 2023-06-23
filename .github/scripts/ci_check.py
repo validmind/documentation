@@ -27,9 +27,9 @@ def ci_check(pr_number, access_token):
     # Check for the presence of at least one label
     required_labels = ['internal','highlight', 'enhancement', 'bug', 'deprecation', 'documentation']
     if not any(label in labels for label in required_labels):
-        # Pull request has no label and root comment is empty
+        # Check if root comment is empty
         if not description.strip():
-            comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Except for `internal`, pull requests must also include a description in the release notes section."
+            comment = "Pull requests must include at least one of the required labels: `internal` (no release notes required), `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`."
             pr.create_issue_comment(comment)
             return False
         # Check for description of external change
@@ -37,7 +37,6 @@ def ci_check(pr_number, access_token):
         release_notes_match = re.search(release_notes_pattern, description, re.DOTALL)
         if release_notes_match:
             release_notes_text = release_notes_match.group(1).strip()
-            # Pull request is missing label but has a description
             if release_notes_text and release_notes_text != '<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->':
                 comment = "Pull requests must include at least one of the required labels: `internal` (no release notes required), `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`."
                 pr.create_issue_comment(comment)
@@ -46,12 +45,14 @@ def ci_check(pr_number, access_token):
         comment = "Pull requests must include at least one of the required labels: `internal`, `highlight`, `enhancement`, `bug`, `deprecation`, `documentation`. Except for `internal`, pull requests must also include a description in the release notes section."
         pr.create_issue_comment(comment)
         return False
-        
-    # Pull request has a label and root comment is empty
+    
+    # Check if root comment is empty
     if not description.strip():
-            comment = "Pull requests must include a description in the release notes section."
-            pr.create_issue_comment(comment)
-            return False
+        comment = "Pull requests must include a description in the release notes section."
+        pr.create_issue_comment(comment)
+        return False
+        
+    # Check for description of external change
     release_notes_pattern = r'## External Release Notes[\n\r]+(.*?)(?:\n##|\Z)'
     release_notes_match = re.search(release_notes_pattern, description, re.DOTALL)
     if release_notes_match:
