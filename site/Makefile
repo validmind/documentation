@@ -25,17 +25,16 @@ clean:
 
 # Clone the source repository we need
 clone:
-	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
+	git clone git@github.com:validmind/validmind-python.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
 notebooks:
-	rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
-#	cp -r $(SRC_DIR)/notebooks/Quickstart_Customer Churn_full_suite.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/how_to && cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)/how_to
-	mkdir -p $(DEST_DIR_NB)/nlp && cp -r $(SRC_DIR)/notebooks/nlp/nlp_sentiment_analysis_demo.ipynb $(DEST_DIR_NB)/nlp/
-	mkdir -p $(DEST_DIR_NB)/time_series && cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
-	cp -r $(SRC_DIR)/notebooks/external_test_providers_demo.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/tests && cp -r $(SRC_DIR)/notebooks/tests/MyCustomTest.py $(DEST_DIR_NB)/tests/
+	rm -rf $(DEST_DIR_NB)/how_to
+	mkdir -p $(DEST_DIR_NB)/how_to
+	cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)/how_to
+	rm -rf $(DEST_DIR_NB)/time_series
+	mkdir -p $(DEST_DIR_NB)/time_series
+	cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
 
 # Make Python library docs & copy them over
 python-docs:
