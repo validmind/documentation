@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ValidMind - Quickstart - Customer Churn Full Suite Model Documentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../validmind.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/get-started.html" rel="" target="">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/guide.html" rel="" target="">
+ <span class="menu-text">Guides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/developer-framework.html" rel="" target="">
+ <span class="menu-text">Developer Framework</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/faq.html" rel="" target="">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guide/support.html" rel="" target="">
+ <span class="menu-text">Support</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#before-you-begin" id="toc-before-you-begin" class="nav-link active" data-scroll-target="#before-you-begin">Before You Begin</a></li>
+  <li><a href="#install-the-validmind-developer-framework" id="toc-install-the-validmind-developer-framework" class="nav-link" data-scroll-target="#install-the-validmind-developer-framework">Install the Validmind Developer framework</a></li>
+  <li><a href="#initialize-the-python-environment" id="toc-initialize-the-python-environment" class="nav-link" data-scroll-target="#initialize-the-python-environment">Initialize the Python environment</a></li>
+  <li><a href="#initialize-the-validmind-client-library" id="toc-initialize-the-validmind-client-library" class="nav-link" data-scroll-target="#initialize-the-validmind-client-library">Initialize the Validmind Client Library</a></li>
+  <li><a href="#load-the-demo-dataset" id="toc-load-the-demo-dataset" class="nav-link" data-scroll-target="#load-the-demo-dataset">Load the Demo Dataset</a></li>
+  <li><a href="#run-the-full-data-and-model-validation-test-suite" id="toc-run-the-full-data-and-model-validation-test-suite" class="nav-link" data-scroll-target="#run-the-full-data-and-model-validation-test-suite">Run the Full Data and Model Validation Test Suite</a>
+  <ul class="collapse">
+  <li><a href="#prepocess-the-raw-dataset" id="toc-prepocess-the-raw-dataset" class="nav-link" data-scroll-target="#prepocess-the-raw-dataset">Prepocess the Raw Dataset</a></li>
+  <li><a href="#run-the-full-suite" id="toc-run-the-full-suite" class="nav-link" data-scroll-target="#run-the-full-suite">Run the Full Suite</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quickstart - Customer Churn Full Suite Model Documentation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This interactive notebook will guide you through documenting a model using the ValidMind Developer framework. We will use sample datasets provided by the library and train a simple classification model.</p>
+<p>For this simple demonstration, we will use the following bank customer churn dataset from Kaggle: https://www.kaggle.com/code/kmalit/bank-customer-churn-prediction/data.</p>
+<p>We will train a sample model and demonstrate the following documentation functionalities:</p>
+<ul>
+<li>Initializing the ValidMind Developer Framework</li>
+<li>Using a sample datasets provided by the library to train a simple classification model</li>
+<li>Running a test suite to quickly generate document about the data and model</li>
+</ul>
+<section id="before-you-begin" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-begin">Before You Begin</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Need a hand?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>First time working with Validmind? Try <a href="../guide/quickstart.html">reading our quickstart.</a><br> Not what you’re looking for? Try reaching out to our support team at <a href="mailto:support@validmind.com">support@validmind.com</a> for further assistance.</p>
+</div>
+</div>
+<p>To set up our Developer Framework, run each of the following code snippets.</p>
+</section>
+<section id="install-the-validmind-developer-framework" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="install-the-validmind-developer-framework">Install the Validmind Developer framework</h2>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">--</span>upgrade validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Requirement already satisfied: validmind in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (1.15.5)
+Requirement already satisfied: xgboost&lt;2.0.0,&gt;=1.5.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.7.6)
+Requirement already satisfied: ipython==7.34.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (7.34.0)
+Requirement already satisfied: arch&lt;6.0.0,&gt;=5.4.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (5.6.0)
+Requirement already satisfied: catboost&lt;2.0,&gt;=1.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.2)
+Requirement already satisfied: pydantic&lt;2.0.0,&gt;=1.9.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.10.10)
+Requirement already satisfied: pdoc&lt;14.0.0,&gt;=13.1.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (13.1.1)
+Requirement already satisfied: pandas-profiling&lt;4.0.0,&gt;=3.6.6 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (3.6.6)
+Requirement already satisfied: requests&lt;3.0.0,&gt;=2.27.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (2.31.0)
+Requirement already satisfied: sphinx&lt;7.0.0,&gt;=6.1.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (6.2.1)
+Requirement already satisfied: scikit-learn&lt;2.0.0,&gt;=1.0.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.3.0)
+Requirement already satisfied: sentry-sdk&lt;2.0.0,&gt;=1.24.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.26.0)
+Requirement already satisfied: myst-parser&lt;2.0.0,&gt;=1.0.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.0.0)
+Requirement already satisfied: pypmml&lt;0.10.0,&gt;=0.9.17 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.9.17)
+Requirement already satisfied: aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (3.8.4)
+Requirement already satisfied: shap&lt;0.42.0,&gt;=0.41.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.41.0)
+Requirement already satisfied: markdown&lt;4.0.0,&gt;=3.4.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (3.4.3)
+Requirement already satisfied: numpy==1.22.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.22.3)
+Requirement already satisfied: tqdm&lt;5.0.0,&gt;=4.64.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (4.65.0)
+Requirement already satisfied: dython&lt;0.8.0,&gt;=0.7.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.7.2)
+Requirement already satisfied: pandas==1.5.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.5.3)
+Requirement already satisfied: tabulate&lt;0.9.0,&gt;=0.8.9 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.8.10)
+Requirement already satisfied: nltk&lt;4.0.0,&gt;=3.8.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (3.8.1)
+Requirement already satisfied: click&lt;9.0.0,&gt;=8.0.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (8.1.3)
+Requirement already satisfied: sphinx-rtd-theme&lt;2.0.0,&gt;=1.2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (1.2.2)
+Requirement already satisfied: statsmodels&lt;0.14.0,&gt;=0.13.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.13.5)
+Requirement already satisfied: kaleido==0.2.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.2.1)
+Requirement already satisfied: plotly&lt;6.0.0,&gt;=5.14.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (5.15.0)
+Requirement already satisfied: python-dotenv&lt;0.21.0,&gt;=0.20.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.20.0)
+Requirement already satisfied: seaborn&lt;0.12.0,&gt;=0.11.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.11.2)
+Requirement already satisfied: ipywidgets&lt;9.0.0,&gt;=8.0.6 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (8.0.6)
+Requirement already satisfied: sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from validmind) (0.5.5)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (3.0.38)
+Requirement already satisfied: setuptools&gt;=18.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ipython==7.34.0-&gt;validmind) (57.4.0)
+Requirement already satisfied: jedi&gt;=0.16 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (0.18.2)
+Requirement already satisfied: pygments in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (2.15.1)
+Requirement already satisfied: traitlets&gt;=4.2 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (5.9.0)
+Requirement already satisfied: backcall in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (0.2.0)
+Requirement already satisfied: colorama in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (0.4.6)
+Requirement already satisfied: matplotlib-inline in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (0.1.6)
+Requirement already satisfied: decorator in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (5.1.1)
+Requirement already satisfied: pickleshare in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipython==7.34.0-&gt;validmind) (0.7.5)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in c:\users\parri\appdata\roaming\python\python39\site-packages (from pandas==1.5.3-&gt;validmind) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from pandas==1.5.3-&gt;validmind) (2023.3)
+Requirement already satisfied: aiosignal&gt;=1.1.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (1.3.1)
+Requirement already satisfied: charset-normalizer&lt;4.0,&gt;=2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (3.1.0)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (1.9.2)
+Requirement already satisfied: frozenlist&gt;=1.1.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (1.3.3)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (6.0.4)
+Requirement already satisfied: async-timeout&lt;5.0,&gt;=4.0.0a3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (4.0.2)
+Requirement already satisfied: attrs&gt;=17.3.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (23.1.0)
+Requirement already satisfied: cchardet in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (2.1.7)
+Requirement already satisfied: Brotli in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (1.0.9)
+Requirement already satisfied: aiodns in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (3.0.0)
+Requirement already satisfied: property-cached&gt;=1.6.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from arch&lt;6.0.0,&gt;=5.4.0-&gt;validmind) (1.6.4)
+Requirement already satisfied: scipy&gt;=1.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from arch&lt;6.0.0,&gt;=5.4.0-&gt;validmind) (1.10.1)
+Requirement already satisfied: matplotlib in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (3.7.1)
+Requirement already satisfied: graphviz in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (0.20.1)
+Requirement already satisfied: six in c:\users\parri\appdata\roaming\python\python39\site-packages (from catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.16.0)
+Requirement already satisfied: scikit-plot&gt;=0.3.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from dython&lt;0.8.0,&gt;=0.7.1-&gt;validmind) (0.3.7)
+Requirement already satisfied: psutil&gt;=5.9.1 in c:\users\parri\appdata\roaming\python\python39\site-packages (from dython&lt;0.8.0,&gt;=0.7.1-&gt;validmind) (5.9.5)
+Requirement already satisfied: widgetsnbextension~=4.0.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (4.0.7)
+Requirement already satisfied: ipykernel&gt;=4.5.1 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (6.23.3)
+Requirement already satisfied: jupyterlab-widgets~=3.0.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (3.0.7)
+Requirement already satisfied: packaging in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (23.1)
+Requirement already satisfied: comm&gt;=0.1.1 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (0.1.3)
+Requirement already satisfied: tornado&gt;=6.1 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (6.3.2)
+Requirement already satisfied: jupyter-client&gt;=6.1.12 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (8.3.0)
+Requirement already satisfied: nest-asyncio in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (1.5.6)
+Requirement already satisfied: debugpy&gt;=1.6.5 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (1.6.7)
+Requirement already satisfied: jupyter-core!=5.0.*,&gt;=4.12 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (5.3.1)
+Requirement already satisfied: pyzmq&gt;=20 in c:\users\parri\appdata\roaming\python\python39\site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (25.1.0)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.0 in c:\users\parri\appdata\roaming\python\python39\site-packages (from jedi&gt;=0.16-&gt;ipython==7.34.0-&gt;validmind) (0.8.3)
+Requirement already satisfied: importlib-metadata&gt;=4.8.3 in c:\users\parri\appdata\roaming\python\python39\site-packages (from jupyter-client&gt;=6.1.12-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (6.7.0)
+Requirement already satisfied: zipp&gt;=0.5 in c:\users\parri\appdata\roaming\python\python39\site-packages (from importlib-metadata&gt;=4.8.3-&gt;jupyter-client&gt;=6.1.12-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (3.15.0)
+Requirement already satisfied: pywin32&gt;=300 in c:\users\parri\appdata\roaming\python\python39\site-packages (from jupyter-core!=5.0.*,&gt;=4.12-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (306)
+Requirement already satisfied: platformdirs&gt;=2.5 in c:\users\parri\appdata\roaming\python\python39\site-packages (from jupyter-core!=5.0.*,&gt;=4.12-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&lt;9.0.0,&gt;=8.0.6-&gt;validmind) (3.8.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.1.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (4.40.0)
+Requirement already satisfied: cycler&gt;=0.10 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (0.11.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (3.1.0)
+Requirement already satisfied: pillow&gt;=6.2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (9.5.0)
+Requirement already satisfied: importlib-resources&gt;=3.2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (5.12.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from matplotlib-&gt;catboost&lt;2.0,&gt;=1.2-&gt;validmind) (1.4.4)
+Requirement already satisfied: jinja2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (3.1.2)
+Requirement already satisfied: docutils&lt;0.20,&gt;=0.15 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (0.18.1)
+Requirement already satisfied: mdit-py-plugins~=0.3.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (0.3.5)
+Requirement already satisfied: pyyaml in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (6.0)
+Requirement already satisfied: markdown-it-py&lt;3.0.0,&gt;=1.0.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (2.2.0)
+Requirement already satisfied: mdurl~=0.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from markdown-it-py&lt;3.0.0,&gt;=1.0.0-&gt;myst-parser&lt;2.0.0,&gt;=1.0.0-&gt;validmind) (0.1.2)
+Requirement already satisfied: joblib in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from nltk&lt;4.0.0,&gt;=3.8.1-&gt;validmind) (1.3.1)
+Requirement already satisfied: regex&gt;=2021.8.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from nltk&lt;4.0.0,&gt;=3.8.1-&gt;validmind) (2023.6.3)
+Requirement already satisfied: ydata-profiling in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (4.3.1)
+Requirement already satisfied: MarkupSafe in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from pdoc&lt;14.0.0,&gt;=13.1.1-&gt;validmind) (2.1.3)
+Requirement already satisfied: tenacity&gt;=6.2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from plotly&lt;6.0.0,&gt;=5.14.1-&gt;validmind) (8.2.2)
+Requirement already satisfied: wcwidth in c:\users\parri\appdata\roaming\python\python39\site-packages (from prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0-&gt;ipython==7.34.0-&gt;validmind) (0.2.6)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in c:\users\parri\appdata\roaming\python\python39\site-packages (from pydantic&lt;2.0.0,&gt;=1.9.1-&gt;validmind) (4.7.0)
+Requirement already satisfied: py4j&gt;=0.10.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from pypmml&lt;0.10.0,&gt;=0.9.17-&gt;validmind) (0.10.9.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (2023.5.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from requests&lt;3.0.0,&gt;=2.27.1-&gt;validmind) (2.0.3)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from scikit-learn&lt;2.0.0,&gt;=1.0.2-&gt;validmind) (3.1.0)
+Requirement already satisfied: slicer==0.0.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (0.0.7)
+Requirement already satisfied: cloudpickle in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (2.2.1)
+Requirement already satisfied: numba in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (0.57.1)
+Requirement already satisfied: snowballstemmer&gt;=2.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.2.0)
+Requirement already satisfied: sphinxcontrib-applehelp in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.4)
+Requirement already satisfied: sphinxcontrib-htmlhelp&gt;=2.0.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.0.1)
+Requirement already satisfied: babel&gt;=2.9 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (2.12.1)
+Requirement already satisfied: sphinxcontrib-devhelp in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.2)
+Requirement already satisfied: sphinxcontrib-jsmath in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.1)
+Requirement already satisfied: imagesize&gt;=1.3 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.4.1)
+Requirement already satisfied: alabaster&lt;0.8,&gt;=0.7 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (0.7.13)
+Requirement already satisfied: sphinxcontrib-qthelp in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.0.3)
+Requirement already satisfied: sphinxcontrib-serializinghtml&gt;=1.1.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx&lt;7.0.0,&gt;=6.1.3-&gt;validmind) (1.1.5)
+Requirement already satisfied: html2text in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (2020.1.16)
+Requirement already satisfied: pydash in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (7.0.4)
+Requirement already satisfied: yapf in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (0.40.1)
+Requirement already satisfied: unify in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (0.5)
+Requirement already satisfied: sphinxcontrib-jquery&lt;5,&gt;=4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from sphinx-rtd-theme&lt;2.0.0,&gt;=1.2.0-&gt;validmind) (4.1)
+Requirement already satisfied: patsy&gt;=0.5.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from statsmodels&lt;0.14.0,&gt;=0.13.5-&gt;validmind) (0.5.3)
+Requirement already satisfied: pycares&gt;=4.0.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from aiodns-&gt;aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (4.3.0)
+Requirement already satisfied: cffi&gt;=1.5.0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from pycares&gt;=4.0.0-&gt;aiodns-&gt;aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (1.15.1)
+Requirement already satisfied: pycparser in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from cffi&gt;=1.5.0-&gt;pycares&gt;=4.0.0-&gt;aiodns-&gt;aiohttp[speedups]&lt;4.0.0,&gt;=3.8.4-&gt;validmind) (2.21)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from numba-&gt;shap&lt;0.42.0,&gt;=0.41.0-&gt;validmind) (0.40.1)
+Requirement already satisfied: untokenize in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from unify-&gt;sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (0.1.1)
+Requirement already satisfied: tomli&gt;=2.0.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from yapf-&gt;sphinx-markdown-builder&lt;0.6.0,&gt;=0.5.5-&gt;validmind) (2.0.1)
+Requirement already satisfied: wordcloud&gt;=1.9.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (1.9.2)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.2 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (2.13.3)
+Requirement already satisfied: dacite&gt;=1.8 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (1.8.1)
+Requirement already satisfied: phik&lt;0.13,&gt;=0.11.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (0.12.3)
+Requirement already satisfied: visions[type_image_path]==0.7.5 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (0.7.5)
+Requirement already satisfied: multimethod&lt;2,&gt;=1.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (1.9.1)
+Requirement already satisfied: htmlmin==0.1.12 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (0.1.12)
+Requirement already satisfied: imagehash==4.3.1 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (4.3.1)
+Requirement already satisfied: PyWavelets in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from imagehash==4.3.1-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (1.4.1)
+Requirement already satisfied: networkx&gt;=2.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from visions[type_image_path]==0.7.5-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (3.1)
+Requirement already satisfied: tangled-up-in-unicode&gt;=0.0.4 in c:\users\parri\appdata\local\programs\python\python39\lib\site-packages (from visions[type_image_path]==0.7.5-&gt;ydata-profiling-&gt;pandas-profiling&lt;4.0.0,&gt;=3.6.6-&gt;validmind) (0.2.0)
+Note: you may need to restart the kernel to use updated packages.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING: You are using pip version 21.2.3; however, version 23.1.2 is available.
+You should consider upgrading via the 'c:\Users\parri\AppData\Local\Programs\Python\Python39\python.exe -m pip install --upgrade pip' command.</code></pre>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Follow this link to read about <a href="../guide/install-and-initialize-developer-framework.html">installing and initializing</a> our Developer Framework in-depth.</p>
+</div>
+</div>
+</div></div></section>
+<section id="initialize-the-python-environment" class="level2">
+<h2 class="anchored" data-anchor-id="initialize-the-python-environment">Initialize the Python environment</h2>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="initialize-the-validmind-client-library" class="level2">
+<h2 class="anchored" data-anchor-id="initialize-the-validmind-client-library">Initialize the Validmind Client Library</h2>
+<p>To link a project with the client library, you will need to find the initialization code in the <strong>Client Integration</strong> page on the appropriate project.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t have a documentation project?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Learn how to <a href="../guide/create-documentation-project.html">create your first.</a>.</p>
+</div>
+</div>
+<p>Copy and paste it directly into the following cell, and run the cell to initialize the client library:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace the code below with the code snippet from your project ##</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"246a6c36b1550c66619cf901ce9d9e0f"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"API_SECRET"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"cljj1g5ss03ou18jqw1pnvcqf"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>2023-06-30 16:17:09,503 - ERROR - api_client - Failed to connect to ValidMind API: {"code": "invalid_credentials", "description": "Invalid API credentials"}</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ConnectionError: {"code": "invalid_credentials", "description": "Invalid API credentials"}</code></pre>
+</div>
+</div>
+</section>
+<section id="load-the-demo-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-demo-dataset">Load the Demo Dataset</h2>
+<p>For the purpose of this demonstration, we will use a sample dataset provided by the ValidMind library.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the sample dataset from the library</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># You can try a different dataset with: </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#from validmind.datasets.classification import taiwan_credit as demo_dataset</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="initialize-a-dataset-object-for-validmind" class="level4">
+<h4 class="anchored" data-anchor-id="initialize-a-dataset-object-for-validmind">Initialize a dataset object for ValidMind</h4>
+<p>Before running the test plan, we must first initialize a ValidMind dataset object using the <code>init_dataset</code> function from the <code>vm</code> module. This function takes in arguements: <code>dataset</code> which is the dataset that we want to analyze; <code>target_column</code> which is used to identify the target variable; <code>class_labels</code> which is used to identify the labels used for classification model training.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    class_labels<span class="op">=</span>demo_dataset.class_labels</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="run-the-full-data-and-model-validation-test-suite" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-full-data-and-model-validation-test-suite">Run the Full Data and Model Validation Test Suite</h2>
+<p>We will need to preprocess the dataset and produce the training, test and validation splits first.</p>
+<section id="prepocess-the-raw-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="prepocess-the-raw-dataset">Prepocess the Raw Dataset</h3>
+<p>For demonstration purposes, we simplified the preprocessing using demo_dataset.preprocess which executes the following operations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>train_df, validation_df, test_df <span class="op">=</span> demo_dataset.preprocess(df)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_df.drop(demo_dataset.target_column, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_df[demo_dataset.target_column]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> validation_df.drop(demo_dataset.target_column, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> validation_df[demo_dataset.target_column]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>model.set_params(</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>model.fit(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_val, y_val)],</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now initialize the training and test datasets into dataset objects using vm.init_dataset():</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We also initialize a model object using vm.init_model():</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-the-full-suite" class="level3">
+<h3 class="anchored" data-anchor-id="run-the-full-suite">Run the Full Suite</h3>
+<p>We are now ready to run the test suite for binary classifier with tabular datasets. This function will run test plans on the dataset and model objects, and will document the results in the ValidMind UI.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"binary_classifier_full_suite"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.list_tests()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vm.test_plans.describe_plan(<span class="st">"tabular_data_quality"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"binary_classifier_full_suite"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can access and review the resulting documentation in the ValidMind UI, in the “Model Development” section of the model documentation.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/privacy-policy/">Privacy Policy</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/terms-of-use/">Terms of Use</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
