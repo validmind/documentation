@@ -71,3 +71,7 @@ deploy-prod:
 		aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && \
 		aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
+
+# Generate release notes
+release-notes:
+	python generate_release_notes.py
