@@ -143,7 +143,7 @@ if __name__ == '__main__':
 
   os.chdir(repo_path)  # Change the current working directory to the cloned repository path
 
-  release_date = input("Enter the release date (Month Day, Year): ")
+  release_date = input("Enter the release date (<month> <day>, <year>): ")
   formatted_release_date = datetime.strptime(release_date, "%B %d, %Y").strftime("%Y-%b-%d").lower()
 
   release_folder = os.path.join("releases", formatted_release_date)
