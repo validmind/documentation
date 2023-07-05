@@ -63,7 +63,7 @@ def update_release_highlights_template(template_filepath, pull_requests):
         if external_notes:
             release_notes += f"- **{title}**\n\n{external_notes}\n\n"
 
-    template_content = re.sub(r"(?<=## Release highlights\n\n).*?(?=\n##)", release_notes, template_content, flags=re.DOTALL)
+    template_content = re.sub(r"(?<=## Release highlights\n\n).*?(?=\n###)", release_notes, template_content, flags=re.DOTALL)
 
     with open(template_filepath, 'w') as file:
         file.write(template_content)
@@ -81,7 +81,7 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                     if label_name in qmd_files:
                         external_release_notes = extract_external_release_notes(pr['body'])
                         if external_release_notes:
-                            qmd_files[label_name] += f"- **{pr['title']}**\n\n   {external_release_notes}\n\n\n"
+                            qmd_files[label_name] += f"- **{pr['title']}**\n\n{external_release_notes}\n\n\n"
                     
                     if label_name == "highlight":
                         highlight_pull_requests.append(pr)
@@ -93,16 +93,38 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                 qmd_filepath = os.path.join(release_folder, qmd_filename)
                 with open(qmd_filepath, 'w') as file:
                     file.write("---\n")
-                    file.write(f"title: \"{label.capitalize()}\"\n")
+                    if label == "bug":
+                        file.write("title: \"Bug fixes\"\n")
+                    elif label == "documentation":
+                        file.write("title: \"Documentation updates\"\n")
+                    elif label == "enhancement":
+                        file.write("title: \"Enhancements\"\n")
+                    else:
+                        file.write(f"title: \"{label.capitalize()}\"\n")
                     file.write("keywords: \"release notes, model risk management, ValidMind\"\n")
                     file.write("---\n\n")
-                    file.write(f"## {label.capitalize()} -- {release_date}\n\n")
+                    if label == "bug":
+                        file.write(f"## Bug fixes -- {release_date}\n\n")
+                    elif label == "documentation":
+                        file.write(f"## Documentation updates -- {release_date}\n\n")
+                    elif label == "enhancement":
+                        file.write(f"## Enhancements -- {release_date}\n\n")
+                    else:
+                        file.write(f"## {label.capitalize()} -- {release_date}\n\n")
                     file.write(release_notes)
 
     # Copy and update release_highlights_template.qmd in the releases folder
     template_filename = "release_highlights_template.qmd"
     template_filepath = os.path.join(release_folder, f"release-notes-{formatted_date}.qmd")
     shutil.copyfile(template_filename, template_filepath)
+    with open(template_filepath, 'r') as file:
+        template_content = file.read()
+
+    template_content = template_content.replace("Release date", release_date)
+    template_content = template_content.replace("version number", tag_name)
+
+    with open(template_filepath, 'w') as file:
+        file.write(template_content)
 
     update_release_highlights_template(template_filepath, highlight_pull_requests)
 
@@ -146,7 +168,7 @@ def update_quarto_yaml(qmd_files, release_date):
                     file.write(f'                  file: releases/{formatted_release_date}/deprecation.qmd\n')
 
                 if qmd_files["documentation"]:
-                    file.write(f'                - text: "Documentation"\n')
+                    file.write(f'                - text: "Documentation updates"\n')
                     file.write(f'                  file: releases/{formatted_release_date}/documentation.qmd\n')
 
                 add_release_content = False
