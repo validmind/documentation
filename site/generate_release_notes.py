@@ -5,6 +5,7 @@ import subprocess
 import json
 from datetime import datetime
 
+# Get the tag name and time
 def get_tag_info():
     # Get the most recent tag name
     cmd_tag_name = ['gh', 'api', 'repos/validmind/documentation/tags', '--jq', '.[0].name']
@@ -16,13 +17,14 @@ def get_tag_info():
     result_commit_sha = subprocess.run(cmd_commit_sha, capture_output=True, text=True)
     tag_sha = result_commit_sha.stdout.strip()
 
-    # Get the commit time from its SHA
+    # Get the time for the commit associated with the most recent tag
     cmd_commit_time = ['gh', 'api', f'repos/validmind/documentation/git/commits/{tag_sha}', '--jq', '.committer.date']
     result_commit_time = subprocess.run(cmd_commit_time, capture_output=True, text=True)
     tag_time = result_commit_time.stdout.strip()[:10] # Truncate the date
 
     return tag_name, tag_time
 
+# Get the title, number, and root comment for the 30 most recent PRs
 def get_merged_pull_requests():
     cmd = ['gh', 'pr', 'list', '--state', 'merged', '--json', 'title,number,body', '--limit', '30']
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -30,6 +32,7 @@ def get_merged_pull_requests():
     pr_data = json.loads(output)
     return pr_data
 
+# Get the label(s) associated with PRs
 def get_labels(pull_request_number):
     cmd = ['gh', 'pr', 'view', str(pull_request_number), '--json', 'labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -38,6 +41,7 @@ def get_labels(pull_request_number):
     labels = labels_data['labels']
     return labels
 
+# Get the time that the PRs were merged to compare to the tagged commit time
 def get_merged_at(pull_request_number):
     cmd = ['gh', 'pr', 'view', str(pull_request_number), '--json', 'mergedAt']
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -46,12 +50,17 @@ def get_merged_at(pull_request_number):
     merge_time = merge_time_data['mergedAt'][:10] # Truncate so only the date is printed
     return merge_time
 
+# Extract the section of the PR root comment after '## External Release Notes' from the full PR body in the txt file
 def extract_external_release_notes(pr_body):
     match = re.search(r"## External Release Notes(.+)", pr_body, re.DOTALL)
     if match:
         return match.group(1).strip()
     return None
 
+# Writes in the titles and extracted comments of PRs with the 'highlight' to the release highlights template
+# Adds 'highlight' PRs from the documentation repo to '## Release highlights'
+# Adds 'highlight' PRs from the validmind-python repo to '## ValidMind Developer Framework'
+# Adds 'highlight' PRs from the frontend repo to '## ValidMind Platform UI'
 def update_release_highlights_template(template_filepath, pull_requests):
     with open(template_filepath, 'r') as file:
         template_content = file.read()
@@ -68,8 +77,9 @@ def update_release_highlights_template(template_filepath, pull_requests):
     with open(template_filepath, 'w') as file:
         file.write(template_content)
 
+# Creates qmd files for each label if PRs for that label exist. Scans through txt file and checks the label of each PR and if it was merged after the latest tagged commit.
+# Writes the formatted PR title and body to the qmd file
 def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_requests, tag_time, release_date, tag_name):
-
     highlight_pull_requests = []
     for pr in merged_pull_requests:
         merged_at = get_merged_at(pr['number'])
@@ -86,6 +96,7 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                     if label_name == "highlight":
                         highlight_pull_requests.append(pr)
 
+    # Renames the titles and headings of the qmd files
     for label, release_notes in qmd_files.items():
         if label != "highlight":
             if release_notes:
@@ -113,7 +124,7 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                         file.write(f"## {label.capitalize()} -- {release_date}\n\n")
                     file.write(release_notes)
 
-    # Copy and update release_highlights_template.qmd in the releases folder
+    # Copies release_highlights_template.qmd to the releases folder and writes in content from 'highlight' label
     template_filename = "release_highlights_template.qmd"
     template_filepath = os.path.join(release_folder, f"release-notes-{formatted_date}.qmd")
     shutil.copyfile(template_filename, template_filepath)
@@ -128,6 +139,7 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
 
     update_release_highlights_template(template_filepath, highlight_pull_requests)
 
+# Adds the copied release highlights file and the qmd files to the _quarto.yml file under the release date
 def update_quarto_yaml(qmd_files, release_date):
     yaml_filename = "_quarto.yml"
     temp_yaml_filename = "_quarto_temp.yml"
@@ -183,7 +195,8 @@ if __name__ == '__main__':
 
     release_date = input("Enter the release date (<month> <day>, <year>): ")
     formatted_release_date = datetime.strptime(release_date, "%B %d, %Y").strftime("%Y-%b-%d").lower()
-
+    
+    # Creates a new folder under 'releases'
     release_folder = os.path.join("releases", formatted_release_date)
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -194,19 +207,20 @@ if __name__ == '__main__':
     # Create the new folder if it doesn't exist
     subprocess.run(['mkdir', '-p', folder_path])
 
-    # Get the merged pull requests
+    # Gets the title, number, and body of merged PRs
     merged_pull_requests = get_merged_pull_requests()
 
     tag_name, tag_time = get_tag_info()
     print(f"Extracting from pull requests after release tag '{tag_name}'")
 
+    # Writes the PR information to a txt file, including PR label and merge time
     with open(file_path, 'w') as file:
         file.write("Merged Pull Requests:\n")
         for pr in merged_pull_requests:
             file.write(f"Number: {pr['number']}\n")
             file.write(f"Title: {pr['title']}\n")
             merged_at = get_merged_at(pr['number'])
-            file.write(f"Merged At: {merged_at}\n")  # Write the merged_at data
+            file.write(f"Merged At: {merged_at}\n") 
             file.write("\n")
             labels = get_labels(pr['number'])
             if labels:
@@ -231,4 +245,5 @@ if __name__ == '__main__':
     
     update_quarto_yaml(qmd_files, release_date)
 
+    # Deletes the txt file once all PR data is extracted
     os.remove(file_path)
