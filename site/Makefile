@@ -4,7 +4,7 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod 
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod release-notes
 
 # Help section
 help:
@@ -18,6 +18,7 @@ help:
 	@echo "  deploy-demo    Render the docs site & deploy to docs-ci-cd-demo and clear cache"
 	@echo "  deploy-prod    Render the docs site & deploy to docs-ci-cd-prod and clear cache"
 	@echo "  help           Display this help message (default target)"
+	@echo "  release-notes  Generate release notes from pull requests since latest tag and update _quarto.yml"
 
 # Clean up source directory
 clean:
@@ -71,3 +72,7 @@ deploy-prod:
 		aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && \
 		aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
+
+# Generate release notes
+release-notes:
+	python generate_release_notes.py
