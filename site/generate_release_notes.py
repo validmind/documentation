@@ -96,6 +96,8 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                     if label_name == "highlight":
                         highlight_pull_requests.append(pr)
 
+    release_date = release_date.title()
+
     # Renames the titles and headings of the qmd files
     for label, release_notes in qmd_files.items():
         if label != "highlight":
@@ -148,6 +150,8 @@ def update_quarto_yaml(qmd_files, release_date):
 
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
+
+    release_date = release_date.title()
 
     with open(yaml_filename, 'w') as file:
         add_release_content = False
