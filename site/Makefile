@@ -76,3 +76,7 @@ deploy-prod:
 # Generate release notes
 release-notes:
 	python generate_release_notes.py
+
+#Generate python-specific release notes
+python-release-notes:
+	python generate_python_release_notes.py
