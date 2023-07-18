@@ -89,8 +89,8 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                 for label in labels:
                     label_name = label['name'].lower()
                     if label_name in qmd_files:
-                        # print(label_name) only recognized bug and enhancement
                         external_release_notes = extract_external_release_notes(pr['body'])
+                        #print(external_release_notes) prints NONE
                         if external_release_notes:
                             qmd_files[label_name] += f"- **{pr['title']}**\n\n{external_release_notes}\n\n\n"
                     
@@ -101,9 +101,10 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
 
     # Renames the titles and headings of the qmd files
     for label, release_notes in qmd_files.items():
-        print("entering loop")
+        #print(label)
+        #print("entering loop")
         if label != "highlight":
-            print("label is not higlight")
+            #print("label is not higlight")
             if release_notes:
                 print("there are release notes")
                 qmd_filename = f"{label.replace(' ', '-').lower()}.qmd"
