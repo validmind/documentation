@@ -101,10 +101,7 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
 
     # Renames the titles and headings of the qmd files
     for label, release_notes in qmd_files.items():
-        #print(label)
-        #print("entering loop")
         if label != "highlight":
-            #print("label is not higlight")
             if release_notes:
                 print("there are release notes")
                 qmd_filename = f"{label.replace(' ', '-').lower()}.qmd"
@@ -114,9 +111,8 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                     print("FILEWRITE")
                     if label == "bug":
                         file.write("title: \"Bug fixes\"\n")
-                    elif label == "python":
-                        print("PYTHON!")
-                        file.write("title: \"Python updates\"\n")
+                    elif label == "dependencies":
+                        file.write("title: \"Dependency updates\"\n")
                     elif label == "enhancement":
                         file.write("title: \"Enhancements\"\n")
                     else:
@@ -125,9 +121,8 @@ def generate_qmd_files(qmd_files, release_folder, formatted_date, merged_pull_re
                     file.write("---\n\n")
                     if label == "bug":
                         file.write(f"## Bug fixes -- {release_date}\n\n")
-                    elif label == "python":
-                        print("PYTHON!")
-                        file.write(f"## Python updates -- {release_date}\n\n")
+                    elif label == "dependencies":
+                        file.write(f"## Dependency updates -- {release_date}\n\n")
                     elif label == "enhancement":
                         file.write(f"## Enhancements -- {release_date}\n\n")
                     else:
@@ -191,9 +186,9 @@ def update_quarto_yaml(qmd_files, release_date):
                     file.write(f'                - text: "Deprecations"\n')
                     file.write(f'                  file: releases/{formatted_release_date}/deprecation.qmd\n')
 
-                if qmd_files["python"]:
-                    file.write(f'                - text: "Python updates"\n')
-                    file.write(f'                  file: releases/{formatted_release_date}/python.qmd\n')
+                if qmd_files["dependencies"]:
+                    file.write(f'                - text: "Dependency updates"\n')
+                    file.write(f'                  file: releases/{formatted_release_date}/dependencies.qmd\n')
 
                 add_release_content = False
 
@@ -248,7 +243,7 @@ if __name__ == '__main__':
         "enhancement": "",
         "bug": "",
         "deprecation": "",
-        "python": ""
+        "dependencies": ""
     }
 
     os.makedirs(release_folder, exist_ok=True)
