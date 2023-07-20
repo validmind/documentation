@@ -36,7 +36,7 @@ notebooks:
 	mkdir -p $(DEST_DIR_NB)/nlp && cp -r $(SRC_DIR)/notebooks/nlp/nlp_sentiment_analysis_demo.ipynb $(DEST_DIR_NB)/nlp/
 	mkdir -p $(DEST_DIR_NB)/time_series && cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
 	cp -r $(SRC_DIR)/notebooks/external_test_providers_demo.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/tests && cp -r $(SRC_DIR)/notebooks/tests/MyCustomTest.py $(DEST_DIR_NB)/tests/
+	mkdir -p $(DEST_DIR_NB)/external_tests/tests && cp -r $(SRC_DIR)/notebooks/external_tests/tests/MyCustomTest.py $(DEST_DIR_NB)/external_tests/tests/
 
 # Make Python library docs & copy them over
 python-docs:
