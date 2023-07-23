@@ -5,21 +5,22 @@ DEST_DIR_PYTHON := _site/validmind
 
 # Notebooks to copy over, plus some to preserve as they are sourced from Google Drive
 NOTEBOOKS = \
-    notebooks/how_to/run_a_template.ipynb \
     notebooks/external_test_providers_demo.ipynb \
     notebooks/external_tests/tests/MyCustomTest.py \
     notebooks/how_to/implementing_custom_tests.ipynb \
     notebooks/how_to/explore_test_suites_test_plans_and_tests.ipynb \
+    notebooks/how_to/run_a_template.ipynb \
     notebooks/how_to/run_a_test.ipynb \
     notebooks/how_to/run_a_test_plan.ipynb \
     notebooks/how_to/run_a_test_suite.ipynb \
-    notebooks/time_series/tutorial_time_series_forecasting.ipynb \
-    notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb
+    notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb \
+	notebooks/probability_of_default/credit_risk_scorecard_demo.ipynb \
+	notebooks/probability_of_default/probability_of_default_validmind.ipynb \
+    notebooks/time_series/tutorial_time_series_forecasting.ipynb 
 
-PRESERVE_FILES = \
-    "notebooks/Quickstart_Customer Churn_full_suite.ipynb" \
+GDRIVE_NOTEBOOKS = \
+    "Quickstart_Customer Churn_full_suite.ipynb" \
     notebooks/Introduction_Customer_Churn.ipynb
-
 
 # Define .PHONY target for help section
 .PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod release-notes
@@ -49,22 +50,16 @@ clone:
 # Copy over Jupyter notebooks
 
 notebooks:
-	mkdir -p Temp
-	$(foreach file,$(PRESERVE_FILES), \
-		cp -r "$(DEST_DIR_NB)/$(file)" Temp/; \
+	@rm -rf $(DEST_DIR_NB)/ > /dev/null 2>&1 && mkdir -p $(DEST_DIR_NB)
+	@$(foreach notebook,$(NOTEBOOKS), \
+		echo "Updating $(notebook) ..."; \
+		mkdir -p $(DEST_DIR_NB)/$(dir $(notebook)) > /dev/null 2>&1; \
+		cp -r $(SRC_DIR)/$(notebook) $(DEST_DIR_NB)/$(dir $(notebook)) > /dev/null 2>&1; \
 	)
-	
-	rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
-	$(foreach notebook,$(NOTEBOOKS), \
-		mkdir -p "$(DEST_DIR_NB)/$(dir $(notebook))" && \
-		cp -r "$(SRC_DIR)/$(notebook)" "$(DEST_DIR_NB)/$(dir $(notebook))"; \
-	)
-	
-	$(foreach file,$(PRESERVE_FILES), \
-		cp -r "Temp/$(notdir $(file))" "$(DEST_DIR_NB)/$(file)"; \
-	)
-	
-	rm -rf Temp
+	@echo "Copying additional notebooks from Google Drive ..."
+	@cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Quickstart_Customer Churn_full_suite.ipynb" $(DEST_DIR_NB)/
+	@cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/
+	@echo "Done copying additional files."
 
 
 # Make Python library docs & copy them over
