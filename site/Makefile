@@ -3,6 +3,24 @@ SRC_DIR := _source/validmind-python
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
+# Notebooks to copy over, plus some to preserve as they are sourced from Google Drive
+NOTEBOOKS = \
+    notebooks/how_to/run_a_template.ipynb \
+    notebooks/external_test_providers_demo.ipynb \
+    notebooks/external_tests/tests/MyCustomTest.py \
+    notebooks/how_to/implementing_custom_tests.ipynb \
+    notebooks/how_to/explore_test_suites_test_plans_and_tests.ipynb \
+    notebooks/how_to/run_a_test.ipynb \
+    notebooks/how_to/run_a_test_plan.ipynb \
+    notebooks/how_to/run_a_test_suite.ipynb \
+    notebooks/time_series/tutorial_time_series_forecasting.ipynb \
+    notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb
+
+PRESERVE_FILES = \
+    "notebooks/Quickstart_Customer Churn_full_suite.ipynb" \
+    notebooks/Introduction_Customer_Churn.ipynb
+
+
 # Define .PHONY target for help section
 .PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod release-notes
 
@@ -29,14 +47,25 @@ clone:
 	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
+
 notebooks:
+	mkdir -p Temp
+	$(foreach file,$(PRESERVE_FILES), \
+		cp -r "$(DEST_DIR_NB)/$(file)" Temp/; \
+	)
+	
 	rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
-#	cp -r $(SRC_DIR)/notebooks/Quickstart_Customer Churn_full_suite.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/how_to && cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)/how_to
-	mkdir -p $(DEST_DIR_NB)/nlp && cp -r $(SRC_DIR)/notebooks/nlp/nlp_sentiment_analysis_demo.ipynb $(DEST_DIR_NB)/nlp/
-	mkdir -p $(DEST_DIR_NB)/time_series && cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
-	cp -r $(SRC_DIR)/notebooks/external_test_providers_demo.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/external_tests/tests && cp -r $(SRC_DIR)/notebooks/external_tests/tests/MyCustomTest.py $(DEST_DIR_NB)/external_tests/tests/
+	$(foreach notebook,$(NOTEBOOKS), \
+		mkdir -p "$(DEST_DIR_NB)/$(dir $(notebook))" && \
+		cp -r "$(SRC_DIR)/$(notebook)" "$(DEST_DIR_NB)/$(dir $(notebook))"; \
+	)
+	
+	$(foreach file,$(PRESERVE_FILES), \
+		cp -r "Temp/$(notdir $(file))" "$(DEST_DIR_NB)/$(file)"; \
+	)
+	
+	rm -rf Temp
+
 
 # Make Python library docs & copy them over
 python-docs:
