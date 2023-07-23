@@ -55,7 +55,7 @@ notebooks:
 		cp -r $(SRC_DIR)/$(notebook) $$dest_dir > /dev/null 2>&1; \
 		echo "Updated $(notebook)"; \
 	)
-	@echo "Copying additional notebooks from Google Drive ..."
+	@echo "\nCopying additional notebooks from Google Drive ..."
 	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Quickstart_Customer Churn_full_suite.ipynb" $(DEST_DIR_NB)/
 	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/
 
