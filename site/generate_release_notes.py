@@ -60,55 +60,31 @@ def get_frontend_pr_numbers(tag_name_frontend):
         exit()
 
 # Get the PR title and body using the list of PR numbers from the documentation repo
-def get_documentation_pull_request_data(documentation_pull_request_number):
-    cmd = ['gh', 'pr', 'view', str(documentation_pull_request_number), '--json', 'title,number,body']
+def get_documentation_pr_data(documentation_pull_request_number):
+    cmd = ['gh', 'pr', 'view', str(documentation_pull_request_number), '--json', 'title,number,body,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     documentation_pr_data = json.loads(output)
-    return documentation_pr_data
+    documentation_labels = documentation_pr_data.get('labels', [])
+    return documentation_pr_data, documentation_labels
 
 # Get the PR title and body using the list of PR numbers from the validmind-python repo
-def get_python_pull_request_data(python_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'title,number,body']
+def get_python_pr_data(python_pull_request_number):
+    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'title,number,body,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     python_pr_data = json.loads(output)
-    return python_pr_data
+    python_labels = python_pr_data.get('labels', [])
+    return python_pr_data, python_labels
 
 # Get the PR title and body using the list of PR numbers from the frontend repo
-def get_frontend_pull_request_data(frontend_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/frontend', 'view', str(frontend_pull_request_number), '--json', 'title,number,body']
+def get_frontend_pr_data(frontend_pull_request_number):
+    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/frontend', 'view', str(frontend_pull_request_number), '--json', 'title,number,body,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     frontend_pr_data = json.loads(output)
-    return frontend_pr_data
-
-# Get the PR label from the documentation repo
-def get_documentation_labels(documentation_pull_request_number):
-    cmd = ['gh', 'pr', 'view', str(documentation_pull_request_number), '--json', 'labels']
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    output = result.stdout.strip()
-    labels_data = json.loads(output)
-    documentation_labels = labels_data['labels']
-    return documentation_labels
-
-# Get the PR label from the validmind-python repo
-def get_python_labels(python_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'labels']
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    output = result.stdout.strip()
-    labels_data = json.loads(output)
-    python_labels = labels_data['labels']
-    return python_labels
-
-# Get the PR label from the frontend repo
-def get_frontend_labels(frontend_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/frontend', 'view', str(frontend_pull_request_number), '--json', 'labels']
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    output = result.stdout.strip()
-    labels_data = json.loads(output)
-    frontend_labels = labels_data['labels']
-    return frontend_labels
+    frontend_labels = frontend_pr_data.get('labels', [])
+    return frontend_pr_data, frontend_labels
 
 # Extract the section of the PR root comment after '## External Release Notes' from the full PR body in the txt file
 def extract_external_release_notes(pr_body):
@@ -120,7 +96,7 @@ def extract_external_release_notes(pr_body):
 # Adds PRs labeled 'highlight' to the release highlights template file. PRs from documentation are written under '## Release Highlights', validmind-python under
 # 'ValidMind Developer Framework', and frontend under 'ValidMind Platform UI'
 def update_release_highlights_template(template_filepath, documentation_highlight_pull_requests, python_highlight_pull_requests, frontend_highlight_pull_requests):
-
+   
     with open(template_filepath, 'r') as file:
         template_content = file.read()
 
@@ -163,7 +139,7 @@ def update_release_highlights_template(template_filepath, documentation_highligh
 
 # Checks in a PR has the 'internal' label, and if not, writes the PR information to the relevant qmd files
 def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull_requests):
-    labels = get_documentation_labels(pr_number)
+    pr_data, labels = get_documentation_pr_data(pr_number)
     if labels:
         skip_pr = False
         for label in labels:
@@ -175,7 +151,6 @@ def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull
         if not skip_pr:
             for label in labels:
                 label_name = label['name'].lower()
-                pr_data = get_documentation_pull_request_data(pr_number)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
@@ -187,7 +162,7 @@ def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull
 
 # Checks in a PR has the 'internal' label, and if not, writes the PR information to the relevant qmd files
 def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
-    labels = get_python_labels(pr_number)
+    pr_data, labels = get_python_pr_data(pr_number)
     if labels:
         skip_pr = False
         for label in labels:
@@ -199,7 +174,6 @@ def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
         if not skip_pr:
             for label in labels:
                 label_name = label['name'].lower()
-                pr_data = get_python_pull_request_data(pr_number)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
@@ -211,7 +185,7 @@ def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
 
 # Checks in a PR has the 'internal' label, and if not, writes the PR information to the relevant qmd files
 def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests):
-    labels = get_frontend_labels(pr_number)
+    pr_data, labels = get_frontend_pr_data(pr_number)
     if labels:
         skip_pr = False
         for label in labels:
@@ -223,7 +197,6 @@ def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
         if not skip_pr:
             for label in labels:
                 label_name = label['name'].lower()
-                pr_data = get_frontend_pull_request_data(pr_number)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
