@@ -99,3 +99,15 @@ Manually from the `docs-demo` branch:
 ```bash
 make deploy-demo
 ```
+
+## Generate release notes
+
+From the tag for the upcoming release, click 'Create release from tag', and then 'Generate release notes' to generate a list of pull requests to include in the upcoming release. Do this in the documentation, validmind-python, and frontend repos.
+
+From the documentation repo:
+
+```bash
+cd site
+make release-notes
+```
+Enter the release tag for each repo, and the date for the upcoming release.
