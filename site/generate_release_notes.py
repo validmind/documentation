@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 
 # Get the list of PR numbers for a specified release from Github from the documentation repo
-def get_pull_requests_from_documentation(tag_name_documentation):
+def get_documentation_pr_numbers(tag_name_documentation):
     cmd_release = ['gh', 'api', f'repos/validmind/documentation/releases/tags/{tag_name_documentation}']
     result_release = subprocess.run(cmd_release, capture_output=True, text=True)
     output_release = result_release.stdout.strip()
@@ -15,16 +15,16 @@ def get_pull_requests_from_documentation(tag_name_documentation):
 # Extract a list of PR numbers in this release
     if 'body' in release_data:
         body = release_data['body']
-        documentation_pull_request_numbers = re.findall(r"https://github.com/validmind/documentation/pull/(\d+)", body)
+        documentation_pr_numbers = re.findall(r"https://github.com/validmind/documentation/pull/(\d+)", body)
         # Remove duplicates
-        documentation_pull_request_numbers = set(documentation_pull_request_numbers)
-        return documentation_pull_request_numbers
+        documentation_pr_numbers = set(documentation_pr_numbers)
+        return documentation_pr_numbers
     else:
         print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_documentation}'.")
         exit()
 
 # Get the list of PR numbers for a specified release from Github from the validmind-python repo
-def get_pull_requests_from_validmind_python(tag_name_python):
+def get_python_pr_numbers(tag_name_python):
     cmd_release = ['gh', 'api', f'repos/validmind/validmind-python/releases/tags/{tag_name_python}']
     result_release = subprocess.run(cmd_release, capture_output=True, text=True)
     output_release = result_release.stdout.strip()
@@ -33,16 +33,16 @@ def get_pull_requests_from_validmind_python(tag_name_python):
     # Extract a list of PR numbers in this release
     if 'body' in release_data:
         body = release_data['body']
-        python_pull_request_numbers = re.findall(r"https://github.com/validmind/validmind-python/pull/(\d+)", body)
+        python_pr_numbers = re.findall(r"https://github.com/validmind/validmind-python/pull/(\d+)", body)
         # Remove duplicates
-        python_pull_request_numbers = set(python_pull_request_numbers)
-        return python_pull_request_numbers
+        python_pr_numbers = set(python_pr_numbers)
+        return python_pr_numbers
     else:
         print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_python}' in validmind-python.")
         exit()
 
 # Get the list of PR numbers for a specified release from Github from the frontend repo
-def get_pull_requests_from_frontend(tag_name_frontend):
+def get_frontend_pr_numbers(tag_name_frontend):
     cmd_release = ['gh', 'api', f'repos/validmind/frontend/releases/tags/{tag_name_frontend}']
     result_release = subprocess.run(cmd_release, capture_output=True, text=True)
     output_release = result_release.stdout.strip()
@@ -51,10 +51,10 @@ def get_pull_requests_from_frontend(tag_name_frontend):
     # Extract a list of PR numbers in this release
     if 'body' in release_data:
         body = release_data['body']
-        frontend_pull_request_numbers = re.findall(r"https://github.com/validmind/frontend/pull/(\d+)", body)
+        frontend_pr_numbers = re.findall(r"https://github.com/validmind/frontend/pull/(\d+)", body)
         # Remove duplicates
-        frontend_pull_request_numbers = set(frontend_pull_request_numbers)
-        return frontend_pull_request_numbers
+        frontend_pr_numbers = set(frontend_pr_numbers)
+        return frontend_pr_numbers
     else:
         print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_python}' in frontend.")
         exit()
@@ -109,57 +109,6 @@ def get_frontend_labels(frontend_pull_request_number):
     labels_data = json.loads(output)
     frontend_labels = labels_data['labels']
     return frontend_labels
-
-# Write the docuemntation PR data (title, number, body, and labels) to a text file
-def write_documentation_pr_data_to_file(file_path, pull_request_numbers):
-    with open(file_path, 'w') as file:
-        file.write("Merged Pull Requests:\n")
-        for pr_number in pull_request_numbers:
-            pr_data = get_documentation_pull_request_data(pr_number)
-            file.write(f"Number: {pr_data['number']}\n")
-            file.write(f"Title: {pr_data['title']}\n")
-            file.write("\n")
-            labels = get_documentation_labels(pr_data['number'])
-            if labels:
-                file.write("Labels:\n")
-                for label in labels:
-                    file.write(f"- {label['name']}\n")
-            file.write(f"Body: {pr_data['body']}\n")
-            file.write("\n")
-
-# Write the validmind-python PR data (title, number, body, and labels) to a text file
-def write_python_pr_data_to_file(file_path, pull_request_numbers):
-    with open(file_path, 'w') as file:
-        file.write("Merged Pull Requests:\n")
-        for pr_number in pull_request_numbers:
-            pr_data = get_python_pull_request_data(pr_number)
-            file.write(f"Number: {pr_data['number']}\n")
-            file.write(f"Title: {pr_data['title']}\n")
-            file.write("\n")
-            labels = get_python_labels(pr_data['number'])
-            if labels:
-                file.write("Labels:\n")
-                for label in labels:
-                    file.write(f"- {label['name']}\n")
-            file.write(f"Body: {pr_data['body']}\n")
-            file.write("\n")
-
-# Write the frontend PR data (title, number, body, and labels) to a text file
-def write_frontend_pr_data_to_file(file_path, pull_request_numbers):
-    with open(file_path, 'w') as file:
-        file.write("Merged Pull Requests:\n")
-        for pr_number in pull_request_numbers:
-            pr_data = get_frontend_pull_request_data(pr_number)
-            file.write(f"Number: {pr_data['number']}\n")
-            file.write(f"Title: {pr_data['title']}\n")
-            file.write("\n")
-            labels = get_frontend_labels(pr_data['number'])
-            if labels:
-                file.write("Labels:\n")
-                for label in labels:
-                    file.write(f"- {label['name']}\n")
-            file.write(f"Body: {pr_data['body']}\n")
-            file.write("\n")
 
 # Extract the section of the PR root comment after '## External Release Notes' from the full PR body in the txt file
 def extract_external_release_notes(pr_body):
@@ -286,21 +235,22 @@ def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
                 
 # Creates qmd files for each label if PRs for that label exist. Scans through txt file and checks the label of each PR and if it was merged after the latest tagged commit.
 # Writes the formatted PR title and body to the qmd file
-def generate_qmd_files(qmd_files, release_folder, documentation_pull_request_numbers, python_pull_request_numbers, frontend_pull_request_numbers, release_date):
+def generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, python_pr_numbers, frontend_pr_numbers, release_date):
+
     documentation_highlight_pull_requests = []
     python_highlight_pull_requests = []
     frontend_highlight_pull_requests = []
 
-    for pr_number in documentation_pull_request_numbers:
+    release_date = release_date.title()
+
+    for pr_number in documentation_pr_numbers:
         write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull_requests)
 
-    for pr_number in python_pull_request_numbers:
+    for pr_number in python_pr_numbers:
         write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests)
 
-    for pr_number in frontend_pull_request_numbers:
+    for pr_number in frontend_pr_numbers:
         write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
-
-    release_date = release_date.title()
 
     # Renames the titles and headings of the qmd files
     for label, release_notes in qmd_files.items():
@@ -332,10 +282,11 @@ def generate_qmd_files(qmd_files, release_folder, documentation_pull_request_num
 
     # Copy the template file from the templates folder
     template_filename = "release_highlights_template.qmd"
+    copied_template_filename = "highlights.qmd"
     template_filepath = os.path.join("..", "templates", template_filename)
 
     # Update the path for the copied template in the releases folder
-    copied_template_filepath = os.path.join(release_folder, template_filename)
+    copied_template_filepath = os.path.join(release_folder, copied_template_filename)
 
     shutil.copyfile(template_filepath, copied_template_filepath)
 
@@ -414,33 +365,11 @@ if __name__ == '__main__':
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    # File paths for PR data
-    documentation_file_name = "documentation-data.txt"
-    validmind_python_file_name = "python-data.txt"
-    frontend_file_name = "frontend-data.txt"
+    print("Extracting pull request data.")
 
-    documentation_folder_path = f"releases/{formatted_release_date}"
-    validmind_python_folder_path = f"releases/{formatted_release_date}"
-    frontend_folder_path = f"releases/{formatted_release_date}"
-
-    documentation_file_path = f"{documentation_folder_path}/{documentation_file_name}"
-    validmind_python_file_path = f"{validmind_python_folder_path}/{validmind_python_file_name}"
-    frontend_file_path = f"{frontend_folder_path}/{frontend_file_name}"
-
-    # Create the new folder if it doesn't exist
-    subprocess.run(['mkdir', '-p', documentation_folder_path])
-    subprocess.run(['mkdir', '-p', validmind_python_folder_path])
-    subprocess.run(['mkdir', '-p', frontend_folder_path])
-
-    print("Writing pull request data to txt files.")
-
-    documentation_pull_request_numbers = get_pull_requests_from_documentation(tag_name_documentation)
-    python_pull_request_numbers = get_pull_requests_from_validmind_python(tag_name_python)
-    frontend_pull_request_numbers = get_pull_requests_from_frontend(tag_name_frontend)
-
-    write_documentation_pr_data_to_file(documentation_file_path, documentation_pull_request_numbers)
-    write_python_pr_data_to_file(validmind_python_file_path, python_pull_request_numbers)
-    write_frontend_pr_data_to_file(frontend_file_path, frontend_pull_request_numbers)
+    documentation_pr_numbers = get_documentation_pr_numbers(tag_name_documentation)
+    python_pr_numbers = get_python_pr_numbers(tag_name_python)
+    frontend_pr_numbers = get_frontend_pr_numbers(tag_name_frontend)
 
     qmd_files = {
         "enhancement": "",
@@ -453,15 +382,10 @@ if __name__ == '__main__':
 
     print("Writing pull request data to qmd files.")
 
-    generate_qmd_files(qmd_files, release_folder, documentation_pull_request_numbers, python_pull_request_numbers, frontend_pull_request_numbers, release_date)
+    generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, python_pr_numbers, frontend_pr_numbers, release_date)
 
     print("Updating _quarto.yaml file.")
 
     update_quarto_yaml(qmd_files, release_date)
 
     print("Release notes process successful.")
-
-    # Deletes the txt file once all PR data is extracted
-    os.remove(documentation_file_path)
-    os.remove(validmind_python_file_path)
-    os.remove(frontend_file_path)
