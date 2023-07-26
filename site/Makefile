@@ -42,8 +42,8 @@ NOTEBOOKS = \
     notebooks/how_to/run_a_test_plan.ipynb \
     notebooks/how_to/run_a_test_suite.ipynb \
     notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb \
-	notebooks/probability_of_default/credit_risk_scorecard_demo.ipynb \
-	notebooks/probability_of_default/probability_of_default_validmind.ipynb \
+    notebooks/probability_of_default/credit_risk_scorecard_demo.ipynb \
+    notebooks/probability_of_default/probability_of_default_validmind.ipynb \
     notebooks/time_series/tutorial_time_series_forecasting.ipynb 
 
 notebooks:
