@@ -338,7 +338,7 @@ if __name__ == '__main__':
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    print("Extracting pull request data.")
+    print("Extracting pull request data ...")
 
     documentation_pr_numbers = get_documentation_pr_numbers(tag_name_documentation)
     python_pr_numbers = get_python_pr_numbers(tag_name_python)
