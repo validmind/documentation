@@ -291,9 +291,8 @@ def update_quarto_yaml(qmd_files, release_date):
             if add_release_content and i == insert_index:
                 formatted_release_date = datetime.strptime(release_date, "%B %d, %Y").strftime("%Y-%b-%d").lower()
                 file.write(f'            - text: "{release_date}"\n')
+                file.write(f'              file: releases/{formatted_release_date}/highlights.qmd\n')
                 file.write(f'              contents:\n')
-                file.write(f'                - text: "Release Highlights"\n')
-                file.write(f'                  file: releases/{formatted_release_date}/highlights.qmd\n')
 
                 if qmd_files["enhancement"]:
                     file.write(f'                - text: "Enhancements"\n')
