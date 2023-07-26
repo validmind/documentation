@@ -61,28 +61,31 @@ def get_frontend_pr_numbers(tag_name_frontend):
 
 # Get the PR title and body using the list of PR numbers from the documentation repo
 def get_documentation_pr_data(documentation_pull_request_number):
-    cmd = ['gh', 'pr', 'view', str(documentation_pull_request_number), '--json', 'title,number,body,labels']
+    cmd = ['gh', 'pr', 'view', str(documentation_pull_request_number), '--json', 'title,number,author,body,url,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     documentation_pr_data = json.loads(output)
+    documentation_pr_data['author'] = documentation_pr_data['author'].get('login', '')
     documentation_labels = documentation_pr_data.get('labels', [])
     return documentation_pr_data, documentation_labels
 
 # Get the PR title and body using the list of PR numbers from the validmind-python repo
 def get_python_pr_data(python_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'title,number,body,labels']
+    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'title,number,author,body,url,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     python_pr_data = json.loads(output)
+    python_pr_data['author'] = python_pr_data['author'].get('login', '')
     python_labels = python_pr_data.get('labels', [])
     return python_pr_data, python_labels
 
 # Get the PR title and body using the list of PR numbers from the frontend repo
 def get_frontend_pr_data(frontend_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/frontend', 'view', str(frontend_pull_request_number), '--json', 'title,number,body,labels']
+    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/frontend', 'view', str(frontend_pull_request_number), '--json', 'title,number,author,body,url,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     frontend_pr_data = json.loads(output)
+    frontend_pr_data['author'] = frontend_pr_data['author'].get('login', '')
     frontend_labels = frontend_pr_data.get('labels', [])
     return frontend_pr_data, frontend_labels
 
@@ -154,7 +157,7 @@ def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     documentation_highlight_pull_requests.append(pr_data)
@@ -177,7 +180,7 @@ def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     python_highlight_pull_requests.append(pr_data)
@@ -200,7 +203,7 @@ def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     frontend_highlight_pull_requests.append(pr_data)
