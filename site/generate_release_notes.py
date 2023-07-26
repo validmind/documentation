@@ -353,7 +353,7 @@ if __name__ == '__main__':
 
     os.makedirs(release_folder, exist_ok=True)
 
-    print("Writing pull request data to qmd files.")
+    print("Writing pull request data to QMD files ...")
 
     generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, python_pr_numbers, frontend_pr_numbers, release_date)
 
