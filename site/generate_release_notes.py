@@ -357,7 +357,7 @@ if __name__ == '__main__':
 
     generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, python_pr_numbers, frontend_pr_numbers, release_date)
 
-    print("Updating _quarto.yaml file.")
+    print("Updating _quarto.yaml file ...")
 
     update_quarto_yaml(qmd_files, release_date)
 
