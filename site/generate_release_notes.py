@@ -157,7 +157,7 @@ def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     documentation_highlight_pull_requests.append(pr_data)
@@ -180,7 +180,7 @@ def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     python_highlight_pull_requests.append(pr_data)
@@ -203,7 +203,7 @@ def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**\n\n{external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     frontend_highlight_pull_requests.append(pr_data)
@@ -237,23 +237,15 @@ def generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, pyth
                 with open(qmd_filepath, 'w') as file:
                     file.write("---\n")
                     if label == "bug":
-                        file.write("title: \"Bug fixes\"\n")
+                        file.write(f"title: \"Bug fixes -- {release_date}\"\n")
                     elif label == "documentation":
-                        file.write("title: \"Documentation updates\"\n")
+                        file.write(f"title: \"Documentation updates -- {release_date}\"\n")
                     elif label == "enhancement":
-                        file.write("title: \"Enhancements\"\n")
+                        file.write(f"title: \"Enhancements -- {release_date}\"\n")
                     else:
-                        file.write(f"title: \"{label.capitalize()}\"\n")
+                        file.write(f"title: \"{label.capitalize()} -- {release_date}\"\n")
                     file.write("keywords: \"release notes, model risk management, ValidMind\"\n")
                     file.write("---\n\n")
-                    if label == "bug":
-                        file.write(f"## Bug fixes -- {release_date}\n\n")
-                    elif label == "documentation":
-                        file.write(f"## Documentation updates -- {release_date}\n\n")
-                    elif label == "enhancement":
-                        file.write(f"## Enhancements -- {release_date}\n\n")
-                    else:
-                        file.write(f"## {label.capitalize()} -- {release_date}\n\n")
                     file.write(release_notes)
 
     # Copy the template file from the templates folder
