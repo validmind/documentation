@@ -129,13 +129,14 @@ def update_release_highlights_template(template_filepath, documentation_highligh
     template_content = re.sub(r"(?<=## Release highlights\n\n).*?(?=\n..)", documentation_release_notes, template_content, flags=re.DOTALL)
 
     # Add the section for PRs from the validmind-python repo
-    template_content = re.sub(r"(?<=### ValidMind Developer Framework \(version number\)\n\n).*?(?=\n..)", python_release_notes, template_content, flags=re.DOTALL)
+    template_content = re.sub(r"(?<=### ValidMind Developer Framework \(validmind-python version number\)\n\n).*?(?=\n..)", python_release_notes, template_content, flags=re.DOTALL)
 
     # Add the section for PRs from the validmind-python repo
-    template_content = re.sub(r"(?<=### ValidMind Platform UI\n\n).*?(?=\n..)", frontend_release_notes, template_content, flags=re.DOTALL)
+    template_content = re.sub(r"(?<=### ValidMind Platform UI \(frontend version number\)\n\n).*?(?=\n..)", frontend_release_notes, template_content, flags=re.DOTALL)
 
     template_content = template_content.replace("Release date", release_date)
-    template_content = template_content.replace("version number", tag_name_python)
+    template_content = template_content.replace("validmind-python version number", tag_name_python)
+    template_content = template_content.replace("frontend version number", tag_name_frontend)
 
     with open(template_filepath, 'w') as file:
         file.write(template_content)
