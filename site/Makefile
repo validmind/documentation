@@ -22,24 +22,46 @@ help:
 
 # Clean up source directory
 clean:
+	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 
 # Clone the source repository we need
 clone:
+	@echo "\nCloning source repos ..."
 	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
+
+NOTEBOOKS = \
+    notebooks/external_test_providers_demo.ipynb \
+    notebooks/external_tests/tests/MyCustomTest.py \
+    notebooks/how_to/implementing_custom_tests.ipynb \
+    notebooks/how_to/explore_test_suites_test_plans_and_tests.ipynb \
+    notebooks/how_to/run_a_template.ipynb \
+    notebooks/how_to/run_a_test.ipynb \
+    notebooks/how_to/run_a_test_plan.ipynb \
+    notebooks/how_to/run_a_test_suite.ipynb \
+    notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb \
+    notebooks/probability_of_default/credit_risk_scorecard_demo.ipynb \
+    notebooks/probability_of_default/probability_of_default_validmind.ipynb \
+    notebooks/time_series/tutorial_time_series_forecasting.ipynb 
+
 notebooks:
-	rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
-#	cp -r $(SRC_DIR)/notebooks/Quickstart_Customer Churn_full_suite.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/how_to && cp -r $(SRC_DIR)/notebooks/how_to/. $(DEST_DIR_NB)/how_to
-	mkdir -p $(DEST_DIR_NB)/nlp && cp -r $(SRC_DIR)/notebooks/nlp/nlp_sentiment_analysis_demo.ipynb $(DEST_DIR_NB)/nlp/
-	mkdir -p $(DEST_DIR_NB)/time_series && cp -r $(SRC_DIR)/notebooks/time_series/tutorial_time_series_forecasting.ipynb $(DEST_DIR_NB)/time_series/
-	cp -r $(SRC_DIR)/notebooks/external_test_providers_demo.ipynb $(DEST_DIR_NB)/
-	mkdir -p $(DEST_DIR_NB)/tests && cp -r $(SRC_DIR)/notebooks/tests/MyCustomTest.py $(DEST_DIR_NB)/tests/
+	@echo "\nUpdating notebook source ..."
+	@rm -rf $(DEST_DIR_NB)/ > /dev/null 2>&1 && mkdir -p $(DEST_DIR_NB)
+	@$(foreach notebook,$(NOTEBOOKS), \
+		dest_dir=$(DEST_DIR_NB)/$(patsubst notebooks/%,%,$(dir $(notebook))); \
+		mkdir -p $$dest_dir > /dev/null 2>&1; \
+		cp -r $(SRC_DIR)/$(notebook) $$dest_dir > /dev/null 2>&1; \
+		echo "Updated $(notebook)"; \
+	)
+	@echo "\nCopying additional notebooks from Google Drive ..."
+	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Quickstart_Customer Churn_full_suite.ipynb" $(DEST_DIR_NB)/
+	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/
 
 # Make Python library docs & copy them over
 python-docs:
+	@echo "\nUpdating Python documentation ..."
 	rm -rf $(DEST_DIR_PYTHON)
 	mkdir -p $(DEST_DIR_PYTHON)
 	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
@@ -56,10 +78,8 @@ deploy-demo:
 	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
 		echo "You're not on the docs-demo branch, no action taken."; \
 	else \
-		echo "You're on the docs-demo branch. Deploying docs-demo site ..."; \
-        quarto render && \
-        aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && \
-        aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+		echo "\nDeploying docs-demo site ..."; \
+        quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
     fi
 
 # Deployment to https://docs.validmind.ai/
@@ -67,12 +87,11 @@ deploy-prod:
 	@if [ "`git rev-parse --abbrev-ref HEAD`" != "main" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
 		echo "You're not on the main or prod branches, no action taken."; \
 	else \
-		echo "You're on the main or prod branch. Deploying prod site ..."; \
-		quarto render && \
-		aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && \
-		aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		echo "\nDeploying prod site ..."; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Generate release notes
 release-notes:
+	@echo "\nGenerating release notes ..."
 	python generate_release_notes.py
