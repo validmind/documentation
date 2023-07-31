@@ -108,22 +108,19 @@ def update_release_highlights_template(template_filepath, documentation_highligh
     frontend_release_notes = ""
 
     for pr in documentation_highlight_pull_requests:
-        title = pr['title']
-        external_notes = extract_external_release_notes(pr['body'])
-        if external_notes:
-            documentation_release_notes += f"- **{title}**\n\n{external_notes}\n\n"
+        external_release_notes = extract_external_release_notes(pr['body'])
+        if external_release_notes:
+            documentation_release_notes += f"<!---{pr['title']} by @{pr['author']} in [#{pr['number']}]({pr['url']})--->\n- **{pr['title']}**. {external_release_notes}\n\n\n"
 
     for pr in python_highlight_pull_requests:
-        title = pr['title']
-        external_notes = extract_external_release_notes(pr['body'])
-        if external_notes:
-            python_release_notes += f"- **{title}**\n\n{external_notes}\n\n"
+        external_release_notes = extract_external_release_notes(pr['body'])
+        if external_release_notes:
+            python_release_notes += f"<!---{pr['title']} by @{pr['author']} in [#{pr['number']}]({pr['url']})--->\n- **{pr['title']}**. {external_release_notes}\n\n\n"
 
     for pr in frontend_highlight_pull_requests:
-        title = pr['title']
-        external_notes = extract_external_release_notes(pr['body'])
-        if external_notes:
-            frontend_release_notes += f"- **{title}**\n\n{external_notes}\n\n"
+        external_release_notes = extract_external_release_notes(pr['body'])
+        if external_release_notes:
+            frontend_release_notes += f"<!---{pr['title']} by @{pr['author']} in [#{pr['number']}]({pr['url']})--->\n- **{pr['title']}**. {external_release_notes}\n\n\n"
 
     # Update the section for PRs from the documentation repo
     template_content = re.sub(r"(?<=## Release highlights\n\n).*?(?=\n..)", documentation_release_notes, template_content, flags=re.DOTALL)
@@ -158,7 +155,7 @@ def write_documentation_prs_to_qmd_files(pr_number, documentation_highlight_pull
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']})--->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     documentation_highlight_pull_requests.append(pr_data)
@@ -181,7 +178,7 @@ def write_python_prs_to_qmd_files(pr_number, python_highlight_pull_requests):
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']})--->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     python_highlight_pull_requests.append(pr_data)
@@ -204,7 +201,7 @@ def write_frontend_prs_to_qmd_files(pr_number, frontend_highlight_pull_requests)
                 if label_name in qmd_files:
                     external_release_notes = extract_external_release_notes(pr_data['body'])
                     if external_release_notes:
-                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']}) --->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
+                        qmd_files[label_name] += f"<!---{pr_data['title']} by @{pr_data['author']} in [#{pr_number}]({pr_data['url']})--->\n- **{pr_data['title']}**. {external_release_notes}\n\n\n"
                 # Adds the PR to the highlights list if it has the 'highlight' label
                 if label_name == "highlight":
                     frontend_highlight_pull_requests.append(pr_data)
