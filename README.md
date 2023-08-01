@@ -1,3 +1,7 @@
+# ValidMind
+
+ValidMind helps model developers and model validators streamline communication and automate the model documentation process. 
+
 # Documentation
 
 The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
@@ -34,11 +38,21 @@ site
 
 **guide/** — Core docs sourced in Quarto Markdown
 
-**notebooks/** — Jyupiter notebooks copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks) or Google Drive
+**notebooks/** — Jupyter notebooks copied from [validmind-python/notebooks](https://github.com/validmind/validmind-python/tree/main/notebooks) or Google Drive
 
 **_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more
 
 **index.qmd** — Main landing page sourced in Quarto Markdown and HTML
+
+## How to contribute
+
+We welcome contributions to [ValidMind's documentation](https://docs.validmind.ai/guide/get-started.html). If you've noticed an issue in the documentation, or have an idea for an improvement, please create an issue or pull request.
+
+If you are creating a pull request (PR), make sure to test your changes by rendering or previewing the site. A member of ValidMind's documentation team will review and merge your PR.
+
+If this is your first time contributing, you will be asked to sign a contributer agreement.
+
+Join our community Slack channels to ask questions and get support from ValidMind with contributing.
 
 ## Preview the docs site
 
@@ -46,15 +60,6 @@ site
 cd site
 quarto preview
 ```
-
-## Update files sourced from other repos
-
-```bash
-cd site
-make get-source
-```
-
-Important: This action doesn't copy the Jupyter notebooks sourced from [Google Drive](https://drive.google.com/drive/folders/1o2TcY9PM-OkjBKdfenymuaeAIqarY4T2). You need to update these notebooks _manually_. 
 
 ## Generate the docs site
 
@@ -79,35 +84,3 @@ site
 └── _site ...
     └── *.html, *.css, *.png, *.js ...
 ```
-
-## Deploy the production docs site
-
-Automatically from the `prod` branch: merge a commit into the branch with the latest changes from `main`.
-
-Manually from the `main` or `prod` branches:
-
-```bash
-make deploy-prod
-```
-
-## Deploy the docs demo site
-
-Automatically from the `docs-demo` branch: merge a commit into the branch, e.g. with the files you want to deploy.
-
-Manually from the `docs-demo` branch:
-
-```bash
-make deploy-demo
-```
-
-## Generate release notes
-
-From the tag for the upcoming release, click 'Create release from tag', and then 'Generate release notes' to generate a list of pull requests to include in the upcoming release. Do this in the documentation, validmind-python, and frontend repos.
-
-From the documentation repo:
-
-```bash
-cd site
-make release-notes
-```
-Enter the release tag for each repo, and the date for the upcoming release.
