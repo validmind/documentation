@@ -1,10 +1,21 @@
 # ValidMind
 
-ValidMind helps model developers and model validators streamline communication and automate the model documentation process. 
+ValidMind helps model developers and model validators streamline communication and automate the model documentation process.
 
 # Documentation
 
-The home for our user-facing documentation and related infrastructure. If you need to make updates to our external docs site, you're in the right place.
+The home for our user-facing documentation and related infrastructure. If you want to make updates to our external docs site, you're in the right place.
+
+## How to contribute
+
+We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please submit an issue or create a pull request. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs.
+
+If you are creating a pull request, make sure to test your changes by rendering or previewing the site.
+
+If this is your first time contributing, you will be asked to sign a contributer agreement.
+
+**ValidMind documentation:** https://docs.validmind.ai/guide/get-started.html
+**Community Slack:** site/guide/join-community.qmd
 
 ## Prerequisites
 
@@ -43,16 +54,6 @@ site
 **_quarto.yml** — Rendering options for the site, including navigation, search, footer, and more
 
 **index.qmd** — Main landing page sourced in Quarto Markdown and HTML
-
-## How to contribute
-
-We welcome contributions to [ValidMind's documentation](https://docs.validmind.ai/guide/get-started.html). If you've noticed an issue in the documentation, or have an idea for an improvement, please create an issue or pull request.
-
-If you are creating a pull request (PR), make sure to test your changes by rendering or previewing the site. A member of ValidMind's documentation team will review and merge your PR.
-
-If this is your first time contributing, you will be asked to sign a contributer agreement.
-
-Join our community Slack channels to ask questions and get support from ValidMind with contributing.
 
 ## Preview the docs site
 
