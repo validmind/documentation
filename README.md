@@ -1,12 +1,12 @@
 # ValidMind
 
+![](site/guide/ValidMind-logo-color.svg)
+
 ValidMind helps model developers and model validators streamline communication and automate the model documentation process.
 
-# Documentation
+This is the home for our user-facing documentation and related infrastructure. If you want to make updates to our external docs site, you're in the right place.
 
-The home for our user-facing documentation and related infrastructure. If you want to make updates to our external docs site, you're in the right place.
-
-## Contribute to the documentation
+## Contributing to the documentation
 
 We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please submit an issue or create a pull request. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs. 
 
