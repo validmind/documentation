@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="keywords" content="get started, developer framework, model risk management, ValidMind">
+<meta name="keywords" content="key concepts, model risk management, ValidMind">
 
 <title>ValidMind - Get started with the ValidMind Developer Framework</title>
 <style>
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -290,10 +324,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <ul>
   <li><a href="#what-is-the-developer-framework" id="toc-what-is-the-developer-framework" class="nav-link active" data-scroll-target="#what-is-the-developer-framework">What is the Developer Framework?</a></li>
   <li><a href="#how-do-i-use-the-framework" id="toc-how-do-i-use-the-framework" class="nav-link" data-scroll-target="#how-do-i-use-the-framework">How do I use the framework?</a></li>
-  <li><a href="#getting-ready-to-generate-documentation" id="toc-getting-ready-to-generate-documentation" class="nav-link" data-scroll-target="#getting-ready-to-generate-documentation">Getting ready to generate documentation</a>
-  <ul class="collapse">
-  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
-  </ul></li>
+  <li><a href="#using-the-framework-in-production" id="toc-using-the-framework-in-production" class="nav-link" data-scroll-target="#using-the-framework-in-production">Using the framework in production</a></li>
   </ul>
 </nav>
     </div>
@@ -302,7 +333,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Get started with the ValidMind Developer Framework</h1>
+<h1 class="title">Key concepts</h1>
 </div>
 
 
@@ -317,10 +348,10 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 </header>
 
-<p>This section provides an introduction for what the ValidMind Developer Framework is and what functionality it provides. This topic is relevant for model developers who want to use the framework to document and test their models.</p>
+<p>This section introduces the ValidMind Developer Framework and its functionalities. This topic is relevant for model developers who want to use the framework to document and test their models in production.</p>
 <section id="what-is-the-developer-framework" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-the-developer-framework">What is the Developer Framework?</h2>
-<p>When building models for specific use cases, whether they’re AI-driven large language models (LLMs) or models for financial services, it’s important for model developers to meticulously document the entire development process of the selected models. Inherently, no model is perfect and each carries its own set of risks based on its design and purpose. Robust documentation and complete testing is a crucial measure to mitigate these inherent risks.</p>
+<p>When developing models for specific use cases, whether they’re AI-driven large language models (LLMs) or models for financial services, it’s important for model developers to meticulously document the entire development process of the selected models. Inherently, no model is perfect and each carries its own set of risks based on its design and purpose. Robust documentation and complete testing is a crucial measure to mitigate these inherent risks.</p>
 <p>ValidMind’s Developer Framework provides a rich suite of documentation tools and test plans, from documenting descriptions of your dataset to testing your models for weak spots and overfit areas. The Developer Framework helps you automate the generation of model documentation by feeding the ValidMind platform with documentation artifacts and test results to the ValidMind platform.</p>
 <!--- TO DO update this diagram to include documentation generation and testing --->
 <div class="quarto-figure quarto-figure-center">
@@ -328,30 +359,30 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <p><img src="get-started-validmind.png" class="img-fluid figure-img" style="width:70.0%" alt="An image showing the two main components of ValidMind. The Developer Framework that integrates with your existing developer environment, and the ValidMind MRM platform."></p>
 </figure>
 </div>
-<p>ValidMind helps developers by enabling two main activities:</p>
+<p>ValidMind offers two primary methods for documenting model risk:</p>
 <ul>
-<li><strong>Generating model documentation</strong>: Through automation, the Developer Framework extracts metadata from associated datasets and models for you and generates model documentation. You can also add more documentation and tests manually using the documentation editing capabilities in the ValidMind UI.</li>
-<li><strong>Running pre-built validation tests</strong>: ValidMind provides a suite of validation tests for common financial services use cases. For cases where these tests do not cover all of you needs, you can also extend existing test suites with your own proprietary tests or testing providers.</li>
+<li><strong>By generating model documentation</strong>: Through automation, the framework extracts metadata from associated datasets and models for you and generates model documentation. You can also add more documentation and tests manually using the documentation editing capabilities in the ValidMind UI.</li>
+<li><strong>By running pre-built validation tests</strong>: The framework provides a suite of validation tests for common financial services use cases. For cases where these tests do not cover everything you need, you can also extend existing test suites with your own proprietary tests or testing providers.</li>
 </ul>
-<p>The Developer Framework is designed to be model agnostic. If your model is built in Python, ValidMind’s Python library will provide all the standard functionality without requiring your developers to rewrite any functions.</p>
+<p>The Developer Framework is designed to be model agnostic. If your model is built in Python, ValidMind’s Python client library already provides all the standard functionality you might need without requiring your developers to rewrite any functions. For Python developers, a simple install gets you all of the functions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-simple callout-important no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key concepts to know
+What are some key ValidMind concepts?
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<!--- TO DO This likely needs to be single sourced and reused in Get Started section somewhere. --->
-<p>If you haven’t read through our <a href="../guide/get-started.html">Get started</a> section, here are some important concepts to know.</p>
+<p>Here are some important concepts that will help you get started with the Developer Framework:</p>
 <dl>
 <dt>Project</dt>
 <dd>
-All documentation work in ValidMind is organized into projects which act as a container for the model documentation and validation report of your model. Each stage of the model’s MRM lifecycle will constitute a new project, and may be configured with its own templates and workflows.
+All documentation work in ValidMind is organized into projects which act as a container for the model documentation and validation report of your model. Each stage of the model’s lifecycle will constitute a new project, and may be configured with its own templates and workflows.
 </dd>
 <dt>Model documentation</dt>
 <dd>
@@ -386,6 +417,7 @@ Functions as a test suite and lays out the structure of model documentation, seg
 A function contained in the ValidMind Developer Framework, which is designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates.
 </dd>
 </dl>
+<!--- TO DO This likely needs to be single sourced and reused in Get Started section somewhere. --->
 </div>
 </div>
 </div>
@@ -415,21 +447,78 @@ A function contained in the ValidMind Developer Framework, which is designed to 
 <li><p><strong>Submit for review</strong>: In the ValidMind Platform UI, you submit the model documentation for review which moves the documentation workflow moves to the next phase where a model validator will review it.</p></li>
 </ol>
 </section>
-<section id="getting-ready-to-generate-documentation" class="level2">
-<h2 class="anchored" data-anchor-id="getting-ready-to-generate-documentation">Getting ready to generate documentation</h2>
-<p>Let’s explore the approach to generating and refining documentation further to understand the different elements involved in the process. As the previous section already indicated, this is an <em>iterative process</em>.</p>
+<section id="using-the-framework-in-production" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-framework-in-production">Using the framework in production</h2>
+<p>Let’s explore the approach to generating and refining documentation further to understand the process of using the ValidMind Developer Framework in production better.</p>
 <!--- NR How do developers verify the current documentation template? --->
-<p>Before you, as a model developer, can use the Developer Framework, you should verify that the current documentation template contains all the necessary tests for the model they need. For example: the template might already be sufficient and you only need to run the template within the Developer Framework to populate documentation. Or, the template might need additional tests and you will need to add these tests via the Developer Framework.</p>
-<section id="steps" class="level3">
-<h3 class="anchored" data-anchor-id="steps">Steps</h3>
-<p>We call this process of verifying the suitability of the the current documentation template or adding more tests to the template the <strong><em>template building</em></strong> and <strong><em>template execution</em></strong> phases:</p>
+<p>Before you, as a model developer, can use the Developer Framework, you should verify that the current documentation template contains all the necessary tests for the model they need. The template might already be sufficient and you only need to run the template within the Developer Framework to populate documentation. Or, more likely, the template might need additional tests that you can add these tests via the Developer Framework.</p>
+<p>We call this process of verifying the suitability of the the current documentation template or adding more tests to the template the <strong><em>template building</em></strong> and <strong><em>template execution</em></strong> phases.</p>
+<p>This is an iterative process:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[1. Build template] --&gt; B[2. Run template]
+    B --&gt; A
+</pre>
+</div>
+</div>
+</div>
+</div>
+<p><br></p>
+<!--- TO DO We need to add some links to these steps (to test: can you add content blocks to templates via the same method as adding them to documentation projects?) --->
 <ol type="1">
-<li><p><strong>Build the template:</strong>&nbsp;When the documentation template requires more tests to be added, or if the documentation template does not have any content blocks, you use the Developer Framework to select the relevant tests for the model use case.</p></li>
-<li><p><strong>Run the template:</strong>&nbsp;When all the required tests are registered as content blocks in the documentation template, you only need to call <code>run_template()</code> to populate the necessary model documentation.</p></li>
+<li><p><strong>Build the template:</strong>&nbsp;When the documentation template requires more tests to be added, or if the documentation template does not include a specific content or test block you need:</p>
+<ul>
+<li><p>Use the Developer Framework to <a href="../guide/add-content-blocks.html">to add the relevant tests or content blocks</a> for the model use case.</p></li>
+<li><p>If a test you need is not provided out of the box, <a href="../notebooks/external_test_providers_demo.html">add your own external test provider</a>.</p></li>
+</ul></li>
+<li><p><strong>Run the template:</strong>&nbsp;When you have registered all the required tests as content blocks in the documentation template, populate the necessary model documentation with this call in your model:</p>
+<pre><code>run_template()</code></pre></li>
 </ol>
-<p>It’s important to acknowledge that ValidMind cannot realistically cover every use case nor create a documentation template that fits all institutions. Most users will likely start by building a template for the use case as the first step.</p>
-<p>The end-to-end flow that developers go through when populating a documentation template with ValidMind looks like follows:</p>
-<!--- TO DO Create the mother of all Mermaid diagrams!--->
+<p>Please note that ValidMind may not support all potential use cases or provide a universally applicable documentation template. Typically, you initiate the process of putting ValidMind into production by constructing a template specific for your own use case and refine your the documenation project.</p>
+<!--- TO DO Create the mother of all Mermaid diagrams to replace this image embed and explain this further
+
+The end-to-end workflow that a model developer steps through when populating a documentation template with ValidMind is as follows:
+
+![](developer-framework-workflow.png)
+
+
+
+:::{.cell}
+
+:::{.cell-output-display}
+
+:::{}
+
+:::{}
+
+<pre class="mermaid mermaid-js">graph TB
+    subgraph Modeling
+        A1[A1] --&gt; A2[A2]
+    end
+    subgraph Documentation
+        B1[B1] --&gt; B2[B2]
+        B2 --&gt; B3[B3]
+        B3 --&gt; B4[B4]
+    end
+    subgraph Platform UI
+        C1[C1] --&gt; C2[C2]
+        C2 --&gt; C3[C3]
+        C3 --&gt; C4[C4]
+    end
+    A2 --&gt; B2
+    C4 --&gt; B1
+
+</pre>
+:::
+:::
+:::
+:::
+
+
+--->
 <!---
 ## Related Topics
 
@@ -437,7 +526,6 @@ Provide links or references to related topics that users might find useful or in
 --->
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
