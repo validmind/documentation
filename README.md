@@ -27,7 +27,7 @@ You need:
 
 ## How to contribute
 
-Our core docs are sourced in Quarto Markdown under **site**-->**guide**. If you create new documentation, make sure to add it to the **_quarto.yml** file.
+Our core docs are sourced in Quarto Markdown under [site/guide/](https://github.com/validmind/documentation/tree/main/site/guide). If you create new documentation, make sure to add it to the [_quarto.yml](https://github.com/validmind/documentation/blob/main/site/_quarto.yml) file.
 
 If you are creating a pull request, test your changes by rendering or previewing the site. Note that if this is your first time contributing, you wil be asked to sign a contributor agreement.
 
