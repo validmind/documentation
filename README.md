@@ -8,7 +8,7 @@ This is the home for the user-facing documentation and related infrastructure fo
 
 ## Contributing to the documentation
 
-We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please submit an issue or create a pull request. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs. 
+We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please create a pull request or submit an issue. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs. 
 
 - Follow the [Quickstart](https://docs.validmind.ai/guide/quickstart.html) for a 20 minute introduction to the Developer Framework and ValidMind Platform.
 
