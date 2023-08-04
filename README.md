@@ -4,7 +4,7 @@
 
 ValidMind helps model developers and model validators streamline communication and automate the model documentation process.
 
-This is the home for our user-facing documentation and related infrastructure. If you want to make updates to our external docs site, you're in the right place.
+This is the home for the user-facing documentation and related infrastructure for ValidMind. If you want to make updates to our external docs site, you're in the right place.
 
 ## Contributing to the documentation
 
