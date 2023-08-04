@@ -10,7 +10,7 @@ This is the home for our user-facing documentation and related infrastructure. I
 
 We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please submit an issue or create a pull request. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs. 
 
-- Follow the [quickstart](https://docs.validmind.ai/guide/quickstart.html) for a 20 minute introduction to the Developer Framework and ValidMind Platform.
+- Follow the [Quickstart](https://docs.validmind.ai/guide/quickstart.html) for a 20 minute introduction to the Developer Framework and ValidMind Platform.
 
 - Read the [Developer Framework docs](https://docs.validmind.ai/guide/developer-framework.html) for more information about ValidMind's open source tests and Jupyter notebooks.
 
