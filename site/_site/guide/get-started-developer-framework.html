@@ -325,6 +325,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <li><a href="#what-is-the-developer-framework" id="toc-what-is-the-developer-framework" class="nav-link active" data-scroll-target="#what-is-the-developer-framework">What is the Developer Framework?</a></li>
   <li><a href="#how-do-i-use-the-framework" id="toc-how-do-i-use-the-framework" class="nav-link" data-scroll-target="#how-do-i-use-the-framework">How do I use the framework?</a></li>
   <li><a href="#adopting-the-framework-for-your-use-case" id="toc-adopting-the-framework-for-your-use-case" class="nav-link" data-scroll-target="#adopting-the-framework-for-your-use-case">Adopting the framework for your use case</a></li>
+  <li><a href="#generating-documentation" id="toc-generating-documentation" class="nav-link" data-scroll-target="#generating-documentation">Generating documentation</a>
+  <ul class="collapse">
+  <li><a href="#in-your-modeling-environment" id="toc-in-your-modeling-environment" class="nav-link" data-scroll-target="#in-your-modeling-environment">In your modeling environment</a></li>
+  <li><a href="#in-your-documentation-environment" id="toc-in-your-documentation-environment" class="nav-link" data-scroll-target="#in-your-documentation-environment">In your documentation environment</a></li>
+  <li><a href="#in-your-modeling-environment-1" id="toc-in-your-modeling-environment-1" class="nav-link" data-scroll-target="#in-your-modeling-environment-1">In your modeling environment</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -397,7 +403,7 @@ Provides a comprehensive record and description of a quantitative model. This do
 </ul>
 <p>The purpose of model documentation is to provide transparency, facilitate understanding, and enable effective governance and oversight of the model.</p>
 <dl>
-<dt>Project</dt>
+<dt>Documentation project</dt>
 <dd>
 All documentation work in ValidMind is organized into projects which act as a container for the model documentation and validation report of your model. Each stage of the model’s lifecycle constitutes a new project and can be configured with its own templates and workflows.
 </dd>
@@ -490,9 +496,74 @@ In the ValidMind Platform UI, you submit the model documentation for review whic
 <pre><code>run_template()</code></pre></li>
 </ol>
 <p>Please note that ValidMind may not support all potential use cases or provide a universally applicable documentation template. Typically, you initiate the process of putting ValidMind into production by constructing a template specific for your own use case and refine your the documenation project.</p>
-<p>TO DO Create the mother of all Mermaid diagrams to replace this image embed and explain this further</p>
+</section>
+<section id="generating-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="generating-documentation">Generating documentation</h2>
 <p>The end-to-end workflow that a model developer steps through when populating a documentation template with ValidMind is as follows:</p>
-<p><img src="developer-framework-workflow.png" class="img-fluid"></p>
+<!--- TO DO Do we need to explain how these environments relate to the term "developer environment" or IDE we use elsewhere? --->
+<section id="in-your-modeling-environment" class="level3">
+<h3 class="anchored" data-anchor-id="in-your-modeling-environment">In your modeling environment</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Build the model] --&gt; B[Export datasets and models]
+    B --&gt; C[Load training datasets&lt;br&gt;and models into your&lt;br&gt;documentation environment]
+</pre>
+</div>
+</div>
+</div>
+</div>
+<p><br></p>
+<ol type="1">
+<li><p>Build the model.</p></li>
+<li><p>Export datasets and models.</p></li>
+<li><p>In your documentation environment, load training datasets and models.</p></li>
+</ol>
+</section>
+<section id="in-your-documentation-environment" class="level3">
+<h3 class="anchored" data-anchor-id="in-your-documentation-environment">In your documentation environment</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A[Create notebook&lt;br&gt;to select and&lt;br&gt;build relevant tests] --&gt; B[From your modeling&lt;br&gt;environment,&lt;br&gt;load trained datasets&lt;br&gt;and models.]
+    B --&gt; C[Initialize developer framework.]
+    C --&gt; D[Select relevant tests.]
+    D --&gt; E[Check if all tests&lt;br&gt;covered by ValidMind&lt;br&gt;or custom test provider?]
+    E -- Yes --&gt; F[Run selected tests.]
+    F --&gt; G[Review test results.]
+    E -- No --&gt; H[Create and register additional tests]
+    G --&gt; I[In the ValidMind Platform UI, add content blocks to model documentation.]
+    H --&gt; E
+</pre>
+</div>
+</div>
+</div>
+</div>
+<p><br></p>
+<ol type="1">
+<li><p>Create notebook to select and build relevant tests.</p></li>
+<li><p>From your modeling environment, load trained datasets and models.</p></li>
+<li><p>Initialize developer framework.</p></li>
+<li><p>Select relevant tests.</p></li>
+<li><p>Check if all tests covered by ValidMind or custom test provider?</p>
+<p>Yes:</p>
+<ol type="a">
+<li>Run selected tests.</li>
+<li>Review test results.</li>
+</ol>
+<p>No: Create and register additional tests</p></li>
+<li><p>In the ValidMind Platform UI, add content blocks to model documentation.</p></li>
+</ol>
+</section>
+<section id="in-your-modeling-environment-1" class="level3">
+<h3 class="anchored" data-anchor-id="in-your-modeling-environment-1">In your modeling environment</h3>
+<!---
+![](developer-framework-workflow.png)
+--->
 <!---
 ## Related Topics
 
@@ -500,6 +571,7 @@ Provide links or references to related topics that users might find useful or in
 --->
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
