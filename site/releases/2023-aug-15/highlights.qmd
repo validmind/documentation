@@ -1,0 +1,56 @@
+---
+title: "August 15, 2023"
+keywords: "release notes, model risk management, ValidMind"
+---
+
+## Release highlights
+
+This release includes a number of improvements for the developer experience when using the ValidMind Developer Framework, along with a visual redesign of the Platform UI.
+
+### ValidMind Developer Framework (v1.17.0)
+
+<!--- NR commented out the AGPL-3 license update, as these repositories are still set to private
+- **Updated LICENSE to AGPL-3**. We added the GNU Affero General Public License version 3 to some of our GitHub repositories. 
+--->
+
+<!---John6797/sc 1980/metric test class dx improvements by @johnwalz97 in [#220](https://github.com/validmind/validmind-python/pull/220)--->
+- **Improved developer experience for the Metric test class**. We made a number of enhancements to the ValidMind Developer Framework to improve the experience for developers:
+
+   * **Better test organization**: Added a `metadata` and `tags` attribute to the `Test` base class for better categorization and filtering of tests.
+   * **Better filtering**: Added a new `task_type` argument to the `list_tests()` function to allow simple filtering by `task_type` set in a test.
+   * **Clearer naming**: Renamed `required_context` to `required_inputs` across the whole ValidMind SDK.
+
+<!---feat: [sc-1862] User should have a way to discover required context and default config when running tests by @johnwalz97 in [#204](https://github.com/validmind/validmind-python/pull/204)--->
+- **Enhancements to test configuration discovery**: To make the discovery of required context and default configuration easier, this update includes a number of changes to how `required_context` and `default_parameters` are presented:
+   * **Preview template expansion**: With `vm.preview_template()`, you can now view detailed, expandable information for each content block driven by a test. This includes the test's name, description, required context, and default parameters.
+   * **Simplified test listing**: The `vm.tests.list_tests()` function has been refined to show only the `ID`, `Name`, and `Description` for each test, making it more user-friendly.
+   * **Detailed test descriptions**: You can now obtain complete test details, including `required_context` and `default_params`, using the `vm.tests.describe_test()` function.
+   * **Retrieve test suite**: The new function `vm.get_test_suite()` allows you to access a specific test suite instance via the high-level Validmind API.
+   * **Access to default configuration**: A new method, `get_default_config()`, is now part of both the TestPlan and TestSuite classes, letting you obtain a dictionary containing all the configuration parameters used by the tests.
+   * **Easier required context**: A complementary new method, `get_required_context()`, now returns a list of all the context variables needed for tests to run, making it easier for you to ensure that everything is set up correctly.
+
+### ValidMind Platform UI (v1.4.10)
+
+<!---Release 1.4.7 by @cachafla in [#444](https://github.com/validmind/frontend/pull/444)--->
+**Redesigned application and navigation bar layout**. The new application design offers a cleaner, more intuitive interface that enhances user experience. The updated navigation bar layout specifically contributes to easier navigation, allowing users to find what they need with greater efficiency.
+
+## How to upgrade
+
+To access the latest version of the [ValidMind Platform UI](http://app.prod.validmind.ai/), reload your browser tab.
+
+To upgrade the ValidMind Developer Framework:
+
+- [Using Jupyter Hub](../../guide/try-developer-framework-with-jupyterhub.qmd): reload your browser tab and re-run the `!pip install --upgrade validmind` cell.
+
+- [Using Docker](../../guide/try-developer-framework-with-docker.qmd): pull the latest Docker image:
+    
+    ```jsx
+    docker pull validmind/validmind-jupyter-demo:latest
+    
+    ```
+    
+- [In your own developer environment](../../guide/install-and-initialize-developer-framework.qmd): restart your notebook and re-run:
+    
+    ```python
+    !pip install validmind
+    ```
