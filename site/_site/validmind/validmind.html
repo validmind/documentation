@@ -30,7 +30,7 @@
                     <a class="variable" href="#__version__">__version__</a>
             </li>
             <li>
-                    <a class="variable" href="#data_validation">data_validation</a>
+                    <a class="function" href="#get_test_suite">get_test_suite</a>
             </li>
             <li>
                     <a class="function" href="#init">init</a>
@@ -45,10 +45,10 @@
                     <a class="function" href="#init_r_model">init_r_model</a>
             </li>
             <li>
-                    <a class="variable" href="#model_validation">model_validation</a>
+                    <a class="function" href="#preview_template">preview_template</a>
             </li>
             <li>
-                    <a class="function" href="#preview_template">preview_template</a>
+                    <a class="function" href="#run_documentation_tests">run_documentation_tests</a>
             </li>
             <li>
                     <a class="function" href="#run_template">run_template</a>
@@ -78,6 +78,8 @@
             <ul>
                     <li><a href="validmind/__version__.html">__version__</a></li>
                     <li><a href="validmind/datasets.html">datasets</a></li>
+                    <li><a href="validmind/errors.html">errors</a></li>
+                    <li><a href="validmind/tests.html">tests</a></li>
                     <li><a href="validmind/test_plans.html">test_plans</a></li>
                     <li><a href="validmind/test_suites.html">test_suites</a></li>
                     <li><a href="validmind/vm_models.html">vm_models</a></li>
@@ -142,7 +144,7 @@ and to upload to the ValidMind Platform.</p>
                 <section id="__version__">
                     <div class="attr variable">
             <span class="name">__version__</span>        =
-<span class="default_value">&#39;1.16.0&#39;</span>
+<span class="default_value">&#39;1.19.1&#39;</span>
 
         
     </div>
@@ -151,15 +153,37 @@ and to upload to the ValidMind Platform.</p>
     
 
                 </section>
-                <section id="data_validation">
-                    <div class="attr variable">
-            <span class="name">data_validation</span>
+                <section id="get_test_suite">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get_test_suite</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">test_suite_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">section</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">test_suite</span><span class="o">.</span><span class="n">TestSuite</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#data_validation"></a>
+    <a class="headerlink" href="#get_test_suite"></a>
     
-    
+            <div class="docstring"><p>Gets a TestSuite object for the current project or a specific test suite</p>
+
+<p>This function provides an interface to retrieve the TestSuite instance for the
+current project or a specific TestSuite instance identified by test_suite_name.
+The project Test Suite will contain Test Plans for every section in the project's
+documentation template and these Test Plans will contain all the tests associated
+with that section.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>test_suite_name (str, optional):</strong>  The test suite name. If not passed, then the
+project's test suite will be returned. Defaults to None.</li>
+<li><strong>section (str, optional):</strong>  The section of the documentation template from which
+to retrieve the test suite. This only applies if test_suite_name is None.
+Defaults to None.</li>
+<li><strong>args:</strong>  Additional arguments to pass to the TestSuite</li>
+<li><strong>kwargs:</strong>  Additional keyword arguments to pass to the TestSuite</li>
+</ul>
+</div>
+
 
                 </section>
                 <section id="init">
@@ -200,7 +224,7 @@ retrieve them from the environment variables <code>VM_API_KEY</code> and <code>V
                     <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">init_dataset</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">dataset</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span>,</span><span class="param">	<span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;training&#39;</span>,</span><span class="param">	<span class="n">options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">targets</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">DatasetTargets</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">text_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">target_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">class_labels</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">Dataset</span>:</span></span>
+        <span class="name">init_dataset</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">dataset</span>,</span><span class="param">	<span class="n">index</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">date_time_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>,</span><span class="param">	<span class="n">column_names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">text_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">target_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">class_labels</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span>:</span></span>
 
         
     </div>
@@ -215,8 +239,6 @@ DataFrames at the moment.</p>
 
 <ul>
 <li><strong>dataset (pd.DataFrame):</strong>  We only support Pandas DataFrames at the moment</li>
-<li><strong>type (str):</strong>  The dataset split type is necessary for mapping and relating multiple
-datasets together. Can be one of training, validation, test or generic</li>
 <li><strong>options (dict):</strong>  A dictionary of options for the dataset</li>
 <li><strong>targets (vm.vm.DatasetTargets):</strong>  A list of target variables</li>
 <li><strong>target_column (str):</strong>  The name of the target column in the dataset</li>
@@ -242,7 +264,7 @@ datasets together. Can be one of training, validation, test or generic</li>
                     <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">init_model</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">model</span><span class="p">:</span> <span class="nb">object</span>,</span><span class="param">	<span class="n">train_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">test_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">validation_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Model</span>:</span></span>
+        <span class="name">init_model</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">model</span><span class="p">:</span> <span class="nb">object</span>,</span><span class="param">	<span class="n">train_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">test_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">validation_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">VMModel</span>:</span></span>
 
         
     </div>
@@ -250,12 +272,12 @@ datasets together. Can be one of training, validation, test or generic</li>
     
             <div class="docstring"><p>Initializes a VM Model, which can then be passed to other functions
 that can perform additional analysis and tests on the data. This function
-also ensures we are reading a supported model type.</p>
+also ensures we are creating a model supported libraries.</p>
 
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li><strong>model:</strong>  A trained sklearn model</li>
+<li><strong>model:</strong>  A trained model</li>
 </ul>
 
 <h6 id="raises">Raises:</h6>
@@ -267,7 +289,7 @@ also ensures we are reading a supported model type.</p>
 <h6 id="returns">Returns:</h6>
 
 <blockquote>
-  <p>vm.vm.Model: A VM Model instance</p>
+  <p>vm.VMModel: A VM Model instance</p>
 </blockquote>
 </div>
 
@@ -277,7 +299,7 @@ also ensures we are reading a supported model type.</p>
                     <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">init_r_model</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Model</span>:</span></span>
+        <span class="name">init_r_model</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">train_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">test_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">validation_ds</span><span class="p">:</span> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">VMDataset</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">validmind</span><span class="o">.</span><span class="n">vm_models</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">VMModel</span>:</span></span>
 
         
     </div>
@@ -315,17 +337,6 @@ since xgb models saved in .json or .bin format can be loaded directly with eithe
 
 
                 </section>
-                <section id="model_validation">
-                    <div class="attr variable">
-            <span class="name">model_validation</span>
-
-        
-    </div>
-    <a class="headerlink" href="#model_validation"></a>
-    
-    
-
-                </section>
                 <section id="preview_template">
                     <div class="attr function">
             
@@ -350,6 +361,47 @@ the project has not been initialized, then an error will be raised.</p>
 
 
                 </section>
+                <section id="run_documentation_tests">
+                    <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">run_documentation_tests</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">section</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>, </span><span class="param"><span class="n">send</span><span class="o">=</span><span class="kc">True</span>, </span><span class="param"><span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#run_documentation_tests"></a>
+    
+            <div class="docstring"><p>Collect and run all the tests associated with a template</p>
+
+<p>This function will analyze the current project's documentation template and collect
+all the tests associated with it into a test suite. It will then run the test
+suite, log the results to the ValidMind API and display them to the user.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>section (str, optional):</strong>  The section to preview. Defaults to None.</li>
+<li><strong>send (bool, optional):</strong>  Whether to send the results to the ValidMind API. Defaults to True.</li>
+<li><strong>fail_fast (bool, optional):</strong>  Whether to stop running tests after the first failure. Defaults to False.</li>
+<li><strong>*args:</strong>  Arguments to pass to the TestSuite</li>
+<li><strong>**kwargs:</strong>  Keyword arguments to pass to the TestSuite</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>TestSuite: The completed TestSuite instance</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>ValueError:</strong>  If the project has not been initialized</li>
+</ul>
+</div>
+
+
+                </section>
                 <section id="run_template">
                     <div class="attr function">
             
@@ -360,7 +412,16 @@ the project has not been initialized, then an error will be raised.</p>
     </div>
     <a class="headerlink" href="#run_template"></a>
     
-            <div class="docstring"><p>Collect and run all the tests associated with a template</p>
+            <div class="docstring"><p>DEPRECATED! Use <code>vm.run_documentation_tests</code> instead.</p>
+
+<p>_run_template(
+    template=client_config.documentation_template,
+    section=section,
+    <em>args,
+    *</em>kwargs,
+)</p>
+
+<p>Collect and run all the tests associated with a template</p>
 
 <p>This function will analyze the current project's documentation template and collect
 all the tests associated with it into a test suite. It will then run the test
@@ -386,7 +447,7 @@ suite, log the results to the ValidMind API and display them to the user.</p>
                     <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">run_test_plan</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">test_plan_name</span>, </span><span class="param"><span class="n">send</span><span class="o">=</span><span class="kc">True</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
+        <span class="name">run_test_plan</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">test_plan_name</span>, </span><span class="param"><span class="n">send</span><span class="o">=</span><span class="kc">True</span>, </span><span class="param"><span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
 
         
     </div>
@@ -402,8 +463,9 @@ run it.</p>
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li><strong>test_plan_name (str):</strong>  The test plan name (e.g. 'binary_classifier')</li>
+<li><strong>test_plan_name (str):</strong>  The test plan name (e.g. 'classifier')</li>
 <li><strong>send (bool, optional):</strong>  Whether to post the test results to the API. send=False is useful for testing. Defaults to True.</li>
+<li><strong>fail_fast (bool, optional):</strong>  Whether to stop running tests after the first failure. Defaults to False.</li>
 <li><strong>**kwargs:</strong>  Additional keyword arguments to pass to the test plan. These will provide
 the TestPlan instance with the necessary context to run the tests. e.g. dataset, model etc.
 See the documentation for the specific test plan for more details.</li>
@@ -428,7 +490,7 @@ See the documentation for the specific test plan for more details.</li>
                     <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">run_test_suite</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">test_suite_name</span>, </span><span class="param"><span class="n">send</span><span class="o">=</span><span class="kc">True</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
+        <span class="name">run_test_suite</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">test_suite_name</span>, </span><span class="param"><span class="n">send</span><span class="o">=</span><span class="kc">True</span>, </span><span class="param"><span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
 
         
     </div>
@@ -443,8 +505,9 @@ class based on the test_suite_name, initialize each of the test plans, and run t
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li><strong>test_suite_name (str):</strong>  The test suite name (e.g. 'binary_classifier_full_suite')</li>
+<li><strong>test_suite_name (str):</strong>  The test suite name (e.g. 'classifier_full_suite')</li>
 <li><strong>send (bool, optional):</strong>  Whether to post the test results to the API. send=False is useful for testing. Defaults to True.</li>
+<li><strong>fail_fast (bool, optional):</strong>  Whether to stop running tests after the first failure. Defaults to False.</li>
 <li><strong>**kwargs:</strong>  Additional keyword arguments to pass to the test suite. These will provide
 the TestSuite instance with the necessary context to run the tests. e.g. dataset, model etc.
 See the documentation for the specific test plan, metric or threshold test for more details.</li>
