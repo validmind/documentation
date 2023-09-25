@@ -1,0 +1,48 @@
+---
+title: "Enhancements -- September 26, 2023"
+keywords: "release notes, model risk management, ValidMind"
+---
+
+---
+title: "Enhancements -- September 25, 2023"
+keywords: "release notes, model risk management, ValidMind"
+---
+
+<!---SC-2042: Add multi-class classification support by @AnilSorathiya in [#221](https://github.com/validmind/validmind-python/pull/221)--->
+- **SC-2042: Add multi-class classification support**. * This feature add support for the multi-class classification task. The developer framework supports multi-class version of some the existing metrics (confusion matrix, accuracy, precision, recall or roc auc  etc.)
+* The dataset and model interfaces support dealing with multiple targets.
+
+
+<!---SC-2061: Support hugging face models by @AnilSorathiya in [#222](https://github.com/validmind/validmind-python/pull/222)--->
+- **SC-2061: Support hugging face models**. This feature add support to validate pretrained models from the HuggingFace Hub. Note that this doesn't imply we will be testing a LLM, but any language model compatible with the HF transformers API.
+
+I have used the financial phrasebank to build the sentiment analysis using  the hugging face models in a demo notebook: https://huggingface.co/datasets/financial_phrasebank
+
+This PR includes:
+- Create a new notebook that runs documentation tests for a HuggingFace model
+    - The HF model can be anyone that supports text classification (sentiment analysis)
+    - Assume the HF Pipeline model which includes `model` and `tokenizer`  pair
+- The tests uses the financial phrasebank dataset
+- The model validation tests support testing with a HF model
+    - The developer framework should support a new `HuggingFace pretrained Model` type
+
+
+<!---SC-2100: Implement classification model comparison metrics by @AnilSorathiya in [#231](https://github.com/validmind/validmind-python/pull/231)--->
+- **SC-2100: Implement classification model comparison metrics**. This PR adds model performance comparison test for classification tasks. 
+The test includes metrics such as accuracy, F1, precision, recall, roc_auc score.
+
+The test requires multiple models where "candidate" model will pass through "model" param and this model will be compared against the models that are pass through "models" params of the "init_model" interface. This will allow us to keep track of the "candidate" model.
+
+
+<!---[SC-2108] Multi-class tests should report metrics for individual classes and many other changes by @cachafla in [#228](https://github.com/validmind/validmind-python/pull/228)--->
+- **[SC-2108] Multi-class tests should report metrics for individual classes and many other changes**. - Introduced new `fail_fast` argument that can be passed to `run_test_plan`, `run_test_suite` and `run_documentation_tests` and can be used to fail and raise an exception on the first error encountered. Useful for debugging
+- `ClassifierPerformance` test now figures out if we're testing a binary or multi-class model. When testing a multi-class models we will report additional per-class, macro and weighted average metrics
+- Fix F1 score metric so it works properly for binary and multi-class models
+
+
+<!---[SC-1956] Credit risk scorecard demo notebooks by @juanmleng in [#223](https://github.com/validmind/validmind-python/pull/223)--->
+- **[SC-1956] Credit risk scorecard demo notebooks**. - Add `credit_risk_scorecard_development_demo.ipnyb` notebook
+- Add `credit_risk_scorecard_validation_demo.ipnyb` notebook
+- Add helpers `scorecard_model.py` and `model_development.py` that includes functions to implement the credit risk scorecard model
+
+
