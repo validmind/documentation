@@ -75,7 +75,7 @@ docs-site: clean clone notebooks python-docs
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
-    quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+	quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
