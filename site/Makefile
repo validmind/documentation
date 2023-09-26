@@ -42,12 +42,16 @@ NOTEBOOKS = \
     notebooks/how_to/run_a_test_plan.ipynb \
     notebooks/how_to/run_a_test_suite.ipynb \
     notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb \
-    notebooks/probability_of_default/credit_risk_scorecard_demo.ipynb \
-    notebooks/probability_of_default/probability_of_default_validmind.ipynb \
-    notebooks/time_series/tutorial_time_series_forecasting.ipynb 
+    notebooks/time_series/tutorial_time_series_forecasting.ipynb \
+    notebooks/llm/hugging_face_integration_demo.ipynb \
+    notebooks/probability_of_default/credit_risk_scorecard_development_demo.ipynb \
+    notebooks/probability_of_default/credit_risk_scorecard_validation_demo.ipynb \
+    notebooks/probability_of_default/helpers/scorecard_model.py \
+    notebooks/probability_of_default/helpers/model_development.py
 
 notebooks:
 	@echo "\nUpdating notebook source ..."
+	@rm -f notebooks.zip > /dev/null 2>&1
 	@rm -rf $(DEST_DIR_NB)/ > /dev/null 2>&1 && mkdir -p $(DEST_DIR_NB)
 	@$(foreach notebook,$(NOTEBOOKS), \
 		dest_dir=$(DEST_DIR_NB)/$(patsubst notebooks/%,%,$(dir $(notebook))); \
@@ -58,6 +62,8 @@ notebooks:
 	@echo "\nCopying additional notebooks from Google Drive ..."
 	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Quickstart_Customer Churn_full_suite.ipynb" $(DEST_DIR_NB)/
 	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/
+	@echo "\nZipping up notebooks into notebooks.zip ..."
+	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
 # Make Python library docs & copy them over
 python-docs:
