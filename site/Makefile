@@ -1,5 +1,5 @@
 # Define source and destination directories
-SRC_DIR := _source/validmind-python
+SRC_DIR := _source/developer-framework
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 
@@ -10,7 +10,7 @@ DEST_DIR_PYTHON := _site/validmind
 help:
 	@echo "Available targets:"
 	@echo "  clean          Remove the _source/ directory"
-	@echo "  clone          Clone the validmind-python repository into _source/"
+	@echo "  clone          Clone the developer-framework repository into _source/"
 	@echo "  notebooks      Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs    Copy the Python library docs into _site/validmind"
 	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
@@ -28,7 +28,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b prod git@github.com:validmind/validmind-python.git $(SRC_DIR)
+	git clone -b prod git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks
 
