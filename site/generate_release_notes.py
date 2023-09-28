@@ -23,9 +23,9 @@ def get_documentation_pr_numbers(tag_name_documentation):
         print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_documentation}'.")
         exit()
 
-# Get the list of PR numbers for a specified release from Github from the validmind-python repo
+# Get the list of PR numbers for a specified release from Github from the developer-framework repo
 def get_python_pr_numbers(tag_name_python):
-    cmd_release = ['gh', 'api', f'repos/validmind/validmind-python/releases/tags/{tag_name_python}']
+    cmd_release = ['gh', 'api', f'repos/validmind/developer-framework/releases/tags/{tag_name_python}']
     result_release = subprocess.run(cmd_release, capture_output=True, text=True)
     output_release = result_release.stdout.strip()
     release_data = json.loads(output_release)
@@ -33,12 +33,12 @@ def get_python_pr_numbers(tag_name_python):
     # Extract a list of PR numbers in this release
     if 'body' in release_data:
         body = release_data['body']
-        python_pr_numbers = re.findall(r"https://github.com/validmind/validmind-python/pull/(\d+)", body)
+        python_pr_numbers = re.findall(r"https://github.com/validmind/developer-framework/pull/(\d+)", body)
         # Remove duplicates
         python_pr_numbers = set(python_pr_numbers)
         return python_pr_numbers
     else:
-        print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_python}' in validmind-python.")
+        print(f"Error: Unable to fetch pull request numbers for the release with tag '{tag_name_python}' in developer-framework.")
         exit()
 
 # Get the list of PR numbers for a specified release from Github from the frontend repo
@@ -69,9 +69,9 @@ def get_documentation_pr_data(documentation_pull_request_number):
     documentation_labels = documentation_pr_data.get('labels', [])
     return documentation_pr_data, documentation_labels
 
-# Get the PR title and body using the list of PR numbers from the validmind-python repo
+# Get the PR title and body using the list of PR numbers from the developer-framework repo
 def get_python_pr_data(python_pull_request_number):
-    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/validmind-python', 'view', str(python_pull_request_number), '--json', 'title,number,author,body,url,labels']
+    cmd = ['gh', 'pr', '--repo', 'github.com/validmind/developer-framework', 'view', str(python_pull_request_number), '--json', 'title,number,author,body,url,labels']
     result = subprocess.run(cmd, capture_output=True, text=True)
     output = result.stdout.strip()
     python_pr_data = json.loads(output)
@@ -96,7 +96,7 @@ def extract_external_release_notes(pr_body):
         return match.group(1).strip()
     return None
 
-# Adds PRs labeled 'highlight' to the release highlights template file. PRs from documentation are written under '## Release Highlights', validmind-python under
+# Adds PRs labeled 'highlight' to the release highlights template file. PRs from documentation are written under '## Release Highlights', developer-framework under
 # 'ValidMind Developer Framework', and frontend under 'ValidMind Platform UI'
 def update_release_highlights_template(template_filepath, documentation_highlight_pull_requests, python_highlight_pull_requests, frontend_highlight_pull_requests):
    
@@ -125,14 +125,14 @@ def update_release_highlights_template(template_filepath, documentation_highligh
     # Update the section for PRs from the documentation repo
     template_content = re.sub(r"(?<=## Release highlights\n\n).*?(?=\n..)", documentation_release_notes, template_content, flags=re.DOTALL)
 
-    # Add the section for PRs from the validmind-python repo
-    template_content = re.sub(r"(?<=### ValidMind Developer Framework \(validmind-python version number\)\n\n).*?(?=\n..)", python_release_notes, template_content, flags=re.DOTALL)
+    # Add the section for PRs from the developer-framework repo
+    template_content = re.sub(r"(?<=### ValidMind Developer Framework \(developer-framework version number\)\n\n).*?(?=\n..)", python_release_notes, template_content, flags=re.DOTALL)
 
-    # Add the section for PRs from the validmind-python repo
+    # Add the section for PRs from the developer-framework repo
     template_content = re.sub(r"(?<=### ValidMind Platform UI \(frontend version number\)\n\n).*?(?=\n..)", frontend_release_notes, template_content, flags=re.DOTALL)
 
     template_content = template_content.replace("Release date", release_date)
-    template_content = template_content.replace("validmind-python version number", tag_name_python)
+    template_content = template_content.replace("developer-framework version number", tag_name_python)
     template_content = template_content.replace("frontend version number", tag_name_frontend)
 
     with open(template_filepath, 'w') as file:
@@ -316,7 +316,7 @@ if __name__ == '__main__':
     tag_name_documentation = input("Enter the release tag for the documentation repo: ")
     tag_name_documentation = tag_name_documentation.strip()
 
-    tag_name_python = input("Enter the release tag for the validmind-python repo: ")
+    tag_name_python = input("Enter the release tag for the developer-framework repo: ")
     tag_name_python = tag_name_python.strip()
 
     tag_name_frontend = input("Enter the release tag for the frontend repo: ")
