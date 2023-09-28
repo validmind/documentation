@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../releases/2023-sep-26/enhancement.qmd" rel="next">
+<link href="../../releases/2023-sep-27/enhancement.html" rel="next">
 <link href="../../guide/join-closed-beta.html" rel="prev">
 <link href="../../validmind.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -352,13 +352,13 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
       <ul id="" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../releases/2023-sep-26/enhancement.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../../releases/2023-sep-27/enhancement.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Enhancements</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../releases/2023-sep-26/documentation.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../../releases/2023-sep-27/documentation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Documentation</span></a>
   </div>
 </li>
@@ -407,9 +407,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#release-highlights" id="toc-release-highlights" class="nav-link active" data-scroll-target="#release-highlights">Release highlights</a>
+  <li><a href="#release-highlights" id="toc-release-highlights" class="nav-link active" data-scroll-target="#release-highlights">Release highlights</a></li>
+  <li><a href="#validmind-developer-framework-v1.19.0" id="toc-validmind-developer-framework-v1.19.0" class="nav-link" data-scroll-target="#validmind-developer-framework-v1.19.0">ValidMind Developer Framework (v1.19.0)</a>
   <ul class="collapse">
-  <li><a href="#validmind-developer-framework-v1.19.0" id="toc-validmind-developer-framework-v1.19.0" class="nav-link" data-scroll-target="#validmind-developer-framework-v1.19.0">ValidMind Developer Framework (v1.19.0)</a></li>
+  <li><a href="#large-language-model-llm-support" id="toc-large-language-model-llm-support" class="nav-link" data-scroll-target="#large-language-model-llm-support">Large language model (LLM) support</a></li>
+  <li><a href="#support-for-hugging-face-models" id="toc-support-for-hugging-face-models" class="nav-link" data-scroll-target="#support-for-hugging-face-models">Support for Hugging Face models</a></li>
+  <li><a href="#a-better-developer-experience-with-run_test" id="toc-a-better-developer-experience-with-run_test" class="nav-link" data-scroll-target="#a-better-developer-experience-with-run_test">A better developer experience with <code>run_test</code></a></li>
   </ul></li>
   <li><a href="#how-to-upgrade" id="toc-how-to-upgrade" class="nav-link" data-scroll-target="#how-to-upgrade">How to upgrade</a></li>
   </ul>
@@ -444,57 +447,64 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <section id="release-highlights" class="level2">
 <h2 class="anchored" data-anchor-id="release-highlights">Release highlights</h2>
 <p>In this release, we’ve added support for large language models (LLMs) to enhance the capabilities of the ValidMind Developer Framework in preparation for the closed beta, along with a number of new demo notebooks that you can try out. Other enhancements improve the experience for developers and with our documentation site.</p>
-<section id="validmind-developer-framework-v1.19.0" class="level3">
-<h3 class="anchored" data-anchor-id="validmind-developer-framework-v1.19.0">ValidMind Developer Framework (v1.19.0)</h3>
+</section>
+<section id="validmind-developer-framework-v1.19.0" class="level2">
+<h2 class="anchored" data-anchor-id="validmind-developer-framework-v1.19.0">ValidMind Developer Framework (v1.19.0)</h2>
 <!---John6797/sc 2062/sentiment analysis demo notebook should support by @johnwalz97 in [#224](https://github.com/validmind/validmind-python/pull/224)--->
-<ul>
-<li><strong>Large language model (LLM) support</strong>. We added initial support for large language models (LLMs) in ValidMind via the new <code>FoundationModel</code> class. Users can create an instance of a <code>FoundationModel</code> and specify <code>predict_fn</code> and a <code>prompt</code> and pass that into any test plan or test suite, for example. The <code>predict_fn</code> must be defined by the user and implements the logic for calling the Foundation LLM, usually via the API.</li>
-</ul>
+<section id="large-language-model-llm-support" class="level3">
+<h3 class="anchored" data-anchor-id="large-language-model-llm-support">Large language model (LLM) support</h3>
+<p>We added initial support for large language models (LLMs) in ValidMind via the new <code>FoundationModel</code> class. You can now create an instance of a <code>FoundationModel</code> and specify <code>predict_fn</code> and a <code>prompt</code>, and pass that into any test plan or test suite, for example. The <code>predict_fn</code> must be defined by the user and implements the logic for calling the Foundation LLM, usually via the API.</p>
+<p>To demonstrate the capabilities of LLM support, this release also includes new demo notebooks:</p>
 <!---John6797/sc 2088/implement prompt validation metrics poc by @johnwalz97 in [#232](https://github.com/validmind/validmind-python/pull/232)--->
 <ul>
-<li><strong>Prompt validation demo notebook for LLMs</strong>. As a proof of concept, we added initial native prompt validation tests to the Developer Framework. It also adds a demo notebook and simple template to test out these metrics on the Sentiment Analysis LLM model we have built.</li>
+<li><strong>Prompt validation demo notebook for LLMs</strong>. As a proof of concept, we added initial native prompt validation tests to the Developer Framework, including a notebook and simple template to test out these metrics on a sentiment analysis LLM model we built.</li>
 </ul>
 <!---[SC-2216] Implement demo notebook for summarization model using LLMs by @cachafla in [#242](https://github.com/validmind/validmind-python/pull/242)--->
 <!---[SC-2144] Support hugging face summarization models by @AnilSorathiya in [#238](https://github.com/validmind/validmind-python/pull/238)--->
 <ul>
 <li><strong>Summarization model demo notebook for LLMs</strong>. We added a new notebook in the Developer Framework that includes the financial news dataset, initializes a Hugging Face summarization model using the <code>init_model</code> interface, implements relevant metrics for testing, and demonstrates how to run a <em>text summarization metrics</em> test suite for an LLM instructed as a financial news summarizer.</li>
 </ul>
-<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Interested in our LLM functionality?
+Interested in our LLM support?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Large language model (LLM) functionality will be part of our closed beta:</p>
-<ul>
-<li><a href="https://validmind.com/announcing-validminds-closed-beta-coming-soon/">Read the announcement</a></li>
-<li><a href="../../guide/join-closed-beta.html">Join the waitlist</a></li>
-</ul>
+<p>Large language model support and more will be available in our closed beta. <a href="https://validmind.com/announcing-validminds-closed-beta-coming-soon/">Read the announcement</a> and sign up to take the first step in exploring all that ValidMind has to offer:</p>
+<form method="get" action="https://docs.validmind.ai/guide/join-closed-beta.html" target="_blank">
+<button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">
+Join the waitlist
+</button>
+</form>
 </div>
 </div>
 <!---SC-2061: Support hugging face models by @AnilSorathiya in [#222](https://github.com/validmind/validmind-python/pull/222)--->
-<ul>
-<li><p><strong>Support for Hugging Face models</strong>. ValidMind can now validate pre-trained models from the HuggingFace Hub, including any language model compatible with the HF transformers API.</p>
-<p>Includes a <strong>financial news sentiment analysis demo</strong> that runs documentation tests for a Hugging Face model with text classification using the <a href="https://huggingface.co/datasets/financial_phrasebank">financial_phrasebank</a>. <a href="../../notebooks/llm/hugging_face_integration_demo.html">Try it …</a></p></li>
-</ul>
+</section>
+<section id="support-for-hugging-face-models" class="level3">
+<h3 class="anchored" data-anchor-id="support-for-hugging-face-models">Support for Hugging Face models</h3>
+<p>ValidMind can now validate pre-trained models from the HuggingFace Hub, including any language model compatible with the HF transformers API.</p>
+<p>Includes a <strong>financial news sentiment analysis demo</strong> that runs documentation tests for a Hugging Face model with text classification using the <a href="https://huggingface.co/datasets/financial_phrasebank">financial_phrasebank</a>. <a href="../../notebooks/llm/hugging_face_integration_demo.html">Try it …</a></p>
 <!---[SC-1956] Credit risk scorecard demo notebooks by @juanmleng in [#223](https://github.com/validmind/validmind-python/pull/223)--->
 <ul>
-<li><p><strong>New credit risk scorecard demo notebooks</strong>. We added demo notebooks and supporting files for:</p>
+<li><strong>New credit risk scorecard demo notebooks</strong>. We added demo notebooks and supporting files for:
 <ul>
-<li>Developing credit risk scorecards. <a href="../../notebooks/credit_risk_scorecard_development_demo.ipnyb">Try it …</a></li>
-<li>Validating credit risk scorecards. <a href="../../notebooks/credit_risk_scorecard_validation_demo.ipnyb">Try it …</a></li>
+<li>Developing credit risk scorecards. <a href="../../notebooks/probability_of_default/credit_risk_scorecard_development_demo.html">Try it …</a></li>
+<li>Validating credit risk scorecards. <a href="../../notebooks/probability_of_default/credit_risk_scorecard_validation_demo.html">Try it …</a></li>
 </ul></li>
-<li><p><strong>Simplified developer experience when running tests.</strong> We added a new <code>run_test</code> helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options.</p>
-<p><!---Add new `run_test` helper function by @cachafla in [#243](https://github.com/validmind/validmind-python/pull/243)---> We also updated the <code>Quickstart</code> notebook to have a consistent experience:</p>
-<ul>
-<li>We are now running <code>vm.preview_template()</code> after initializing ValidMind</li>
-<li>We are now running <code>vm.run_documentation_tests()</code> instead of running a test suite that is not connected to the template</li>
 </ul>
-<p><strong>Example usage of <code>run_test</code>:</strong></p>
+</section>
+<section id="a-better-developer-experience-with-run_test" class="level3">
+<h3 class="anchored" data-anchor-id="a-better-developer-experience-with-run_test">A better developer experience with <code>run_test</code></h3>
+<p>We added a new <code>run_test</code> helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options.</p>
+<!---Add new `run_test` helper function by @cachafla in [#243](https://github.com/validmind/validmind-python/pull/243)--->
+<p>We also updated the Quickstart notebook to have a consistent experience: <a href="../../notebooks/Quickstart_Customer Churn_full_suite.html">Try it …</a></p>
+<p>This notebook: - Now runs <code>vm.preview_template()</code> after initializing ValidMind - Now runs <code>vm.run_documentation_tests()</code> instead of running a test suite that is not connected to the template</p>
+<section id="example-usage-for-run_test" class="level4">
+<h4 class="anchored" data-anchor-id="example-usage-for-run_test">Example usage for <code>run_test</code></h4>
 <p>Discover existing tests by calling <code>list_tests()</code> or <code>describe_test()</code>:</p>
 <p><code>list_tests()</code>:</p>
 <p><img src="270865082-d85821f7-f43c-40fb-a68c-96d9a0e6cfe2.png" class="img-fluid"></p>
@@ -502,7 +512,7 @@ Interested in our LLM functionality?
 <p><img src="270865181-839c0bf1-898a-452d-8025-85534cc5ad7d.png" class="img-fluid"></p>
 <p>View the tests associated with a documentation template by running <code>preview_template()</code>:</p>
 <p><img src="270865328-67488af6-0f19-4d81-bf50-3dc95d0fb305.png" class="img-fluid"></p>
-<p>Using the test ID, run a given test and pass additional configuration parameters and inputs to it:</p>
+<p>Using the test ID, run a given test and pass in additional configuration parameters and inputs:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No params</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>test_results <span class="op">=</span> vm.tests.run_test(</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"class_imbalance"</span>,</span>
@@ -515,14 +525,13 @@ Interested in our LLM functionality?
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"min_percent_threshold"</span>: <span class="dv">30</span>},</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Output:</p>
-<p><img src="270865561-e202c0fb-ca90-4ab2-ba88-e2e524b32ff0.png" class="img-fluid"></p>
+<p>Output: <img src="270865561-e202c0fb-ca90-4ab2-ba88-e2e524b32ff0.png" class="img-fluid"></p>
 <p>Send the results of the test to ValidMind by calling <code>.log()</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>test_results.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>test_results.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <!---
 ### ValidMind Platform UI (v1.6.0)
 --->
+</section>
 </section>
 </section>
 <section id="how-to-upgrade" class="level2">
@@ -797,7 +806,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../releases/2023-sep-26/enhancement.qmd" class="pagination-link">
+      <a href="../../releases/2023-sep-27/enhancement.html" class="pagination-link">
         <span class="nav-page-text">Enhancements</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
