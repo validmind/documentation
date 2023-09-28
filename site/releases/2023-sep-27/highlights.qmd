@@ -6,7 +6,7 @@ date: last-modified
 
 ## Release highlights
 
-In this release, we've added support for large language models (LLMs) to enhance the capabilities of the ValidMind Developer Framework in preparation for the closed beta, along with a number of new demo notebooks that you can try out. Other enhancements provide improvements for the developer experience and with our documentation site.
+In this release, we've added support for large language models (LLMs) to enhance the capabilities of the ValidMind Developer Framework in preparation for the [closed beta](https://validmind.com/announcing-validminds-closed-beta-coming-soon/), along with a number of new demo notebooks that you can try out. Other enhancements provide improvements for the developer experience and with our documentation site.
 
 ## ValidMind Developer Framework (v1.19.0)
 
@@ -22,7 +22,7 @@ To demonstrate the capabilities of LLM support, this release also includes new d
 
 <!---[SC-2216] Implement demo notebook for summarization model using LLMs by @cachafla in [#242](https://github.com/validmind/validmind-python/pull/242)--->
 <!---[SC-2144] Support hugging face summarization models by @AnilSorathiya in [#238](https://github.com/validmind/validmind-python/pull/238)--->
-- **Summarization model demo notebook for LLMs**. We added a new notebook in the Developer Framework that includes the financial news dataset, initializes a Hugging Face summarization model using the `init_model` interface, implements relevant metrics for testing, and demonstrates how to run a _text summarization metrics_ test suite for an LLM instructed as a financial news summarizer.
+- **Text summarization model demo notebook for LLMs**. We added a new notebook in the Developer Framework that includes the financial news dataset, initializes a Hugging Face summarization model using the `init_model` interface, implements relevant metrics for testing, and demonstrates how to run a _text summarization metrics_ test suite for an LLM instructed as a financial news summarizer.
 
 ::: {.callout-important}
 ## Interested in our LLM support?
@@ -39,22 +39,30 @@ Large language model support and more will be available in our closed beta. [Rea
 
 ValidMind can now validate pre-trained models from the HuggingFace Hub, including any language model compatible with the HF transformers API. 
 
-Includes a **financial news sentiment analysis demo** that runs documentation tests for a Hugging Face model with text classification using the [financial_phrasebank](https://huggingface.co/datasets/financial_phrasebank). [Try it ...](../../notebooks/llm/hugging_face_integration_demo.ipynb)
+To illustrate this new feature, we have included a **financial news sentiment analysis demo** that runs documentation tests for a Hugging Face model with text classification using the [financial_phrasebank](https://huggingface.co/datasets/financial_phrasebank). [Try it ...](../../notebooks/llm/hugging_face_integration_demo.ipynb)
 
 
 <!---[SC-1956] Credit risk scorecard demo notebooks by @juanmleng in [#223](https://github.com/validmind/validmind-python/pull/223)--->
-- **New credit risk scorecard demo notebooks**. We added demo notebooks and supporting files for:
+### New credit risk scorecard demo notebooks 
+
+We added new demo notebooks and supporting files for very popular financial services model use cases:
+
   - Developing credit risk scorecards. [Try it ...](../../notebooks/probability_of_default/credit_risk_scorecard_development_demo.ipynb)
   - Validating credit risk scorecards. [Try it ...](../../notebooks/probability_of_default/credit_risk_scorecard_validation_demo.ipynb)
 
 ### A better developer experience with `run_test`
 
-We added a new `run_test` helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options. 
+We added a new `run_test` helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options. For example:
+
+```python
+run_test("ClassImbalance", dataset=dataset, params=params, send=True)
+```
 
 <!---Add new `run_test` helper function by @cachafla in [#243](https://github.com/validmind/validmind-python/pull/243)--->
 We also updated the Quickstart notebook to have a consistent experience: [Try it ...](../../notebooks/Quickstart_Customer Churn_full_suite.ipynb)
 
 This notebook:
+
 - Now runs `vm.preview_template()` after initializing ValidMind
 - Now runs `vm.run_documentation_tests()` instead of running a test suite that is not connected to the template
 
