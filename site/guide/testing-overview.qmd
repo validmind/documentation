@@ -1,47 +1,46 @@
 ---
-title: "Tests, test plans, and test suites"
-keywords: "when to use test plans and tests, ai risk, model risk management, ValidMind"
+title: "Tests and test suites"
+keywords: "tests, test suites, ai risk, model risk management, ValidMind"
 date: last-modified
 ---
 
-This topic provides an overview about: 
+This topic provides an overview for what _tests_ and _test suites_ are in the ValidMind Developer Framework, when to use tests and test suites, and typical scenarios. 
 
-- What test and test plans are in the Developer Framework
-
-- When to use test plans and tests, and typical scenarios
-
-## What are tests, test plans, and test suites?
+## What are tests and test suites?
 
 - **Tests** are designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates. 
 
-- **Test plans** are collections of tests which are meant to be run together to address specific aspects of the documentation.
+- **Test suites** are collections of tests which are run together to automate generating model documentation end-to-end for specific use-cases. 
 
-   Example: the `tabular_dataset` test plan runs several descriptive and data quality tests on a structured dataset, and documents the results in the ValidMind Platform.
+   Example: the [`classifier_full_suite`](../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite runs the [`tabular_dataset`](../validmind/validmind/test_suites/tabular_datasets.html) and [`classifier`](../validmind/validmind/test_suites/classifier.html) test suites to fully document the data and model sections for binary classification model use-cases. 
 
-- **Test suites** are collection of test plans which are meant to run together to automate generate model documentation end-to-end for specific use-cases.
+## When do I use tests and test suites?
 
-   Example: the `binary_classifier_full_suite` test suite runs the `tabular_dataset` and `binary_classifier` test plans to fully document the data and model sections for binary classification model use-cases. 
+ValidMind provides many built-in tests and test suites which make it easy for a model developer to document their work at any point during the model development lifecycle when they need to validate that their work satisfies model risk management requirements. 
 
+While you, as a model developer, have the flexibility to decide when to use which ValidMind tests, we have identified a few typical scenarios with their own characteristics and needs:
 
-## When do I use ValidMind tests, test plans, and test suites?
+### Dataset testing
 
-ValidMind provides many built-in tests and test plans which make it easy for a model developer to document their work at any point during the model development lifecycle when they need to validate that their work satisfies model risk management requirements. 
+To document and validate your dataset:
 
-While model developers have the flexibility to decide when to use ValidMind tests, we have identified a few typical scenarios which have their own characteristics and needs:
+- For generic tabular datasets: use the [`tabular_dataset`](../validmind/validmind/test_suites/tabular_datasets.html) test suite.
+- For time-series datasets: use the [`time_series_dataset`](../validmind/validmind/test_suites/time_series.html#TimeSeriesDataset) test suite.
 
-- When you want to document and validate your dataset:
-  - For generic tabular datasets: use the `tabular_dataset` test plan.
-  - For time-series datasets: use the `time_series_dataset` test plan.
+### Model testing
 
-- When you want to document and validate about your model:
-  - For binary classification models: use the `binary_classifier` test plan.
-  - For time series models: use the `timeseries` test plan.
+To document and validate your model:
 
-- When you want to document a binary classification model and the relevant dataset end-to-end: use the `binary_classifier_full_suite` test suite.
+- For binary classification models: use the [`classifier`](../validmind/validmind/test_suites/classifier.html) test suite.
+- For time series models: use the [`timeseries`](../validmind/validmind/test_suites/time_series.html) test suite.
 
-## API Reference
+### End-to-end testing
 
-See the [Reference](reference.qmd) pages for a list of all of the built-in tests and test plans for datasets and models.
+To document a binary classification model and the relevant dataset end-to-end: use the [`classifier_full_suite`](../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite.
+
+## Is there an API reference available?
+
+See the [alidMind Developer Framework API Reference](reference.qmd) for a list of all of the built-in tests and test suites for datasets and models.
 
 <!---
 ## Related Topics
