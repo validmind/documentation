@@ -47,8 +47,8 @@ NOTEBOOKS = \
     notebooks/probability_of_default/credit_risk_scorecard_development_demo.ipynb \
     notebooks/probability_of_default/credit_risk_scorecard_validation_demo.ipynb \
     notebooks/probability_of_default/helpers/scorecard_model.py \
-    notebooks/probability_of_default/helpers/model_development.py
-
+    notebooks/probability_of_default/helpers/model_development.py \
+    notebooks/llm/prompt_validation_demo.ipynb
 
 notebooks:
 	@echo "\nUpdating notebook source ..."
