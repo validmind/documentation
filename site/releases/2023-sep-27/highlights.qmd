@@ -1,0 +1,133 @@
+---
+title: "September 27, 2023"
+keywords: "release notes, ai risk, model risk management, ValidMind"
+date: last-modified
+---
+
+## Release highlights
+
+In this release, we've added support for large language models (LLMs) to enhance the capabilities of the ValidMind Developer Framework in preparation for the [closed beta](https://validmind.com/announcing-validminds-closed-beta-coming-soon/), along with a number of new demo notebooks that you can try out. Other enhancements provide improvements for the developer experience and with our documentation site.
+
+## ValidMind Developer Framework (v1.19.0)
+
+<!---John6797/sc 2062/sentiment analysis demo notebook should support by @johnwalz97 in [#224](https://github.com/validmind/validmind-python/pull/224)--->
+### Large language model (LLM) support
+
+We added initial support for large language models (LLMs) in ValidMind via the new `FoundationModel` class. You can now create an instance of a `FoundationModel` and specify `predict_fn` and a `prompt`, and pass that into any test suite, for example. The `predict_fn` must be defined by the user and implements the logic for calling the Foundation LLM, usually via the API.
+
+To demonstrate the capabilities of LLM support, this release also includes new demo notebooks: 
+
+<!---John6797/sc 2088/implement prompt validation metrics poc by @johnwalz97 in [#232](https://github.com/validmind/validmind-python/pull/232)--->
+- **Prompt validation demo notebook for LLMs**. As a proof of concept, we added initial native prompt validation tests to the Developer Framework, including a notebook and simple template to test out these metrics on a sentiment analysis LLM model we built.
+
+<!---[SC-2216] Implement demo notebook for summarization model using LLMs by @cachafla in [#242](https://github.com/validmind/validmind-python/pull/242)--->
+<!---[SC-2144] Support hugging face summarization models by @AnilSorathiya in [#238](https://github.com/validmind/validmind-python/pull/238)--->
+- **Text summarization model demo notebook for LLMs**. We added a new notebook in the Developer Framework that includes the financial news dataset, initializes a Hugging Face summarization model using the `init_model` interface, implements relevant metrics for testing, and demonstrates how to run a _text summarization metrics_ test suite for an LLM instructed as a financial news summarizer.
+
+::: {.callout-important}
+## Interested in our LLM support?
+Large language model support and more will be available in our closed beta. [Read the announcement](https://validmind.com/announcing-validminds-closed-beta-coming-soon/) and sign up to take the first step in exploring all that ValidMind has to offer: 
+
+<form method="get" action="https://docs.validmind.ai/guide/join-closed-beta.html">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Join the waitlist</button>
+</form>
+
+:::
+
+<!---SC-2061: Support hugging face models by @AnilSorathiya in [#222](https://github.com/validmind/validmind-python/pull/222)--->
+### Support for Hugging Face models
+
+ValidMind can now validate pre-trained models from the HuggingFace Hub, including any language model compatible with the HF transformers API. 
+
+To illustrate this new feature, we have included a **financial news sentiment analysis demo** that runs documentation tests for a Hugging Face model with text classification using the [financial_phrasebank](https://huggingface.co/datasets/financial_phrasebank). [Try it ...](../../notebooks/llm/hugging_face_integration_demo.ipynb)
+
+
+<!---[SC-1956] Credit risk scorecard demo notebooks by @juanmleng in [#223](https://github.com/validmind/validmind-python/pull/223)--->
+### New credit risk scorecard demo notebooks 
+
+We added new demo notebooks and supporting files for very popular financial services model use cases:
+
+  - Developing credit risk scorecards. [Try it ...](../../notebooks/probability_of_default/credit_risk_scorecard_development_demo.ipynb)
+  - Validating credit risk scorecards. [Try it ...](../../notebooks/probability_of_default/credit_risk_scorecard_validation_demo.ipynb)
+
+### A better developer experience with `run_test`
+
+We added a new `run_test` helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options. For example:
+
+```python
+run_test("ClassImbalance", dataset=dataset, params=params, send=True)
+```
+
+<!---Add new `run_test` helper function by @cachafla in [#243](https://github.com/validmind/validmind-python/pull/243)--->
+We also updated the Quickstart notebook to have a consistent experience: [Try it ...](../../notebooks/Quickstart_Customer Churn_full_suite.ipynb)
+
+This notebook:
+
+- Now runs `vm.preview_template()` after initializing ValidMind
+- Now runs `vm.run_documentation_tests()` instead of running a test suite that is not connected to the template
+
+#### Example usage for `run_test`
+
+Discover existing tests by calling `list_tests()` or `describe_test()`:
+
+`list_tests()`:
+
+![](270865082-d85821f7-f43c-40fb-a68c-96d9a0e6cfe2.png)
+
+`describe_test()`:
+
+![](270865181-839c0bf1-898a-452d-8025-85534cc5ad7d.png)
+
+View the tests associated with a documentation template by running `preview_template()`:
+
+![](270865328-67488af6-0f19-4d81-bf50-3dc95d0fb305.png)
+
+ Using the test ID, run a given test and pass in additional configuration parameters and inputs:
+
+```python
+# No params
+test_results = vm.tests.run_test(
+    "class_imbalance",
+    dataset=vm_dataset
+)
+
+# Custom params
+test_results = vm.tests.run_test(
+    "class_imbalance",
+    params={"min_percent_threshold": 30},
+    dataset=vm_dataset
+)
+```
+Output:
+![](270865561-e202c0fb-ca90-4ab2-ba88-e2e524b32ff0.png)
+
+Send the results of the test to ValidMind by calling `.log()`:
+
+```python
+test_results.log()
+```
+
+<!---
+### ValidMind Platform UI (v1.6.0)
+--->
+
+## How to upgrade
+
+To access the latest version of the [ValidMind Platform UI](http://app.prod.validmind.ai/), reload your browser tab.
+
+To upgrade the ValidMind Developer Framework:
+
+- [Using Jupyter Hub](../../guide/try-developer-framework-with-jupyterhub.qmd): reload your browser tab and re-run the `!pip install --upgrade validmind` cell.
+
+- [Using Docker](../../guide/try-developer-framework-with-docker.qmd): pull the latest Docker image:
+    
+    ```jsx
+    docker pull validmind/validmind-jupyter-demo:latest
+    
+    ```
+    
+- [In your own developer environment](../../guide/install-and-initialize-developer-framework.qmd): restart your notebook and re-run:
+    
+    ```python
+    !pip install validmind
+    ```
