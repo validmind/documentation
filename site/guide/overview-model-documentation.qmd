@@ -18,7 +18,7 @@ The ValidMind Developer Framework is a developer framework and documentation eng
 
 ![](overview-developer-framework.png){width=80% fig-align="center" fig-alt="An image showing the two main components of ValidMind. The Developer Framework that integrates with your existing developer environment, and the ValidMind AI risk platform."}
 
-The Developer Framework consists of a client-side library, API endpoints for models and testing, and validation tests that streamline the model development process. Implemented as a series of independent libraries in Python and R, our framework ensures compatibility and flexibility with diverse sets of developer environments and requirements.
+The Developer Framework consists of a client-side library, API integration for models and testing, and validation tests that streamline the model development process. Implemented as a series of independent libraries in Python and R, our framework ensures compatibility and flexibility with diverse sets of developer environments and requirements.
 
 With the Developer Framework, you can:
 
@@ -27,17 +27,20 @@ With the Developer Framework, you can:
 - **Integrate with your development environment** — Seamlessly incorporate the framework into your existing model development environment, connecting to your existing model code and data sets.
 - **Upload documentation data** — Send qualitative and quantitative test data to the AI risk platform to generate the model documentation for review and approval, fostering effective collaboration with model reviewers and validators.
 
+## Simple installation
+
+Install the Developer Framework with: `pip install validmind`
+
 ## Docs-as-code
 
 ::: {.grid}
 
 ::: {.g-col-5}
-What the Developer Framework does:
+What the Developer Framework offers:
 
-- Easy to install with `pip install validmind`.
 - Generates documentation artifacts utilizing the context of the model and dataset, the model's metadata, and the chosen documentation template.
 - Can be easily imported into your local model development environment. The supported platforms include Python and R.
-- Dual-licensed: it's available as open-source under AGPL v3 license and also with a commercial software license.
+- Dual-licensed: the framework is available as open-source under AGPL v3 license and also with a commercial software license.
 :::
 
 ::: {.g-col-7}
@@ -70,13 +73,12 @@ How the Developer Framework works:
 - The tests and functions are executed automatically, following pre-configured templates tailored for specific model use cases. This ensures that minimum documentation requirements are consistently fulfilled.
 - The framework integrates with ETL/data processing pipelines using connector interfaces. This enables the extraction of relationships between raw data sources and their corresponding post-processed datasets, such as those preloaded session instances received from platforms like Spark and Snowflake.
 
-
-
 ## Extensible by design
 
 ::: {.grid}
 
-::: {.g-col-6}
+::: {.g-col-5}
+
 In Financial Services, our platform supports various model types, including:
 
 - Traditional machine learning models (ML) such as tree-based models and neural network models.
@@ -85,16 +87,41 @@ In Financial Services, our platform supports various model types, including:
 - Traditional statistical models like Ordinary Least Squares (OLS) regression, Logistic regression, Time Series models, and more.
 
 [Read more ...](supported-models.qmd)
+
 :::
 
-::: {.g-col-6}
+::: {.g-col-7}
 Our platform is designed to be highly extensible to cater to our customers' specific requirements. You can expand its functionality in the following ways:
 
-- You can easily add support for new models and data types by defining new classes within the framework. We provide templates to guide you through this process.
-- To include custom tests in the library, you can define new functions. We offer templates to help you create these custom tests.
+- You can easily add support for new models and data types by defining new classes within the framework. We provide templates to guide you through this process. [Read more ...](view-templates.qmd)
+- To include custom tests in the library, you can define new functions. We offer templates to help you create these custom tests. [Read more ...](../notebooks/how_to/implementing_custom_tests.ipynb)
 - You have the flexibility to integrate third-party test libraries seamlessly. These libraries can be hosted either locally within your infrastructure or remotely, for example, on GitHub. Leverage additional testing capabilities and resources as needed. [Read more ...](../notebooks/external_test_providers_demo.ipynb)
 :::
 
+:::
+
+## API integration
+
+::: {.grid}
+
+::: {.g-col-5}
+ValidMind imports the following artifacts into the documentation via SaaS API endpoint integration:
+
+- Metadata about datasets and models, used to lookup programmatic documentation content, such as the stored definition for _common logistic regression limitations_ when a logistic regression model has been passed to the ValidMind test plan to be run.
+- Quality and performance metrics collected from datasets and models.
+- Output from test and test suites that have been run.
+- Images, plots, visuals that were generated as part of extracting metrics and running tests.
+
+:::
+
+::: {.g-col-7}
+![](overview-api-integration.png)
+:::
+
+:::
+
+::: {.callout-important}
+ValidMind does not send any personal identifiable information (PII) or any data used by your models when generating documentation reports.
 :::
 
 ## Ready to try out ValidMind?
