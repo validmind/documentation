@@ -28,41 +28,19 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b prod git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b cachafla/sc-1962/restructure-how-notebooks-used-in-the-docs git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
-# Copy over Jupyter notebooks
-
-NOTEBOOKS = \
-    notebooks/quickstart_customer_churn_full_suite.ipynb \
-    notebooks/external_test_providers_demo.ipynb \
-    notebooks/external_tests/tests/MyCustomTest.py \
-    notebooks/how_to/implementing_custom_tests.ipynb \
-    notebooks/how_to/explore_test_suites_test_plans_and_tests.ipynb \
-	notebooks/how_to/explore_test_suites_and_tests.ipynb \
-    notebooks/how_to/run_a_test.ipynb \
-    notebooks/how_to/run_a_test_suite.ipynb \
-    notebooks/nlp/nlp_sentiment_analysis_catboost_demo.ipynb \
-    notebooks/time_series/tutorial_time_series_forecasting.ipynb \
-    notebooks/llm/hugging_face_integration_demo.ipynb \
-    notebooks/probability_of_default/credit_risk_scorecard_development_demo.ipynb \
-    notebooks/probability_of_default/credit_risk_scorecard_validation_demo.ipynb \
-    notebooks/probability_of_default/helpers/scorecard_model.py \
-    notebooks/probability_of_default/helpers/model_development.py \
-    notebooks/llm/prompt_validation_demo.ipynb
-
+# Copy over Jupyter notebooks and supporting files
 notebooks:
-	@echo "\nUpdating notebook source ..."
+	@echo "\\nUpdating notebook source ..."
 	@rm -f notebooks.zip > /dev/null 2>&1
 	@rm -rf $(DEST_DIR_NB)/ > /dev/null 2>&1 && mkdir -p $(DEST_DIR_NB)
-	@$(foreach notebook,$(NOTEBOOKS), \
-		dest_dir=$(DEST_DIR_NB)/$(patsubst notebooks/%,%,$(dir $(notebook))); \
-		mkdir -p $$dest_dir > /dev/null 2>&1; \
-		cp -r $(SRC_DIR)/$(notebook) $$dest_dir > /dev/null 2>&1; \
-		echo "Updated $(notebook)"; \
-	)
-	@echo "\nCopying additional notebooks from Google Drive ..."
-	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/
-	@echo "\nZipping up notebooks into notebooks.zip ..."
+	@cp -r $(SRC_DIR)/notebooks/* $(DEST_DIR_NB)/
+	@rm -rf $(DEST_DIR_NB)/code_sharing
+	@rm -f $(DEST_DIR_NB)/README.md
+	@echo "\\nCopying additional notebooks from Google Drive ..."
+	cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/code_samples
+	@echo "\\nZipping up notebooks into notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
 # Make Python library docs & copy them over
