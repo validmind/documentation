@@ -28,7 +28,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b cachafla/sc-1962/restructure-how-notebooks-used-in-the-docs git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b prod git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
