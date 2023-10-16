@@ -32,19 +32,17 @@ clone:
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
-	@echo "\\nUpdating notebook source ..."
+	@echo "\nUpdating notebook source ..."
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/* $(DEST_DIR_NB)/
-	@echo "\\nCopying LICENSE into notebooks path  ..."
+	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
-	@echo "\\nCopying additional notebooks from Google Drive ..."
-	@cp "$(HOME)/Google Drive/Shared drives/ValidMind Demo/Notebooks/Introduction_Customer_Churn.ipynb" $(DEST_DIR_NB)/code_samples
-	@echo "\\nZipping up notebooks into notebooks.zip ..."
+	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
     # This line fixes text casing in Quarto when notebooks are embedded via wildcard
-	@echo "\\nRenaming code_samples/nlp_and_llm to code_samples/NLP_and_LLM to fix Quarto sidebar ..."
+	@echo "Renaming code_samples/nlp_and_llm to fix Quarto sidebar ..."
 	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/LLM_and_NLP; fi
 
 # Make Python library docs & copy them over
