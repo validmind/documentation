@@ -35,7 +35,7 @@ notebooks:
 	@echo "\nUpdating notebook source ..."
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
-	@cp -r $(SRC_DIR)/notebooks/* $(DEST_DIR_NB)/
+	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
