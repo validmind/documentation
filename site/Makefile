@@ -39,11 +39,14 @@ notebooks:
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
+	@echo "Moving Quickstart notebook into the root of notebooks/ ..."
+	@if [ -f "$(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb" ]; then mv $(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb $(DEST_DIR_NB)/quickstart_customer_churn_full_suite.ipynb; fi
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
     # This line fixes text casing in Quarto when notebooks are embedded via wildcard
 	@echo "Renaming code_samples/nlp_and_llm to fix Quarto sidebar ..."
 	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/LLM_and_NLP; fi
+
 
 # Make Python library docs & copy them over
 python-docs:
