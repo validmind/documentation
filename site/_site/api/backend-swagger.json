@@ -1,0 +1,1900 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/groups": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of group list.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedGroups"
+                        } 
+                    }
+                },
+                "summary": "Retrieve a paginated list of groups from the logged-in user's organization",
+                "description": "Fetch a paginated list of groups from the logged-in user's organization.\n**Query Parameters:**\n\n- **page:** Page number for pagination (default is 1).\n- **limit:** Limit the number of items to be returned (default is 100).\n- **sort_by:** Sort by one of the available fields: 'name', 'created_at', 'updated_at' (default is 'name'). # noqa\n- **sort_order:** Sort order, either 'asc' or 'desc' (default is 'asc').\n- **search:** Search term for groups, uses ILIKE on 'name'.\n- **is_default:** Filter by default groups (true or false).",
+                "operationId": "get_group_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "default": "name",
+                        "enum": [
+                            "name",
+                            "is_default",
+                            "created_at",
+                            "updated_at"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Search term using ILIKE on name"
+                    },
+                    {
+                        "name": "is_default",
+                        "in": "query",
+                        "type": "boolean",
+                        "description": "Is default group?"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing name in payload."
+                    },
+                    "201": {
+                        "description": "User successfully created."
+                    }
+                },
+                "summary": "Create a new group in the logged user's organization",
+                "description": "Create a new group in the logged user's organization.\n- Validates name is unique.\n\n**Request Payload:**\n\n- **name:** (required) The name of the group.",
+                "operationId": "post_group_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostGroup"
+                        }
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            }
+        },
+        "/api/v1/groups/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve a specific group from the logged user's organization by CUID",
+                "description": "Retrieve a specific group by CUID within the logged user's organization.",
+                "operationId": "get_group_resource_instance",
+                "tags": [
+                    "groups"
+                ]
+            },
+            "patch": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing or invalid fields in payload."
+                    },
+                    "200": {
+                        "description": "Group updated successfully."
+                    }
+                },
+                "summary": "Update specific group details in the logged user's organization",
+                "description": "Update a specific group by CUID within the logged user's organization.\n- Validates name is unique.\n\n**Request Payload:**\n\n- **name:** (optional) New name of the group.\n\nPartial updates are allowed.",
+                "operationId": "patch_group_resource_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PatchGroup"
+                        }
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Group deleted successfully."
+                    }
+                },
+                "summary": "Delete a specific group from the logged user's organization by CUID",
+                "description": "Delete a specific group by CUID within the logged user's organization.\n- Removes all memberships\n- Removes all references it's the resources:\n    - inventory models\n    - templates\n    - workflows\n- And sets it to the organization's default group.",
+                "operationId": "delete_group_resource_instance",
+                "tags": [
+                    "groups"
+                ]
+            }
+        },
+        "/api/v1/groups/{cuid}/resources": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of linked resources."
+                    }
+                },
+                "summary": "Get group resources by type",
+                "description": "Retrieves the resources in the group.\n**Query Parameters:**\n\n- **type:** (required) The type of the cuids of resources.",
+                "operationId": "get_group_resources_resource_instance",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "type": "string",
+                        "required": true,
+                        "description": "Resource type",
+                        "default": "Template",
+                        "enum": [
+                            "Template",
+                            "InventoryModel",
+                            "StatusesWorkflow"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing or invalid fields in payload."
+                    },
+                    "200": {
+                        "description": "Successful removal of group resource."
+                    }
+                },
+                "summary": "Remove the resources from the group",
+                "description": "Removes the resource from the group.\nReturns an array of resource cuids that were removed.\n\n**Request Payload:**\n\n- **type:** (required) The type of the cuids of resources\n- **resources:** (required) List of resource cuids.",
+                "operationId": "delete_group_resources_resource_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/GroupResource"
+                        }
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing type or resources in payload."
+                    },
+                    "201": {
+                        "description": "Group resource successfully linked."
+                    }
+                },
+                "summary": "Add the resource link to the group",
+                "description": "Add resources to group.\n**Request Payload:**\n\n- **type:** (required) The type of the cuids of resources being managed on\nthe group. Valid types are described in the model.\n- **resources:** (required) List of resource cuids.",
+                "operationId": "post_group_resources_resource_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/GroupResource"
+                        }
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            }
+        },
+        "/api/v1/groups/{cuid}/users": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of group memberships."
+                    }
+                },
+                "summary": "Retrieves the users in the group",
+                "description": "Retrieves the users in the group.",
+                "operationId": "get_group_membership_instance",
+                "tags": [
+                    "groups"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing or invalid fields in payload."
+                    },
+                    "200": {
+                        "description": "Successful removal of group memberships."
+                    }
+                },
+                "summary": "Remove the users from the group",
+                "description": "Removes the users from the group.\nReturns an array of user cuids that were removed.",
+                "operationId": "delete_group_membership_instance",
+                "tags": [
+                    "groups"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Group not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing users in payload."
+                    },
+                    "201": {
+                        "description": "Group membership successfully created."
+                    }
+                },
+                "summary": "Add the users to the group",
+                "description": "Add users to group.\n**Request Payload:**\n\n- **users:** (required) List of user cuids.",
+                "operationId": "post_group_membership_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostGroupMembership"
+                        }
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ]
+            }
+        },
+        "/api/v1/inventory-models": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of inventory models list.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedInventoryModels"
+                        }
+                    }
+                },
+                "summary": "Retrieve inventory models within the logged user's organization",
+                "description": "Retrieve inventory models within the logged user's organization.",
+                "operationId": "get_inventory_model_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "default": "name",
+                        "enum": [
+                            "name",
+                            "created_at",
+                            "next_planned_imv_date"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Search term using ILIKE on name"
+                    },
+                    {
+                        "name": "tiering",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Tiering filter"
+                    },
+                    {
+                        "name": "business_units",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Business unit filter (cuid csv)"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Status filter (cuid csv)"
+                    },
+                    {
+                        "name": "uses",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Uses filter"
+                    },
+                    {
+                        "name": "owners",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Owners filter (cuid csv)"
+                    },
+                    {
+                        "name": "last_completed_imv_dates",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Last completed imv dates filter (csv timestamp range values)"
+                    },
+                    {
+                        "name": "next_planned_imv_dates",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Next planned imv dates filter (csv timestamp range values)"
+                    },
+                    {
+                        "name": "performance_rating",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Performance rating filter (csv decimal range values)"
+                    },
+                    {
+                        "name": "pma_in_place",
+                        "in": "query",
+                        "type": "string",
+                        "description": "pma in place filter"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "inventory-models"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "402": {
+                        "description": "Quota exceeded for current subscription plan."
+                    },
+                    "401": {
+                        "description": "Unauthorized."
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    },
+                    "201": {
+                        "description": "Inventory model successfully created."
+                    }
+                },
+                "summary": "Creates inventory model",
+                "description": "Creates inventory model.\n***Requires Permissions:***\n\n- resource: \"Models\" action: create_model\n\n***Requires Subscription Plan:***\n\n- Feature.Name.CREATE_MODELS.value",
+                "operationId": "post_inventory_model_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateInventoryModel"
+                        }
+                    }
+                ],
+                "tags": [
+                    "inventory-models"
+                ]
+            }
+        },
+        "/api/v1/inventory-models/filters": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve inventory model filters",
+                "description": "Retrieve inventory model filters.",
+                "operationId": "get_inventory_model_resource_filters",
+                "tags": [
+                    "inventory-models"
+                ]
+            }
+        },
+        "/api/v1/inventory-models/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Inventory model not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve a specific inventory model within the logged user's organization",
+                "description": "Retrieve a specific inventory model within the logged user's organization.",
+                "operationId": "get_inventory_model_resource_instance",
+                "tags": [
+                    "inventory-models"
+                ]
+            }
+        },
+        "/api/v1/inventory-models/{cuid}/users": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve inventory model stakeholders",
+                "description": "Retrieve inventory model stakeholders.",
+                "operationId": "get_inventory_model_user_resource_instance",
+                "tags": [
+                    "inventory-models"
+                ]
+            }
+        },
+        "/api/v1/organizations": {
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing name in payload or user has already an organization."
+                    },
+                    "201": {
+                        "description": "Organization successfully created."
+                    }
+                },
+                "summary": "Creates organization and its dependencies:",
+                "description": "Creates organization and its dependencies, used during the onboarding process.\n- A new organization\n- Creates customer admin user and its sdk client, using customer_admin_email\n- A default group for the organization\n- Business units\n- Roles and Permissions\n- Workflows\n- Findings severities\n- Templates\n- Demo inventory model\n- Demo initial projects\n\n- Assigns a free subscription plan\n\n**Request Payload:**\n- **organization_name:** (required) The name of the organization.\n- **name:** (required) The name of the user.\n- **last_name:** (required) The last name of the user.\n- **job_title:** (required) The job title of the user.\n- **opted_in_for_newsletter:** (optional) If the user opted in for newsletter.\n- **opted_in_for_slack:** (optional) If the user opted in for slack.\n- **accepted_tyc:** (optional) If the user accepted the terms and conditions.\n\n**Response Payload:**\n- Error if the user already has an organization.\n- organization: The created organization.",
+                "operationId": "post_organization_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateOrganization"
+                        }
+                    }
+                ],
+                "tags": [
+                    "organizations"
+                ]
+            }
+        },
+        "/api/v1/roles": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of roles list.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedRoles"
+                        }
+                    }
+                },
+                "summary": "Retrieve a paginated list of organization roles from the logged-in user's organization",
+                "description": "Fetch a paginated list of organization roles from the logged-in user's organization.\n**Query Parameters:**\n\n- **page:** Page number for pagination (default is 1).\n- **limit:** Limit the number of items to be returned (default is 100).\n- **sort_by:** Sort by one of the available fields: 'name', 'is_admin', 'created_at', 'updated_at' (default is 'name'). # noqa\n- **sort_order:** Sort order, either 'asc' or 'desc' (default is 'asc').\n- **search:** Search term for users, uses ILIKE on 'name'.",
+                "operationId": "get_organization_role_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "default": "name",
+                        "enum": [
+                            "name",
+                            "is_admin",
+                            "created_at",
+                            "updated_at"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Search term using ILIKE on name and email"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "organization_roles"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing name or is_admin in payload."
+                    },
+                    "201": {
+                        "description": "Organization role successfully created."
+                    }
+                },
+                "summary": "Create a new organization role in the logged user's organization",
+                "description": "Create a new organization role in the logged user's organization.\n**Request Payload:**\n\n- **name:** (required) The name of the user.\n- **is_admin:** (required) Whether this role is for admins or not.\n\nThis method validates that the role name is unique and not already in use.",
+                "operationId": "post_organization_role_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostOrganizationRole"
+                        }
+                    }
+                ],
+                "tags": [
+                    "organization_roles"
+                ]
+            }
+        },
+        "/api/v1/roles/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Organization role not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve a specific role from the logged user's organization by CUID",
+                "description": "Retrieve a specific role by CUID within the logged user's organization.",
+                "operationId": "get_organization_role_instance",
+                "tags": [
+                    "organization_roles"
+                ]
+            },
+            "patch": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Organization role not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing or invalid fields in payload."
+                    },
+                    "200": {
+                        "description": "User updated successfully."
+                    }
+                },
+                "summary": "Update specific organization role details in the logged user's organization",
+                "description": "Update a specific role by CUID within the logged user's organization.\n**Request Payload:**\n\n- **name:** (optional) New name of the user.\n- **is_admin:** (optional) New email of the user.\n\nPartial updates are allowed.",
+                "operationId": "patch_organization_role_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PatchOrganizationRole"
+                        }
+                    }
+                ],
+                "tags": [
+                    "organization_roles"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "Organization role not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Organization role deleted successfully."
+                    }
+                },
+                "summary": "Delete a specific role from the logged user's organization by CUID",
+                "description": "Delete a specific role by CUID within the logged user's organization.",
+                "operationId": "delete_organization_role_instance",
+                "tags": [
+                    "organization_roles"
+                ]
+            }
+        },
+        "/api/v1/user-invites": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of user invitations.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedUsers"
+                        }
+                    }
+                },
+                "summary": "Retrieve a paginated list of user invitations from the logged-in user's organization",
+                "description": "Fetch a paginated list of user invitation for the logged-in user's organization.\n**Query Parameters:**\n\n- **page:** Page number for pagination (default is 1).\n- **limit:** Limit the number of items to be returned (default is 100).\n- **sort_by:** Sort by one of the available fields: 'status', 'email', 'created_at', 'updated_at' (default is 'created_at'). # noqa\n- **sort_order:** Sort order, either 'asc' or 'desc' (default is 'asc').\n- **search:** Search term for users, uses ILIKE on 'email'.",
+                "operationId": "get_user_invite_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "default": "created_at",
+                        "enum": [
+                            "email",
+                            "status",
+                            "created_at",
+                            "updated_at"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Search term using ILIKE on 'name'"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Filter by status",
+                        "enum": [
+                            "pending",
+                            "accepted"
+                        ]
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "users"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "402": {
+                        "description": "Unauthorized. Subscription quota for 'invite_users' exceeds limit."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be email already invited or user already exists."
+                    },
+                    "201": {
+                        "description": "User invite successfully created."
+                    }
+                },
+                "summary": "Create a new user invite in the logged user's organization",
+                "description": "Create a new user invite in the logged user's organization.\n**Request Payload:**\n\n- **email:** (required) The email address of the user.\n- **groups:** (required) Array of group cuids.\n- **roles:** (required) Array of role cuids.\n\n**Validates:**\n\n- All groups should belong to the organization\n- All roles should belong to the organization\n- User with the same email should not exist\n- User with the same email should not be invited already\n\n**Sends:**\n- Email to the invited user with a link to accept the invitation\n- Zapier event to register the email to the whitelist",
+                "operationId": "post_user_invite_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostUserInvite"
+                        }
+                    }
+                ],
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/api/v1/user-invites/check": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Validation result",
+                        "schema": {
+                            "$ref": "#/definitions/InviteUserCheck"
+                        }
+                    }
+                },
+                "summary": "Validate the state of the invitation",
+                "description": "Validate the state of the invitation.\nThe invitation email contains a link with the invitation parameter.\n\nFor example: url/?invite=clnxbsrg50000tuyyv0p54mbe",
+                "operationId": "get_user_invite_resource_operation",
+                "parameters": [
+                    {
+                        "name": "invite",
+                        "in": "query",
+                        "type": "string",
+                        "required": true,
+                        "description": "Invitation cuid"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "security": [],
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/api/v1/user-invites/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User invite not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "User invite deleted successfully."
+                    }
+                },
+                "summary": "Delete a specific user invite by CUID within the logged user's organization",
+                "description": "Delete a specific user invite by CUID within the logged user's organization.",
+                "operationId": "delete_user_invite_resource_instance",
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/api/v1/user-roles": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of user roles list.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedUserRoles"
+                        }
+                    }
+                },
+                "summary": "Retrieve a paginated list of user roles from the logged-in user's organization",
+                "description": "Fetch a paginated list of user roles from the logged-in user's organization.\n**Query Parameters:**\n\n- **page:** Page number for pagination (default is 1).\n- **limit:** Limit the number of items to be returned (default is 100).\n- **sort_by:** Sort by one of the available fields: 'created_at', 'updated_at'. # noqa\n- **sort_order:** Sort order, either 'asc' or 'desc' (default is 'asc').\n- **user_id:** Filter by user cuid\n- **role_id:** Filter by organization role cuid",
+                "operationId": "get_user_roles_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "enum": [
+                            "created_at",
+                            "updated_at"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Filter by user cuid"
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Filter by organization role cuid"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "user_roles"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing user_id or role_id in payload."
+                    },
+                    "201": {
+                        "description": "User role successfully created."
+                    }
+                },
+                "summary": "Assigns an organization role to a user",
+                "description": "Create a new user role in the logged user's organization.\n**Request Payload:**\n\n- **user_id:** (required) The User cuid to assign the role to\n- **role_id:** (required) The Role cuid\n\nThis method validates:\n- The user and role exists.\n- User and Role is already set.\n\nTo update a user role, better use DELETE and POST methods.",
+                "operationId": "post_user_roles_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostUserRole"
+                        }
+                    }
+                ],
+                "tags": [
+                    "user_roles"
+                ]
+            }
+        },
+        "/api/v1/user-roles/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User role not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve a specific user role from the logged user's organization by CUID",
+                "description": "Retrieve a specific user role by CUID within the logged user's organization.",
+                "operationId": "get_user_role_resource_instance",
+                "tags": [
+                    "user_roles"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User role not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "User deleted successfully."
+                    }
+                },
+                "summary": "Delete a specific user role from the logged user's organization by CUID",
+                "description": "Delete a specific user role by CUID within the logged user's organization.\n- Use for removing assigned roles from users.",
+                "operationId": "delete_user_role_resource_instance",
+                "tags": [
+                    "user_roles"
+                ]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Successful retrieval of user list.",
+                        "schema": {
+                            "$ref": "#/definitions/PaginatedUsers"
+                        }
+                    }
+                },
+                "summary": "Retrieve a paginated list of users from the logged-in user's organization",
+                "description": "Fetch a paginated list of users from the logged-in user's organization.\n**Query Parameters:**\n\n- **page:** Page number for pagination (default is 1).\n- **limit:** Limit the number of items to be returned (default is 100).\n- **sort_by:** Sort by one of the available fields: 'name', 'email', 'created_at', 'updated_at' (default is 'name'). # noqa\n- **sort_order:** Sort order, either 'asc' or 'desc' (default is 'asc').\n- **search:** Search term for users, uses ILIKE on 'name' and 'email'.",
+                "operationId": "get_user_resource_collection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Page number",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Limit the number of items",
+                        "default": 100
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort by this field",
+                        "default": "name",
+                        "enum": [
+                            "name",
+                            "email",
+                            "created_at",
+                            "updated_at"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Sort order",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Search term using ILIKE on name and email"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "users"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing email or name in payload."
+                    },
+                    "201": {
+                        "description": "User successfully created."
+                    }
+                },
+                "summary": "Create a new user in the logged user's organization",
+                "description": "Create a new user in the logged user's organization.\n**Request Payload:**\n\n- **email:** (required) The email address of the user.\n- **name:** (required) The name of the user.\n\nThis method validates that the email is unique and not already in use.",
+                "operationId": "post_user_resource_collection",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PostUser"
+                        }
+                    }
+                ],
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/api/v1/users/{cuid}": {
+            "parameters": [
+                {
+                    "name": "cuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "Success."
+                    }
+                },
+                "summary": "Retrieve a specific user from the logged user's organization by CUID",
+                "description": "Retrieve a specific user by CUID within the logged user's organization.",
+                "operationId": "get_user_resource_instance",
+                "tags": [
+                    "users"
+                ]
+            },
+            "patch": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "400": {
+                        "description": "Bad Request. Possible issues could be missing or invalid fields in payload."
+                    },
+                    "200": {
+                        "description": "User updated successfully."
+                    }
+                },
+                "summary": "Update specific user details in the logged user's organization",
+                "description": "Update a specific user by CUID within the logged user's organization.\n**Request Payload:**\n\n- **email:** (optional) New email of the user.\n- **name:** (optional) New name of the user.\n\nPartial updates are allowed.",
+                "operationId": "patch_user_resource_instance",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PatchUser"
+                        }
+                    }
+                ],
+                "tags": [
+                    "users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authorization header required."
+                    },
+                    "200": {
+                        "description": "User deleted successfully."
+                    }
+                },
+                "summary": "Delete a specific user from the logged user's organization by CUID",
+                "description": "Delete a specific user by CUID within the logged user's organization.",
+                "operationId": "delete_user_resource_instance",
+                "tags": [
+                    "users"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "ValidMind API",
+        "version": "1.0"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer Auth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Example: `Bearer eyXXXXXXXX` __(for now login in postman and paste the token here)__"
+        },
+        "oauth2": {
+            "type": "oauth2",
+            "flow": "implicit",
+            "authorizationUrl": "https://dev-bpojk7up.us.auth0.com/authorize?audience=https://api.test.vm.validmind.ai",
+            "scopes": {
+                "openid": "Grants openid access",
+                "profile": "Grants profile access",
+                "email": "Grants email access"
+            }
+        }
+    },
+    "security": [
+        {
+            "Bearer Auth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "organizations",
+            "description": "Organizations related operations"
+        },
+        {
+            "name": "users",
+            "description": "User related operations"
+        },
+        {
+            "name": "organization_roles",
+            "description": "Organization roles related operations"
+        },
+        {
+            "name": "user_roles",
+            "description": "User roles related operations"
+        },
+        {
+            "name": "groups",
+            "description": "Groups related operations"
+        },
+        {
+            "name": "inventory-models",
+            "description": "Inventory models related operations"
+        }
+    ],
+    "definitions": {
+        "CreateOrganization": {
+            "required": [
+                "job_title",
+                "last_name",
+                "name",
+                "organization_name"
+            ],
+            "properties": {
+                "organization_name": {
+                    "type": "string",
+                    "description": "Organization name"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "User last name"
+                },
+                "job_title": {
+                    "type": "string",
+                    "description": "User job title"
+                },
+                "opted_in_for_newsletter": {
+                    "type": "boolean"
+                },
+                "opted_in_for_slack": {
+                    "type": "boolean"
+                },
+                "accepted_tyc": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "PostUser": {
+            "required": [
+                "email",
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                }
+            },
+            "type": "object"
+        },
+        "PaginatedUsers": {
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "description": "Page number"
+                },
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of items"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of items per page"
+                },
+                "results": {
+                    "type": "array",
+                    "description": "Users array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "PatchUser": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                }
+            },
+            "type": "object"
+        },
+        "PostUserInvite": {
+            "required": [
+                "email",
+                "groups",
+                "roles"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Email"
+                },
+                "groups": {
+                    "type": "array",
+                    "description": "Array of group cuids",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles": {
+                    "type": "array",
+                    "description": "Array of role cuids",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "InviteUserCheck": {
+            "properties": {
+                "result": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "PostOrganizationRole": {
+            "required": [
+                "is_admin",
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "is_admin": {
+                    "type": "boolean",
+                    "description": "Is admin role?"
+                }
+            },
+            "type": "object"
+        },
+        "PaginatedRoles": {
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "description": "Page number"
+                },
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of items"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of items per page"
+                },
+                "results": {
+                    "type": "array",
+                    "description": "Roles array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "PatchOrganizationRole": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "is_admin": {
+                    "type": "boolean",
+                    "description": "Is admin role?"
+                }
+            },
+            "type": "object"
+        },
+        "PostUserRole": {
+            "required": [
+                "role_id",
+                "user_id"
+            ],
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "User cuid"
+                },
+                "role_id": {
+                    "type": "string",
+                    "description": "Role cuid"
+                }
+            },
+            "type": "object"
+        },
+        "PaginatedUserRoles": {
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "description": "Page number"
+                },
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of items"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of items per page"
+                },
+                "results": {
+                    "type": "array",
+                    "description": "UserRoles array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "PostGroup": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Group name (must be unique by org)"
+                }
+            },
+            "type": "object"
+        },
+        "PaginatedGroups": {
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "description": "Page number"
+                },
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of items"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of items per page"
+                },
+                "results": {
+                    "type": "array",
+                    "description": "Groups array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "PatchGroup": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Group name (must be unique by org)"
+                }
+            },
+            "type": "object"
+        },
+        "PostGroupMembership": {
+            "required": [
+                "users"
+            ],
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "description": "List of user cuids",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "GroupResource": {
+            "required": [
+                "resources",
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of the cuids of resources being managed on the group, valid types are one of ['Template', 'InventoryModel', 'StatusesWorkflow']",
+                    "example": "Template"
+                },
+                "resources": {
+                    "type": "array",
+                    "description": "List of resource cuids",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "CreateInventoryModel": {
+            "required": [
+                "business_unit_cuid",
+                "group_cuid",
+                "is_spreadsheet_based",
+                "methodologies_data",
+                "name",
+                "owners",
+                "purpose",
+                "template_cuid",
+                "tiering",
+                "use"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Inventory model name"
+                },
+                "methodologies_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tiering": {
+                    "type": "string"
+                },
+                "use": {
+                    "type": "string"
+                },
+                "purpose": {
+                    "type": "string"
+                },
+                "owners": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "business_unit_cuid": {
+                    "type": "string"
+                },
+                "template_cuid": {
+                    "type": "string"
+                },
+                "group_cuid": {
+                    "type": "string"
+                },
+                "is_spreadsheet_based": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "PaginatedInventoryModels": {
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "description": "Page number"
+                },
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of items"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of items per page"
+                },
+                "results": {
+                    "type": "array",
+                    "description": "Inventory models array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        },
+        "AuthError": {}
+    }
+}
