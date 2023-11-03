@@ -2,6 +2,7 @@
 SRC_DIR := _source/developer-framework
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
+DEST_DIR_TESTS := tests
 
 # Define .PHONY target for help section
 .PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod release-notes
@@ -55,11 +56,17 @@ python-docs:
 	mkdir -p $(DEST_DIR_PYTHON)
 	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
 
-# Get all source files
-get-source: clean clone notebooks python-docs
+test-descriptions:
+	@echo "\nUpdating test descriptions source ..."
+	rm -rf $(DEST_DIR_TESTS)
+	mkdir -p $(DEST_DIR_TESTS)
+	cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
 
 # Get all source files
-docs-site: clean clone notebooks python-docs
+get-source: clean clone notebooks python-docs test-descriptions
+
+# Get all source files
+docs-site: clean clone notebooks python-docs test-descriptions
 	quarto render
 
 # Deployment to https://docs-demo.vm.validmind.ai/
