@@ -22,7 +22,7 @@ You need:
 
 - [Quarto CLI](https://quarto.org/docs/get-started/)
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
-- For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html).
+- For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
 ## How to contribute
 
