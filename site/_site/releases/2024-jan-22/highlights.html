@@ -584,7 +584,9 @@ vm_train_ds = vm.init_dataset(
 <li>Improved the output table format of <code>DatasetDescription</code> and <code>Duplicates</code></li>
 </ul>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-<p><span id="arbitrary-test-new"> - <strong>Support for arbitrary and custom inputs</strong>. More work on formalizing and standardizing test inputs. The Developer Framework now supports passing arbitrary/custom inputs along with standard inputs (<code>dataset</code>, <code>model</code> and <code>models</code>) as an <code>inputs</code> dictionary when running individual tests or test suites.</span></p>
+<ul>
+<li><strong>Support for arbitrary and custom inputs</strong>.<span id="arbitrary-test-new"> More work on formalizing and standardizing test inputs. The Developer Framework now supports passing arbitrary/custom inputs along with standard inputs (<code>dataset</code>, <code>model</code> and <code>models</code>) as an <code>inputs</code> dictionary when running individual tests or test suites.</span></li>
+</ul>
 <p>In addition, standard inputs are now considered deprecated. The legacy behavior will continue to be supported before it’s fully removed.</p>
 <p>Legacy syntax for passing inputs:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
@@ -649,7 +651,7 @@ vm_train_ds = vm.init_dataset(
 <h2 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h2>
 <!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
 <ul>
-<li><strong>Fix support for openai &gt;=1.0</strong>. - Updated LLM related demo notebooks to properly support <code>openai &gt;=1.0.0</code></li>
+<li><strong>Fix support for OpenAI library</strong>. We have updated our demonstration notebooks for large language models (LLMs) to provide correct support for <code>openai &gt;= 1.0.0</code>. Previously, some notebooks were using an older version of the OpenAI client API.</li>
 </ul>
 </section>
 <section id="deprecations" class="level2">
@@ -672,26 +674,32 @@ vm_train_ds = vm.init_dataset(
         dataset = vm_dataset,
         model = vm_model,
 )</code></pre>
-<!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
-<ul>
-<li><strong>[SC-2771] Remove deprecated high level api methods</strong>. Remove <code>run_template</code> and <code>run_test_plan</code> from the developer framework.</li>
-</ul>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-<p><span id="arbitrary-test-legacy"> - <strong>Standard inputs are deprecated</strong>. The ValidMind Developer Framework now supports passing arbitrary or custom inputs along with the existing standard inputs, including <code>dataset</code>, <code>model</code> and <code>models</code> as an <code>inputs</code> dictionary when running individual tests or test suites.</span></p>
-<p>In addition, standard inputs are now considered deprecated. The legacy behavior will continue to be supported before it’s fully removed.</p>
-<p>Legacy syntax for passing inputs that is deprecated:</p>
+<ul>
+<li><p><strong>Standard inputs are deprecated</strong>.<span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an <code>inputs</code> dictionary when running individual tests or test suites. As a result, the standard inputs <code>dataset</code>, <code>model</code>, and <code>models</code> are now deprecated and might be removed in a future release. Developers should update their code to use the new, recommended syntax.</span></p>
+<p>Deprecated legacy syntax for passing inputs:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>New syntax for passing inputs that should be used:</p>
+<p>New recommended syntax for passing inputs:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Also see <a href="#arbitrary-test-new">Allow arbitrary test context (V2)</a></p>
+<p>Also see <a href="#arbitrary-test-new">Support for arbitrary and custom inputs</a>.</p></li>
+</ul>
+<!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
+<ul>
+<li><p><strong>Removed deprecated high-level API methods</strong>: The API methods <code>run_template</code> and <code>run_test_plan</code> had been deprecated previously. They have now been removed from the the ValidMind Developer Framework.</p>
+<p>Developers should update their code to use the recommended high-level API methods:</p>
+<ul>
+<li><code>run_template</code> (removed): Use <a href="https://docs.validmind.ai/validmind/validmind.html#run_documentation_tests"><code>vm.run_documentation_tests</code></a></li>
+<li><code>run_test_plan</code> (removed) : Use <a href="https://docs.validmind.ai/validmind/validmind.html#run_test_suite"><code>vm.run_test_suite</code></a></li>
+</ul></li>
+</ul>
 </section>
 <section id="how-to-upgrade" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-upgrade">How to upgrade</h2>
