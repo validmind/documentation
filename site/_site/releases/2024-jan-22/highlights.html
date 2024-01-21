@@ -478,6 +478,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <li><a href="#release-highlights" id="toc-release-highlights" class="nav-link active" data-scroll-target="#release-highlights">Release highlights</a>
   <ul class="collapse">
   <li><a href="#validmind-developer-framework-v1.25.3" id="toc-validmind-developer-framework-v1.25.3" class="nav-link" data-scroll-target="#validmind-developer-framework-v1.25.3">ValidMind Developer Framework (v1.25.3)</a></li>
+  <li><a href="#init_model-improvements" id="toc-init_model-improvements" class="nav-link" data-scroll-target="#init_model-improvements"><code>init_model</code> improvements</a></li>
   </ul></li>
   <li><a href="#enhancements" id="toc-enhancements" class="nav-link" data-scroll-target="#enhancements">Enhancements</a></li>
   <li><a href="#bug-fixes" id="toc-bug-fixes" class="nav-link" data-scroll-target="#bug-fixes">Bug fixes</a></li>
@@ -510,6 +511,53 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="release-highlights">Release highlights</h2>
 <section id="validmind-developer-framework-v1.25.3" class="level3">
 <h3 class="anchored" data-anchor-id="validmind-developer-framework-v1.25.3">ValidMind Developer Framework (v1.25.3)</h3>
+<!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
+</section>
+<section id="init_model-improvements" class="level3">
+<h3 class="anchored" data-anchor-id="init_model-improvements"><code>init_model</code> improvements</h3>
+<p>Users can now pass a dataset with pre-computed model predictions. By default our developer framework will compute model predictions when calling <code>init_model</code>. In the following example we will try to call the <code>predict()</code> method of the model for the training and test datasets:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This can pose an issue when datasets are too big: <code>init_model</code> might take too long to compute. In general, users should be able to pass datasets that have a column with pre-computed predictions:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>x1</th>
+<th>x2</th>
+<th>…</th>
+<th>target_column</th>
+<th>prediction_column</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.1</td>
+<td>0.2</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>0.2</td>
+<td>0.4</td>
+<td>1…</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>It is now possible to pass a <code>prediction_column</code> when initializing a new dataset. When <code>init_model</code> sees this, it won’t generate model predictions at run time:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vm.init_dataset(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>     dataset<span class="op">=</span>df,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     feature_columns<span class="op">=</span>[...],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     target_column<span class="op">=</span> ...,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>     extra_columns<span class="op">=</span>{</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         prediction_column: <span class="st">'name-of-prediction-column'</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
 <section id="support-for-adding-feature-columns-parameter-to-init-dataset" class="level4">
 <h4 class="anchored" data-anchor-id="support-for-adding-feature-columns-parameter-to-init-dataset">Support for adding feature columns parameter to init dataset</h4>
@@ -542,27 +590,12 @@ vm_train_ds = vm.init_dataset(
 <p><strong>Testing</strong></p>
 <p>Notebook <code>configure_dataset_featutes.ipynb</code> has been added to show: - how to use the <code>feature_columns</code> parameter when initizalizing validmind datasets and model objects - how <code>feature_columns</code> can be used to report by segment</p>
 <p>Try it yourself: <a href="">TODO</a></p>
-</section>
-</section>
-</section>
-<section id="enhancements" class="level2">
-<h2 class="anchored" data-anchor-id="enhancements">Enhancements</h2>
-<!---John6797/sc 2524/support for azure open ai api keys dev framework by @johnwalz97 in [#300](https://github.com/validmind/developer-framework/pull/300)--->
-<ul>
-<li><strong>John6797/sc 2524/support for azure open ai api keys dev framework</strong>. - Added support for running LLM-powered tests with the Azure OpenAI Service. In order to use Azure Open AI endpoints users only need to set the following environment variables before calling <code>vm.init()</code>:
-<ul>
-<li>AZURE_OPENAI_KEY</li>
-<li>AZURE_OPENAI_ENDPOINT</li>
-<li>AZURE_OPENAI_MODEL</li>
-<li>AZURE_OPENAI_VERSION (optional)</li>
-</ul></li>
-</ul>
-<p>More information can be found here: https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication</p>
-<!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
-<!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
+</section>
+<section id="support-for-multiple-sections-in-run_documentation_tests" class="level4">
+<h4 class="anchored" data-anchor-id="support-for-multiple-sections-in-run_documentation_tests">Support for multiple sections in run_documentation_tests()</h4>
 <ul>
-<li><strong>[SC-2707] Support for multiple sections in run_documentation_tests()</strong>. - Modify <code>client.py</code> to allow users to run multiple sections using <code>run_documentation_tests()</code></li>
+<li>Modify <code>client.py</code> to allow users to run multiple sections using <code>run_documentation_tests()</code></li>
 <li>The changes are compatible with the current use.</li>
 <li>Running one section:</li>
 </ul>
@@ -578,105 +611,83 @@ vm_train_ds = vm.init_dataset(
     dataset=vm_dataset,
 )</code></pre>
 <p>How to notebook: -<code>how_to/run_documentation_sections.ipynb</code></p>
-<!---[SC 2527] `init_dataset` should not attempt to preprocess the input dataset by @AnilSorathiya in [#297](https://github.com/validmind/developer-framework/pull/297)--->
-<ul>
-<li><strong>[SC 2527] <code>init_dataset</code> should not attempt to preprocess the input dataset</strong>. - Improved performance of <code>init_dataset</code></li>
-<li>Improved the output table format of <code>DatasetDescription</code> and <code>Duplicates</code></li>
-</ul>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 <ul>
 <li><strong>Support for arbitrary and custom inputs</strong>.<span id="arbitrary-test-new"> More work on formalizing and standardizing test inputs. The Developer Framework now supports passing arbitrary/custom inputs along with standard inputs (<code>dataset</code>, <code>model</code> and <code>models</code>) as an <code>inputs</code> dictionary when running individual tests or test suites.</span></li>
 </ul>
 <p>In addition, standard inputs are now considered deprecated. The legacy behavior will continue to be supported before it’s fully removed.</p>
 <p>Legacy syntax for passing inputs:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>New syntax for passing inputs:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
+</section>
+<section id="update-code-samples-and-how-to-notebooks-to-use-test-inputs" class="level4">
+<h4 class="anchored" data-anchor-id="update-code-samples-and-how-to-notebooks-to-use-test-inputs">Update code samples and how to notebooks to use test inputs</h4>
+<p>Updated notebooks in <code>code_samples</code> and <code>how_to</code> to use <code>inputs={...}</code>.</p>
 <ul>
-<li><strong>[SC-2628] <code>init_model</code> improvements </strong>. Users can now pass a dataset with pre-computed model predictions. By default our developer framework will compute model predictions when calling <code>init_model</code>. In the following example we will try to call the <code>predict()</code> method of the model for the training and test datasets:</li>
+<li>New interface:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This can pose an issue when datasets are too big: <code>init_model</code> might take too long to compute. In general, users should be able to pass datasets that have a column with pre-computed predictions:</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>x1</th>
-<th>x2</th>
-<th>…</th>
-<th>target_column</th>
-<th>prediction_column</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0.1</td>
-<td>0.2</td>
-<td>…</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>0.2</td>
-<td>0.4</td>
-<td>1…</td>
-<td>1</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>It is now possible to pass a <code>prediction_column</code> when initializing a new dataset. When <code>init_model</code> sees this, it won’t generate model predictions at run time:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vm.init_dataset(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>     dataset<span class="op">=</span>df,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     feature_columns<span class="op">=</span>[...],</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     target_column<span class="op">=</span> ...,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     extra_columns<span class="op">=</span>{</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         prediction_column: <span class="st">'name-of-prediction-column'</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>test_suite <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Deprecated interface:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>test_suite <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        dataset <span class="op">=</span> vm_dataset,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> vm_model,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="enhancements" class="level2">
+<h2 class="anchored" data-anchor-id="enhancements">Enhancements</h2>
+<!---John6797/sc 2524/support for azure open ai api keys dev framework by @johnwalz97 in [#300](https://github.com/validmind/developer-framework/pull/300)--->
+<ul>
+<li><p><strong>John6797/sc 2524/support for azure open ai api keys dev framework</strong>. - Added support for running LLM-powered tests with the Azure OpenAI Service. In order to use Azure Open AI endpoints users only need to set the following environment variables before calling <code>vm.init()</code>:</p>
+<ul>
+<li>AZURE_OPENAI_KEY</li>
+<li>AZURE_OPENAI_ENDPOINT</li>
+<li>AZURE_OPENAI_MODEL</li>
+<li>AZURE_OPENAI_VERSION (optional)</li>
+</ul></li>
+</ul>
+<p>More information can be found here: https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication</p>
+<!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
+<!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
+<!---[SC 2527] `init_dataset` should not attempt to preprocess the input dataset by @AnilSorathiya in [#297](https://github.com/validmind/developer-framework/pull/297)--->
+<ul>
+<li><strong>[SC 2527] <code>init_dataset</code> should not attempt to preprocess the input dataset</strong>.
+<ul>
+<li>Improved performance of <code>init_dataset</code></li>
+<li>Improved the output table format of <code>DatasetDescription</code> and <code>Duplicates</code></li>
+</ul></li>
+</ul>
 </section>
 <section id="bug-fixes" class="level2">
 <h2 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h2>
 <!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
 <ul>
-<li><strong>Fix support for OpenAI library</strong>. We have updated our demonstration notebooks for large language models (LLMs) to provide correct support for <code>openai &gt;= 1.0.0</code>. Previously, some notebooks were using an older version of the OpenAI client API.</li>
+<li><strong>Support for OpenAI library &gt;=1.0</strong>. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for <code>openai &gt;= 1.0.0</code>. Previously, some notebooks were using an older version of the OpenAI client API.</li>
 </ul>
 </section>
 <section id="deprecations" class="level2">
 <h2 class="anchored" data-anchor-id="deprecations">Deprecations</h2>
-<!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
-<ul>
-<li><p><strong>[SC-2770] Update code samples and how to notebooks to use test inputs</strong>. Updated notebooks in <code>code_samples</code> and <code>how_to</code> to use <code>inputs={...}</code>.</p></li>
-<li><p>New interface:</p></li>
-</ul>
-<pre><code>test_suite = vm.run_documentation_tests(
-    inputs = {
-        "dataset": vm_dataset,
-        "model": vm_model,
-    }
-)</code></pre>
-<ul>
-<li>Deprecated interface:</li>
-</ul>
-<pre><code>test_suite = vm.run_documentation_tests(
-        dataset = vm_dataset,
-        model = vm_model,
-)</code></pre>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 <ul>
-<li><p><strong>Standard inputs are deprecated</strong>.<span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an <code>inputs</code> dictionary when running individual tests or test suites. As a result, the standard inputs <code>dataset</code>, <code>model</code>, and <code>models</code> are now deprecated and might be removed in a future release. Developers should update their code to use the new, recommended syntax.</span></p>
+<li><p><strong>Standard inputs are deprecated</strong>.<span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an <code>inputs</code> dictionary when running individual tests or test suites. As a result, the standard inputs <code>dataset</code>, <code>model</code>, and <code>models</code> are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.</span></p>
 <p>Deprecated legacy syntax for passing inputs:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
@@ -693,8 +704,8 @@ vm_train_ds = vm.init_dataset(
 </ul>
 <!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
 <ul>
-<li><p><strong>Removed deprecated high-level API methods</strong>: The API methods <code>run_template</code> and <code>run_test_plan</code> had been deprecated previously. They have now been removed from the the ValidMind Developer Framework.</p>
-<p>Developers should update their code to use the recommended high-level API methods:</p>
+<li><p><strong>Removed deprecated high-level API methods</strong>: The API methods <code>run_template</code> and <code>run_test_plan</code> had been deprecated previously. They have now been removed from the ValidMind Developer Framework.</p>
+<p>If you are a developer, you should update your code to use the recommended high-level API methods:</p>
 <ul>
 <li><code>run_template</code> (removed): Use <a href="https://docs.validmind.ai/validmind/validmind.html#run_documentation_tests"><code>vm.run_documentation_tests</code></a></li>
 <li><code>run_test_plan</code> (removed) : Use <a href="https://docs.validmind.ai/validmind/validmind.html#run_test_suite"><code>vm.run_test_suite</code></a></li>
@@ -981,7 +992,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></div>   
+    <div class="nav-footer-left"><em>© Copyright 2023-24 ValidMind Inc All Rights Reserved.</em></div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
