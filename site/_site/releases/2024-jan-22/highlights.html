@@ -562,7 +562,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <h4 class="anchored" data-anchor-id="init-dataset-improvements"><code>init dataset</code> improvements</h4>
 <p>At present, <code>init_dataset</code> loads the entire dataset, using all available features for prediction tasks. While this works well, this imposes a constraint when implementing metrics that report by segment, and it becomes inefficient with large datasets containing numerous features, where only a small subset is actually pertinent for prediction.</p>
 <p>This PR implements the addition of a <code>feature_columns</code> argument, accepting a list of feature names for prediction. The function would then internally filter the dataset to keep only these specified features for prediction-related tasks. The rest of the dataset, would not be used for predictions and can be used for other tasks such segmentation.</p>
-<p>Example of use:</p>
+<p>Usage example:</p>
 <pre><code>feature_columns = ['CreditScore', 'Age', 'Balance', 'NumOfProducts', 'EstimatedSalary']
 
 vm_train_ds = vm.init_dataset(
@@ -570,46 +570,35 @@ vm_train_ds = vm.init_dataset(
     target_column=demo_dataset.target_column,
     feature_columns=feature_columns
 )</code></pre>
-<p>Changes include:</p>
 <ul>
-<li>Support for <code>init_dataset</code> to take a <code>feature_columns</code> parameter required changes in these files:
-<ul>
-<li><code>client.py</code></li>
-<li><code>dataset.py</code></li>
-<li><code>huggingface.py</code></li>
-<li><code>pytorch.py</code></li>
-<li><code>sklearn.py</code></li>
-</ul></li>
 <li>Two new metrics have been implemented to report by segment and show the use of <code>feature_columns</code>:
 <ul>
 <li><code>MissingValuesBySegment</code></li>
 <li><code>DescriptiveStatisticsBySegment</code></li>
 </ul></li>
 </ul>
-<p><strong>Testing</strong></p>
-<p>Notebook <code>configure_dataset_featutes.ipynb</code> has been added to show: - how to use the <code>feature_columns</code> parameter when initizalizing validmind datasets and model objects - how <code>feature_columns</code> can be used to report by segment</p>
-<p>Try it yourself: <a href="">TODO</a></p>
+<p>A new notebook has been added to show how configuring data set features works:</p>
+<ul>
+<li>how to use the <code>feature_columns</code> parameter when initizalizing <code>validmind</code> datasets and model objects</li>
+<li>how <code>feature_columns</code> can be used to report by segment</li>
+</ul>
+<p>Try it yourself: TO DO LINK <a href="../../notebooks/how_to/configure_dataset_features.ipynb">Configure data set features</a></p>
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
 </section>
-<section id="support-for-multiple-sections-in-run_documentation_tests" class="level4">
-<h4 class="anchored" data-anchor-id="support-for-multiple-sections-in-run_documentation_tests">Support for multiple sections in run_documentation_tests()</h4>
-<ul>
-<li>Modify <code>client.py</code> to allow users to run multiple sections using <code>run_documentation_tests()</code></li>
-<li>The changes are compatible with the current use.</li>
-<li>Running one section:</li>
-</ul>
-<pre><code>results = vm.run_documentation_tests(
-    section="data_preparation",
-    dataset=vm_dataset,
-)</code></pre>
-<ul>
-<li>Running multiple sections:</li>
-</ul>
-<pre><code>results = vm.run_documentation_tests(
-    section=["data_preparation", "model_development"],
-    dataset=vm_dataset,
-)</code></pre>
-<p>How to notebook: -<code>how_to/run_documentation_sections.ipynb</code></p>
+<section id="run_documentation_tests-improvements" class="level4">
+<h4 class="anchored" data-anchor-id="run_documentation_tests-improvements"><code>run_documentation_tests()</code> improvements</h4>
+<p>The <code>run_documentation_tests()</code> function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. This improvement addresses a request we received through customer feedback. The previous behavior was to allow running only one section at a time. This change maintains backward compatibility with the existing syntax, requiring no updates to your code.</p>
+<p>Example usage to run one section:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span><span class="st">"data_preparation"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Example usage to run multiple sections:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span>[<span class="st">"data_preparation"</span>, <span class="st">"model_development"</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Try it yourself: TO DO LINK <a href="../../notebooks/how_to/run_documentation_sections.ipynb">Run documentation sections</a></p>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 </section>
 <section id="support-for-arbitrary-and-custom-inputs" class="level4">
@@ -623,7 +612,7 @@ vm_train_ds = vm.init_dataset(
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
-<p>To make it easier for you to adopt arbitrary or custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:</p>
+<p>To make it easier for you to adopt arbitrary and custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:</p>
 <ul>
 <li>How-to notebooks, including:
 <ul>
@@ -660,13 +649,10 @@ vm_train_ds = vm.init_dataset(
 <!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
 <!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
 <!---[SC 2527] `init_dataset` should not attempt to preprocess the input dataset by @AnilSorathiya in [#297](https://github.com/validmind/developer-framework/pull/297)--->
-<ul>
-<li><strong><code>init_dataset</code> should not attempt to preprocess the input dataset</strong>.
-<ul>
-<li>Improved performance of <code>init_dataset</code></li>
-<li>Improved the output table format of <code>DatasetDescription</code> and <code>Duplicates</code></li>
-</ul></li>
-</ul>
+
+<!---- **`init_dataset` should not attempt to preprocess the input dataset**. 
+  - Improved performance of `init_dataset`
+  - Improved the output table format of `DatasetDescription` and `Duplicates`--->
 </section>
 <section id="bug-fixes" class="level2">
 <h2 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h2>
@@ -680,12 +666,12 @@ vm_train_ds = vm.init_dataset(
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 <ul>
 <li><p><strong>Standard inputs are deprecated</strong>. <span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an <code>inputs</code> dictionary when running individual tests or test suites. As a result, the standard inputs <code>dataset</code>, <code>model</code>, and <code>models</code> are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.</span></p>
-<p>Deprecated legacy syntax for passing inputs:</p>
+<p>Deprecated legacy usage for passing inputs:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>test_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>New recommended syntax for passing inputs:</p>
+<p>New recommended usage for passing inputs:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>test_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
