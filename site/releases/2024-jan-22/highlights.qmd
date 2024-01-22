@@ -8,7 +8,7 @@ keywords: "release notes, ai risk, model risk management, ValidMind"
 ### ValidMind Developer Framework (v1.25.3)
 
 <!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
-### `init_model` improvements 
+#### `init_model` improvements 
 
 Users can now pass a dataset with pre-computed model predictions. By default our developer framework will compute model predictions when calling `init_model`. In the following example we will try to call the `predict()` method of the model for the training and test datasets:
 
@@ -41,7 +41,7 @@ vm.init_dataset(
 ```
 
 <!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
-#### Support for adding feature columns parameter to init dataset
+#### `init dataset` improvements
 
 At present, `init_dataset` loads the entire dataset, using all available features for prediction tasks. While this works well, this imposes a constraint when implementing metrics that report by segment, and it becomes inefficient with large datasets containing numerous features, where only a small subset is actually pertinent for prediction.
 
@@ -106,23 +106,14 @@ How to notebook:
 
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-- **Support for arbitrary and custom inputs**.<span id="arbitrary-test-new"> More work on formalizing and standardizing test inputs. The Developer Framework now supports passing arbitrary/custom inputs along with standard inputs (`dataset`, `model` and `models`) as an `inputs` dictionary when running individual tests or test suites.
+#### Support for arbitrary and custom inputs <span id="arbitrary-test-new"> 
 
-In addition, standard inputs are now considered deprecated. The legacy behavior will continue to be supported before it's fully removed.
+The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an `inputs` dictionary when running individual tests or test suites. This support replaces the standard inputs `dataset`, `model`, and `models`, which are now deprecated. 
 
-Legacy syntax for passing inputs:
-
-```python
-full_suite = vm.run_documentation_tests(
-    dataset=vm_dataset,
-    model=vm_model
-)
-```
-
-New syntax for passing inputs:
+New recommended syntax for passing inputs:
 
 ```python
-full_suite = vm.run_documentation_tests(
+test_suite = vm.run_documentation_tests(
     inputs={
         "dataset": vm_dataset,
         "model": vm_model,
@@ -131,46 +122,40 @@ full_suite = vm.run_documentation_tests(
 ```
 
 <!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
-#### Update code samples and how to notebooks to use test inputs
 
-Updated notebooks in `code_samples` and `how_to` to use `inputs={...}`. 
+To make it easier for you to adopt arbitrary or custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
 
-- New interface:
+- How-to notebooks, including:
+  - [Integrate an external test provider](../../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
+  - TO DO LINK [Configure data set features](../../notebooks/how_to/configure_dataset_features.ipynb) 
+  - [Configure Parameters for a Specific Test](../../notebooks/how_to/configure_parameters_demo.ipynb)
+  - [Running an Individual Test](../../notebooks/how_to/run_a_test.ipynb)
+  - [Running an Individual Test Suite](../../notebooks/how_to/run_a_test_suite.ipynb)
 
-```python
-test_suite = vm.run_documentation_tests(
-    inputs = {
-        "dataset": vm_dataset,
-        "model": vm_model,
-    }
-)
-```
-- Deprecated interface: 
+- [Code samples](../../guide/samples-jupyter-notebooks.qmd), including:
+  - NLP and LLM models
+  - Regression models
+  - Time series models
 
-```python
-test_suite = vm.run_documentation_tests(
-        dataset = vm_dataset,
-        model = vm_model,
-)
-```
+Also check [Standard inputs are deprecated](#arbitrary-test-legacy).
 
 ## Enhancements
 
 <!---John6797/sc 2524/support for azure open ai api keys dev framework by @johnwalz97 in [#300](https://github.com/validmind/developer-framework/pull/300)--->
-- **John6797/sc 2524/support for azure open ai api keys dev framework**. - Added support for running LLM-powered tests with the Azure OpenAI Service. In order to use Azure Open AI endpoints users only need to set the following environment variables before calling `vm.init()`:
+- **Support for Azure OpenAI Service**. The ValidMInd Developer Framework now supports running LLM-powered tests with the Azure OpenAI Service via API, in addition to the previously supported OpenAI API. To work with Azure OpenAI API endpoints, you need to set the following environment variables before calling `vm.init()`:
+  
+  - `AZURE_OPENAI_KEY`: API key for authentication
+  - `AZURE_OPENAI_ENDPOINT`: API endpoint URL
+  - `AZURE_OPENAI_MODEL`: Specifies the language model or service to use
+  - `AZURE_OPENAI_VERSION` (optional): Allows specifying a specific version of the service if available
 
-  - AZURE_OPENAI_KEY
-  - AZURE_OPENAI_ENDPOINT
-  - AZURE_OPENAI_MODEL
-  - AZURE_OPENAI_VERSION (optional)
-
-More information can be found here: https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication
+To learn more about configuring Azure OpenAI Service, see [Authentication](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication) in the official Microsoft documentation.
 
 <!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
 <!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
 
 <!---[SC 2527] `init_dataset` should not attempt to preprocess the input dataset by @AnilSorathiya in [#297](https://github.com/validmind/developer-framework/pull/297)--->
-- **[SC 2527] `init_dataset` should not attempt to preprocess the input dataset**. 
+- **`init_dataset` should not attempt to preprocess the input dataset**. 
   - Improved performance of `init_dataset`
   - Improved the output table format of `DatasetDescription` and `Duplicates`
 
@@ -182,12 +167,12 @@ More information can be found here: https://learn.microsoft.com/en-us/azure/ai-s
 ## Deprecations
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-- **Standard inputs are deprecated**.<span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
+- **Standard inputs are deprecated**. <span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
   
   Deprecated legacy syntax for passing inputs:
   
   ```python
-  full_suite = vm.run_documentation_tests(
+  test_suite = vm.run_documentation_tests(
       dataset=vm_dataset,
       model=vm_model
   )
@@ -196,7 +181,7 @@ More information can be found here: https://learn.microsoft.com/en-us/azure/ai-s
   New recommended syntax for passing inputs:
   
   ```python
-  full_suite = vm.run_documentation_tests(
+  test_suite = vm.run_documentation_tests(
       inputs={
           "dataset": vm_dataset,
           "model": vm_model,
@@ -204,7 +189,7 @@ More information can be found here: https://learn.microsoft.com/en-us/azure/ai-s
   )
   ```
   
-  Also see [Support for arbitrary and custom inputs](#arbitrary-test-new).
+  Also check [Support for arbitrary and custom inputs](#arbitrary-test-new).
 
 <!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
 - **Removed deprecated high-level API methods**: The API methods `run_template` and `run_test_plan` had been deprecated previously. They have now been removed from the ValidMind Developer Framework.
