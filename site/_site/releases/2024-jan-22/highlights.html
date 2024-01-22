@@ -508,19 +508,20 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 <section id="release-highlights" class="level2">
 <h2 class="anchored" data-anchor-id="release-highlights">Release highlights</h2>
+<p>The release includes numerous improvements to the ValidMind Developer Framework, including new features for model and dataset initialization, easier testing, support for additional inputs and the Azure OpenAI API, updated notebooks, bug fixes and deprecations, and much more.</p>
 <section id="validmind-developer-framework-v1.25.3" class="level3">
 <h3 class="anchored" data-anchor-id="validmind-developer-framework-v1.25.3">ValidMind Developer Framework (v1.25.3)</h3>
 <!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
-<section id="init_model-improvements" class="level4">
-<h4 class="anchored" data-anchor-id="init_model-improvements"><code>init_model</code> improvements</h4>
-<p>To improve performance and efficiency, you can now pass a dataset with pre-computed model predictions when initializing a model. By default, if no prediction column is specified when calling <code>init_model</code>, the ValidMind Developer Framework will compute the model predictions as before.</p>
-<p>To illustrate how using prediction columns can help, consider the following example <em>without a prediction column</em>:</p>
+<section id="improvements-for-init_model" class="level4">
+<h4 class="anchored" data-anchor-id="improvements-for-init_model">Improvements for <code>init_model</code></h4>
+<p>When initializing a model, you can now pass a dataset with pre-computed model predictions to improve performance. By default, if no prediction column is specified when calling <code>init_model</code>, the ValidMind Developer Framework will compute the model predictions as before.</p>
+<p>To illustrate how passing a dataset that includes a prediction column can help, consider the following example without a prediction column:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Internally, this example invokes the <code>predict()</code> method of the model for the training and test datasets when the model is initialized. The issue here is that this approach can be problematic with large datasets: <code>init_model</code> can simply take too long to compute.</p>
+<p>Internally, this example invokes the <code>predict()</code> method of the model for the training and test datasets when the model is initialized. This approach can be problematic with large datasets: <code>init_model</code> can simply take too long to compute.</p>
 <p>You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. If <code>init_model</code> detects this column, it will not generate model predictions at runtime.</p>
 <table class="table">
 <thead>
@@ -549,7 +550,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </tr>
 </tbody>
 </table>
-<p>Usage example <em>with a prediction column</em>:</p>
+<p>Usage example with a prediction column:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vm.init_dataset(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>     dataset<span class="op">=</span>df,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     feature_columns<span class="op">=</span>[...],</span>
@@ -560,9 +561,10 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
 </section>
-<section id="init-dataset-improvements" class="level4">
-<h4 class="anchored" data-anchor-id="init-dataset-improvements"><code>init dataset</code> improvements</h4>
-<p>The addition of a <code>feature_columns</code> argument allows you to specify a list of feature names for prediction. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation. This improvement replaces the existing behavior of <code>init_dataset</code>, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented metrics and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.</p>
+<section id="improvements-for-init-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="improvements-for-init-dataset">Improvements for <code>init dataset</code></h4>
+<p>When initializing a dataset, the new <code>feature_columns</code> argument lets you specify a list of feature names for prediction to improve efficiency. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation.</p>
+<p>This improvement replaces the existing behavior of <code>init_dataset</code>, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented metrics and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.</p>
 <p>Usage example:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [<span class="st">'CreditScore'</span>, <span class="st">'Age'</span>, <span class="st">'Balance'</span>, <span class="st">'NumOfProducts'</span>, <span class="st">'EstimatedSalary'</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -576,12 +578,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li><code>MissingValuesBySegment</code></li>
 <li><code>DescriptiveStatisticsBySegment</code></li>
 </ul>
-<p>A new notebook illustrates the configuration of dataset features:</p>
+<p>A new notebook illustrates how you can configure these dataset features:</p>
 <ul>
 <li>How to utilize the <code>feature_columns</code> parameter when initizalizing <code>validmind</code> datasets and model objects</li>
 <li>How <code>feature_columns</code> can be used to report by segment</li>
 </ul>
-<p>Try it yourself: <a href="../../notebooks/how_to/configure_dataset_features.html">Configuring and Using Dataset Features</a></p>
+<p>Try it: <a href="../../notebooks/how_to/configure_dataset_features.html">Configuring and Using Dataset Features</a></p>
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
 </section>
 <section id="run_documentation_tests-improvements" class="level4">
@@ -597,7 +599,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span>[<span class="st">"data_preparation"</span>, <span class="st">"model_development"</span>],</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_dataset,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Try it yourself: <a href="../../notebooks/how_to/run_documentation_sections.html">Running individual documentation sections</a></p>
+<p>Try it: <a href="../../notebooks/how_to/run_documentation_sections.html">Running Individual Documentation Sections</a></p>
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 </section>
 <section id="support-for-arbitrary-and-custom-inputs" class="level4">
@@ -615,8 +617,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <ul>
 <li>How-to notebooks, including:
 <ul>
-<li><a href="../../notebooks/code_samples/custom_tests/external_test_providers_demo.html">Integrate an external test provider</a></li>
-<li><a href="../../notebooks/how_to/configure_dataset_features.html">Configuring and Using Dataset Features</a></li>
+<li><a href="../../notebooks/code_samples/custom_tests/external_test_providers_demo.html">Integrate An External Test Provider</a></li>
+<li><a href="../../notebooks/how_to/configure_dataset_features.html">Configuring And Using Dataset Features</a></li>
 <li><a href="../../notebooks/how_to/configure_parameters_demo.html">Configure Parameters for a Specific Test</a></li>
 <li><a href="../../notebooks/how_to/run_a_test.html">Running an Individual Test</a></li>
 <li><a href="../../notebooks/how_to/run_a_test_suite.html">Running an Individual Test Suite</a></li>
@@ -657,7 +659,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h2>
 <!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
 <ul>
-<li><strong>Support for OpenAI library &gt;=1.0</strong>. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for <code>openai &gt;= 1.0.0</code>. Previously, some notebooks were using an older version of the OpenAI client API.</li>
+<li><strong>Fixed support for OpenAI library &gt;=1.0</strong>. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for <code>openai &gt;= 1.0.0</code>. Previously, some notebooks were using an older version of the OpenAI client API.</li>
 </ul>
 </section>
 <section id="deprecations" class="level2">

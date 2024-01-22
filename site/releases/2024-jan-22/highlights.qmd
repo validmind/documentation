@@ -5,15 +5,17 @@ keywords: "release notes, ai risk, model risk management, ValidMind"
 
 ## Release highlights
 
+The release includes numerous improvements to the ValidMind Developer Framework, including new features for model and dataset initialization, easier testing, support for additional inputs and the Azure OpenAI API, updated notebooks, bug fixes and deprecations, and much more.
+
 ### ValidMind Developer Framework (v1.25.3)
 
 <!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
 
-#### `init_model` improvements
+#### Improvements for `init_model`
 
-To improve performance and efficiency, you can now pass a dataset with pre-computed model predictions when initializing a model. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions as before.
+When initializing a model, you can now pass a dataset with pre-computed model predictions to improve performance. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions as before.
 
-To illustrate how using prediction columns can help, consider the following example _without a prediction column_: 
+To illustrate how passing a dataset that includes a prediction column can help, consider the following example without a prediction column: 
 
 ```python
 vm_model = vm.init_model(
@@ -23,7 +25,7 @@ vm_model = vm.init_model(
 )
 ```
 
-Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. The issue here is that this approach can be problematic with large datasets: `init_model` can simply take too long to compute.
+Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. This approach can be problematic with large datasets: `init_model` can simply take too long to compute.
 
 You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. If `init_model` detects this column, it will not generate model predictions at runtime. 
 
@@ -32,7 +34,7 @@ You can now avoid this issue by providing a dataset with a column containing pre
 |0.1|0.2|...|0|0|
 |0.2|0.4|1...|1|1|
 
-Usage example _with a prediction column_:
+Usage example with a prediction column:
 
 ```python
 vm.init_dataset(
@@ -46,9 +48,11 @@ vm.init_dataset(
 ```
 
 <!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
-#### `init dataset` improvements
+#### Improvements for `init dataset`
 
-The addition of a `feature_columns` argument allows you to specify a list of feature names for prediction. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation. This improvement replaces the existing behavior of `init_dataset`, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented metrics and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.
+When initializing a dataset, the new `feature_columns` argument lets you specify a list of feature names for prediction to improve efficiency. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation. 
+
+This improvement replaces the existing behavior of `init_dataset`, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented metrics and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.
 
 Usage example:
 
@@ -67,12 +71,12 @@ Additionally, two new metrics enable you to report by segment and show the use o
 - `MissingValuesBySegment`
 - `DescriptiveStatisticsBySegment`
 
-A new notebook illustrates the configuration of dataset features:
+A new notebook illustrates how you can configure these dataset features:
 
 - How to utilize the `feature_columns` parameter when initizalizing `validmind` datasets and model objects
 - How `feature_columns` can be used to report by segment
 
-Try it yourself: [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+Try it: [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
 
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
 #### `run_documentation_tests()` improvements
@@ -97,7 +101,7 @@ results = vm.run_documentation_tests(
 )
 ```
 
-Try it yourself: [Running individual documentation sections](../../notebooks/how_to/run_documentation_sections.ipynb)
+Try it: [Running Individual Documentation Sections](../../notebooks/how_to/run_documentation_sections.ipynb)
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 #### Support for arbitrary and custom inputs <span id="arbitrary-test-new">
@@ -119,8 +123,8 @@ test_suite = vm.run_documentation_tests(
 To make it easier for you to adopt arbitrary and custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
 
 - How-to notebooks, including:
-  - [Integrate an external test provider](../../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
-  - [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+  - [Integrate An External Test Provider](../../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
+  - [Configuring And Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
   - [Configure Parameters for a Specific Test](../../notebooks/how_to/configure_parameters_demo.ipynb)
   - [Running an Individual Test](../../notebooks/how_to/run_a_test.ipynb)
   - [Running an Individual Test Suite](../../notebooks/how_to/run_a_test_suite.ipynb)
@@ -155,7 +159,7 @@ To learn more about configuring Azure OpenAI Service, see [Authentication](https
 ## Bug fixes
 
 <!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
-- **Support for OpenAI library >=1.0**. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for `openai >= 1.0.0`. Previously, some notebooks were using an older version of the OpenAI client API.
+- **Fixed support for OpenAI library >=1.0**. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for `openai >= 1.0.0`. Previously, some notebooks were using an older version of the OpenAI client API.
 
 ## Deprecations
 
