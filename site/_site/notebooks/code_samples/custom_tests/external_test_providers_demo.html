@@ -106,6 +106,10 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
 
 <link rel="stylesheet" href="../../../styles.css">
@@ -259,6 +263,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
       <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/configure_dataset_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuring and Using Dataset Features</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/configure_parameters_demo.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Configure Parameters for a Specific Test</span></a>
   </div>
@@ -291,6 +301,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_a_test_suite.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running an Individual Test Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Individual Documentation Sections</span></a>
   </div>
 </li>
       </ul>
@@ -1396,6 +1412,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Quickstart for California Housing Regression Model Documentation — Full Suite</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/regression/regression_model_full_suite_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">California Housing Regression Model Documentation — Full Suite</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -1511,8 +1533,14 @@ New to ValidMind?
 <section id="install-the-client-library" class="level2">
 <h2 class="anchored" data-anchor-id="install-the-client-library">Install the client library</h2>
 <p>The client library provides Python support for the ValidMind Developer Framework. To install it:</p>
-<div class="cell">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[notice] A new release of pip is available: 23.2.1 -&gt; 23.3.2
+[notice] To update, run: pip install --upgrade pip
+Note: you may need to restart the kernel to use updated packages.</code></pre>
+</div>
 </div>
 </section>
 <section id="before-you-initialize-the-client-library-update-the-customer-churn-template-template" class="level2">
@@ -1521,13 +1549,13 @@ New to ValidMind?
 <ul>
 <li>Go to <strong>Settings &gt; Templates</strong> and click on the <strong>Binary classification</strong> template. Let’s add a new top level section called <code>test_providers_demo</code> with some test driven content blocks like below:</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> test_providers_demo</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> Test providers demo</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> my_local_provider.tests.MyCustomTest</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> my_inline_provider.tests.MyCustomTest</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> test_providers_demo</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> Test providers demo</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> my_local_provider.tests.MyCustomTest</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> my_inline_provider.tests.MyCustomTest</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Click on <strong>Prepare new version</strong>, provide some version notes and click con <strong>Save new version</strong> to save a new version of this template</li>
 <li>Now we need to swap our project to this new version of the template. Follow the steps on this guide to swap the template of our customer churn model: https://docs.validmind.ai/guide/swap-documentation-project-templates.html</li>
@@ -1545,17 +1573,20 @@ New to ValidMind?
 <li><p>Go to <strong>Documentation Projects</strong> &gt; <strong>YOUR_UNIQUE_PROJECT_NAME</strong> &gt; <strong>Getting Started</strong> and click <strong>Copy snippet to clipboard</strong>.</p></li>
 </ol>
 <p>Next, replace this placeholder with your own code snippet:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace with code snippet from your documentation project ##</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace with code snippet from your documentation project ##</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"http://localhost:3000/api/v1/tracking"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>2024-01-19 12:32:07,500 - INFO(validmind.api_client): Connected to ValidMind. Project: [Demo] Customer Churn Model - Initial Validation (clr4sqr8z003muqy64hksfbnx)</code></pre>
+</div>
 </div>
 <section id="preview-the-documentation-template-and-validate-that-it-contains-the-new-test-blocks" class="level3">
 <h3 class="anchored" data-anchor-id="preview-the-documentation-template-and-validate-that-it-contains-the-new-test-blocks">Preview the documentation template and validate that it contains the new test blocks</h3>
@@ -1563,8 +1594,17 @@ New to ValidMind?
 <p>::: {.callout-tip}</p>
 <p><code>preview_template()</code> will show an error when loading the new tests since we haven’t registered our new test providers yet. This is expected.</p>
 <p>:::</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>vm.preview_template()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vm.preview_template()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>2024-01-19 12:32:07,515 - ERROR(validmind.tests): Unable to load test my_local_provider.tests.MyCustomTest. No Test Provider found for the namespace: my_local_provider.
+2024-01-19 12:32:07,516 - ERROR(validmind.tests): Unable to load test my_inline_provider.tests.MyCustomTest. No Test Provider found for the namespace: my_inline_provider.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"4e4b993791e64ecdb2cddce1c0e39379","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
 </div>
 </section>
 <section id="register-external-test-providers" class="level3">
@@ -1573,70 +1613,85 @@ New to ValidMind?
 <p>We will build an inline test provider that allows creating tests directly in the notebook and a local filesystem test provider that allows loading tests from a local folder.</p>
 <p>For the local filesystem provider, we just need to specify the root folder under which the provider class will look for tests. For this demo, it is the <code>./tests/</code> directory.</p>
 <p><strong>Import the Local File System Test Provider from the <code>validmind.tests</code> module</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.tests <span class="im">import</span> LocalTestProvider</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.tests <span class="im">import</span> LocalTestProvider</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Create an inline TestProvider Class that just returns a single test</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MySecondCustomTest(vm.vm_models.Metric):</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The test name should match the content ID on the template</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">"my_inline_provider.tests.MyCustomTest"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> description(<span class="va">self</span>):</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"This is a custom test from an external test provider."</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>):</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.cache_results([{<span class="st">"foo"</span>: <span class="st">"bar"</span>}])</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> summary(<span class="va">self</span>, results):</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> vm.vm_models.ResultSummary(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            results<span class="op">=</span>[</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                vm.vm_models.ResultTable(</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                    data<span class="op">=</span>pd.DataFrame(results),</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                    metadata<span class="op">=</span>vm.vm_models.ResultTableMetadata(</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                        title<span class="op">=</span><span class="st">"Results from Test Provider Inside Notebook"</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                    ),</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestProviderInline:</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> load_test(<span class="va">self</span>, test_id):</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ignore the test_id and just return the single test above</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> MySecondCustomTest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MySecondCustomTest(vm.vm_models.Metric):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The test name should match the content ID on the template</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">"my_inline_provider.tests.MyCustomTest"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> description(<span class="va">self</span>):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"This is a custom test from an external test provider."</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.cache_results([{<span class="st">"foo"</span>: <span class="st">"bar"</span>}])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> summary(<span class="va">self</span>, results):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> vm.vm_models.ResultSummary(</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            results<span class="op">=</span>[</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                vm.vm_models.ResultTable(</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                    data<span class="op">=</span>pd.DataFrame(results),</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                    metadata<span class="op">=</span>vm.vm_models.ResultTableMetadata(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                        title<span class="op">=</span><span class="st">"Results from Test Provider Inside Notebook"</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>                    ),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestProviderInline:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> load_test(<span class="va">self</span>, test_id):</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ignore the test_id and just return the single test above</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> MySecondCustomTest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># instantiate the test provider</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>inline_test_provider <span class="op">=</span> TestProviderInline()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>local_test_provider <span class="op">=</span> LocalTestProvider(root_folder<span class="op">=</span><span class="st">"."</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># register the test providers</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>vm.tests.register_test_provider(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    namespace<span class="op">=</span><span class="st">"my_inline_provider"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    test_provider<span class="op">=</span>inline_test_provider,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>) <span class="co"># validmind will now call the `TestProviderInline.load_test` method whenever it encounters a test ID that starts with `my_inline_provider`</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>vm.tests.register_test_provider(</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    namespace<span class="op">=</span><span class="st">"my_local_provider"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    test_provider<span class="op">=</span>local_test_provider,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>) <span class="co"># validmind will now call the `LocalTestProvider.load_test` method whenever it encounters a test ID that starts with `my_local_provider`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># instantiate the test provider</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>inline_test_provider <span class="op">=</span> TestProviderInline()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>local_test_provider <span class="op">=</span> LocalTestProvider(root_folder<span class="op">=</span><span class="st">"."</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># register the test providers</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>vm.tests.register_test_provider(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    namespace<span class="op">=</span><span class="st">"my_inline_provider"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    test_provider<span class="op">=</span>inline_test_provider,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>) <span class="co"># validmind will now call the `TestProviderInline.load_test` method whenever it encounters a test ID that starts with `my_inline_provider`</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>vm.tests.register_test_provider(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    namespace<span class="op">=</span><span class="st">"my_local_provider"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    test_provider<span class="op">=</span>local_test_provider,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>) <span class="co"># validmind will now call the `LocalTestProvider.load_test` method whenever it encounters a test ID that starts with `my_local_provider`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="verify-that-preview_template-now-loads-the-tests-from-the-test-providers" class="level3">
 <h3 class="anchored" data-anchor-id="verify-that-preview_template-now-loads-the-tests-from-the-test-providers">Verify that <code>preview_template()</code> now loads the tests from the test providers</h3>
 <p>After registering the test providers with <code>vm.tests.register_test_provider()</code>, the developer framework can now locate the code that will execute the tests when we run the documentation tests on the template. We can verify this by running <code>preview_template()</code> again and seeing that the tests are now loaded correctly.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vm.preview_template()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vm.preview_template()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"9b14d40e9258413e937c9e842ce8a4d8","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
 </div>
 </section>
 <section id="running-the-template" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-template">Running the template</h3>
-<p>Now we can run the template as usual and it will use the external test providers to load the appropriate tests. Note that we’re not passing any inputs such as <code>dataset</code> and <code>model</code> to <code>run_template()</code>. This is because our demo test providers do not have any required inputs and we’re scoping the template execution to the <code>test_providers_demo</code> section by using the <code>section</code> keyword argument.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>suite_results <span class="op">=</span> vm.run_documentation_tests(section<span class="op">=</span><span class="st">'test_providers_demo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can run the template as usual and it will use the external test providers to load the appropriate tests. Note that we’re not passing any inputs such as <code>dataset</code> and <code>model</code> to <code>run_documentation_tests()</code>. This is because our demo test providers do not have any required inputs and we’re scoping the template execution to the <code>test_providers_demo</code> section by using the <code>section</code> keyword argument.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>suite_results <span class="op">=</span> vm.run_documentation_tests(section<span class="op">=</span><span class="st">'test_providers_demo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"6c80cccf6e5c46e8996412da992fc1a6","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b645a46a04204e18b26db6dcf0c726eb","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
 </div>
 </section>
 </section>
