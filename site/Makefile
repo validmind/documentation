@@ -52,15 +52,17 @@ notebooks:
 # Make Python library docs & copy them over
 python-docs:
 	@echo "\nUpdating Python documentation ..."
-	rm -rf $(DEST_DIR_PYTHON)
-	mkdir -p $(DEST_DIR_PYTHON)
-	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
+	@rm -rf $(DEST_DIR_PYTHON)
+	@mkdir -p $(DEST_DIR_PYTHON)
+	@cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	rm -rf $(DEST_DIR_TESTS)
-	mkdir -p $(DEST_DIR_TESTS)
-	cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
+	@cd _source/developer-framework && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd ../../
+	@rm -rf $(DEST_DIR_TESTS)
+	@mkdir -p $(DEST_DIR_TESTS)
+	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
 
 # Get all source files
 get-source: clean clone notebooks python-docs test-descriptions
