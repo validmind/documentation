@@ -8,11 +8,12 @@ keywords: "release notes, ai risk, model risk management, ValidMind"
 ### ValidMind Developer Framework (v1.25.3)
 
 <!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
+
 #### `init_model` improvements
 
-You can now pass a dataset with pre-computed model predictions. By default, the developer framework will compute model predictions when calling `init_model`. 
+To improve performance and efficiency, you can now pass a dataset with pre-computed model predictions when initializing a model. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions as before.
 
-In the following example we will try to call the `predict()` method of the model for the training and test datasets:
+To illustrate how using prediction columns can help, consider the following example _without a prediction column_: 
 
 ```python
 vm_model = vm.init_model(
@@ -22,14 +23,16 @@ vm_model = vm.init_model(
 )
 ```
 
-This can pose an issue when datasets are too big: `init_model` might take too long to compute. In general, users should be able to pass datasets that have a column with pre-computed predictions:
+Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. The issue here is that this approach can be problematic with large datasets: `init_model` can simply take too long to compute.
+
+You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. If `init_model` detects this column, it will not generate model predictions at runtime. 
 
 |x1|x2|...|target_column|prediction_column|
 |-|-|-|-|-|
 |0.1|0.2|...|0|0|
 |0.2|0.4|1...|1|1|
 
-It is now possible to pass a `prediction_column` when initializing a new dataset. When `init_model` sees this, it won't generate model predictions at run time:
+Usage example _with a prediction column_:
 
 ```python
 vm.init_dataset(
@@ -37,7 +40,7 @@ vm.init_dataset(
      feature_columns=[...],
      target_column= ...,
      extra_columns={
-         prediction_column: 'name-of-prediction-column',
+         prediction_column: 'NAME-OF-PREDICTION-COLUMN',
     },
 )
 ```
