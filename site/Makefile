@@ -70,6 +70,8 @@ get-source: clean clone notebooks python-docs test-descriptions
 # Get all source files
 docs-site: clean clone notebooks python-docs test-descriptions
 	quarto render
+	quarto render notebooks/how_to/explore_tests.ipynb --execute
+	quarto render notebooks/how_to/explore_test_suites.ipynb --execute
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
