@@ -13,7 +13,7 @@ This release includes numerous improvements to the ValidMind Developer Framework
 
 #### Improvements to `init_model`
 
-When initializing a model, you can now pass a dataset with pre-computed model predictions to improve performance. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions as before.
+When initializing a model, you can now pass a dataset with pre-computed model predictions if they are available. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions on the entire dataset.
 
 To illustrate how passing a dataset that includes a prediction column can help, consider the following example without a prediction column: 
 
@@ -66,11 +66,6 @@ vm_train_ds = vm.init_dataset(
 )
 ```
 
-Additionally, two new metrics enable you to report by segment and show the use of `feature_columns`:
-
-- `MissingValuesBySegment`
-- `DescriptiveStatisticsBySegment`
-
 A new notebook illustrates how you can configure these dataset features:
 
 - How to utilize the `feature_columns` parameter when initizalizing `validmind` datasets and model objects
@@ -81,32 +76,53 @@ Try it: [Configuring and Using Dataset Features](../../notebooks/how_to/configur
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
 #### Improvements to `run_documentation_tests()`
 
-The `run_documentation_tests()` function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. The previous behavior was to allow running only one section at a time. This change maintains backward compatibility with the existing syntax, requiring no updates to your code.
+The `run_documentation_tests()` function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. This means that you no longer need to call the same function twice for two different sections, reducing the potential for errors and enabling you to use a single `config` object. The previous behavior was to allow running only one section at a time. This change maintains backward compatibility with the existing syntax, requiring no updates to your code.
 
-Example usage to run one section:
+Existing example usage: Multiple function calls are needed to run multiple sections
 
 ```python
-results = vm.run_documentation_tests(
-    section="data_preparation",
-    dataset=vm_dataset,
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section="section_1",
+    config={
+        "validmind.tests.data_validation.ClassImbalance": ...
+    } 
+)
+
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section="section_2",
+    config={
+        "validmind.tests.data_validation.Duplicates": ...
+    } 
 )
 ```
 
-Example usage to run multiple sections:
+New example usage: A single function call runs multiple sections
 
 ```python
-results = vm.run_documentation_tests(
-    section=["data_preparation", "model_development"],
-    dataset=vm_dataset,
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section=["section_1", "section_2"],
+    config={
+        "validmind.tests.data_validation.ClassImbalance": ...,
+        "validmind.tests.data_validation.Duplicates": ...
+    } 
 )
 ```
 
 Try it: [Running Individual Documentation Sections](../../notebooks/how_to/run_documentation_sections.ipynb)
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-#### Support for arbitrary and custom inputs <span id="arbitrary-test-new">
+#### Support for custom inputs <span id="custom-input-new">
 
-The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an `inputs` dictionary when running individual tests or test suites. This support replaces the standard inputs `dataset`, `model`, and `models`, which are now deprecated.
+The ValidMind Developer Framework now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. This support replaces the standard inputs `dataset`, `model`, and `models`, which are now deprecated.
 
 New recommended syntax for passing inputs:
 
@@ -120,7 +136,7 @@ test_suite = vm.run_documentation_tests(
 ```
 
 <!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
-To make it easier for you to adopt arbitrary and custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
+To make it easier for you to adopt custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
 
 - How-to notebooks, including:
   - [Integrate An External Test Provider](../../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
@@ -134,7 +150,7 @@ To make it easier for you to adopt arbitrary and custom inputs, we have updated 
   - Regression models
   - Time series models
 
-Also check [Standard inputs are deprecated](#arbitrary-test-legacy).
+Also check [Standard inputs are deprecated](#custom-input-legacy).
 
 ## Enhancements
 
@@ -164,7 +180,7 @@ To learn more about configuring Azure OpenAI Service, see [Authentication](https
 ## Deprecations
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-- **Standard inputs are deprecated**. <span id="arbitrary-test-legacy"> The ValidMind Developer Framework now supports passing arbitrary or custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
+- **Standard inputs are deprecated**. <span id="custom-input-legacy"> The ValidMind Developer Framework now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
 
   Deprecated legacy usage for passing inputs:
 
@@ -186,7 +202,7 @@ To learn more about configuring Azure OpenAI Service, see [Authentication](https
   )
   ```
 
-  Also check [Support for arbitrary and custom inputs](#arbitrary-test-new).
+  Also check [Support for custom inputs](#custom-input-new).
 
 <!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
 - **Removed deprecated high-level API methods**: The API methods `run_template` and `run_test_plan` had been deprecated previously. They have now been removed from the ValidMind Developer Framework.
