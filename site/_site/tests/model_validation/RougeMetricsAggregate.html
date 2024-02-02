@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ValidMind</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../tests/model_validation/TokenDisparity.html" rel="next">
+<link href="../../tests/model_validation/RougeMetrics.html" rel="prev">
+<link href="../../validmind.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/get-started.html"> 
+<span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/guide.html"> 
+<span class="menu-text">Guides</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text"><i class="fa-solid fa-cube" aria-label="cube"></i> Developer Framework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-fa-cube--developer-framework">    
+        <li>
+    <a class="dropdown-item" href="../../guide/get-started-developer-framework.html">
+ <span class="dropdown-text"><i class="fa-solid fa-rocket" aria-label="rocket"></i> Get Started</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../guide/supported-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-code" aria-label="code"></i> CODE SAMPLES</li>
+        <li>
+    <a class="dropdown-item" href="../../notebooks/quickstart_customer_churn_full_suite.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book" aria-label="book"></i> Quickstart · <code>Customer Churn</code> · <code>Binary Classification</code></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../guide/samples-jupyter-notebooks.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> More Samples · <code>LLM</code> · <code>NLP</code> · <code>Time Series</code> · <code>Etc.</code></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../notebooks.zip">
+ <span class="dropdown-text"><i class="fa-solid fa-download" aria-label="download"></i> Download Samples · <code>notebooks.zip</code></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://jupyterhub.validmind.com/">
+ <span class="dropdown-text"><i class="fa-solid fa-hand-point-right" aria-label="hand-point-right"></i> Try it on Jupyter Hub <i class="fa-solid fa-hand-point-left" aria-label="hand-point-left"></i></span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
+        <li>
+    <a class="dropdown-item" href="../../guide/testing-overview.html">
+ <span class="dropdown-text"><i class="fa-solid fa-flask-vial" aria-label="flask-vial"></i> Run Tests &amp; Test Suites</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../guide/test-descriptions.html">
+ <span class="dropdown-text"><i class="fa-solid fa-microscope" aria-label="microscope"></i> Test Descriptions</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-book" aria-label="book"></i> REFERENCE</li>
+        <li>
+    <a class="dropdown-item" href="../../validmind/validmind.html" target="_blank">
+ <span class="dropdown-text"><i class="fa-solid fa-external-link" aria-label="external-link"></i> Developer Framework</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/faq.html"> 
+<span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../guide/support.html"> 
+<span class="menu-text">Support</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/" target="_blank"> 
+<span class="menu-text">validmind.com <i class="fa-solid fa-external-link" aria-label="external-link"></i></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../guide/test-descriptions.html">Test descriptions</a></li><li class="breadcrumb-item"><a href="../../tests/model_validation/BertScore.html">Model Validation</a></li><li class="breadcrumb-item"><a href="../../tests/model_validation/RougeMetricsAggregate.html">RougeMetricsAggregate</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/get-started-developer-framework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get started with the ValidMind Developer Framework</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/supported-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Supported models</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize the Developer Framework</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../guide/testing-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run tests &amp; test suites</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/configure_dataset_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuring and Using Dataset Features</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/configure_parameters_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure Parameters for a Specific Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/explore_test_suites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Viewing All Available Test Suites and Tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/explore_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring Tests in the Developer Framework:</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/implementing_custom_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implementing Custom Metrics and Threshold Tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_a_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running an Individual Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_a_test_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running an Individual Test Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Individual Documentation Sections</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../guide/test-descriptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Test descriptions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Data Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/ACFandPACFPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ACFandPACFPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/ANOVAOneWayTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ANOVAOneWayTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/AutoAR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoAR</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/AutoMA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoMA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/AutoSeasonality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoSeasonality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/AutoStationarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoStationarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/BivariateFeaturesBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateFeaturesBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/BivariateHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/BivariateScatterPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateScatterPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/ChiSquaredFeaturesTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ChiSquaredFeaturesTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/ClassImbalance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassImbalance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DatasetCorrelations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetCorrelations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DatasetDescription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetDescription</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DatasetMetadata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetMetadata</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DatasetSplit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetSplit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DefaultRatesbyRiskBandPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DefaultRatesbyRiskBandPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/DescriptiveStatistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DescriptiveStatistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/Duplicates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Duplicates</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/EngleGrangerCoint.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EngleGrangerCoint</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/FeatureTargetCorrelationPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FeatureTargetCorrelationPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/HeatmapFeatureCorrelations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HeatmapFeatureCorrelations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/HighCardinality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HighCardinality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/HighPearsonCorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HighPearsonCorrelation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/IQROutliersBarPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IQROutliersBarPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/IQROutliersTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IQROutliersTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/IsolationForestOutliers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IsolationForestOutliers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/LaggedCorrelationHeatmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LaggedCorrelationHeatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/MissingValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/MissingValuesBarPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValuesBarPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/MissingValuesRisk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValuesRisk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/PearsonCorrelationMatrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PearsonCorrelationMatrix</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/PiTCreditScoresHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PiTCreditScoresHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/PiTPDHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PiTPDHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/RollingStatsPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RollingStatsPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/ScatterPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScatterPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/SeasonalDecompose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SeasonalDecompose</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/Skewness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skewness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/SpreadPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SpreadPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TabularCategoricalBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularCategoricalBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TabularDateTimeHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularDateTimeHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TabularDescriptionTables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularDescriptionTables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TabularNumericalHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularNumericalHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TargetRateBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TargetRateBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TimeSeriesFrequency.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesFrequency</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TimeSeriesHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TimeSeriesLinePlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesLinePlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TimeSeriesMissingValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesMissingValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TimeSeriesOutliers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesOutliers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/TooManyZeroValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TooManyZeroValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/UniqueRows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">UniqueRows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/WOEBinPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WOEBinPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/WOEBinTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WOEBinTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Nlp</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/CommonWords.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CommonWords</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/Hashtags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hashtags</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/Mentions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mentions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/Punctuations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Punctuations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/StopWords.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StopWords</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/data_validation/nlp/TextDescription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TextDescription</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Model Validation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/BertScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BertScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/BertScoreAggregate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BertScoreAggregate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/BleuScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BleuScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/ClusterSizeDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterSizeDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/ContextualRecall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextualRecall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/ModelMetadata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ModelMetadata</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/RegardHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegardHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/RegardScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegardScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/RougeMetrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RougeMetrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/RougeMetricsAggregate.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">RougeMetricsAggregate</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/TokenDisparity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TokenDisparity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/ToxicityHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ToxicityHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/ToxicityScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ToxicityScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Embeddings</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/ClusterDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/CosineSimilarityDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CosineSimilarityDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/DescriptiveAnalytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DescriptiveAnalytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/EmbeddingsVisualization2D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EmbeddingsVisualization2D</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/StabilityAnalysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/StabilityAnalysisKeyword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisKeyword</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/StabilityAnalysisRandomNoise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisRandomNoise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/StabilityAnalysisSynonyms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisSynonyms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/embeddings/StabilityAnalysisTranslation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisTranslation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Sklearn</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/AdjustedMutualInformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AdjustedMutualInformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/AdjustedRandIndex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AdjustedRandIndex</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClassifierInSamplePerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassifierInSamplePerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClassifierOutOfSamplePerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassifierOutOfSamplePerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClassifierPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassifierPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClusterCosineSimilarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterCosineSimilarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClusterPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ClusterPerformanceMetrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterPerformanceMetrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/CompletenessScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CompletenessScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ConfusionMatrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ConfusionMatrix</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/FowlkesMallowsScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FowlkesMallowsScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/HomogeneityScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HomogeneityScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/HyperParametersTuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HyperParametersTuning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/KMeansClustersOptimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KMeansClustersOptimization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/MinimumAccuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumAccuracy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/MinimumF1Score.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumF1Score</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/MinimumROCAUCScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumROCAUCScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ModelsPerformanceComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ModelsPerformanceComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/OverfitDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OverfitDiagnosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/PermutationFeatureImportance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PermutationFeatureImportance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/PopulationStabilityIndex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PopulationStabilityIndex</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/PrecisionRecallCurve.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PrecisionRecallCurve</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/RegressionErrors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionErrors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/RegressionModelsPerformanceComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsPerformanceComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/RegressionR2Square.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionR2Square</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/RobustnessDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RobustnessDiagnosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/ROCCurve.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ROCCurve</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/SHAPGlobalImportance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SHAPGlobalImportance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/SilhouettePlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SilhouettePlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/TrainingTestDegradation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TrainingTestDegradation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/VMeasure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VMeasure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/sklearn/WeakspotsDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WeakspotsDiagnosis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Statsmodels</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ADF.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADF</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ADFTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADFTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/AutoARIMA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoARIMA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/BoxPierce.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BoxPierce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/DFGLSArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DFGLSArch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/DurbinWatsonTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DurbinWatsonTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/FeatureImportanceAndSignificance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FeatureImportanceAndSignificance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/GINITable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GINITable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/JarqueBera.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JarqueBera</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/KolmogorovSmirnov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KolmogorovSmirnov</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/KPSS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KPSS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/Lilliefors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lilliefors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/LJungBox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LJungBox</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/LogisticRegCumulativeProb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LogisticRegCumulativeProb</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/LogisticRegPredictionHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LogisticRegPredictionHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/LogRegressionConfusionMatrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LogRegressionConfusionMatrix</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/PDRatingClassPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDRatingClassPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/PhillipsPerronArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PhillipsPerronArch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionCoeffsPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionCoeffsPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionFeatureSignificance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionFeatureSignificance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelForecastPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelForecastPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelForecastPlotLevels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelForecastPlotLevels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelInsampleComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelInsampleComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelOutsampleComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelOutsampleComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelsCoeffs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsCoeffs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelSensitivityPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelSensitivityPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelsPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RegressionModelSummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelSummary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ResidualsVisualInspection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ResidualsVisualInspection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/RunsTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RunsTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ScorecardBucketHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScorecardBucketHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ScorecardHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScorecardHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ScorecardProbabilitiesHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScorecardProbabilitiesHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ShapiroWilk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ShapiroWilk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/model_validation/statsmodels/ZivotAndrewsArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ZivotAndrewsArch</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Prompt Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bias</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Clarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Conciseness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conciseness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Delimitation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delimitation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/NegativeInstruction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NegativeInstruction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Robustness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Robustness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tests/prompt_validation/Specificity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Specificity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../guide/samples-jupyter-notebooks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code samples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Custom Tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/custom_tests/external_test_providers_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Integrate an External Test Provider</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+ <span class="menu-text">LLM and NLP</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/foundation_models_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment Analysis of Financial Data Using a Large Language Model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/foundation_models_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of Financial Data Using a Large Language Model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/hugging_face_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment Analysis of Financial Data Using Hugging Face NLP Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/hugging_face_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of Financial Data Using Hugging Face NLP models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/nlp_sentiment_analysis_catboost_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP Sentiment Analysis with CatBoost</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prompt Validation for Large Language Models (LLMs)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+ <span class="menu-text">Regression</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for California Housing Regression Model Documentation — Full Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/regression/regression_model_full_suite_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">California Housing Regression Model Documentation — Full Suite</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+ <span class="menu-text">Time Series</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/time_series/tutorial_time_series_forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Forecasting Model Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../guide/reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../validmind/validmind.html" class="sidebar-item-text sidebar-link" target="&quot;_blank&quot;">
+ <span class="menu-text">ValidMind Developer Framework Reference </span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rougemetricsaggregate" id="toc-rougemetricsaggregate" class="nav-link active" data-scroll-target="#rougemetricsaggregate">RougeMetricsAggregate</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/RougeMetricsAggregate.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="rougemetricsaggregate" class="level1">
+<h1>RougeMetricsAggregate</h1>
+<p>Evaluates the average quality of machine-generated text using various ROUGE metrics and visualizes the aggregated results.</p>
+<p><strong>Purpose</strong>: The ROUGE, or Recall-Oriented Understudy for Gisting Evaluation, remains a cornerstone for assessing machine-generated text quality. Predominantly used in tasks such as text summarization, machine translation, and text generation, the emphasis of ROUGE is to gauge the reflection of pivotal information and core concepts from human references in machine-produced content.</p>
+<p><strong>Test Mechanism</strong>:</p>
+<ol type="1">
+<li><p><strong>Comparison Procedure</strong>: The evaluation requires contrasting machine-rendered text against a human-made reference.</p></li>
+<li><p><strong>Integral Metrics</strong>:</p></li>
+</ol>
+<ul>
+<li><p><strong>ROUGE-N (N-gram Overlap)</strong>: Assesses the commonality of n-grams between both sets of texts. Regularly, metrics consider 1 (unigrams), 2 (bigrams), and 3 (trigrams), rendering precision, recall, and F1-score.</p></li>
+<li><p><strong>ROUGE-L (Longest Common Subsequence)</strong>: Discerns the lengthiest mutually inclusive word chain in both texts, ascertaining the machine text’s efficacy in capturing essential phrases.</p></li>
+<li><p><strong>ROUGE-S (Skip-bigram)</strong>: Quantifies the concurrence of skip-bigrams. This metric cherishes word order but tolerates occasional omissions.</p></li>
+</ul>
+<ol start="3" type="1">
+<li><strong>Visual Representation</strong>: The aggregate approach underscores the visualization of average scores across precision, recall, and F1-score, enhancing result interpretation.</li>
+</ol>
+<p><strong>Signs of High Risk</strong>:</p>
+<ul>
+<li>Diminished average scores across ROUGE metrics</li>
+<li>Depressed precision may highlight verbosity in machine text</li>
+<li>Lacking recall might hint at missed critical details from the reference</li>
+<li>A dwindling F1 score might spotlight a disjointed precision-recall performance</li>
+<li>Consistently low averages could reveal deep-rooted model inadequacies</li>
+</ul>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Provides a holistic view of text quality via diverse metrics</li>
+<li>Gracefully handles paraphrasing owing to n-gram evaluations</li>
+<li>Promotes the capture of crucial word chains through the longest common subsequence</li>
+<li>Aggregate visual insights bolster comprehension of overall model behavior</li>
+</ul>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li>Might overlook nuances like semantic integrity, fluency, or syntactic correctness</li>
+<li>Focuses more on discrete phrases or n-grams over holistic sentences</li>
+<li>Reliance on human references can be limiting when they’re hard to source or infeasible.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../tests/model_validation/RougeMetrics.html" class="pagination-link  aria-label=" rougemetrics"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RougeMetrics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../tests/model_validation/TokenDisparity.html" class="pagination-link" aria-label="TokenDisparity">
+        <span class="nav-page-text">TokenDisparity</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><em>© Copyright 2023-24 ValidMind Inc All Rights Reserved.</em></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/RougeMetricsAggregate.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/" target="_blank">
+<p>validmind.com <i class="fa-solid fa-external-link" aria-label="external-link"></i></p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/privacy-policy/">
+<p>Privacy Policy</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/terms-of-use/">
+<p>Terms of Use</p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

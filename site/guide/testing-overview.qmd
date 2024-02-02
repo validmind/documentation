@@ -1,9 +1,20 @@
 ---
-title: "Tests and test suites"
+title: "Run tests and test suites"
 keywords: "tests, test suites, ai risk, model risk management, ValidMind"
 date: last-modified
+listing:
+  type: grid
+  image-placeholder: "jupyter-logo-rectangle.svg"
+  max-description-length: 250
+  image-height: "100%"
+  fields: [title, description, reading-time]
+  contents: 
+    - "../notebooks/how_to/*"
 ---
 
+<!--- TO DO
+- Ordering of notebooks if we want them to appear in a specific sequence
+--->
 This topic provides an overview for what _tests_ and _test suites_ are in the ValidMind Developer Framework, when to use tests and test suites, and typical scenarios. 
 
 ## What are tests and test suites?
@@ -22,30 +33,44 @@ ValidMind provides many built-in tests and test suites which make it easy for a 
 
 While you, as a model developer, have the flexibility to decide when to use which ValidMind tests, we have identified a few typical scenarios with their own characteristics and needs:
 
+::: {.grid}
+::: {.g-col-4}
 ### Dataset testing
 
 To document and validate your dataset:
 
 - For generic tabular datasets: use the [`tabular_dataset`](../validmind/validmind/test_suites/tabular_datasets.html) test suite.
 - For time-series datasets: use the [`time_series_dataset`](../validmind/validmind/test_suites/time_series.html#TimeSeriesDataset) test suite.
+:::
 
+::: {.g-col-4}
 ### Model testing
 
 To document and validate your model:
 
 - For binary classification models: use the [`classifier`](../validmind/validmind/test_suites/classifier.html) test suite.
 - For time series models: use the [`timeseries`](../validmind/validmind/test_suites/time_series.html) test suite.
+:::
 
+::: {.g-col-4}
 ### End-to-end testing
 
-To document a binary classification model and the relevant dataset end-to-end: use the [`classifier_full_suite`](../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite.
+To document a binary classification model and the relevant dataset end-to-end: 
+
+Use the [`classifier_full_suite`](../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite.
+:::
+
+:::
+
+## Can I use my own tests?
+
+Yes, ValidMind supports custom tests that you develop yourself or that are provided by third-party test libraries, also referred to as _test providers_. We provide instructions with code examples that you can adapt:
+
+- [Implement Custom Metrics and Threshold Tests](../notebooks/how_to/implementing_custom_tests.ipynb)
+- [Integrate an External Test Provider](../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
 
 ## Is there an API reference available?
 
 See the [ValidMind Developer Framework API Reference](reference.qmd) for a list of all of the built-in tests and test suites for datasets and models.
 
-<!---
-## Related Topics
-
-Provide links or references to related topics that users might find useful or interesting. These could be other articles, resources, or tools related to the main topic.
---->
+## How-tos for testing
