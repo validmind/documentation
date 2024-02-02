@@ -2427,5 +2427,145 @@
     "title": "Sensitivity Analysis",
     "section": "4. Modeling",
     "text": "4. Modeling\n\nTraining, validation, test\nWith our data in nice shape, we’ll split it into training, validation, and test sets.\n\n\ndf = df[df['sentiment'] != \"neutral\"]\ndf.loc[df['sentiment'] == \"positive\", 'sentiment'] = 1\ndf.loc[df['sentiment'] == \"negative\", 'sentiment'] = 0\nprint(np.unique(df['sentiment']))\n\nprint(df.head())\ntrain, test = train_test_split(df[['text','sentiment']], test_size=0.33, random_state=42)\ntrain = train[['text','sentiment']]\ntest = test[['text','sentiment']]\n\ntrain, valid = train_test_split(\n    train,\n    train_size=0.7,\n    random_state=0,\n    stratify=train['sentiment'])\ny_train, X_train = \\\n    train['sentiment'], train.drop(['sentiment'], axis=1)\ny_valid, X_valid = \\\n    valid['sentiment'], valid.drop(['sentiment'], axis=1)\ny_test, X_test= \\\n    test['sentiment'], test.drop(['sentiment'], axis=1)\n\n[0 1]\n                                       OriginalTweet           Sentiment  \\\n1  advice Talk to your neighbours family to excha...            Positive   \n2  Coronavirus Australia: Woolworths to give elde...            Positive   \n3  My food stock is not the only one which is emp...            Positive   \n4  Me, ready to go at supermarket during the #COV...  Extremely Negative   \n5  As news of the regions first confirmed COVID-...            Positive   \n\n                                                text sentiment  \n1  advice talk neighbours family exchange phone n...         1  \n2  coronavirus australia woolworths give elderly ...         1  \n3  food stock one empty please panic enough food ...         1  \n4  me ready go supermarket covid outbreak im para...         0  \n5  news regions first confirmed covid case came s...         1  \n\n\n\n\nBuild model\n\ndef fit_model(X_train, y_train,val_data, **kwargs):\n    model = CatBoostClassifier(\n        task_type='CPU',\n        iterations=5000,\n        eval_metric='Accuracy',\n        od_type='Iter',\n        od_wait=500,\n        **kwargs\n    )\n    return model.fit(\n        X=X_train,\n        y=y_train,\n        eval_set=val_data,\n        verbose=100,\n        plot=True,\n        use_best_model=True\n        )\n\n\nmodel = fit_model(\n    X_train, y_train,\n    val_data=(X_valid,y_valid),\n    text_features=['text'],\n    learning_rate=0.35,\n    tokenizers=[\n        {\n            'tokenizer_id': 'Sense',\n            'separator_type': 'BySense',\n            'lowercasing': 'True',\n            'token_types':['Word', 'Number', 'SentenceBreak'],\n            'sub_tokens_policy':'SeveralTokens'\n        }      \n    ],\n    dictionaries = [\n        {\n            'dictionary_id': 'Word',\n            'max_dictionary_size': '5000'\n        }\n    ],\n    feature_calcers = [\n        'BoW:top_tokens_count=10000'\n    ]\n)\n\n\n\n\n0:  learn: 0.6037263    test: 0.6062211 best: 0.6062211 (0) total: 101ms    remaining: 8m 25s\n100:    learn: 0.8601456    test: 0.8288509 best: 0.8291225 (98)    total: 4.36s    remaining: 3m 31s\n200:    learn: 0.9101601    test: 0.8515349 best: 0.8528932 (193)   total: 8.52s    remaining: 3m 23s\n300:    learn: 0.9349054    test: 0.8562891 best: 0.8564249 (297)   total: 12.8s    remaining: 3m 19s\n400:    learn: 0.9557496    test: 0.8566965 best: 0.8583265 (348)   total: 17s  remaining: 3m 15s\n500:    learn: 0.9712955    test: 0.8569682 best: 0.8583265 (348)   total: 21.2s    remaining: 3m 10s\n600:    learn: 0.9795633    test: 0.8576474 best: 0.8583265 (348)   total: 25.3s    remaining: 3m 5s\n700:    learn: 0.9865502    test: 0.8533007 best: 0.8583265 (348)   total: 29.6s    remaining: 3m 1s\n800:    learn: 0.9915575    test: 0.8572399 best: 0.8583265 (348)   total: 33.8s    remaining: 2m 57s\n900:    learn: 0.9949345    test: 0.8603640 best: 0.8610432 (869)   total: 38.1s    remaining: 2m 53s\n1000:   learn: 0.9970306    test: 0.8604999 best: 0.8610432 (869)   total: 42.4s    remaining: 2m 49s\n1100:   learn: 0.9980786    test: 0.8590057 best: 0.8611790 (1038)  total: 46.7s    remaining: 2m 45s\n1200:   learn: 0.9985444    test: 0.8602282 best: 0.8611790 (1038)  total: 51s  remaining: 2m 41s\n1300:   learn: 0.9987773    test: 0.8626732 best: 0.8632165 (1261)  total: 55.2s    remaining: 2m 37s\n1400:   learn: 0.9990684    test: 0.8621299 best: 0.8632165 (1261)  total: 59.5s    remaining: 2m 32s\n1500:   learn: 0.9991266    test: 0.8624015 best: 0.8636240 (1464)  total: 1m 3s    remaining: 2m 28s\n1600:   learn: 0.9991849    test: 0.8614507 best: 0.8636240 (1464)  total: 1m 8s    remaining: 2m 24s\n1700:   learn: 0.9992431    test: 0.8617224 best: 0.8636240 (1464)  total: 1m 12s   remaining: 2m 20s\n1800:   learn: 0.9993013    test: 0.8613149 best: 0.8638957 (1756)  total: 1m 16s   remaining: 2m 16s\n1900:   learn: 0.9994178    test: 0.8614507 best: 0.8638957 (1756)  total: 1m 21s   remaining: 2m 12s\n2000:   learn: 0.9994760    test: 0.8604999 best: 0.8638957 (1756)  total: 1m 25s   remaining: 2m 8s\n2100:   learn: 0.9994760    test: 0.8600924 best: 0.8638957 (1756)  total: 1m 29s   remaining: 2m 3s\n2200:   learn: 0.9994760    test: 0.8607715 best: 0.8638957 (1756)  total: 1m 34s   remaining: 1m 59s\nStopped by overfitting detector  (500 iterations wait)\n\nbestTest = 0.8638956805\nbestIteration = 1756\n\nShrink model to first 1757 iterations.\n\n\n\n\nInitialize validmind objects\n\nvm_train_ds = vm.init_dataset(dataset=pd.concat([X_train, y_train], axis=1), type=\"generic\", target_column=\"sentiment\")\nvm_test_ds = vm.init_dataset(dataset=pd.concat([X_test, y_test], axis=1), type=\"generic\",target_column=\"sentiment\")\nvm_model = vm.init_model(model, train_ds=vm_train_ds, test_ds=vm_test_ds)\n\n2023-07-06 12:54:24,980 - INFO - client - Pandas dataset detected. Initializing VM Dataset instance...\n2023-07-06 12:54:24,982 - INFO - dataset - Inferring dataset types...\n2023-07-06 12:54:24,998 - INFO - client - Pandas dataset detected. Initializing VM Dataset instance...\n2023-07-06 12:54:24,999 - INFO - dataset - Inferring dataset types...\n\n\n\nRun model metrics test plan\n\nmodel_metrics_test_suite = vm.run_test_suite(\"binary_classifier_metrics\", \n                                             model=vm_model\n                                            )\n\n\n\n\n2023-07-06 12:54:25,525 - INFO - PermutationFeatureImportance - Skiping PFI for catboost models\n2023-07-06 12:54:25,555 - INFO - PopulationStabilityIndex - Skiping PSI for catboost models\n2023-07-06 12:54:25,556 - INFO - SHAPGlobalImportance - Skiping SHAP for catboost models\n\n\n\n\n\n\n\nRun model validation test plan\n\nmodel_validation_test_suite = vm.run_test_suite(\"binary_classifier_validation\", \n                                             model=vm_model\n                                            )"
+  },
+  {
+    "objectID": "guide/manage-users.html",
+    "href": "guide/manage-users.html",
+    "title": "Manage users",
+    "section": "",
+    "text": "Managing users is fundamental to maintaining access control and efficient user management in the ValidMind system. This task topic will guide you through the process of inviting new users, assigning them to specific groups, and configuring their roles. Whether you’re a group administrator or a superuser, understanding these steps is crucial for ensuring the right individuals have the appropriate access and permissions within the system."
+  },
+  {
+    "objectID": "guide/manage-users.html#viewing-your-account-profile",
+    "href": "guide/manage-users.html#viewing-your-account-profile",
+    "title": "Manage users",
+    "section": "Viewing your account profile",
+    "text": "Viewing your account profile\n\nLog in to the ValidMind UI. quart\nGo to Settings in the sidebar and select Profile.\nYou can find the following at your profile page.\n\nProfile details\nRoles attached to your account\nValues for API Key and Secret Key"
+  },
+  {
+    "objectID": "guide/manage-users.html#prerequisites",
+    "href": "guide/manage-users.html#prerequisites",
+    "title": "Manage users",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nTo perform these next steps, you must be a group administrator or a superuser."
+  },
+  {
+    "objectID": "guide/manage-users.html#invite-new-users",
+    "href": "guide/manage-users.html#invite-new-users",
+    "title": "Manage users",
+    "section": "Invite new users",
+    "text": "Invite new users\n\nLog in to the ValidMind UI.\nClick Settings.\n\nNavigate to User Permissions in the sidebar.\nClick Invite New Users.\nEnter the user’s email address.\nAssign the user to a group from the Group dropdown menu.\nAdd roles to the user by clicking the  icon and selecting the appropriate roles from the list.\nClick Assign Roles to invitee.\n\nUsers now will have the option to accept the invitation through the email they receive.\nYou can find pending invitations at the Pending Invites section.\nConfirm that the new user is successfully added and that their group and roles are correctly configured to meet your access control requirements."
+  },
+  {
+    "objectID": "guide/manage-users.html#assign-new-roles-to-a-user",
+    "href": "guide/manage-users.html#assign-new-roles-to-a-user",
+    "title": "Manage users",
+    "section": "Assign new roles to a user",
+    "text": "Assign new roles to a user\n\nLog in to the ValidMind UI.\nClick Settings.\nUnder User Permissions in the sidebar, select User Directory.\nUse one of these methods to assign roles to users:\n\nSelect the checkbox next to one or more users and click Assign New Role or Assign New Role to n Users; OR\nNext to any individual user, click the  icon.\n\nOn the pop-up that appears, select the roles to be assigned and click Assign Roles to User."
+  },
+  {
+    "objectID": "guide/manage-users.html#remove-roles-from-a-user",
+    "href": "guide/manage-users.html#remove-roles-from-a-user",
+    "title": "Manage users",
+    "section": "Remove roles from a user",
+    "text": "Remove roles from a user\n\nLog in to the ValidMind UI.\nClick Settings.\nUnder User Permissions in the sidebar, select User Directory.\nClick the  in the pill next to the role for the user that you want to remove."
+  },
+  {
+    "objectID": "guide/manage-users.html#viewing-group-members",
+    "href": "guide/manage-users.html#viewing-group-members",
+    "title": "Manage users",
+    "section": "Viewing group members",
+    "text": "Viewing group members\n\nLog in to the ValidMind UI.\nClick Settings.\nUnder User Permissions in the sidebar, select Groups.\nClick See Details to view the complete list of members in any group."
+  },
+  {
+    "objectID": "guide/manage-users.html#adding-or-removing-group-members",
+    "href": "guide/manage-users.html#adding-or-removing-group-members",
+    "title": "Manage users",
+    "section": "Adding or removing group members",
+    "text": "Adding or removing group members\n\nLog in to the ValidMind UI.\nClick Settings.\nUnder User Permissions in the sidebar, select Groups.\nTo add a member to a group\n\nClick See Details.\nClick  Add New Member.\nSelect members by checking the boxes next to their names in the pop-up.\nClick  Add to Group.\n\nTo remove a member from a group\n\nClick See Details.\nSelect members by checking the boxes next to their names.\nClick Remove Member."
+  },
+  {
+    "objectID": "guide/manage-groups.html",
+    "href": "guide/manage-groups.html",
+    "title": "Manage groups",
+    "section": "",
+    "text": "This task involves managing user groups within ValidMind, allowing for organized access control."
+  },
+  {
+    "objectID": "guide/manage-groups.html#prerequisites",
+    "href": "guide/manage-groups.html#prerequisites",
+    "title": "Manage groups",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nTo perform these steps, you must be a group administrator or a superuser."
+  },
+  {
+    "objectID": "guide/manage-groups.html#add-new-groups",
+    "href": "guide/manage-groups.html#add-new-groups",
+    "title": "Manage groups",
+    "section": "Add new groups",
+    "text": "Add new groups\n\nLog in to the ValidMind UI.\nUnder User Permissions in the sidebar, select Groups.\nClick Add New Group to initiate the group creation process:\n\nProvide a name for the new group.\nOptionally, specify a description for the group’s purpose.\nAdd users to the group by selecting them from a list or specifying their usernames.\nSave the new group configuration.\n\nConfirm that the new group is created and appears in the list of available groups, ensuring it is correctly configured for its intended use."
+  },
+  {
+    "objectID": "guide/manage-groups.html#see-group-details",
+    "href": "guide/manage-groups.html#see-group-details",
+    "title": "Manage groups",
+    "section": "See group details",
+    "text": "See group details\n\nLog in to the ValidMind UI.\nAccess the “Group Management” section.\nLocate the group for which you want to see details.\n\nClick on the group’s name to access its details.\n\nWithin the group details, you can:\n\nView the group’s name and description.\nSee a list of users who are members of the group.\nReview any additional information or settings related to the group.\n\n\n\n\n\n\n\n\nEnsure that the group details align with your requirements for access control and group management."
+  },
+  {
+    "objectID": "guide/manage-roles-and-permissions.html",
+    "href": "guide/manage-roles-and-permissions.html",
+    "title": "Manage roles & permissions",
+    "section": "",
+    "text": "These steps guide you through the process of configuring and overseeing roles and permissions in the ValidMind Platform UI. By carefully defining what users can and cannot do, you can ensure that the right individuals have the appropriate level of access to resources and can perform the correct actions."
+  },
+  {
+    "objectID": "guide/manage-roles-and-permissions.html#prerequisites",
+    "href": "guide/manage-roles-and-permissions.html#prerequisites",
+    "title": "Manage roles & permissions",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nTo perform these steps, you must be a group administrator or a superuser."
+  },
+  {
+    "objectID": "guide/manage-roles-and-permissions.html#add-new-roles",
+    "href": "guide/manage-roles-and-permissions.html#add-new-roles",
+    "title": "Manage roles & permissions",
+    "section": "Add new roles",
+    "text": "Add new roles\nTo add a new role:\n\nLog in to the ValidMind UI.\nUnder User Permissions in the sidebar, select Roles & Permissions.\nClick on the Add New Role button to initiate the role creation process.\n\nSpecify a name for the new role.\nDefine the role’s description and purpose.\nAssign permissions to the role based on the actions it should be allowed to perform.\nSave the new role configuration.\n\nVerify that the new role appears in the list of available roles, ensuring it is correctly set up for use."
+  },
+  {
+    "objectID": "guide/manage-roles-and-permissions.html#manage-permissions",
+    "href": "guide/manage-roles-and-permissions.html#manage-permissions",
+    "title": "Manage roles & permissions",
+    "section": "Manage permissions",
+    "text": "Manage permissions\nTo manage the permissions for existing roles:\n\nLog in to the ValidMind UI.\nNavigate to the Roles & Permissions page.\nLocate the role for which you want to manage permissions.\n\nClick on the role to access its details.\n\nWithin the role’s details, you can:\n\nView the current permissions assigned to the role.\nAdd new permissions by specifying the actions or resources the role should have access to.\nRemove permissions that are no longer necessary for the role.\nSave the updated permissions configuration for the role.\n\n\n{.callout-tip} Be careful when modifying permissions to ensure they align with the role’s intended responsibilities and access requirements. :::"
+  },
+  {
+    "objectID": "guide/user-management.html",
+    "href": "guide/user-management.html",
+    "title": "User management",
+    "section": "",
+    "text": "User management involves controlling and organizing user accounts within the ValidMind Platform UI. It encompasses tasks like user creation, authentication, authorization, and access control. Effective user management is essential for maintaining security and operational efficiency."
+  },
+  {
+    "objectID": "guide/user-management.html#introduction",
+    "href": "guide/user-management.html#introduction",
+    "title": "User management",
+    "section": "",
+    "text": "User management involves controlling and organizing user accounts within the ValidMind Platform UI. It encompasses tasks like user creation, authentication, authorization, and access control. Effective user management is essential for maintaining security and operational efficiency."
+  },
+  {
+    "objectID": "guide/user-management.html#key-concepts",
+    "href": "guide/user-management.html#key-concepts",
+    "title": "User management",
+    "section": "Key concepts",
+    "text": "Key concepts\nValidMind uses role-based access control (RBAC) to manage user permissions systematically for our platform. With RBAC, access permissions are associated with roles rather than individual users. Users are assigned to specific roles, and these roles are then granted the necessary permissions to perform their respective tasks.\nThis approach simplifies user management by centralizing permissions and enhances security and efficiency. It ensures that your users have the appropriate level of access based on their roles, reducing the risk of unauthorized actions and fostering a structured and controlled environment within an organization’s digital ecosystem.\n\n\nKey terms\n\nUsers\n\nIndividuals interacting with the Platform UI, each having a unique account.\n\nRoles\n\nSets of permissions defining actions that user can perform on resources in the Platform UI that can be taken.\n\nGroups\n\nCollections of users with similar roles or permissions for streamlined management, such as an organization or team within your company.\n\nPermissions\n\nSpecific actions or operations on resources allowed or denied to users or roles.\n\nResource actions\n\nSpecific CRUD (cread, read, update, delete) actions, such as create_model or update_template.\n\n\n\n\nSupported Roles\nUser management utilizes role-based access control (RBAC), where roles determine permissions. Here are some common roles and their descriptions:\n\nDeveloper\n\nUsers with this role are responsible for developing models. They may have access to development tools and resources that interact with the Platform UI and they can upload model documentation and test results through the Developer Framework.\n\nValidator\n\nValidators review and test applications or content for quality assurance. They may have limited access to modify content or configurations.\n\nGroup Admin\n\nGroup admins manage specific user groups, assigning and revoking permissions within those groups. They help ensure efficient group-level access control.\n\nCustomer Admin (Superuser)\n\nThe Customer Admin role is a superuser, with extensive control over the entire platform. This role can manage users, groups, and permissions at a broader level."
+  },
+  {
+    "objectID": "guide/user-management.html#example",
+    "href": "guide/user-management.html#example",
+    "title": "User management",
+    "section": "Example",
+    "text": "Example\nIn the following example, RBAC has been configured for users and roles for two groups, the Marketing Group and the Finance & Risk Management group:\n\nOn the left, the possible CRUD (create, read, update, delete) operations are listed. There are four supported user roles, along with a number of users that have been defined. Each user is a member of one or more groups where they can perform actions based on the roles that they have been given."
   }
 ]
