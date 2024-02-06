@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-02-01">
-<meta name="keywords" content="guides, how-to, ai risk, model risk management, ValidMind">
+<meta name="dcterms.date" content="2024-02-06">
+<meta name="keywords" content="get started, ai risk, model risk management, ValidMind">
 
 <title>ValidMind - Guides</title>
 <style>
@@ -511,6 +511,12 @@ window.Quarto = {
  <span class="menu-text">View validation guidelines</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/link-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Link evidence</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -525,13 +531,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../guide/add-project-findings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">FUTURE: Add project findings</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/link-evidence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">FUTURE: Link evidence</span></a>
+ <span class="menu-text">Add project findings</span></a>
   </div>
 </li>
       </ul>
@@ -584,7 +584,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 1, 2024</p>
+      <p class="date">February 6, 2024</p>
     </div>
   </div>
   
@@ -595,7 +595,7 @@ window.Quarto = {
 <div>
   <div class="keywords">
     <div class="block-title">Keywords</div>
-    <p>guides, how-to, ai risk, model risk management, ValidMind</p>
+    <p>get started, ai risk, model risk management, ValidMind</p>
   </div>
 </div>
 
@@ -609,14 +609,59 @@ window.Quarto = {
 <li><a href="#model-documentation">Model documentation</a></li>
 <li><a href="#model-validation">Model validation</a></li>
 </ul>
-<!--- The link to the developer section is in here twice, once as a callout and once as a listing tile in the model developer section. --->
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>This section primarily covers tasks you perform in the Platform UI. To get started with documenting models in your own development environment, refer to the <a href="../guide/get-started-developer-framework.html">Developer Framework</a> section.</p>
+<div class="callout-title-container flex-fill">
+<i class="fa-solid fa-angle-right" aria-label="angle-right"></i> Key ValidMind concepts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<!--- These concepts are introduced in the "Get started" section. They are repeated the guides and get started with the developer framework sections in a collapsed format in case a reader missed them earlier. --->
+<dl>
+<dt>Model documentation</dt>
+<dd>
+The purpose of model documentation is to provide transparency, facilitate understanding, and enable effective governance and oversight of the model. Provides a comprehensive record and description of a quantitative model. Should encompass all relevant information about the model in accordance with:
+</dd>
+</dl>
+<ul>
+<li>Intended use</li>
+<li>Regulatory requirements set by regulatory bodies</li>
+<li>Model risk policies set by your institution</li>
+<li>Assumptions</li>
+<li>Methodologies</li>
+<li>Data and inputs</li>
+<li>Model performance evaluation</li>
+<li>Limitations</li>
+</ul>
+<dl>
+<dt>Documentation project</dt>
+<dd>
+All documentation work in ValidMind is organized into projects which act as a container for the model documentation and validation report of your model. Each stage of the model’s lifecycle constitutes a new project and can be configured with its own templates and workflows.
+</dd>
+<dt>Documentation Template</dt>
+<dd>
+Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. ValidMind templates come with pre-defined sections, similar to test placeholders, including boilerplates and spaces designated for documentation and test results.
+</dd>
+</dl>
+<p>Model documentation is populated when the tests contained in a template run successfully, completing the test suite. This process ensures that the model meets all the specified requirements. At the same time, template placeholders get populated with content that documents the model. This content is generated by the ValidMind Developer Framework, providing a coherent structure for model information.</p>
+<p>Essentially, our platform scans these templates, identifies all tests, and systematically organizes them into a well-structured test suite. This automation enhances the efficiency and consistency of the validation process.</p>
+<p>The criteria for these templates are typically provided by your model risk management team. We provide some templates out of the box that you can use and programmatically customize to suit the requirements of each model use case. This task of customization is usually performed by an administrator, who ensures that the templates align with the organizational standards and specific needs of each model.</p>
+<dl>
+<dt>Tests</dt>
+<dd>
+A function contained in the ValidMind Developer Framework, which is designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates.
+</dd>
+<dt>Test suites</dt>
+<dd>
+A collection of tests which are meant to run together to automate generate model documentation end-to-end for specific use-cases.
+</dd>
+</dl>
+<p>Example: the <a href="../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs the tests from the <a href="../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</p>
 </div>
 </div>
 </div>
@@ -627,7 +672,7 @@ window.Quarto = {
 <p>Tasks for platform administrators typically involve configuring ValidMind for use by other members of your organization, both for the initial setup and for ongoing platform administration:</p>
 <div id="listing-guide-platform-administrators-get-started" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1706801179970" data-listing-reading-time-sort="3" data-listing-word-count-sort="404">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1706893384140" data-listing-reading-time-sort="3" data-listing-word-count-sort="404">
 <a href="../guide/manage-users-and-roles.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -641,7 +686,7 @@ User management involves controlling and organizing user accounts within the Val
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="173">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="173">
 <a href="../guide/configure-workflows.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -655,7 +700,7 @@ As part of the initial setup of the ValidMind solution for your company or organ
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1706722811140" data-listing-reading-time-sort="3" data-listing-word-count-sort="410">
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1706893384139" data-listing-reading-time-sort="3" data-listing-word-count-sort="410">
 <a href="../guide/import-documentation-templates.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -669,7 +714,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5062">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5062">
 <a href="../guide/configure-documentation-project-templates.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -683,7 +728,7 @@ Learn how to edit templates that get used for model documentation or for validat
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1706722811137" data-listing-reading-time-sort="3" data-listing-word-count-sort="410">
+<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1706893384137" data-listing-reading-time-sort="3" data-listing-word-count-sort="410">
 <a href="../guide/create-inventory-model.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -697,7 +742,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="834">
+<div class="g-col-1" data-index="5" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384135" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="834">
 <a href="../guide/configure-aws-privatelink.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -733,7 +778,7 @@ No matching items
 <p>Guides to get you started:</p>
 <div id="listing-guide-model-developers-get-started" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="208">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384140" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="208">
 <a href="../guide/register-models-in-model-inventory.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -747,7 +792,7 @@ Learn how to register a model you are documenting in the model inventory. This t
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="317">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384137" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="317">
 <a href="../guide/create-documentation-project.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -761,7 +806,7 @@ Learn how to create a new documentation project in the ValidMind Platform. You u
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811138" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1210">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384139" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1210">
 <a href="../guide/get-started-developer-framework.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -783,7 +828,7 @@ No matching items
 <p>Working on model documentation:</p>
 <div id="listing-guide-model-developers" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811150" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="256">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1706843033000" data-listing-file-modified-sort="1706843033243" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="256">
 <a href="../guide/samples-jupyter-notebooks.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -797,7 +842,7 @@ Our code samples, based on Jupyter notebooks, are designed to showcase the capab
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811137" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="314">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384138" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="314">
 <a href="../guide/document-models-with-ui.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -811,7 +856,7 @@ Learn how to use the ValidMind UI editor to edit the content of a documentation 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811135" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="423">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384135" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="423">
 <a href="../guide/collaborate-on-documentation-projects.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -825,7 +870,7 @@ Learn how ValidMind enhances collaboration between model validators and develope
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811152" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="253">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384141" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="253">
 <a href="../guide/submit-for-approval.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -852,7 +897,7 @@ No matching items
 <h2 class="anchored" data-anchor-id="model-validation">Model validation</h2>
 <div id="listing-guide-model-validation" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1706802440000" data-listing-file-modified-sort="1706802440911" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="388">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384135" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="388">
 <a href="../guide/build-validation-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -866,7 +911,7 @@ Use the ValidMind UI editor to create, edit, and publish validation reports for 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1706803418000" data-listing-file-modified-sort="1706803418408" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384137" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
 <a href="../guide/customize-validation-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -880,7 +925,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1706802647000" data-listing-file-modified-sort="1706802647433" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384141" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
 <a href="../guide/set-up-approval-workflows.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -894,7 +939,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1706803164000" data-listing-file-modified-sort="1706803164345" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="181">
 <a href="../guide/create-and-manage-project-findings.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -908,7 +953,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-listing-date-sort="1706722811000" data-listing-file-modified-sort="1706722811152" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="253">
+<div class="g-col-1" data-index="4" data-listing-date-sort="1706893384000" data-listing-file-modified-sort="1706893384141" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="253">
 <a href="../guide/submit-for-approval.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
