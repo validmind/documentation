@@ -221,6 +221,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Install and initialize the Developer Framework</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Store project credentials in .env files</span></a>
+  </div>
+</li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
@@ -231,6 +237,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
           </a> 
       </div>
       <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/configure_dataset_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuring and Using Dataset Features</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/configure_parameters_demo.html" class="sidebar-item-text sidebar-link">
@@ -265,6 +277,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_a_test_suite.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running an Individual Test Suite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Individual Documentation Sections</span></a>
   </div>
 </li>
       </ul>
@@ -1370,6 +1388,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
  <span class="menu-text">Quickstart for California Housing Regression Model Documentation — Full Suite</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/code_samples/regression/regression_model_full_suite_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">California Housing Regression Model Documentation — Full Suite</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -1420,12 +1444,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 <section id="duplicates" class="level1">
 <h1>Duplicates</h1>
-<p>Checks for and quantifies the presence of duplicate entries in the dataset or a specified column.</p>
-<p><strong>Purpose</strong>: The Duplicates test is designed to assess the data quality of an ML model by identifying any duplicate entries in the data set. It focuses on seeking out duplication in a specified text column or among the primary keys of the data set, which could have serious implications for the performance and integrity of the model. Duplicate entries could potentially skew the data distribution and influence model training inaccurately.</p>
-<p><strong>Test Mechanism</strong>: This test operates by calculating the total number of duplicate entries in the data set. The algorithm will count duplicates within the ‘text_column’ if this property is specified. If primary keys are defined, the test will also be applied on them. The count of duplicates (‘n_duplicates’) is then compared to a predefined minimum threshold (the default ‘min_threshold’ is set at 1) to determine whether the test has passed or not. The results include the total number of duplicates as well as the percentage of duplicate rows in comparison to the overall dataset (‘p_duplicates’).</p>
-<p><strong>Signs of High Risk</strong>: - A large amount of duplicates, particularly those exceeding the predefined minimum threshold, point toward a high risk situation. - Overrepresentation of certain data which can lead to skewed results. - Indication of inefficient data collecting techniques leading to data redundancy. - Models that fail this test predominantly may necessitate a closer examination of their data preprocessing methods or source data.</p>
-<p><strong>Strengths</strong>: - The Duplicates test is highly adaptable, being capable of being used with both text data and tabular data formats. - It is able to provide results both numerically and as a percentage of the total data set, allowing for a broader understanding of the extent of duplication. - Its utility lies in effectively flagging any data quality issues that could potentially upset model performance and generate erroneous predictions.</p>
-<p><strong>Limitations</strong>: - The Duplicates test solely targets exact duplication in entries, meaning it may overlook near-duplicates or normalized forms of entries that might also affect data distribution and model integrity. - Data variations caused by errors, phrasing changes, or inconsistencies may not be detected. - A substantial number of duplicates in a datasets may not always denote poor data quality, as this can be dependent on the nature of the data and the problem being addressed.</p>
+<p>Tests dataset for duplicate entries, ensuring model reliability via data quality verification.</p>
+<p><strong>Purpose</strong>: The ‘Duplicates’ metric is designed to check for duplicate rows within the dataset provided to the model. It serves as a measure of data quality, ensuring that the model isn’t merely memorizing duplicate entries or being swayed by redundant information. This is an important step in the pre-processing of data for both classification and regression tasks.</p>
+<p><strong>Test Mechanism</strong>: This metric operates by checking each row for duplicates in the dataset. If a text column is specified in the dataset, the test is conducted on this column; if not, the test is run on all feature columns. The number and percentage of duplicates are calculated and returned in a DataFrame. Additionally, a test is passed if the total count of duplicates falls below a specified minimum threshold.</p>
+<p><strong>Signs of High Risk</strong>: - A high number of duplicate rows in the dataset. This can lead to overfitting where the model performs well on the training data but poorly on unseen data. - A high percentage of duplicate rows in the dataset. A large proportion of duplicate values could indicate that there’s a problem with data collection or processing.</p>
+<p><strong>Strengths</strong>: - Assists in improving the reliability of the model’s training process by ensuring the training data is not contaminated with duplicate entries which can distort statistical analyses. - Provides both absolute number and percentage value of duplicate rows, giving a thorough overview of data quality - Highly customizable as it allows for setting a user-defined minimum threshold to determine if the test has been passed.</p>
+<p><strong>Limitations</strong>: - This test does not distinguish between benign duplicates (i.e., coincidental identical entries in different rows) and problematic duplicates originating from data collection or processing errors. - Since the test becomes more computationally intensive as the size of the dataset increases, it might not be suitable for very large datasets. - It can only check for exact duplicates and may miss semantically similar information packaged differently.</p>
 
 
 </section>
@@ -1998,7 +2022,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><em>© Copyright 2023 ValidMind Inc All Rights Reserved.</em></p>
+<p><em>© Copyright 2023-24 ValidMind Inc All Rights Reserved.</em></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

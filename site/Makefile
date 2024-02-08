@@ -52,15 +52,17 @@ notebooks:
 # Make Python library docs & copy them over
 python-docs:
 	@echo "\nUpdating Python documentation ..."
-	rm -rf $(DEST_DIR_PYTHON)
-	mkdir -p $(DEST_DIR_PYTHON)
-	cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
+	@rm -rf $(DEST_DIR_PYTHON)
+	@mkdir -p $(DEST_DIR_PYTHON)
+	@cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	rm -rf $(DEST_DIR_TESTS)
-	mkdir -p $(DEST_DIR_TESTS)
-	cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
+	@cd _source/developer-framework && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd ../../
+	@rm -rf $(DEST_DIR_TESTS)
+	@mkdir -p $(DEST_DIR_TESTS)
+	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
 
 # Get all source files
 get-source: clean clone notebooks python-docs test-descriptions
@@ -68,6 +70,8 @@ get-source: clean clone notebooks python-docs test-descriptions
 # Get all source files
 docs-site: clean clone notebooks python-docs test-descriptions
 	quarto render
+#	quarto render notebooks/how_to/explore_tests.ipynb --execute
+#	quarto render notebooks/how_to/explore_test_suites.ipynb --execute
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
@@ -85,4 +89,4 @@ deploy-prod:
 # Generate release notes
 release-notes:
 	@echo "\nGenerating release notes ..."
-	python generate_release_notes.py
+	@python generate_release_notes.py
