@@ -211,71 +211,39 @@ The top-level `inputs` parameter officially acts as a "global inputs" parameter,
 ## Bug fixes
 
 <!---Invalid content blocks create errors in run documentation by @cachafla in [#326](https://github.com/validmind/developer-framework/pull/326)--->
-- **Invalid content blocks create errors in run documentation**. Fixed an issue where using an invalid test Identifier would prevent `run_documentation_tests()` from running all available tests
+- **Invalid content blocks create errors in run documentation**. Fixed an issue where using an invalid test identifier would prevent `run_documentation_tests()` from running all available tests. 
 
 
 <!---Ability to show condensed sections in documentation sidebar by @cachafla in [#565](https://github.com/validmind/frontend/pull/565)--->
-- **Ability to show condensed sections in documentation sidebar**. Fixed an issue where the table of contents was not displaying every subsection that belongs the parent section.
-
+- **Ability to show condensed sections in documentation sidebar**. Fixed an issue where the table of contents was not displaying every subsection that belongs the parent section. The table of contents 
 
 <!---Fixed an issue where the diff for validation reports was showing inco… by @even-steven in [#561](https://github.com/validmind/frontend/pull/561)--->
-- **Fixed an issue where the diff for validation reports was showing inco…**. Fixed an issue where the diff for validation reports was showing incorrectly
+- **Template swap shows the wrong diff**. Fixed an issue where the diff for validation reports was showing incorrectly when swapping templates. The correct diff is now displayed correctly. 
 
 <!---bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block by @panchicore in [#536](https://github.com/validmind/frontend/pull/536)--->
-- **bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block**. - Fixed an issue where clicking on a recent activity item would not redirect users to corresponding content block
+- **bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block**. Fixed an issue where clicking on a recent activity item would not redirect you to the corresponding content block. Clicking on a recent item now takes you to the correct content block.
 
 ## Documentation updates
 
 <!---User management docs by @nrichers in [#137](https://github.com/validmind/documentation/pull/137)--->
-- **User management docs**. Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. [Learn more ...](../../guide/user-management.qmd)
+- **User management documentation**. Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. [Learn more ...](../../guide/user-management.qmd)
 
 
 <!---Add input_id usage to notebook samples by @cachafla in [#332](https://github.com/validmind/developer-framework/pull/332)--->
-- **Add input_id usage to notebook samples**. Updated sample notebooks to show usage of `input_id` when calling `vm.init_dataset()` or `vm.init_model()`.
+- **Add input_id usage to notebook samples**. We updated our sample notebooks to show the current recommended usage for `input_id` when calling `vm.init_dataset()` or `vm.init_model()`.
 
+  Learn more:
+  
+  - [Quickstart for Customer Churn Model Documentation — Full Suite](../../notebooks/quickstart_customer_churn_full_suite.ipynb)
+  - [Sentiment Analysis of Financial Data Using a Large Language Model (LLM)](../../notebooks/code_samples/LLM_and_NLP/foundation_models_integration_demo.ipynb)
+  - [Summarization of Financial Data Using a Large Language Model (LLM)](../../notebooks/code_samples/LLM_and_NLP/foundation_models_summarization_demo.ipynb)
+  - [Sentiment Analysis of Financial Data Using Hugging Face NLP Models](../../notebooks/code_samples/LLM_and_NLP/hugging_face_integration_demo.ipynb)
+  - [Summarization of Financial Data Using Hugging Face NLP models](../../notebooks/code_samples/LLM_and_NLP/hugging_face_summarization_demo.ipynb)
+  - [Prompt Validation for Large Language Models (LLMs)](../../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.ipynb)
+  - [Quickstart for California Housing Regression Model Documentation — Full Suite](../../notebooks/code_samples/regression/quickstart_regression_full_suite.ipynb)
+  - [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+  - [Configure Parameters for a Specific Test](../../notebooks/how_to/configure_parameters_demo.ipynb)
 
-<!---[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually by @AnilSorathiya in [#327](https://github.com/validmind/developer-framework/pull/327)--->
-- **[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually**. Allow test `inputs` and `params` to be passed via the `config` parameter of `run_documentation_tests().
-
-Currently `config` will pass `params` to each test that gets declared:
-
-```python
-full_suite = vm.run_documentation_tests(
-    inputs = {
-        ...
-    },
-    config={
-        "validmind.data_validation.SomeTest": {
-            "min_threshold": 1
-        }
-    }
-}
-```
-
-In the example above, the test `SomeTest` would receive a custom value for the param "min_threshold".
-
-The proposed solution changes the `config` structure so both test `params` and `inputs` can be passed. In our original accuracy test example, we can now specify what model should be passed to each individual test instance:
-
-```python
-full_suite = vm.run_documentation_tests(
-    inputs = {
-        "dataset": vm_dataset,
-        "model": xgb_model
-    },
-    config = {
-        "validmind..model_validation.Accuracy:xgb_model": {
-            "params": { threshold: 0.5 },
-            "inputs": { "model": xgb_model }
-        },
-        "validmind..model_validation.Accuracy:lr_model": {
-            "params": { threshold: 0.3 },
-            "inputs": { "model": lr_model }
-        },
-    }
-}
-```
-
-The top-level `inputs` parameter officially acts as a "global inputs" parameter, and individual tests can customize what they see as "input model" via their own configs.
 
 ## How to upgrade
 
