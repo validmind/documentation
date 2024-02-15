@@ -531,27 +531,17 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="release-highlights">Release highlights</h2>
 <section id="validmind-developer-framework-v1.26.6" class="level3">
 <h3 class="anchored" data-anchor-id="validmind-developer-framework-v1.26.6">ValidMind Developer Framework (v1.26.6)</h3>
-<!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
-<ul>
-<li><strong>John6797/sc 2943/developer framework should register documentation</strong>. We’ve added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with <code>vm.init_dataset()</code> and <code>vm.init_model()</code>, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code, it simply works with the existing <code>init</code> methods as mentioned.</li>
-</ul>
-</section>
-<section id="validmind-platform-ui-v1.13.13" class="level3">
-<h3 class="anchored" data-anchor-id="validmind-platform-ui-v1.13.13">ValidMind Platform UI (v1.13.13)</h3>
-</section>
-</section>
-<section id="enhancements" class="level2">
-<h2 class="anchored" data-anchor-id="enhancements">Enhancements</h2>
 <!---[SC-2706] Documentation templates should allow rendering more than one unique metric result for the same metric by @AnilSorathiya in [#322](https://github.com/validmind/developer-framework/pull/322)--->
-<ul>
-<li><strong>[SC-2706] Documentation templates should allow rendering more than one unique metric result for the same metric</strong>. Documentation templates now allow logging more than one unique result for the same test. You can optionally add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type. For example, the following two content blocks:</li>
-</ul>
+<section id="documentation-templates-now-support-multiple-unique-results-for-the-same-metric" class="level4">
+<h4 class="anchored" data-anchor-id="documentation-templates-now-support-multiple-unique-results-for-the-same-metric">Documentation templates now support multiple unique results for the same metric</h4>
+<p>Documentation templates have been updated to support logging multiple unique results for the same test. This support for allows you to run the same test across different datasets or models. To make use of this new feature, you add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type.</p>
+<p>For example, the following content blocks with the suffixes <code>training_data</code> and <code>test_data</code> enable you to log two individual results for the same test <code>validmind.data_validation.Skewness</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> test</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> validmind.data_validation.Skewness:training_data</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> validmind.data_validation.Skewness:test_data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Will allow you to log two individual results for the same test <code>validmind.data_validation.Skewness</code>. This enables you to run the same test across different datasets or models.</p>
-<p>In the developer framework, each of these unique <code>content_id</code>s can be configured by passing the appropriate <code>config</code> and <code>inputs</code> in <code>run_documentation_tests()</code> or <code>run_test()</code>. As an example, here’s how we can configure two separate tests for <code>Skewness</code> using different datasets and parameters:</p>
+<p>In the developer framework, each of these unique <code>content_id</code> identifiers can be configured by passing the appropriate <code>config</code> and <code>inputs</code> in <code>run_documentation_tests()</code> or <code>run_test()</code>.</p>
+<p>For example, to configure two separate tests for <code>Skewness</code> using different datasets and parameters:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.Skewness:training_data"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
@@ -569,23 +559,13 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>vm_test_ds</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>test.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Demo notebook (<code>document_multiple_results_for_the_same_test</code>) is available in the <code>how_to</code> directory.</p>
-<!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
-<ul>
-<li><strong>[SC-2330] Ability to see available task types and tags</strong>. - Add <code>list_task_types()</code> and <code>list_tags()</code> to list all available <code>task_type</code> and <code>tags</code> across all test classes.<br>
-</li>
-<li>Add <code>list_tasks_and_tags()</code> to list which <code>tags</code> are associated to which <code>task_type</code>.</li>
-<li>These functions have been included in the <code>how_to/explore_tests.ipynb</code> notebook: <img width="887" alt="Screenshot 2024-01-22 at 10 43 18" src="https://github.com/validmind/developer-framework/assets/117463657/28250b4a-fcc7-4863-9a47-55d73698a5d4"> <img width="1124" alt="Screenshot 2024-01-22 at 11 12 00" src="https://github.com/validmind/developer-framework/assets/117463657/f73c8ef0-aa01-4c2b-96a5-201714dd4f2d"></li>
-</ul>
-<!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
-<ul>
-<li><strong>John6797/sc 2943/developer framework should register documentation</strong>. We’ve added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with <code>vm.init_dataset()</code> and <code>vm.init_model()</code>, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code, it simply works with the existing <code>init</code> methods as mentioned.</li>
-</ul>
+<p>Try it yourself: <a href="../../notebooks/how_to/document_multiple_results_for_the_same_test.html">Rendering more than one unique result for the same metric</a></p>
 <!---[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually by @AnilSorathiya in [#327](https://github.com/validmind/developer-framework/pull/327)--->
-<ul>
-<li><strong>[SC 3073] <code>run_documentation_tests()</code> should allow specifying inputs for any test individually</strong>. Allow test <code>inputs</code> and <code>params</code> to be passed via the <code>config</code> parameter of `run_documentation_tests().</li>
-</ul>
-<p>Currently <code>config</code> will pass <code>params</code> to each test that gets declared:</p>
+</section>
+<section id="specify-inputs-for-tests-individually-with-run_documentation_tests" class="level4">
+<h4 class="anchored" data-anchor-id="specify-inputs-for-tests-individually-with-run_documentation_tests">Specify inputs for tests individually with <code>run_documentation_tests()</code></h4>
+<p>The <code>run_documentation_tests()</code> function has been updated to allow passing test <code>inputs</code> and <code>params</code> via the <code>config</code> parameter.</p>
+<p>Previously, <code>config</code> could already pass <code>params</code> to each test that gets declared:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        ...</span>
@@ -596,8 +576,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the example above, the test <code>SomeTest</code> would receive a custom value for the param “min_threshold”.</p>
-<p>The proposed solution changes the <code>config</code> structure so both test <code>params</code> and <code>inputs</code> can be passed. In our original accuracy test example, we can now specify what model should be passed to each individual test instance:</p>
+<p>In this example, the test <code>SomeTest</code> receives a custom value for the param <code>min_threshold</code>.</p>
+<p>With the updated function, <code>config</code> can now pass both <code>params</code> and <code>inputs</code> to each declared test. For example, you can now specify what model should be passed to each individual test instance:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
@@ -614,24 +594,81 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        },</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The top-level <code>inputs</code> parameter officially acts as a “global inputs” parameter, and individual tests can customize what they see as “input model” via their own configs.</p>
+<p>Here, the top-level <code>inputs</code> parameter acts as a <em>global inputs</em> parameter, and the individual tests can customize what they see as <em>input model</em> via their own <code>config</code> parameters.</p>
+<!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
+</section>
+<section id="see-available-task-types-and-tags" class="level4">
+<h4 class="anchored" data-anchor-id="see-available-task-types-and-tags">See available task types and tags</h4>
+<p>To enable model developers to know what task types and tags are available to filter on, we have made some updates to our developer framework:</p>
+<ul>
+<li>New <code>list_task_types()</code> and <code>list_tags()</code> endpoints enable you to list all available <code>task_type</code> and <code>tags</code> across all test classes</li>
+<li>New <code>list_tasks_and_tags()</code> endpoint enable you to list which <code>tags</code> are associated to which <code>task_type</code></li>
+</ul>
+<p><img src="28250b4a-fcc7-4863-9a47-55d73698a5d4.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 80%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></p>
+<p>Try it: <a href="../../notebooks/how_to/explore_tests.html">Exploring Tests in the Developer Framework</a></p>
+<!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
+</section>
+<section id="developer-framework-documentation-inputs" class="level4">
+<h4 class="anchored" data-anchor-id="developer-framework-documentation-inputs">Developer framework documentation inputs</h4>
+<p>We have added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with <code>vm.init_dataset()</code> and <code>vm.init_model()</code>, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code and works with existing <code>init</code> methods.</p>
+</section>
+</section>
+<section id="validmind-platform-ui-v1.13.13" class="level3">
+<h3 class="anchored" data-anchor-id="validmind-platform-ui-v1.13.13">ValidMind Platform UI (v1.13.13)</h3>
+<!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
+<section id="update-events-to-show-users-who-ran-the-developer-framework-actions" class="level4">
+<h4 class="anchored" data-anchor-id="update-events-to-show-users-who-ran-the-developer-framework-actions">Update events to show users who ran the developer framework actions</h4>
+<p>Update rendering of events related to the developer framework. We are now showing the user who ran the action instead of a generic “Developer Framework” actor name</p>
+<div class="grid">
+<div class="g-col-6">
+<p><strong>Before</strong></p>
+<p><img src="78586ce2-4e9d-4613-9738-b09db49c2d5e.png" alt="Old indicator that says that the developer framework logged an event" style="width: 100%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></p>
+</div>
+<div class="g-col-6">
+<p><strong>After</strong></p>
+<p><img src="8b643ea9-61c6-445e-bf2a-422d94193ffc.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 100%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></p>
+</div>
+</div>
+<!---Nrichers/sc 2163/revisit once again the getting started page by @nrichers in [#543](https://github.com/validmind/frontend/pull/543)--->
+</section>
+<section id="simplified-instructions-for-developers" class="level4">
+<h4 class="anchored" data-anchor-id="simplified-instructions-for-developers">Simplified instructions for developers</h4>
+<p>We simplified the instructions for getting started with the ValidMind Developer Framework in the Platform UI. These instructions tell you how to use the code snippet for your documentation project with your own model or with one of our code samples.</p>
+<p><img src="bf9b42d3-c74f-41f9-97b5-52911e33eb0d.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 80%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></p>
+</section>
+</section>
+</section>
+<section id="enhancements" class="level2">
+<h2 class="anchored" data-anchor-id="enhancements">Enhancements</h2>
 <!---Panchicore/sc 2799/model owner should be able to edit model by @panchicore in [#562](https://github.com/validmind/frontend/pull/562)--->
-<ul>
-<li><strong>Panchicore/sc 2799/model owner should be able to edit model</strong>. Model owners can now edit the values for any field displayed on the model details page. Previously it was only possible to edit custom fields defined by the organization.</li>
-</ul>
+<dl>
+<dt>Model owner can edit model details page</dt>
+<dd>
+Model owners can now edit the values for fields displayed on the model details page. Previously it was only possible to edit custom fields defined by your organization.
+</dd>
+</dl>
 <!---Reducing load time by using localstorage for Auth0 by @even-steven in [#570](https://github.com/validmind/frontend/pull/570)--->
-<ul>
-<li><strong>Reducing load time by using localstorage for Auth0</strong>. We reduced the loading times of our ValidMind Platform UI to improve the user experience.</li>
-</ul>
+<dl>
+<dt>Reduced load times for the ValidMind Platform UI</dt>
+<dd>
+We reduced the loading times of our Platform UI to improve the user experience.
+</dd>
+</dl>
 <!---Added support for filtering model inventory by developers / validators by @even-steven in [#563](https://github.com/validmind/frontend/pull/563)--->
-<ul>
-<li><strong>Added support for filtering model inventory by developers / validators</strong>. Enhanced the Model Inventory filtering to allow filtering by Developers and Validators.</li>
-</ul>
+<dl>
+<dt>Added support for filtering model inventory by developers / validators</dt>
+<dd>
+Enhanced the Model Inventory filtering to allow filtering by Developers and Validators.
+</dd>
+</dl>
 <!---Support for custom model fields by @panchicore in [#509](https://github.com/validmind/frontend/pull/509)--->
-<ul>
-<li><strong>Support for custom model fields</strong>. - Enable organizations to manage custom fields in their model inventory. Administrators can define their own fields for models, tailoring the model inventory to their specific needs.
-<ul>
-<li>Initial set of supported field types:
+<dl>
+<dt>Support for custom model fields in the model inventory</dt>
+<dd>
+The model inventory has been updated to allow organizations to add custom fields. This enhancement enables administrators to customize the model inventory according to your specific organizational needs.
+</dd>
+</dl>
+<p>The initial release supports the following field types:</p>
 <ul>
 <li>Single Line Text</li>
 <li>Long Text</li>
@@ -644,106 +681,69 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li>Date Time</li>
 <li>Email</li>
 <li>Linked Record to User</li>
-</ul></li>
-</ul></li>
 </ul>
-<!---Nrichers/sc 2163/revisit once again the getting started page by @nrichers in [#543](https://github.com/validmind/frontend/pull/543)--->
-<ul>
-<li><strong>Nrichers/sc 2163/revisit once again the getting started page</strong>. We simplified the instructions for getting started with the ValidMind Developer Framework in the Platform UI.</li>
-</ul>
-<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
-<!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
-<ul>
-<li><strong>Update events to show users who ran the developer framework actions</strong>. - Update rendering of events related to the developer framework. We are now showing the user who ran the action instead of a generic “Developer Framework” actor name</li>
-</ul>
-<p><em>Before</em></p>
-<p><img width="513" alt="image" src="https://github.com/validmind/frontend/assets/21595/78586ce2-4e9d-4613-9738-b09db49c2d5e"></p>
-<p><em>After</em></p>
-<p><img width="505" alt="image" src="https://github.com/validmind/frontend/assets/21595/8b643ea9-61c6-445e-bf2a-422d94193ffc"></p>
 <!---Adds toggle to see only mentions in Recent Activity > Comments by @gtagle in [#525](https://github.com/validmind/frontend/pull/525)--->
-<ul>
-<li><strong>Adds toggle to see only mentions in Recent Activity &gt; Comments</strong>. - Adds toggle to see only mentions in Recent Activity &gt; Comments
-<ul>
-<li>Shows all mentions by default (comments where the logged in user was tagged)</li>
-</ul></li>
-</ul>
+<dl>
+<dt>Filter for mentions in recent activity comments</dt>
+<dd>
+We implemented a toggle feature in the <strong>Recent Activity</strong> &gt; <strong>Comments</strong> section to filter and display only specific mentions. By default, all comments where the logged-in user has been tagged are displayed by this filter.
+</dd>
+</dl>
 <!---Add CKEditor support to finding description and remediation plan - Introduce the `RichTextContentEditor` component by @panchicore in [#542](https://github.com/validmind/frontend/pull/542)--->
-<ul>
-<li><strong>Add CKEditor support to finding description and remediation plan - Introduce the <code>RichTextContentEditor</code> component</strong>. - Add support for the rich text editor interface on forms in the Findings and Validation Report sections</li>
-</ul>
-<!---Support for custom model fields by @panchicore in [#509](https://github.com/validmind/frontend/pull/509)--->
-<ul>
-<li><strong>Support for custom model fields</strong>. - Enable organizations to manage custom fields in their model inventory. Administrators can define their own fields for models, tailoring the model inventory to their specific needs.
-<ul>
-<li>Initial set of supported field types:
-<ul>
-<li>Single Line Text</li>
-<li>Long Text</li>
-<li>Single Select</li>
-<li>Multiple Select</li>
-<li>Checkbox</li>
-<li>Number</li>
-<li>URL</li>
-<li>Date</li>
-<li>Date Time</li>
-<li>Email</li>
-<li>Linked Record to User</li>
-</ul></li>
-</ul></li>
-</ul>
-<!---Nrichers/sc 2163/revisit once again the getting started page by @nrichers in [#543](https://github.com/validmind/frontend/pull/543)--->
-<ul>
-<li><strong>Nrichers/sc 2163/revisit once again the getting started page</strong>. We simplified the instructions for getting started with the ValidMind Developer Framework in the Platform UI.</li>
-</ul>
-<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
-<!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
-<ul>
-<li><strong>Update events to show users who ran the developer framework actions</strong>. - Update rendering of events related to the developer framework. We are now showing the user who ran the action instead of a generic “Developer Framework” actor name</li>
-</ul>
-<p><em>Before</em></p>
-<p><img width="513" alt="image" src="https://github.com/validmind/frontend/assets/21595/78586ce2-4e9d-4613-9738-b09db49c2d5e"></p>
-<p><em>After</em></p>
-<p><img width="505" alt="image" src="https://github.com/validmind/frontend/assets/21595/8b643ea9-61c6-445e-bf2a-422d94193ffc"></p>
-<!---Adds toggle to see only mentions in Recent Activity > Comments by @gtagle in [#525](https://github.com/validmind/frontend/pull/525)--->
-<ul>
-<li><strong>Adds toggle to see only mentions in Recent Activity &gt; Comments</strong>. - Adds toggle to see only mentions in Recent Activity &gt; Comments
-<ul>
-<li>Shows all mentions by default (comments where the logged in user was tagged)</li>
-</ul></li>
-</ul>
-<!---Add CKEditor support to finding description and remediation plan - Introduce the `RichTextContentEditor` component by @panchicore in [#542](https://github.com/validmind/frontend/pull/542)--->
-<ul>
-<li><strong>Add CKEditor support to finding description and remediation plan - Introduce the <code>RichTextContentEditor</code> component</strong>. - Add support for the rich text editor interface on forms in the Findings and Validation Report sections</li>
-</ul>
+<dl>
+<dt>Expanded rich-text editor support</dt>
+<dd>
+Forms in the <strong>Findings</strong> and <strong>Validation Report</strong> sections now support the rich-text editor interface. This support enables you to use the editor for your finding descriptions and remediation plans, for example.
+</dd>
+</dl>
 </section>
 <section id="bug-fixes" class="level2">
 <h2 class="anchored" data-anchor-id="bug-fixes">Bug fixes</h2>
 <!---Invalid content blocks create errors in run documentation by @cachafla in [#326](https://github.com/validmind/developer-framework/pull/326)--->
-<ul>
-<li><strong>Invalid content blocks create errors in run documentation</strong>. Fixed an issue where using an invalid test identifier would prevent <code>run_documentation_tests()</code> from running all available tests.</li>
-</ul>
+<dl>
+<dt>Invalid content blocks create errors for <code>run_documentation_tests()</code></dt>
+<dd>
+Fixed an issue where using an invalid test identifier would prevent <code>run_documentation_tests()</code> from running all available tests. The full test suite now runs as expected, even when an invalid test identifier is specified.
+</dd>
+</dl>
 <!---Ability to show condensed sections in documentation sidebar by @cachafla in [#565](https://github.com/validmind/frontend/pull/565)--->
-<ul>
-<li><strong>Ability to show condensed sections in documentation sidebar</strong>. Fixed an issue where the table of contents was not displaying every subsection that belongs the parent section. The table of contents</li>
-</ul>
+<dl>
+<dt>Show all collapsed sections in documentation table of contents</dt>
+<dd>
+Fixed an issue where the table of contents was not displaying every subsection that belongs to the parent section. The table of contents now accurately reflects the complete structure of the documentation, including all subsections.
+</dd>
+</dl>
 <!---Fixed an issue where the diff for validation reports was showing inco… by @even-steven in [#561](https://github.com/validmind/frontend/pull/561)--->
-<ul>
-<li><strong>Template swap shows the wrong diff</strong>. Fixed an issue where the diff for validation reports was showing incorrectly when swapping templates. The correct diff is now displayed correctly.</li>
-</ul>
+<dl>
+<dt>Template swap shows the wrong diff</dt>
+<dd>
+Fixed an issue where the diff for validation reports was showing incorrectly when swapping templates. The correct diff between the current and the new template is now displayed.
+</dd>
+</dl>
 <!---bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block by @panchicore in [#536](https://github.com/validmind/frontend/pull/536)--->
-<ul>
-<li><strong>bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block</strong>. Fixed an issue where clicking on a recent activity item would not redirect you to the corresponding content block. Clicking on a recent item now takes you to the correct content block.</li>
-</ul>
+<dl>
+<dt>Clicking on a recent activity item should link to the corresponding content block</dt>
+<dd>
+Fixed an issue where clicking on a recent activity item would not redirect you to the corresponding content block. Clicking on a recent item now takes you to the correct content block as expected.
+</dd>
+</dl>
 </section>
 <section id="documentation-updates" class="level2">
 <h2 class="anchored" data-anchor-id="documentation-updates">Documentation updates</h2>
 <!---User management docs by @nrichers in [#137](https://github.com/validmind/documentation/pull/137)--->
-<ul>
-<li><strong>User management documentation</strong>. Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. <a href="../../guide/user-management.html">Learn more …</a></li>
-</ul>
+<dl>
+<dt>New user management documentation</dt>
+<dd>
+Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. <a href="../../guide/user-management.html">Learn more …</a>
+</dd>
+</dl>
 <!---Add input_id usage to notebook samples by @cachafla in [#332](https://github.com/validmind/developer-framework/pull/332)--->
-<ul>
-<li><p><strong>Add input_id usage to notebook samples</strong>. We updated our sample notebooks to show the current recommended usage for <code>input_id</code> when calling <code>vm.init_dataset()</code> or <code>vm.init_model()</code>.</p>
+<dl>
+<dt>Updated sample notebooks with current <code>input_id</code> usage</dt>
+<dd>
+We updated our sample notebooks to show the current, recommended usage for <code>input_id</code> when calling <code>vm.init_dataset()</code> or <code>vm.init_model()</code>.
+</dd>
+</dl>
 <p>Learn more:</p>
 <ul>
 <li><a href="../../notebooks/quickstart_customer_churn_full_suite.html">Quickstart for Customer Churn Model Documentation — Full Suite</a></li>
@@ -755,7 +755,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <li><a href="../../notebooks/code_samples/regression/quickstart_regression_full_suite.html">Quickstart for California Housing Regression Model Documentation — Full Suite</a></li>
 <li><a href="../../notebooks/how_to/configure_dataset_features.html">Configuring and Using Dataset Features</a></li>
 <li><a href="../../notebooks/how_to/configure_parameters_demo.html">Configure Parameters for a Specific Test</a></li>
-</ul></li>
 </ul>
 </section>
 <section id="how-to-upgrade" class="level2">
