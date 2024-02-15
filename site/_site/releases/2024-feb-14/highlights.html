@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="keywords" content="release notes, ai risk, model risk management, ValidMind">
 
 <title>ValidMind - February 14, 2024</title>
 <style>
@@ -517,12 +516,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   </div>
   
 
-<div>
-  <div class="keywords">
-    <div class="block-title">Keywords</div>
-    <p>release notes, ai risk, model risk management, ValidMind</p>
-  </div>
-</div>
 
 </header>
 
@@ -534,14 +527,13 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <!---[SC-2706] Documentation templates should allow rendering more than one unique metric result for the same metric by @AnilSorathiya in [#322](https://github.com/validmind/developer-framework/pull/322)--->
 <section id="documentation-templates-now-support-multiple-unique-results-for-the-same-metric" class="level4">
 <h4 class="anchored" data-anchor-id="documentation-templates-now-support-multiple-unique-results-for-the-same-metric">Documentation templates now support multiple unique results for the same metric</h4>
-<p>Documentation templates have been updated to support logging multiple unique results for the same test. This support for allows you to run the same test across different datasets or models. To make use of this new feature, you add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type.</p>
+<p>Documentation templates have been updated to support logging multiple unique results for the same test which enables you to run the same test across different datasets or models. To make use of this new feature, you add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type.</p>
 <p>For example, the following content blocks with the suffixes <code>training_data</code> and <code>test_data</code> enable you to log two individual results for the same test <code>validmind.data_validation.Skewness</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> test</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> validmind.data_validation.Skewness:training_data</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> metric</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> validmind.data_validation.Skewness:test_data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the developer framework, each of these unique <code>content_id</code> identifiers can be configured by passing the appropriate <code>config</code> and <code>inputs</code> in <code>run_documentation_tests()</code> or <code>run_test()</code>.</p>
-<p>For example, to configure two separate tests for <code>Skewness</code> using different datasets and parameters:</p>
+<p>You can configure each of these unique <code>content_id</code> identifiers by passing the appropriate <code>config</code> and <code>inputs</code> in <code>run_documentation_tests()</code> or <code>run_test()</code>. For example, to configure two separate tests for <code>Skewness</code> using different datasets and parameters:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.Skewness:training_data"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
@@ -564,8 +556,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </section>
 <section id="specify-inputs-for-tests-individually-with-run_documentation_tests" class="level4">
 <h4 class="anchored" data-anchor-id="specify-inputs-for-tests-individually-with-run_documentation_tests">Specify inputs for tests individually with <code>run_documentation_tests()</code></h4>
-<p>The <code>run_documentation_tests()</code> function has been updated to allow passing test <code>inputs</code> and <code>params</code> via the <code>config</code> parameter.</p>
-<p>Previously, <code>config</code> could already pass <code>params</code> to each test that gets declared:</p>
+<p>The <code>run_documentation_tests()</code> function has been updated to allow passing both test <code>inputs</code> and <code>params</code> via the <code>config</code> parameter.</p>
+<p>Previously, <code>config</code> could already pass <code>params</code> to each test that you declare. In this example, the test <code>SomeTest</code> receives a custom value for the param <code>min_threshold</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        ...</span>
@@ -575,9 +567,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"min_threshold"</span>: <span class="dv">1</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this example, the test <code>SomeTest</code> receives a custom value for the param <code>min_threshold</code>.</p>
-<p>With the updated function, <code>config</code> can now pass both <code>params</code> and <code>inputs</code> to each declared test. For example, you can now specify what model should be passed to each individual test instance:</p>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the updated function, <code>config</code> can now pass both <code>params</code> and <code>inputs</code> to each declared test. For example, to specify what model should be passed to each individual test instance:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_dataset,</span>
@@ -593,8 +584,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"inputs"</span>: { <span class="st">"model"</span>: lr_model }</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        },</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here, the top-level <code>inputs</code> parameter acts as a <em>global inputs</em> parameter, and the individual tests can customize what they see as <em>input model</em> via their own <code>config</code> parameters.</p>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here, the top-level <code>inputs</code> parameter acts as a global <code>inputs</code> parameter, and the individual tests can customize what they see as the input model via their own <code>config</code> parameters.</p>
 <!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
 </section>
 <section id="see-available-task-types-and-tags" class="level4">
