@@ -525,9 +525,9 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <section id="validmind-developer-framework-v1.26.6" class="level3">
 <h3 class="anchored" data-anchor-id="validmind-developer-framework-v1.26.6">ValidMind Developer Framework (v1.26.6)</h3>
 <!---[SC-2706] Documentation templates should allow rendering more than one unique metric result for the same metric by @AnilSorathiya in [#322](https://github.com/validmind/developer-framework/pull/322)--->
-<section id="documentation-templates-now-supports-tracking-each-metric-result-with-a-unique-identifier" class="level4">
-<h4 class="anchored" data-anchor-id="documentation-templates-now-supports-tracking-each-metric-result-with-a-unique-identifier">Documentation templates now supports tracking each metric result with a unique identifier</h4>
-<p>Documentation templates have been updated to support logging multiple unique results for the same test which enables you to run the same test across different datasets or models. To make use of this new feature, you add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type.</p>
+<section id="documentation-templates-now-support-tracking-each-metric-result-with-a-unique-identifier" class="level4">
+<h4 class="anchored" data-anchor-id="documentation-templates-now-support-tracking-each-metric-result-with-a-unique-identifier">Documentation templates now support tracking each metric result with a unique identifier</h4>
+<p>Documentation templates have been updated to support logging each metric run as a unique result, making it possible to run the same test across different datasets or models. To make use of this new feature, you simply add a unique <code>result_id</code> identifier as a suffix to a <code>content_id</code> identifier in the content block definition of a <code>metric</code> or <code>test</code> content type.</p>
 <p>For example, the following content blocks with the suffixes <code>training_data</code> and <code>test_data</code> enable you to log two individual results for the same test <code>validmind.data_validation.Skewness</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">content_type</span><span class="kw">:</span><span class="at"> test</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">content_id</span><span class="kw">:</span><span class="at"> validmind.data_validation.Skewness:training_data</span></span>
@@ -554,8 +554,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <p>Try it yourself: <a href="../../notebooks/how_to/document_multiple_results_for_the_same_test.html">Rendering more than one unique result for the same metric</a></p>
 <!---[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually by @AnilSorathiya in [#327](https://github.com/validmind/developer-framework/pull/327)--->
 </section>
-<section id="specify-inputs-for-tests-individually-with-run_documentation_tests" class="level4">
-<h4 class="anchored" data-anchor-id="specify-inputs-for-tests-individually-with-run_documentation_tests">Specify inputs for tests individually with <code>run_documentation_tests()</code></h4>
+<section id="easier-specification-of-inputs-for-individual-tests-with-run_documentation_tests" class="level4">
+<h4 class="anchored" data-anchor-id="easier-specification-of-inputs-for-individual-tests-with-run_documentation_tests">Easier specification of inputs for individual tests with <code>run_documentation_tests()</code></h4>
 <p>The <code>run_documentation_tests()</code> function has been updated to allow passing both test <code>inputs</code> and <code>params</code> via the <code>config</code> parameter.</p>
 <p>Previously, <code>config</code> could already pass <code>params</code> to each test that you declare. In this example, the test <code>SomeTest</code> receives a custom value for the param <code>min_threshold</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
@@ -588,28 +588,28 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <p>Here, the top-level <code>inputs</code> parameter acts as a global <code>inputs</code> parameter, and the individual tests can customize what they see as the input model via their own <code>config</code> parameters.</p>
 <!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
 </section>
-<section id="see-available-task-types-and-tags" class="level4">
-<h4 class="anchored" data-anchor-id="see-available-task-types-and-tags">See available task types and tags</h4>
+<section id="view-available-task-types-and-tags-to-filter-tests" class="level4">
+<h4 class="anchored" data-anchor-id="view-available-task-types-and-tags-to-filter-tests">View available task types and tags to filter tests</h4>
 <p>To enable model developers to know what task types and tags are available to filter on, we have made some updates to our developer framework:</p>
 <ul>
 <li>New <code>list_task_types()</code> and <code>list_tags()</code> endpoints enable you to list all available <code>task_type</code> and <code>tags</code> across all test classes</li>
-<li>New <code>list_tasks_and_tags()</code> endpoint enable you to list which <code>tags</code> are associated to which <code>task_type</code></li>
+<li>New <code>list_tasks_and_tags()</code> endpoint enables you to list which <code>tags</code> are associated to which <code>task_type</code></li>
 </ul>
 <p><img src="28250b4a-fcc7-4863-9a47-55d73698a5d4.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 80%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></p>
 <p>Try it: <a href="../../notebooks/how_to/explore_tests.html">Exploring Tests in the Developer Framework</a></p>
 <!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
 </section>
-<section id="developer-framework-documentation-inputs" class="level4">
-<h4 class="anchored" data-anchor-id="developer-framework-documentation-inputs">Developer framework documentation inputs</h4>
+<section id="developer-framework-documentation-inputs-tracking" class="level4">
+<h4 class="anchored" data-anchor-id="developer-framework-documentation-inputs-tracking">Developer framework documentation inputs tracking</h4>
 <p>We have added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with <code>vm.init_dataset()</code> and <code>vm.init_model()</code>, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code and works with existing <code>init</code> methods.</p>
 </section>
 </section>
 <section id="validmind-platform-ui-v1.13.13" class="level3">
 <h3 class="anchored" data-anchor-id="validmind-platform-ui-v1.13.13">ValidMind Platform UI (v1.13.13)</h3>
 <!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
-<section id="update-events-to-show-users-who-ran-the-developer-framework-actions" class="level4">
-<h4 class="anchored" data-anchor-id="update-events-to-show-users-who-ran-the-developer-framework-actions">Update events to show users who ran the developer framework actions</h4>
-<p>Update rendering of events related to the developer framework. We are now showing the user who ran the action instead of a generic “Developer Framework” actor name</p>
+<section id="updated-events-to-show-who-ran-the-developer-framework-actions" class="level4">
+<h4 class="anchored" data-anchor-id="updated-events-to-show-who-ran-the-developer-framework-actions">Updated events to show who ran the developer framework actions</h4>
+<p>We are now showing the name of the user who ran the action instead of a generic “Developer Framework” name whenever you generate documentation:</p>
 <div class="grid">
 <div class="g-col-6">
 <p><strong>Before</strong></p>
@@ -633,30 +633,30 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="enhancements">Enhancements</h2>
 <!---Panchicore/sc 2799/model owner should be able to edit model by @panchicore in [#562](https://github.com/validmind/frontend/pull/562)--->
 <dl>
-<dt>Model owner can edit model details page</dt>
+<dt>Model owners can edit model details</dt>
 <dd>
 Model owners can now edit the values for fields displayed on the model details page. Previously it was only possible to edit custom fields defined by your organization.
 </dd>
 </dl>
 <!---Reducing load time by using localstorage for Auth0 by @even-steven in [#570](https://github.com/validmind/frontend/pull/570)--->
 <dl>
-<dt>Reduced load times for the ValidMind Platform UI</dt>
+<dt>Performance improvements for the ValidMind Platform UI</dt>
 <dd>
-We reduced the loading times of our Platform UI to improve the user experience.
+We made improvements to page load times on our Platform UI for a smoother user experience.
 </dd>
 </dl>
 <!---Added support for filtering model inventory by developers / validators by @even-steven in [#563](https://github.com/validmind/frontend/pull/563)--->
 <dl>
 <dt>Added support for filtering model inventory by developers / validators</dt>
 <dd>
-Enhanced the Model Inventory filtering to allow filtering by Developers and Validators.
+Enhanced navigation of the Model Inventory by enabling filtering based on Developers and Validators involved with each model.
 </dd>
 </dl>
 <!---Support for custom model fields by @panchicore in [#509](https://github.com/validmind/frontend/pull/509)--->
 <dl>
 <dt>Support for custom model fields in the model inventory</dt>
 <dd>
-The model inventory has been updated to allow organizations to add custom fields. This enhancement enables administrators to customize the model inventory according to your specific organizational needs.
+The model inventory has been updated to allow organizations to add custom fields. This enhancement enables administrators to customize the model inventory data schema according to your specific organizational needs. This can be done by accessing <strong>Custom Fields</strong> in the <strong>Settings</strong> page.
 </dd>
 </dl>
 <p>The initial release supports the following field types:</p>
