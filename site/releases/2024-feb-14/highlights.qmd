@@ -1,0 +1,236 @@
+---
+title: "February 14, 2024"
+---
+
+## Release highlights
+
+### ValidMind Developer Framework (v1.26.6)
+
+<!---[SC-2706] Documentation templates should allow rendering more than one unique metric result for the same metric by @AnilSorathiya in [#322](https://github.com/validmind/developer-framework/pull/322)--->
+#### Documentation templates now support tracking each metric result with a unique identifier
+
+Documentation templates have been updated to support logging each metric run as a unique result, making it possible to run the same test across different datasets or models. To make use of this new feature, you simply add a unique `result_id` identifier as a suffix to a `content_id` identifier in the content block definition of a `metric` or `test` content type. 
+
+For example, the following content blocks with the suffixes `training_data` and `test_data` enable you to log two individual results for the same test `validmind.data_validation.Skewness`:
+
+```yaml
+- content_type: test
+  content_id: validmind.data_validation.Skewness:training_data
+- content_type: metric
+  content_id: validmind.data_validation.Skewness:test_data
+```
+
+You can configure each of these unique `content_id` identifiers by passing the appropriate `config` and `inputs` in `run_documentation_tests()` or `run_test()`. For example, to configure two separate tests for `Skewness` using different datasets and parameters:
+
+```python
+test = vm.tests.run_test(
+    test_id="validmind.data_validation.Skewness:training_data",
+    params={
+        "max_threshold": 1
+    },
+    dataset=vm_train_ds,
+)
+test.log()
+
+test = vm.tests.run_test(
+    test_id="validmind.data_validation.Skewness:test_data",
+    params={
+        "max_threshold": 1.5
+    },
+    dataset=vm_test_ds
+)
+test.log()
+```
+
+Try it yourself: [Rendering more than one unique result for the same metric](../../notebooks/how_to/document_multiple_results_for_the_same_test.ipynb)
+
+<!---[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually by @AnilSorathiya in [#327](https://github.com/validmind/developer-framework/pull/327)--->
+#### Easier specification of inputs for individual tests with `run_documentation_tests()`
+
+The `run_documentation_tests()` function has been updated to allow passing both test `inputs` and `params` via the `config` parameter.
+
+Previously, `config` could already pass `params` to each test that you declare. In this example, the test `SomeTest` receives a custom value for the param `min_threshold`:
+
+```python
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    config={
+        "validmind.data_validation.SomeTest": {
+            "min_threshold": 1
+        }
+    }
+)
+```
+
+With the updated function, `config` can now pass both `params` and `inputs` to each declared test. For example, to specify what model should be passed to each individual test instance:
+
+```python
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        "dataset": vm_dataset,
+        "model": xgb_model
+    },
+    config = {
+        "validmind..model_validation.Accuracy:xgb_model": {
+            "params": { threshold: 0.5 },
+            "inputs": { "model": xgb_model }
+        },
+        "validmind..model_validation.Accuracy:lr_model": {
+            "params": { threshold: 0.3 },
+            "inputs": { "model": lr_model }
+        },
+    }
+)
+```
+
+Here, the top-level `inputs` parameter acts as a global `inputs` parameter, and the individual tests can customize what they see as the input model via their own `config` parameters.
+
+<!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
+#### View available task types and tags to filter tests
+
+To enable model developers to know what task types and tags are available to filter on, we have made some updates to our developer framework:
+
+- New `list_task_types()` and `list_tags()` endpoints enable you to list all available `task_type` and `tags` across all test classes
+- New `list_tasks_and_tags()` endpoint enables you to list which `tags` are associated to which `task_type`
+
+<img src="28250b4a-fcc7-4863-9a47-55d73698a5d4.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 80%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;">
+
+Try it: [Exploring Tests in the Developer Framework](../../notebooks/how_to/explore_tests.ipynb)
+
+<!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
+#### Developer framework documentation inputs tracking
+
+We have added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with `vm.init_dataset()` and `vm.init_model()`, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code and works with existing `init` methods.
+
+### ValidMind Platform UI (v1.13.13)
+
+<!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
+#### Updated events to show who ran the developer framework actions
+
+We are now showing the name of the user who ran the action instead of a generic "Developer Framework" name whenever you generate documentation:
+
+::: {.grid}
+::: {.g-col-6}
+**Before**
+
+<img src="78586ce2-4e9d-4613-9738-b09db49c2d5e.png" alt="Old indicator that says that the developer framework logged an event" style="width: 100%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;">
+
+:::
+
+::: {.g-col-6}
+**After**
+
+<img src="8b643ea9-61c6-445e-bf2a-422d94193ffc.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 100%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;">
+:::
+:::
+
+
+<!---Nrichers/sc 2163/revisit once again the getting started page by @nrichers in [#543](https://github.com/validmind/frontend/pull/543)--->
+#### Simplified instructions for developers
+
+We simplified the instructions for getting started with the ValidMind Developer Framework in the Platform UI. These instructions tell you how to use the code snippet for your documentation project with your own model or with one of our code samples.
+
+<img src="bf9b42d3-c74f-41f9-97b5-52911e33eb0d.png" alt="New indicator that specifies the user who made updates through the developer framework" style="width: 80%; border: 1px solid #333; box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;">
+
+## Enhancements
+
+<!---Panchicore/sc 2799/model owner should be able to edit model by @panchicore in [#562](https://github.com/validmind/frontend/pull/562)--->
+Model owners can edit model details
+: Model owners can now edit the values for fields displayed on the model details page. Previously it was only possible to edit custom fields defined by your organization.
+
+<!---Reducing load time by using localstorage for Auth0 by @even-steven in [#570](https://github.com/validmind/frontend/pull/570)--->
+Performance improvements for the ValidMind Platform UI
+: We made improvements to page load times on our Platform UI for a smoother user experience.
+
+<!---Added support for filtering model inventory by developers / validators by @even-steven in [#563](https://github.com/validmind/frontend/pull/563)--->
+Added support for filtering model inventory by developers / validators
+: Enhanced navigation of the Model Inventory by enabling filtering based on Developers and Validators involved with each model.
+
+<!---Support for custom model fields by @panchicore in [#509](https://github.com/validmind/frontend/pull/509)--->
+Support for custom model fields in the model inventory
+: The model inventory has been updated to allow organizations to add custom fields. This enhancement enables administrators to customize the model inventory data schema according to your specific organizational needs. This can be done by accessing **Custom Fields** in the **Settings** page.
+
+The initial release supports the following field types:
+
+- Single Line Text
+- Long Text
+- Single Select
+- Multiple Select
+- Checkbox
+- Number
+- URL
+- Date
+- Date Time
+- Email
+- Linked Record to User
+
+<!---Adds toggle to see only mentions in Recent Activity > Comments by @gtagle in [#525](https://github.com/validmind/frontend/pull/525)--->
+Filter for mentions in recent activity comments
+: We implemented a toggle feature in the **Recent Activity** > **Comments** section to filter and display only specific mentions. By default, all comments where the logged-in user has been tagged are displayed by this filter. 
+
+<!---Add CKEditor support to finding description and remediation plan - Introduce the `RichTextContentEditor` component by @panchicore in [#542](https://github.com/validmind/frontend/pull/542)--->
+Expanded rich-text editor support
+: Forms in the **Findings** and **Validation Report** sections now support the rich-text editor interface. This support enables you to use the editor for your finding descriptions and remediation plans, for example. 
+
+## Bug fixes
+
+<!---Invalid content blocks create errors in run documentation by @cachafla in [#326](https://github.com/validmind/developer-framework/pull/326)--->
+Invalid content blocks create errors for `run_documentation_tests()`
+: Fixed an issue where using an invalid test identifier would prevent `run_documentation_tests()` from running all available tests. The full test suite now runs as expected, even when an invalid test identifier causes an error for an individual test.
+
+<!---Ability to show condensed sections in documentation sidebar by @cachafla in [#565](https://github.com/validmind/frontend/pull/565)--->
+Show all collapsed sections in documentation table of contents
+: Fixed an issue where the table of contents was not displaying every subsection that belongs to the parent section. The table of contents now accurately reflects the complete structure of the documentation, including all subsections.
+
+<!---Fixed an issue where the diff for validation reports was showing inco… by @even-steven in [#561](https://github.com/validmind/frontend/pull/561)--->
+Template swap shows the wrong diff
+: Fixed an issue where the diff for validation reports was showing incorrectly when swapping templates. The correct diff between the current and the new template is now displayed.
+
+<!---bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block by @panchicore in [#536](https://github.com/validmind/frontend/pull/536)--->
+Clicking on a recent activity item should link to the corresponding content block
+: Fixed an issue where clicking on a recent activity item would not redirect you to the corresponding content block. Clicking on a recent item now takes you to the correct content block as expected.
+
+## Documentation updates
+
+<!---User management docs by @nrichers in [#137](https://github.com/validmind/documentation/pull/137)--->
+New user management documentation
+: Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. [Learn more ...](../../guide/user-management.qmd)
+
+<!---Add input_id usage to notebook samples by @cachafla in [#332](https://github.com/validmind/developer-framework/pull/332)--->
+Updated sample notebooks with current `input_id` usage
+: We updated our sample notebooks to show the current, recommended usage for `input_id` when calling `vm.init_dataset()` or `vm.init_model()`.
+
+Learn more:
+
+- [Quickstart for Customer Churn Model Documentation — Full Suite](../../notebooks/quickstart_customer_churn_full_suite.ipynb)
+- [Sentiment Analysis of Financial Data Using a Large Language Model (LLM)](../../notebooks/code_samples/LLM_and_NLP/foundation_models_integration_demo.ipynb)
+- [Summarization of Financial Data Using a Large Language Model (LLM)](../../notebooks/code_samples/LLM_and_NLP/foundation_models_summarization_demo.ipynb)
+- [Sentiment Analysis of Financial Data Using Hugging Face NLP Models](../../notebooks/code_samples/LLM_and_NLP/hugging_face_integration_demo.ipynb)
+- [Summarization of Financial Data Using Hugging Face NLP models](../../notebooks/code_samples/LLM_and_NLP/hugging_face_summarization_demo.ipynb)
+- [Prompt Validation for Large Language Models (LLMs)](../../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.ipynb)
+- [Quickstart for California Housing Regression Model Documentation — Full Suite](../../notebooks/code_samples/regression/quickstart_regression_full_suite.ipynb)
+- [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+- [Configure Parameters for a Specific Test](../../notebooks/how_to/configure_parameters_demo.ipynb)
+
+## How to upgrade
+
+To access the latest version of the [ValidMind Platform UI](http://app.prod.validmind.ai/), reload your browser tab.
+
+To upgrade the ValidMind Developer Framework:
+
+- [Using Jupyter Hub](../../guide/try-developer-framework-with-jupyterhub.qmd): reload your browser tab and re-run the `!pip install --upgrade validmind` cell.
+
+- [Using Docker](../../guide/try-developer-framework-with-docker.qmd): pull the latest Docker image:
+    
+    ```jsx
+    docker pull validmind/validmind-jupyter-demo:latest
+    
+    ```
+    
+- [In your own developer environment](../../guide/install-and-initialize-developer-framework.qmd): restart your notebook and re-run:
+    
+    ```python
+    !pip install validmind
+    ```
