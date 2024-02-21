@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-02-16">
+<meta name="dcterms.date" content="2024-02-20">
 <meta name="keywords" content="Supported models, ai risk, model risk management, ValidMind">
 
 <title>ValidMind - Supported models</title>
@@ -1417,14 +1417,14 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-is-a-supported-model" id="toc-what-is-a-supported-model" class="nav-link active" data-scroll-target="#what-is-a-supported-model">What is a supported model?</a></li>
-  <li><a href="#currently-supported-models" id="toc-currently-supported-models" class="nav-link" data-scroll-target="#currently-supported-models">Currently supported models</a></li>
+  <li><a href="#supported-model-types" id="toc-supported-model-types" class="nav-link active" data-scroll-target="#supported-model-types">Supported model types</a></li>
+  <li><a href="#what-is-a-supported-model" id="toc-what-is-a-supported-model" class="nav-link" data-scroll-target="#what-is-a-supported-model">What is a supported model?</a></li>
   <li><a href="#related-topics" id="toc-related-topics" class="nav-link" data-scroll-target="#related-topics">Related Topics</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/guide/supported-models.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -1439,7 +1439,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 16, 2024</p>
+      <p class="date">February 20, 2024</p>
     </div>
   </div>
   
@@ -1458,115 +1458,51 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 
 <p>Our Supported Models provide an array of templates for testing and documentation, aimed at specific use-cases. This topic is relevant for model developers who want to know what functionality the Developer Framework provides and how they can extend it.</p>
+<section id="supported-model-types" class="level3">
+<h3 class="anchored" data-anchor-id="supported-model-types">Supported model types</h3>
+<dl>
+<dt>Traditional statistical models</dt>
+<dd>
+<ul>
+<li>Linear regression</li>
+<li>Logistic regression</li>
+<li>Time series</li>
+</ul>
+</dd>
+<dt>Machine learning models</dt>
+<dd>
+<ul>
+<li>Hugging Face-based compatible models:
+<ul>
+<li>Natural language processing (NLP) text classification</li>
+<li>Classification</li>
+<li>Regression</li>
+</ul></li>
+<li>Tree-based models using XGBoost or CatBoost:
+<ul>
+<li>Classification<br>
+</li>
+<li>Regression</li>
+</ul></li>
+</ul>
+</dd>
+<dt>Generative AI models</dt>
+<dd>
+<ul>
+<li>Large language model-based classification (LLM)</li>
+<li>Large language model-based text summarization (LLM)</li>
+</ul>
+</dd>
+</dl>
+<p>Modeling frameworks/packages: Scikit-learn statsmodels PyTorch Hugging Face Transformers XGBoost CatBoost LightGBM R models (via rpy2 bridge interface) LLM models (via OpenAI compatible APIs)</p>
+<p>These model types cover a very large portion of the models used in commercial and retail banking. However, given the rapid developments in the AI space (e.g.&nbsp;LLMs), ValidMind’s engineering focus has gone into making sure our developer framework is extensible to support future model types/modeling packages, so that we do not box our customers into specific model types. Customers can already add support for new model types and modeling frameworks on our Developer Framework today.</p>
+</section>
 <section id="what-is-a-supported-model" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-a-supported-model">What is a supported model?</h2>
 <p>A <em>supported model</em> refers to a model for which predefined testing or documentation functions exist in the ValidMind Developer Framework, provided that the model you are developing is documented using a supported version of our client library.</p>
 <!--- TO DO This text might need a bit more expansion --->
 <p>Please note the inherent dependency on data types, such as tabular, time series, and text data types. This distinction isn’t always immediately evident. For example: while binary classification is possible on text datasets, only the <code>tabular_dataset</code> suite is explicitly mentioned in our list of supported models.</p>
 <p>Additionally, the framework might accommodate additional models not explicitly listed. The absence of pre-configured tests for these models doesn’t necessarily indicate a lack of support. You always have the flexibility to <a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html">integrate your own tests or connect to an external test provider</a>, if needed.</p>
-</section>
-<section id="currently-supported-models" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="currently-supported-models">Currently supported models</h2>
-<p>As of release (v1.26.6), the Developer Framework supports the following model types:</p>
-<div class="column-page">
-<table class="table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 10%">
-<col style="width: 20%">
-<col style="width: 35%">
-<col style="width: 11%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Problem type</th>
-<th>Goal</th>
-<th>Test Suite</th>
-<th>Supported Libraries</th>
-<th>Tests</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Data validation</td>
-<td>tabular_dataset</td>
-<td>numpy, pandas</td>
-<td>DatasetMetadata, DatasetDescription, DescriptiveStatistics, DatasetCorrelations</td>
-</tr>
-<tr class="even">
-<td>Binary classification</td>
-<td>Data validation</td>
-<td>tabular_dataset</td>
-<td>numpy, pandas</td>
-<td>ClassImbalance, Duplicates, HighCardinality, HighPearsonCorrelation, MissingValues, Skewness, UniqueRows, TooManyZeroValues</td>
-</tr>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>ModelMetadata, DatasetSplit, ConfusionMatrix, ClassifierInSamplePerformance, ClassifierOutOfSamplePerformance, PermutationFeatureImportance, PrecisionRecallCurve, ROCCurve, CharacteristicStabilityIndex, PopulationStabilityIndex, SHAPGlobalImportance</td>
-</tr>
-<tr class="even">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>MinimumAccuracy, MinimumF1Score, MinimumROCAUCScore, TrainingTestDegradation</td>
-</tr>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>OverfitDiagnosis, WeakspotsDiagnosis, RobustnessDiagnosis</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>TimeSeriesOutliers, TimeSeriesMissingValues, TimeSeriesFrequency</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>TimeSeriesLinePlot, TimeSeriesHistogram, ACFandPACFPlot, SeasonalDecompose, AutoSeasonality, AutoStationarity, RollingStatsPlot, AutoAR, AutoMA</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>ScatterPlot, LaggedCorrelationHeatmap, EngleGrangerCoint, SpreadPlot</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelSummary</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelInsampleComparison, RegressionModelOutsampleComparison</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelForecastPlot</td>
-</tr>
-</tbody>
-</table>
-</div>
 </section>
 <section id="related-topics" class="level2">
 <h2 class="anchored" data-anchor-id="related-topics">Related Topics</h2>
