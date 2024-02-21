@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -291,6 +291,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rendering more than one unique result for the same metric</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/explore_test_suites.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Viewing All Available Test Suites and Tests</span></a>
   </div>
@@ -413,20 +419,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../tests/data_validation/DatasetCorrelations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DatasetCorrelations</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../tests/data_validation/DatasetDescription.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">DatasetDescription</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../tests/data_validation/DatasetMetadata.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DatasetMetadata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1404,12 +1398,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/code_samples/LLM_and_NLP/nlp_sentiment_analysis_catboost_demo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">NLP Sentiment Analysis with CatBoost</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Prompt Validation for Large Language Models (LLMs)</span></a>
   </div>
@@ -1429,12 +1417,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Quickstart for California Housing Regression Model Documentation — Full Suite</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/code_samples/regression/regression_model_full_suite_demo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">California Housing Regression Model Documentation — Full Suite</span></a>
   </div>
 </li>
       </ul>
@@ -1484,7 +1466,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <li><a href="#before-you-begin" id="toc-before-you-begin" class="nav-link" data-scroll-target="#before-you-begin">Before you begin</a></li>
   <li><a href="#install-the-client-library" id="toc-install-the-client-library" class="nav-link" data-scroll-target="#install-the-client-library">Install the client library</a></li>
   <li><a href="#initialize-the-client-library" id="toc-initialize-the-client-library" class="nav-link" data-scroll-target="#initialize-the-client-library">Initialize the client library</a></li>
-  <li><a href="#initialize-the-python-environment" id="toc-initialize-the-python-environment" class="nav-link" data-scroll-target="#initialize-the-python-environment">Initialize the Python environment</a></li>
   <li><a href="#load-the-sample-dataset" id="toc-load-the-sample-dataset" class="nav-link" data-scroll-target="#load-the-sample-dataset">Load the sample dataset</a>
   <ul class="collapse">
   <li><a href="#initialize-the-training-and-test-datasets" id="toc-initialize-the-training-and-test-datasets" class="nav-link" data-scroll-target="#initialize-the-training-and-test-datasets">Initialize the training and test datasets</a></li>
@@ -1518,11 +1499,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 <section id="configuring-and-using-dataset-features" class="level1">
 <h1>Configuring and Using Dataset Features</h1>
-<p>This notebook shows model developers how they can learn more about configuring and using the features in <code>init_dataset</code> These instructions include the code required to:</p>
-<ul>
-<li>…</li>
-<li>…</li>
-</ul>
+<p>This notebook shows how to use custom feature columns with <code>init_dataset</code>. The default behavior of <code>init_dataset</code> is to utilize all dataset columns when running tests. As we’ll see below, it is also possible to pass in a list of features to use and thus restrict computations to only those features.</p>
 <section id="validmind-at-a-glance" class="level2">
 <h2 class="anchored" data-anchor-id="validmind-at-a-glance">ValidMind at a glance</h2>
 <p>ValidMind’s platform enables organizations to identify, document, and manage model risks for all types of models, including AI/ML models, LLMs, and statistical models. As a model developer, you use the ValidMind Developer Framework to automate documentation and validation tests, and then use the ValidMind AI Risk Platform UI to collaborate on documentation projects. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.</p>
@@ -1548,7 +1525,6 @@ New to ValidMind?
 <p>Signing up is FREE — <a href="https://app.prod.validmind.ai"><strong>Sign up now</strong></a></p>
 </div>
 </div>
-<p>This notebook requires an OpenAI API secret key to run. If you don’t have one, visit <a href="https://platform.openai.com/account/api-keys">API keys</a> on OpenAI’s site to create a new key for yourself. Note that API usage charges may apply.</p>
 <p>If you encounter errors due to missing modules in your Python environment, install the modules with <code>pip install</code>, and then re-run the notebook. For more help, refer to <a href="https://docs.python.org/3/installing/index.html">Installing Python Modules</a>.</p>
 </section>
 <section id="install-the-client-library" class="level2">
@@ -1572,47 +1548,29 @@ New to ValidMind?
 <div id="cell-6" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace this placeholder with the code snippet from your own project ##</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"..."</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"..."</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"..."</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="initialize-the-python-environment" class="level2">
-<h2 class="anchored" data-anchor-id="initialize-the-python-environment">Initialize the Python environment</h2>
-<p>Next, let’s import the necessary libraries and set up your Python environment for data analysis:</p>
-<div id="cell-8" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-the-sample-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="load-the-sample-dataset">Load the sample dataset</h2>
-<div id="cell-10" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the sample dataset from the library</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># You can also try a different dataset with:</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># from validmind.datasets.classification import taiwan_credit as demo_dataset</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>demo_dataset.target_column</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the sample dataset from the library</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># You can also try a different dataset with:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># from validmind.datasets.classification import taiwan_credit as demo_dataset</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> demo_dataset.load_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="initialize-the-training-and-test-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="initialize-the-training-and-test-datasets">Initialize the training and test datasets</h3>
@@ -1620,56 +1578,55 @@ New to ValidMind?
 <p>This function takes a number of arguments:</p>
 <ul>
 <li><code>dataset</code> — the raw dataset that you want to analyze</li>
+<li><code>input_id</code> - a unique identifier that allows tracking what inputs are used when running each individual test</li>
 <li><code>target_column</code> —&nbsp;the name of the target column in the dataset</li>
 <li><code>feature_columns</code> - the names of the feature columns in the dataset</li>
 </ul>
-<p>With the datasets ready, you can now initialize the training and test datasets (<code>train_df</code> and <code>test_df</code>) created earlier into their own dataset objects using <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset"><code>vm.init_dataset()</code></a>:</p>
-<div id="cell-14" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [<span class="st">'CreditScore'</span>, <span class="st">'Age'</span>, <span class="st">'Tenure'</span>, <span class="st">'Balance'</span>, <span class="st">'NumOfProducts'</span>, <span class="st">'HasCrCard'</span>, <span class="st">'IsActiveMember'</span>, <span class="st">'EstimatedSalary'</span>]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    feature_columns<span class="op">=</span>feature_columns</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [<span class="st">'CreditScore'</span>, <span class="st">'Age'</span>, <span class="st">'Tenure'</span>, <span class="st">'Balance'</span>, <span class="st">'NumOfProducts'</span>, <span class="st">'HasCrCard'</span>, <span class="st">'IsActiveMember'</span>, <span class="st">'EstimatedSalary'</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"raw_dataset"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    feature_columns<span class="op">=</span>feature_columns</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="defining-custom-features" class="level3">
 <h3 class="anchored" data-anchor-id="defining-custom-features">Defining custom features</h3>
-<p>This section shows how defining custom features enables us to:</p>
-<ul>
-<li>Use these custom features to compute dataset metrics.</li>
-<li>Employ the columns not included as features for additional purposes, such as segmenting the metrics.</li>
-</ul>
+<p>This section shows how we can define a subset of features to use when computing dataset metrics. Any feature that is not included in the <code>feature_columns</code> argument is omitted from the computation of the <code>DescriptiveStatistics</code> metric in the examples below.</p>
 <p>In the following example we use the metric <code>DescriptiveStatistics</code> to show how the output changes when customizing features.</p>
 <ol type="1">
 <li>Running metric with all the features.</li>
 </ol>
-<div id="cell-18" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.DescriptiveStatistics"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"dataset"</span>:vm_dataset}</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"raw_dataset_all_features"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.DescriptiveStatistics"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"dataset"</span>:vm_dataset}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>Running metric with a subset of features.</li>
 </ol>
-<div id="cell-20" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    feature_columns<span class="op">=</span>[<span class="st">'CreditScore'</span>, <span class="st">'Age'</span>, <span class="st">'Balance'</span>, <span class="st">'Geography'</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.DescriptiveStatistics"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"dataset"</span>:vm_dataset}</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vm_dataset <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"raw_dataset_subset"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    feature_columns<span class="op">=</span>[<span class="st">'CreditScore'</span>, <span class="st">'Age'</span>, <span class="st">'Balance'</span>, <span class="st">'Geography'</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.DescriptiveStatistics"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"dataset"</span>:vm_dataset}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -2231,7 +2188,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../guide/testing-overview.html" class="pagination-link  aria-label=" run="" tests="" &amp;="" test="" suites"="">
+      <a href="../../guide/testing-overview.html" class="pagination-link" aria-label="Run tests &amp; test suites">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Run tests &amp; test suites</span>
       </a>          
   </div>

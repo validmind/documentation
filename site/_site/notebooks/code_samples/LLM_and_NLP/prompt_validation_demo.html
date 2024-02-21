@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
 <link href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" rel="next">
-<link href="../../../notebooks/code_samples/LLM_and_NLP/nlp_sentiment_analysis_catboost_demo.html" rel="prev">
+<link href="../../../notebooks/code_samples/LLM_and_NLP/hugging_face_summarization_demo.html" rel="prev">
 <link href="../../../validmind.png" rel="icon" type="image/png">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -291,6 +291,12 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rendering more than one unique result for the same metric</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/explore_test_suites.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Viewing All Available Test Suites and Tests</span></a>
   </div>
@@ -413,20 +419,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../tests/data_validation/DatasetCorrelations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DatasetCorrelations</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../../tests/data_validation/DatasetDescription.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">DatasetDescription</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../tests/data_validation/DatasetMetadata.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DatasetMetadata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1404,12 +1398,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../notebooks/code_samples/LLM_and_NLP/nlp_sentiment_analysis_catboost_demo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">NLP Sentiment Analysis with CatBoost</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Prompt Validation for Large Language Models (LLMs)</span></a>
   </div>
@@ -1429,12 +1417,6 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Quickstart for California Housing Regression Model Documentation — Full Suite</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../notebooks/code_samples/regression/regression_model_full_suite_demo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">California Housing Regression Model Documentation — Full Suite</span></a>
   </div>
 </li>
       </ul>
@@ -1486,8 +1468,8 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
   <li><a href="#initialize-the-client-library" id="toc-initialize-the-client-library" class="nav-link" data-scroll-target="#initialize-the-client-library">Initialize the client library</a>
   <ul class="collapse">
   <li><a href="#preview-the-documentation-template" id="toc-preview-the-documentation-template" class="nav-link" data-scroll-target="#preview-the-documentation-template">Preview the documentation template</a></li>
-  <li><a href="#download-the-test-dataset" id="toc-download-the-test-dataset" class="nav-link" data-scroll-target="#download-the-test-dataset">Download the test dataset</a></li>
   <li><a href="#get-ready-to-run-the-analysis" id="toc-get-ready-to-run-the-analysis" class="nav-link" data-scroll-target="#get-ready-to-run-the-analysis">Get ready to run the analysis</a></li>
+  <li><a href="#get-your-sample-dataset-ready-for-analysis" id="toc-get-your-sample-dataset-ready-for-analysis" class="nav-link" data-scroll-target="#get-your-sample-dataset-ready-for-analysis">Get your sample dataset ready for analysis</a></li>
   </ul></li>
   <li><a href="#perform-the-prompt-validation" id="toc-perform-the-prompt-validation" class="nav-link" data-scroll-target="#perform-the-prompt-validation">Perform the prompt validation</a></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
@@ -1569,15 +1551,14 @@ New to ValidMind?
 <div id="cell-6" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Replace this placeholder with the code snippet from your own project ##</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"..."</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"..."</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"..."</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  api_host <span class="op">=</span> <span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  api_key <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  api_secret <span class="op">=</span> <span class="st">"..."</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  project <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="preview-the-documentation-template" class="level3">
 <h3 class="anchored" data-anchor-id="preview-the-documentation-template">Preview the documentation template</h3>
@@ -1587,23 +1568,14 @@ New to ValidMind?
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vm.preview_template()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="download-the-test-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="download-the-test-dataset">Download the test dataset</h3>
-<p>To perform the sentiment analysis for financial news, you need a sample dataset:</p>
-<ol type="1">
-<li><p>Download the sample dataset from https://www.kaggle.com/datasets/ankurzing/sentiment-analysis-for-financial-news.</p>
-<p>This dataset contains two columns, <code>Sentiment</code> and <code>News Headline</code>. The sentiment can be <code>negative</code>, <code>neutral</code> or <code>positive</code>.</p></li>
-<li><p>Move the CSV file that contains the dataset into the current directory.</p></li>
-</ol>
-</section>
 <section id="get-ready-to-run-the-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="get-ready-to-run-the-analysis">Get ready to run the analysis</h3>
 <p>Import the ValidMind <code>FoundationModel</code> and <code>Prompt</code> classes needed for the sentiment analysis later on:</p>
-<div id="cell-11" class="cell">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.models <span class="im">import</span> FoundationModel, Prompt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Check your access to the OpenAI API:</p>
-<div id="cell-13" class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dotenv</span>
@@ -1612,7 +1584,7 @@ New to ValidMind?
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.getenv(<span class="st">"OPENAI_API_KEY"</span>) <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"OPENAI_API_KEY not found"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-14" class="cell">
+<div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> OpenAI()</span>
@@ -1626,7 +1598,7 @@ New to ValidMind?
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    ).choices[<span class="dv">0</span>].message.content</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Set the prompt guidelines for the sentiment analysis:</p>
-<div id="cell-16" class="cell">
+<div id="cell-15" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prompt_template <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">You are an AI with expertise in sentiment analysis, particularly in the context of financial news.</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">Your task is to analyze the sentiment of a specific sentence provided below.</span></span>
@@ -1645,8 +1617,12 @@ New to ValidMind?
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>prompt_variables <span class="op">=</span> [<span class="st">"Sentence"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Get your sample dataset ready for analysis:</p>
-<div id="cell-18" class="cell">
+</section>
+<section id="get-your-sample-dataset-ready-for-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="get-your-sample-dataset-ready-for-analysis">Get your sample dataset ready for analysis</h3>
+<p>To perform the sentiment analysis for financial news we’re going to load a local copy of this dataset: https://www.kaggle.com/datasets/ankurzing/sentiment-analysis-for-financial-news.</p>
+<p>This dataset contains two columns, <code>Sentiment</code> and <code>Sentence</code>. The sentiment can be <code>negative</code>, <code>neutral</code> or <code>positive</code>.</p>
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'./datasets/sentiments.csv'</span>)</span>
@@ -1659,36 +1635,30 @@ New to ValidMind?
 <section id="perform-the-prompt-validation" class="level2">
 <h2 class="anchored" data-anchor-id="perform-the-prompt-validation">Perform the prompt validation</h2>
 <p>First, use the ValidMind Developer Framework to initialize the dataset and model objects necessary for documentation. The ValidMind <code>predict_fn</code> function allows the model to be tested and evaluated in a standardized manner:</p>
-<div id="cell-20" class="cell">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>df_test,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    text_column<span class="op">=</span><span class="st">"Sentence"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Sentiment"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> FoundationModel(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    predict_fn<span class="op">=</span>call_model,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    prompt<span class="op">=</span>Prompt(</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        template<span class="op">=</span>prompt_template,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        variables<span class="op">=</span>prompt_variables,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"test_dataset"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    text_column<span class="op">=</span><span class="st">"Sentence"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Sentiment"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> FoundationModel(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    predict_fn<span class="op">=</span>call_model,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    prompt<span class="op">=</span>Prompt(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        template<span class="op">=</span>prompt_template,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        variables<span class="op">=</span>prompt_variables,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, use the ValidMind Developer Framework to run validation tests on the model. These tests evaluate various aspects of the prompts, including bias, clarity, conciseness, delimitation, negative instruction, and specificity.</p>
 <p>Each test is explained in detail, highlighting its purpose, test mechanism, and the importance of the specific aspect being evaluated. The tests are graded on a scale from 1 to 10, with a predetermined threshold, and the explanations for each test include a score, threshold, and a pass/fail determination.</p>
-<div id="cell-22" class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the full suite with the following command (it will take a while):</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># suite_results = vm.run_documentation_tests(dataset=vm_test_ds, model=vm_model)</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># By default the tests will use GPT-3.5 as the evaluation model, to get better results use GPT:</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># os.environ["VM_OPENAI_MODEL"] = "gpt4"</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>test_suite_results <span class="op">=</span> vm.run_test_suite(</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"prompt_validation"</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"model"</span>:vm_model}</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>test_suite_results <span class="op">=</span> vm.run_test_suite(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"prompt_validation"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> {<span class="st">"model"</span>: vm_model}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here, most of the tests pass but the test for <em>conciseness</em> needs further attention, as it fails the threshold. This test is designed to evaluate the brevity and succinctness of prompts provided to a large language model (LLM).</p>
 <p>The test matters, because a concise prompt strikes a balance between offering clear instructions and eliminating redundant or unnecessary information, ensuring that the LLM receives relevant input without being overwhelmed.</p>
@@ -2262,8 +2232,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../notebooks/code_samples/LLM_and_NLP/nlp_sentiment_analysis_catboost_demo.html" class="pagination-link  aria-label=" nlp="" sentiment="" analysis="" with="" catboost"="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">NLP Sentiment Analysis with CatBoost</span>
+      <a href="../../../notebooks/code_samples/LLM_and_NLP/hugging_face_summarization_demo.html" class="pagination-link" aria-label="Summarization of Financial Data Using Hugging Face NLP models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Summarization of Financial Data Using Hugging Face NLP models</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
