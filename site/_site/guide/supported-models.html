@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-02-21">
+<meta name="dcterms.date" content="2024-02-23">
 
 <title>ValidMind - Supported models</title>
 <style>
@@ -1412,13 +1412,19 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#what-is-a-supported-model" id="toc-what-is-a-supported-model" class="nav-link active" data-scroll-target="#what-is-a-supported-model">What is a supported model?</a></li>
-  <li><a href="#currently-supported-models" id="toc-currently-supported-models" class="nav-link" data-scroll-target="#currently-supported-models">Currently supported models</a></li>
+  <li><a href="#supported-model-types" id="toc-supported-model-types" class="nav-link" data-scroll-target="#supported-model-types">Supported model types</a>
+  <ul class="collapse">
+  <li><a href="#traditional-statistical-models" id="toc-traditional-statistical-models" class="nav-link" data-scroll-target="#traditional-statistical-models">Traditional statistical models</a></li>
+  <li><a href="#machine-learning-models" id="toc-machine-learning-models" class="nav-link" data-scroll-target="#machine-learning-models">Machine learning models</a></li>
+  <li><a href="#generative-ai-models" id="toc-generative-ai-models" class="nav-link" data-scroll-target="#generative-ai-models">Generative AI models</a></li>
+  </ul></li>
+  <li><a href="#supported-modeling-libraries-and-other-tools" id="toc-supported-modeling-libraries-and-other-tools" class="nav-link" data-scroll-target="#supported-modeling-libraries-and-other-tools">Supported modeling libraries and other tools</a></li>
   <li><a href="#related-topics" id="toc-related-topics" class="nav-link" data-scroll-target="#related-topics">Related Topics</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/validmind/documentation/edit/main/site/guide/supported-models.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -1433,7 +1439,7 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 21, 2024</p>
+      <p class="date">February 23, 2024</p>
     </div>
   </div>
   
@@ -1443,122 +1449,109 @@ gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
 
 </header>
 
-<p>Our Supported Models provide an array of templates for testing and documentation, aimed at specific use-cases. This topic is relevant for model developers who want to know what functionality the Developer Framework provides and how they can extend it.</p>
+<p>ValidMind’s Developer Framework provides out-of-the-box support for testing and documentation for an array of model types and modeling packages.</p>
 <section id="what-is-a-supported-model" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-a-supported-model">What is a supported model?</h2>
-<p>A <em>supported model</em> refers to a model for which predefined testing or documentation functions exist in the ValidMind Developer Framework, provided that the model you are developing is documented using a supported version of our client library.</p>
-<!--- TO DO This text might need a bit more expansion --->
-<p>Please note the inherent dependency on data types, such as tabular, time series, and text data types. This distinction isn’t always immediately evident. For example: while binary classification is possible on text datasets, only the <code>tabular_dataset</code> suite is explicitly mentioned in our list of supported models.</p>
-<p>Additionally, the framework might accommodate additional models not explicitly listed. The absence of pre-configured tests for these models doesn’t necessarily indicate a lack of support. You always have the flexibility to <a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html">integrate your own tests or connect to an external test provider</a>, if needed.</p>
+<p>A <em>supported model</em> refers to a model for which predefined testing or documentation functions exist in the ValidMind Developer Framework, provided that the model you are developing is documented using a supported version of our client library. These model types cover a very large portion of the models used in commercial and retail banking.</p>
+<p>Given the rapid developments in the AI space, including the advent of large language models (LLMs), ValidMind product development has also focused on making sure that our developer framework is extensible to support future model types or modeling packages, so that we do not limit our users to specific model types. You always have the flexibility to:</p>
+<ul>
+<li><a href="../notebooks/how_to/implementing_custom_tests.html">Implement custom tests</a></li>
+<li><a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html">Integrate external test providers</a></li>
+</ul>
+<!--- Please note the inherent dependency on data types, such as tabular, time series, and text data types. This distinction isn't always immediately evident. For example: while binary classification is possible on text datasets, only the `tabular_dataset` suite is explicitly mentioned in our list of supported models.--->
 </section>
-<section id="currently-supported-models" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="currently-supported-models">Currently supported models</h2>
-<p>As of release (v1.26.6), the Developer Framework supports the following model types:</p>
-<div class="column-page">
-<table class="table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 10%">
-<col style="width: 20%">
-<col style="width: 35%">
-<col style="width: 11%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Problem type</th>
-<th>Goal</th>
-<th>Test Suite</th>
-<th>Supported Libraries</th>
-<th>Tests</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Data validation</td>
-<td>tabular_dataset</td>
-<td>numpy, pandas</td>
-<td>DatasetMetadata, DatasetDescription, DescriptiveStatistics, DatasetCorrelations</td>
-</tr>
-<tr class="even">
-<td>Binary classification</td>
-<td>Data validation</td>
-<td>tabular_dataset</td>
-<td>numpy, pandas</td>
-<td>ClassImbalance, Duplicates, HighCardinality, HighPearsonCorrelation, MissingValues, Skewness, UniqueRows, TooManyZeroValues</td>
-</tr>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>ModelMetadata, DatasetSplit, ConfusionMatrix, ClassifierInSamplePerformance, ClassifierOutOfSamplePerformance, PermutationFeatureImportance, PrecisionRecallCurve, ROCCurve, CharacteristicStabilityIndex, PopulationStabilityIndex, SHAPGlobalImportance</td>
-</tr>
-<tr class="even">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>MinimumAccuracy, MinimumF1Score, MinimumROCAUCScore, TrainingTestDegradation</td>
-</tr>
-<tr class="odd">
-<td>Binary classification</td>
-<td>Model validation</td>
-<td>binary_classifier_model_validation</td>
-<td>sklearn.RandomForestClassifier, sklearn.LogisticRegression, xgboost.XGBClassifier, CatBoostClassifier</td>
-<td>OverfitDiagnosis, WeakspotsDiagnosis, RobustnessDiagnosis</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>TimeSeriesOutliers, TimeSeriesMissingValues, TimeSeriesFrequency</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>TimeSeriesLinePlot, TimeSeriesHistogram, ACFandPACFPlot, SeasonalDecompose, AutoSeasonality, AutoStationarity, RollingStatsPlot, AutoAR, AutoMA</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Data validation</td>
-<td>time_series_dataset</td>
-<td>numpy, pandas</td>
-<td>ScatterPlot, LaggedCorrelationHeatmap, EngleGrangerCoint, SpreadPlot</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelSummary</td>
-</tr>
-<tr class="even">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelInsampleComparison, RegressionModelOutsampleComparison</td>
-</tr>
-<tr class="odd">
-<td>Time series</td>
-<td>Model validation</td>
-<td>time_series_model_validation</td>
-<td>statsmodels.regression.linear_model.OLS, statsmodels.regression.linear_model.GLS, sklearn.linear_model.LinearRegression, xgboost.XGBRegressor</td>
-<td>RegressionModelForecastPlot</td>
-</tr>
-</tbody>
-</table>
+<section id="supported-model-types" class="level2">
+<h2 class="anchored" data-anchor-id="supported-model-types">Supported model types</h2>
+<section id="traditional-statistical-models" class="level3">
+<h3 class="anchored" data-anchor-id="traditional-statistical-models">Traditional statistical models</h3>
+<ul>
+<li>Linear regression: Models relationship between a scalar response and one or more explanatory variables.</li>
+<li>Logistic regression: Predicts the probability of a binary outcome based on one or more predictor variables.</li>
+<li>Time series: Analyzes data points collected or sequenced over time.</li>
+</ul>
+</section>
+<section id="machine-learning-models" class="level3">
+<h3 class="anchored" data-anchor-id="machine-learning-models">Machine learning models</h3>
+<dl>
+<dt>Hugging Face-compatible models</dt>
+<dd>
+<ul>
+<li>Natural language processing (NLP) text classification: Categorizes text into predefined classes.</li>
+<li>Tabular classification: Assigns categories to tabular dataset entries.</li>
+<li>Tabular regression: Predicts continuous outcomes from tabular data.</li>
+</ul>
+</dd>
+<dt>Tree-based models (XGBoost / CatBoost / random forest)</dt>
+<dd>
+<ul>
+<li>Classification: Predicts categorical outcomes using decision trees.</li>
+<li>Regression: Predicts continuous outcomes using decision trees.</li>
+</ul>
+</dd>
+<dt>K-nearest neighbors (KNN)</dt>
+<dd>
+<ul>
+<li>Classification: Assigns class by majority vote of the k-nearest neighbors.</li>
+<li>Regression: Predicts value based on the average of the k-nearest neighbors.</li>
+</ul>
+</dd>
+<dt>Clustering</dt>
+<dd>
+<ul>
+<li>K-means: Partitions <em>n</em> observations into <em>k</em> clusters in which each observation belongs to the cluster with the nearest mean.</li>
+</ul>
+</dd>
+<dt>Neural networks</dt>
+<dd>
+<ul>
+<li>Long short-term memory (LSTM): Processes sequences of data, remembering inputs over long periods.</li>
+<li>Recurrent neural network (RNN): Processes sequences by maintaining a state that reflects the history of processed elements.</li>
+<li>Convolutional neural network (CNN): Primarily used for processing grid-like data such as images.</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="generative-ai-models" class="level3">
+<h3 class="anchored" data-anchor-id="generative-ai-models">Generative AI models</h3>
+<dl>
+<dt>Large language models (LLMs)</dt>
+<dd>
+<ul>
+<li>Classification: Categorizes input into predefined classes.</li>
+<li>Text summarization: Generates concise summaries from longer texts.</li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="supported-modeling-libraries-and-other-tools" class="level2">
+<h2 class="anchored" data-anchor-id="supported-modeling-libraries-and-other-tools">Supported modeling libraries and other tools</h2>
+<div class="grid">
+<div class="g-col-6">
+<ul>
+<li><a href="https://scikit-learn.org/stable/">scikit-learn</a>: A Python library for machine learning, offering a range of supervised and unsupervised learning algorithms.</li>
+<li><a href="https://www.statsmodels.org/stable/index.html">statsmodels</a>: A Python module that provides classes and functions for the estimation of many different statistical models, as well as for conducting statistical tests and exploring data.</li>
+<li><a href="https://pytorch.org/">PyTorch</a>: An open-source machine learning library based on the Torch library, used for applications such as computer vision and natural language processing.</li>
+<li><a href="https://huggingface.co/docs/transformers/en/index">Hugging Face Transformers</a>: Provides thousands of pre-trained models to perform tasks on texts such as classification, information extraction, question answering, summarization, translation, and text generation.</li>
+<li><a href="https://xgboost.readthedocs.io/en/stable/">XGBoost</a>: An optimized distributed gradient boosting library designed to be highly efficient, flexible, and portable, implementing machine learning algorithms under the Gradient Boosting framework.</li>
+</ul>
+</div>
+<div class="g-col-6">
+<ul>
+<li><a href="https://catboost.ai/">CatBoost</a>: An open-source gradient boosting on decision trees library with categorical feature support out of the box, for ranking, classification, regression, and other ML tasks.</li>
+<li><a href="https://lightgbm.readthedocs.io/en/stable/">LightGBM</a>: A fast, distributed, high-performance gradient boosting (GBDT, GBRT, GBM, or MART) framework based on decision tree algorithms, used for ranking, classification, and many other machine learning tasks.</li>
+<li>R models, via <a href="https://rpy2.github.io/">rpy2 - R in Python</a>: Facilitates the integration of R’s statistical computing and graphics capabilities with Python, allowing for R models to be called from Python.</li>
+<li>Large language models (LLMs), via <a href="https://platform.openai.com/docs/introduction">OpenAI-compatible APIs</a>: Access to advanced AI models trained by OpenAI for a variety of natural language tasks, including text generation, translation, and analysis, through a compatible API interface. This support includes both the OpenAI API and the Azure OpenAI Service via API.</li>
+</ul>
+</div>
 </div>
 </section>
 <section id="related-topics" class="level2">
 <h2 class="anchored" data-anchor-id="related-topics">Related Topics</h2>
 <ul>
-<li><p>Check out our <a href="../guide/get-started-developer-framework.html">Developer Framework documentation</a> for more details on how to use our documentation and testing functions with supported models.</p></li>
-<li><p>For additional tests that are not supported, refer to our documentation on <a href="../notebooks/how_to/implementing_custom_tests.html">Implementing Custom Tests</a> and <a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html">Integrating External Test Providers.</a></p></li>
+<li><a href="../guide/testing-overview.html">Run tests &amp; test suites</a></li>
+<li><a href="../guide/test-descriptions.html">Test descriptions</a></li>
+<li><a href="../guide/samples-jupyter-notebooks.html">Code samples</a></li>
 </ul>
 
 
