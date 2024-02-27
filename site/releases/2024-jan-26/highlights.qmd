@@ -1,0 +1,237 @@
+---
+title: "January 26, 2024"
+---
+
+## Release highlights
+
+This release includes numerous improvements to the ValidMind Developer Framework, including new features for model and dataset initialization, easier testing, support for additional inputs and the Azure OpenAI API, updated notebooks, bug fixes, deprecations, and much more.
+
+### ValidMind Developer Framework (v1.25.3)
+
+<!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
+
+#### Improvements to `init_model`
+
+When initializing a model, you can now pass a dataset with pre-computed model predictions if they are available. By default, if no prediction column is specified when calling `init_model`, the ValidMind Developer Framework will compute the model predictions on the entire dataset.
+
+To illustrate how passing a dataset that includes a prediction column can help, consider the following example without a prediction column: 
+
+```python
+vm_model = vm.init_model(
+    model,
+    train_ds=vm_train_ds,
+    test_ds=vm_test_ds,
+)
+```
+
+Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. This approach can be problematic with large datasets: `init_model` can simply take too long to compute.
+
+You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. If `init_model` detects this column, it will not generate model predictions at runtime. 
+
+|x1|x2|...|target_column|prediction_column|
+|-|-|-|-|-|
+|0.1|0.2|...|0|0|
+|0.2|0.4|1...|1|1|
+
+Usage example with a prediction column:
+
+```python
+vm.init_dataset(
+     dataset=df,
+     feature_columns=[...],
+     target_column= ...,
+     extra_columns={
+         prediction_column: 'NAME-OF-PREDICTION-COLUMN',
+    },
+)
+```
+
+<!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
+#### Improvements to `init_dataset`
+
+When initializing a dataset, the new `feature_columns` argument lets you specify a list of feature names for prediction to improve efficiency. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation. 
+
+This improvement replaces the existing behavior of `init_dataset`, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented metrics and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.
+
+Usage example:
+
+```python
+feature_columns = ['CreditScore', 'Age', 'Balance', 'NumOfProducts', 'EstimatedSalary']
+
+vm_train_ds = vm.init_dataset(
+    dataset=train_df,
+    target_column=demo_dataset.target_column,
+    feature_columns=feature_columns
+)
+```
+
+A new notebook illustrates how you can configure these dataset features:
+
+- How to utilize the `feature_columns` parameter when initizalizing `validmind` datasets and model objects
+- How `feature_columns` can be used to report by segment
+
+Try it: [Configuring and Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+
+<!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
+#### Improvements to `run_documentation_tests()`
+
+The `run_documentation_tests()` function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. This means that you no longer need to call the same function twice for two different sections, reducing the potential for errors and enabling you to use a single `config` object. The previous behavior was to allow running only one section at a time. This change maintains backward compatibility with the existing syntax, requiring no updates to your code.
+
+Existing example usage: Multiple function calls are needed to run multiple sections
+
+```python
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section="section_1",
+    config={
+        "validmind.tests.data_validation.ClassImbalance": ...
+    } 
+)
+
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section="section_2",
+    config={
+        "validmind.tests.data_validation.Duplicates": ...
+    } 
+)
+```
+
+New example usage: A single function call runs multiple sections
+
+```python
+full_suite = vm.run_documentation_tests(
+    inputs = {
+        ...
+    },
+    section=["section_1", "section_2"],
+    config={
+        "validmind.tests.data_validation.ClassImbalance": ...,
+        "validmind.tests.data_validation.Duplicates": ...
+    } 
+)
+```
+
+Try it: [Running Individual Documentation Sections](../../notebooks/how_to/run_documentation_sections.ipynb)
+
+<!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
+#### Support for custom inputs <span id="custom-input-new">
+
+The ValidMind Developer Framework now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. This support replaces the standard inputs `dataset`, `model`, and `models`, which are now deprecated.
+
+New recommended syntax for passing inputs:
+
+```python
+test_suite = vm.run_documentation_tests(
+    inputs={
+        "dataset": vm_dataset,
+        "model": vm_model,
+    },
+)
+```
+
+<!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
+To make it easier for you to adopt custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
+
+- How-to notebooks, including:
+  - [Integrate An External Test Provider](../../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
+  - [Configuring And Using Dataset Features](../../notebooks/how_to/configure_dataset_features.ipynb)
+  - [Configure Parameters for a Specific Test](../../notebooks/how_to/configure_parameters_demo.ipynb)
+  - [Running an Individual Test](../../notebooks/how_to/run_a_test.ipynb)
+  - [Running an Individual Test Suite](../../notebooks/how_to/run_a_test_suite.ipynb)
+
+- [Code samples](../../guide/samples-jupyter-notebooks.qmd), including:
+  - NLP and LLM models
+  - Regression models
+  - Time series models
+
+Also check [Standard inputs are deprecated](#custom-input-legacy).
+
+## Enhancements
+
+<!---John6797/sc 2524/support for azure open ai api keys dev framework by @johnwalz97 in [#300](https://github.com/validmind/developer-framework/pull/300)--->
+- **Support for Azure OpenAI Service**. The ValidMInd Developer Framework now supports running LLM-powered tests with the Azure OpenAI Service via API, in addition to the previously supported OpenAI API. To work with Azure OpenAI API endpoints, you need to set the following environment variables before calling `vm.init()`:
+
+  - `AZURE_OPENAI_KEY`: API key for authentication
+  - `AZURE_OPENAI_ENDPOINT`: API endpoint URL
+  - `AZURE_OPENAI_MODEL`: Specifies the language model or service to use
+  - `AZURE_OPENAI_VERSION` (optional): Allows specifying a specific version of the service if available
+
+To learn more about configuring Azure OpenAI Service, see [Authentication](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication) in the official Microsoft documentation.
+
+<!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
+<!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
+
+<!---[SC 2527] `init_dataset` should not attempt to preprocess the input dataset by @AnilSorathiya in [#297](https://github.com/validmind/developer-framework/pull/297)--->
+<!---- **`init_dataset` should not attempt to preprocess the input dataset**.
+  - Improved performance of `init_dataset`
+  - Improved the output table format of `DatasetDescription` and `Duplicates`--->
+
+## Bug fixes
+
+<!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
+- **Fixed support for OpenAI library >=1.0**. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for `openai >= 1.0.0`. Previously, some notebooks were using an older version of the OpenAI client API.
+
+## Deprecations
+
+<!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
+- **Standard inputs are deprecated**. <span id="custom-input-legacy"> The ValidMind Developer Framework now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
+
+  Deprecated legacy usage for passing inputs:
+
+  ```python
+  test_suite = vm.run_documentation_tests(
+      dataset=vm_dataset,
+      model=vm_model
+  )
+  ```
+
+  New recommended usage for passing inputs:
+
+  ```python
+  test_suite = vm.run_documentation_tests(
+      inputs={
+          "dataset": vm_dataset,
+          "model": vm_model,
+      },
+  )
+  ```
+
+  Also check [Support for custom inputs](#custom-input-new).
+
+<!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
+- **Removed deprecated high-level API methods**: The API methods `run_template` and `run_test_plan` had been deprecated previously. They have now been removed from the ValidMind Developer Framework.
+
+  If you are a developer, you should update your code to use the recommended high-level API methods:
+
+  - `run_template` (removed): Use [`vm.run_documentation_tests`](https://docs.validmind.ai/validmind/validmind.html#run_documentation_tests)
+  - `run_test_plan` (removed) : Use [`vm.run_test_suite`](https://docs.validmind.ai/validmind/validmind.html#run_test_suite)
+
+## User guide
+
+**Updated Python requirements**. We have updated our user guide to clarify the Python versions supported by the ValidMind Developer Framework. We now support **Python {{< var python-version >}}**. 
+
+## How to upgrade
+
+To access the latest version of the [ValidMind Platform UI](http://app.prod.validmind.ai/), reload your browser tab.
+
+To upgrade the ValidMind Developer Framework:
+
+- [Using Jupyter Hub](../../guide/try-developer-framework-with-jupyterhub.qmd): reload your browser tab and re-run the `!pip install --upgrade validmind` cell.
+
+- [Using Docker](../../guide/try-developer-framework-with-docker.qmd): pull the latest Docker image:
+
+    ```jsx
+    docker pull validmind/validmind-jupyter-demo:latest
+
+    ```
+
+- [In your own developer environment](../../guide/install-and-initialize-developer-framework.qmd): restart your notebook and re-run:
+
+    ```python
+    !pip install validmind
+    ```

@@ -332,9 +332,25 @@ if __name__ == '__main__':
 
     print("Extracting pull request data ...")
 
-    documentation_pr_numbers = get_documentation_pr_numbers(tag_name_documentation)
-    python_pr_numbers = get_python_pr_numbers(tag_name_python)
-    frontend_pr_numbers = get_frontend_pr_numbers(tag_name_frontend)
+    if tag_name_documentation:
+        documentation_pr_numbers = get_documentation_pr_numbers(tag_name_documentation)
+    else:
+        print('  INFO: validmind/documentation tag is empty, skipping extraction of PR data.')
+    
+    if tag_name_python:
+        python_pr_numbers = get_python_pr_numbers(tag_name_python)
+    else:
+        print('  INFO: validmind/developer-framework tag is empty, skipping extraction of PR data.')
+    
+    if tag_name_frontend:
+        frontend_pr_numbers = get_frontend_pr_numbers(tag_name_frontend)
+    else:
+        print('  INFO: validmind/frontend tag is empty, skipping extraction of PR data.')
+    
+    # Exit with an error if all three tags are undefined
+    if not tag_name_documentation and not tag_name_python and not tag_name_frontend:
+        sys.exit('ERROR: No release tags have been provided, exiting.')
+    
 
     qmd_files = {
         "enhancement": "",
@@ -347,7 +363,11 @@ if __name__ == '__main__':
 
     print("Writing pull request data to QMD files ...")
 
-    generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, python_pr_numbers, frontend_pr_numbers, release_date)
+    generate_qmd_files(qmd_files, release_folder, 
+                   documentation_pr_numbers if 'documentation_pr_numbers' in locals() else [], 
+                   python_pr_numbers if 'python_pr_numbers' in locals() else [], 
+                   frontend_pr_numbers if 'frontend_pr_numbers' in locals() else [], 
+                   release_date)
 
     print("Updating _quarto.yaml file ...")
 

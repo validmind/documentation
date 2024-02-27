@@ -1,6 +1,5 @@
 ---
 title: "October 25, 2023"
-keywords: "release notes, ai risk, model risk management, ValidMind"
 ---
 
 ## Release highlights
@@ -86,6 +85,46 @@ From this page you can manage:
 - Workflows that determine the statuses of your documentation projects and how they transition through the workflow according to your requirements.
 
 [Try it ...](https://app.dev.vm.validmind.ai/settings/)
+
+## Enhancements
+
+<!---[SC-2346] Rouge and Bert score metrics should show average scores by @juanmleng in [#263](https://github.com/validmind/developer-framework/pull/263)--->
+- **Rouge and Bert Score metrics now show average scores**: Introduced `RougeMetricsAggregate` and `BertScoreAggregate` to offer a high-level overview of model performance across a large number of text rows. These metrics complement the detailed row-by-row analysis provided by `RougeMetrics` and `BertScore`.
+<!--- NR this notebook is not currently included in our docs site:
+Tested these metrics running `foundational_models_summarization_high_code.ipynb` --->
+
+<!---[SC-2143] Metrics for safety toxicity and bias in text summarization by @juanmleng in [#258](https://github.com/validmind/developer-framework/pull/258)--->
+- **Added metrics for safety toxicity and bias in text summarization**. We introduced several new metrics to evaluate safety and bias risks in text summarization:
+  
+  - `ToxicityScore`: Measures safety risk
+  - `ToxicityHistogram`: Provides a distribution of safety risk scores
+  - `RegardScore`: Evaluates bias risk
+  - `RegardHistogram`: Shows distribution of bias risk scores
+<!--- NR this notebook is not currently included in our docs site:
+To test these metrics, see notebook `foundation_models_summarization_bias.ipynb`---> 
+
+## Bug fixes
+
+<!---[SC-2303] Shap metric issue resolved by @juanmleng in [#262](https://github.com/validmind/developer-framework/pull/262)--->
+- **Shap metric issue resolved**. - We set `matplotlib` to version `3.7.x` in `pyproject.toml` to fix an incompatibility with the latest `matplotlib` version (`3.8.0`). This incompatibility was causing SHAP plot errors. We will keep track of `matplotlib` releases for future updates. Once fixed, we will consider updating the version. 
+
+## Documentation updates
+
+<!---Platform overview rewrite by @nrichers in [#138](https://github.com/validmind/documentation/pull/138)--->
+- **Platform overview rewrite**. We expanded our platform overview to provide more background information about what ValidMind offers and how we enable you to comply with policies and regulations such as SR 11-7 and SS1/23. [Try it ...](../../guide/overview.qmd)
+
+<!---Quickstart updates for the closed beta by @nrichers in [#141](https://github.com/validmind/documentation/pull/141)--->
+- **Quickstart updates for the closed beta**. We updated the Quickstart section of our documentation to reflect recent UI and sign-up flow changes. [Try it ...](../../guide/quickstart.qmd)
+
+<!---John6797/sc 2211/update test descriptions by @johnwalz97 in [#244](https://github.com/validmind/developer-framework/pull/244)
+- **John6797/sc 2211/update test descriptions**. Add full markdown descriptions to all tests
+--->
+
+<!--- Rework how we include notebooks in our docs site [#139](https://github.com/validmind/documentation/pull/139)--->
+- **Improved handling of Jupyter notebooks for code samples and testing how-to content**. We now programmatically embed these notebooks in our documentation site and generate a downloadable `notebooks.zip` file with all notebooks and supporting datasets. Try it:
+  
+  - [Code samples](../../guide/samples-jupyter-notebooks.qmd)
+  - [Tests and test suites](../../guide/testing-overview.qmd)
 
 ## How to upgrade
 
