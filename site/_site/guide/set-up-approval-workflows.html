@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-02-27">
+<meta name="dcterms.date" content="2024-03-06">
 
 <title>ValidMind - Set up approval workflows</title>
 <style>
@@ -45,11 +45,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -89,6 +89,9 @@ cookieconsent.run({
 });
 </script> 
   
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -105,7 +108,6 @@ cookieconsent.run({
     <img src="../guide/ValidMind-logo-color.svg" alt="" class="navbar-logo">
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -136,15 +138,15 @@ cookieconsent.run({
         <li class="dropdown-header"><i class="fa-solid fa-code" aria-label="code"></i> CODE SAMPLES</li>
         <li>
     <a class="dropdown-item" href="../notebooks/quickstart_customer_churn_full_suite.html" rel="" target="">
- <span class="dropdown-text"><i class="fa-solid fa-book" aria-label="book"></i> Quickstart · <code>Customer Churn</code> · <code>Binary Classification</code></span></a>
+ <span class="dropdown-text"><i class="fa-solid fa-book" aria-label="book"></i> QuickStart · <code>Customer Churn</code> · <code>Binary Classification</code></span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../guide/samples-jupyter-notebooks.html" rel="" target="">
- <span class="dropdown-text"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> More Samples · <code>LLM</code> · <code>NLP</code> · <code>Time Series</code> · <code>Etc.</code></span></a>
+ <span class="dropdown-text"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> More Code Samples · <code>LLM</code> · <code>NLP</code> · <code>Time Series</code> · <code>Etc.</code></span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../notebooks.zip" rel="" target="">
- <span class="dropdown-text"><i class="fa-solid fa-download" aria-label="download"></i> Download Samples · <code>notebooks.zip</code></span></a>
+ <span class="dropdown-text"><i class="fa-solid fa-download" aria-label="download"></i> Download Code Samples · <code>notebooks.zip</code></span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="https://jupyterhub.validmind.ai/" rel="" target="">
@@ -164,7 +166,7 @@ cookieconsent.run({
         <li class="dropdown-header"><i class="fa-solid fa-book" aria-label="book"></i> REFERENCE</li>
         <li>
     <a class="dropdown-item" href="../validmind/validmind.html" rel="" target="_blank">
- <span class="dropdown-text"><i class="fa-solid fa-external-link" aria-label="external-link"></i> Developer Framework</span></a>
+ <span class="dropdown-text"><i class="fa-solid fa-external-link" aria-label="external-link"></i> ValidMind Developer Framework</span></a>
   </li>  
     </ul>
   </li>
@@ -196,7 +198,8 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
+  <li><a href="#the-default-documentation-workflow" id="toc-the-default-documentation-workflow" class="nav-link active" data-scroll-target="#the-default-documentation-workflow">The default documentation workflow</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
   <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
@@ -219,7 +222,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 27, 2024</p>
+      <p class="date">March 6, 2024</p>
     </div>
   </div>
   
@@ -230,6 +233,54 @@ cookieconsent.run({
 </header>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus, urna vel dignissim fringilla, est justo rhoncus ex, nec gravida eros nisl a nisi. Suspendisse potenti.</p>
+<section id="the-default-documentation-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="the-default-documentation-workflow">The default documentation workflow</h3>
+<p>Out of the box, the model documentation workflow is configured like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[In documentation] --&gt; B[In validation]
+    B --&gt; C[In review /&lt;br&gt;under approval]
+    C --&gt; D[Approved]
+</pre>
+</div>
+</div>
+</div>
+</div>
+<dl>
+<dt>In documentation</dt>
+<dd>
+Your model developers use the ValidMind Developer Framework to run&nbsp;validation tests and generate automated model documentation. They then use the ValidMind UI to populate qualitative documentation sections. This phase is the most critical and involved for model developers.
+</dd>
+</dl>
+<p>To learn more about documenting models, see <a href="../guide/get-started-developer-framework.html">Get started with the developer framework</a>.</p>
+<dl>
+<dt>In validation</dt>
+<dd>
+Your model validators review the model documentation and challenge the model:
+</dd>
+</dl>
+<ul>
+<li>Collaborate in the ValidMind UI to facilitate question and answer threads to collect more information from model developers.</li>
+<li>Challenge the model with the ValidMind Developer Framework to replicate test results and conduct your own testing.</li>
+</ul>
+<p>Validators then use the ValidMind UI to generate a validation report and manage the findings discovered during the model review process.</p>
+<dl>
+<dt>In review / under approval</dt>
+<dd>
+Senior risk managers and executives use the ValidMind UI to review validation report and findings to make a final decision.
+</dd>
+</dl>
+<p>The generated validation report contains detailed information about the models being evaluated, including their underlying assumptions, methodologies, and performance metrics. It also highlights any potential weaknesses or vulnerabilities that may be present in the models.</p>
+<dl>
+<dt>Approved</dt>
+<dd>
+Approval signifies the final endorsement and authorization for a model to be used in production. Approval occurs after careful examination and validation of the model, ensuring that it meets institutional standards and guidelines, and regulatory requirements.
+</dd>
+</dl>
+</section>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
 <p>[Include a list of any prerequisites the user needs to complete before starting the task, such as having certain software installed, access to certain resources, or completing previous tasks.]</p>
