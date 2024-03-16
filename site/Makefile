@@ -51,10 +51,15 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@echo "\nUpdating Python documentation ..."
-	@rm -rf $(DEST_DIR_PYTHON)
-	@mkdir -p $(DEST_DIR_PYTHON)
-	@cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON)
+	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
+		echo "\nUpdating Python documentation ..."; \
+		rm -rf $(DEST_DIR_PYTHON); \
+		mkdir -p $(DEST_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON); \
+	else \
+		echo "\nNo updated Python documentation available locally, skipping step ..."; \
+	fi
+
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
