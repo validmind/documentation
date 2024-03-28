@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../notebooks/how_to/run_documentation_sections.html" rel="next">
-<link href="../../notebooks/how_to/implementing_custom_tests.html" rel="prev">
+<link href="../../notebooks/how_to/load_datasets_predictions.html" rel="prev">
 <link href="../../validmind.png" rel="icon" type="image/png">
 <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
@@ -325,6 +325,12 @@ cookieconsent.run({
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/load_datasets_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multiple options to load predictions in ValidMind Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_a_test.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Running an Individual Test</span></a>
   </div>
@@ -333,6 +339,24 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running Individual Documentation Sections</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_documentation_with_config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Documentation with Config</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide to Running Tests with Multiple Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Unit Metrics</span></a>
   </div>
 </li>
       </ul>
@@ -875,18 +899,6 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../tests/model_validation/sklearn/AdjustedRandIndex.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">AdjustedRandIndex</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../tests/model_validation/sklearn/ClassifierInSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierInSamplePerformance</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../tests/model_validation/sklearn/ClassifierOutOfSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierOutOfSamplePerformance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1492,6 +1504,7 @@ cookieconsent.run({
   <li><a href="#set-up-test-inputs-and-run-the-test" id="toc-set-up-test-inputs-and-run-the-test" class="nav-link" data-scroll-target="#set-up-test-inputs-and-run-the-test">Set up test inputs and run the test</a>
   <ul class="collapse">
   <li><a href="#initialize-validmind-objects" id="toc-initialize-validmind-objects" class="nav-link" data-scroll-target="#initialize-validmind-objects">Initialize ValidMind objects</a></li>
+  <li><a href="#assign-predictions-to-the-datasets" id="toc-assign-predictions-to-the-datasets" class="nav-link" data-scroll-target="#assign-predictions-to-the-datasets">Assign predictions to the datasets</a></li>
   <li><a href="#run-the-test" id="toc-run-the-test" class="nav-link" data-scroll-target="#run-the-test">Run the test</a></li>
   <li><a href="#log-the-test-results-to-validmind" id="toc-log-the-test-results-to-validmind" class="nav-link" data-scroll-target="#log-the-test-results-to-validmind">Log the test results to ValidMind</a></li>
   </ul></li>
@@ -1565,14 +1578,15 @@ New to ValidMind?
 <p>Next, replace this placeholder with your own code snippet:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace with your code snippet</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -1628,22 +1642,32 @@ New to ValidMind?
 <h3 class="anchored" data-anchor-id="initialize-validmind-objects">Initialize ValidMind objects</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    model,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"train_dataset"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"test_dataset"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span><span class="op">=</span><span class="st">"generic"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(model, input_id<span class="op">=</span><span class="st">"model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assign-predictions-to-the-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="assign-predictions-to-the-datasets">Assign predictions to the datasets</h3>
+<p>We can now use the <code>assign_predictions()</code> method from the <code>Dataset</code> object to link existing predictions to any model. If no prediction values are passed, the method will compute predictions automatically:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="run-the-test" class="level3">
@@ -1655,18 +1679,18 @@ New to ValidMind?
 </ul>
 <p>You can then pass in any inputs for the test as keyword arguments. Most likely, these will be <code>dataset</code> and <code>model</code> objects. Again, you may refer to the <code>explore_tests.ipynb</code> notebook to find the required inputs for a test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.model_validation.sklearn.TrainingTestDegradation"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{},  <span class="co"># can be used to set overrides to the test's default parameters</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model}</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> vm.tests.run_test(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.model_validation.sklearn.TrainingTestDegradation"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{},  <span class="co"># can be used to set overrides to the test's default parameters</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model, <span class="st">"datasets"</span>: (vm_train_ds, vm_test_ds)},</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="log-the-test-results-to-validmind" class="level3">
 <h3 class="anchored" data-anchor-id="log-the-test-results-to-validmind">Log the test results to ValidMind</h3>
 <p>After the test has been run, you can save the results to ValidMind by calling the <code>log</code> method of the test object returned after running the test:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>test.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>test.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1925,8 +1949,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../notebooks/how_to/implementing_custom_tests.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Implementing Custom Metrics and Threshold Tests</span>
+      <a href="../../notebooks/how_to/load_datasets_predictions.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Multiple options to load predictions in ValidMind Datasets</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

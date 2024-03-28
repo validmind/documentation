@@ -325,6 +325,12 @@ cookieconsent.run({
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/load_datasets_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multiple options to load predictions in ValidMind Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_a_test.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running an Individual Test</span></a>
   </div>
@@ -333,6 +339,24 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running Individual Documentation Sections</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_documentation_with_config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Documentation with Config</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide to Running Tests with Multiple Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Unit Metrics</span></a>
   </div>
 </li>
       </ul>
@@ -875,18 +899,6 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../tests/model_validation/sklearn/AdjustedRandIndex.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">AdjustedRandIndex</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../tests/model_validation/sklearn/ClassifierInSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierInSamplePerformance</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../tests/model_validation/sklearn/ClassifierOutOfSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierOutOfSamplePerformance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1573,7 +1585,7 @@ New to ValidMind?
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span>,</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="preview-the-documentation-template" class="level3">
@@ -1596,7 +1608,7 @@ New to ValidMind?
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _format_cell_text(text, width<span class="op">=</span><span class="dv">50</span>):</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Private function to format a cell's text."""</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join([textwrap.fill(line, width<span class="op">=</span>width) <span class="cf">for</span> line <span class="kw">in</span> text.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join([textwrap.fill(line, width<span class="op">=</span>width) <span class="cf">for</span> line <span class="kw">in</span> text.split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)])</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _format_dataframe_for_tabulate(df):</span>
@@ -1605,26 +1617,27 @@ New to ValidMind?
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Format all string columns</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> column <span class="kw">in</span> df_out.columns:</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if column is of type object (likely strings)</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> df_out[column].dtype <span class="op">==</span> <span class="bu">object</span>:</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            df_out[column] <span class="op">=</span> df_out[column].<span class="bu">apply</span>(_format_cell_text)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_out</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            df_out[column].dtype <span class="op">==</span> <span class="bu">object</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        ):  <span class="co"># Check if column is of type object (likely strings)</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            df_out[column] <span class="op">=</span> df_out[column].<span class="bu">apply</span>(_format_cell_text)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_out</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _dataframe_to_html_table(df):</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Private function to convert a DataFrame to an HTML table."""</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> df.columns.tolist()</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    table_data <span class="op">=</span> df.values.tolist()</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tabulate(table_data, headers<span class="op">=</span>headers, tablefmt<span class="op">=</span><span class="st">"html"</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _dataframe_to_html_table(df):</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Private function to convert a DataFrame to an HTML table."""</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> df.columns.tolist()</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    table_data <span class="op">=</span> df.values.tolist()</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tabulate(table_data, headers<span class="op">=</span>headers, tablefmt<span class="op">=</span><span class="st">"html"</span>)</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_formatted_dataframe(df, num_rows<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Primary function to format and display a DataFrame."""</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> num_rows <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.head(num_rows)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    formatted_df <span class="op">=</span> _format_dataframe_for_tabulate(df)</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    html_table <span class="op">=</span> _dataframe_to_html_table(formatted_df)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    display(HTML(html_table))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_formatted_dataframe(df, num_rows<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Primary function to format and display a DataFrame."""</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> num_rows <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.head(num_rows)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    formatted_df <span class="op">=</span> _format_dataframe_for_tabulate(df)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    html_table <span class="op">=</span> _dataframe_to_html_table(formatted_df)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    display(HTML(html_table))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-the-dataset" class="level3">
@@ -1633,11 +1646,11 @@ New to ValidMind?
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cnn_dataset <span class="op">=</span> load_dataset(<span class="st">'cnn_dailymail'</span>, <span class="st">'3.0.0'</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> cnn_dataset.data[<span class="st">'train'</span>].to_pandas()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>val_df <span class="op">=</span> cnn_dataset.data[<span class="st">'validation'</span>].to_pandas()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> cnn_dataset.data[<span class="st">'test'</span>].to_pandas()</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df[[<span class="st">'article'</span>, <span class="st">'highlights'</span>]]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cnn_dataset <span class="op">=</span> load_dataset(<span class="st">"cnn_dailymail"</span>, <span class="st">"3.0.0"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> cnn_dataset.data[<span class="st">"train"</span>].to_pandas()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>val_df <span class="op">=</span> cnn_dataset.data[<span class="st">"validation"</span>].to_pandas()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> cnn_dataset.data[<span class="st">"test"</span>].to_pandas()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df[[<span class="st">"article"</span>, <span class="st">"highlights"</span>]]</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df.head(<span class="dv">20</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>display_formatted_dataframe(train_df, num_rows<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1659,9 +1672,8 @@ New to ValidMind?
 <p>Before we proceed with the analysis, it’s crucial to ensure the quality of our NLP data. We can run the <code>data_preparation</code> section of the template to validate the data’s integrity and suitability:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>text_data_test_plan <span class="op">=</span> vm.run_documentation_tests(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span><span class="st">"data_preparation"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_raw_ds}</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span><span class="st">"data_preparation"</span>, inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_raw_ds}</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, T5Tokenizer, T5ForConditionalGeneration</span>
@@ -1676,7 +1688,7 @@ New to ValidMind?
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    min_length<span class="op">=</span><span class="dv">0</span>,</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    max_length<span class="op">=</span><span class="dv">60</span>,</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    truncation<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    model_kwargs<span class="op">=</span>{<span class="st">"cache_dir"</span>: <span class="st">'/Documents/Huggin_Face/'</span>},</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    model_kwargs<span class="op">=</span>{<span class="st">"cache_dir"</span>: <span class="st">"/Documents/Huggin_Face/"</span>},</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)  <span class="co"># Note: We specify cache_dir to use predownloaded models.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -1692,8 +1704,10 @@ New to ValidMind?
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    summarizer_model,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign model predictions to the test dataset</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="run-model-validation-tests" class="level3">
 <h3 class="anchored" data-anchor-id="run-model-validation-tests">Run model validation tests</h3>
@@ -1701,8 +1715,11 @@ New to ValidMind?
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>summarization_results <span class="op">=</span> vm.run_documentation_tests(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    section<span class="op">=</span><span class="st">"model_development"</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model},</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_test_ds,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>

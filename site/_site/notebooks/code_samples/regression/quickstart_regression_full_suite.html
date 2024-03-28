@@ -325,6 +325,12 @@ cookieconsent.run({
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/load_datasets_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multiple options to load predictions in ValidMind Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_a_test.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running an Individual Test</span></a>
   </div>
@@ -333,6 +339,24 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Running Individual Documentation Sections</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_documentation_with_config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running Documentation with Config</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide to Running Tests with Multiple Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Unit Metrics</span></a>
   </div>
 </li>
       </ul>
@@ -875,18 +899,6 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../tests/model_validation/sklearn/AdjustedRandIndex.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">AdjustedRandIndex</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../tests/model_validation/sklearn/ClassifierInSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierInSamplePerformance</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../tests/model_validation/sklearn/ClassifierOutOfSamplePerformance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ClassifierOutOfSamplePerformance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1496,6 +1508,7 @@ cookieconsent.run({
   <li><a href="#prepocess-the-raw-dataset" id="toc-prepocess-the-raw-dataset" class="nav-link" data-scroll-target="#prepocess-the-raw-dataset">Prepocess the raw dataset</a></li>
   <li><a href="#initialize-the-validmind-datasets" id="toc-initialize-the-validmind-datasets" class="nav-link" data-scroll-target="#initialize-the-validmind-datasets">Initialize the ValidMind datasets</a></li>
   <li><a href="#initialize-a-model-object" id="toc-initialize-a-model-object" class="nav-link" data-scroll-target="#initialize-a-model-object">Initialize a model object</a></li>
+  <li><a href="#assign-predictions-to-the-datasets" id="toc-assign-predictions-to-the-datasets" class="nav-link" data-scroll-target="#assign-predictions-to-the-datasets">Assign predictions to the datasets</a></li>
   <li><a href="#run-the-full-suite-of-tests" id="toc-run-the-full-suite-of-tests" class="nav-link" data-scroll-target="#run-the-full-suite-of-tests">Run the full suite of tests</a></li>
   </ul></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
@@ -1664,8 +1677,11 @@ New to ValidMind?
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>model1_s1 <span class="op">=</span> model_1.score(x_train, y_train)</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>model1_s2 <span class="op">=</span> model_1.score(x_val, y_val)</span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"R² of Support Gradient Boosting Regressor on training set: </span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>(model1_s1))</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R² of Support Gradient Boosting Regressor on test set: </span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>(model1_s2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"R² of Support Gradient Boosting Regressor on training set: </span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>(</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        model1_s1</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R² of Support Gradient Boosting Regressor on test set: </span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>(model1_s2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initialize-the-validmind-datasets" class="level3">
@@ -1686,16 +1702,12 @@ New to ValidMind?
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"train_dataset"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"test_dataset"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df, input_id<span class="op">=</span><span class="st">"train_dataset"</span>, target_column<span class="op">=</span>demo_dataset.target_column</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df, input_id<span class="op">=</span><span class="st">"test_dataset"</span>, target_column<span class="op">=</span>demo_dataset.target_column</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initialize-a-model-object" class="level3">
@@ -1705,15 +1717,29 @@ New to ValidMind?
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"random_forest_regressor"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>vm_model_1 <span class="op">=</span> vm.init_model(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    model_1,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"gradient_boosting_regressor"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    train_ds<span class="op">=</span>vm_train_ds,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    test_ds<span class="op">=</span>vm_test_ds,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>vm_model_1 <span class="op">=</span> vm.init_model(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    model_1,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"gradient_boosting_regressor"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assign-predictions-to-the-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="assign-predictions-to-the-datasets">Assign predictions to the datasets</h3>
+<p>We can now use the assign_predictions() method from the Dataset object to link existing predictions to any model. If no prediction values are passed, the method will compute predictions automatically:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model_1,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>vm_model_1,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="run-the-full-suite-of-tests" class="level3">
@@ -1727,13 +1753,14 @@ New to ValidMind?
 </ul>
 <p>The variable <code>full_suite</code> then holds the result of these tests.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_raw_dataset,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"models"</span>: [vm_model_1]</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>full_suite <span class="op">=</span> vm.run_documentation_tests(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_train_ds,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datasets"</span>: (vm_train_ds, vm_test_ds),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"model"</span>: vm_model,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"models"</span>:[vm_model_1]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
