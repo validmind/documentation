@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -70,20 +104,104 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-tests-beginner .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
       searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-tests-beginner'] = new List('listing-tests-beginner', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tests-explore .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-tests-explore'] = new List('listing-tests-explore', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tests-intermediate .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-tests-intermediate'] = new List('listing-tests-intermediate', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tests-advanced .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-tests-advanced'] = new List('listing-tests-advanced', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -265,6 +383,12 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../guide/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Install and initialize the developer framework</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generate model documentation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -1498,11 +1622,13 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-are-tests-and-test-suites" id="toc-what-are-tests-and-test-suites" class="nav-link active" data-scroll-target="#what-are-tests-and-test-suites">What are tests and test suites?</a></li>
+  <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link active" data-scroll-target="#key-concepts">Key concepts</a></li>
   <li><a href="#when-do-i-use-tests-and-test-suites" id="toc-when-do-i-use-tests-and-test-suites" class="nav-link" data-scroll-target="#when-do-i-use-tests-and-test-suites">When do I use tests and test suites?</a></li>
   <li><a href="#can-i-use-my-own-tests" id="toc-can-i-use-my-own-tests" class="nav-link" data-scroll-target="#can-i-use-my-own-tests">Can I use my own tests?</a></li>
-  <li><a href="#is-there-an-api-reference-available" id="toc-is-there-an-api-reference-available" class="nav-link" data-scroll-target="#is-there-an-api-reference-available">Is there an API reference available?</a></li>
-  <li><a href="#how-tos-for-testing" id="toc-how-tos-for-testing" class="nav-link" data-scroll-target="#how-tos-for-testing">How-tos for testing</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting started</a></li>
+  <li><a href="#explore-tests-and-test-suites" id="toc-explore-tests-and-test-suites" class="nav-link" data-scroll-target="#explore-tests-and-test-suites">Explore tests and test suites</a></li>
+  <li><a href="#intermediate" id="toc-intermediate" class="nav-link" data-scroll-target="#intermediate">Intermediate</a></li>
+  <li><a href="#advanced" id="toc-advanced" class="nav-link" data-scroll-target="#advanced">Advanced</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/validmind/documentation/edit/main/site/guide/testing-overview.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -1532,23 +1658,46 @@ cookieconsent.run({
 
 </header>
 
-<!--- TO DO
-- Ordering of notebooks if we want them to appear in a specific sequence
---->
 <p>ValidMind provides many built-in tests and test suites which make it easy for a model developer to document their work at any point during the model development lifecycle when they need to validate that their work satisfies model risk management requirements.</p>
-<section id="what-are-tests-and-test-suites" class="level2">
-<h2 class="anchored" data-anchor-id="what-are-tests-and-test-suites">What are tests and test suites?</h2>
+<section id="key-concepts" class="level2">
+<h2 class="anchored" data-anchor-id="key-concepts">Key concepts</h2>
 <dl>
-<dt>Tests</dt>
+<dt>Test</dt>
 <dd>
-Tests are designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates.
+Runs a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates.
 </dd>
-<dt>Test suites</dt>
+</dl>
+<p>Each metric or test is encapsulated as a Python class with three key methods:</p>
+<ul>
+<li><code>description()</code>: An explanation of what the metric measures or what the test checks.</li>
+<li><code>run()</code>: Computes the metric, caching both the results and any related figures that get generated.</li>
+<li><code>summary()</code>: Generates output tables summarizing the results.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExampleMetric(Metric):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> <span class="st">"mean_of_values"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Markdown-compatible description of the metric</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> description(<span class="va">self</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the metric and cache its results and figures</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> run (<span class="va">self</span>):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Code to build a list of ResultSummaries that form the results tables</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> summary (<span class="va">self</span>, metric_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl>
+<dt>Test suite</dt>
 <dd>
-Test suites are collections of tests which are run together to automate generating model documentation end-to-end for specific use-cases.
+A collection of tests which are run together to automate generating model documentation end-to-end for specific use-cases.
 </dd>
 </dl>
 <p>Example: the <a href="../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs the tests from the <a href="../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</p>
+<dl>
+<dt>Test providers</dt>
+<dd>
+Third-party test libraries that can be be used with the ValidMind Developer Framework.
+</dd>
+</dl>
 </section>
 <section id="when-do-i-use-tests-and-test-suites" class="level2">
 <h2 class="anchored" data-anchor-id="when-do-i-use-tests-and-test-suites">When do I use tests and test suites?</h2>
@@ -1585,31 +1734,126 @@ Test suites are collections of tests which are run together to automate generati
 <li><a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html">Integrate an External Test Provider</a></li>
 </ul>
 </section>
-<section id="is-there-an-api-reference-available" class="level2">
-<h2 class="anchored" data-anchor-id="is-there-an-api-reference-available">Is there an API reference available?</h2>
-<p>See the <a href="../validmind/validmind.html">ValidMind Developer Framework API Reference</a> for a list of all of the built-in tests and test suites for datasets and models.</p>
-</section>
-<section id="how-tos-for-testing" class="level2">
-<h2 class="anchored" data-anchor-id="how-tos-for-testing">How-tos for testing</h2>
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
+<p>Start by running a pre-made test, then modify it, and finally create your own test:</p>
+<div id="listing-tests-beginner" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327886" data-listing-reading-time-sort="5">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="3">
+<a href="../notebooks/how_to/run_a_test.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Running an Individual Test
+</h5>
+<div class="card-text listing-description">
+This notebook shows how to run individual metrics or thresholds tests that is part of the ValidMind Developer Framework. These instructions include the code required to:
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1712612327886" data-listing-reading-time-sort="5">
 <a href="../notebooks/how_to/configure_parameters_demo.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Configure Parameters for a Specific Test
 </h5>
-<div class="listing-reading-time card-text text-muted">
-5 min
-</div>
 <div class="card-text listing-description">
 This notebook guides model developers through using a simple classification model for bank customer churn dataset. It shows you how to set up the ValidMind Developer Framework and guide you through documenting a model using the ValidMind Developer…
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="5">
+<a href="../notebooks/how_to/implementing_custom_tests.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Implementing Custom Metrics and Threshold Tests
+</h5>
+<div class="card-text listing-description">
+Custom metrics offer added flexibility by extending the default metrics provided by ValidMind, enabling you to document any type of model or use case. Both metrics and threshold tests assess models but they differ in approach: <em>metrics</em> measure a range of dataset or model…<em></em>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
+<section id="explore-tests-and-test-suites" class="level2">
+<h2 class="anchored" data-anchor-id="explore-tests-and-test-suites">Explore tests and test suites</h2>
+<p>Next, find available tests and test suites using the developer framework or the interactive test sandbox:</p>
+<div id="listing-tests-explore" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="4">
+<a href="../notebooks/how_to/explore_tests.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Exploring Tests in the Developer Framework:
+</h5>
+<div class="card-text listing-description">
+Welcome to this comprehensive guide to the ValidMind Developer Framework <code>tests</code> module! In this notebook, we’ll dive deep into the utilities available for viewing and understanding the various…
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1712612327887" data-listing-reading-time-sort="1">
+<a href="../notebooks/how_to/explore_test_suites.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Viewing All Available Test Suites and Tests
+</h5>
+<div class="card-text listing-description">
+This notebook shows model developers how they can learn more about the test suites and tests that are available in the ValidMind Developer Framework. These instructions include the code required to get:
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<a href="../guide/test-sandbox.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+<i class="fa-solid fa-toolbox" aria-label="toolbox"></i> Test sandbox (BETA)
+</h5>
+<div class="card-text listing-description">
+Explore our interactive sandbox to see what tests are available in the ValidMind Developer Framework.
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
+<section id="intermediate" class="level2">
+<h2 class="anchored" data-anchor-id="intermediate">Intermediate</h2>
+<p>Building on previous sections, add your own test provider, set up datasets, run tests on individual sections in your model documentation, and more:</p>
+<div id="listing-tests-intermediate" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327885" data-listing-reading-time-sort="5">
+<a href="../notebooks/code_samples/custom_tests/external_test_providers_demo.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Integrate an External Test Provider
+</h5>
+<div class="card-text listing-description">
+This notebook shows model developers how to…
 </div>
 </div>
 </div>
@@ -1622,9 +1866,6 @@ This notebook guides model developers through using a simple classification mode
 <h5 class="no-anchor card-title listing-title">
 Configuring and Using Dataset Features
 </h5>
-<div class="listing-reading-time card-text text-muted">
-3 min
-</div>
 <div class="card-text listing-description">
 This notebook shows how to use custom feature columns with <code>init_dataset</code>. The default behavior of <code>init_dataset</code> is to utilize all dataset columns when…
 </div>
@@ -1632,52 +1873,43 @@ This notebook shows how to use custom feature columns with <code>init_dataset</c
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="4">
-<a href="../notebooks/how_to/explore_tests.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="3">
+<a href="../notebooks/how_to/run_documentation_sections.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Exploring Tests in the Developer Framework:
+Running Individual Documentation Sections
 </h5>
-<div class="listing-reading-time card-text text-muted">
-4 min
-</div>
 <div class="card-text listing-description">
-Welcome to this comprehensive guide to the ValidMind Developer Framework <code>tests</code> module! In this notebook, we’ll dive deep into the utilities available for viewing and understanding the various…
+This notebook guides you through using the <code>run_documentation_tests()</code> function within the ValidMind…
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="4">
+<a href="../notebooks/how_to/run_documentation_with_config.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Running Documentation with Config
+</h5>
+<div class="card-text listing-description">
+This notebook guides you through using the <code>run_documentation_tests()</code> function within the ValidMind Developer Framework. The function takes <code>config</code> as a parameter that enables developers to configure inputs and parameters for individual tests.
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="3">
 <a href="../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Guide to Running Tests with Multiple Datasets
 </h5>
-<div class="listing-reading-time card-text text-muted">
-3 min
-</div>
 <div class="card-text listing-description">
 This notebook guides you through a mechanism of running a test that requires more than one dataset.
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="5">
-<a href="../notebooks/how_to/implementing_custom_tests.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Implementing Custom Metrics and Threshold Tests
-</h5>
-<div class="listing-reading-time card-text text-muted">
-5 min
-</div>
-<div class="card-text listing-description">
-Custom metrics offer added flexibility by extending the default metrics provided by ValidMind, enabling you to document any type of model or use case. Both metrics and threshold tests assess models but they differ in approach: <em>metrics</em> measure a range of dataset or model…<em></em>
 </div>
 </div>
 </div>
@@ -1690,113 +1922,8 @@ Custom metrics offer added flexibility by extending the default metrics provided
 <h5 class="no-anchor card-title listing-title">
 Introduction to Unit Metrics
 </h5>
-<div class="listing-reading-time card-text text-muted">
-7 min
-</div>
 <div class="card-text listing-description">
 In this notebook, we introduce the concept of <em>Unit Metric</em> and provide a step-by-step guide on how to define, execute and extract results from these measures. As an example, we use data from a customer churn use case to fit a binary…
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="5">
-<a href="../notebooks/how_to/load_datasets_predictions.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Multiple options to load predictions in ValidMind Datasets
-</h5>
-<div class="listing-reading-time card-text text-muted">
-5 min
-</div>
-<div class="card-text listing-description">
-This notebook guides you through loading predictions in ValidMind dataset objects using the <code>assign_predictions()</code> function. The…
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="7" data-listing-file-modified-sort="1712612327887" data-listing-reading-time-sort="6">
-<a href="../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Rendering more than one unique result for the same metric
-</h5>
-<div class="listing-reading-time card-text text-muted">
-6 min
-</div>
-<div class="card-text listing-description">
-Documentation templates facilitate the presentation of multiple unique metric results for a single metric. Consider various scenarios where you may intend to showcase results of the same metric with diverse inputs:
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="8" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="4">
-<a href="../notebooks/how_to/run_documentation_with_config.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Running Documentation with Config
-</h5>
-<div class="listing-reading-time card-text text-muted">
-4 min
-</div>
-<div class="card-text listing-description">
-This notebook guides you through using the <code>run_documentation_tests()</code> function within the ValidMind Developer Framework. The function takes <code>config</code> as a parameter that enables developers to configure inputs and parameters for individual tests.
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="9" data-listing-file-modified-sort="1712612327889" data-listing-reading-time-sort="3">
-<a href="../notebooks/how_to/run_documentation_sections.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Running Individual Documentation Sections
-</h5>
-<div class="listing-reading-time card-text text-muted">
-3 min
-</div>
-<div class="card-text listing-description">
-This notebook guides you through using the <code>run_documentation_tests()</code> function within the ValidMind…
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="10" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="3">
-<a href="../notebooks/how_to/run_a_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Running an Individual Test
-</h5>
-<div class="listing-reading-time card-text text-muted">
-3 min
-</div>
-<div class="card-text listing-description">
-This notebook shows how to run individual metrics or thresholds tests that is part of the ValidMind Developer Framework. These instructions include the code required to:
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="11" data-listing-file-modified-sort="1712612327887" data-listing-reading-time-sort="1">
-<a href="../notebooks/how_to/explore_test_suites.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Viewing All Available Test Suites and Tests
-</h5>
-<div class="listing-reading-time card-text text-muted">
-1 min
-</div>
-<div class="card-text listing-description">
-This notebook shows model developers how they can learn more about the test suites and tests that are available in the ValidMind Developer Framework. These instructions include the code required to get:
 </div>
 </div>
 </div>
@@ -1806,7 +1933,52 @@ This notebook shows model developers how they can learn more about the test suit
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+</section>
+<section id="advanced" class="level2">
+<h2 class="anchored" data-anchor-id="advanced">Advanced</h2>
+<p>Need more? Try some of the advanced features provided by the developer framework:</p>
+<div id="listing-tests-advanced" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327887" data-listing-reading-time-sort="6">
+<a href="../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Rendering more than one unique result for the same metric
+</h5>
+<div class="card-text listing-description">
+Documentation templates facilitate the presentation of multiple unique metric results for a single metric. Consider various scenarios where you may intend to showcase results of the same metric with diverse inputs:
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1712612327888" data-listing-reading-time-sort="5">
+<a href="../notebooks/how_to/load_datasets_predictions.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Multiple options to load predictions in ValidMind Datasets
+</h5>
+<div class="card-text listing-description">
+This notebook guides you through loading predictions in ValidMind dataset objects using the <code>assign_predictions()</code> function. The…
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

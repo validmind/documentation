@@ -2,29 +2,82 @@
 title: "Run tests and test suites"
 date: last-modified
 listing:
-  type: grid
-  image-placeholder: "jupyter-logo-rectangle.svg"
-  max-description-length: 250
-  image-height: "100%"
-  fields: [title, description, reading-time]
-  contents: 
-    - "../notebooks/how_to/*"
+  - id: tests-beginner
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents: 
+    - ../notebooks/how_to/run_a_test.ipynb
+    - ../notebooks/how_to/configure_parameters_demo.ipynb
+    - ../notebooks/how_to/implementing_custom_tests.ipynb
+  - id: tests-explore
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../notebooks/how_to/explore_tests.ipynb
+    - ../notebooks/how_to/explore_test_suites.ipynb
+    - test-sandbox.qmd
+
+  - id: tests-intermediate
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents: 
+    - ../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb
+    - ../notebooks/how_to/configure_dataset_features.ipynb
+    - ../notebooks/how_to/run_documentation_sections.ipynb
+    - ../notebooks/how_to/run_documentation_with_config.ipynb
+    - ../notebooks/how_to/run_tests_that_require_multiple_datasets.ipynb
+    - ../notebooks/how_to/run_unit_metrics.ipynb
+  - id: tests-advanced
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents: 
+    - ../notebooks/how_to/document_multiple_results_for_the_same_test.ipynb
+    - ../notebooks/how_to/load_datasets_predictions.ipynb
 ---
 
-<!--- TO DO
-- Ordering of notebooks if we want them to appear in a specific sequence
---->
 ValidMind provides many built-in tests and test suites which make it easy for a model developer to document their work at any point during the model development lifecycle when they need to validate that their work satisfies model risk management requirements. 
 
-## What are tests and test suites?
+## Key concepts
 
-Tests
-: Tests are designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates. 
+Test
+: Runs a specific quantitative test on the dataset or model. Test results are sent to the ValidMind Platform to generate the model documentation according to the relevant templates. 
 
-Test suites
-: Test suites are collections of tests which are run together to automate generating model documentation end-to-end for specific use-cases. 
+Each metric or test is encapsulated as a Python class with three key methods:
+
+- `description()`: An explanation of what the metric measures or what the test checks.
+- `run()`: Computes the metric, caching both the results and any related figures that get generated.
+- `summary()`: Generates output tables summarizing the results.
+
+```python
+class ExampleMetric(Metric):
+
+        name = "mean_of_values"
+
+        # Markdown-compatible description of the metric
+        def description(self):
+
+        # Compute the metric and cache its results and figures
+        def run (self):
+
+        # Code to build a list of ResultSummaries that form the results tables
+        def summary (self, metric_values)
+```
+
+Test suite
+: A collection of tests which are run together to automate generating model documentation end-to-end for specific use-cases. 
 
    Example: the [`classifier_full_suite`](../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite runs the tests from the [`tabular_dataset`](../validmind/validmind/test_suites/tabular_datasets.html) and [`classifier`](../validmind/validmind/test_suites/classifier.html) test suites to fully document the data and model sections for binary classification model use-cases. 
+
+Test providers
+: Third-party test libraries that can be be used with the ValidMind Developer Framework.
 
 ## When do I use tests and test suites?
 
@@ -66,8 +119,30 @@ Yes, ValidMind supports custom tests that you develop yourself or that are provi
 - [Implement Custom Metrics and Threshold Tests](../notebooks/how_to/implementing_custom_tests.ipynb)
 - [Integrate an External Test Provider](../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb)
 
-## Is there an API reference available?
+## Getting started
 
-See the [ValidMind Developer Framework API Reference](../validmind/validmind.html) for a list of all of the built-in tests and test suites for datasets and models.
+Start by running a pre-made test, then modify it, and finally create your own test:
 
-## How-tos for testing
+:::{#tests-beginner}
+:::
+
+## Explore tests and test suites
+
+Next, find available tests and test suites using the developer framework or the interactive test sandbox:
+
+:::{#tests-explore}
+:::
+
+## Intermediate
+
+Building on previous sections, add your own test provider, set up datasets, run tests on individual sections in your model documentation, and more:
+
+:::{#tests-intermediate}
+:::
+
+## Advanced
+
+Need more? Try some of the advanced features provided by the developer framework: 
+
+:::{#tests-advanced}
+:::
