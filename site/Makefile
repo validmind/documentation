@@ -29,7 +29,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b prod git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b nrichers/sc-3795/add-explanations-definition-of-concepts-into git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
