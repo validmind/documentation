@@ -1,28 +1,54 @@
 ---
 title: "Get started with the ValidMind Developer Framework"
 date: last-modified
+listing:
+  - id: developer-getting-started
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../notebooks/quickstart_customer_churn_full_suite.ipynb
+#    - developer-getting-started-video.qmd
+  - id: developer-how-to-beginner
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents: 
+    - ../notebooks/how_to/run_a_test.ipynb
+    - ../notebooks/how_to/configure_test_parameters.ipynb
+    - ../notebooks/code_samples/custom_tests/implement_custom_tests.ipynb
+  - id: developer-code-samples
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents: 
+    - ../notebooks/code_samples/customization/customizing_metrics_with_output_templates.ipynb
+    - ../notebooks/code_samples/LLM_and_NLP/prompt_validation_demo.ipynb
+    - ../notebooks/code_samples/time_series/tutorial_time_series_forecasting.ipynb
+
 ---
 
-As a model developer, you use the ValidMind Developer Framework to automate the generation of model documentation by uploading documentation artifacts and test results to the ValidMind platform.
+The ValidMind Developer Framework helps you streamline model documentation by automating the generation of drafts. All you need to do is upload your documentation artifacts and test results to the ValidMind platform.
 
-## What is the developer framework?
+## What is the Developer Framework?
 
-ValidMind's developer framework provides a rich collection of documentation tools and test suites, from documenting descriptions of your dataset to validation testing your models for weak spots and overfit areas. 
+ValidMind's Developer Framework provides a rich collection of documentation tools and test suites, from documenting descriptions of your dataset to validation testing your models for weak spots and overfit areas. 
 
-<!--- TO DO update this diagram to include documentation generation and testing --->
+![](get-started-validmind.png){width=70% fig-align="center" fig-alt="An image showing the two main components of ValidMind. The Developer Framework that integrates with your existing developer environment, and the ValidMind MRM platform."}
 
-![](get-started-validmind.png){width=70% fig-align="center" fig-alt="An image showing the two main components of ValidMind. The developer framework that integrates with your existing developer environment, and the ValidMind MRM platform."}
+ValidMind offers two primary methods for automating model documentation:
 
-ValidMind offers two primary methods for documenting model risk:
+- **Generate documentation**: Through automation, the framework extracts metadata from associated datasets and models for you and generates model documentation based on a template. You can also add more documentation and tests manually using the documentation editing capabilities in the ValidMind UI. 
 
-- **By generating model documentation**: Through automation, the framework extracts metadata from associated datasets and models for you and generates model documentation. You can also add more documentation and tests manually using the documentation editing capabilities in the ValidMind UI.
+- **Run validation tests**: The framework provides a suite of validation tests for common financial services use cases. For cases where these tests do not cover everything you need, you can also extend existing test suites with your own proprietary tests or testing providers. 
 
-- **By running pre-built validation tests**: The framework provides a suite of validation tests for common financial services use cases. For cases where these tests do not cover everything you need, you can also extend existing test suites with your own proprietary tests or testing providers. 
-
-The developer framework is designed to be model agnostic. If your model is built in Python, ValidMind’s Python client library already provides all the standard functionality you might need without requiring your developers to rewrite any functions. 
+The Developer Framework is designed to be model agnostic. If your model is built in Python, ValidMind’s Python client library already provides all the standard functionality you might need without requiring your developers to rewrite any functions.
 
 ::: {.callout-important collapse="true" appearance="minimal"}
-## {{< fa building-columns >}} Key ValidMind concepts
+##  {{< fa angle-right >}} Key ValidMind concepts
 
 <!--- These concepts were already introduced in the "Get started" section. They are repeated here in a collapsed format in case a reader missed them earlier. --->
 
@@ -30,145 +56,35 @@ The developer framework is designed to be model agnostic. If your model is built
 
 :::
 
-## How do I use the framework?
+## Getting started
 
-A typical high-level workflow for model developers consists of four major steps:
+After you [**sign up**](https://app.prod.validmind.ai) for ValidMind to get access, head to the QuickStart guide or watch the video demonstration:
 
-```{mermaid}
-graph LR
-    A[Develop<br>model] --> B[Generate model<br>documentation]
-    B --> C[Refine model<br>documentation]
-    C --> D[Submit for review]
-    C --> B
-```
-<br>
-
-**Develop model**
-: In your existing developer environment, build one or more candidate models that need to be validated. This step includes all the usual activities you already follow as a model developer. 
-
-**Generate model documentation**
-: With the ValidMind Developer Framework, generate automated model documentation and run validation tests. This step includes making use of the automation and testing functionality provided by the framework and uploading the output to the Platform UI. You can iteratively regenerate the documentation as you work though the next step of refining your documentation.
-
-**Refine model documentation**
-: In the ValidMind Platform UI, review the generated documentation and test output. Iterate over the documentation and test output to refine your model documentation. Collaborate with other developers and model validators to finalize the model documentation and get it ready for review. 
-
-**Submit for review**
-: In the ValidMind Platform UI, you submit the model documentation for review which moves the documentation workflow moves to the next phase where a model validator will review it.
-
-## How do I generate model documentation?
-
-<!--- NR How do developers verify the current documentation template? --->
-Before you can use the developer framework, you need to verify that the current documentation template contains all the necessary tests for the model you are developing: 
-
-- The template might already be sufficient and you only need to run the template within the developer framework to populate documentation. 
-
-- Or, more likely, the template might need additional tests that you can add these tests via the developer framework. 
-
-
-This process of verifying the suitability of the the current documentation template and adding more tests to the template is an iterative process:
-
-```{mermaid}
-graph LR
-    A[Verify template] --> B[Build template]
-    B --> D[Add tests and<br>content blocks]
-    D --> E[Add external<br>test providers]
-    E --> C[Run template]
-    C --> B
-
-```
-<br>
-
-<!--- TO DO We need to add some links to these steps (to test: can you add content blocks to templates via the same method as adding them to model documentation?) ---> 
-
-Build the template
-: When the documentation template requires more tests to be added, or if the documentation template does not include a specific content or test block you need: 
-   
-   - For functionality provided by the developer framework: [Add the relevant tests or content blocks](work-with-content-blocks.qmd) for the model use case. 
-    
-   - For tests not provided by the framework: [Add your own external test provider](../notebooks/code_samples/custom_tests/external_test_providers_demo.ipynb).
-
-Run the template
-: When you have registered all the required tests as content blocks in the documentation template, populate the necessary model documentation by adding this call to your model:
-   
-   ```
-   run_documentation_tests()
-   ```
-
-
-::: {.callout-important appearance="minimal"}
-ValidMind may not support all potential use cases or provide a universally applicable documentation template. Typically, you initiate the process of putting ValidMind into production by constructing a template specific for your own use case and then refine your model documentation.
+:::{#developer-getting-started}
 :::
 
-### End-to end workflow
+## Learn how to run tests
 
-::: {.grid}
+ValidMind provides many built-in tests and test suites which make it easy for developers to automate their model documentation. Start by running a pre-made test, then modify it, and finally create your own test: 
 
-::: {.g-col-6}
-#### In your modeling environment
-
-<!--- NR Where should `pip install validmind` go? --->
-
-1. Build your model.
-
-2. Export the datasets and model.
-
-Next, go to **With the developer framework, Step 2**.  {{< fa arrow-right >}}
-
-#### With the developer framework
-
-1. Create a notebook to select and build the relevant tests.
-
-2. {{< fa arrow-right >}} **From your modeling environment**, load the trained datasets and models.
-
-3. {{< fa arrow-right >}} Use the instructions from **In the Platform UI, Step 3**, [initialize the ValidMind Developer Framework](install-and-initialize-developer-framework.qmd).
-
-4. Select the relevant tests.
-
-5. Review if all tests are covered by ValidMind or your external test provider:
-    
-   - If all tests are NOT covered: Create and register additional tests.
-   - If all tests are covered: 
-      a. Run the selected tests.
-      b. Review your test results. 
-
-Next, go to **In the ValidMind Platform UI, Step 5**.  {{< fa arrow-right >}} 
-
+:::{#developer-how-to-beginner}
 :::
 
-::: {.g-col-6}
+{{< fa hand-point-right >}} Learn more: [Run tests & test suites](testing-overview.qmd)
 
-#### In the ValidMind Platform UI
+## Try the code samples
 
-1. [Register a new model](register-models-in-model-inventory.qmd).
+Our code samples showcase the capabilities of the ValidMind Developer Framework. Examples that you can build on and adapt for your own use cases include:
 
-2. Review the template structure.
+:::{#developer-code-samples}
+::: 
 
-3. [Locate the framework integration instructions](install-and-initialize-developer-framework.qmd#locate-the-framework-integration-instructions). 
-   
-4.  Go to **With the developer framework, Step 3**. {{< fa arrow-right >}}
-
-5. {{< fa arrow-right >}} After **With the developer framework, Step 6**, [add content blocks](work-with-content-blocks.qmd) to your model documentation: 
-   
-   Select the block type:
-   
-      - For test-driven blocks: Select from available test provider results
-      - For text blocks: 
-         
-         - For new block:
-            - Add new editable text content block
-            - Review and collaborate on the content block
-         <!--- NR what does this actually entail? --->
-         - For existing blocks: Select from available texts from content provider
-
-6. [Submit your model documentation for review](submit-for-approval.qmd).
-
-:::
-
-
-:::
+{{< fa hand-point-right >}} Try more: [Code samples](samples-jupyter-notebooks.qmd)
 
 ## What's next
 
-- [Run tests & test suites](testing-overview.qmd)
-- [Code samples](samples-jupyter-notebooks.qmd)
-- <a href="../validmind/validmind.html" target="_blank">ValidMind Developer Framework Reference</a> {{< fa external-link >}}
+After you have tried out the developer framework, continue with your model documentation in the AI Risk Platform ("Platform UI") online. There, you can:
+
+- Work with documentation templates to customize them to your specific needs
+- Work with model documentation in the UI to make edits, collaborate with validators, and submit your model documentation for approval
+- Export your finalized model documentation
