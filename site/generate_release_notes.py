@@ -247,8 +247,8 @@ def generate_qmd_files(qmd_files, release_folder, documentation_pr_numbers, pyth
                     file.write(release_notes)
 
     # Copy the template file from the templates folder
-    template_filename = "release_highlights_template.qmd"
-    copied_template_filename = "highlights.qmd"
+    template_filename = "release_notes_template.qmd"
+    copied_template_filename = "release-notes.qmd"
     template_filepath = os.path.join("..", "templates", template_filename)
 
     # Update the path for the copied template in the releases folder
@@ -277,31 +277,14 @@ def update_quarto_yaml(qmd_files, release_date):
         for i, line in enumerate(lines):
             file.write(line)
 
-            if line.strip() == "- text: \"Releases\"":
+#            if line.strip() == "- text: \"Releases\"":
+            if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
                 add_release_content = True
-                insert_index = i + 1
+                insert_index = i
 
             if add_release_content and i == insert_index:
                 formatted_release_date = datetime.strptime(release_date, "%B %d, %Y").strftime("%Y-%b-%d").lower()
-                file.write(f'            - text: "{release_date}"\n')
-                file.write(f'              file: releases/{formatted_release_date}/highlights.qmd\n')
-                file.write(f'              contents:\n')
-
-                if qmd_files["enhancement"]:
-                    file.write(f'                - text: "Enhancements"\n')
-                    file.write(f'                  file: releases/{formatted_release_date}/enhancement.qmd\n')
-
-                if qmd_files["bug"]:
-                    file.write(f'                - text: "Bug fixes"\n')
-                    file.write(f'                  file: releases/{formatted_release_date}/bug.qmd\n')
-
-                if qmd_files["deprecation"]:
-                    file.write(f'                - text: "Deprecations"\n')
-                    file.write(f'                  file: releases/{formatted_release_date}/deprecation.qmd\n')
-
-                if qmd_files["documentation"]:
-                    file.write(f'                - text: "Documentation updates"\n')
-                    file.write(f'                  file: releases/{formatted_release_date}/documentation.qmd\n')
+                file.write(f'        - releases/{formatted_release_date}/release-notes.qmd\n')
 
                 add_release_content = False
 
