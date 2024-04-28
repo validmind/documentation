@@ -13,11 +13,10 @@ def collect_github_urls():
         url = input("Enter a full GitHub release URL (leave empty to finish): ")
         if not url:
             if not urls:  # Check if no URLs have been added yet
-                print("Error: At least one GitHub release URL must be specified.")
+                print("Error: You must specify at least one full GitHub release URL.")
                 exit(1)  # Exit the script with an error code
             break
         urls.append(url)
-    print("Generating release notes...")
     return urls
 
 def get_pr_numbers_from_url(release_url):
@@ -166,18 +165,6 @@ def write_prs_to_file(file, categories, label_to_category):
             file.writelines(output_lines)
 
 def main():
-    release_datetime = get_release_date()
-    formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
-    original_release_date = release_datetime.strftime("%B %d, %Y")
-
-    directory_path = f"releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd"
-    
-    with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
-    
-    # Define label to category mapping and other structures
     label_to_category = {
         "highlight": "## Release highlights",
         "enhancement": "## Enhancements",
@@ -195,6 +182,21 @@ def main():
     label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
 
     github_urls = collect_github_urls()
+    
+    release_datetime = get_release_date()
+    formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
+    original_release_date = release_datetime.strftime("%B %d, %Y")
+
+    directory_path = f"releases/{formatted_release_date}/"
+    os.makedirs(directory_path, exist_ok=True)
+    output_file = f"{directory_path}release-notes.qmd"
+
+    print("Generating release notes...")
+
+    with open(output_file, "w") as file:
+        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+    
+    # Define label to category mapping and other structures
     for url in github_urls:
         repo_name, pr_numbers = get_pr_numbers_from_url(url)
         if pr_numbers:
@@ -229,8 +231,12 @@ def main():
 
     # After completing all tasks, print git status to show output files
     try:
-        result = subprocess.run(["git", "status"], check=True, text=True, capture_output=True)
-        print(result.stdout)
+        result = subprocess.run(["git", "status", "--short"], check=True, text=True, capture_output=True)
+        lines = result.stdout.split('\n')
+        print("Files to commit:")
+        for line in lines:
+            if line.startswith((' M', '??', 'A ')):  # M for modified, ?? for untracked, A for added
+                print(line)
     except subprocess.CalledProcessError as e:
         print("Failed to run git status:", e)
 
