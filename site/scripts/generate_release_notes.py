@@ -11,10 +11,12 @@ def collect_github_urls():
     while True:
         url = input("Enter a full GitHub release URL (leave empty to finish): ")
         if not url:
+            if not urls:  # Check if no URLs have been added yet
+                print("Error: At least one GitHub release URL must be specified.")
+                exit(1)  # Exit the script with an error code
             break
         urls.append(url)
-    print(f"Generating release notes ...")
-
+    print("Generating release notes...")
     return urls
 
 def get_pr_numbers_from_url(release_url):
@@ -102,7 +104,6 @@ def download_assets(release_notes, directory_path):
             print(f"Failed to download {url}. Reason: {str(e)} - Attempted URL: {url}")
 
 def update_quarto_yaml(output_file, release_date):
-    print(f"Updating _quarto.yml ...")
     yaml_filename = "_quarto.yml"
     temp_yaml_filename = "_quarto_temp.yml"
 
@@ -131,6 +132,37 @@ def update_quarto_yaml(output_file, release_date):
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
+    
+    print(f"Added release notes to docs site (_quarto.yml, line {insert_index + 2})")
+
+def write_prs_to_file(file, categories, label_to_category):
+    for label, pr_list in categories.items():
+        if pr_list:  # Only write heading if there are PRs
+            output_lines = [f"{label_to_category.get(label, '## Other')}\n\n"]
+            last_line_was_blank = False
+
+            for pr in pr_list:
+                pr_lines = [
+                    f"\n<!---\nPR #{pr['pr_number']}: {pr['full_title']}\n",
+                    f"URL: {pr['url']}\n",
+                    f"Labels: {pr['labels']}\n",
+                    f"--->\n### {pr['title']}\n\n"
+                ]
+                
+                if pr['notes']:
+                    pr_lines.append(f"{pr['notes']}\n\n")
+                
+                for line in pr_lines:
+                    if line.strip() == "":
+                        if last_line_was_blank:
+                            continue
+                        last_line_was_blank = True
+                    else:
+                        last_line_was_blank = False
+                    output_lines.append(line)
+            
+            # Write processed lines to file
+            file.writelines(output_lines)
 
 def main():
     release_datetime = get_release_date()
@@ -142,35 +174,56 @@ def main():
     output_file = f"{directory_path}release-notes.qmd"
     
     with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n")
+        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
     
+    # Define label to category mapping and other structures
+    label_to_category = {
+        "highlight": "## Release highlights",
+        "enhancement": "## Enhancements",
+        "deprecation": "## Deprecations",
+        "bug": "## Bug fixes",
+        "documentation": "## Documentation"
+    }
+    categories = {
+        "highlight": [],
+        "enhancement": [],
+        "deprecation": [],
+        "bug": [],
+        "documentation": []
+    }
+    label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
+
     github_urls = collect_github_urls()
     for url in github_urls:
         repo_name, pr_numbers = get_pr_numbers_from_url(url)
         if pr_numbers:
-            with open(output_file, "a") as file:
-                for pr_number in pr_numbers:
-                    pr_data = get_pr_data(repo_name, pr_number)
-                    if pr_data:
-                        release_notes = extract_external_release_notes(pr_data['body'])
-                        cleaned_title = clean_title(pr_data['title'])
-                        labels = ", ".join([label['name'] for label in pr_data['labels']])
-                        file.write(f"\n<!---\nPR #{pr_number}: {pr_data['title']}\n")
-                        file.write(f"URL: {pr_data['url']}\n")
-                        file.write(f"Labels: {labels}\n")
-                        if release_notes:
-                            # Filter and prepare release notes content
-                            filtered_release_notes = '\n'.join(line for line in release_notes.split('\n') if '---' not in line)
-                            file.write(f"--->\n### {cleaned_title}\n\n")
-                            file.write(f"{filtered_release_notes}\n")
-                            # Download linked assets
-                            download_assets(release_notes, directory_path)
-                        else:
-                            file.write("No release notes section found.\n")
-        else:
-            with open(output_file, "a") as file:
-                file.write(f"No PR numbers found for {url}\n")
-    # Update _quarto.yml with the new release notes file
+            for pr_number in pr_numbers:
+                pr_data = get_pr_data(repo_name, pr_number)
+                if pr_data:
+                    release_notes = extract_external_release_notes(pr_data['body'])
+                    cleaned_title = clean_title(pr_data['title'])
+                    labels = [label['name'] for label in pr_data['labels']]
+                    pr_details = {
+                        'pr_number': pr_number,
+                        'title': cleaned_title,
+                        'full_title': pr_data['title'],
+                        'url': pr_data['url'],
+                        'labels': ", ".join(labels),
+                        'notes': release_notes
+                    }
+                    assigned = False
+                    for priority_label in label_hierarchy:
+                        if priority_label in labels:
+                            categories[priority_label].append(pr_details)
+                            assigned = True
+                            break
+                    if not assigned:
+                        categories.setdefault('other', []).append(pr_details)
+
+    # Write categorized PRs to the file
+    with open(output_file, "a") as file:
+        write_prs_to_file(file, categories, label_to_category)
+
     update_quarto_yaml(output_file, release_datetime)
 
 if __name__ == "__main__":
