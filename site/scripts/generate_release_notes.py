@@ -133,7 +133,7 @@ def update_quarto_yaml(output_file, release_date):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
-    print(f"Added release notes to docs site (_quarto.yml, line {insert_index + 2})")
+    print(f"Added release notes to _quarto.yml, line {insert_index + 2}")
 
 def write_prs_to_file(file, categories, label_to_category):
     for label, pr_list in categories.items():
