@@ -5,6 +5,7 @@ import requests
 import os
 import shutil
 import datetime
+import subprocess
 
 def collect_github_urls():
     urls = []
@@ -225,6 +226,13 @@ def main():
         write_prs_to_file(file, categories, label_to_category)
 
     update_quarto_yaml(output_file, release_datetime)
+
+    # After completing all tasks, print git status to show output files
+    try:
+        result = subprocess.run(["git", "status"], check=True, text=True, capture_output=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print("Failed to run git status:", e)
 
 if __name__ == "__main__":
     main()
