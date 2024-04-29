@@ -4,6 +4,7 @@ import subprocess
 import json
 import re
 import shutil
+import numpy as np
 import datetime
 
 def collect_github_urls():
@@ -76,7 +77,21 @@ def clean_title(title):
     return title.strip()
 
 def get_release_date():
-    default_date = datetime.datetime.now().strftime("%B %d, %Y")
+    # Get the current date without time
+    today = datetime.datetime.now().date()  # This ensures the date is a date-only object
+
+    # Convert the date to a numpy datetime64 object, specifying the date format
+    np_today = np.datetime64(today, 'D')
+
+    # Calculate 3 business days from today. 'forward' means move to the next business day if today is not one.
+    three_business_days = np.busday_offset(np_today, 3, roll='forward')
+
+    # Convert numpy datetime64 back to datetime.date
+    three_business_days = three_business_days.astype('datetime64[D]').astype(datetime.date)
+
+    # Format the default date
+    default_date = three_business_days.strftime("%B %d, %Y")
+
     date_input = input(f"Enter the release date (Month Day, Year) [{default_date}]: ") or default_date
     try:
         # Validate the date format
@@ -85,11 +100,6 @@ def get_release_date():
     except ValueError:
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
         return get_release_date()
-
-import os
-import requests
-import subprocess
-import re
 
 def update_quarto_yaml(output_file, release_date):
     yaml_filename = "_quarto.yml"
@@ -203,9 +213,6 @@ def main():
                         'notes': release_notes
                     }
 
-                    # Download release notes assets
-                    #download_assets(release_notes, directory_path)  # Call the function here
-
                     assigned = False
                     for priority_label in label_hierarchy:
                         if priority_label in labels:
@@ -227,7 +234,7 @@ def main():
         lines = result.stdout.split('\n')
         print("Files to commit:")
         for line in lines:
-            if line.startswith((' M', '??', 'A ')):  # M for modified, ?? for untracked, A for added
+            if line.startswith((' M', '??', 'A ')):
                 print(line)
     except subprocess.CalledProcessError as e:
         print("Failed to run git status:", e)
