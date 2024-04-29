@@ -133,7 +133,7 @@ def write_prs_to_file(file, categories, label_to_category):
 
             for pr in pr_list:
                 pr_lines = [
-                    f"\n<!---\nPR #{pr['pr_number']}: {pr['full_title']}\n",
+                    f"<!---\nPR #{pr['pr_number']}: {pr['full_title']}\n",
                     f"URL: {pr['url']}\n",
                     f"Labels: {pr['labels']}\n",
                     f"--->\n### {pr['title']}\n\n"
