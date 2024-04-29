@@ -175,7 +175,7 @@ def main():
     
     release_datetime = get_release_date()
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
-    original_release_date = release_datetime.strftime("%B %d, %Y")
+    original_release_date = release_datetime.strftime("%B %-d, %Y")
 
     directory_path = f"releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
