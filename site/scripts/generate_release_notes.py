@@ -77,26 +77,18 @@ def clean_title(title):
     return title.strip()
 
 def get_release_date():
-    # Get the current date without time
-    today = datetime.datetime.now().date()  # This ensures the date is a date-only object
-
-    # Convert the date to a numpy datetime64 object, specifying the date format
+    today = datetime.datetime.now().date()
     np_today = np.datetime64(today, 'D')
 
     # Calculate 3 business days from today. 'forward' means move to the next business day if today is not one.
     three_business_days = np.busday_offset(np_today, 3, roll='forward')
-
-    # Convert numpy datetime64 back to datetime.date
     three_business_days = three_business_days.astype('datetime64[D]').astype(datetime.date)
-
-    # Format the default date
     default_date = three_business_days.strftime("%B %d, %Y")
 
     date_input = input(f"Enter the release date (Month Day, Year) [{default_date}]: ") or default_date
     try:
-        # Validate the date format
         validated_date = datetime.datetime.strptime(date_input, "%B %d, %Y")
-        return validated_date  # Return the datetime object for flexible formatting later
+        return validated_date
     except ValueError:
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
         return get_release_date()
