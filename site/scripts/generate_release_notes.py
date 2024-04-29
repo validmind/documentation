@@ -86,48 +86,10 @@ def get_release_date():
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
         return get_release_date()
 
-import subprocess
 import os
-
-def download_github_asset(asset_id, repository, directory_path):
-    # Construct the gh CLI command to download an asset
-    cmd = ["gh", "release", "download", "--repo", repository, "--pattern", asset_id]
-    
-    try:
-        # Change the current directory to where you want to download the asset
-        os.chdir(directory_path)
-        # Execute the command
-        result = subprocess.run(cmd, check=True, text=True, capture_output=True)
-        print(f"Downloaded assets to {directory_path}: {result.stdout}")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to download asset from GitHub. Reason: {e.stderr}")
-
-def download_assets(release_notes, directory_path):
-    trusted_sites = [
-        "https://github.com",
-        "https://www.loom.com"
-    ]
-    links = re.findall(r'http[s]?://[^\s">]+', release_notes)
-    for url in links:
-        if "github.com/validmind/" in url and '/assets/' in url:
-            # Extract repository path and asset ID from URL
-            parts = url.split('/')
-            if len(parts) > 5:
-                repository = f"{parts[3]}/{parts[4]}"  # e.g., 'validmind/frontend'
-                asset_id = parts[-1]  # The last part is assumed to be the asset ID
-                download_github_asset(asset_id, repository, directory_path)
-        elif any(url.startswith(site) for site in trusted_sites):
-            print(f"\nAttempting to download from {url}")
-            try:
-                response = requests.get(url)
-                response.raise_for_status()
-                filename = os.path.basename(url)
-                file_path = os.path.join(directory_path, filename)
-                with open(file_path, 'wb') as f:
-                    f.write(response.content)
-                print(f"Downloaded {filename} to {directory_path}")
-            except requests.RequestException as e:
-                print(f"Failed to download {url}. Reason: {str(e)}")
+import requests
+import subprocess
+import re
 
 def update_quarto_yaml(output_file, release_date):
     yaml_filename = "_quarto.yml"
@@ -242,7 +204,7 @@ def main():
                     }
 
                     # Download release notes assets
-                    download_assets(release_notes, directory_path)  # Call the function here
+                    #download_assets(release_notes, directory_path)  # Call the function here
 
                     assigned = False
                     for priority_label in label_hierarchy:
