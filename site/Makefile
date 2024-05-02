@@ -93,5 +93,4 @@ deploy-prod:
 
 # Generate release notes
 release-notes:
-	@echo "\nGenerating release notes ..."
-	@python generate_release_notes.py
+	@python scripts/generate_release_notes.py
