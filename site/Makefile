@@ -29,7 +29,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b prod git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b main git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -46,7 +46,7 @@ notebooks:
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
     # This line fixes text casing in Quarto when notebooks are embedded via wildcard
 	@echo "Renaming code_samples/nlp_and_llm to fix Quarto sidebar ..."
-	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/LLM_and_NLP; fi
+	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/NLP_and_LLM; fi
 
 
 # Make Python library docs & copy them over
