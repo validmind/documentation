@@ -1,4 +1,3 @@
-import os
 import requests
 import subprocess
 import json
@@ -6,6 +5,21 @@ import re
 import shutil
 import numpy as np
 import datetime
+import openai
+from dotenv import load_dotenv
+import os
+
+def setup_openai_api():
+    # Load environment variables
+    load_dotenv()
+
+    # Get the OpenAI API key
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        raise EnvironmentError("OpenAI API key is not set in .env file.")
+
+    # Set the API key for the OpenAI library
+    openai.api_key = api_key
 
 def collect_github_urls():
     urls = []
@@ -63,6 +77,14 @@ def extract_external_release_notes(pr_body):
         extracted_text = match.group(1).strip()
         # Process each line to add an extra '#' if the line starts with three or more '#'
         modified_text = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))
+
+        # Edit the output lines with ChatGPT
+        #print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
+        edited_text = edit_text_with_openai(modified_text)
+        #print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
+
+        modified_text = edited_text
+
         return modified_text
     return None
 
@@ -74,7 +96,43 @@ def clean_title(title):
         title = parts[-1].strip()  # Get the part after the last '/'
         if title and title[0].islower():
             title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
+
+    title = title.strip()
+
+    # Edit the title with ChatGPT
+    #print(f"ORIGINAL TITLE: {title}")
+    edited_title = edit_text_with_openai(title)
+    #print(f"EDITED TITLE:   {edited_title}")
+
+    title = edited_title
+
     return title.strip()
+
+def edit_text_with_openai(lines):
+    # Join lines into a single string with newline characters
+    original_text = "\n".join(lines)
+    client = openai.OpenAI() 
+    #print(f"ORIGINAL TEXT: {original_text}")
+
+    instruction_text = "Proofread the following release notes text so that it is clear, concise, and error-free. Use sentence-style capitalization and address the reader in the second person. If the original text includes comments, return them as-is in your response. If the original text is a short line with noperiod at the end, do not add one."
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4-turbo",
+            messages=[{"role": "system", "content": instruction_text},
+                      {"role": "user", "content": original_text}],
+            max_tokens=len(original_text) * 2,  # Adjust the token limit as needed
+            frequency_penalty=0.5,  # Optional: modify repetition tendencies
+            presence_penalty=0.5  # Optional: encourage diversity in responses
+        )
+        edited_text = response.choices[0].message.content
+        #return edited_text.split('\n')
+        return edited_text
+
+    except Exception as e:
+        print(f"\nFailed to edit text with OpenAI: {str(e)}")
+        print(f"ORIGINAL TEXT: {lines}\n\n")
+        return lines  # Return the original lines if the edit fails
 
 def get_release_date():
     today = datetime.datetime.now().date()
@@ -150,11 +208,14 @@ def write_prs_to_file(file, categories, label_to_category):
                     else:
                         last_line_was_blank = False
                     output_lines.append(line)
-            
-            # Write processed lines to file
+
+            # Write processed and edited lines to file
             file.writelines(output_lines)
 
 def main():
+    # Set up the OpenAI API key from the .env file
+    setup_openai_api()  # Make sure API key is set
+
     label_to_category = {
         "highlight": "## Release highlights",
         "enhancement": "## Enhancements",
@@ -181,7 +242,7 @@ def main():
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
 
-    print("Generating release notes...")
+    print("Generating & editing release notes...")
 
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
