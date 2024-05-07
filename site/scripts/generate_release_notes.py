@@ -78,7 +78,7 @@ def extract_external_release_notes(pr_body):
         # Process each line to add an extra '#' if the line starts with three or more '#'
         modified_text = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))
 
-        # Edit the output lines with ChatGPT
+        # Edit the release notes text with ChatGPT
         #print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
         edited_text = edit_text_with_openai(modified_text)
         #print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
@@ -99,7 +99,7 @@ def clean_title(title):
 
     title = title.strip()
 
-    # Edit the title with ChatGPT
+    # Edit the pull request title with ChatGPT
     #print(f"ORIGINAL TITLE: {title}")
     edited_title = edit_text_with_openai(title)
     #print(f"EDITED TITLE:   {edited_title}")
@@ -114,7 +114,7 @@ def edit_text_with_openai(lines):
     client = openai.OpenAI() 
     #print(f"ORIGINAL TEXT: {original_text}")
 
-    instruction_text = "Proofread the following release notes text so that it is clear, concise, and error-free. Use sentence-style capitalization and address the reader in the second person. If the original text includes comments, return them as-is in your response. If the original text is a short line with noperiod at the end, do not add one."
+    instruction_text = "Proofread the following release notes text so that it is clear, concise, and error-free. Use sentence-style capitalization and address the reader in the second person. If the original text includes comments, return them as-is in your response. If the original text is a short line with no period at the end, do not add one."
 
     try:
         response = client.chat.completions.create(
@@ -214,7 +214,7 @@ def write_prs_to_file(file, categories, label_to_category):
 
 def main():
     # Set up the OpenAI API key from the .env file
-    setup_openai_api()  # Make sure API key is set
+    setup_openai_api()
 
     label_to_category = {
         "highlight": "## Release highlights",
