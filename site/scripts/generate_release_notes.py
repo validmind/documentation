@@ -131,7 +131,7 @@ def edit_text_with_openai(lines):
 
     except Exception as e:
         print(f"\nFailed to edit text with OpenAI: {str(e)}")
-        print(f"ORIGINAL TEXT: {lines}\n\n")
+        print(f"\n{lines}\n\n")
         return lines  # Return the original lines if the edit fails
 
 def get_release_date():
@@ -209,7 +209,7 @@ def write_prs_to_file(file, categories, label_to_category):
                         last_line_was_blank = False
                     output_lines.append(line)
 
-            # Write processed and edited lines to file
+            # Write processed lines to file
             file.writelines(output_lines)
 
 def main():
@@ -242,7 +242,7 @@ def main():
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
 
-    print("Generating & editing release notes...")
+    print("Generating & editing release notes ...")
 
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
