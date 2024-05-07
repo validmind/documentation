@@ -114,12 +114,17 @@ def edit_text_with_openai(lines):
     client = openai.OpenAI() 
     #print(f"ORIGINAL TEXT: {original_text}")
 
-    instruction_text = "Proofread the following release notes text so that it is clear, concise, and error-free. Use sentence-style capitalization and address the reader in the second person. If the original text includes comments, return them as-is in your response. If the original text is a short line with no period at the end, do not add one."
+    editing_instructions = """
+    Proofread the following release notes text to be clear, concise, and error-free. 
+    Use sentence-style capitalization. Return comments as-is if included in the original text. 
+    If the original text is a short line with no punctuation at the end, do not add punctuation. 
+    Please adhere to our style guide, which can be found here: https://docs.validmind.ai/about/style-guide.html
+    """
 
     try:
         response = client.chat.completions.create(
             model="gpt-4-turbo",
-            messages=[{"role": "system", "content": instruction_text},
+            messages=[{"role": "system", "content": editing_instructions},
                       {"role": "user", "content": original_text}],
             max_tokens=len(original_text) * 2,  # Adjust the token limit as needed
             frequency_penalty=0.5,  # Optional: modify repetition tendencies
