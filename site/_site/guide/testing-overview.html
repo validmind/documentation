@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-05-02">
+<meta name="dcterms.date" content="2024-05-07">
 
 <title>ValidMind - Run tests and test suites</title>
 <style>
@@ -1664,7 +1664,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 2, 2024</p>
+      <p class="date">May 7, 2024</p>
     </div>
   </div>
   
@@ -1688,26 +1688,79 @@ cookieconsent.run({
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <!--- These concepts are introduced in the "Get started" section. They are repeated the guides and get started with the developer framework sections in a collapsed format in case a reader missed them earlier. --->
-<section id="key-concepts" class="level3">
-<h3 class="anchored" data-anchor-id="key-concepts">Key Concepts</h3>
-<p><strong>Model documentation</strong>: A structured and detailed record pertaining to a model, encompassing key components such as its underlying assumptions, methodologies, data sources, inputs, performance metrics, evaluations, limitations, and intended uses. It serves to ensure transparency, adherence to regulatory requirements, and a clear understanding of potential risks associated with the model’s application.</p>
-<p><strong>Validation report</strong>: A formal document prepared as part of the model validation process that evaluates information provided by the model documentation, outlining the findings, assessments, and recommendations related to a specific model’s performance, appropriateness, and limitations. It provides a comprehensive review of the model’s conceptual framework, data sources and integrity, calibration methods, and performance outcomes, crucial for ensuring transparency and regulatory compliance.</p>
-<p><strong>Documentation template</strong>: Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.</p>
-<p><strong>Tests</strong>: A function contained in the ValidMind Developer Framework, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.</p>
-<p><strong>Metrics</strong>: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.</p>
-<p><strong>Custom metrics</strong>: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.</p>
-<p><strong>Inputs</strong>: Objects to be evaluated and documented in the developer framework. They can be any of the following:</p>
+<!-- IF A KEY CONCEPT NEEDS TO BE ADDED:
+
+1. Create a new file under the `about/glossary/key_concepts` folder with the following structure `_concept.qmd` (the `_` is mandatory for Quarto to retrieve the file as a single-source embed: https://quarto.org/docs/authoring/includes.html)
+2. Include it below with the structure `{{< include ../about/glossary/key_concepts/_concept.qmd >}}`
+3. In the `about/glossary` folder, locate the correct section file it belongs to (e.g. `_ai.qmd`) and embed it there as well in ABC order with the structure `{{< include key_concepts/_concept.qmd >}}` 
+
+These instructions update the key concept on anywhere the key concepts are reference as well as within the glossary.
+
+-->
+<dl>
+<dt>model documentation</dt>
+<dd>
+<p>A structured and detailed record pertaining to a model, encompassing key components such as its underlying assumptions, methodologies, data sources, inputs, performance metrics, evaluations, limitations, and intended uses.</p>
+<ul>
+<li>Within the realm of model risk management, this documentation serves to ensure transparency, adherence to regulatory requirements, and a clear understanding of potential risks associated with the model’s application.</li>
+</ul>
+</dd>
+<dt>validation report</dt>
+<dd>
+<p>A formal document produced after a model validation process, outlining the findings, assessments, and recommendations related to a specific model’s performance, appropriateness, and limitations. Provides a comprehensive review of the model’s conceptual framework, data sources and integrity, calibration methods, and performance outcomes.</p>
+<ul>
+<li>Within model risk management, the validation report is crucial for ensuring transparency, demonstrating regulatory compliance, and offering actionable insights for model refinement or adjustments.</li>
+</ul>
+</dd>
+<dt>template, documentation template</dt>
+<dd>
+<p>Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.</p>
+<ul>
+<li>ValidMind templates come with pre-defined sections, similar to test placeholders, including boilerplates and spaces designated for documentation and test results. When rendered, produces a document that model developers can use for model validation.</li>
+</ul>
+</dd>
+<dt>test</dt>
+<dd>
+<p>A function contained in the developer framework, designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind platform to generate the model documentation according to the template that is associated with the documentation.</p>
+<ul>
+<li>Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.</li>
+</ul>
+</dd>
+<dt>metrics, custom metrics</dt>
+<dd>
+<p>Metrics are a subset of tests that do not have thresholds. Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.</p>
+<ul>
+<li>In the context of ValidMind’s Jupyter notebooks, metrics and tests can be thought of as interchangeable concepts.</li>
+</ul>
+</dd>
+<dt>inputs</dt>
+<dd>
+Objects to be evaluated and documented in the developer framework. They can be any of the following:
+</dd>
+</dl>
 <ul>
 <li><strong>model</strong>: A single model that has been initialized in ValidMind with <code>vm.init_model()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_model">Model Documentation</a> or the for more information.</li>
 <li><strong>dataset</strong>: Single dataset that has been initialized in ValidMind with <code>vm.init_dataset()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset">Dataset Documentation</a> for more information.</li>
 <li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.</li>
 <li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
 </ul>
-<p><strong>Parameters</strong>: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.</p>
-<p><strong>Outputs</strong>: Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a pandas DataFrame. Plots may be matplotlib or plotly figures.</p>
-<p><strong>Test suites</strong>: Collections of tests designed to run together to automate and generate model documentation end-to-end for specific use-cases.</p>
-<p>Example: the <a href="../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</p>
-</section>
+<dl>
+<dt>parameters</dt>
+<dd>
+Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.
+</dd>
+<dt>outputs</dt>
+<dd>
+Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas DataFrame</a>. Plots may be <a href="https://matplotlib.org/">matplotlib</a> or <a href="https://plotly.com/">plotly</a> figures.
+</dd>
+<dt>test suite</dt>
+<dd>
+A collection of tests which are run together to generate model documentation end-to-end for specific use-cases.
+</dd>
+</dl>
+<ul>
+<li>e.g.&nbsp;The <a href="../../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="../../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1716,7 +1769,7 @@ cookieconsent.run({
 <p>Start by running a pre-made test, then modify it, and finally create your own test:</p>
 <div id="listing-tests-beginner" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1714675068748" data-listing-reading-time-sort="10">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1714943841556" data-listing-reading-time-sort="10">
 <a href="../notebooks/how_to/run_tests/1_run_dataset_based_tests.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -1808,7 +1861,7 @@ No matching items
 <p>Building on previous sections, add your own test provider, set up datasets, run tests on individual sections in your model documentation, and more:</p>
 <div id="listing-tests-intermediate" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1714675068743" data-listing-reading-time-sort="13">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1715127619632" data-listing-reading-time-sort="13">
 <a href="../notebooks/code_samples/custom_tests/integrate_external_test_providers.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
