@@ -116,15 +116,17 @@ def edit_text_with_openai(lines):
     Please edit the provided technical content with the following guidelines:
 
     - Use clear, concise, and neutral language.
-    - Address the reader directly using the second person ("you").
-    - Write in the active voice and present tense wherever possible.
-    - Apply sentence-style capitalization to headings and text.
+    - Address the user directly in the second person.
+    - Write in the active voice and present tense.
+    - Apply sentence-style capitalization to text.
+    - Add missing definite and indefinite articles.
     - Maintain all original hyperlinks for reference.
     - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
     - Enclose any words joined by underscores in backticks (`) if they aren't already.
-    - Avoid splitting text across multiple lines or sections unnecessarily.
-    - Treat lines that end without punctuation as headings and do not add punctiation.
-    - Avoid using hyperbole, exclamation marks, and quotes around non-code English words.
+    - Only split text across multiple lines if text contains more than three complete sentences.
+    - Treat lines that end without punctuation as headings and do not add punctuation.
+    - Remove exclamation marks.
+    - Remove quotes around non-code English words.
     - Adhere to our style guide, which can be accessed [here](https://docs.validmind.ai/about/style-guide.html).
     """
 
