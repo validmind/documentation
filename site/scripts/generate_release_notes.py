@@ -113,17 +113,18 @@ def edit_text_with_openai(lines):
     editing_instructions = """
     Please edit the provided technical content according to the following guidelines:
 
-    - Use simple and neutral language.
-    - Address the user directly in the second person.
-    - Write in the active voice.
-    - Use present tense where possible. 
+    - Use simple and neutral language in the active voice.
+    - Address users directly in the second person with "you".
+    - Use present tense by avoiding the use of "will".
     - Apply sentence-style capitalization to text.
-    - Split sentences that are longer than 25 words.
-    - Enclose any words joined by underscores in backticks (`) if they aren't already.
+    - Rewrite sentences that are longer than 25 words as multiple sentences.
+    - Only split text across multiple lines if the text contains more than three sentences.
+    - Avoid handwaving references to "it" or "this" by including the text referred to. 
     - Treat short text of less than ten words without a period at the end as a heading. 
-    - Only split text across multiple lines if text contains more than two sentences.
-    - Remove exclamation marks.
+    - Enclose any words joined by underscores in backticks (`) if they aren't already.
+    - Remove exclamation marks from English text.
     - Remove quotes around non-code English words.
+    - Maintain existing punctuation at the end of sentences.
     - Maintain all original hyperlinks for reference.
     - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
     """
