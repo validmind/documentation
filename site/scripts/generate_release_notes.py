@@ -1,4 +1,3 @@
-import os
 import requests
 import subprocess
 import json
@@ -6,6 +5,21 @@ import re
 import shutil
 import numpy as np
 import datetime
+import openai
+from dotenv import load_dotenv
+import os
+
+def setup_openai_api():
+    # Load environment variables
+    load_dotenv()
+
+    # Get the OpenAI API key
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        raise EnvironmentError("OpenAI API key is not set in .env file.")
+
+    # Set the API key for the OpenAI library
+    openai.api_key = api_key
 
 def collect_github_urls():
     urls = []
@@ -63,6 +77,13 @@ def extract_external_release_notes(pr_body):
         extracted_text = match.group(1).strip()
         # Process each line to add an extra '#' if the line starts with three or more '#'
         modified_text = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))
+
+        # Edit the release notes text with ChatGPT
+        # print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
+        edited_text = edit_text_with_openai(modified_text)
+        # print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
+
+        modified_text = edited_text
         return modified_text
     return None
 
@@ -74,7 +95,64 @@ def clean_title(title):
         title = parts[-1].strip()  # Get the part after the last '/'
         if title and title[0].islower():
             title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
-    return title.strip()
+
+    title = title.strip()
+
+    # Edit the pull request title with ChatGPT
+    # print(f"ORIGINAL TITLE: {title}")
+    edited_title = edit_text_with_openai(title)
+    # print(f"EDITED TITLE:   {edited_title}")
+
+    title = edited_title.rstrip('.')
+    return title
+
+def edit_text_with_openai(lines):
+    original_text = "\n".join(lines)
+    client = openai.OpenAI() 
+
+    editing_instructions = """
+    Please edit the provided technical content according to the following guidelines:
+
+    - Use simple and neutral language in the active voice.
+    - Address users directly in the second person with "you".
+    - Use present tense by avoiding the use of "will".
+    - Apply sentence-style capitalization to text.
+    - Rewrite sentences that are longer than 25 words as multiple sentences.
+    - Only split text across multiple lines if the text contains more than three sentences.
+    - Avoid handwaving references to "it" or "this" by including the text referred to. 
+    - Treat short text of less than ten words without a period at the end as a heading. 
+    - Enclose any words joined by underscores in backticks (`) if they aren't already.
+    - Remove exclamation marks from English text.
+    - Remove quotes around non-code English words.
+    - Maintain existing punctuation at the end of sentences.
+    - Maintain all original hyperlinks for reference.
+    - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4-turbo",
+            messages=[
+                {
+                    "role": "system", 
+                    "content": editing_instructions
+                },
+                {
+                    "role": "user", 
+                    "content": original_text
+                }
+                ],
+            max_tokens=4096,  # Adjust the token limit as needed
+            frequency_penalty=0.5,  # Modify repetition tendencies
+            presence_penalty=0.5  # Encourage diversity in responses
+        )
+        edited_text = response.choices[0].message.content
+        return edited_text
+
+    except Exception as e:
+        print(f"\nFailed to edit text with OpenAI: {str(e)}")
+        print(f"\n{lines}\n")
+        return lines  # Return the original lines if the edit fails
 
 def get_release_date():
     today = datetime.datetime.now().date()
@@ -150,11 +228,14 @@ def write_prs_to_file(file, categories, label_to_category):
                     else:
                         last_line_was_blank = False
                     output_lines.append(line)
-            
+
             # Write processed lines to file
             file.writelines(output_lines)
 
 def main():
+    # Set up the OpenAI API key from the .env file
+    setup_openai_api()
+
     label_to_category = {
         "highlight": "## Release highlights",
         "enhancement": "## Enhancements",
@@ -181,7 +262,7 @@ def main():
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
 
-    print("Generating release notes...")
+    print("Generating & editing release notes ...")
 
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
@@ -192,6 +273,7 @@ def main():
         if pr_numbers:
             for pr_number in pr_numbers:
                 pr_data = get_pr_data(repo_name, pr_number)
+                print(f"  Processing {repo_name}/#{pr_number} ...")
                 if pr_data:
                     release_notes = extract_external_release_notes(pr_data['body'])
                     cleaned_title = clean_title(pr_data['title'])
