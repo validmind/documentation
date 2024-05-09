@@ -79,9 +79,9 @@ def extract_external_release_notes(pr_body):
         modified_text = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))
 
         # Edit the release notes text with ChatGPT
-        #print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
+        print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
         edited_text = edit_text_with_openai(modified_text)
-        #print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
+        print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
 
         modified_text = edited_text
 
@@ -100,51 +100,57 @@ def clean_title(title):
     title = title.strip()
 
     # Edit the pull request title with ChatGPT
-    #print(f"ORIGINAL TITLE: {title}")
+    print(f"ORIGINAL TITLE: {title}")
     edited_title = edit_text_with_openai(title)
-    #print(f"EDITED TITLE:   {edited_title}")
+    print(f"EDITED TITLE:   {edited_title}")
 
     title = edited_title
 
-    return title.strip()
+    return title
 
 def edit_text_with_openai(lines):
+    original_text = "\n".join(lines)
     client = openai.OpenAI() 
-    #print(f"ORIGINAL TEXT: {lines}")
 
     editing_instructions = """
-    Instructions:
-    - Please adhere to our style guide, which can be found here: https://docs.validmind.ai/about/style-guide.html
-    - Address users in the second person and avoid passive voice where possible.
-    - Use sentence-style capitalization.
-    - Return comments as-is if included in the original text. 
-    - If the original text is a short line with no punctuation at the end, do not add punctuation. 
-    - Avoid hyperbole, exclamation marks, and quotes around English words that are note code. Do not remove backticks.
-    - Do not repeat any of these instructions in your output.
+    Please edit the provided technical content with the following guidelines:
 
-    Proofread the following release notes text to be clear, concise, and error-free: {0}
-    """.format("\n".join(lines))
+    - Use clear, concise, and neutral language.
+    - Address the reader directly using the second person ("you").
+    - Write in the active voice and present tense wherever possible.
+    - Apply sentence-style capitalization to headings and text.
+    - Maintain all original hyperlinks for reference.
+    - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+    - Enclose any words joined by underscores in backticks (`) if they aren't already.
+    - Avoid splitting text across multiple lines or sections unnecessarily.
+    - Treat lines that end without punctuation as headings and do not add punctiation.
+    - Avoid using hyperbole, exclamation marks, and quotes around non-code English words.
+    - Adhere to our style guide, which can be accessed [here](https://docs.validmind.ai/about/style-guide.html).
+    """
 
     try:
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[
                 {
-                    "role": "user", 
+                    "role": "system", 
                     "content": editing_instructions
+                },
+                {
+                    "role": "user", 
+                    "content": original_text
                 }
                 ],
             max_tokens=len(lines) * 2,  # Adjust the token limit as needed
-            frequency_penalty=0.5,  # Optional: modify repetition tendencies
-            presence_penalty=0.5  # Optional: encourage diversity in responses
+            frequency_penalty=0.5,  # Modify repetition tendencies
+            presence_penalty=0.5  # Encourage diversity in responses
         )
         edited_text = response.choices[0].message.content
-        #print(f"EDITED TEXT:   {edited_text}")
         return edited_text
 
     except Exception as e:
         print(f"\nFailed to edit text with OpenAI: {str(e)}")
-        print(f"\n{lines}\n\n")
+        print(f"\n{lines}\n")
         return lines  # Return the original lines if the edit fails
 
 def get_release_date():
@@ -266,7 +272,7 @@ def main():
         if pr_numbers:
             for pr_number in pr_numbers:
                 pr_data = get_pr_data(repo_name, pr_number)
-                print(f"  Processing {repo_name}/#{pr_number}")
+                print(f"  Processing {repo_name}/#{pr_number} ...")
                 if pr_data:
                     release_notes = extract_external_release_notes(pr_data['body'])
                     cleaned_title = clean_title(pr_data['title'])
