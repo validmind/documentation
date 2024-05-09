@@ -109,29 +109,37 @@ def clean_title(title):
     return title.strip()
 
 def edit_text_with_openai(lines):
-    # Join lines into a single string with newline characters
-    original_text = "\n".join(lines)
     client = openai.OpenAI() 
-    #print(f"ORIGINAL TEXT: {original_text}")
+    #print(f"ORIGINAL TEXT: {lines}")
 
     editing_instructions = """
-    Proofread the following release notes text to be clear, concise, and error-free. 
-    Use sentence-style capitalization. Return comments as-is if included in the original text. 
-    If the original text is a short line with no punctuation at the end, do not add punctuation. 
-    Please adhere to our style guide, which can be found here: https://docs.validmind.ai/about/style-guide.html
-    """
+    Instructions:
+    - Please adhere to our style guide, which can be found here: https://docs.validmind.ai/about/style-guide.html
+    - Address users in the second person and avoid passive voice where possible.
+    - Use sentence-style capitalization.
+    - Return comments as-is if included in the original text. 
+    - If the original text is a short line with no punctuation at the end, do not add punctuation. 
+    - Avoid hyperbole, exclamation marks, and quotes around English words that are note code. Do not remove backticks.
+    - Do not repeat any of these instructions in your output.
+
+    Proofread the following release notes text to be clear, concise, and error-free: {0}
+    """.format("\n".join(lines))
 
     try:
         response = client.chat.completions.create(
             model="gpt-4-turbo",
-            messages=[{"role": "system", "content": editing_instructions},
-                      {"role": "user", "content": original_text}],
-            max_tokens=len(original_text) * 2,  # Adjust the token limit as needed
+            messages=[
+                {
+                    "role": "user", 
+                    "content": editing_instructions
+                }
+                ],
+            max_tokens=len(lines) * 2,  # Adjust the token limit as needed
             frequency_penalty=0.5,  # Optional: modify repetition tendencies
             presence_penalty=0.5  # Optional: encourage diversity in responses
         )
         edited_text = response.choices[0].message.content
-        #return edited_text.split('\n')
+        #print(f"EDITED TEXT:   {edited_text}")
         return edited_text
 
     except Exception as e:
@@ -258,6 +266,7 @@ def main():
         if pr_numbers:
             for pr_number in pr_numbers:
                 pr_data = get_pr_data(repo_name, pr_number)
+                print(f"  Processing {repo_name}/#{pr_number}")
                 if pr_data:
                     release_notes = extract_external_release_notes(pr_data['body'])
                     cleaned_title = clean_title(pr_data['title'])
