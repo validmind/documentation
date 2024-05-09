@@ -79,12 +79,11 @@ def extract_external_release_notes(pr_body):
         modified_text = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))
 
         # Edit the release notes text with ChatGPT
-        print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
+        # print(f"ORIGINAL RELEASE NOTES TEXT: {modified_text}")
         edited_text = edit_text_with_openai(modified_text)
-        print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
+        # print(f"EDITED RELEASE NOTES TEXT:   {edited_text}")
 
         modified_text = edited_text
-
         return modified_text
     return None
 
@@ -100,12 +99,11 @@ def clean_title(title):
     title = title.strip()
 
     # Edit the pull request title with ChatGPT
-    print(f"ORIGINAL TITLE: {title}")
+    # print(f"ORIGINAL TITLE: {title}")
     edited_title = edit_text_with_openai(title)
-    print(f"EDITED TITLE:   {edited_title}")
+    # print(f"EDITED TITLE:   {edited_title}")
 
-    title = edited_title
-
+    title = edited_title.rstrip('.')
     return title
 
 def edit_text_with_openai(lines):
@@ -113,21 +111,21 @@ def edit_text_with_openai(lines):
     client = openai.OpenAI() 
 
     editing_instructions = """
-    Please edit the provided technical content with the following guidelines:
+    Please edit the provided technical content according to the following guidelines:
 
-    - Use clear, concise, and neutral language.
+    - Use simple and neutral language.
     - Address the user directly in the second person.
-    - Write in the active voice and present tense.
+    - Write in the active voice.
+    - Use present tense where possible. 
     - Apply sentence-style capitalization to text.
-    - Add missing definite and indefinite articles.
-    - Maintain all original hyperlinks for reference.
-    - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+    - Split sentences that are longer than 25 words.
     - Enclose any words joined by underscores in backticks (`) if they aren't already.
-    - Only split text across multiple lines if text contains more than three complete sentences.
-    - Treat lines that end without punctuation as headings and do not add punctuation.
+    - Treat short text of less than ten words without a period at the end as a heading. 
+    - Only split text across multiple lines if text contains more than two sentences.
     - Remove exclamation marks.
     - Remove quotes around non-code English words.
-    - Adhere to our style guide, which can be accessed [here](https://docs.validmind.ai/about/style-guide.html).
+    - Maintain all original hyperlinks for reference.
+    - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
     """
 
     try:
@@ -143,7 +141,7 @@ def edit_text_with_openai(lines):
                     "content": original_text
                 }
                 ],
-            max_tokens=len(lines) * 2,  # Adjust the token limit as needed
+            max_tokens=4096,  # Adjust the token limit as needed
             frequency_penalty=0.5,  # Modify repetition tendencies
             presence_penalty=0.5  # Encourage diversity in responses
         )
