@@ -1,4 +1,4 @@
-# BivariateHistograms
+# tests\data_validation\BivariateHistograms
 
 Generates bivariate histograms for paired features, aiding in visual inspection of categorical variables
 distributions and correlations.

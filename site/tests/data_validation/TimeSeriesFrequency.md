@@ -1,4 +1,4 @@
-# TimeSeriesFrequency
+# tests\data_validation\TimeSeriesFrequency
 
 Evaluates consistency of time series data frequency and generates a frequency plot.
 

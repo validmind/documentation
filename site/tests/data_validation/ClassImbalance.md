@@ -1,4 +1,4 @@
-# ClassImbalance
+# tests\data_validation\ClassImbalance
 
 Evaluates and quantifies class distribution imbalance in a dataset used by a machine learning model.
 

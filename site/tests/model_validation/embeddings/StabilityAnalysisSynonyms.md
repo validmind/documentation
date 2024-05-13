@@ -1,4 +1,4 @@
-# StabilityAnalysisSynonyms
+# tests\model_validation\embeddings\StabilityAnalysisSynonyms
 
 Evaluates the stability of text embeddings models when words in test data are replaced by their synonyms randomly.
 

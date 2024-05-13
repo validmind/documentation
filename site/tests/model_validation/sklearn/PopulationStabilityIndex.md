@@ -1,4 +1,4 @@
-# PopulationStabilityIndex
+# tests\model_validation\sklearn\PopulationStabilityIndex
 
 Evaluates the Population Stability Index (PSI) to quantify the stability of an ML model's predictions across
 different datasets.

@@ -1,4 +1,4 @@
-# PrecisionRecallCurve
+# tests\model_validation\sklearn\PrecisionRecallCurve
 
 Evaluates the precision-recall trade-off for binary classification models and visualizes the Precision-Recall curve.
 

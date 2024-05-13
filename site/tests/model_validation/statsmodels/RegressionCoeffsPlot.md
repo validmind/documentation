@@ -1,4 +1,4 @@
-# RegressionCoeffsPlot
+# tests\model_validation\statsmodels\RegressionCoeffsPlot
 
 Visualizes regression coefficients with 95% confidence intervals to assess predictor variables' impact on response
 variable.

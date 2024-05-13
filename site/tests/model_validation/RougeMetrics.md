@@ -1,4 +1,4 @@
-# RougeMetrics
+# tests\model_validation\RougeMetrics
 
 Evaluates the quality of machine-generated text using various ROUGE metrics, and visualizes the results.
 

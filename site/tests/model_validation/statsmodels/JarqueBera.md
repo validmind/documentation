@@ -1,4 +1,4 @@
-# JarqueBera
+# tests\model_validation\statsmodels\JarqueBera
 
 Assesses normality of dataset features in an ML model using the Jarque-Bera test.
 

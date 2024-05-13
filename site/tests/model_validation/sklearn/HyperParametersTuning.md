@@ -1,4 +1,4 @@
-# HyperParametersTuning
+# tests\model_validation\sklearn\HyperParametersTuning
 
 Exerts exhaustive grid search to identify optimal hyperparameters for the model, improving performance.
 

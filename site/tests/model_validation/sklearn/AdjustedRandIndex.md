@@ -1,4 +1,4 @@
-# AdjustedRandIndex
+# tests\model_validation\sklearn\AdjustedRandIndex
 
 Measures the similarity between two data clusters using the Adjusted Rand Index (ARI) metric in clustering machine
 learning models.

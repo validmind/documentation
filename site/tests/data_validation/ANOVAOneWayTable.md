@@ -1,4 +1,4 @@
-# ANOVAOneWayTable
+# tests\data_validation\ANOVAOneWayTable
 
 Applies one-way ANOVA (Analysis of Variance) to identify statistically significant numerical features in the
 dataset.

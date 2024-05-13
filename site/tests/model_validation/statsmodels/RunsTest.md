@@ -1,4 +1,4 @@
-# RunsTest
+# tests\model_validation\statsmodels\RunsTest
 
 Executes Runs Test on ML model to detect non-random patterns in output data sequence.
 

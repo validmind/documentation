@@ -1,4 +1,4 @@
-# BertScore
+# tests\model_validation\BertScore
 
 Evaluates text generation models' performance by calculating precision, recall, and F1 score based on BERT
 contextual embeddings.

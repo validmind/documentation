@@ -1,4 +1,4 @@
-# DescriptiveAnalytics
+# tests\model_validation\embeddings\DescriptiveAnalytics
 
 Evaluates statistical properties of text embeddings in an ML model via mean, median, and standard deviation
 histograms.

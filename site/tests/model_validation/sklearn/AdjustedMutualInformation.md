@@ -1,4 +1,4 @@
-# AdjustedMutualInformation
+# tests\model_validation\sklearn\AdjustedMutualInformation
 
 Evaluates clustering model performance by measuring mutual information between true and predicted labels, adjusting
 for chance.

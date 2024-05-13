@@ -1,4 +1,4 @@
-# VMeasure
+# tests\model_validation\sklearn\VMeasure
 
 Evaluates homogeneity and completeness of a clustering model using the V Measure Score.
 

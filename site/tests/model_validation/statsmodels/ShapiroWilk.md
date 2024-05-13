@@ -1,4 +1,4 @@
-# ShapiroWilk
+# tests\model_validation\statsmodels\ShapiroWilk
 
 Evaluates feature-wise normality of training data using the Shapiro-Wilk test.
 

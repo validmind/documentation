@@ -1,4 +1,4 @@
-# PDRatingClassPlot
+# tests\model_validation\statsmodels\PDRatingClassPlot
 
 Assesses and visualizes credit risk distribution across different rating classes within a dataset via default
 probabilities.

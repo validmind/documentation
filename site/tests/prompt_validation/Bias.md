@@ -1,4 +1,4 @@
-# Bias
+# tests\prompt_validation\Bias
 
 Evaluates bias in a Large Language Model based on the order and distribution of exemplars in a prompt.
 

@@ -1,4 +1,4 @@
-# TabularDateTimeHistograms
+# tests\data_validation\TabularDateTimeHistograms
 
 Generates histograms to provide graphical insight into the distribution of time intervals in model's datetime data.
 

@@ -1,4 +1,4 @@
-# FowlkesMallowsScore
+# tests\model_validation\sklearn\FowlkesMallowsScore
 
 Evaluates the similarity between predicted and actual cluster assignments in a model using the Fowlkes-Mallows
 score.

@@ -1,4 +1,4 @@
-# CumulativePredictionProbabilities
+# tests\model_validation\statsmodels\CumulativePredictionProbabilities
 
 Visualizes cumulative probabilities of positive and negative classes for both training and testing in logistic
 regression models.

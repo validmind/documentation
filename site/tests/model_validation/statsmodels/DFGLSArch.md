@@ -1,4 +1,4 @@
-# DFGLSArch
+# tests\model_validation\statsmodels\DFGLSArch
 
 Executes Dickey-Fuller GLS metric to determine order of integration and check stationarity in time series data.
 

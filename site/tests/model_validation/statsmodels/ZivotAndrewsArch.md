@@ -1,4 +1,4 @@
-# ZivotAndrewsArch
+# tests\model_validation\statsmodels\ZivotAndrewsArch
 
 Evaluates the order of integration and stationarity of time series data using Zivot-Andrews unit root test.
 

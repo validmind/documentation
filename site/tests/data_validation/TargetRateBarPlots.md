@@ -1,4 +1,4 @@
-# TargetRateBarPlots
+# tests\data_validation\TargetRateBarPlots
 
 Generates bar plots visualizing the default rates of categorical features for a classification machine learning
 model.

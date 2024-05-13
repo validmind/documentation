@@ -1,4 +1,4 @@
-# AutoARIMA
+# tests\model_validation\statsmodels\AutoARIMA
 
 Evaluates ARIMA models for time-series forecasting, ranking them using Bayesian and Akaike Information Criteria.
 

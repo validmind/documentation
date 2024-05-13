@@ -1,4 +1,4 @@
-# AutoStationarity
+# tests\data_validation\AutoStationarity
 
 Automates Augmented Dickey-Fuller test to assess stationarity across multiple time series in a DataFrame.
 

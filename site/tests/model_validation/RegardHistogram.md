@@ -1,4 +1,4 @@
-# RegardHistogram
+# tests\model_validation\RegardHistogram
 
 **Purpose:**
 The `RegardHistogram` metric offers a histogram-based visualization of regard scores across different text

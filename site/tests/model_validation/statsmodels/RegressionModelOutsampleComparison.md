@@ -1,4 +1,4 @@
-# RegressionModelOutsampleComparison
+# tests\model_validation\statsmodels\RegressionModelOutsampleComparison
 
 Computes MSE and RMSE for multiple regression models using out-of-sample test to assess model's prediction accuracy
 on unseen data.

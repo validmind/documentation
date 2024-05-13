@@ -1,4 +1,4 @@
-# PredictionProbabilitiesHistogram
+# tests\model_validation\statsmodels\PredictionProbabilitiesHistogram
 
 Generates and visualizes histograms of the Probability of Default predictions for both positive and negative
 classes in training and testing datasets.

@@ -1,4 +1,4 @@
-# Lilliefors
+# tests\model_validation\statsmodels\Lilliefors
 
 Assesses the normality of feature distributions in an ML model's training dataset using the Lilliefors test.
 

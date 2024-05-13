@@ -1,4 +1,4 @@
-# BoxPierce
+# tests\model_validation\statsmodels\BoxPierce
 
 Detects autocorrelation in time-series data through the Box-Pierce test to validate model performance.
 

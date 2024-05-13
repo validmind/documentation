@@ -1,4 +1,4 @@
-# StabilityAnalysis
+# tests\model_validation\embeddings\StabilityAnalysis
 
 Base class for embeddings stability analysis tests
 

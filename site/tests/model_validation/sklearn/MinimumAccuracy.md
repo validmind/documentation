@@ -1,4 +1,4 @@
-# MinimumAccuracy
+# tests\model_validation\sklearn\MinimumAccuracy
 
 Checks if the model's prediction accuracy meets or surpasses a specified threshold.
 

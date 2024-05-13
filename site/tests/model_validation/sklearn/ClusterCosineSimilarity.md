@@ -1,4 +1,4 @@
-# ClusterCosineSimilarity
+# tests\model_validation\sklearn\ClusterCosineSimilarity
 
 Measures the intra-cluster similarity of a clustering model using cosine similarity.
 

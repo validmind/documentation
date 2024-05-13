@@ -1,4 +1,4 @@
-# TrainingTestDegradation
+# tests\model_validation\sklearn\TrainingTestDegradation
 
 Tests if model performance degradation between training and test datasets exceeds a predefined threshold.
 

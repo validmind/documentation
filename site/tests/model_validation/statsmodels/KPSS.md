@@ -1,4 +1,4 @@
-# KPSS
+# tests\model_validation\statsmodels\KPSS
 
 Executes KPSS unit root test to validate stationarity of time-series data in machine learning model.
 

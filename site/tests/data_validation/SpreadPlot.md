@@ -1,4 +1,4 @@
-# SpreadPlot
+# tests\data_validation\SpreadPlot
 
 Visualizes the spread relationship between pairs of time-series variables in a dataset, thereby aiding in
 identification of potential correlations.

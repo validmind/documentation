@@ -1,4 +1,4 @@
-# Clarity
+# tests\prompt_validation\Clarity
 
 Evaluates and scores the clarity of prompts in a Large Language Model based on specified guidelines.
 

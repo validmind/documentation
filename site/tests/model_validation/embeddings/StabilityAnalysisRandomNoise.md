@@ -1,4 +1,4 @@
-# StabilityAnalysisRandomNoise
+# tests\model_validation\embeddings\StabilityAnalysisRandomNoise
 
 Evaluate robustness of embeddings models to random noise introduced by using
 a `probability` parameter to choose random locations in the text to apply

@@ -1,4 +1,4 @@
-# PermutationFeatureImportance
+# tests\model_validation\sklearn\PermutationFeatureImportance
 
 Assesses the significance of each feature in a model by evaluating the impact on model performance when feature
 values are randomly rearranged.

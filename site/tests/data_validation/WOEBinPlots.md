@@ -1,4 +1,4 @@
-# WOEBinPlots
+# tests\data_validation\WOEBinPlots
 
 Generates visualizations of Weight of Evidence (WoE) and Information Value (IV) for understanding predictive power
 of categorical variables in a data set.

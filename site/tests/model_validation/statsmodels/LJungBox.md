@@ -1,4 +1,4 @@
-# LJungBox
+# tests\model_validation\statsmodels\LJungBox
 
 Assesses autocorrelations in dataset features by performing a Ljung-Box test on each feature.
 

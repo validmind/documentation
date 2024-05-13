@@ -1,4 +1,4 @@
-# MeteorScore
+# tests\model_validation\MeteorScore
 
 Computes and visualizes the METEOR score for each text generation instance, assessing translation quality.
 

@@ -1,4 +1,4 @@
-# FeaturesAUC
+# tests\model_validation\FeaturesAUC
 
 Evaluates the discriminatory power of each individual feature within a binary classification model by calculating the Area Under the Curve (AUC) for each feature separately.
 

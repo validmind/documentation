@@ -1,4 +1,4 @@
-# WOEBinTable
+# tests\data_validation\WOEBinTable
 
 Calculates and assesses the Weight of Evidence (WoE) and Information Value (IV) of each feature in a ML model.
 

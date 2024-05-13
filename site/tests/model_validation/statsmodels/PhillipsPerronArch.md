@@ -1,4 +1,4 @@
-# PhillipsPerronArch
+# tests\model_validation\statsmodels\PhillipsPerronArch
 
 Executes Phillips-Perron test to assess the stationarity of time series data in each ML model feature.
 

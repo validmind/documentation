@@ -1,4 +1,4 @@
-# ScatterPlot
+# tests\data_validation\ScatterPlot
 
 Creates a scatter plot matrix to visually analyze feature relationships, patterns, and outliers in a dataset.
 

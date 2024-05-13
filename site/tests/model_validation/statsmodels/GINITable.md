@@ -1,4 +1,4 @@
-# GINITable
+# tests\model_validation\statsmodels\GINITable
 
 Evaluates classification model performance using AUC, GINI, and KS metrics for training and test datasets.
 

@@ -1,4 +1,4 @@
-# CompletenessScore
+# tests\model_validation\sklearn\CompletenessScore
 
 Evaluates a clustering model's capacity to categorize instances from a single class into the same cluster.
 

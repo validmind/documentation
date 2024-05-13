@@ -1,4 +1,4 @@
-# HomogeneityScore
+# tests\model_validation\sklearn\HomogeneityScore
 
 Assesses clustering homogeneity by comparing true and predicted labels, scoring from 0 (heterogeneous) to 1
 (homogeneous).

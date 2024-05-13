@@ -1,4 +1,4 @@
-# AutoMA
+# tests\data_validation\AutoMA
 
 Automatically selects the optimal Moving Average (MA) order for each variable in a time series dataset based on
 minimal BIC and AIC values.

@@ -1,4 +1,4 @@
-# AutoAR
+# tests\data_validation\AutoAR
 
 Automatically identifies the optimal Autoregressive (AR) order for a time series using BIC and AIC criteria.
 

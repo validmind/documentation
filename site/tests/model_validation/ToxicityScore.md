@@ -1,4 +1,4 @@
-# ToxicityScore
+# tests\model_validation\ToxicityScore
 
 **Purpose:**
 The ToxicityScore metric is designed to present a sequential representation of toxicity scores for various texts.

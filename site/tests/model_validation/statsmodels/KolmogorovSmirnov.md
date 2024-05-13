@@ -1,4 +1,4 @@
-# KolmogorovSmirnov
+# tests\model_validation\statsmodels\KolmogorovSmirnov
 
 Executes a feature-wise Kolmogorov-Smirnov test to evaluate alignment with normal distribution in datasets.
 

@@ -1,4 +1,4 @@
-# PiTPDHistogram
+# tests\data_validation\PiTPDHistogram
 
 Assesses credit risk prediction accuracy of a model by comparing actual and predicted defaults at a chosen point in
 time.

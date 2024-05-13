@@ -1,4 +1,4 @@
-# BleuScore
+# tests\model_validation\BleuScore
 
 Assesses translation quality by comparing machine-translated sentences with human-translated ones using BLEU score.
 

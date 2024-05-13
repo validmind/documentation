@@ -1,4 +1,4 @@
-# IQROutliersTable
+# tests\data_validation\IQROutliersTable
 
 Determines and summarizes outliers in numerical features using Interquartile Range method.
 

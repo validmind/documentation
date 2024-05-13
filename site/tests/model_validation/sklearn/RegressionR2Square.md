@@ -1,4 +1,4 @@
-# RegressionR2Square
+# tests\model_validation\sklearn\RegressionR2Square
 
 **Purpose**: The purpose of the RegressionR2Square Metric test is to measure the overall goodness-of-fit of a
 regression model. Specifically, this Python-based test evaluates the R-squared (R2) and Adjusted R-squared (Adj R2)

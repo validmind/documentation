@@ -1,4 +1,4 @@
-# Specificity
+# tests\prompt_validation\Specificity
 
 Evaluates and scores the specificity of prompts provided to a Large Language Model (LLM), based on clarity,
 detail, and relevance.

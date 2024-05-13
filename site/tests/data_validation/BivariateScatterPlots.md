@@ -1,4 +1,4 @@
-# BivariateScatterPlots
+# tests\data_validation\BivariateScatterPlots
 
 Generates bivariate scatterplots to visually inspect relationships between pairs of predictor variables in machine
 learning classification tasks.

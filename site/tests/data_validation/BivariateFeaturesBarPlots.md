@@ -1,4 +1,4 @@
-# BivariateFeaturesBarPlots
+# tests\data_validation\BivariateFeaturesBarPlots
 
 Generates visual bar plots to analyze the relationship between paired features within categorical data in the model.
 

@@ -1,4 +1,4 @@
-# TabularCategoricalBarPlots
+# tests\data_validation\TabularCategoricalBarPlots
 
 Generates and visualizes bar plots for each category in categorical features to evaluate dataset's composition.
 

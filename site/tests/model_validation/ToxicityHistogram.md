@@ -1,4 +1,4 @@
-# ToxicityHistogram
+# tests\model_validation\ToxicityHistogram
 
 **Purpose:**
 The ToxicityHistogram metric visualizes and analyzes the toxicity scores of various texts. Through histograms, it

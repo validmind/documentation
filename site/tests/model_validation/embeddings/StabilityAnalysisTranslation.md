@@ -1,4 +1,4 @@
-# StabilityAnalysisTranslation
+# tests\model_validation\embeddings\StabilityAnalysisTranslation
 
 Evaluate robustness of embeddings models to noise introduced by translating
 the original text to another language and back.

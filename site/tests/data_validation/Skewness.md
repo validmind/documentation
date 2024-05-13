@@ -1,4 +1,4 @@
-# Skewness
+# tests\data_validation\Skewness
 
 Evaluates the skewness of numerical data in a machine learning model and checks if it falls below a set maximum
 threshold.

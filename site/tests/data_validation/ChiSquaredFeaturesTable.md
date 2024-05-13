@@ -1,4 +1,4 @@
-# ChiSquaredFeaturesTable
+# tests\data_validation\ChiSquaredFeaturesTable
 
 Executes Chi-Squared test for each categorical feature against a target column to assess significant association.
 

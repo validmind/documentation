@@ -1,4 +1,4 @@
-# ResidualsVisualInspection
+# tests\model_validation\statsmodels\ResidualsVisualInspection
 
 Provides a comprehensive visual analysis of residuals for regression models utilizing various plot types.
 

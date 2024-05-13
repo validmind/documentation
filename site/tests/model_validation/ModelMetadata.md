@@ -1,4 +1,4 @@
-# ModelMetadata
+# tests\model_validation\ModelMetadata
 
 Extracts and summarizes critical metadata from a machine learning model instance for comprehensive analysis.
 

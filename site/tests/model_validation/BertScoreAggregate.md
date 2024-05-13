@@ -1,4 +1,4 @@
-# BertScoreAggregate
+# tests\model_validation\BertScoreAggregate
 
 Evaluates the aggregate performance of text generation models by computing the average precision, recall,
 and F1 score based on BERT contextual embeddings.

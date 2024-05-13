@@ -1,4 +1,4 @@
-# CosineSimilarityDistribution
+# tests\model_validation\embeddings\CosineSimilarityDistribution
 
 Assesses the similarity between predicted text embeddings from a model using a Cosine Similarity distribution
 histogram.

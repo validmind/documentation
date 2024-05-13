@@ -1,4 +1,4 @@
-# ClusterSizeDistribution
+# tests\model_validation\ClusterSizeDistribution
 
 Compares and visualizes the distribution of cluster sizes in model predictions and actual data for assessing
 clustering model performance.

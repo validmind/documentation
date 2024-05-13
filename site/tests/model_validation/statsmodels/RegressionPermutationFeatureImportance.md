@@ -1,4 +1,4 @@
-# RegressionPermutationFeatureImportance
+# tests\model_validation\statsmodels\RegressionPermutationFeatureImportance
 
 Assesses the significance of each feature in a model by evaluating the impact on model performance when feature
 values are randomly rearranged. Specifically designed for use with statsmodels, this metric offers insight into the

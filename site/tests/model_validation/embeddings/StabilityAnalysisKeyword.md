@@ -1,4 +1,4 @@
-# StabilityAnalysisKeyword
+# tests\model_validation\embeddings\StabilityAnalysisKeyword
 
 Evaluate robustness of embeddings models to keyword swaps on the test dataset
 

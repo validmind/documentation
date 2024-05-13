@@ -1,4 +1,4 @@
-# RegardScore
+# tests\model_validation\RegardScore
 
 **Purpose:**
 The `RegardScore` metric assesses the degree of regard—positive, negative, neutral, or other—present in the given text,

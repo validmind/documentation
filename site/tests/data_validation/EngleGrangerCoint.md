@@ -1,4 +1,4 @@
-# EngleGrangerCoint
+# tests\data_validation\EngleGrangerCoint
 
 Validates co-integration in pairs of time series data using the Engle-Granger test and classifies them as
 Cointegrated' or 'Not cointegrated'.

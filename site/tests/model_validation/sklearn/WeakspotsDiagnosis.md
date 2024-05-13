@@ -1,4 +1,4 @@
-# WeakspotsDiagnosis
+# tests\model_validation\sklearn\WeakspotsDiagnosis
 
 Identifies and visualizes weak spots in a machine learning model's performance across various sections of the
 feature space.

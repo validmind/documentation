@@ -1,4 +1,4 @@
-# SilhouettePlot
+# tests\model_validation\sklearn\SilhouettePlot
 
 Calculates and visualizes Silhouette Score, assessing degree of data point suitability to its cluster in ML models.
 

@@ -1,4 +1,4 @@
-# MinimumF1Score
+# tests\model_validation\sklearn\MinimumF1Score
 
 Evaluates if the model's F1 score on the validation set meets a predefined minimum threshold.
 

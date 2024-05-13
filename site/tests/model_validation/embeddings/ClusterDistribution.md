@@ -1,4 +1,4 @@
-# ClusterDistribution
+# tests\model_validation\embeddings\ClusterDistribution
 
 Assesses the distribution of text embeddings across clusters produced by a model using KMeans clustering.
 

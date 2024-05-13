@@ -1,4 +1,4 @@
-# ClassifierPerformance
+# tests\model_validation\sklearn\ClassifierPerformance
 
 Evaluates performance of binary or multiclass classification models using precision, recall, F1-Score, accuracy,
 and ROC AUC scores.

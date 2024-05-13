@@ -1,4 +1,4 @@
-# SelfCheckNLIScore
+# tests\model_validation\SelfCheckNLIScore
 
 Evaluates text generation models' performance by quantifying the level of hallucination in generated texts compared to reference texts.
 

@@ -1,4 +1,4 @@
-# UniqueRows
+# tests\data_validation\UniqueRows
 
 Verifies the diversity of the dataset by ensuring that the count of unique rows exceeds a prescribed threshold.
 

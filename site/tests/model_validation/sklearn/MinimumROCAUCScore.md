@@ -1,4 +1,4 @@
-# MinimumROCAUCScore
+# tests\model_validation\sklearn\MinimumROCAUCScore
 
 Validates model by checking if the ROC AUC score meets or surpasses a specified threshold.
 

@@ -1,4 +1,4 @@
-# TabularNumericalHistograms
+# tests\data_validation\TabularNumericalHistograms
 
 Generates histograms for each numerical feature in a dataset to provide visual insights into data distribution and
 detect potential issues.

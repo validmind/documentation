@@ -1,4 +1,4 @@
-# IQROutliersBarPlot
+# tests\data_validation\IQROutliersBarPlot
 
 Visualizes outlier distribution across percentiles in numerical data using Interquartile Range (IQR) method.
 

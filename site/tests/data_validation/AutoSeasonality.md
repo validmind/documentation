@@ -1,4 +1,4 @@
-# AutoSeasonality
+# tests\data_validation\AutoSeasonality
 
 Automatically identifies and quantifies optimal seasonality in time series data to improve forecasting model
 performance.
