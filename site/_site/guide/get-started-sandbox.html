@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.33">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-05-13">
+<meta name="dcterms.date" content="2024-05-16">
 
-<title>ValidMind – Welcome to the ValidMind sandbox!</title>
+<title>ValidMind - Welcome to the ValidMind sandbox!</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,7 +113,7 @@ cookieconsent.run({
     <img src="../about/ValidMind-logo-color.svg" alt="" class="navbar-logo">
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -131,7 +131,7 @@ cookieconsent.run({
 <span class="menu-text">Guides</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text"><i class="fa-solid fa-cube" aria-label="cube"></i> Developer Framework</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-fa-cube--developer-framework">    
@@ -193,7 +193,7 @@ cookieconsent.run({
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -238,7 +238,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 13, 2024</p>
+      <p class="date">May 16, 2024</p>
     </div>
   </div>
   
@@ -269,7 +269,7 @@ cookieconsent.run({
 <p>If you haven’t reached out to us yet, email <a href="mailto:info@validmind.ai" class="email">info@validmind.ai</a> to enquire about access to the sandbox.</p></li>
 </ol>
 <!--- FUTURE step for self-signup
-1. Get your access credentials for the platform UI by signing up with ValidMind: <https://app.prod.validmind.ai/>
+1. Get your access credentials for the platform UI by signing up with ValidMind: [https://app.prod.validmind.ai](https://app.prod.validmind.ai)
    
    This is the login URL for our platform UI where you can look at the model inventory for the different models. 
 --->
@@ -277,7 +277,7 @@ cookieconsent.run({
 <li><p>When you receive your access credentials, make sure you can log in:</p>
 <ul>
 <li>ValidMind Jupyter Hub: <a href="https://jupyterhub.validmind.ai/" class="uri">https://jupyterhub.validmind.ai/</a></li>
-<li>ValidMind Platform UI: <a href="https://app.prod.validmind.ai/" class="uri">https://app.prod.validmind.ai/</a></li>
+<li>ValidMind Platform UI: <a href="https://app.prod.validmind.ai">https://app.prod.validmind.ai</a></li>
 </ul></li>
 <li><p>Join a kick-off session with ValidMind to get a free instructor-led hands-on demo.</p>
 <p>After we have received your request to try out the sandbox, we will contact you to set up a kick-off session.</p></li>
@@ -366,10 +366,8 @@ ValidMind Jupyter Hub
 <li>View reports to identify risk areas</li>
 </ul>
 <!-- Using the variable in the button below messes up the CSS styling.  -->
-<form method="get" action="https://app.prod.validmind.ai/" target="_blank">
-<button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">
-ValidMind Platform UI
-</button>
+<form method="get" action="https://app.prod.validmind.ai" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">ValidMind Platform UI</button>
 </form>
 <!---Also collaborate with model developers, edit draft validation reports, and view workflows.--->
 </section>
@@ -435,7 +433,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -467,29 +476,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -497,7 +484,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
