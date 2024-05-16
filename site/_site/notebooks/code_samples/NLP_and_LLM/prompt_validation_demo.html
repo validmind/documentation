@@ -63,7 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
-<link href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" rel="next">
+<link href="../../../notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.html" rel="next">
 <link href="../../../notebooks/code_samples/NLP_and_LLM/llm_summarization_demo.html" rel="prev">
 <link href="../../../validmind.png" rel="icon" type="image/png">
 <script src="../../../site_libs/cookie-consent/cookie-consent.js"></script>
@@ -1629,6 +1629,12 @@ cookieconsent.run({
  <span class="menu-text">Prompt validation for large language models (LLMs)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RAG Model Documentation Demo</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -1948,16 +1954,19 @@ cookieconsent.run({
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"Sentiment"</span>,</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> FoundationModel(</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    predict_fn<span class="op">=</span>call_model,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    prompt<span class="op">=</span>Prompt(</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        template<span class="op">=</span>prompt_template,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        variables<span class="op">=</span>prompt_variables,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign model predictions to the test dataset</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>vm_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    FoundationModel(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        predict_fn<span class="op">=</span>call_model,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        prompt<span class="op">=</span>Prompt(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            template<span class="op">=</span>prompt_template,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            variables<span class="op">=</span>prompt_variables,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"gpt_35_model"</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign model predictions to the test dataset</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(vm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, use the ValidMind Developer Framework to run validation tests on the model. These tests evaluate various aspects of the prompts, including bias, clarity, conciseness, delimitation, negative instruction, and specificity.</p>
 <p>Each test is explained in detail, highlighting its purpose, test mechanism, and the importance of the specific aspect being evaluated. The tests are graded on a scale from 1 to 10, with a predetermined threshold, and the explanations for each test include a score, threshold, and a pass/fail determination.</p>
@@ -2424,8 +2433,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="pagination-link" aria-label="Document a California Housing Price Prediction regression model">
-        <span class="nav-page-text">Document a California Housing Price Prediction regression model</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.html" class="pagination-link" aria-label="RAG Model Documentation Demo">
+        <span class="nav-page-text">RAG Model Documentation Demo</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
