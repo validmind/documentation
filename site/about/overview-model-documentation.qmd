@@ -1,0 +1,133 @@
+---
+title: "Automated model testing & documentation"
+date: last-modified
+---
+
+<!---
+## Automated model testing & documentation details 
+Overview & updated graphic
+### Docs-as-code
+### Extensible by design
+### Closed beta: LLM testing & documentation
+--->
+
+## The {{< var vm_framework >}}
+
+The {{< var vm_framework >}} is a {{< var vm_dev >}} and documentation engine designed to streamline the process of documenting various types of models, including traditional statistical models, legacy systems, artificial intelligence/machine learning models, and large language models (LLMs). It offers model developers a systematic approach to documenting and testing risk models with repeatability and consistency, ensuring alignment with regulatory and compliance standards.
+
+<!-- Using the variable in alt text messes up the image display  -->
+
+![](overview-developer-framework.png){width=80% fig-align="center" fig-alt="An image showing the two main components of ValidMind. The developer framework that integrates with your existing developer environment, and the ValidMind AI risk platform."}
+
+The {{< var vm_dev >}} consists of a client-side library, API integration for models and testing, and validation tests that streamline the model development process. Implemented as a series of independent libraries in Python and R, our framework ensures compatibility and flexibility with diverse sets of developer environments and requirements.
+
+With the {{< var vm_dev >}}, you can:
+
+- **Automate documentation** — Add comprehensive documentation as metadata while you build models to be shared with model validators, streamlining and speeding up the process.
+- **Run test suites** — Identify potential risks for a diverse range of statistical and AI/LLM/ML models by assessing data quality, model outcomes, robustness, and explainability.
+- **Integrate with your development environment** — Seamlessly incorporate the framework into your existing model development environment, connecting to your existing model code and data sets.
+- **Upload documentation data** — Send qualitative and quantitative test data to the AI risk platform to generate the model documentation for review and approval, fostering effective collaboration with model reviewers and validators.
+
+## Simple installation
+
+Install the {{< var vm_dev >}} with: `pip install validmind`
+
+## Docs-as-code
+
+::: {.grid}
+
+::: {.g-col-5}
+What the {{< var vm_dev >}} offers:
+
+- Generates documentation artifacts utilizing the context of the model and dataset, the model's metadata, and the chosen documentation template.
+- Can be easily imported into your local model development environment. The supported platforms include Python and R.
+- Dual-licensed: the framework is available as open-source under AGPL v3 license and also with a commercial software license.
+:::
+
+::: {.g-col-7}
+
+```python
+import validmind as vm
+
+vm.init(project="PROJECT_IDENTIFIER")
+```
+
+```python
+vm_dataset = vm. log_dataset(
+      df,
+      "training",
+      targets=targets,
+)
+vm. run_dataset_tests(df, vm_dataset=vm_dataset)
+```
+
+```python
+vm. Log_model (model)
+vm. log_training_metrics (model, x_train, y_train)
+vm. run_model_tests (model, x_test, y_test)
+```
+:::
+
+:::
+How the {{< var vm_dev >}} works:
+
+- The tests and functions are executed automatically, following pre-configured templates tailored for specific model use cases. This ensures that minimum documentation requirements are consistently fulfilled.
+- The framework integrates with ETL/data processing pipelines using connector interfaces. This enables the extraction of relationships between raw data sources and their corresponding post-processed datasets, such as those preloaded session instances received from platforms like Spark and Snowflake.
+
+## Extensible by design
+
+::: {.grid}
+
+::: {.g-col-5}
+
+In Financial Services, our platform supports various model types, including:
+
+- Traditional machine learning models (ML) such as tree-based models and neural network models.
+- Natural language processing models (NLP) for text analysis and understanding.
+- Large language models (LLMs) in beta testing phase, offering advanced language capabilities.
+- Traditional statistical models like Ordinary Least Squares (OLS) regression, Logistic regression, Time Series models, and more.
+
+[Read more ...](../guide/supported-models.qmd)
+
+:::
+
+::: {.g-col-7}
+Our platform is designed to be highly extensible to cater to our customers' specific requirements. You can expand its functionality in the following ways:
+
+- You can easily add support for new models and data types by defining new classes within the framework. We provide templates to guide you through this process. [Read more ...](../guide/customize-documentation-templates.qmd)
+- To include custom tests in the library, you can define new functions. We offer templates to help you create these custom tests. [Read more ...](../notebooks/code_samples/custom_tests/implement_custom_tests.ipynb)
+- You have the flexibility to integrate third-party test libraries seamlessly. These libraries can be hosted either locally within your infrastructure or remotely, for example, on GitHub. Leverage additional testing capabilities and resources as needed. [Read more ...](../notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb)
+:::
+
+:::
+
+## API integration
+
+::: {.grid}
+
+::: {.g-col-5}
+ValidMind imports the following artifacts into the documentation via SaaS API endpoint integration:
+
+- Metadata about datasets and models, used to lookup programmatic documentation content, such as the stored definition for _common logistic regression limitations_ when a logistic regression model has been passed to the ValidMind test plan to be run.
+- Quality and performance metrics collected from datasets and models.
+- Output from test and test suites that have been run.
+- Images, plots, visuals that were generated as part of extracting metrics and running tests.
+
+:::
+
+::: {.g-col-7}
+![](overview-api-integration.png)
+:::
+
+:::
+
+::: {.callout-important}
+ValidMind does NOT: 
+
+- Send any personal identifiable information (PII) when generating documentation reports.
+- Store any customer datasets or models. 
+:::
+
+## Ready to try out ValidMind?
+
+Our [QuickStart](../guide/quickstart.qmd) is the quickest and easiest way to try out our product features.
