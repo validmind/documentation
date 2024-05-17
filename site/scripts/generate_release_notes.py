@@ -131,7 +131,7 @@ def edit_text_with_openai(lines):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system", 
