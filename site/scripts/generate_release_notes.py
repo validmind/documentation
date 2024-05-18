@@ -116,14 +116,16 @@ def edit_text_with_openai(lines):
     - Use simple and neutral language in the active voice.
     - Address users directly in the second person with "you".
     - Use present tense by avoiding the use of "will".
-    - Apply sentence-style capitalization to text.
+    - Apply sentence-style capitalization to text
+    - Always capitalize the first letter of text on each line.
     - Rewrite sentences that are longer than 25 words as multiple sentences.
     - Only split text across multiple lines if the text contains more than three sentences.
     - Avoid handwaving references to "it" or "this" by including the text referred to. 
     - Treat short text of less than ten words without a period at the end as a heading. 
     - Enclose any words joined by underscores in backticks (`) if they aren't already.
-    - Remove exclamation marks from English text.
-    - Remove quotes around non-code English words.
+    - Remove exclamation marks from text.
+    - Remove quotes around non-code words.
+    - Remove the text "feat:" from the output
     - Maintain existing punctuation at the end of sentences.
     - Maintain all original hyperlinks for reference.
     - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
