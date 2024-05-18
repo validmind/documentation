@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-04-08">
+<meta name="dcterms.date" content="2024-05-16">
 
 <title>ValidMind - Guides</title>
 <style>
@@ -596,7 +596,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 8, 2024</p>
+      <p class="date">May 16, 2024</p>
     </div>
   </div>
   
@@ -625,27 +625,78 @@ cookieconsent.run({
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<!--- These concepts are introduced in the "Get started" section. They are repeated the guides and get started with the developer framework sections in a collapsed format in case a reader missed them earlier. --->
-<section id="key-concepts" class="level3">
-<h3 class="anchored" data-anchor-id="key-concepts">Key Concepts</h3>
-<p><strong>Model documentation</strong>: A structured and detailed record pertaining to a model, encompassing key components such as its underlying assumptions, methodologies, data sources, inputs, performance metrics, evaluations, limitations, and intended uses. It serves to ensure transparency, adherence to regulatory requirements, and a clear understanding of potential risks associated with the model’s application.</p>
-<p><strong>Validation report</strong>: A formal document prepared as part of the model validation process that evaluates information provided by the model documentation, outlining the findings, assessments, and recommendations related to a specific model’s performance, appropriateness, and limitations. It provides a comprehensive review of the model’s conceptual framework, data sources and integrity, calibration methods, and performance outcomes, crucial for ensuring transparency and regulatory compliance.</p>
-<p><strong>Documentation template</strong>: Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.</p>
-<p><strong>Tests</strong>: A function contained in the ValidMind Developer Framework, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.</p>
-<p><strong>Metrics</strong>: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.</p>
-<p><strong>Custom metrics</strong>: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.</p>
-<p><strong>Inputs</strong>: Objects to be evaluated and documented in the developer framework. They can be any of the following:</p>
+<!--- These concepts are introduced in the "Get started" section. They are repeated the guides and get started with the dev framework sections in a collapsed format in case a reader missed them earlier. --->
+<!-- IF A KEY CONCEPT NEEDS TO BE ADDED:
+
+1. Create a new file under the `about/glossary/key_concepts` folder with the following structure `_concept.qmd` (the `_` is mandatory for Quarto to retrieve the file as a single-source embed: https://quarto.org/docs/authoring/includes.html)
+2. Include it below with the structure `{{< include ../about/glossary/key_concepts/_concept.qmd >}}`
+3. In the `about/glossary` folder, locate the correct section file it belongs to (e.g. `_ai.qmd`) and embed it there as well in ABC order with the structure `{{< include key_concepts/_concept.qmd >}}` 
+
+These instructions update the key concept on anywhere the key concepts are reference as well as within the glossary.
+
+-->
+<dl>
+<dt>model documentation</dt>
+<dd>
+A structured and detailed record pertaining to a model, encompassing key components such as its underlying assumptions, methodologies, data sources, inputs, performance metrics, evaluations, limitations, and intended uses.
+</dd>
+</dl>
+<p>Within the realm of model risk management, this documentation serves to ensure transparency, adherence to regulatory requirements, and a clear understanding of potential risks associated with the model’s application.</p>
+<dl>
+<dt>validation report</dt>
+<dd>
+A formal document produced after a model validation process, outlining the findings, assessments, and recommendations related to a specific model’s performance, appropriateness, and limitations. Provides a comprehensive review of the model’s conceptual framework, data sources and integrity, calibration methods, and performance outcomes.
+</dd>
+</dl>
+<p>Within model risk management, the validation report is crucial for ensuring transparency, demonstrating regulatory compliance, and offering actionable insights for model refinement or adjustments.</p>
+<dl>
+<dt>template, documentation template</dt>
+<dd>
+Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.
+</dd>
+</dl>
+<p>ValidMind templates come with pre-defined sections, similar to test placeholders, including boilerplates and spaces designated for documentation and test results. When rendered, produces a document that model developers can use for model validation.</p>
+<dl>
+<dt>test</dt>
+<dd>
+A function contained in the developer framework, designed to run a specific quantitative test on the dataset or model. Test results are sent to the ValidMind platform to generate the model documentation according to the template that is associated with the documentation.
+</dd>
+</dl>
+<p>Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.</p>
+<dl>
+<dt>metrics, custom metrics</dt>
+<dd>
+Metrics are a subset of tests that do not have thresholds. Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.
+</dd>
+</dl>
+<p>In the context of ValidMind’s Jupyter notebooks, metrics and tests can be thought of as interchangeable concepts.</p>
+<dl>
+<dt>inputs</dt>
+<dd>
+Objects to be evaluated and documented in the developer framework. They can be any of the following:
+</dd>
+</dl>
 <ul>
 <li><strong>model</strong>: A single model that has been initialized in ValidMind with <code>vm.init_model()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_model">Model Documentation</a> or the for more information.</li>
 <li><strong>dataset</strong>: Single dataset that has been initialized in ValidMind with <code>vm.init_dataset()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset">Dataset Documentation</a> for more information.</li>
 <li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.</li>
 <li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
 </ul>
-<p><strong>Parameters</strong>: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.</p>
-<p><strong>Outputs</strong>: Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a pandas DataFrame. Plots may be matplotlib or plotly figures.</p>
-<p><strong>Test suites</strong>: Collections of tests designed to run together to automate and generate model documentation end-to-end for specific use-cases.</p>
-<p>Example: the <a href="../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</p>
-</section>
+<dl>
+<dt>parameters</dt>
+<dd>
+Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.
+</dd>
+<dt>outputs</dt>
+<dd>
+Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas DataFrame</a>. Plots may be <a href="https://matplotlib.org/">matplotlib</a> or <a href="https://plotly.com/">plotly</a> figures.
+</dd>
+<dt>test suite</dt>
+<dd>
+A collection of tests which are run together to generate model documentation end-to-end for specific use cases.
+</dd>
+</dl>
+<p>For example, the <a href="../../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="../../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use cases.</p>
 </div>
 </div>
 </div>
@@ -654,7 +705,7 @@ cookieconsent.run({
 <p>To onboard your organization, teams or business units, and users onto the ValidMind platform:</p>
 <div id="listing-guides-onboarding" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712612327863" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1715906860047" data-listing-reading-time-sort="3">
 <a href="../guide/onboarding-users.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -668,7 +719,7 @@ Onboarding users involves controlling and organizing who has access to the Valid
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327852" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860044" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
 <a href="../guide/configure-aws-privatelink.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -693,7 +744,7 @@ No matching items
 <p>To configure the model inventory to your organization’s requirements and to register new models:</p>
 <div id="listing-guides-model-inventory" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860045" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
 <a href="../guide/edit-model-inventory-fields.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -707,7 +758,7 @@ Edit individual model detailed fields in the model inventory to customize them t
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327872" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860049" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
 <a href="../guide/register-models-in-model-inventory.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -732,7 +783,7 @@ No matching items
 <p>To document and test your models in your own model development environment:</p>
 <div id="listing-guides-developer-framework" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1714581751000" data-listing-file-modified-sort="1714581751702" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860046" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
 <a href="../guide/get-started-developer-framework.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -746,7 +797,7 @@ The ValidMind Developer Framework helps you streamline model documentation by au
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1714462548000" data-listing-file-modified-sort="1714462548316" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860050" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <a href="../guide/samples-jupyter-notebooks.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -765,10 +816,10 @@ Our code samples, based on Jupyter notebooks, showcase the capabilities and feat
 No matching items
 </div>
 </div>
-<p>To work with documentation, documentation templates, and model documentation in the Platform UI, and to collaborate with model validators:</p>
+<p>To work with documentation, documentation templates, and model documentation in the platform UI, and to collaborate with model validators:</p>
 <div id="listing-guides-model-documentation" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327876" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1714589438000" data-listing-file-modified-sort="1714589438377" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
 <a href="../guide/working-with-documentation-templates.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -782,7 +833,7 @@ Documentation templates offer a standardized approach to creating consistent and
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327876" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860052" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <a href="../guide/working-with-model-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -790,13 +841,13 @@ Documentation templates offer a standardized approach to creating consistent and
 Working with model documentation
 </h5>
 <div class="card-text listing-description">
-After you upload initial model documentation through the developer framework, use the Platform UI to make qualitative edits to model documentation, view guidelines, collaborate with validators, and submit your model documentation for approval.
+After you upload initial model documentation through the developer framework, use the platform UI to make qualitative edits to model documentation, view guidelines, collaborate with validators, and submit your model documentation for approval.
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860045" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <a href="../guide/export-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -821,7 +872,7 @@ No matching items
 <p>To set up approvals, prepare validation reports, collaborate with model developers, link evidence to your reports, or work with model documentation findings:</p>
 <div id="listing-guides-model-validation" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327865" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860047" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <a href="../guide/preparing-validation-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -835,7 +886,7 @@ As part of preparing validation reports, you can view the guidelines, collaborat
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860052" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
 <a href="../guide/work-with-model-findings.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -849,7 +900,7 @@ Model findings are detailed observations identified during the model validation 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860052" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
 <a href="../guide/view-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -863,7 +914,7 @@ Reports provide quick insights into your model validation efforts, detailing cri
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1712612327000" data-listing-file-modified-sort="1712612327854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1715906860000" data-listing-file-modified-sort="1715906860045" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
 <a href="../guide/export-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">

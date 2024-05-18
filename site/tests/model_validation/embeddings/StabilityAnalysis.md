@@ -4,7 +4,6 @@ Base class for embeddings stability analysis tests
 
 required_inputs = ["model", "dataset"]
 default_params = {
-text_column": None,
 mean_similarity_threshold": 0.7,
 }
 metadata = {
