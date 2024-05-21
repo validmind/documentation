@@ -5,19 +5,35 @@ title: "May 22, 2024"
 ## Release highlights
 
 <!---
-PR #29: Custom Metric Function Decorator
-URL: https://github.com/validmind/developer-framework/pull/29
+PR #50: New introductory notebook for model developers
+URL: https://github.com/validmind/developer-framework/pull/50
 Labels: enhancement, highlight
 --->
-### Custom metric function decorator
+### New introductory notebook for model developers
 
-We have introduced a new `metric` decorator that turns any function into a ValidMind Metric.
+Our new end-to-end notebook gives you a full introduction to the ValidMind Developer Framework. As a model developer, you can use this notebook to learn how the end-to-end documentation process works, based on common scenarios you encounter in model development settings.
 
-Custom metrics offer added flexibility. They allow you to extend the library of default metrics provided by ValidMind. This enables you to document any type of model or use case.
+High level sections include:
 
-This new decorator simplifies creating and using custom metrics by almost completely eliminating the boilerplate code required to define and register a custom metric.
+1. **Initializing the ValidMind Developer Framework**
 
-Check out the [new notebook](https://docs.validmind.ai/notebooks/code_samples/custom_tests/implement_custom_tests.html) to see how you can start using custom metrics in your documentation.
+   ValidMind’s developer framework provides a rich collection of documentation tools and test suites, from documenting descriptions of datasets to validation and testing of models using a variety of open-source testing frameworks.
+
+2. **Start the model development process with raw data, run out-of-the box tests, and add evidence to model documentation**
+
+   Learn how to access ValidMind's test repository of individual tests that you will use as building blocks to ensure a model is being built appropriately. The goal is to show how to run tests, investigate results, and add tests results or evidence to the documentation.
+
+   For a full list of out-of-the-box tests, see [Test descriptions](https://docs.validmind.com/guide/test-descriptions.html) or try the interactive [Test sandbox](https://docs.validmind.com/guide/test-sandbox.html).
+
+3. **Implementing custom tests**
+
+   Usually, model developers have their own custom tests and it is important to include this within the model documentation. We will show you how to include custom tests and then how they can be added to documentation as additional evidence.
+
+4. **Finalize testing and documentation**
+
+   Learn how you can ensure that model documentation includes custom tests and how to make test configuration changes that apply to all tests in the model documentation template. At the end of this section you should have a fully documented model ready for review.
+
+Try it on JupyterHub: [ValidMind Introduction for Model Developers¶](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/intro_for_model_developers.ipynb)
 
 <!---
 PR #67: Support for external models
@@ -26,21 +42,20 @@ Labels: enhancement, highlight
 --->
 ### Support for external models
 
-You can now run documentation tests without passing a Python-native model object. This change enables documenting:
+You can now run documentation tests without passing a Python-native model object. This change enables you to document:
 
 - Models that are developed in non-Python environments
 - Non-standard model interfaces:
-  - Models deployed as APIs, i.e., SageMaker model endpoints
-  - Tools such as Spark where a "model" is not a typical object that exposes a `predict()` interface
+  - Models deployed as APIs, such as SageMaker model endpoints
+  - Tools such as Spark where a model is not a typical object that exposes a `predict()` interface
 
-To run tests for these models, you typically need to load model predictions from a file, dataset, etc. The new `init_model` interface does not enforce a Python model object anymore. You only need to pass `attributes` that describe the model. This is required as a best practice for model documentation.
+To run tests for these models, you typically must load model predictions from a file, dataset, and so on. The new `init_model` interface does not enforce a Python model object anymore. You only need to pass `attributes` that describe the model which is required as a best practice for model documentation.
 
-Initializing an external model
+#### Initializing an external model
 
-Since there is no native Python object to pass to `init_model`, you need to pass attributes that describe the model:
+Since there is no native Python object to pass to `init_model`, you instead pass attributes that describe the model:
 
-```
-python
+```python
 # Assume you want to load predictions for a PySpark ML model
 
 model_attributes = {
@@ -49,26 +64,23 @@ model_attributes = {
 }
 
 # Or maybe you're loading predictions for a SageMaker endpoint (model API)
-
 model_attributes = {
     "architecture": "SageMaker Model",
     "language": "Python",
 }
-#
-Call `init_model` without passing a model. Pass `attributes` instead.
 
+# Call `init_model` without passing a model. Pass `attributes` instead.
 vm_model = vm.init_model(
     attributes=model_attributes,
     input_id="model",
 )
 ```
 
-Assigning predictions
+#### Assigning predictions
 
-Since there's no model object available, the developer framework won't be able to call `model.predict()` or `model.predict_proba()`. You need to load predictions and probabilities manually, i.e.:
+Since there's no model object available, the developer framework won't be able to call `model.predict()` or `model.predict_proba()`. You need to load predictions and probabilities manually. For example:
 
-```
-python
+```python
 vm_train_ds.assign_predictions(
     model=vm_model,
     prediction_values=prediction_values,
@@ -76,69 +88,22 @@ vm_train_ds.assign_predictions(
 )
 ```
 
-You can run tests as usual. No other changes are needed.
-
-
-<!---
-PR #50: New introductory notebook for model developers
-URL: https://github.com/validmind/developer-framework/pull/50
-Labels: enhancement, highlight
---->
-### New introductory notebook for model developers
-
-New introductory notebook for model developers
-
-This notebook gives you a full introduction to the developer framework and teaches you how to document a model end to end.
- 
-High level sections:
-
-**1. Initialize the ValidMind developer framework**
-
-ValidMind’s developer framework provides a rich collection of documentation tools and test suites. These range from documenting descriptions of datasets to validation and testing of models using various open-source testing frameworks.
-
-**2. Start the model development process with raw data, run out-of-the-box tests, and add evidence to model documentation**
-
-In this stage the notebook provides details on how to access ValidMind's test repository of individual tests that you use as building blocks. This ensures a model is built appropriately. The goal is to show how to run tests, investigate results, and add test results or evidence to the documentation.
-
-For a full list of out-of-box tests please refer to: [https://docs.validmind.com/guide/test-descriptions.html](https://docs.validmind.com/guide/test-descriptions.html)
-
-**3. Learn how to implement custom tests**
-
-Usually, model developers have their own custom tests, and it is important to include these within the model documentation. We show you how to include custom tests and then how they can be added to documentation as additional evidence.
-
-**4. Ensure completion of documentation**
-
-In this stage the notebook shows you how to ensure that model documentation includes custom tests and how to make test configuration changes that apply to all tests in the model documentation template. At the end of this section you should have a fully documented model ready for review.
-
+You can proceed to run tests on your data as you would under normal conditions, without needing to modify any other parts of your code.
 
 <!---
-PR #684: Documentation Outline Page (Unresolved Conversations)
-URL: https://github.com/validmind/frontend/pull/684
+PR #29: Custom Metric Function Decorator
+URL: https://github.com/validmind/developer-framework/pull/29
 Labels: enhancement, highlight
 --->
-### Documentation outline page (unresolved conversations)
+### Custom metric function decorator
 
-Created a new documentation outline page
+We introduced a new `metric` decorator that turns any function into a ValidMind Metric that you can use in your documentation.
 
-Replaces the existing project overview page.
+Custom metrics offer added flexibility. They allow you to extend the library of default metrics provided by ValidMind which enables you to document any type of model or use case.
 
-New page details
+This new decorator simplifies creating and using custom metrics by almost completely eliminating the boilerplate code required to define and register a custom metric.
 
-This page shows a section-by-section outline of your project's documentation. It also includes a count of every unresolved conversation within each section.
-
-Hovering over chat icon
-
-You may hover over the `Chat` icon to see a preview of all unresolved conversations. Click them to jump to those conversations.
-
-Resolve directly from popup
-
-You may also choose to resolve conversations directly from the popup.
-
-![Screenshot 2024-04-03 at 1:56:04 PM](https://github.com/validmind/frontend/assets/35815846/9176b47f-fa44-4deb-bf63-c510e8c12cbb)
-
----
-
-![Screenshot 2024-04-03 at 1:56:17 PM](https://github.com/validmind/frontend/assets/35815846/87dd5489-e358-4dea-9316-58df135f45ab)
+Try it on JupyterHub: [Implement custom tests](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/custom_tests/implement_custom_tests.ipynb)
 
 <!---
 PR #668: New Documentation Overview Page
@@ -147,95 +112,24 @@ Labels: enhancement, design, highlight
 --->
 ### New documentation overview page
 
-Our new documentation is designed to help you find the information you need quickly. 
-We aim to provide clear and concise instructions. 
+Our new documentation is designed to help you find the information you need more quickly. Now more distinct from the Model Details page, the new overview page provides easier navigation and enhanced data visualization to better understand the progress of the documentation stage.
 
-Table of contents
-
-- Getting started
-- Tutorials
-- API reference
-- FAQs
-
-Getting started
-
-This section helps you set up and begin using our product. You'll find step-by-step guides for installation, setup, and basic functions.
-
-Tutorials
-
-Here, you'll discover in-depth tutorials covering different features and use cases. These are structured to build on your knowledge as you go along.
-
-API reference
-
-The API reference offers detailed information about our APIs. Each endpoint includes descriptions of parameters, example requests, and responses.
-
-FAQs
-
-In the FAQs section, common questions are answered to help troubleshoot any issues you may encounter
-
-With this new update
-
-Documentation overview page
-
-Is more distinct from model detail page. It provides an easier way to navigate into sections with enhanced data visualization. This helps you better understand the progress of the documentation stage.
-
-<img width="841" alt="image" src="https://github.com/validmind/frontend/assets/16059/55d090d3-f32e-4f36-9bdd-cee0f1c4203d">
-
-<img width="839" alt="image" src="https://github.com/validmind/frontend/assets/16059/393ebf78-b8ce-4c55-83ea-9cee2371705f">
-
-<img width="840" alt="image" src="https://github.com/validmind/frontend/assets/16059/64f02550-f6db-4903-a17e-ec23d92c8377">
-
-<!---
-PR #658: feat: add business unit and risk area at organization setting
-URL: https://github.com/validmind/frontend/pull/658
-Labels: highlight, servicerocket
---->
-### Add business unit and risk area at organization setting
-
-# Features
-
-New features in organization page:
-
-- Add business unit
-- Add risk area
-- Remove business unit
-- Remove risk area
+![](317065110-55d090d3-f32e-4f36-9bdd-cee0f1c4203d.png)
 
 <!---
 PR #684: Documentation Outline Page (Unresolved Conversations)
 URL: https://github.com/validmind/frontend/pull/684
 Labels: enhancement, highlight
 --->
-### Documentation outline page (unresolved conversations)
+### Documentation outline page with conversations
 
-Created a new documentation outline page, which replaces the existing project overview page.
+We created a new documentation outline page which replaces the existing project overview page. This page shows a section-by-section outline of your project's documentation:
 
-This page shows a section-by-section outline of your project's documentation. It includes a count of every unresolved conversation within each section.
+![](319353094-9176b47f-fa44-4deb-bf63-c510e8c12cbb.png){fig-alt="A screenshot showing the new documentation outline page, with numbered model documentation sections from 1. to 3.4"}
 
-You may hover over the `Chat` icon to see a preview of all unresolved conversations. Click them to jump to them.
+It also includes a count of every unresolved conversation within each section. From here, you can hover over the chat icon to see a preview of all unresolved conversations. Click a chat icon to jump to a conversations, or  resolve conversations directly from the popup.
 
-You may also choose to resolve conversations directly from the popup
-
-<img width="901" alt="Screenshot 2024-04-03 at 1 56 04 PM" src="https://github.com/validmind/frontend/assets/35815846/9176b47f-fa44-4deb-bf63-c510e8c12cbb">
-
----
-
-<img width="505" alt="Screenshot 2024-04-03 at 1 56 17 PM" src="https://github.com/validmind/frontend/assets/35815846/87dd5489-e358-4dea-9316-58df135f45ab">
-
-<!---
-PR #668: New Documentation Overview Page
-URL: https://github.com/validmind/frontend/pull/668
-Labels: enhancement, design, highlight
---->
-### New documentation overview page
-
-With this new update, documentation overview page is more distinct from model detail page. It provides an easier way to navigate into the sections with enhanced data visualization. The updates help you better understand progress of the documentation stage.
-
-<img width="841" alt="image" src="https://github.com/validmind/frontend/assets/16059/55d090d3-f32e-4f36-9bdd-cee0f1c4203d">
-
-<img width="839" alt="image" src="https://github.com/validmind/frontend/assets/16059/393ebf78-b8ce-4c55-83ea-9cee2371705f">
-
-<img width="840" alt "image" src="https://github.com/validmind/frontend/assets/16059/64f02550-f6db-4903-a17e-ec23d92c8377">
+![](319353097-87dd5489-e358-4dea-9316-58df135f45ab.png){fig-alt="A screenshot showing four unresolved conversation between model developers or validator" width="70%"}
 
 <!---
 PR #658: feat: add business unit and risk area at organization setting
@@ -244,49 +138,44 @@ Labels: highlight, servicerocket
 --->
 ### Add business unit and risk area at organization setting
 
-# Features
+New features have been added to the organization page, allowing users to manage business units and risk areas more effectively. You can now add and remove business units and risk areas directly within the organization settings.
 
-## New features in organization page:
-
-- Add business unit
-- Add risk area
-- Remove business unit
-- Remove risk area
+{{< video 319067297-cfc828b7-c4a8-46a4-89ff-1b7286681189.mp4 >}}
 
 <!---
 PR #696: Added "Generate with AI" button to the CKEditor
 URL: https://github.com/validmind/frontend/pull/696
 Labels: enhancement, highlight
 --->
-### Added generate with AI button to the CKEditor
+### Added **Generate with AI button** to the text editor
 
+Our new **Generate with AI** button is now available when you edit text blocks in model documentation or model validation reports. This button replaces the old button that was used to AI-generate content.
 
+Clicking on **Generate with AI** pops up a modal showing the AI content generation:
 
-Added a `Generate with AI` button to the text editor. This appears within the text blocks in Model Documentation as well as Model Validation. This replaces the old button that was used to AI-generate content.
+![](323798334-b8cfb363-3dfb-4bfd-a638-cc728a2ad010.png){fig-alt="A screenshot showing a text editor with a toolbar. The New Generate with AI button is available on the right."}
 
-Clicking on `Generate with AI` pops up a modal showing the AI content generation. Here, you can choose to `Accept` or `Try Again`.
+Here, you can choose to **Accept Text** or **Try Again**:
 
-<img width="1048" alt="Screenshot 2024-04-18 at 5 56 29 PM" src="https://github.com/validmind/frontend/assets/35815846/b8cfb363-3dfb-4bfd-a638-cc728a2ad010">
-
-<img width="814" alt="Screenshot 2024-04-18 at 5 57 06 PM" src="https://github.com/validmind/frontend/assets/35815846/a0da2945-34d8-4bba-ba7a-f41f542a8e11">
+![](323798341-a0da2945-34d8-4bba-ba7a-f41f542a8e11.png){fig-alt="A screenshot showing a modal with AI-generated text."}
 
 <!---
 PR #728: feat: add, remove, and rename sections with the new template editing experience
 URL: https://github.com/validmind/frontend/pull/728
 Labels: highlight, servicerocket
 --->
-### Add, remove, and rename sections with the new template editing experience
+### New documentation template editor
 
-This update allows you to edit templates visually, eliminating the need to manually edit YAML files.
+This update allows you to edit documentation templates visually, eliminating the need to manually edit YAML files. Add, remove, and rename sections with the new edit.r
 
 Key features:
 
-**enhanced template setting page**
+**Enhanced template setting page**
 
 - The edit button next to the version dropdown is now hidden.
 - A new edit button is displayed above the accordions. Clicking this button activates the edit mode for the accordion.
 
-**edit mode functionality**
+**Edit mode functionality**
 
 - In edit mode, you see a cancel button to exit edit mode and a button to publish a new version of the template with the current changes.
 - You can edit section titles when the accordion is in edit mode.
@@ -295,29 +184,30 @@ Key features:
 
 This new visual editing interface streamlines the template editing process, making it more intuitive and user-friendly.
 
-https://github.com/validmind/frontend/assets/3985459/a8d38a22-d3e5-4d96-8299-f1f19fc64366
+<!--- TO DO Fix .mp4 --->
+{{< video 328118693-a8d38a22-d3e5-4d96-8299-f1f19fc64366-1.mp4 >}}
 
-https://github.com/validmind/frontend/assets/3985459/14b8d89d-4438-45b0-a050-60c1e23dc53e
+<!--- TO DO Fix .mp4 --->
+{{< video 328846515-14b8d89d-4438-45b0-a050-60c1e23dc53e-2.mp4 >}}
 
 <!---
 PR #687: Workflows 2
 URL: https://github.com/validmind/frontend/pull/687
 Labels: highlight
 --->
-### Workflows 2
+### Better UI for workflow customization
 
-Revamped workflows feature to enable more granular management of model and documentation lifecycles and deep integration with model inventory attributes.
+Our revamped workflow UI enables more granular management of model and documentation lifecycles and deep integration with model inventory attributes.
 
-
-The new workflows UI includes the following features
+The new workflows UI includes the following features:
 
 - Ability to require a user action (approve, reject, request changes, etc.) before updating the status of a resource. The user action is presented to relevant users as an action button.
 
 - Ability to define the conditions that need to be met before allowing state transitions on a workflow. These conditions are evaluated from attribute values of the inventory model.
 
-- Support for approval steps. Approval steps allow you to define the model attribute where a list of `approver` users needs retrieval and specify the percentage of approvals needed for a successful approval.
+- Support for approval steps. Approval steps allow you to define the model attribute where a list of approvers needs retrieval and specify the percentage of approvals needed for a successful approval.
 
-- Approval steps allow defining `approved` and `rejected` outcomes.
+- Approval steps allow defining approved and rejected outcomes.
 
 
 ## Enhancements
