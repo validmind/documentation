@@ -17,23 +17,13 @@ Our new end-to-end notebook gives you a full introduction to the ValidMind Devel
 
 High level sections include:
 
-1. **Initializing the ValidMind Developer Framework**
+1. Initializing the ValidMind Developer Framework — The developer framework provides tools for documentation and testing, from dataset descriptions to model validation using various open-source frameworks.
 
-   ValidMind’s developer framework provides a rich collection of documentation tools and test suites, from documenting descriptions of datasets to validation and testing of models using a variety of open-source testing frameworks.
+2. Starting the model development process — Access the test repository to use individual tests as building blocks for model development. Learn to run tests, analyze results, and add evidence to model documentation. See the full list of tests at [Test descriptions](https://docs.validmind.com/guide/test-descriptions.html) or try the [Test sandbox](https://docs.validmind.com/guide/test-sandbox.html).
 
-2. **Start the model development process with raw data, run out-of-the box tests, and add evidence to model documentation**
+3. Implementing custom tests — Include custom tests in model documentation. Learn how to add these tests and use them as additional evidence.
 
-   Learn how to access ValidMind's test repository of individual tests that you will use as building blocks to ensure a model is being built appropriately. The goal is to show how to run tests, investigate results, and add tests results or evidence to the documentation.
-
-   For a full list of out-of-the-box tests, see [Test descriptions](https://docs.validmind.com/guide/test-descriptions.html) or try the interactive [Test sandbox](https://docs.validmind.com/guide/test-sandbox.html).
-
-3. **Implementing custom tests**
-
-   Usually, model developers have their own custom tests and it is important to include this within the model documentation. We will show you how to include custom tests and then how they can be added to documentation as additional evidence.
-
-4. **Finalize testing and documentation**
-
-   Learn how you can ensure that model documentation includes custom tests and how to make test configuration changes that apply to all tests in the model documentation template. At the end of this section you should have a fully documented model ready for review.
+4. Finalizing testing and documentation — Ensure model documentation includes custom tests and configure settings for all tests in the template. By the end, you should have a fully documented model ready for review.
 
 Try it on JupyterHub: [ValidMind Introduction for Model Developers¶](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/intro_for_model_developers.ipynb)
 
@@ -119,7 +109,7 @@ PR #29: Custom Metric Function Decorator
 URL: https://github.com/validmind/developer-framework/pull/29
 Labels: enhancement, highlight
 --->
-### Custom metric function decorator
+### Custom metric function decorators
 
 We introduced a new `metric` decorator that turns any function into a ValidMind Metric that you can use in your documentation.
 
@@ -160,9 +150,34 @@ PR #658: feat: add business unit and risk area at organization setting
 URL: https://github.com/validmind/frontend/pull/658
 Labels: highlight, servicerocket
 --->
-### Add business unit and risk area at organization setting
+<!---
+PR #680: [VALIDMIND-180] Remove Business Units from the organization settings page.
+URL: https://github.com/validmind/frontend/pull/680
+Labels: enhancement, servicerocket
+--->
+<!---
+PR #661: [VALIDMIND-180] Remove Risk Areas from the organization settings page.
+URL: https://github.com/validmind/frontend/pull/661
+Labels: enhancement, servicerocket
+--->
+<!---
+PR #652: [VALIDMIND-163] Add Risk Areas from the Organization settings page
+URL: https://github.com/validmind/frontend/pull/652
+Labels: enhancement, servicerocket
+--->
+<!---
+PR #643: [VALIDMIND-161] Add Business Units from the organization settings page
+URL: https://github.com/validmind/frontend/pull/643
+Labels: enhancement, servicerocket
+--->
+### Business unit and risk areas settings for organizations 
 
-New features have been added to the organization page, allowing users to manage business units and risk areas more effectively. You can now add and remove business units and risk areas directly within the organization settings.
+We have introduced several updates to the Organization settings page, enabling you to manage business units and risk areas for your organization. The following features are now available:
+
+- Add or remove business units from your organization.
+- Remove business units from the organization settings page.
+- Remove risk areas from the organization settings page.
+- Add or remove risk areas from your organization.
 
 {{< video 319067297-cfc828b7-c4a8-46a4-89ff-1b7286681189.mp4 >}}
 
@@ -171,7 +186,7 @@ PR #696: Added "Generate with AI" button to the CKEditor
 URL: https://github.com/validmind/frontend/pull/696
 Labels: enhancement, highlight
 --->
-### **Generate with AI button** in the text editor
+### **Generate with AI** button in text editor
 
 Our new **Generate with AI** button is now available when you edit text blocks in model documentation or model validation reports. This button replaces the old button that was used to AI-generate content.
 
@@ -190,7 +205,7 @@ Labels: highlight, servicerocket
 --->
 ### New documentation template editor
 
-This update allows you to edit documentation templates visually, eliminating the need to manually edit YAML files. Add, remove, and rename sections with the new edit.r
+This update allows you to edit documentation templates visually, eliminating the need to manually edit YAML files. Add, remove, and rename sections with the new editor.
 
 Key features:
 
@@ -206,31 +221,11 @@ Key features:
 - You can insert new sections before or after an existing section or insert a sub-section.
 - You can remove sections, with a confirmation alert to ensure the action.
 
-This new visual editing interface streamlines the template editing process, making it more intuitive and user-friendly.
+This new visual editing interface streamlines the template editing process, making it more intuitive and user-friendly:
 
 {{< video 328118693-a8d38a22-d3e5-4d96-8299-f1f19fc64366.mp4 >}}
 
 {{< video 328846515-14b8d89d-4438-45b0-a050-60c1e23dc53e.mp4 >}}
-
-<!---
-PR #687: Workflows 2
-URL: https://github.com/validmind/frontend/pull/687
-Labels: highlight
---->
-### Better UI for workflow customization
-
-Our revamped workflows UI pages enables more granular management of model and documentation lifecycles and deep integration with model inventory attributes.
-
-The new workflows UI includes the following features:
-
-- Ability to require a user action (approve, reject, request changes, etc.) before updating the status of a resource. The user action is presented to relevant users as an action button.
-
-- Ability to define the conditions that need to be met before allowing state transitions on a workflow. These conditions are evaluated from attribute values of the inventory model.
-
-- Support for approval steps. Approval steps allow you to define the model attribute where a list of approvers needs retrieval and specify the percentage of approvals needed for a successful approval.
-
-- Approval steps allow defining approved and rejected outcomes.
-
 
 ## Enhancements
 
@@ -267,7 +262,7 @@ scores = compute_my_scores(x_train)
 vm_train_ds.add_extra_column("scores", scores)
 ```
 
-This function throws an error if no column values are passed:
+This function returns an error if no column values are passed:
 
 ```python
 vm_train_ds.add_extra_column("scores")
@@ -275,7 +270,7 @@ vm_train_ds.add_extra_column("scores")
 ValueError: Column values must be provided when the column doesn't exist in the dataset
 ```
 
-It's also possible to use `init_dataset` with a dataset that has precomputed scores, i.e.:
+It's also possible to use `init_dataset` with a dataset that has precomputed scores, for example:
 
 ```python
 > train_df.columns
@@ -370,7 +365,7 @@ PR #44: John6797/sc 3882/metric decorator should work with test providers
 URL: https://github.com/validmind/developer-framework/pull/44
 Labels: enhancement
 --->
-### Metric decorators work with test providers
+### Use metric decorators with test providers
 
 Continuing our efforts to simplify the process for getting your custom code working in ValidMind, we now support functional metrics for internal tests and test providers. Functional metrics are tests that can be defined as pure functions without any boilerplate.
 
@@ -410,71 +405,49 @@ PR #43: [SC-3423] Review credit scorecard notebook
 URL: https://github.com/validmind/developer-framework/pull/43
 Labels: enhancement
 --->
-### Review credit scorecard notebook
+### Assign prediction probabilities
 
-This PR adds support for assigning `prediction_probabilities` to `assign_predictions`.
+We added support for assigning `prediction_probabilities` to `assign_predictions`. This support enables you to:
 
-This allows:
-
-- Assign prediction values and probabilities that have been computed outside ValidMind (VM).
+- Assign prediction values and probabilities that have been computed outside ValidMind.
 - Incorporate prediction values and probabilities from datasets that already have prediction columns.
 - Automate the assignment of prediction values and probabilities within VM.
 
 Try it:[Assign Prediction Values and Probabilities to ValidMind Datasets](https://github.com/validmind/developer-framework/blob/main/notebooks/code_sharing/credit_risk/assign_prediction_probabilities.ipynb)
 
 <!---
-PR #680: [VALIDMIND-180] Remove Business Units from the organization settings page.
-URL: https://github.com/validmind/frontend/pull/680
-Labels: enhancement, servicerocket
---->
-<!---
-PR #680: [VALIDMIND-180] Remove Business Units from the organization settings page.
-URL: https://github.com/validmind/frontend/pull/680
-Labels: enhancement, servicerocket
---->
-<!---
-PR #661: [VALIDMIND-180] Remove Risk Areas from the organization settings page.
-URL: https://github.com/validmind/frontend/pull/661
-Labels: enhancement, servicerocket
---->
-<!---
-PR #652: [VALIDMIND-163] Add Risk Areas from the Organization settings page
-URL: https://github.com/validmind/frontend/pull/652
-Labels: enhancement, servicerocket
---->
-<!---
-PR #643: [VALIDMIND-161] Add Business Units from the organization settings page
-URL: https://github.com/validmind/frontend/pull/643
-Labels: enhancement, servicerocket
---->
-### Organization settings page updates
-
-We have introduced several updates to the organization settings page, enhancing the management of business units and risk areas. You can now add and remove both business units and risk areas directly from the settings page, providing greater flexibility and control. The following features have been added:
-
-- Add or remove business units from your organization.
-- Remove business units from the organization settings page.
-- Remove risk areas from the organization settings page.
-- Add or remove risk areas from your organization.
-
-![](organization-settings-page.png){width="90%" fig-alt="A screenshot of the Organization settings page showing the new Business Unit and Risk Areas options."}
-
-<!---
 PR #686: Ability to associate a Finding with a documentation section.
 URL: https://github.com/validmind/frontend/pull/686
 Labels: enhancement
 --->
-### Associate finding with a documentation section
+### Associate findings with a documentation section
 
 You can now associate Model Findings with sections within your model documentation. Doing so will allow you to track findings by severity, section-by-section, in the Documentation overview page. You can see the total number of findings at the top of the Documentation overview page, as well as the individual counts per section. To view the related findings, hover over the finding icon in each section and click on one to jump to it.
 
 <div style="position: relative; padding-bottom: 56.544502617801044%; height: 0;"><iframe src="https://www.loom.com/embed/2c3e2ebc3ae94cfeb23b86af2cddf697?sid=778fd2f3-5d4b-442a-88a6-61cab9e23730" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
 
 <!---
+PR #687: Workflows 2
+URL: https://github.com/validmind/frontend/pull/687
+Labels: highlight
+--->
+### Better UI for workflow customization
+
+Our revamped workflows UI pages enable more granular management of model and documentation lifecycles and deep integration with model inventory attributes.
+
+The new workflows UI includes the following features:
+
+- Ability to require a user action (approve, reject, request changes, etc.) before updating the status of a resource. The user action is presented to relevant users as an action button.
+- Ability to define the conditions that need to be met before allowing state transitions on a workflow. These conditions are evaluated from attribute values of the inventory model.
+- Support for approval steps. Approval steps allow you to define the model attribute where a list of approvers needs retrieval and specify the percentage of approvals needed for a successful approval.
+- Approval steps allow defining approved and rejected outcomes.
+
+<!---
 PR #689: Added section statuses to model documentation and overview page
 URL: https://github.com/validmind/frontend/pull/689
 Labels: enhancement
 --->
-### Added section statuses to model documentation and overview page
+### Set section status for model documentation and overview page
 
 We added a status picker to each section of the model documentation page. This picker allows you to set whether the section is **In Progress** or **Done**. The Documentation overview page display a total count of how many sections have been completed, as well as a checkmark indicating that the section is done.
 
@@ -487,7 +460,7 @@ PR #711: Added feature to specify a template for Rich Text Custom fields
 URL: https://github.com/validmind/frontend/pull/711
 Labels: enhancement
 --->
-### Added feature to specify a template for rich text custom fields
+### Specify a template for rich text custom fields
 
 We added a new property to the **Long Text** custom field: `ENABLE RICH TEXT FORMATTING`. Toggling this property changes the field to a rich text editor rather than a simple text area. Another field called **Template** is also available and enables you to specify the default value within the rich text editor. This feature can be useful for defining procedures or guidelines that all models need to follow.
 
@@ -511,7 +484,7 @@ PR #723: Vendor info during inventory model creation and revised inventory model
 URL: https://github.com/validmind/frontend/pull/723
 Labels: enhancement
 --->
-### Vendor info during inventory model creation and revised inventory model filters
+### Specify vendor info during inventory registration and improved inventory model filters
 
 Added the ability to flag models as `Is Vendor Model` and specify a vendor name.
 
@@ -623,11 +596,11 @@ Labels: documentation
 --->
 ### Sandbox getting started
 
-We added getting started information for the new ValidMind sandbox environment which is currently available on request. You use the sandbox to gain hands-on experience and explore what ValidMind has to offer. 
+We added getting started information for the new ValidMind sandbox environment, which is currently available on request. You can use the sandbox to gain hands-on experience and explore what ValidMind has to offer. 
 
 The sandbox mimics a production environment. It includes comprehensive resources such as notebooks with sample code you can run, sample models registered in the model inventory, and draft documentation and validation reports.
 
-Most of our model documentation features are available for you to test in the sandbox. This includes:
+Most of our model documentation features are available for you to test in the sandbox. These include:
 
 - Automated model testing & documentation
 - Preparing model validation reports
