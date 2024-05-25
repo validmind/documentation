@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ValidMind - RAG Model Documentation Demo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" rel="next">
+<link href="../../../notebooks/code_samples/NLP_and_LLM/prompt_validation_demo.html" rel="prev">
+<link href="../../../validmind.png" rel="icon" type="image/png">
+<script src="../../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"express",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  });
+});
+</script> 
+  
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../about/ValidMind-logo-color.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/overview.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../guide/get-started.html" rel="" target="">
+ <span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../guide/guides.html" rel="" target="">
+ <span class="menu-text">Guides</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text"><i class="fa-solid fa-cube" aria-label="cube"></i> Developer Framework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-fa-cube--developer-framework">    
+        <li>
+    <a class="dropdown-item" href="../../../guide/get-started-developer-framework.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-rocket" aria-label="rocket"></i> Get Started</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../guide/supported-models.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
+        <li>
+    <a class="dropdown-item" href="../../../guide/testing-overview.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-flask-vial" aria-label="flask-vial"></i> Run Tests &amp; Test Suites</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../guide/test-descriptions.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-microscope" aria-label="microscope"></i> Test Descriptions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../guide/test-sandbox.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-toolbox" aria-label="toolbox"></i> Test sandbox (BETA)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-code" aria-label="code"></i> CODE SAMPLES</li>
+        <li>
+    <a class="dropdown-item" href="../../../guide/samples-jupyter-notebooks.html" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> All Code Samples · <code>LLM</code> · <code>NLP</code> · <code>Time Series</code> · <code>Etc.</code></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../notebooks.zip" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-download" aria-label="download"></i> Download Code Samples · <code>notebooks.zip</code></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://jupyterhub.validmind.ai/" rel="" target="">
+ <span class="dropdown-text"><i class="fa-solid fa-hand-point-right" aria-label="hand-point-right"></i> Try it on Jupyter Hub <i class="fa-solid fa-hand-point-left" aria-label="hand-point-left"></i></span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header"><i class="fa-solid fa-book" aria-label="book"></i> REFERENCE</li>
+        <li>
+    <a class="dropdown-item" href="../../../validmind/validmind.html" rel="" target="_blank">
+ <span class="dropdown-text"><i class="fa-solid fa-external-link" aria-label="external-link"></i> ValidMind Developer Framework</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../guide/faq.html" rel="" target="">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../guide/support.html" rel="" target="">
+ <span class="menu-text">Support</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/" rel="" target="_blank">
+ <span class="menu-text">validmind.com <i class="fa-solid fa-external-link" aria-label="external-link"></i></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../guide/samples-jupyter-notebooks.html">Code samples</a></li><li class="breadcrumb-item"><a href="../../../notebooks/code_samples/NLP_and_LLM/foundation_models_integration_demo.html">NLP and LLM</a></li><li class="breadcrumb-item"><a href="../../../notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.html">RAG Model Documentation Demo</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/get-started-developer-framework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Developer Framework</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">MODEL DOCUMENTATION</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/quickstart_customer_churn_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for model documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/supported-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Supported models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generate model documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize the developer framework</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Store project credentials in .env files</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">MODEL TESTING</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../guide/testing-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run tests &amp; test suites</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/configure_dataset_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure dataset features</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document multiple results for the same test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/explore_test_suites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Explore test suites</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/explore_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Explore tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/load_datasets_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load dataset predictions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run individual documentation sections</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_documentation_tests_with_config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run documentation tests with custom configurations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run tests with multiple datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run unit metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Run Tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests/1_run_dataset_based_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run dataset based tests</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../guide/test-descriptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Test descriptions</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Data Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/ACFandPACFPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ACFandPACFPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/ANOVAOneWayTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ANOVAOneWayTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/AutoAR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoAR</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/AutoMA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoMA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/AutoSeasonality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoSeasonality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/AutoStationarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoStationarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/BivariateFeaturesBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateFeaturesBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/BivariateHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/BivariateScatterPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BivariateScatterPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/ChiSquaredFeaturesTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ChiSquaredFeaturesTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/ClassImbalance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassImbalance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/DatasetDescription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetDescription</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/DatasetSplit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DatasetSplit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/DefaultRatesbyRiskBandPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DefaultRatesbyRiskBandPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/DescriptiveStatistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DescriptiveStatistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/Duplicates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Duplicates</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/EngleGrangerCoint.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EngleGrangerCoint</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/FeatureTargetCorrelationPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FeatureTargetCorrelationPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/HeatmapFeatureCorrelations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HeatmapFeatureCorrelations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/HighCardinality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HighCardinality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/HighPearsonCorrelation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HighPearsonCorrelation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/IQROutliersBarPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IQROutliersBarPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/IQROutliersTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IQROutliersTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/IsolationForestOutliers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IsolationForestOutliers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/LaggedCorrelationHeatmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LaggedCorrelationHeatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/MissingValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/MissingValuesBarPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValuesBarPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/MissingValuesRisk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MissingValuesRisk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/PearsonCorrelationMatrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PearsonCorrelationMatrix</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/PiTCreditScoresHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PiTCreditScoresHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/PiTPDHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PiTPDHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/RollingStatsPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RollingStatsPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/ScatterPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScatterPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/SeasonalDecompose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SeasonalDecompose</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/Skewness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Skewness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/SpreadPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SpreadPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TabularCategoricalBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularCategoricalBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TabularDateTimeHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularDateTimeHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TabularDescriptionTables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularDescriptionTables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TabularNumericalHistograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TabularNumericalHistograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TargetRateBarPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TargetRateBarPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TimeSeriesFrequency.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesFrequency</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TimeSeriesHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TimeSeriesLinePlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesLinePlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TimeSeriesMissingValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesMissingValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TimeSeriesOutliers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TimeSeriesOutliers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/TooManyZeroValues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TooManyZeroValues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/UniqueRows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">UniqueRows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/WOEBinPlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WOEBinPlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/WOEBinTable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WOEBinTable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Nlp</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/CommonWords.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CommonWords</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/Hashtags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hashtags</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/LanguageDetection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LanguageDetection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/Mentions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mentions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/PolarityAndSubjectivity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PolarityAndSubjectivity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/Punctuations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Punctuations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/Sentiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/StopWords.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StopWords</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/TextDescription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TextDescription</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/data_validation/nlp/Toxicity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Toxicity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Model Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/BertScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BertScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/BleuScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BleuScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ClusterSizeDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterSizeDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ContextualRecall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextualRecall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/FeaturesAUC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FeaturesAUC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/MeteorScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MeteorScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ModelMetadata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ModelMetadata</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/RegardScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegardScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/RegressionResidualsPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionResidualsPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/RougeScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RougeScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/TokenDisparity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TokenDisparity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ToxicityScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ToxicityScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Embeddings</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/ClusterDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/CosineSimilarityComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CosineSimilarityComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/CosineSimilarityDistribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CosineSimilarityDistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/CosineSimilarityHeatmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CosineSimilarityHeatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/DescriptiveAnalytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DescriptiveAnalytics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/EmbeddingsVisualization2D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EmbeddingsVisualization2D</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/EuclideanDistanceComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EuclideanDistanceComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/EuclideanDistanceHeatmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EuclideanDistanceHeatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/PCAComponentsPairwisePlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PCAComponentsPairwisePlots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/StabilityAnalysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/StabilityAnalysisKeyword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisKeyword</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/StabilityAnalysisRandomNoise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisRandomNoise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/StabilityAnalysisSynonyms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisSynonyms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/StabilityAnalysisTranslation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">StabilityAnalysisTranslation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/embeddings/TSNEComponentsPairwisePlots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TSNEComponentsPairwisePlots</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Ragas</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/AnswerCorrectness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AnswerCorrectness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/AnswerRelevance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AnswerRelevance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/AnswerSimilarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AnswerSimilarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/AspectCritique.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AspectCritique</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/ContextEntityRecall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextEntityRecall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/ContextPrecision.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextPrecision</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/ContextRecall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextRecall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/ContextRelevancy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContextRelevancy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/ragas/Faithfulness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Faithfulness</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Sklearn</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/AdjustedMutualInformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AdjustedMutualInformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/AdjustedRandIndex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AdjustedRandIndex</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ClassifierPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClassifierPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ClusterCosineSimilarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterCosineSimilarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ClusterPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ClusterPerformanceMetrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ClusterPerformanceMetrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/CompletenessScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CompletenessScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ConfusionMatrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ConfusionMatrix</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/FowlkesMallowsScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FowlkesMallowsScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/HomogeneityScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HomogeneityScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/HyperParametersTuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HyperParametersTuning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/KMeansClustersOptimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KMeansClustersOptimization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/MinimumAccuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumAccuracy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/MinimumF1Score.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumF1Score</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/MinimumROCAUCScore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MinimumROCAUCScore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ModelsPerformanceComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ModelsPerformanceComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/OverfitDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OverfitDiagnosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/PermutationFeatureImportance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PermutationFeatureImportance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/PopulationStabilityIndex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PopulationStabilityIndex</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/PrecisionRecallCurve.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PrecisionRecallCurve</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/RegressionErrors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionErrors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/RegressionModelsPerformanceComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsPerformanceComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/RegressionR2Square.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionR2Square</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/RobustnessDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RobustnessDiagnosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/ROCCurve.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ROCCurve</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/SHAPGlobalImportance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SHAPGlobalImportance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/SilhouettePlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SilhouettePlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/TrainingTestDegradation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TrainingTestDegradation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/VMeasure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VMeasure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/sklearn/WeakspotsDiagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">WeakspotsDiagnosis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Statsmodels</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ADF.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADF</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ADFTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADFTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/AutoARIMA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AutoARIMA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/BoxPierce.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BoxPierce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/CumulativePredictionProbabilities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CumulativePredictionProbabilities</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/DFGLSArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DFGLSArch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/DurbinWatsonTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DurbinWatsonTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/FeatureImportanceAndSignificance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FeatureImportanceAndSignificance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/GINITable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GINITable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/JarqueBera.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JarqueBera</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/KolmogorovSmirnov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KolmogorovSmirnov</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/KPSS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KPSS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/Lilliefors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lilliefors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/LJungBox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LJungBox</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/PDRatingClassPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDRatingClassPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/PhillipsPerronArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PhillipsPerronArch</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/PredictionProbabilitiesHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PredictionProbabilitiesHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionCoeffsPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionCoeffsPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionFeatureSignificance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionFeatureSignificance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelForecastPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelForecastPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelForecastPlotLevels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelForecastPlotLevels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelInsampleComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelInsampleComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelOutsampleComparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelOutsampleComparison</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelsCoeffs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsCoeffs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelSensitivityPlot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelSensitivityPlot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelsPerformance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelsPerformance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionModelSummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionModelSummary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RegressionPermutationFeatureImportance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RegressionPermutationFeatureImportance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ResidualsVisualInspection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ResidualsVisualInspection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/RunsTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RunsTest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ScorecardHistogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ScorecardHistogram</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ShapiroWilk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ShapiroWilk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/model_validation/statsmodels/ZivotAndrewsArch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ZivotAndrewsArch</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+ <span class="menu-text">Prompt Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bias</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Clarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clarity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Conciseness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conciseness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Delimitation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delimitation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/NegativeInstruction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NegativeInstruction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Robustness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Robustness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../tests/prompt_validation/Specificity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Specificity</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../guide/test-sandbox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-toolbox" aria-label="toolbox"></i> Test sandbox (BETA)</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">NOTEBOOKS</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../guide/samples-jupyter-notebooks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code samples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+ <span class="menu-text">Credit Risk</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/credit_risk/application_scorecard_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an application scorecard model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+ <span class="menu-text">Custom Tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/custom_tests/implement_custom_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implement custom tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/custom_tests/integrate_external_test_providers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Integrate external test providers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">
+ <span class="menu-text">Customization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/customization/customizing_metrics_with_output_templates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customize metric outputs using output templates</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+ <span class="menu-text">NLP and LLM</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/foundation_models_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment analysis of financial data using a large language model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/foundation_models_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of financial data using a large language model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/hugging_face_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment analysis of financial data using Hugging Face NLP models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/hugging_face_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of financial data using Hugging Face NLP models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/llm_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automate news summarization using LLMs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/prompt_validation_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prompt validation for large language models (LLMs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">RAG Model Documentation Demo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="false">
+ <span class="menu-text">Regression</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a California Housing Price Prediction regression model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="false">
+ <span class="menu-text">Time Series</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/code_samples/time_series/tutorial_time_series_forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a time series forecasting model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">REFERENCE</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../validmind/validmind.html" class="sidebar-item-text sidebar-link" target="&quot;_blank&quot;">
+ <span class="menu-text">ValidMind Developer Framework <i class="fa-solid fa-external-link" aria-label="external-link"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#about-validmind" id="toc-about-validmind" class="nav-link active" data-scroll-target="#about-validmind">About ValidMind</a>
+  <ul class="collapse">
+  <li><a href="#before-you-begin" id="toc-before-you-begin" class="nav-link" data-scroll-target="#before-you-begin">Before you begin</a></li>
+  <li><a href="#new-to-validmind" id="toc-new-to-validmind" class="nav-link" data-scroll-target="#new-to-validmind">New to ValidMind?</a></li>
+  <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link" data-scroll-target="#key-concepts">Key concepts</a></li>
+  </ul></li>
+  <li><a href="#pre-requisites" id="toc-pre-requisites" class="nav-link" data-scroll-target="#pre-requisites">Pre-requisites</a>
+  <ul class="collapse">
+  <li><a href="#validmind-initialization" id="toc-validmind-initialization" class="nav-link" data-scroll-target="#validmind-initialization">ValidMind Initialization</a></li>
+  <li><a href="#read-open-ai-api-key" id="toc-read-open-ai-api-key" class="nav-link" data-scroll-target="#read-open-ai-api-key">Read Open AI API Key</a></li>
+  </ul></li>
+  <li><a href="#dataset-loader" id="toc-dataset-loader" class="nav-link" data-scroll-target="#dataset-loader">Dataset Loader</a></li>
+  <li><a href="#data-validation" id="toc-data-validation" class="nav-link" data-scroll-target="#data-validation">Data validation</a>
+  <ul class="collapse">
+  <li><a href="#duplicates" id="toc-duplicates" class="nav-link" data-scroll-target="#duplicates">Duplicates</a></li>
+  <li><a href="#stop-words" id="toc-stop-words" class="nav-link" data-scroll-target="#stop-words">Stop Words</a></li>
+  <li><a href="#punctuations" id="toc-punctuations" class="nav-link" data-scroll-target="#punctuations">Punctuations</a></li>
+  <li><a href="#common-words" id="toc-common-words" class="nav-link" data-scroll-target="#common-words">Common Words</a></li>
+  <li><a href="#language-detection" id="toc-language-detection" class="nav-link" data-scroll-target="#language-detection">Language Detection</a></li>
+  <li><a href="#toxicity-score" id="toc-toxicity-score" class="nav-link" data-scroll-target="#toxicity-score">Toxicity Score</a></li>
+  <li><a href="#polarity-and-subjectivity" id="toc-polarity-and-subjectivity" class="nav-link" data-scroll-target="#polarity-and-subjectivity">Polarity and Subjectivity</a></li>
+  <li><a href="#sentiment" id="toc-sentiment" class="nav-link" data-scroll-target="#sentiment">Sentiment</a></li>
+  </ul></li>
+  <li><a href="#embedding-model" id="toc-embedding-model" class="nav-link" data-scroll-target="#embedding-model">Embedding Model</a>
+  <ul class="collapse">
+  <li><a href="#assign-predictions" id="toc-assign-predictions" class="nav-link" data-scroll-target="#assign-predictions">Assign Predictions</a></li>
+  <li><a href="#run-tests" id="toc-run-tests" class="nav-link" data-scroll-target="#run-tests">Run tests</a></li>
+  </ul></li>
+  <li><a href="#setup-vector-store" id="toc-setup-vector-store" class="nav-link" data-scroll-target="#setup-vector-store">Setup Vector Store</a>
+  <ul class="collapse">
+  <li><a href="#generate-embeddings-for-the-train-set" id="toc-generate-embeddings-for-the-train-set" class="nav-link" data-scroll-target="#generate-embeddings-for-the-train-set">Generate embeddings for the Train Set</a></li>
+  <li><a href="#insert-embeddings-and-questions-into-vector-db" id="toc-insert-embeddings-and-questions-into-vector-db" class="nav-link" data-scroll-target="#insert-embeddings-and-questions-into-vector-db">Insert embeddings and questions into Vector DB</a></li>
+  </ul></li>
+  <li><a href="#retrieval-model" id="toc-retrieval-model" class="nav-link" data-scroll-target="#retrieval-model">Retrieval Model</a></li>
+  <li><a href="#generation-model" id="toc-generation-model" class="nav-link" data-scroll-target="#generation-model">Generation Model</a></li>
+  <li><a href="#setup-rag-pipeline-model" id="toc-setup-rag-pipeline-model" class="nav-link" data-scroll-target="#setup-rag-pipeline-model">Setup RAG Pipeline Model</a></li>
+  <li><a href="#run-tests-1" id="toc-run-tests-1" class="nav-link" data-scroll-target="#run-tests-1">Run tests</a>
+  <ul class="collapse">
+  <li><a href="#answer-similarity" id="toc-answer-similarity" class="nav-link" data-scroll-target="#answer-similarity">Answer Similarity</a></li>
+  <li><a href="#context-entity-recall" id="toc-context-entity-recall" class="nav-link" data-scroll-target="#context-entity-recall">Context Entity Recall</a></li>
+  <li><a href="#context-precision" id="toc-context-precision" class="nav-link" data-scroll-target="#context-precision">Context Precision</a></li>
+  <li><a href="#context-relevancy" id="toc-context-relevancy" class="nav-link" data-scroll-target="#context-relevancy">Context Relevancy</a></li>
+  <li><a href="#faithfulness" id="toc-faithfulness" class="nav-link" data-scroll-target="#faithfulness">Faithfulness</a></li>
+  <li><a href="#answer-relevance" id="toc-answer-relevance" class="nav-link" data-scroll-target="#answer-relevance">Answer Relevance</a></li>
+  <li><a href="#context-recall" id="toc-context-recall" class="nav-link" data-scroll-target="#context-recall">Context Recall</a></li>
+  <li><a href="#answer-correctness" id="toc-answer-correctness" class="nav-link" data-scroll-target="#answer-correctness">Answer Correctness</a></li>
+  <li><a href="#aspect-critique" id="toc-aspect-critique" class="nav-link" data-scroll-target="#aspect-critique">Aspect Critique</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/validmind/documentation/blob/main/site/notebooks/code_samples/NLP_and_LLM/rag_documentation_demo.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/validmind/documentation/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RAG Model Documentation Demo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this notebook, we are going to implement a simple RAG Model for automating the process of answering RFP questions using GenAI. We will see how we can initialize an embedding model, a retrieval model and a generator model with LangChain components and use them within the ValidMind developer framework to run tests against them. Finally, we will see how we can put them together in a Pipeline and run that to get e2e results and run tests against that.</p>
+<p><a id="toc2_"></a></p>
+<section id="about-validmind" class="level2">
+<h2 class="anchored" data-anchor-id="about-validmind">About ValidMind</h2>
+<p>ValidMind is a platform for managing model risk, including risk associated with AI and statistical models.</p>
+<p>You use the ValidMind Developer Framework to automate documentation and validation tests, and then use the ValidMind AI Risk Platform UI to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.</p>
+<p><a id="toc2_1_"></a></p>
+<section id="before-you-begin" class="level3">
+<h3 class="anchored" data-anchor-id="before-you-begin">Before you begin</h3>
+<p>This notebook assumes you have basic familiarity with Python, including an understanding of how functions work. If you are new to Python, you can still run the notebook but we recommend further familiarizing yourself with the language.</p>
+<p>If you encounter errors due to missing modules in your Python environment, install the modules with <code>pip install</code>, and then re-run the notebook. For more help, refer to <a href="https://docs.python.org/3/installing/index.html">Installing Python Modules</a>.</p>
+<p><a id="toc2_2_"></a></p>
+</section>
+<section id="new-to-validmind" class="level3">
+<h3 class="anchored" data-anchor-id="new-to-validmind">New to ValidMind?</h3>
+<p>If you haven’t already seen our <a href="https://docs.validmind.ai/guide/get-started-developer-framework.html">Get started with the ValidMind Developer Framework</a>, we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.</p>
+<div class="alert alert-block alert-info" style="background-color: #f7e4ee; color: #222425; border: 1px solid #222425;">
+<p>For access to all features available in this notebook, create a free ValidMind account.</p>
+Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b></a>
+</div>
+<p><a id="toc2_3_"></a></p>
+</section>
+<section id="key-concepts" class="level3">
+<h3 class="anchored" data-anchor-id="key-concepts">Key concepts</h3>
+<ul>
+<li><strong>FunctionModels</strong>: ValidMind offers support for creating <code>VMModel</code> instances from Python functions. This enables us to support any “model” by simply using the provided function as the model’s <code>predict</code> method.</li>
+<li><strong>PipelineModels</strong>: ValidMind models (<code>VMModel</code> instances) of any type can be piped together to create a model pipeline. This allows model components to be created and tested/documented independently, and then combined into a single model for end-to-end testing and documentation. We use the <code>|</code> operator to pipe models together.</li>
+<li><strong>RAG</strong>: RAG stands for Retrieval Augmented Generation and refers to a wide range of GenAI applications where some form of retrieval is used to add context to the prompt so that the LLM that generates content can refer to it when creating its output. In this notebook, we are going to implement a simple RAG setup using LangChain components.</li>
+</ul>
+</section>
+</section>
+<section id="pre-requisites" class="level1">
+<h1>Pre-requisites</h1>
+<p>Let’s go ahead and install the <code>validmind</code> library if its not already installed… Then we can install the <code>qdrant-client</code> library for our vector store and <code>langchain</code> for everything else:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q qdrant<span class="op">-</span>client langchain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="validmind-initialization" class="level3">
+<h3 class="anchored" data-anchor-id="validmind-initialization">ValidMind Initialization</h3>
+<p>Now we will import and initialize the ValidMind framework so we can connect to our project in the ValidMind platform. This will let us log inputs, plots, and test results to our model documentation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"https://api.prod.validmind.ai/api/v1/tracking"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="read-open-ai-api-key" class="level3">
+<h3 class="anchored" data-anchor-id="read-open-ai-api-key">Read Open AI API Key</h3>
+<p>We will need to have an OpenAI API key to be able to use their <code>text-embedding-3-small</code> model for our embeddings, <code>gpt-3.5-turbo</code> model for our generator and <code>gpt-4o</code> model for our LLM-as-Judge tests. If you don’t have an OpenAI API key, you can get one by signing up at <a href="https://platform.openai.com/signup">OpenAI</a>. Then you can create a <code>.env</code> file in the root of your project and the following cell will load it from there. Alternatively, you can just uncomment the line below to directly set the key (not recommended for security reasons).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load openai api key</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># os.environ["OPENAI_API_KEY"] = "sk-..."</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> <span class="st">"OPENAI_API_KEY"</span> <span class="kw">in</span> os.environ:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"OPENAI_API_KEY is not set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="dataset-loader" class="level1">
+<h1>Dataset Loader</h1>
+<p>Great, now that we have all of our dependencies installed, the developer framework initialized and connected to our model documentation project and our OpenAI API key setup, we can go ahead and load our datasets. We will use the synthetic <code>RFP</code> dataset included with ValidMind for this notebook. This dataset contains a variety of RFP questions and ground truth answers that we can use both as the source where our Retriever will search for similar question-answer pairs as well as our test set for evaluating the performance of our RAG model. To do this, we just have to load it and call the preprocess function to get a split of the data into train and test sets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the sample dataset from the library</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.llm.rag <span class="im">import</span> rfp</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>raw_df <span class="op">=</span> rfp.load_data()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> rfp.preprocess(raw_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    train_df,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    text_column<span class="op">=</span><span class="st">"question"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"ground_truth"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    test_df,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    text_column<span class="op">=</span><span class="st">"question"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span><span class="st">"ground_truth"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-validation" class="level1">
+<h1>Data validation</h1>
+<p>Now that we have loaded our dataset, we can go ahead and run some data validation tests right away to start assessing and documenting the quality of our data. Since we are using a text dataset, we can use ValidMind’s built-in array of text data quality tests to check that things like number of duplicates, missing values, and other common text data issues are not present in our dataset. We can also run some tests to check the sentiment and toxicity of our data.</p>
+<section id="duplicates" class="level3">
+<h3 class="anchored" data-anchor-id="duplicates">Duplicates</h3>
+<p>First, let’s check for duplicates in our dataset. We can use the <code>validmind.data_validation.Duplicates</code> test and pass our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> vm.tests.run_test(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.Duplicates"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: vm_train_ds</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="stop-words" class="level3">
+<h3 class="anchored" data-anchor-id="stop-words">Stop Words</h3>
+<p>Next, let’s check for stop words in our dataset. We can use the <code>validmind.data_validation.StopWords</code> test and pass our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.nlp.StopWords"</span>, inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds}</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="punctuations" class="level3">
+<h3 class="anchored" data-anchor-id="punctuations">Punctuations</h3>
+<p>Next, let’s check for punctuations in our dataset. We can use the <code>validmind.data_validation.Punctuations</code> test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.nlp.Punctuations"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds},</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="common-words" class="level3">
+<h3 class="anchored" data-anchor-id="common-words">Common Words</h3>
+<p>Next, let’s check for common words in our dataset. We can use the <code>validmind.data_validation.CommonWord</code> test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.nlp.CommonWords"</span>, inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds}</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="language-detection" class="level3">
+<h3 class="anchored" data-anchor-id="language-detection">Language Detection</h3>
+<p>For documentation purposes, we can detect and log the languages used in the dataset with the <code>validmind.data_validation.LanguageDetection</code> test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    test_id<span class="op">=</span><span class="st">"validmind.data_validation.nlp.LanguageDetection"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds},</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="toxicity-score" class="level3">
+<h3 class="anchored" data-anchor-id="toxicity-score">Toxicity Score</h3>
+<p>Now, let’s go ahead and run the <code>validmind.data_validation.nlp.Toxicity</code> test to compute a toxicity score for our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.data_validation.nlp.Toxicity"</span>, inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds}</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="polarity-and-subjectivity" class="level3">
+<h3 class="anchored" data-anchor-id="polarity-and-subjectivity">Polarity and Subjectivity</h3>
+<p>We can also run the <code>validmind.data_validation.nlp.PolarityAndSubjectivity</code> test to compute the polarity and subjectivity of our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.data_validation.nlp.PolarityAndSubjectivity"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds},</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sentiment" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment">Sentiment</h3>
+<p>Finally, we can run the <code>validmind.data_validation.nlp.Sentiment</code> test to plot the sentiment of our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vm.tests.run_test(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.data_validation.nlp.Sentiment"</span>, inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_train_ds}</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="embedding-model" class="level1">
+<h1>Embedding Model</h1>
+<p>Now that we have our dataset loaded and have run some data validation tests to assess and document the quality of our data, we can go ahead and initialize our embedding model. We will use the <code>text-embedding-3-small</code> model from OpenAI for this purpose wrapped in the <code>OpenAIEmbeddings</code> class from LangChain. This model will be used to “embed” our questions both for inserting the question-answer pairs from the “train” set into the vector store and for embedding the question from inputs when making predictions with our RAG model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> OpenAIEmbeddings</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>embedding_client <span class="op">=</span> OpenAIEmbeddings(model<span class="op">=</span><span class="st">"text-embedding-3-small"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed(<span class="bu">input</span>):</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns a text embedding for the given text"""</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> embedding_client.embed_query(<span class="bu">input</span>[<span class="st">"question"</span>])</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>vm_embedder <span class="op">=</span> vm.init_model(input_id<span class="op">=</span><span class="st">"embedding_model"</span>, predict_fn<span class="op">=</span>embed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What we have done here is to initialize the <code>OpenAIEmbeddings</code> class so it uses OpenAI’s <code>text-embedding-3-small</code> model. We then created an <code>embed</code> function that takes in an <code>input</code> dictionary and uses the <code>embed_query</code> method of the embedding client to compute the embeddings of the <code>question</code>. We use an <code>embed</code> function since that is how ValidMind supports any custom model. We will use this strategy for the retrieval and generator models as well but you could also use, say, a HuggingFace model directly. See the documentation for more information on which model types are directly supported - <a href="https://docs.validmind.ai/validmind/validmind.html">ValidMind Documentation</a>… Finally, we use the <code>init_model</code> function from the ValidMind framework to create a <code>VMModel</code> object that can be used in ValidMind tests. This also logs the model to our model documentation project and any test that uses the model will be linked to the logged model and its metadata.</p>
+<section id="assign-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="assign-predictions">Assign Predictions</h3>
+<p>To precompute the embeddings for our test set, we can call the <code>assign_predictions</code> method of our <code>vm_test_ds</code> object we created above. This will compute the embeddings for each question in the test set and store them in the a special prediction column of the test set thats linked to our <code>vm_embedder</code> model. This will allow us to use these embeddings later when we run tests against our embedding model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(vm_embedder)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vm_test_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-tests" class="level3">
+<h3 class="anchored" data-anchor-id="run-tests">Run tests</h3>
+<p>Now that everything is setup for the embedding model, we can go ahead and run some tests to assess and document the quality of our embeddings. We will use the <code>validmind.model_validation.embeddings.*</code> tests to compute a variety of metrics against our model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.tests <span class="im">import</span> run_test</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.StabilityAnalysisRandomNoise"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"probability"</span>: <span class="fl">0.3</span>},</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.StabilityAnalysisSynonyms"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"probability"</span>: <span class="fl">0.3</span>},</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.StabilityAnalysisTranslation"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"source_lang"</span>: <span class="st">"en"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"target_lang"</span>: <span class="st">"fr"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.CosineSimilarityHeatmap"</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.EuclideanDistanceHeatmap"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.PCAComponentsPairwisePlots"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"n_components"</span>: <span class="dv">3</span>},</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.embeddings.TSNEComponentsPairwisePlots"</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_embedder, <span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"n_components"</span>: <span class="dv">3</span>, <span class="st">"perplexity"</span>: <span class="dv">20</span>},</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="setup-vector-store" class="level1">
+<h1>Setup Vector Store</h1>
+<p>Great, so now that we have assessed our embedding model and verified that it is performing well, we can go ahead and use it to compute embeddings for our question-answer pairs in the “train” set. We will then use these embeddings to insert the question-answer pairs into a vector store. We will use an in-memory <code>qdrant</code> vector database for demo purposes but any option would work just as well here. We will use the <code>QdrantClient</code> class from LangChain to interact with the vector store. This class will allow us to insert and search for embeddings in the vector store.</p>
+<section id="generate-embeddings-for-the-train-set" class="level3">
+<h3 class="anchored" data-anchor-id="generate-embeddings-for-the-train-set">Generate embeddings for the Train Set</h3>
+<p>We can use the same <code>assign_predictions</code> method from earlier except this time we will use the <code>vm_train_ds</code> object to compute the embeddings for the question-answer pairs in the “train” set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(vm_embedder)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vm_train_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="insert-embeddings-and-questions-into-vector-db" class="level3">
+<h3 class="anchored" data-anchor-id="insert-embeddings-and-questions-into-vector-db">Insert embeddings and questions into Vector DB</h3>
+<p>Now that we have computed the embeddings for our question-answer pairs in the “train” set, we can go ahead and insert them into the vector store:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.vectorstores <span class="im">import</span> Qdrant</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> OpenAIEmbeddings</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.document_loaders <span class="im">import</span> DataFrameLoader</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load documents from dataframe</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>loader <span class="op">=</span> DataFrameLoader(train_df, page_content_column<span class="op">=</span><span class="st">"question"</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> loader.load()</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># choose model using embedding client</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>embedding_client <span class="op">=</span> OpenAIEmbeddings(model<span class="op">=</span><span class="st">"text-embedding-3-small"</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># setup vector datastore</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>qdrant <span class="op">=</span> Qdrant.from_documents(</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    docs,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    embedding_client,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span><span class="st">":memory:"</span>,  <span class="co"># Local mode with in-memory storage only</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    collection_name<span class="op">=</span><span class="st">"rfp_rag_collection"</span>,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="retrieval-model" class="level1">
+<h1>Retrieval Model</h1>
+<p>Now that we have an embedding model and a vector database setup and loaded with our data, we need a Retrieval model that can search for similar question-answer pairs for a given input question. Once created, we can initialize this as a ValidMind model and <code>assign_predictions</code> to it just like our embedding model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retrieve(<span class="bu">input</span>):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    contexts <span class="op">=</span> []</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> result <span class="kw">in</span> qdrant.similarity_search_with_score(<span class="bu">input</span>[<span class="st">"question"</span>]):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        document, score <span class="op">=</span> result</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        context <span class="op">=</span> <span class="ss">f"Q: </span><span class="sc">{</span>document<span class="sc">.</span>page_content<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        context <span class="op">+=</span> <span class="ss">f"A: </span><span class="sc">{</span>document<span class="sc">.</span>metadata[<span class="st">'ground_truth'</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        contexts.append(context)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> contexts</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>vm_retriever <span class="op">=</span> vm.init_model(input_id<span class="op">=</span><span class="st">"retrieval_model"</span>, predict_fn<span class="op">=</span>retrieve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(model<span class="op">=</span>vm_retriever)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vm_test_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="generation-model" class="level1">
+<h1>Generation Model</h1>
+<p>As the final piece of this simple RAG pipeline, we can create and initialize a generation model that will use the retrieved context to generate an answer to the input question. We will use the <code>gpt-3.5-turbo</code> model from OpenAI.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>system_prompt <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="st">You are an expert RFP AI assistant.</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="st">You are tasked with answering new RFP questions based on existing RFP questions and answers.</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="st">You will be provided with the existing RFP questions and answer pairs that are the most relevant to the new RFP question.</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="st">After that you will be provided with a new RFP question.</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="st">You will generate an answer and respond only with the answer.</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="st">Ignore your pre-existing knowledge and answer the question based on the provided context.</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>.strip()</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>openai_client <span class="op">=</span> OpenAI()</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate(<span class="bu">input</span>):</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai_client.chat.completions.create(</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: system_prompt},</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="bu">input</span>[<span class="st">"retrieval_model"</span>])},</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="bu">input</span>[<span class="st">"question"</span>]},</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>vm_generator <span class="op">=</span> vm.init_model(input_id<span class="op">=</span><span class="st">"generation_model"</span>, predict_fn<span class="op">=</span>generate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s test it out real quick:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>vm_generator.predict(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"retrieval_model"</span>: [[<span class="st">"My name is anil"</span>]], <span class="st">"question"</span>: [<span class="st">"what is my name"</span>]}</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="setup-rag-pipeline-model" class="level1">
+<h1>Setup RAG Pipeline Model</h1>
+<p>Now that we have all of our individual “component” models setup and initialized we need some way to put them all together in a single “pipeline”. We can use the <code>PipelineModel</code> class to do this. This ValidMind model type simply wraps any number of other ValidMind models and runs them in sequence. We can use a pipe(<code>|</code>) operator - in Python this is normally an <code>or</code> operator but we have overloaded it for easy pipeline creation - to chain together our models. We can then initialize this pipeline model and assign predictions to it just like any other model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>vm_rag_model <span class="op">=</span> vm.init_model(vm_retriever <span class="op">|</span> vm_generator, input_id<span class="op">=</span><span class="st">"rag_model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can <code>assign_predictions</code> to the pipeline model just like we did with the individual models. This will run the pipeline on the test set and store the results in the test set for later use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(model<span class="op">=</span>vm_rag_model)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vm_test_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-tests-1" class="level1">
+<h1>Run tests</h1>
+<p>Let’s go ahead and run some of our new RAG tests against our model…</p>
+<blockquote class="blockquote">
+<p>Note: these tests are still being developed and are not yet in a stable state. We are using advanced tests here that use LLM-as-Judge and other strategies to assess things like the relevancy of the retrieved context to the input question and the correctness of the generated answer when compared to the ground truth. There is more to come in this area so stay tuned!</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="answer-similarity" class="level3">
+<h3 class="anchored" data-anchor-id="answer-similarity">Answer Similarity</h3>
+<p>The concept of Answer Semantic Similarity pertains to the assessment of the semantic resemblance between the generated answer and the ground truth. This evaluation is based on the ground truth and the answer, with values falling within the range of 0 to 1. A higher score signifies a better alignment between the generated answer and the ground truth.</p>
+<p>Measuring the semantic similarity between answers can offer valuable insights into the quality of the generated response. This evaluation utilizes a cross-encoder model to calculate the semantic similarity score.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>run_test(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerSimilarity"</span>,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>).log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context-entity-recall" class="level3">
+<h3 class="anchored" data-anchor-id="context-entity-recall">Context Entity Recall</h3>
+<p>This metric gives the measure of recall of the retrieved context, based on the number of entities present in both ground_truths and contexts relative to the number of entities present in the ground_truths alone. Simply put, it is a measure of what fraction of entities are recalled from ground_truths. This metric is useful in fact-based use cases like tourism help desk, historical QA, etc. This metric can help evaluate the retrieval mechanism for entities, based on comparison with entities present in ground_truths, because in cases where entities matter, we need the contexts which cover them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextEntityRecall"</span>,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context-precision" class="level3">
+<h3 class="anchored" data-anchor-id="context-precision">Context Precision</h3>
+<p>Context Precision is a metric that evaluates whether all of the ground-truth relevant items present in the contexts are ranked higher or not. Ideally all the relevant chunks must appear at the top ranks. This metric is computed using the question, ground_truth and the contexts, with values ranging between 0 and 1, where higher scores indicate better precision.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextPrecision"</span>,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context-relevancy" class="level3">
+<h3 class="anchored" data-anchor-id="context-relevancy">Context Relevancy</h3>
+<p>This metric gauges the relevancy of the retrieved context, calculated based on both the question and contexts. The values fall within the range of (0, 1), with higher values indicating better relevancy.</p>
+<p>Ideally, the retrieved context should exclusively contain essential information to address the provided query. To compute this, we initially estimate the value of by identifying sentences within the retrieved context that are relevant for answering the given question.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextRelevancy"</span>,</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="faithfulness" class="level3">
+<h3 class="anchored" data-anchor-id="faithfulness">Faithfulness</h3>
+<p>This measures the factual consistency of the generated answer against the given context. It is calculated from answer and retrieved context. The answer is scaled to (0,1) range. Higher the better.</p>
+<p>The generated answer is regarded as faithful if all the claims that are made in the answer can be inferred from the given context. To calculate this a set of claims from the generated answer is first identified. Then each one of these claims are cross checked with given context to determine if it can be inferred from given context or not.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.Faithfulness"</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="answer-relevance" class="level3">
+<h3 class="anchored" data-anchor-id="answer-relevance">Answer Relevance</h3>
+<p>The evaluation metric, Answer Relevancy, focuses on assessing how pertinent the generated answer is to the given prompt. A lower score is assigned to answers that are incomplete or contain redundant information and higher scores indicate better relevancy. This metric is computed using the question, the context and the answer.</p>
+<p>The Answer Relevancy is defined as the mean cosine similartiy of the original question to a number of artifical questions, which where generated (reverse engineered) based on the answer.</p>
+<p>Please note, that eventhough in practice the score will range between 0 and 1 most of the time, this is not mathematically guranteed, due to the nature of the cosine similarity ranging from -1 to 1.</p>
+<blockquote class="blockquote">
+<p>Note: This is reference free metric. If you’re looking to compare ground truth answer with generated answer refer to Answer Correctness.</p>
+</blockquote>
+<p>An answer is deemed relevant when it directly and appropriately addresses the original question. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the answer lacks completeness or contains redundant details. To calculate this score, the LLM is prompted to generate an appropriate question for the generated answer multiple times, and the mean cosine similarity between these generated questions and the original question is measured. The underlying idea is that if the generated answer accurately addresses the initial question, the LLM should be able to generate questions from the answer that align with the original question.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerRelevance"</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="context-recall" class="level3">
+<h3 class="anchored" data-anchor-id="context-recall">Context Recall</h3>
+<p>Context recall measures the extent to which the retrieved context aligns with the annotated answer, treated as the ground truth. It is computed based on the ground truth and the retrieved context, and the values range between 0 and 1, with higher values indicating better performance.</p>
+<p>To estimate context recall from the ground truth answer, each sentence in the ground truth answer is analyzed to determine whether it can be attributed to the retrieved context or not. In an ideal scenario, all sentences in the ground truth answer should be attributable to the retrieved context.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextRecall"</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="answer-correctness" class="level3">
+<h3 class="anchored" data-anchor-id="answer-correctness">Answer Correctness</h3>
+<p>The assessment of Answer Correctness involves gauging the accuracy of the generated answer when compared to the ground truth. This evaluation relies on the ground truth and the answer, with scores ranging from 0 to 1. A higher score indicates a closer alignment between the generated answer and the ground truth, signifying better correctness.</p>
+<p>Answer correctness encompasses two critical aspects: semantic similarity between the generated answer and the ground truth, as well as factual similarity. These aspects are combined using a weighted scheme to formulate the answer correctness score.</p>
+<p>Factual correctness quantifies the factual overlap between the generated answer and the ground truth answer. This is done using the concepts of:</p>
+<ul>
+<li>TP (True Positive): Facts or statements that are present in both the ground truth and the generated answer.</li>
+<li>FP (False Positive): Facts or statements that are present in the generated answer but not in the ground truth.</li>
+<li>FN (False Negative): Facts or statements that are present in the ground truth but not in the generated answer.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerCorrectness"</span>,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="aspect-critique" class="level3">
+<h3 class="anchored" data-anchor-id="aspect-critique">Aspect Critique</h3>
+<p>This is designed to assess submissions based on predefined aspects such as harmlessness and correctness. Additionally, users have the flexibility to define their own aspects for evaluating submissions according to their specific criteria. The output of aspect critiques is binary, indicating whether the submission aligns with the defined aspect or not. This evaluation is performed using the ‘answer’ as input.</p>
+<p>Critiques within the LLM evaluators evaluate submissions based on the provided aspect. Ragas Critiques offers a range of predefined aspects like correctness, harmfulness, etc. (Please refer to SUPPORTED_ASPECTS for a complete list). If you prefer, you can also create custom aspects to evaluate submissions according to your unique requirements.</p>
+<pre><code>SUPPORTED_ASPECTS = [ harmfulness, maliciousness, coherence, correctness, conciseness, ]</code></pre>
+<blockquote class="blockquote">
+<p>TODO: Add support for parameterized Supported Aspects</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AspectCritique"</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>In this notebook, we have seen how we can use LangChain and ValidMind together to build, evaluate and document a simple RAG Model as its developed. This is a great example of the interactive development experience that ValidMind is designed to support. We can quickly iterate on our model and document as we go… We have seen how ValidMind supports non-traditional “models” using a functional interface and how we can build pipelines of many models to support complex GenAI workflows.</p>
+<p>This is still a work in progress and we are actively developing new tests and metrics to support more advanced GenAI workflows. We are also keeping an eye on the most popular GenAI models and libraries to explore direct integrations. Stay tuned for more updates and new features in this area!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../notebooks/code_samples/NLP_and_LLM/prompt_validation_demo.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Prompt validation for large language models (LLMs)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../notebooks/code_samples/regression/quickstart_regression_full_suite.html" class="pagination-link">
+        <span class="nav-page-text">Document a California Housing Price Prediction regression model</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><em>© Copyright 2023-2024 ValidMind Inc.&nbsp;All Rights Reserved.</em></div>   
+    <div class="nav-footer-center"><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/">validmind.com <i class="fa-solid fa-external-link" aria-label="external-link"></i></a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/privacy-policy/">Privacy Policy</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://validmind.com/terms-of-use/">Terms of Use</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/validmind/documentation">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/company/validmind/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

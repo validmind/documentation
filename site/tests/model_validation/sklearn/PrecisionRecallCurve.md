@@ -27,7 +27,7 @@ false negatives), which is especially critical in scenarios where both values ar
 different threshold levels.
 
 **Limitations**:
-* This metric is only applicable to binary classification models – it raises errors for multiclass classification
+* This metric is only applicable to binary classification models - it raises errors for multiclass classification
 models or Foundation models.
 * It may not fully represent the overall accuracy of the model if the cost of false positives and false negatives
 are extremely different, or if the dataset is heavily imbalanced.
