@@ -484,7 +484,10 @@ cookieconsent.run({
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
   <li><a href="#add-or-edit-workflow-steps" id="toc-add-or-edit-workflow-steps" class="nav-link" data-scroll-target="#add-or-edit-workflow-steps">Add or edit workflow steps</a></li>
-  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a></li>
+  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a>
+  <ul class="collapse">
+  <li><a href="#add-conditional-requirements" id="toc-add-conditional-requirements" class="nav-link" data-scroll-target="#add-conditional-requirements">Add conditional requirements</a></li>
+  </ul></li>
   <li><a href="#delete-workflow-steps" id="toc-delete-workflow-steps" class="nav-link" data-scroll-target="#delete-workflow-steps">Delete workflow steps</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
   </ul>
@@ -579,66 +582,84 @@ Adjustments to workflows are not retroactive.
 </section>
 <section id="available-step-types" class="level2">
 <h2 class="anchored" data-anchor-id="available-step-types">Available step types</h2>
+<section id="status-change" class="level4">
+<h4 class="anchored" data-anchor-id="status-change">Status Change</h4>
+<ul>
+<li>Transitions statuses based on conditional requirements.</li>
+<li>Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.</li>
+</ul>
+</section>
+<section id="user-action" class="level4">
+<h4 class="anchored" data-anchor-id="user-action">User Action</h4>
+<ul>
+<li>Creates a button that performs an action on behalf of the user.</li>
+<li>Can be configured to display based on conditional requirements.</li>
+</ul>
+</section>
+<section id="approval" class="level4">
+<h4 class="anchored" data-anchor-id="approval">Approval</h4>
+<ul>
+<li>When your resource reaches the approval step, users in the selected Approval Group will receive your configured message.</li>
+<li>Requires an <a href="../guide/manage-groups.html">available Approval Group</a> within your User Permission <a href="https://app.prod.validmind.ai/settings/groups"><strong>Groups</strong></a>.</li>
+</ul>
+</section>
+<section id="add-conditional-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h3>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Conditional requirements can be configured for all three available step types.</p>
+</div>
+</div>
+</div>
+<p>For Status Change and User Action conditions, you’re able to add a single independent <strong>Rule</strong> or a linked condition <strong>Group</strong>. These rules and groups can be nested if desired:</p>
+<ul>
+<li>Click <strong>+ Rule</strong> to add an indepdendent rule.</li>
+<li>Click <strong>+ Group</strong> to add a linked group of rules that all must be true to qualify.</li>
+</ul>
 <table class="table-hover table">
-<caption>Step type summaries</caption>
+<caption>Step type conditional options</caption>
 <colgroup>
-<col style="width: 20%">
-<col style="width: 40%">
-<col style="width: 40%">
+<col style="width: 25%">
+<col style="width: 75%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Type</th>
-<th>Description</th>
-<th>Setup</th>
+<th style="text-align: right;">Step type</th>
+<th>Conditional options</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">Status Change</td>
-<td>Transitions statuses based on conditional requirements.</td>
-<td>Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.</td>
+<td>Under <code>When these conditions are met</code>, you are able to set both <code>AND</code> and <code>OR</code> conditions.</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">User Action</td>
-<td>Creates a button that performs an action on behalf of the user.</td>
-<td>Can be configured to display based on conditional requirements.</td>
+<td>Under <code>Display action button when</code>, you are able to set both <code>AND</code> and <code>OR</code> conditions.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">Approval</td>
-<td>When your resource reaches the approval step, users in the selected Approval Group will receive your configured message.</td>
-<td>Requires an <a href="../guide/manage-groups.html">available Approval Group</a> within your User Permission <a href="https://app.prod.validmind.ai/settings/groups"><strong>Groups</strong></a>.</td>
+<td>Under <code>Threshold</code>, you are able to set the minimum percentage of approvers required for the resource to be approved.</td>
 </tr>
 </tbody>
 </table>
-<section id="status-change" class="level4">
-<h4 class="anchored" data-anchor-id="status-change">Status Change</h4>
-</section>
-<section id="user-action" class="level4">
-<h4 class="anchored" data-anchor-id="user-action">User Action</h4>
-</section>
-<section id="approval" class="level4">
-<h4 class="anchored" data-anchor-id="approval">Approval</h4>
-<!-- CHANGE THE BELOW  -->
-<!-- ### Conditional requirements
-
-- Conditional requirements can be configured for all three available step types.
-- For Status Change and User Action conditions, you're able to add a single independent **+ Rule** or a linked condition **+ Group**.
-
-#### Status change conditionals
-- Under `When these conditions are met`, you are able to set both `AND` and `OR` conditions. 
-- You can also add a single condition **+ Rule** or a condition **+ Group**.
-
-#### User action conditionals
-- Under `Display action button when`, you are able to set both `AND` and `OR` conditions. 
-- You can also add a single condition **+ Rule** or a condition **+ Group**.
-
-#### Approval conditional
-Under `Threshold`, you are able to set the minimum percentage of approvers required for the resource to be approved. -->
 </section>
 </section>
 <section id="delete-workflow-steps" class="level2">
 <h2 class="anchored" data-anchor-id="delete-workflow-steps">Delete workflow steps</h2>
+<ol type="1">
+<li><p>Hover over the step until the <strong><i class="fa-solid fa-ellipsis-vertical" aria-label="ellipsis-vertical"></i></strong> menu appears, then click on it.</p></li>
+<li><p>Select <strong><i class="fa-solid fa-gear" aria-label="gear"></i> Delete</strong>.</p>
+<ul>
+<li>A confirmation dialogue will appear. Select <strong>OK</strong> to continue.</li>
+<li>The step will now be removed from the workflow.</li>
+</ul></li>
+<li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
+</ol>
 </section>
 <section id="whats-next" class="level2">
 <h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
