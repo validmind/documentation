@@ -18,7 +18,8 @@ When a workflow is edited, the new flow will only apply to new models created af
 
 ## Prerequisites
 
-To customize workflows, you must hold the `Customer Admin` or `Developer` role.
+- To customize workflows, you must hold the `Customer Admin` or `Developer` role
+- [Resource statuses](customize-resource-statuses.qmd) must be fully configured
 
 ## Add or edit workflow steps
 
@@ -53,21 +54,44 @@ Refer to **[Available step types](#available-step-types)** for information on av
 
 6. When you are finished, click **Save workflow** to apply your changes.
 
-## Available step types
+### Available step types
 
-#### Status Change
-- Transitions statuses based on conditional requirements. 
-- Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
+Status Change
+: Transitions statuses based on conditional requirements. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
 
-#### User Action
-- Creates a button that performs an action on behalf of the user. 
-- Can be configured to display based on conditional requirements.
+| Field | Description |
+|---:|---|
+| When these conditions are met | [Add conditional requirements](#add-conditional-requirements) to qualify for this step.  |
+| Set status to | Select the status to transition to. |
+: Status Change step configuration {.hover tbl-colwidths="[35,65]"}
 
-#### Approval
-- When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. 
-- Requires an [available Approval Group](manage-groups.qmd) within your User Permission [**Groups**]({{< var vm_url >}}/settings/groups).
+User Action
+: Creates a button that performs an action on behalf of the user. 
 
-### Add conditional requirements
+| Field | Description |
+|---:|---|
+| Display action button when | [Add conditional requirements](#add-conditional-requirements) for displaying this step.  |
+| Action button label | Text that displays on your action button. |
+| Request fields | Include documentation [custom fields](manage-inventory-custom-fields.qmd) alongside your action if desired. |
+| To set status | Select a [status](customize-resource-statuses.qmd) to transition to if desired. |
+: User Action step configuration {.hover tbl-colwidths="[35,65]"}
+
+<!-- ![](configure-steps.gif){fig-alt="USER ACTION BUTTON EXAMPLE"} -->
+
+Approval
+: When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires an [available Approval Group](manage-groups.qmd) within your User Permission [**Groups**]({{< var vm_url >}}/settings/groups).
+
+| Field | Description |
+|---:|---|
+| Approval group | Select the user group responsible for approval. |
+| Threshold | Percentage of approvers required for the resource to be approved. |
+| Approval Message | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
+: Approval Group step configuration {.hover tbl-colwidths="[35,65]"}
+
+<!-- ![](configure-steps.gif){fig-alt="USER ACTION BUTTON EXAMPLE"} -->
+
+
+#### Add conditional requirements
 
 ::: callout
 Conditional requirements can be configured for all three available step types.

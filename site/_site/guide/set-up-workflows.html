@@ -483,10 +483,9 @@ cookieconsent.run({
    
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#add-or-edit-workflow-steps" id="toc-add-or-edit-workflow-steps" class="nav-link" data-scroll-target="#add-or-edit-workflow-steps">Add or edit workflow steps</a></li>
-  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a>
+  <li><a href="#add-or-edit-workflow-steps" id="toc-add-or-edit-workflow-steps" class="nav-link" data-scroll-target="#add-or-edit-workflow-steps">Add or edit workflow steps</a>
   <ul class="collapse">
-  <li><a href="#add-conditional-requirements" id="toc-add-conditional-requirements" class="nav-link" data-scroll-target="#add-conditional-requirements">Add conditional requirements</a></li>
+  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a></li>
   </ul></li>
   <li><a href="#delete-workflow-steps" id="toc-delete-workflow-steps" class="nav-link" data-scroll-target="#delete-workflow-steps">Delete workflow steps</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
@@ -543,7 +542,10 @@ Adjustments to workflows are not retroactive.
 </div>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<p>To customize workflows, you must hold the <code>Customer Admin</code> or <code>Developer</code> role.</p>
+<ul>
+<li>To customize workflows, you must hold the <code>Customer Admin</code> or <code>Developer</code> role</li>
+<li><a href="../guide/customize-resource-statuses.html">Resource statuses</a> must be fully configured</li>
+</ul>
 </section>
 <section id="add-or-edit-workflow-steps" class="level2">
 <h2 class="anchored" data-anchor-id="add-or-edit-workflow-steps">Add or edit workflow steps</h2>
@@ -579,32 +581,111 @@ Adjustments to workflows are not retroactive.
 <li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
 </ol>
 </section>
-</section>
-<section id="available-step-types" class="level2">
-<h2 class="anchored" data-anchor-id="available-step-types">Available step types</h2>
-<section id="status-change" class="level4">
-<h4 class="anchored" data-anchor-id="status-change">Status Change</h4>
-<ul>
-<li>Transitions statuses based on conditional requirements.</li>
-<li>Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.</li>
-</ul>
-</section>
-<section id="user-action" class="level4">
-<h4 class="anchored" data-anchor-id="user-action">User Action</h4>
-<ul>
-<li>Creates a button that performs an action on behalf of the user.</li>
-<li>Can be configured to display based on conditional requirements.</li>
-</ul>
-</section>
-<section id="approval" class="level4">
-<h4 class="anchored" data-anchor-id="approval">Approval</h4>
-<ul>
-<li>When your resource reaches the approval step, users in the selected Approval Group will receive your configured message.</li>
-<li>Requires an <a href="../guide/manage-groups.html">available Approval Group</a> within your User Permission <a href="https://app.prod.validmind.ai/settings/groups"><strong>Groups</strong></a>.</li>
-</ul>
-</section>
-<section id="add-conditional-requirements" class="level3">
-<h3 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h3>
+<section id="available-step-types" class="level3">
+<h3 class="anchored" data-anchor-id="available-step-types">Available step types</h3>
+<dl>
+<dt>Status Change</dt>
+<dd>
+Transitions statuses based on conditional requirements. Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.
+</dd>
+</dl>
+<table class="table-hover table">
+<caption>Status Change step configuration</caption>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">When these conditions are met</td>
+<td><a href="#add-conditional-requirements">Add conditional requirements</a> to qualify for this step.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Set status to</td>
+<td>Select the status to transition to.</td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt>User Action</dt>
+<dd>
+Creates a button that performs an action on behalf of the user.
+</dd>
+</dl>
+<table class="table-hover table">
+<caption>User Action step configuration</caption>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Display action button when</td>
+<td><a href="#add-conditional-requirements">Add conditional requirements</a> for displaying this step.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Action button label</td>
+<td>Text that displays on your action button.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Request fields</td>
+<td>Include documentation <a href="../guide/manage-inventory-custom-fields.html">custom fields</a> alongside your action if desired.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">To set status</td>
+<td>Select a <a href="../guide/customize-resource-statuses.html">status</a> to transition to if desired.</td>
+</tr>
+</tbody>
+</table>
+<!-- ![](configure-steps.gif){fig-alt="USER ACTION BUTTON EXAMPLE"} -->
+<dl>
+<dt>Approval</dt>
+<dd>
+When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires an <a href="../guide/manage-groups.html">available Approval Group</a> within your User Permission <a href="https://app.prod.validmind.ai/settings/groups"><strong>Groups</strong></a>.
+</dd>
+</dl>
+<table class="table-hover table">
+<caption>Approval Group step configuration</caption>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Approval group</td>
+<td>Select the user group responsible for approval.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Threshold</td>
+<td>Percentage of approvers required for the resource to be approved.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Approval Message</td>
+<td>When your resource reaches this approval step, the users in the selected group will recieve the following message.</td>
+</tr>
+</tbody>
+</table>
+<!-- ![](configure-steps.gif){fig-alt="USER ACTION BUTTON EXAMPLE"} -->
+<section id="add-conditional-requirements" class="level4">
+<h4 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h4>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -647,6 +728,7 @@ Adjustments to workflows are not retroactive.
 </tr>
 </tbody>
 </table>
+</section>
 </section>
 </section>
 <section id="delete-workflow-steps" class="level2">
