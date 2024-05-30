@@ -57,24 +57,24 @@ Refer to **[Available step types](#available-step-types)** for information on av
 ### Available step types
 
 Status Change
-: Transitions statuses based on conditional requirements. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
+: Transitions a status. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
 
 | Field | Description |
 |---:|---|
-| When these conditions are met | [Add conditional requirements](#add-conditional-requirements) to qualify for this step.  |
-| Set status to | Select the status to transition to. |
-: Status Change step configuration {.hover tbl-colwidths="[35,65]"}
+| When these conditions are met (optional) | [Add conditional requirements](#add-conditional-requirements) to qualify for this step.  |
+| Set status to (required) | Select the status to transition to. |
+: Status Change step configuration {.hover tbl-colwidths="[40,60]"}
 
 User Action
 : Creates a button that performs an action on behalf of the user. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
 
 | Field | Description |
 |---:|---|
-| Display action button when | [Add conditional requirements](#add-conditional-requirements) for displaying this step.  |
-| Action button label | Text that displays on your action button. |
-| Request fields | Include [custom fields](manage-inventory-custom-fields.qmd) alongside your action if desired. Select the field, then click **+ Add Field** to insert.  |
-| To set status | Select the [status](customize-resource-statuses.qmd) to transition to. |
-: User Action step configuration {.hover tbl-colwidths="[35,65]"}
+| Display action button when (optional) | [Add conditional requirements](#add-conditional-requirements) for displaying this step.  |
+| Action button label (required) | Text that displays on your action button. |
+| Request fields (optional) | Include [custom fields](manage-inventory-custom-fields.qmd) alongside your action if desired. Select the field, then click **+ Add Field** to insert.  |
+| To set status (required) | Select the [status](customize-resource-statuses.qmd) to transition to. |
+: User Action step configuration {.hover tbl-colwidths="[40,60]"}
 
 ::: {.grid}
 
@@ -94,31 +94,47 @@ User Action
 :::
 
 Approval
-: When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires an [available Approval Group](manage-groups.qmd) within your User Permission [**Groups**]({{< var vm_url >}}/settings/groups).
+: When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires a User type [custom field](manage-inventory-custom-fields.qmd) to select from, and must be connected to both an approval and rejection Status Change step.
 
 | Field | Description |
 |---:|---|
-| Approval group | Select the user group responsible for approval. |
-| Threshold | Percentage of approvers required for the resource to be approved. |
-| Approval Message | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
+| Approval group (required) | Select the User type custom field that indicates users responsible for approval. |
+| Threshold (required) | Percentage of approvers required for the resource to be approved. |
+| Approval Message (required) | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
 : Approval Group step configuration {.hover tbl-colwidths="[35,65]"}
 
 ::: {.grid}
 
 ::: {.g-col-7}
-![](configure-user-action.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Date On Hold."}
+![](approval-group-setup.png){fig-alt="A screenshot showing an Approval Group step configuration with a custom field selection of Approval Users."}
 :::
 
 ::: {.g-col-5}
-![](user-action-custom-field.png){fig-alt="A screenshot showing the action transition panel with the Date On Hold custom field."}
+
+![](approvals-message.png){fig-alt="A screenshot showing the approval message shown to the Approval Group."}
 
 ::: callout
-**Example:** A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.
+**Example:** A message shown to the Approval Group users requesting approval of model documentation.
 :::
 
 :::
 
 :::
+
+1. Drag an **Approval** step to the canvas:
+
+    - Select the User type custom field in Approval Group.
+    - Determine an approval Threshold.
+    - Enter an Approval Message with a Title and Message content.
+
+2. Drag two Status Change steps onto the canvas.
+
+    - Assign a Rejected status to one.
+    - Assign an Approved status to the other.
+    - Connect the Approval step to the Rejected and Approved Status Change steps with the red and green **{{< fa circle >}}** respectively.
+
+
+![](approved-rejected.png){fig-alt="A screenshot showing linked Rejected and Approved Status Change steps."}
 
 
 #### Add conditional requirements

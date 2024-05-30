@@ -586,14 +586,14 @@ Adjustments to workflows are not retroactive.
 <dl>
 <dt>Status Change</dt>
 <dd>
-Transitions statuses based on conditional requirements. Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.
+Transitions a status. Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.
 </dd>
 </dl>
 <table class="table-hover table">
 <caption>Status Change step configuration</caption>
 <colgroup>
-<col style="width: 35%">
-<col style="width: 65%">
+<col style="width: 40%">
+<col style="width: 60%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -603,11 +603,11 @@ Transitions statuses based on conditional requirements. Requires <a href="../gui
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">When these conditions are met</td>
+<td style="text-align: right;">When these conditions are met (optional)</td>
 <td><a href="#add-conditional-requirements">Add conditional requirements</a> to qualify for this step.</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">Set status to</td>
+<td style="text-align: right;">Set status to (required)</td>
 <td>Select the status to transition to.</td>
 </tr>
 </tbody>
@@ -621,8 +621,8 @@ Creates a button that performs an action on behalf of the user. Requires <a href
 <table class="table-hover table">
 <caption>User Action step configuration</caption>
 <colgroup>
-<col style="width: 35%">
-<col style="width: 65%">
+<col style="width: 40%">
+<col style="width: 60%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -632,19 +632,19 @@ Creates a button that performs an action on behalf of the user. Requires <a href
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">Display action button when</td>
+<td style="text-align: right;">Display action button when (optional)</td>
 <td><a href="#add-conditional-requirements">Add conditional requirements</a> for displaying this step.</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">Action button label</td>
+<td style="text-align: right;">Action button label (required)</td>
 <td>Text that displays on your action button.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">Request fields</td>
+<td style="text-align: right;">Request fields (optional)</td>
 <td>Include <a href="../guide/manage-inventory-custom-fields.html">custom fields</a> alongside your action if desired. Select the field, then click <strong>+ Add Field</strong> to insert.</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">To set status</td>
+<td style="text-align: right;">To set status (required)</td>
 <td>Select the <a href="../guide/customize-resource-statuses.html">status</a> to transition to.</td>
 </tr>
 </tbody>
@@ -670,7 +670,7 @@ Creates a button that performs an action on behalf of the user. Requires <a href
 <dl>
 <dt>Approval</dt>
 <dd>
-When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires an <a href="../guide/manage-groups.html">available Approval Group</a> within your User Permission <a href="https://app.prod.validmind.ai/settings/groups"><strong>Groups</strong></a>.
+When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires a User type <a href="../guide/manage-inventory-custom-fields.html">custom field</a> to select from, and must be connected to both an approval and rejection Status Change step.
 </dd>
 </dl>
 <table class="table-hover table">
@@ -687,37 +687,52 @@ When your resource reaches the approval step, users in the selected Approval Gro
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">Approval group</td>
-<td>Select the user group responsible for approval.</td>
+<td style="text-align: right;">Approval group (required)</td>
+<td>Select the User type custom field that indicates users responsible for approval.</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">Threshold</td>
+<td style="text-align: right;">Threshold (required)</td>
 <td>Percentage of approvers required for the resource to be approved.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">Approval Message</td>
+<td style="text-align: right;">Approval Message (required)</td>
 <td>When your resource reaches this approval step, the users in the selected group will recieve the following message.</td>
 </tr>
 </tbody>
 </table>
 <div class="grid">
 <div class="g-col-7">
-<p><img src="configure-user-action.png" class="img-fluid" alt="A screenshot showing a User Action step configuration with a request field of Date On Hold."></p>
+<p><img src="approval-group-setup.png" class="img-fluid" alt="A screenshot showing an Approval Group step configuration with a custom field selection of Approval Users."></p>
 </div>
 <div class="g-col-5">
-<p><img src="user-action-custom-field.png" class="img-fluid" alt="A screenshot showing the action transition panel with the Date On Hold custom field."></p>
+<p><img src="approvals-message.png" class="img-fluid" alt="A screenshot showing the approval message shown to the Approval Group."></p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><strong>Example:</strong> A <code>Put On Hold</code> action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.</p>
+<p><strong>Example:</strong> A message shown to the Approval Group users requesting approval of model documentation.</p>
 </div>
 </div>
 </div>
 </div>
 </div>
+<ol type="1">
+<li><p>Drag an <strong>Approval</strong> step to the canvas:</p>
+<ul>
+<li>Select the User type custom field in Approval Group.</li>
+<li>Determine an approval Threshold.</li>
+<li>Enter an Approval Message with a Title and Message content.</li>
+</ul></li>
+<li><p>Drag two Status Change steps onto the canvas.</p>
+<ul>
+<li>Assign a Rejected status to one.</li>
+<li>Assign an Approved status to the other.</li>
+<li>Connect the Approval step to the Rejected and Approved Status Change steps with the red and green <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> respectively.</li>
+</ul></li>
+</ol>
+<p><img src="approved-rejected.png" class="img-fluid" alt="A screenshot showing linked Rejected and Approved Status Change steps."></p>
 <section id="add-conditional-requirements" class="level4">
 <h4 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h4>
 <div class="callout callout-style-simple callout-none no-icon">
