@@ -483,15 +483,19 @@ cookieconsent.run({
    
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#add-or-edit-workflow-steps" id="toc-add-or-edit-workflow-steps" class="nav-link" data-scroll-target="#add-or-edit-workflow-steps">Add or edit workflow steps</a>
+  <li><a href="#configure-workflow-steps" id="toc-configure-workflow-steps" class="nav-link" data-scroll-target="#configure-workflow-steps">Configure workflow steps</a>
+  <ul class="collapse">
+  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a></li>
+  <li><a href="#add-conditional-requirements" id="toc-add-conditional-requirements" class="nav-link" data-scroll-target="#add-conditional-requirements">Add conditional requirements</a></li>
+  </ul></li>
+  <li><a href="#link-workflow-together" id="toc-link-workflow-together" class="nav-link" data-scroll-target="#link-workflow-together">Link workflow together</a>
   <ul class="collapse">
   <li><a href="#link-steps-together" id="toc-link-steps-together" class="nav-link" data-scroll-target="#link-steps-together">Link steps together</a></li>
   </ul></li>
-  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a>
+  <li><a href="#delete-workflow-steps" id="toc-delete-workflow-steps" class="nav-link" data-scroll-target="#delete-workflow-steps">Delete workflow steps</a>
   <ul class="collapse">
-  <li><a href="#add-conditional-requirements" id="toc-add-conditional-requirements" class="nav-link" data-scroll-target="#add-conditional-requirements">Add conditional requirements</a></li>
+  <li><a href="#remove-links-between-steps" id="toc-remove-links-between-steps" class="nav-link" data-scroll-target="#remove-links-between-steps">Remove links between steps</a></li>
   </ul></li>
-  <li><a href="#delete-workflow-steps" id="toc-delete-workflow-steps" class="nav-link" data-scroll-target="#delete-workflow-steps">Delete workflow steps</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/guide/set-up-workflows.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -530,7 +534,15 @@ cookieconsent.run({
 <li><strong>Model documentation:</strong> When documentation is created</li>
 <li><strong>Inventory model:</strong> When the model is created</li>
 </ul>
-<!-- Model validation workflow is in missing as of May 2024 -->
+<!-- 
+- Model validation workflow is in missing as of May 2024
+- These default workflows will eventually be replaced by a trigger you can define
+ -->
+<p>Setting up your workflow involves two major steps:</p>
+<ol type="1">
+<li><a href="#configure-workflow-steps">Configuring workflow steps</a></li>
+<li><a href="#link-workflow-together">Linking the workflow together</a></li>
+</ol>
 <div class="callout callout-style-simple callout-warning callout-titled" title="Adjustments to workflows are not retroactive.">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -551,8 +563,9 @@ Adjustments to workflows are not retroactive.
 <li><a href="../guide/customize-resource-statuses.html">Resource statuses</a> must be fully configured</li>
 </ul>
 </section>
-<section id="add-or-edit-workflow-steps" class="level2">
-<h2 class="anchored" data-anchor-id="add-or-edit-workflow-steps">Add or edit workflow steps</h2>
+<section id="configure-workflow-steps" class="level2">
+<h2 class="anchored" data-anchor-id="configure-workflow-steps">Configure workflow steps</h2>
+<p>To add or edit workflow steps:</p>
 <ol type="1">
 <li><p><a href="https://app.prod.validmind.ai">Log in to the ValidMind Platform UI</a>.</p></li>
 <li><p>In the left sidebar, click <a href="https://app.prod.validmind.ai/settings"><strong><i class="fa-solid fa-gear" aria-label="gear"></i> Settings</strong></a>.</p></li>
@@ -564,7 +577,7 @@ Adjustments to workflows are not retroactive.
 </ul></li>
 <li><p>After you’re finished with step configuration, click <strong>Save</strong> to apply your changes before closing the configuration panel with <strong><i class="fa-solid fa-x" aria-label="x"></i></strong>.</p>
 <p><img src="configure-steps.gif" class="img-fluid" alt="A gif workflow step configuration."></p>
-<p>When at least two steps have been configured, you can then <a href="#link-steps-together">link steps together</a>.</p></li>
+<p>After you’ve configured a step, you can then <a href="#link-workflow-together">link your workflow together</a>.</p></li>
 </ol>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
@@ -576,32 +589,8 @@ Adjustments to workflows are not retroactive.
 </div>
 </div>
 </div>
-<section id="link-steps-together" class="level3">
-<h3 class="anchored" data-anchor-id="link-steps-together">Link steps together</h3>
-<ol type="1">
-<li><p>Click <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> above or below the earlier step and drag it to connect to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> on the subsequent step.</p>
-<p>You’re also able to link several different steps together at various points in the workflow, including stages that may circle back to previous steps:</p>
-<p><img src="linked-workflow.png" class="img-fluid" alt="A screenshot showing an example of multiple steps linked together at various points in the default Inventory Model workflow."></p></li>
-<li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
-</ol>
-<section id="link-approval-steps" class="level4">
-<h4 class="anchored" data-anchor-id="link-approval-steps">Link Approval steps</h4>
-<p><strong><a href="#approval">Approval</a></strong> steps need to be subsequently linked to both a Rejected and an Approval <strong><a href="#status-change">Status Change</a></strong> step:</p>
-<ol type="1">
-<li><p>Configure an <strong>Approval</strong> step.</p></li>
-<li><p>Drag two <strong>Status Change</strong> steps onto the canvas:</p>
-<ul>
-<li>Assign a <code>Rejected</code> status to one in the Set Document Status field.</li>
-<li>Assign an <code>Approved</code> status to the other in the Set Document Status field.</li>
-</ul></li>
-<li><p>Connect the <strong>Approval</strong> step to the <code>Rejected</code> and <code>Approved</code> <strong>Status Change</strong> steps with the red and green <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> respectively by dragging from the colored <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> of the subsequent step.</p></li>
-</ol>
-<p><img src="approved-rejected.png" class="img-fluid" alt="A screenshot showing linked Rejected and Approved Status Change steps."></p>
-</section>
-</section>
-</section>
-<section id="available-step-types" class="level2">
-<h2 class="anchored" data-anchor-id="available-step-types">Available step types</h2>
+<section id="available-step-types" class="level3">
+<h3 class="anchored" data-anchor-id="available-step-types">Available step types</h3>
 <section id="status-change" class="level4">
 <h4 class="anchored" data-anchor-id="status-change">Status Change</h4>
 <ul>
@@ -756,14 +745,15 @@ Example
 </div>
 </div>
 </section>
+</section>
 <section id="add-conditional-requirements" class="level3">
 <h3 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h3>
 <p>Conditional requirements can be configured for all three available step types:</p>
 <table class="table-hover table">
 <caption>Step type conditional options</caption>
 <colgroup>
-<col style="width: 25%">
-<col style="width: 75%">
+<col style="width: 20%">
+<col style="width: 80%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -786,30 +776,75 @@ Example
 </tr>
 </tbody>
 </table>
-<p>For Status Change and User Action conditions, you’re able to add a single independent <strong>Rule</strong> or a linked condition <strong>Group</strong>. These rules and groups can be nested if desired:</p>
+<p>For <a href="#status-change">Status Change</a> and <a href="#user-action">User Action</a> conditions, you’re able to add a single independent <strong>Rule</strong> or a linked condition <strong>Group</strong>. These rules and groups can be nested if desired:</p>
 <ul>
-<li>Click <strong>+ Rule</strong> to add an indepdendent rule.</li>
+<li>Click <strong>+ Rule</strong> to add an independent rule.</li>
 <li>Click <strong>+ Group</strong> to add a linked group of rules that all must be true to qualify.</li>
 </ul>
+</section>
+</section>
+<section id="link-workflow-together" class="level2">
+<h2 class="anchored" data-anchor-id="link-workflow-together">Link workflow together</h2>
+<p>To initiate the beginning of your workflow:</p>
+<ol type="1">
+<li><p>Locate the <strong>Start</strong> of your workflow.</p></li>
+<li><p>Drag from the <strong>.</strong> at the bottom of <strong>Start</strong> to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> on the first step of your workflow.</p></li>
+</ol>
+<section id="link-steps-together" class="level3">
+<h3 class="anchored" data-anchor-id="link-steps-together">Link steps together</h3>
+<p>To link subsequent steps together:</p>
+<ol type="1">
+<li><p>Click <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> above or below the earlier step and drag it to connect to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> on the subsequent step.</p>
+<p>You’re also able to link several different steps together at various points in the workflow, including stages that may circle back to previous steps:</p>
+<p><img src="linked-workflow.png" class="img-fluid" alt="A screenshot showing an example of multiple steps linked together at various points in the default Inventory Model workflow."></p></li>
+<li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
+</ol>
+<section id="link-approval-steps" class="level4">
+<h4 class="anchored" data-anchor-id="link-approval-steps">Link Approval steps</h4>
+<p><a href="#approval">Approval</a> steps need to be subsequently linked to both a Rejected and an Approval <a href="#status-change">Status Change</a> step:</p>
+<ol type="1">
+<li><p>First, <a href="#configure-workflow-steps">configure an <strong>Approval</strong> step</a>.</p></li>
+<li><p>Then, drag two <strong>Status Change</strong> steps onto the canvas:</p>
+<ul>
+<li>Assign a <code>Rejected</code> status to one in the Set Document Status field.</li>
+<li>Assign an <code>Approved</code> status to the other in the Set Document Status field.</li>
+</ul></li>
+<li><p>Connect the <strong>Approval</strong> step to the <code>Rejected</code> and <code>Approved</code> <strong>Status Change</strong> steps with the red and green <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> respectively by dragging from the colored <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> of the subsequent step.</p></li>
+</ol>
+<p><img src="approved-rejected.png" class="img-fluid" alt="A screenshot showing linked Rejected and Approved Status Change steps."></p>
+</section>
 </section>
 </section>
 <section id="delete-workflow-steps" class="level2">
 <h2 class="anchored" data-anchor-id="delete-workflow-steps">Delete workflow steps</h2>
 <ol type="1">
 <li><p>Hover over the step until the <strong><i class="fa-solid fa-ellipsis-vertical" aria-label="ellipsis-vertical"></i></strong> menu appears, then click on it.</p></li>
-<li><p>Select <strong><i class="fa-solid fa-gear" aria-label="gear"></i> Delete</strong>.</p>
+<li><p>Select <strong><i class="fa-solid fa-gear" aria-label="gear"></i> Delete</strong>:</p>
 <ul>
 <li>A confirmation dialogue will appear. Select <strong>OK</strong> to continue.</li>
 <li>The step will now be removed from the workflow.</li>
 </ul></li>
 <li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
 </ol>
+<section id="remove-links-between-steps" class="level3">
+<h3 class="anchored" data-anchor-id="remove-links-between-steps">Remove links between steps</h3>
+<ol type="1">
+<li><p>Hover over a connection until the <strong><i class="fa-solid fa-circle-xmark" aria-label="circle-xmark"></i></strong> appears.</p></li>
+<li><p>Click <strong><i class="fa-solid fa-circle-xmark" aria-label="circle-xmark"></i></strong> to delete the connection:</p>
+<ul>
+<li>A confirmation dialogue will appear. Select <strong>OK</strong> to continue.</li>
+<li>The connection will now be removed from the workflow.</li>
+</ul></li>
+<li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
+</ol>
+</section>
 </section>
 <section id="whats-next" class="level2">
 <h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
 <ul>
 <li><a href="../faq/faq-workflows.html">Workflows FAQ</a></li>
-<li><a href="../guide/preparing-validation-reports.html">Preparing validation reports</a></li>
+<li><a href="../guide/register-models-in-model-inventory.html">Register models in the inventory</a></li>
+<li><a href="../guide/working-with-model-documentation.html">Working with model documentation</a></li>
 </ul>
 
 
