@@ -485,7 +485,11 @@ cookieconsent.run({
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
   <li><a href="#add-or-edit-workflow-steps" id="toc-add-or-edit-workflow-steps" class="nav-link" data-scroll-target="#add-or-edit-workflow-steps">Add or edit workflow steps</a>
   <ul class="collapse">
-  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a></li>
+  <li><a href="#link-steps-together" id="toc-link-steps-together" class="nav-link" data-scroll-target="#link-steps-together">Link steps together</a></li>
+  </ul></li>
+  <li><a href="#available-step-types" id="toc-available-step-types" class="nav-link" data-scroll-target="#available-step-types">Available step types</a>
+  <ul class="collapse">
+  <li><a href="#add-conditional-requirements" id="toc-add-conditional-requirements" class="nav-link" data-scroll-target="#add-conditional-requirements">Add conditional requirements</a></li>
   </ul></li>
   <li><a href="#delete-workflow-steps" id="toc-delete-workflow-steps" class="nav-link" data-scroll-target="#delete-workflow-steps">Delete workflow steps</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
@@ -572,23 +576,38 @@ Adjustments to workflows are not retroactive.
 </div>
 </div>
 </div>
-<section id="link-steps-together" class="level4">
-<h4 class="anchored" data-anchor-id="link-steps-together">Link steps together</h4>
+<section id="link-steps-together" class="level3">
+<h3 class="anchored" data-anchor-id="link-steps-together">Link steps together</h3>
 <ol type="1">
 <li><p>Click <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> above or below the earlier step and drag it to connect to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> on the subsequent step.</p>
 <p>You’re also able to link several different steps together at various points in the workflow, including stages that may circle back to previous steps:</p>
 <p><img src="linked-workflow.png" class="img-fluid" alt="A screenshot showing an example of multiple steps linked together at various points in the default Inventory Model workflow."></p></li>
 <li><p>When you are finished, click <strong>Save workflow</strong> to apply your changes.</p></li>
 </ol>
+<section id="link-approval-steps" class="level4">
+<h4 class="anchored" data-anchor-id="link-approval-steps">Link Approval steps</h4>
+<p><a href="#approval">Approval</a> steps need to be subsequently linked to both a Rejected and an Approval Status Change step:</p>
+<ol type="1">
+<li><p>Configure an Approval step.</p></li>
+<li><p>Drag two <a href="#status-change">Status Change</a> steps onto the canvas:</p>
+<ul>
+<li>Assign a <code>Rejected</code> status to one in the Set Document Status field.</li>
+<li>Assign an <code>Approved</code> status to the other in the Set Document Status field.</li>
+</ul></li>
+<li><p>Connect the Approval step to the <code>Rejected</code> and <code>Approved</code> Status Change steps with the red and green <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> respectively by dragging from the colored <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> to the top <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> of the subsequent step.</p></li>
+</ol>
+<p><img src="approved-rejected.png" class="img-fluid" alt="A screenshot showing linked Rejected and Approved Status Change steps."></p>
 </section>
-<section id="available-step-types" class="level3">
-<h3 class="anchored" data-anchor-id="available-step-types">Available step types</h3>
-<dl>
-<dt>Status Change</dt>
-<dd>
-Transitions a status. Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.
-</dd>
-</dl>
+</section>
+</section>
+<section id="available-step-types" class="level2">
+<h2 class="anchored" data-anchor-id="available-step-types">Available step types</h2>
+<section id="status-change" class="level4">
+<h4 class="anchored" data-anchor-id="status-change">Status Change</h4>
+<ul>
+<li>Transitions a status.</li>
+<li>Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.</li>
+</ul>
 <table class="table-hover table">
 <caption>Status Change step configuration</caption>
 <colgroup>
@@ -612,12 +631,13 @@ Transitions a status. Requires <a href="../guide/customize-resource-statuses.htm
 </tr>
 </tbody>
 </table>
-<dl>
-<dt>User Action</dt>
-<dd>
-Creates a button that performs an action on behalf of the user. Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.
-</dd>
-</dl>
+</section>
+<section id="user-action" class="level4">
+<h4 class="anchored" data-anchor-id="user-action">User Action</h4>
+<ul>
+<li>Creates a button that performs an action on behalf of the user.</li>
+<li>Requires <a href="../guide/customize-resource-statuses.html">available resource statuses</a> associated with the workflow.</li>
+</ul>
 <table class="table-hover table">
 <caption>User Action step configuration</caption>
 <colgroup>
@@ -655,24 +675,38 @@ Creates a button that performs an action on behalf of the user. Requires <a href
 </div>
 <div class="g-col-5">
 <p><img src="user-action-custom-field.png" class="img-fluid" alt="A screenshot showing the action transition panel with the Date On Hold custom field."></p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <code>Put On Hold</code> action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="approval" class="level4">
+<h4 class="anchored" data-anchor-id="approval">Approval</h4>
+<ul>
+<li>When your resource reaches the approval step, users in the selected Approval Group will receive your configured message.</li>
+<li>Requires a User type <a href="../guide/manage-inventory-custom-fields.html">custom field</a> to select from, and must be connected to both an approval and rejection <a href="#status-change">Status Change</a> step.</li>
+</ul>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><strong>Example:</strong> A <code>Put On Hold</code> action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.</p>
+<p>Please note that users must be assigned to the Approval Group custom field before it is transitioned into the Approval workflow step in order for the message to be displayed to them.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<dl>
-<dt>Approval</dt>
-<dd>
-When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires a User type <a href="../guide/manage-inventory-custom-fields.html">custom field</a> to select from, and must be connected to both an approval and rejection Status Change step.
-</dd>
-</dl>
 <table class="table-hover table">
 <caption>Approval Group step configuration</caption>
 <colgroup>
@@ -700,51 +734,31 @@ When your resource reaches the approval step, users in the selected Approval Gro
 </tr>
 </tbody>
 </table>
+<p><img src="approvals-message.png" class="img-fluid" alt="A screenshot showing the approval message shown to the Approval Group."></p>
 <div class="grid">
 <div class="g-col-7">
 <p><img src="approval-group-setup.png" class="img-fluid" alt="A screenshot showing an Approval Group step configuration with a custom field selection of Approval Users."></p>
 </div>
 <div class="g-col-5">
-<p><img src="approvals-message.png" class="img-fluid" alt="A screenshot showing the approval message shown to the Approval Group."></p>
-<div class="callout callout-style-simple callout-none no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Example:</strong> A message shown to the Approval Group users requesting approval of model documentation.</p>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A message shown to the Approval Group users requesting approval of model documentation.</p>
 </div>
 </div>
 </div>
 </div>
-</div>
-<ol type="1">
-<li><p>Drag an <strong>Approval</strong> step to the canvas:</p>
-<ul>
-<li>Select the User type custom field in Approval Group.</li>
-<li>Determine an approval Threshold.</li>
-<li>Enter an Approval Message with a Title and Message content.</li>
-</ul></li>
-<li><p>Drag two Status Change steps onto the canvas.</p>
-<ul>
-<li>Assign a Rejected status to one.</li>
-<li>Assign an Approved status to the other.</li>
-<li>Connect the Approval step to the Rejected and Approved Status Change steps with the red and green <strong><i class="fa-solid fa-circle" aria-label="circle"></i></strong> respectively.</li>
-</ul></li>
-</ol>
-<p><img src="approved-rejected.png" class="img-fluid" alt="A screenshot showing linked Rejected and Approved Status Change steps."></p>
-<section id="add-conditional-requirements" class="level4">
-<h4 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h4>
-<div class="callout callout-style-simple callout-none no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Conditional requirements can be configured for all three available step types.</p>
-</div>
-</div>
-</div>
+</section>
+<section id="add-conditional-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="add-conditional-requirements">Add conditional requirements</h3>
+<p>Conditional requirements can be configured for all three available step types:</p>
 <table class="table-hover table">
 <caption>Step type conditional options</caption>
 <colgroup>
@@ -777,7 +791,6 @@ When your resource reaches the approval step, users in the selected Approval Gro
 <li>Click <strong>+ Rule</strong> to add an indepdendent rule.</li>
 <li>Click <strong>+ Group</strong> to add a linked group of rules that all must be true to qualify.</li>
 </ul>
-</section>
 </section>
 </section>
 <section id="delete-workflow-steps" class="level2">

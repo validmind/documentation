@@ -44,7 +44,7 @@ When a workflow is edited, the new flow will only apply to new models created af
 Refer to **[Available step types](#available-step-types)** for information on available step types and details on how to set up conditional requirements.
 :::
 
-#### Link steps together
+### Link steps together
 
 1. Click **{{< fa circle >}}** above or below the earlier step and drag it to connect to the top **{{< fa circle >}}** on the subsequent step.
 
@@ -54,10 +54,26 @@ Refer to **[Available step types](#available-step-types)** for information on av
 
 6. When you are finished, click **Save workflow** to apply your changes.
 
-### Available step types
+#### Link Approval steps
+[Approval](#approval) steps need to be subsequently linked to both a Rejected and an Approval Status Change step:
 
-Status Change
-: Transitions a status. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
+1. Configure an Approval step.
+
+2. Drag two [Status Change](#status-change) steps onto the canvas:
+
+    - Assign a `Rejected` status to one in the Set Document Status field.
+    - Assign an `Approved` status to the other in the Set Document Status field.
+
+3. Connect the Approval step to the `Rejected` and `Approved` Status Change steps with the red and green **{{< fa circle >}}** respectively by dragging from the colored **{{< fa circle >}}** to the top **{{< fa circle >}}** of the subsequent step.
+
+![](approved-rejected.png){fig-alt="A screenshot showing linked Rejected and Approved Status Change steps."}
+
+## Available step types
+
+#### Status Change
+
+- Transitions a status. 
+- Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
 
 | Field | Description |
 |---:|---|
@@ -65,8 +81,9 @@ Status Change
 | Set status to (required) | Select the status to transition to. |
 : Status Change step configuration {.hover tbl-colwidths="[40,60]"}
 
-User Action
-: Creates a button that performs an action on behalf of the user. Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
+#### User Action
+- Creates a button that performs an action on behalf of the user. 
+- Requires [available resource statuses](customize-resource-statuses.qmd) associated with the workflow.
 
 | Field | Description |
 |---:|---|
@@ -85,16 +102,21 @@ User Action
 ::: {.g-col-5}
 ![](user-action-custom-field.png){fig-alt="A screenshot showing the action transition panel with the Date On Hold custom field."}
 
-::: callout
-**Example:** A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.
+::: {.callout-tip title="Example" appearance="minimal"}
+A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the resource status to On Hold.
 :::
 
 :::
 
 :::
 
-Approval
-: When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. Requires a User type [custom field](manage-inventory-custom-fields.qmd) to select from, and must be connected to both an approval and rejection Status Change step.
+#### Approval
+- When your resource reaches the approval step, users in the selected Approval Group will receive your configured message. 
+- Requires a User type [custom field](manage-inventory-custom-fields.qmd) to select from, and must be connected to both an approval and rejection [Status Change](#status-change) step.
+
+::: callout 
+Please note that users must be assigned to the Approval Group custom field before  it is transitioned into the Approval workflow step in order for the message to be displayed to them. 
+:::
 
 | Field | Description |
 |---:|---|
@@ -102,6 +124,8 @@ Approval
 | Threshold (required) | Percentage of approvers required for the resource to be approved. |
 | Approval Message (required) | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
 : Approval Group step configuration {.hover tbl-colwidths="[35,65]"}
+
+![](approvals-message.png){fig-alt="A screenshot showing the approval message shown to the Approval Group."}
 
 ::: {.grid}
 
@@ -111,37 +135,17 @@ Approval
 
 ::: {.g-col-5}
 
-![](approvals-message.png){fig-alt="A screenshot showing the approval message shown to the Approval Group."}
-
-::: callout
-**Example:** A message shown to the Approval Group users requesting approval of model documentation.
+::: {.callout-tip title="Example" appearance="minimal"}
+A message shown to the Approval Group users requesting approval of model documentation.
 :::
 
 :::
 
 :::
 
-1. Drag an **Approval** step to the canvas:
+### Add conditional requirements
 
-    - Select the User type custom field in Approval Group.
-    - Determine an approval Threshold.
-    - Enter an Approval Message with a Title and Message content.
-
-2. Drag two Status Change steps onto the canvas.
-
-    - Assign a Rejected status to one.
-    - Assign an Approved status to the other.
-    - Connect the Approval step to the Rejected and Approved Status Change steps with the red and green **{{< fa circle >}}** respectively.
-
-
-![](approved-rejected.png){fig-alt="A screenshot showing linked Rejected and Approved Status Change steps."}
-
-
-#### Add conditional requirements
-
-::: callout
-Conditional requirements can be configured for all three available step types.
-:::
+Conditional requirements can be configured for all three available step types:
 
 | Step type | Conditional options |
 |---:|---|
