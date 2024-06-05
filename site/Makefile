@@ -84,7 +84,7 @@ deploy-demo:
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "main" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "nrichers/sc-4580/bny-create-training-collateral" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
 		echo "You're not on the main or prod branches, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
