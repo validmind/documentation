@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-06-03">
+<meta name="dcterms.date" content="2024-06-06">
 
 <title>ValidMind – Guides</title>
 <style>
@@ -201,6 +201,34 @@ ul.task-list li input[type="checkbox"] {
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-guides-model-validation'] = new List('listing-guides-model-validation', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-guides-model-workflows .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-guides-model-workflows'] = new List('listing-guides-model-workflows', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -447,20 +475,64 @@ window.Quarto = {
 </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
+ <span class="menu-text">MODEL WORKFLOWS</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/working-with-model-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with workflows</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/customize-resource-statuses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customize resource statuses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/set-up-model-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Set up workflows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
  <span class="menu-text">MODEL INVENTORY</span>
   </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../guide/working-with-model-inventory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with the model inventory</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../guide/register-models-in-model-inventory.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Register models in the inventory</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../guide/customize-model-inventory-layout.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customize model inventory layout</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../guide/edit-model-inventory-fields.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Edit model inventory fields</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../guide/manage-inventory-custom-fields.html" class="sidebar-item-text sidebar-link">
@@ -633,6 +705,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#onboarding" id="toc-onboarding" class="nav-link active" data-scroll-target="#onboarding">Onboarding</a></li>
+  <li><a href="#model-workflows" id="toc-model-workflows" class="nav-link" data-scroll-target="#model-workflows">Model workflows</a></li>
   <li><a href="#model-inventory" id="toc-model-inventory" class="nav-link" data-scroll-target="#model-inventory">Model inventory</a></li>
   <li><a href="#model-documentation" id="toc-model-documentation" class="nav-link" data-scroll-target="#model-documentation">Model documentation</a></li>
   <li><a href="#model-validation" id="toc-model-validation" class="nav-link" data-scroll-target="#model-validation">Model validation</a></li>
@@ -655,7 +728,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 3, 2024</p>
+      <p class="date">June 6, 2024</p>
     </div>
   </div>
   
@@ -670,6 +743,7 @@ window.Quarto = {
 <p>Our guides offer step-by-step instructions for frequent tasks you perform on the ValidMind platform, organized by category:</p>
 <ul>
 <li><a href="#onboarding">Onboarding</a></li>
+<li><a href="#model-workflows">Model workflows</a></li>
 <li><a href="#model-inventory">Model inventory</a></li>
 <li><a href="#model-documentation">Model documentation</a></li>
 <li><a href="#model-validation">Model validation</a></li>
@@ -814,40 +888,51 @@ No matching items
 </div>
 </div>
 </section>
+<section id="model-workflows" class="level2">
+<h2 class="anchored" data-anchor-id="model-workflows">Model workflows</h2>
+<p>Use workflows to match your organizational needs for overseeing model development, validation, or implementation activities:</p>
+<div id="listing-guides-model-workflows" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1717712157000" data-listing-file-modified-sort="1717712157502" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="576">
+<a href="../guide/working-with-model-workflows.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Working with model workflows
+</h5>
+<div class="card-text listing-description">
+Manage lifecycle processes within your ValidMind Platform UI setup using workflows and transitions.
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
 <section id="model-inventory" class="level2">
 <h2 class="anchored" data-anchor-id="model-inventory">Model inventory</h2>
 <p>To configure the model inventory to your organization’s requirements and to register new models:</p>
 <div id="listing-guides-model-inventory" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1717466984000" data-listing-file-modified-sort="1717466984856" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="218">
-<a href="../guide/register-models-in-model-inventory.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1717712157000" data-listing-file-modified-sort="1717712157501" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="163">
+<a href="../guide/working-with-model-inventory.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Register models in the inventory
+Working with the model inventory
 </h5>
 <div class="card-text listing-description">
-To be able to document models using ValidMind’s model documentation and validation features, you need to register them in the model inventory first.
+Use the model inventory within the ValidMind Platform UI to easily track comprehensive details for all your models throughout the model lifecycle. The model inventory is customizable and extensible, and can be configured to suit your unique needs.
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1717466984000" data-listing-file-modified-sort="1717466984850" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="185">
-<a href="../guide/edit-model-inventory-fields.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Edit model inventory fields
-</h5>
-<div class="card-text listing-description">
-Edit individual model detailed fields in the model inventory to customize them to your needs or to ensure that model details are accurate and up to date.
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1717466984000" data-listing-file-modified-sort="1717466984853" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="361">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1717466984000" data-listing-file-modified-sort="1717466984853" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="361">
 <a href="../guide/manage-inventory-custom-fields.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
