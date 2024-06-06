@@ -1,0 +1,172 @@
+---
+title: "September 27, 2023"
+---
+
+## Release highlights
+
+In this release, we've added support for large language models (LLMs) to enhance the capabilities of the {{< var vm_framework >}} in preparation for the [closed beta](https://validmind.com/announcing-validminds-closed-beta-coming-soon/), along with a number of new demo notebooks that you can try out. 
+
+Other enhancements provide improvements for the developer experience and with our documentation site.
+
+## {{< var vm_framework >}} (v1.19.0)
+
+<!---John6797/sc 2062/sentiment analysis demo notebook should support by @johnwalz97 in [#224](https://github.com/validmind/validmind-python/pull/224)--->
+### Large language model (LLM) support
+
+We added initial support for large language models (LLMs) in ValidMind via the new `FoundationModel` class. You can now create an instance of a `FoundationModel` and specify `predict_fn` and a `prompt`, and pass that into any test suite, for example. The `predict_fn` must be defined by the user and implements the logic for calling the Foundation LLM, usually via the API.
+
+To demonstrate the capabilities of LLM support, this release also includes new demo notebooks: 
+
+<!---John6797/sc 2088/implement prompt validation metrics poc by @johnwalz97 in [#232](https://github.com/validmind/validmind-python/pull/232)--->
+- **Prompt validation demo notebook for LLMs**. As a proof of concept, we added initial native prompt validation tests to the {{< var vm_dev >}}, including a notebook and simple template to test out these metrics on a sentiment analysis LLM model we built.
+
+<!---[SC-2216] Implement demo notebook for summarization model using LLMs by @cachafla in [#242](https://github.com/validmind/validmind-python/pull/242)--->
+<!---[SC-2144] Support hugging face summarization models by @AnilSorathiya in [#238](https://github.com/validmind/validmind-python/pull/238)--->
+- **Text summarization model demo notebook for LLMs**. We added a new notebook in the {{< var vm_dev >}} that includes the financial news dataset, initializes a Hugging Face summarization model using the `init_model` interface, implements relevant metrics for testing, and demonstrates how to run a _text summarization metrics_ test suite for an LLM instructed as a financial news summarizer.
+
+::: {.callout-important}
+## Interested in our LLM support?
+Large language model support and more will be available in our closed beta. [Read the announcement](https://validmind.com/announcing-validminds-closed-beta-coming-soon/) and sign up to take the first step in exploring all that ValidMind has to offer: 
+
+<form method="get" action="https://docs.validmind.ai/guide/join-closed-beta.html">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Join the waitlist</button>
+</form>
+
+:::
+
+<!---SC-2061: Support hugging face models by @AnilSorathiya in [#222](https://github.com/validmind/validmind-python/pull/222)--->
+### Support for Hugging Face models
+
+ValidMind can now validate pre-trained models from the HuggingFace Hub, including any language model compatible with the HF transformers API. 
+
+To illustrate this new feature, we have included a **financial news sentiment analysis demo** that runs documentation tests for a Hugging Face model with text classification using the [financial_phrasebank](https://huggingface.co/datasets/financial_phrasebank). [Try it ...](../../../notebooks/code_samples/NLP_and_LLM/hugging_face_integration_demo.ipynb)
+
+<!---[SC-1956] Credit risk scorecard demo notebooks by @juanmleng in [#223](https://github.com/validmind/validmind-python/pull/223)--->
+<!--- NR As per Andres, these notebooks need to be updated before they can be shared again
+### New credit risk scorecard demo notebooks 
+
+We added new demo notebooks and supporting files for very popular financial services model use cases:
+
+  - Developing credit risk scorecards. [Try it ...](../../../notebooks/code_samples/probability_of_default/credit_risk_scorecard_development_demo.ipynb)
+  - Validating credit risk scorecards. [Try it ...](../../../notebooks/code_samples/probability_of_default/credit_risk_scorecard_validation_demo.ipynb)
+ --->
+
+### A better developer experience with `run_test`
+
+We added a new `run_test` helper function that streamlines running tests for you. This function allows executing any individual test independent of a test suite or a documentation template. A one-line command can execute a test, making it easier to run tests with various parameters and options. For example:
+
+```python
+run_test("ClassImbalance", dataset=dataset, params=params, send=True)
+```
+
+<!---Add new `run_test` helper function by @cachafla in [#243](https://github.com/validmind/validmind-python/pull/243)--->
+We also updated the QuickStart notebook to have a consistent experience: [Try it ...](../../../notebooks/quickstart_customer_churn_full_suite.ipynb)
+
+This notebook:
+
+- Now runs `vm.preview_template()` after initializing ValidMind
+- Now runs `vm.run_documentation_tests()` instead of running a test suite that is not connected to the template
+
+#### Example usage for `run_test`
+
+Discover existing tests by calling `list_tests()` or `describe_test()`:
+
+`list_tests()`:
+
+![](270865082-d85821f7-f43c-40fb-a68c-96d9a0e6cfe2.png)
+
+`describe_test()`:
+
+![](270865181-839c0bf1-898a-452d-8025-85534cc5ad7d.png)
+
+View the tests associated with a documentation template by running `preview_template()`:
+
+![](270865328-67488af6-0f19-4d81-bf50-3dc95d0fb305.png)
+
+ Using the test ID, run a given test and pass in additional configuration parameters and inputs:
+
+```python
+# No params
+test_results = vm.tests.run_test(
+    "class_imbalance",
+    dataset=vm_dataset
+)
+
+# Custom params
+test_results = vm.tests.run_test(
+    "class_imbalance",
+    params={"min_percent_threshold": 30},
+    dataset=vm_dataset
+)
+```
+Output:
+![](270865561-e202c0fb-ca90-4ab2-ba88-e2e524b32ff0.png)
+
+Send the results of the test to ValidMind by calling `.log()`:
+
+```python
+test_results.log()
+```
+
+<!---
+### {{< var vm_platform >}} (v1.6.0)
+--->
+
+## Enhancements
+
+<!---[SC-2108] Multi-class tests should report metrics for individual classes and many other changes by @cachafla in [#228](https://github.com/validmind/validmind-python/pull/228)--->
+
+- **Multi-class test improvements**. We made a number of changes to metrics to improve the developer experience:
+   - A new `fail_fast` argument can be passed to `run_test_plan`, `run_test_suite` and `run_documentation_tests`, used to fail and raise an exception on the first error encountered. This change is useful for debugging.
+   - `ClassifierPerformance` test now determines if you are testing a binary or a multi-class model. When testing a multi-class model, we now report additional per-class, macro and weighted average metrics.
+   - Fixed F1 score metric so it works correctly  for binary and multi-class models.
+
+<!---SC-2042: Add multi-class classification support by @AnilSorathiya in [#221](https://github.com/validmind/validmind-python/pull/221)--->
+- **Added multi-class classification support**. The {{< var vm_dev >}} now supports a multi-class version of some the existing metrics, such as confusion matrix, accuracy, precision, recall, and more. Also, the dataset and model interfaces now support dealing with multiple targets.
+
+<!---SC-2100: Implement classification model comparison metrics by @AnilSorathiya in [#231](https://github.com/validmind/validmind-python/pull/231)--->
+- **Implemented classification model comparison metrics**. Added a model performance comparison test for classification tasks. The test includes metrics such as accuracy, F1, precision, recall, and roc_auc score.
+
+<!---John6797/sc 1790/framework should track additional test metadata by @johnwalz97 in [#239](https://github.com/validmind/validmind-python/pull/239)--->
+- **Track additional test metadata**. Added a `metadata` property to every ValidMind test class. The `metadata` property includes a `task_types` field and a `tags` field which both serve to categorize the tests based on what data and model types they work with, what category of test they fall into, and more.
+
+<!---feat: [sc-2196] Users should be able to filter tests by task type and tags by @johnwalz97 in [#241](https://github.com/validmind/validmind-python/pull/241)--->
+- **Filter tests by task type and tags**. We added a new search feature to the `validmind.tests.list_tests` function to allow for better test discoverability. The `list_tests` function in the `tests` module now supports the following arguments:
+   
+   * `filter`: If set, will match tests by ID, task_types or tags using a combination of substring and fuzzy string matching. Defaults to `None`. 
+   * `task`: If set, will further narrow matching tests (assuming `filter` has been passed) by exact matching the `task` to the test's `task_type` metadata. Defaults to `None`. 
+   * `tags`: If a list is passed, will again narrow the matched tests by exact matching on tags. Defaults to `None`. 
+
+## Documentation updates
+
+<!---User journey improvements by @nrichers in [#128](https://github.com/validmind/documentation/pull/128)--->
+- **User journey improvements**. We enhanced the architecture and content of our external docs site to make the user journey more efficient for model developers and model validators who are new to our products:
+   
+   * **Reworked the "Get Started" section** to include more conceptual information and an overview of the high-level workflows. [Try it ...](../../../guide/get-started.qmd)
+   * **Revised the "What is the {{< var vm_framework >}}?"** section to provide an end-to-end overview of the workflow that model developers should follow as they adopt the {{< var vm_dev >}}.  [Try it ...](../../../guide/get-started-developer-framework.qmd)
+
+<!---Docs site improvements by @nrichers in [#132](https://github.com/validmind/documentation/pull/132)--->
+- **Docs site improvements**. We made a number of incremental improvements to our user guide:
+
+   - **New dropdown for the {{< var vm_dev >}}** that gives faster access to the most important bits, such as our code samples and the reference documentation.
+   
+      ![](developer-framework-dropdown.gif)
+
+   - **Publication date** for each page that reflects the last time the source file was touched.
+   - Previous and next topic footers** for related topics that make it easier to keep reading.
+   - **Expanded overview** for key ValidMind concepts with some additional information.
+   - **Lighter background for diagrams** that improves legibility.
+
+## How to upgrade
+
+To access the latest version of the [{{< var vm_platform >}}](http://app.prod.validmind.ai/), reload your browser tab.
+
+To upgrade the {{< var vm_framework >}}:
+
+- [Using Jupyter Hub](../../../guide/quickstart-try-developer-framework-with-jupyterhub.qmd): reload your browser tab and re-run the `!pip install --upgrade validmind` cell.
+
+- [In your own developer environment](../../../guide/install-and-initialize-developer-framework.qmd): restart your notebook and re-run:
+    
+    ```python
+    !pip install validmind
+    ```
