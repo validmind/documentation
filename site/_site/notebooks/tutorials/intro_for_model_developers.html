@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.39">
+<meta name="generator" content="quarto-1.5.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -146,7 +146,7 @@ cookieconsent.run({
     <img src="../../about/ValidMind-logo-color.svg" alt="" class="navbar-logo">
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -164,7 +164,7 @@ cookieconsent.run({
 <span class="menu-text">Guides</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-cube--developer-framework" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text"><i class="fa-solid fa-cube" aria-label="cube"></i> Developer Framework</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-fa-cube--developer-framework">    
@@ -268,8 +268,8 @@ cookieconsent.run({
   <li><a href="#implementing-custom-tests" id="toc-implementing-custom-tests" class="nav-link" data-scroll-target="#implementing-custom-tests">3. Implementing custom tests</a>
   <ul class="collapse">
   <li><a href="#create-a-confusion-matrix-plot" id="toc-create-a-confusion-matrix-plot" class="nav-link" data-scroll-target="#create-a-confusion-matrix-plot">Create a confusion matrix plot</a></li>
-  <li><a href="#add-parameters-to-custom-metrics" id="toc-add-parameters-to-custom-metrics" class="nav-link" data-scroll-target="#add-parameters-to-custom-metrics">Add parameters to custom metrics</a></li>
-  <li><a href="#pass-parameters-to-custom-metrics" id="toc-pass-parameters-to-custom-metrics" class="nav-link" data-scroll-target="#pass-parameters-to-custom-metrics">Pass parameters to custom metrics</a></li>
+  <li><a href="#add-parameters-to-custom-tests" id="toc-add-parameters-to-custom-tests" class="nav-link" data-scroll-target="#add-parameters-to-custom-tests">Add parameters to custom tests</a></li>
+  <li><a href="#pass-parameters-to-custom-tests" id="toc-pass-parameters-to-custom-tests" class="nav-link" data-scroll-target="#pass-parameters-to-custom-tests">Pass parameters to custom tests</a></li>
   <li><a href="#log-the-confusion-matrix-results" id="toc-log-the-confusion-matrix-results" class="nav-link" data-scroll-target="#log-the-confusion-matrix-results">Log the confusion matrix results</a></li>
   <li><a href="#using-external-test-providers" id="toc-using-external-test-providers" class="nav-link" data-scroll-target="#using-external-test-providers">Using external test providers</a></li>
   <li><a href="#initializing-a-local-test-provider" id="toc-initializing-a-local-test-provider" class="nav-link" data-scroll-target="#initializing-a-local-test-provider">Initializing a local test provider</a></li>
@@ -618,8 +618,8 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 </div>
 <p>Let’s assume we want to remove highly correlated features from the dataset. <code>corr_results</code> is an object of type <code>ThresholdTestResult</code> and we can inspects its individual <code>results</code> to get access to the features that failed the test. In general, all ValidMind tests can return two different types of results:</p>
 <ul>
-<li><a href="https://docs.validmind.ai/validmind/validmind/vm_models.html#MetricResult">MetricResult</a>: most metrics return this type of result</li>
-<li><a href="https://docs.validmind.ai/validmind/validmind/vm_models.html#ThresholdTest">ThresholdTestResult</a>: metrics that compare a metric to a threshold return this type of result</li>
+<li><a href="https://docs.validmind.ai/validmind/validmind/vm_models.html#MetricResult">MetricResult</a>: most tests return this type of result</li>
+<li><a href="https://docs.validmind.ai/validmind/validmind/vm_models.html#ThresholdTest">ThresholdTestResult</a>: tests that compare a result to a threshold return this type of result</li>
 </ul>
 <div id="cell-35" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(corr_results.test_results)</span>
@@ -734,7 +734,7 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <figcaption>screenshot showing insert button for test-driven blocks</figcaption>
 </figure>
 </div>
-<p>Click on the <code>+</code> button and select <code>Test-Driven Block</code>. This will open a dialog where you can select <code>Threshold Test</code> as the type of the test-driven content block, and then select the <code>High Pearson Correlation Vm Raw Dataset Test</code> metric. This will show a preview of the result and it should match the results shown above.</p>
+<p>Click on the <code>+</code> button and select <code>Test-Driven Block</code>. This will open a dialog where you can select <code>Threshold Test</code> as the type of the test-driven content block, and then select <code>High Pearson Correlation Vm Raw Dataset Test</code>. This will show a preview of the result and it should match the results shown above.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/selecting-high-pearson-correlation-test.png" class="img-fluid figure-img"></p>
@@ -859,14 +859,14 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <section id="implementing-custom-tests" class="level2">
 <h2 class="anchored" data-anchor-id="implementing-custom-tests">3. Implementing custom tests</h2>
 <p>This section assumes that model developers already have a repository of custom made tests that they consider critical to include in the documentation. Here we provide details on how to easily integrate custom tests with ValidMind.</p>
-<p>For a more in-depth introduction to custom metrics, refer to this <a href="../../notebooks/code_samples/custom_tests/implement_custom_tests.html">notebook</a>.</p>
-<p>A custom metric is any function that takes a set of inputs and parameters as arguments and returns one or more outputs. The function can be as simple or as complex as you need it to be. It can use external libraries, make API calls, or do anything else that you can do in Python. The only requirement is that the function signature and return values can be “understood” and handled by the ValidMind Developer Framework. As such, custom metrics offer added flexibility by extending the default metrics provided by ValidMind, enabling you to document any type of model or use case.</p>
-<p>In the following example, you will learn how to implement a custom <code>inline</code> metric/test that calculates the confusion matrix for a binary classification model. You will see that the custom metric function is just a regular Python function that can include and require any Python library as you see fit.</p>
+<p>For a more in-depth introduction to custom tests, refer to this <a href="../../notebooks/code_samples/custom_tests/implement_custom_tests.html">notebook</a>.</p>
+<p>A custom test is any function that takes a set of inputs and parameters as arguments and returns one or more outputs. The function can be as simple or as complex as you need it to be. It can use external libraries, make API calls, or do anything else that you can do in Python. The only requirement is that the function signature and return values can be “understood” and handled by the ValidMind Developer Framework. As such, custom tests offer added flexibility by extending the default tests provided by ValidMind, enabling you to document any type of model or use case.</p>
+<p>In the following example, you will learn how to implement a custom <code>inline</code> test that calculates the confusion matrix for a binary classification model. You will see that the custom test function is just a regular Python function that can include and require any Python library as you see fit.</p>
 <p><strong>NOTE</strong>: in the context of Jupyter notebooks, we will use the word <code>inline</code> to refer to functions (or code) defined in the same notebook where they are used (this one) and not in a separate file, as we will see later with test providers.</p>
 <p><a id="toc6_1_"></a></p>
 <section id="create-a-confusion-matrix-plot" class="level3">
 <h3 class="anchored" data-anchor-id="create-a-confusion-matrix-plot">Create a confusion matrix plot</h3>
-<p>To understand how to create a custom metric from anything, let’s first create a confusion matrix plot using the <code>confusion_matrix</code> function from the <code>sklearn.metrics</code> module.</p>
+<p>To understand how to create a custom test from anything, let’s first create a confusion matrix plot using the <code>confusion_matrix</code> function from the <code>sklearn.metrics</code> module.</p>
 <div id="cell-62" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span>
@@ -881,20 +881,20 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>cm_display.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will now create a <span class="citation" data-cites="vm.metric">@vm.metric</span> wrapper that will allow you to create a reusable metric. Note the following changes in the code below:</p>
+<p>We will now create a <span class="citation" data-cites="vm.test">@vm.test</span> wrapper that will allow you to create a reusable test. Note the following changes in the code below:</p>
 <ul>
 <li>The function <code>confusion_matrix</code> takes two arguments <code>dataset</code> and <code>model</code>. This is a <code>VMDataset</code> and <code>VMModel</code> object respectively.
 <ul>
 <li><code>VMDataset</code> objects allow you to access the dataset’s true (target) values by accessing the <code>.y</code> attribute.</li>
 <li><code>VMDataset</code> objects allow you to access the predictions for a given model by accessing the <code>.y_pred()</code> method.</li>
 </ul></li>
-<li>The function docstring provides a description of what the metric does. This will be displayed along with the result in this notebook as well as in the ValidMind platform.</li>
+<li>The function docstring provides a description of what the test does. This will be displayed along with the result in this notebook as well as in the ValidMind platform.</li>
 <li>The function body calculates the confusion matrix using the <code>sklearn.metrics.confusion_matrix</code> function as we just did above.</li>
-<li>The function then returns the <code>ConfusionMatrixDisplay.figure_</code> object - this is important as the ValidMind framework expects the output of the custom metric to be a plot or a table.</li>
-<li>The <code>@vm.metric</code> decorator is doing the work of creating a wrapper around the function that will allow it to be run by the ValidMind framework. It also registers the metric so it can be found by the ID <code>my_custom_metrics.ConfusionMatrix</code> (see the section below on how test IDs work in ValidMind and why this format is important)</li>
+<li>The function then returns the <code>ConfusionMatrixDisplay.figure_</code> object - this is important as the ValidMind framework expects the output of the custom test to be a plot or a table.</li>
+<li>The <code>@vm.test</code> decorator is doing the work of creating a wrapper around the function that will allow it to be run by the ValidMind framework. It also registers the test so it can be found by the ID <code>my_custom_tests.ConfusionMatrix</code> (see the section below on how test IDs work in ValidMind and why this format is important)</li>
 </ul>
 <div id="cell-64" class="cell" data-metadata="{}">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="at">@vm.metric</span>(<span class="st">"my_custom_metrics.ConfusionMatrix"</span>)</span>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="at">@vm.test</span>(<span class="st">"my_custom_tests.ConfusionMatrix"</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_matrix(dataset, model):</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The confusion matrix is a table that is often used to describe the performance of a classification model on a set of data for which the true values are known.</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -921,28 +921,28 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cm_display.figure_  <span class="co"># return the figure object itself</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You can now run the newly created custom metric on both the training and test datasets using the <code>run_test()</code> function:</p>
+<p>You can now run the newly created custom test on both the training and test datasets using the <code>run_test()</code> function:</p>
 <div id="cell-66" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Training dataset</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_metrics.ConfusionMatrix:training_dataset"</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_tests.ConfusionMatrix:training_dataset"</span>,</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model, <span class="st">"dataset"</span>: vm_train_ds},</span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-67" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test dataset</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_metrics.ConfusionMatrix:test_dataset"</span>,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_tests.ConfusionMatrix:test_dataset"</span>,</span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model, <span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><a id="toc6_2_"></a></p>
 </section>
-<section id="add-parameters-to-custom-metrics" class="level3">
-<h3 class="anchored" data-anchor-id="add-parameters-to-custom-metrics">Add parameters to custom metrics</h3>
-<p>Custom metrics can take parameters just like any other function. Let’s modify the <code>confusion_matrix</code> function to take an additional parameter <code>normalize</code> that will allow you to normalize the confusion matrix.</p>
+<section id="add-parameters-to-custom-tests" class="level3">
+<h3 class="anchored" data-anchor-id="add-parameters-to-custom-tests">Add parameters to custom tests</h3>
+<p>Custom tests can take parameters just like any other function. Let’s modify the <code>confusion_matrix</code> function to take an additional parameter <code>normalize</code> that will allow you to normalize the confusion matrix.</p>
 <div id="cell-69" class="cell" data-metadata="{}">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="at">@vm.metric</span>(<span class="st">"my_custom_metrics.ConfusionMatrix"</span>)</span>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="at">@vm.test</span>(<span class="st">"my_custom_tests.ConfusionMatrix"</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_matrix(dataset, model, normalize<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The confusion matrix is a table that is often used to describe the performance of a classification model on a set of data for which the true values are known.</span></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -974,14 +974,14 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 </div>
 <p><a id="toc6_3_"></a></p>
 </section>
-<section id="pass-parameters-to-custom-metrics" class="level3">
-<h3 class="anchored" data-anchor-id="pass-parameters-to-custom-metrics">Pass parameters to custom metrics</h3>
-<p>You can pass parameters to custom metrics by providing a dictionary of parameters to the <code>run_test()</code> function. The parameters will override any default parameters set in the custom metric definition. Note that <code>dataset</code> and <code>model</code> are still passed as <code>inputs</code>. Since these are <code>VMDataset</code> or <code>VMModel</code> inputs, they have a special meaning. When declaring a <code>dataset</code>, <code>model</code>, <code>datasets</code> or <code>models</code> argument in a custom metric function, the Developer Framework will expect these get passed as <code>inputs</code> to <code>run_test()</code> (or <code>run_documentation_tests()</code> instead).</p>
+<section id="pass-parameters-to-custom-tests" class="level3">
+<h3 class="anchored" data-anchor-id="pass-parameters-to-custom-tests">Pass parameters to custom tests</h3>
+<p>You can pass parameters to custom tests by providing a dictionary of parameters to the <code>run_test()</code> function. The parameters will override any default parameters set in the custom test definition. Note that <code>dataset</code> and <code>model</code> are still passed as <code>inputs</code>. Since these are <code>VMDataset</code> or <code>VMModel</code> inputs, they have a special meaning. When declaring a <code>dataset</code>, <code>model</code>, <code>datasets</code> or <code>models</code> argument in a custom test function, the Developer Framework will expect these get passed as <code>inputs</code> to <code>run_test()</code> (or <code>run_documentation_tests()</code> instead).</p>
 <p>Re-running the confusion matrix with <code>normalize=True</code> looks like this:</p>
 <div id="cell-71" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test dataset with normalize=True</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> vm.tests.run_test(</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_metrics.ConfusionMatrix:test_dataset_normalized"</span>,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_custom_tests.ConfusionMatrix:test_dataset_normalized"</span>,</span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"model"</span>: vm_model, <span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"normalize"</span>: <span class="va">True</span>},</span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1037,9 +1037,9 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 </section>
 <section id="save-an-inline-test-to-a-file" class="level4">
 <h4 class="anchored" data-anchor-id="save-an-inline-test-to-a-file">Save an inline test to a file</h4>
-<p>The <code>@vm.metric</code> decorator that was used above to register these as one-off custom tests also adds a convenience method to the function object that allows you to simply call <code>&lt;func_name&gt;.save()</code> to save it to a file. This will save the function to a Python file to a path you specify. In this case, you can pass the variable <code>tests_folder</code> to save it to the custom tests folder we created.</p>
+<p>The <code>@vm.test</code> decorator that was used above to register these as one-off custom tests also adds a convenience method to the function object that allows you to simply call <code>&lt;func_name&gt;.save()</code> to save it to a file. This will save the function to a Python file to a path you specify. In this case, you can pass the variable <code>tests_folder</code> to save it to the custom tests folder we created.</p>
 <p>Normally, this will get you started by creating the file and saving the function code with the correct name. But it won’t automatically add any import or other functions/variables outside of the function that are needed for the test to run. The <code>save()</code> method allows you to pass an optional <code>imports</code> argument that will ensure the necessary imports are added to the file.</p>
-<p>For the <code>confusion_matrix</code> metric, note the imports that are required for the function to run properly:</p>
+<p>For the <code>confusion_matrix</code> test, note the imports that are required for the function to run properly:</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can pass these imports to the <code>save()</code> method to ensure they are included in the file with the following command:</p>
@@ -1053,7 +1053,7 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <h5 class="anchored" data-anchor-id="what-happened">What happened?</h5>
 <p>The <code>save()</code> method saved the <code>confusion_matrix</code> function to a file named <code>ConfusionMatrix.py</code> in the <code>my_tests</code> folder. Note that the new file provides some context on the origin of the test, which is useful for traceability.</p>
 <pre><code># Saved from __main__.confusion_matrix
-# Original Test ID: my_custom_metrics.ConfusionMatrix
+# Original Test ID: my_custom_tests.ConfusionMatrix
 # New Test ID: &lt;test_provider_namespace&gt;.ConfusionMatrix</code></pre>
 <p>Additionally, the new test function has been stripped off its decorator, as it now resides in a file that will be loaded by the test provider:</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ConfusionMatrix(dataset, model, normalize<span class="op">=</span><span class="va">False</span>):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
