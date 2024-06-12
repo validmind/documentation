@@ -258,7 +258,7 @@ cookieconsent.run({
   <ul class="collapse">
   <li><a href="#initialize-the-validmind-datasets" id="toc-initialize-the-validmind-datasets" class="nav-link" data-scroll-target="#initialize-the-validmind-datasets">Initialize the ValidMind datasets</a></li>
   <li><a href="#run-some-tabular-data-tests" id="toc-run-some-tabular-data-tests" class="nav-link" data-scroll-target="#run-some-tabular-data-tests">Run some tabular data tests</a></li>
-  <li><a href="#utilize-test-output" id="toc-utilize-test-output" class="nav-link" data-scroll-target="#utilize-test-output">Utilize test Output</a></li>
+  <li><a href="#utilize-test-output" id="toc-utilize-test-output" class="nav-link" data-scroll-target="#utilize-test-output">Utilize test output</a></li>
   <li><a href="#documenting-the-results-based-on-two-datasets" id="toc-documenting-the-results-based-on-two-datasets" class="nav-link" data-scroll-target="#documenting-the-results-based-on-two-datasets">Documenting the results based on two datasets</a></li>
   <li><a href="#add-individual-test-results-to-model-documentation" id="toc-add-individual-test-results-to-model-documentation" class="nav-link" data-scroll-target="#add-individual-test-results-to-model-documentation">Add individual test results to model documentation</a></li>
   <li><a href="#model-testing" id="toc-model-testing" class="nav-link" data-scroll-target="#model-testing">Model Testing</a></li>
@@ -349,9 +349,8 @@ cookieconsent.run({
 <li><a href="#toc5_3_">Utilize test output</a></li>
 <li><a href="#toc5_4_">Documenting the results based on two datasets</a>
 <ul>
-<li><a href="#toc5_4_1_">Run <code>run_documentation_tests()</code> using <code>vm_raw_dataset_new</code> as input</a></li>
-<li><a href="#toc5_4_2_">Log the individual result high correlation test using <code>vm_raw_dataset</code> (no data cleanup)</a></li>
-<li><a href="#toc5_4_3_">Log the individual result high correlation test using <code>vm_raw_dataset_new</code> (balanced classes and reduced features)</a></li>
+<li><a href="#toc5_4_1_">Run <code>run_documentation_tests()</code> using <code>vm_raw_dataset_preprocessed</code> as input</a></li>
+<li><a href="#toc5_4_2_">Log the individual result of the high correlation test that used <code>vm_balanced_raw_dataset</code> (that had a highly correlated <code>Age</code> column) as input</a></li>
 </ul></li>
 <li><a href="#toc5_5_">Add individual test results to model documentation</a></li>
 <li><a href="#toc5_6_">Model Testing</a></li>
@@ -361,8 +360,8 @@ cookieconsent.run({
 <li><a href="#toc6_">3. Implementing custom tests</a>
 <ul>
 <li><a href="#toc6_1_">Create a confusion matrix plot</a></li>
-<li><a href="#toc6_2_">Add parameters to custom metrics</a></li>
-<li><a href="#toc6_3_">Pass parameters to custom metrics</a></li>
+<li><a href="#toc6_2_">Add parameters to custom tests</a></li>
+<li><a href="#toc6_3_">Pass parameters to custom tests</a></li>
 <li><a href="#toc6_4_">Log the confusion matrix results</a></li>
 <li><a href="#toc6_5_">Using external test providers</a>
 <ul>
@@ -425,17 +424,16 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <p><strong>Model documentation</strong>: A structured and detailed record pertaining to a model, encompassing key components such as its underlying assumptions, methodologies, data sources, inputs, performance metrics, evaluations, limitations, and intended uses. It serves to ensure transparency, adherence to regulatory requirements, and a clear understanding of potential risks associated with the model’s application.</p>
 <p><strong>Documentation template</strong>: Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.</p>
 <p><strong>Tests</strong>: A function contained in the ValidMind Developer Framework, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.</p>
-<p><strong>Metrics</strong>: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.</p>
-<p><strong>Custom metrics</strong>: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.</p>
+<p><strong>Custom tests</strong>: Custom tests are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.</p>
 <p><strong>Inputs</strong>: Objects to be evaluated and documented in the ValidMind framework. They can be any of the following:</p>
 <ul>
 <li><strong>model</strong>: A single model that has been initialized in ValidMind with <a href="https://docs.validmind.ai/validmind/validmind.html#init_model"><code>vm.init_model()</code></a>.</li>
 <li><strong>dataset</strong>: Single dataset that has been initialized in ValidMind with <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset"><code>vm.init_dataset()</code></a>.</li>
-<li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.</li>
-<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
+<li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom test.</li>
+<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom test. See this <a href="https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
 </ul>
-<p><strong>Parameters</strong>: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.</p>
-<p><strong>Outputs</strong>: Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a pandas DataFrame. Plots may be matplotlib or plotly figures.</p>
+<p><strong>Parameters</strong>: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a test, customize its behavior, or provide additional context.</p>
+<p><strong>Outputs</strong>: Custom tests can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a pandas DataFrame. Plots may be matplotlib or plotly figures.</p>
 <p><strong>Test suites</strong>: Collections of tests designed to run together to automate and generate model documentation end-to-end for specific use-cases.</p>
 <p>Example: the <a href="https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="https://docs.validmind.ai/validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use-cases.</p>
 <p><a id="toc4_"></a></p>
@@ -607,7 +605,7 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <p><a id="toc5_3_"></a></p>
 </section>
 <section id="utilize-test-output" class="level3">
-<h3 class="anchored" data-anchor-id="utilize-test-output">Utilize test Output</h3>
+<h3 class="anchored" data-anchor-id="utilize-test-output">Utilize test output</h3>
 <p>Here is an example for how you can utilize the output from a ValidMind test for futher use, for example, if you want to remove highly correlated features. The example below shows how you can get the list of features with the highest correlation coefficients and use them to reduce the final list of features for modeling.</p>
 <div id="cell-33" class="cell" data-metadata="{}">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>corr_results <span class="op">=</span> vm.tests.run_test(</span>
