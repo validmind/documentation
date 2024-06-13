@@ -10,7 +10,7 @@ of the target variable, which could inform feature selection, model-building str
 biases and irregularities in the data.
 
 **Test Mechanism**: This metric operates by creating a scatter plot for each pair of the selected features in the
-dataset. If the parameters "features_pairs" are not specified, an error will be thrown. The metric offers
+dataset. If the parameters "selected_columns" are not specified, an error will be thrown. The metric offers
 flexibility by allowing the user to filter on a specific target class - specified by the "target_filter" parameter
 - for more granified insights. Each scatterplot is then color-coded based on the category of the target variable
 for better visual differentiation. The seaborn scatterplot library is used for generating the plots.

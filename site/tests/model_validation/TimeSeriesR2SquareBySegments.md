@@ -1,0 +1,2 @@
+# TimeSeriesR2SquareBySegments
+
