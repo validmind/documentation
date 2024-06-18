@@ -14,9 +14,9 @@
 <link href="../site_libs/quarto-contrib/tachyons-4.12.0/tachyons.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.39">
+  <meta name="generator" content="quarto-1.4.554">
 
-  <title>ValidMind – Training for Administrators</title>
+  <title>ValidMind - Training for Administrators</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -576,38 +576,40 @@ Learn more …
 <p>Assign roles to users to define their responsibilities and grant permissions to groups to set access levels.</p>
 </div><div class="column bl pl4 f3" style="width:70%;">
 <div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Add roles</a></li><li><a href="#tabset-3-2">Manage permissions</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Manage roles</a></li><li><a href="#tabset-3-2">Manage permissions</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1">
 <ol type="1">
 <li><p>Under User Permissions, select <strong>Roles</strong>.</p></li>
-<li><p>Click on the <strong>Add New Role</strong> button to initiate the role creation process.</p>
-<ul>
-<li>Specify a name for the new role.</li>
-<li>Define the role’s description and purpose.</li>
-<li>Assign permissions to the role based on the actions it should be allowed to perform.</li>
-<li>Save the new role configuration.</li>
-</ul></li>
-<li><p>Verify that the new role appears in the list of available roles, ensuring it is correctly set up for use.</p></li>
-</ol>
-</div>
-<div id="tabset-3-2">
-<ol type="1">
-<li><p>Under User Permissions, select <strong>Permissions</strong>.</p></li>
-<li><p>Locate the role for which you want to manage permissions.</p>
-<p>Click on the role to access its details.</p></li>
-<li><p>Within the role’s details, you can:</p>
+<li><p>Select the role for which you want to manage.</p></li>
+<li><p>Select <strong>Edit Permissions</strong> to edit its details. Within the role’s details, you can:</p>
 <ul>
 <li>View the current permissions assigned to the role.</li>
 <li>Add new permissions by specifying the actions or resources the role should have access to.</li>
 <li>Remove permissions that are no longer necessary for the role.</li>
 <li>Save the updated permissions configuration for the role.</li>
 </ul></li>
+<li><p>Select <strong>Users</strong> to manage users assigned to the role.</p></li>
+</ol>
+<!-- 1. Under User Permissions, select **Roles**.
+
+1. Click on the **Add New Role** button to initiate the role creation process.
+   - Specify a name for the new role.
+   - Define the role's description and purpose.
+   - Assign permissions to the role based on the actions it should be allowed to perform.
+   - Save the new role configuration.
+
+1. Verify that the new role appears in the list of available roles, ensuring it is correctly set up for use. -->
+</div>
+<div id="tabset-3-2">
+<ol type="1">
+<li><p>Under User Permissions, select <strong>Permissions</strong></p></li>
+<li><p>Under your desired action, add or delete roles.</p></li>
 </ol>
 </div>
 </div>
 </div>
-<form method="get" action="../guide/manage-roles-and-permissions.html" target="_blank">
+<form method="get" action="../guide/manage-roles.html" target="_blank">
 <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 24px; padding: 6.25px 12.5px; margin-top: 10px; margin-bottom: 20px;">
 Learn more …
 </button>
@@ -1032,7 +1034,18 @@ Learn more …
         }
         return false;
       }
-      const onCopySuccess = function(e) {
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1064,29 +1077,7 @@ Learn more …
         }, 1000);
         // clear code selection
         e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
       });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        // For code content inside modals, clipBoardJS needs to be initialized with a container option
-        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
           var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1094,7 +1085,7 @@ Learn more …
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
         // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
         for (var i=0; i<links.length; i++) {
           const link = links[i];
           if (!isInternal(link.href)) {
