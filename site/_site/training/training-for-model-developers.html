@@ -14,9 +14,9 @@
 <link href="../site_libs/quarto-contrib/tachyons-4.12.0/tachyons.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.554">
+  <meta name="generator" content="quarto-1.5.39">
 
-  <title>ValidMind - Training for Model Developers</title>
+  <title>ValidMind – Training for Model Developers</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -739,7 +739,26 @@ Learn more …
 </div>
 <p><br>Try it <strong>live</strong> on the next page. <i class="fa-solid fa-hand-point-right" aria-label="hand-point-right"></i></p>
 </div><div class="column bl pl4 f3" style="width:70%;">
-<p>For you to be able to transition through the approval workflow, your model documentation must have completed all required steps.</p>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Verify workflow</a></li><li><a href="#tabset-2-2">Submit for approval</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<p>Workflow states and transitions are configured ahead of time by an administrator but you should verify that the approval process includes the right people.</p>
+<ol type="1">
+<li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.</p></li>
+<li><p>In the left sidebar that appears for your model, click <strong>Documentation</strong>.</p>
+<p>The current status of the project is displayed under <strong>Document Status</strong>.</p>
+<p>For example:</p>
+<ul>
+<li><code>In Documentation</code> means that the model is currently being documented and can be submitted for validation next.</li>
+<li><code>In Validation</code> means that the model is currently being validated and can be submitted for review and then approval.</li>
+</ul></li>
+<li><p>Click <strong><i class="fa-solid fa-arrow-right-arrow-left" aria-label="arrow-right-arrow-left"></i> See workflow</strong> to visualize the entire workflow that this model will go through.</p>
+<p><img data-src="../guide/workflow.png" style="width:85.0%" alt="A summary view of the workflow steps that a model must go through, from initial documentation, to validation, review, and approval."></p></li>
+</ol>
+</div>
+<div id="tabset-2-2">
+<p>To transition through the approval workflow, all required workflow steps must be completed. By default, a model must be in the <code>In Documentation</code> state before you can submit it for validation.</p>
 <ol type="1">
 <li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.</p></li>
 <li><p>In the left sidebar that appears for your model, click <strong>Documentation</strong>.</p></li>
@@ -752,6 +771,9 @@ Learn more …
 <li><strong>To have your model documentation and validation report approved</strong>: Click <strong>Ready for Approval</strong>, fill in the mandatory notes, and submit.</li>
 </ul></li>
 </ol>
+</div>
+</div>
+</div>
 <form method="get" action="../guide/submit-for-approval.html" target="_blank">
 <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 24px; padding: 6.25px 12.5px; margin-top: 10px; margin-bottom: 20px;">
 Learn more …
@@ -1043,18 +1065,7 @@ Accept the text or try again:
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1086,7 +1097,29 @@ Accept the text or try again:
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
           var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1094,7 +1127,7 @@ Accept the text or try again:
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
         // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
         for (var i=0; i<links.length; i++) {
           const link = links[i];
           if (!isInternal(link.href)) {
