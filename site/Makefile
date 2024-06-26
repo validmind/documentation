@@ -29,7 +29,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b cachafla/sc-5078/some-test-descriptions-are-empty git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b main git@github.com:validmind/developer-framework.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
