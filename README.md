@@ -2,7 +2,7 @@
 
 ![](site/about/ValidMind-logo-color.svg)
 
-This is the home for the user-facing documentation and related infrastructure for ValidMind. If you want to make updates to our external docs site, you're in the right place.
+This is the home for the user-facing documentation and related infrastructure for ValidMind. If you want to make updates to our external docs site, you're in the right place!
 
 ## Contributing to the documentation
 
@@ -25,21 +25,22 @@ You need:
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
 ## How to contribute
+> First, read through and familiarize yourself with our [ValidMind style guide](https://docs.validmind.ai/about/style-guide.html).
 
-Our core docs are sourced in Quarto Markdown under [site/guide/](https://github.com/validmind/documentation/tree/main/site/guide). If you create new documentation, make sure to add it to the [_quarto.yml](https://github.com/validmind/documentation/blob/main/site/_quarto.yml) file.
+Our core docs are sourced in Quarto Markdown under [`site`](https://github.com/validmind/documentation/tree/main/site/). If you create new documentation, make sure to add it to the [`_quarto.yml`](https://github.com/validmind/documentation/blob/main/site/_quarto.yml) file.
 
 If you are creating a pull request, test your changes by rendering or previewing the site. Note that if this is your first time contributing, you will be asked to sign a contributor license agreement (CLA).
 
-## Preview the docs site
+### Preview the docs site
 
 ```bash
 cd site
 quarto preview
 ```
 
-## Render the docs site
+### Render the docs site
 
-Just render the site:
+To render the site:
 
 ```bash
 cd site
@@ -53,3 +54,33 @@ site
 └── _site ...
     └── *.html, *.css, *.png, *.js ...
 ```
+
+## Directory map
+
+### `site`
+Core files you manipulate live under `site` in these key directories that more or less correlate to the sections of the docs site reachable via the top navigation bar:
+
+- `about` 
+- `developer-framework` 
+- `faq` 
+- `get-started` 
+- `guide`  
+- `support` 
+
+These directories may have sub-directories depending on their size and grouped sub-topics contained within. 
+
+#### Special `site` directories
+- `releases` — Correlates to the "Releases" section under [About](https://docs.validmind.ai/about/overview.html).
+- `training` — Correlates to the "Training" section under [Get Started](https://docs.validmind.ai/training/training-overview.html)
+
+#### Supporting `site` directories
+- `_site` — This is where static files rendered by `quarto render` get placed.
+- `notebooks` — This is where notebooks retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
+- `tests` — This is where tests retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
+- `assets` — This is where general shared assets live (stylesheets, promotional images, etc.).
+
+### Auxiliary directories
+
+- `site-unused` — Archived files get moved here. 
+- `templates` — You can find generic structural templates in this folder here to help you build your guides.
+
