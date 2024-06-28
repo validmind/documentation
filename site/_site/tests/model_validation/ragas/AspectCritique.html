@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -99,6 +133,35 @@ cookieconsent.run({
 </script> 
   
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -355,6 +418,12 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_tests/1_run_dataset_based_tests.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Run dataset based tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests/2_run_comparison_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run comparison tests</span></a>
   </div>
 </li>
       </ul>
@@ -1641,7 +1710,12 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aspectcritique" id="toc-aspectcritique" class="nav-link active" data-scroll-target="#aspectcritique">AspectCritique</a></li>
+  <li><a href="#aspectcritique" id="toc-aspectcritique" class="nav-link active" data-scroll-target="#aspectcritique">AspectCritique</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview:</a></li>
+  <li><a href="#inputs-and-outputs" id="toc-inputs-and-outputs" class="nav-link" data-scroll-target="#inputs-and-outputs">Inputs and Outputs:</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples:</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/ragas/AspectCritique.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1653,8 +1727,51 @@ cookieconsent.run({
 
 <section id="aspectcritique" class="level1">
 <h1>AspectCritique</h1>
+<p>Evaluates generations against the following aspects: harmfulness, maliciousness, coherence, correctness, and conciseness.</p>
+<section id="overview" class="level3">
+<h3 class="anchored" data-anchor-id="overview">Overview:</h3>
+<p>This is designed to assess submissions against predefined and user-defined “aspects”. For each aspect, a judge LLM is prompted to critique a piece of generated text based on a description of the aspect. The output of this evaluation is a binary (0/1 = yes/no) score that indicates whether the submission aligns with the defined aspect or not.</p>
+</section>
+<section id="inputs-and-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="inputs-and-outputs">Inputs and Outputs:</h3>
+<p>The input to this metric is a dataset containing the input <code>question</code> (prompt to the LLM) and the <code>answer</code> (text generated by the LLM). Any retrieved <code>contexts</code> can also be included to enhance the evaluation.</p>
+<p>The <code>question_column</code>, <code>answer_column</code>, and <code>contexts_column</code> parameters can be used to specify the names or sources for the data that this metric will evaluate if the dataset does not contain the required columns <code>question</code>, <code>answer</code>, and <code>contexts</code>.</p>
+<p>By default, the aspects evaluated are harmfulness, maliciousness, coherence, correctness, and conciseness. To change the aspects evaluated, the <code>aspects</code> parameter can be set to a list containing any of these aspects.</p>
+<p>To add custom aspects, the <code>additional_aspects</code> parameter can be passed as a list of tuples where each tuple contains the aspect name and a description of the aspect that the judge LLM will use to critique the submission.</p>
+<p>The output of this metric is a table of scores for each aspect where the aspect score is the number of “yes” scores divided by the total number of submissions: <span class="math display">\[
+\\text{aspect score} = \\frac{\\text{number of "yes" scores}}{\\text{total number of submissions}}
+\]</span></p>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples:</h3>
+<ul>
+<li><strong>Mapping to Required Columns:</strong> If the dataset does not contain the columns required to run this metric (i.e., <code>question</code>, <code>answer</code>, and <code>contexts</code>), the</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pred_col <span class="op">=</span> my_vm_dataset.prediction_column(my_vm_model)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>run_test(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>validmind.model_validation.ragas.AspectCritique<span class="st">",</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="er">inputs={"dataset": my_vm_dataset},</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>params<span class="op">=</span>{</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>question_column<span class="st">": "</span>input_prompt<span class="st">",</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="er">answer_column": f"{pred_col}.llm_output",</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>contexts_column<span class="st">": lambda row: [row[pred_col]["</span>context_message<span class="st">"]],</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="er">},</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Custom Aspects:</strong> To evaluate custom aspects, the <code>additional_aspects</code> parameter can be set to a list of tuples where each tuple contains the aspect name and a description of the aspect that the judge LLM will use to critique the submission. For example, to evaluate whether the LLM-generated text has a “professional tone”, the <code>additional_aspects</code> parameter can be set like this:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>run_test(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>validmind.model_validation.ragas.AspectCritique<span class="st">",</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="er">inputs={"dataset": my_vm_dataset},</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>params<span class="op">=</span>{</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>additional_aspects<span class="st">": [</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="er">("professionalism", "Does the text have a professional tone?"),</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="er">],</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="er">},</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
