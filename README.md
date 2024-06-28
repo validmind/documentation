@@ -71,7 +71,7 @@ These directories may have sub-directories depending on their size and grouped s
 
 #### Special `site` directories
 - `releases` — Correlates to the "Releases" section under [About](https://docs.validmind.ai/about/overview.html).
-- `training` — Correlates to the "Training" section under [Get Started](https://docs.validmind.ai/training/training-overview.html)
+- `training` — Correlates to the "Training" section under [Get Started](https://docs.validmind.ai/training/training-overview.html).
 
 #### Supporting `site` directories
 - `_site` — This is where static files rendered by `quarto render` get placed.
