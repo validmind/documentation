@@ -38,7 +38,7 @@ notebooks:
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
 	@echo "Checking out intro_for_model_developers_EXECUTED.ipynb from main ..."
-	@git checkout main -- site/notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
+	@git checkout main -- notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
