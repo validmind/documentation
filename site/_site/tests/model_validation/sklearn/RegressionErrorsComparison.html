@@ -358,6 +358,12 @@ cookieconsent.run({
  <span class="menu-text">Run dataset based tests</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests/2_run_comparison_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run comparison tests</span></a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
@@ -1654,6 +1660,12 @@ cookieconsent.run({
 
 <section id="regressionerrorscomparison" class="level1">
 <h1>RegressionErrorsComparison</h1>
+<p>Compare regression error metrics for each model and generate a summary table with the results.</p>
+<p><strong>Purpose</strong>: The purpose of this function is to compare the regression errors for different models applied to various datasets.</p>
+<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates various error metrics (MAE, MSE, MAPE, MBD), and generates a summary table with these results.</p>
+<p><strong>Signs of High Risk</strong>: - High Mean Absolute Error (MAE) or Mean Squared Error (MSE) indicates poor model performance. - High Mean Absolute Percentage Error (MAPE) suggests large percentage errors, especially problematic if the true values are small. - Mean Bias Deviation (MBD) significantly different from zero indicates systematic overestimation or underestimation by the model.</p>
+<p><strong>Strengths</strong>: - Provides multiple error metrics to assess model performance from different perspectives. - Includes a check to avoid division by zero when calculating MAPE.</p>
+<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes. - The function relies on the <code>logger</code> from <code>validmind.logging</code> to warn about zero values in <code>y_true</code>, which should be correctly implemented and imported. - Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model.</p>
 
 
 </section>
