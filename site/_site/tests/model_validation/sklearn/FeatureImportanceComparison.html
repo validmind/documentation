@@ -358,6 +358,12 @@ cookieconsent.run({
  <span class="menu-text">Run dataset based tests</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests/2_run_comparison_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run comparison tests</span></a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
@@ -1654,6 +1660,12 @@ cookieconsent.run({
 
 <section id="featureimportancecomparison" class="level1">
 <h1>FeatureImportanceComparison</h1>
+<p>Compare feature importance scores for each model and generate a summary table with the top important features.</p>
+<p><strong>Purpose</strong>: The purpose of this function is to compare the feature importance scores for different models applied to various datasets.</p>
+<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates permutation feature importance (PFI) scores, and generates a summary table with the top <code>num_features</code> important features for each model.</p>
+<p><strong>Signs of High Risk</strong>: - If key features expected to be important are ranked low, it could indicate potential issues with model training or data quality. - High variance in feature importance scores across different models may suggest instability in feature selection.</p>
+<p><strong>Strengths</strong>: - Provides a clear comparison of the most important features for each model. - Uses permutation importance, which is a model-agnostic method and can be applied to any estimator.</p>
+<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with <code>x_df</code> and <code>y_df</code> methods to access feature and target data. - Requires that <code>model.model</code> is compatible with <code>sklearn.inspection.permutation_importance</code>. - The function’s output is dependent on the number of features specified by <code>num_features</code>, which defaults to 3 but can be adjusted.</p>
 
 
 </section>

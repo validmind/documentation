@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -100,6 +134,35 @@ cookieconsent.run({
 </script> 
   
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -356,6 +419,12 @@ cookieconsent.run({
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_tests/1_run_dataset_based_tests.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Run dataset based tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/run_tests/2_run_comparison_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run comparison tests</span></a>
   </div>
 </li>
       </ul>
@@ -1642,7 +1711,12 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#contextentityrecall" id="toc-contextentityrecall" class="nav-link active" data-scroll-target="#contextentityrecall">ContextEntityRecall</a></li>
+  <li><a href="#contextentityrecall" id="toc-contextentityrecall" class="nav-link active" data-scroll-target="#contextentityrecall">ContextEntityRecall</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#formula" id="toc-formula" class="nav-link" data-scroll-target="#formula">Formula</a></li>
+  <li><a href="#configuring-columns" id="toc-configuring-columns" class="nav-link" data-scroll-target="#configuring-columns">Configuring Columns</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/ragas/ContextEntityRecall.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1654,8 +1728,42 @@ cookieconsent.run({
 
 <section id="contextentityrecall" class="level1">
 <h1>ContextEntityRecall</h1>
+<p>Evaluates the context entity recall for dataset entries and visualizes the results.</p>
+<section id="overview" class="level3">
+<h3 class="anchored" data-anchor-id="overview">Overview</h3>
+<p>This metric gives the measure of recall of the retrieved context, based on the number of entities present in both <code>ground_truths</code> and <code>contexts</code> relative to the number of entities present in the <code>ground_truths</code> alone. Simply put, it is a measure of what fraction of entities are recalled from <code>ground_truths</code>. This metric is useful in fact-based use cases like tourism help desk, historical QA, etc. This metric can help evaluate the retrieval mechanism for entities, based on comparison with entities present in <code>ground_truths</code>, because in cases where entities matter, we need the <code>contexts</code> which cover them.</p>
+</section>
+<section id="formula" class="level3">
+<h3 class="anchored" data-anchor-id="formula">Formula</h3>
+<p>To compute this metric, we use two sets, <span class="math inline">\(GE\)</span> and <span class="math inline">\(CE\)</span>, representing the set of entities present in <code>ground_truths</code> and set of entities present in <code>contexts</code> respectively. We then take the number of elements in intersection of these sets and divide it by the number of elements present in the <span class="math inline">\(GE\)</span>, given by the formula:</p>
+<p><span class="math display">\[
+\\text{context entity recall} = \\frac{| CE \\cap GE |}{| GE |}
+\]</span></p>
+</section>
+<section id="configuring-columns" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-columns">Configuring Columns</h3>
+<p>This metric requires the following columns in your dataset: - <code>contexts</code> (List[str]): A list of text contexts which will be evaluated to make sure if they contain the entities present in the ground truth. - <code>ground_truth</code> (str): The ground truth text from which the entities will be extracted and compared with the entities in the <code>contexts</code>.</p>
+<p>If the above data is not in the appropriate column, you can specify different column names for these fields using the parameters <code>contexts_column</code>, and <code>ground_truth_column</code>.</p>
+<p>For example, if your dataset has this data stored in different columns, you can pass the following parameters:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>contexts_column<span class="st">": "</span>context_info</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ground_truth_column<span class="st">": "</span>my_ground_truth_col<span class="st">",</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If the data is stored as a dictionary in another column, specify the column and key like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pred_col <span class="op">=</span> dataset.prediction_column(model)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>contexts_column<span class="st">": f"</span>{pred_col}.contexts<span class="st">",</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="er">ground_truth_column": "my_ground_truth_col",</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For more complex situations, you can use a function to extract the data:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pred_col <span class="op">=</span> dataset.prediction_column(model)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>contexts_column<span class="st">": lambda row: [row[pred_col]["</span>context_message<span class="st">"]],</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="er">ground_truth_column": "my_ground_truth_col",</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
