@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-06-14">
+<meta name="dcterms.date" content="2024-07-03">
 
 <title>Guides – ValidMind</title>
 <style>
@@ -90,6 +90,34 @@ ul.task-list li input[type="checkbox"] {
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-guides-onboarding'] = new List('listing-guides-onboarding', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-guides-model-workflows .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-guides-model-workflows'] = new List('listing-guides-model-workflows', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -213,34 +241,6 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-guides-model-workflows .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-guides-model-workflows'] = new List('listing-guides-model-workflows', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
   </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
 
@@ -351,13 +351,10 @@ window.Quarto = {
  <span class="dropdown-text"><i class="fa-solid fa-flask-vial" aria-label="flask-vial"></i> Run Tests &amp; Test Suites</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../guide/test-descriptions.html">
+    <a class="dropdown-item" href="../guide/test-descriptions.qmd">
  <span class="dropdown-text"><i class="fa-solid fa-microscope" aria-label="microscope"></i> Test Descriptions</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../guide/test-sandbox.html">
- <span class="dropdown-text"><i class="fa-solid fa-toolbox" aria-label="toolbox"></i> Test sandbox (BETA)</span></a>
-  </li>  
+        <li class="dropdown-header">guide/test-sandbox.qmd</li>
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-code" aria-label="code"></i> CODE SAMPLES</li>
         <li>
@@ -434,65 +431,21 @@ window.Quarto = {
  <span class="menu-text">CONFIGURATION</span>
   </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/set-up-your-organization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Set up your organization</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../guide/onboarding-users.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Onboarding users</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/manage-users.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Manage users</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/manage-groups.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Manage groups</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/manage-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Manage roles</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/manage-permissions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Manage permissions</span></a>
-  </div>
-</li>
-      </ul>
+ <span class="menu-text">guide/set-up-your-organization.qmd</span>
   </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-your-profile.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View your profile</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/view-your-profile.qmd</span>
+  </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/configure-aws-privatelink.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Configure AWS PrivateLink</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/configure-aws-privatelink.qmd</span>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL WORKFLOWS</span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../guide/working-with-model-workflows.html" class="sidebar-item-text sidebar-link">
+            <a href="../guide/working-with-model-workflows.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Working with workflows</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -500,14 +453,11 @@ window.Quarto = {
       </div>
       <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/customize-resource-statuses.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Customize resource statuses</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/customize-resource-statuses.qmd</span>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guide/set-up-model-workflows.html" class="sidebar-item-text sidebar-link">
+  <a href="../guide/set-up-model-workflows.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Set up workflows</span></a>
   </div>
 </li>
@@ -517,38 +467,9 @@ window.Quarto = {
         <li class="sidebar-item">
  <span class="menu-text">MODEL INVENTORY</span>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../guide/working-with-model-inventory.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with the model inventory</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/register-models-in-model-inventory.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Register models in the inventory</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/customize-model-inventory-layout.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Customize model inventory layout</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/edit-model-inventory-fields.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Edit model inventory fields</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guide/manage-inventory-custom-fields.html" class="sidebar-item-text sidebar-link">
+  <a href="../guide/manage-inventory-custom-fields.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Manage inventory custom fields</span></a>
   </div>
 </li>
@@ -558,155 +479,52 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../guide/working-with-documentation-templates.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with documentation templates</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-documentation-templates.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View documentation templates</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/customize-documentation-templates.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Customize documentation templates</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/swap-documentation-templates.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Swap documentation templates</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
             <a href="../guide/working-with-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with model documentation</span></a>
+ <span class="menu-text">Working with model documentation — moved</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-documentation-guidelines.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View documentation guidelines</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/view-documentation-guidelines.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">guide/work-with-content-blocks.qmd</span>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guide/work-with-content-blocks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Work with content blocks</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/assign-documentation-section-statuses.html" class="sidebar-item-text sidebar-link">
+  <a href="../guide/assign-documentation-section-statuses.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assign section statuses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/collaborate-with-others.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Collaborate with others</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/collaborate-with-others.qmd</span>
+  </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-documentation-activity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View documentation activity</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/view-documentation-activity.qmd</span>
+  </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/submit-for-approval.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Submit for approval</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/submit-for-approval.qmd</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/export-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Export documentation</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/export-documentation.qmd</span>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL VALIDATION</span>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../guide/preparing-validation-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preparing validation reports</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-validation-guidelines.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View validation guidelines</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/review-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Review model documentation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/assess-compliance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Assess compliance</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/work-with-content-blocks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Work with content blocks</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/collaborate-with-others.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Collaborate with others</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/submit-for-approval.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Submit for approval</span></a>
-  </div>
-</li>
-      </ul>
+        <li class="sidebar-item">
+ <span class="menu-text">guide/work-with-model-findings.qmd</span>
   </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/work-with-model-findings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Work with model findings</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/view-reports.qmd</span>
+  </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/view-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View reports</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guide/export-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Export documentation</span></a>
-  </div>
-</li>
+ <span class="menu-text">guide/export-documentation.qmd</span>
+  </li>
     </ul>
     </div>
 </nav>
@@ -741,7 +559,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 14, 2024</p>
+      <p class="date">July 3, 2024</p>
     </div>
   </div>
   
@@ -777,7 +595,7 @@ window.Quarto = {
 <!-- IF A KEY CONCEPT NEEDS TO BE ADDED:
 
 1. Create a new file under the `about/glossary/key_concepts` folder with the following structure `_concept.qmd` (the `_` is mandatory for Quarto to retrieve the file as a single-source embed: https://quarto.org/docs/authoring/includes.html)
-2. Include it below with the structure `{{< include ../about/glossary/key_concepts/_concept.qmd >}}`
+2. Include it below with the structure `{{< include /about/glossary/key_concepts/_concept.qmd >}}`
 3. In the `about/glossary` folder, locate the correct section file it belongs to (e.g. `_ai.qmd`) and embed it there as well in ABC order with the structure `{{< include key_concepts/_concept.qmd >}}` 
 
 These instructions update the key concept on anywhere the key concepts are reference as well as within the glossary.
@@ -828,7 +646,7 @@ Objects to be evaluated and documented in the developer framework. They can be a
 <li><strong>model</strong>: A single model that has been initialized in ValidMind with <code>vm.init_model()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_model">Model Documentation</a> or the for more information.</li>
 <li><strong>dataset</strong>: Single dataset that has been initialized in ValidMind with <code>vm.init_dataset()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset">Dataset Documentation</a> for more information.</li>
 <li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.</li>
-<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
+<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="../notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
 </ul>
 <dl>
 <dt>parameters</dt>
@@ -844,7 +662,7 @@ Custom metrics can return elements like tables or plots. Tables may be a list of
 A collection of tests which are run together to generate model documentation end-to-end for specific use cases.
 </dd>
 </dl>
-<p>For example, the <a href="../../validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="../../validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="../../validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use cases.</p>
+<p>For example, the <a href="https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html#ClassifierFullSuite"><code>classifier_full_suite</code></a> test suite runs tests from the <a href="https://docs.validmind.ai/validmind/validmind/test_suites/tabular_datasets.html"><code>tabular_dataset</code></a> and <a href="https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html"><code>classifier</code></a> test suites to fully document the data and model sections for binary classification model use cases.</p>
 </div>
 </div>
 </div>
@@ -853,43 +671,43 @@ A collection of tests which are run together to generate model documentation end
 <p>To onboard your organization, teams or business units, and users onto the ValidMind platform:</p>
 <div id="listing-guides-onboarding" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1719514898000" data-listing-file-modified-sort="1719514898594" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="185">
-<a href="../guide/set-up-your-organization.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="187">
+<a href="../guide/configuration/set-up-your-organization.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Set up your organization
 </h5>
 <div class="card-text listing-description">
-This task involves managing organizations within ValidMind, allowing for effective business unit control.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1719419904000" data-listing-file-modified-sort="1719419904380" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="326">
-<a href="../guide/onboarding-users.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="326">
+<a href="../guide/configuration/onboarding-users.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Onboarding users
 </h5>
 <div class="card-text listing-description">
-User setup involves controlling and organizing who has access to the ValidMind platform. Tasks include inviting your initial users, creating groups, and assigning roles and permissions.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454961" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="816">
-<a href="../guide/configure-aws-privatelink.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="816">
+<a href="../guide/configuration/configure-aws-privatelink.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Configure AWS PrivateLink
 </h5>
 <div class="card-text listing-description">
-To keep your network traffic private and minimizes its attack surface, configure AWS PrivateLink to establish a private connection between ValidMind and your company network.
+
 </div>
 </div>
 </div>
@@ -906,15 +724,15 @@ No matching items
 <p>Use workflows to match your organizational needs for overseeing model development, validation, or implementation activities:</p>
 <div id="listing-guides-model-workflows" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454969" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="588">
-<a href="../guide/working-with-model-workflows.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720046921000" data-listing-file-modified-sort="1720046921387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="614">
+<a href="../guide/model-workflows/working-with-model-workflows.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Working with model workflows
 </h5>
 <div class="card-text listing-description">
-Manage lifecycle processes within your ValidMind Platform UI setup using workflows and transitions.
+
 </div>
 </div>
 </div>
@@ -931,29 +749,29 @@ No matching items
 <p>To configure the model inventory to your organization’s requirements and to register new models:</p>
 <div id="listing-guides-model-inventory" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1719516118000" data-listing-file-modified-sort="1719516118792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="167">
-<a href="../guide/working-with-model-inventory.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720046921000" data-listing-file-modified-sort="1720046921387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="164">
+<a href="../guide/model-inventory/working-with-model-inventory.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Working with the model inventory
 </h5>
 <div class="card-text listing-description">
-Use the model inventory within the ValidMind Platform UI to easily track comprehensive details for all your models throughout the model lifecycle. The model inventory is customizable and extensible, and can be configured to suit your unique needs.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454963" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="342">
-<a href="../guide/manage-inventory-custom-fields.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="344">
+<a href="../guide/model-inventory/manage-inventory-custom-fields.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Manage model inventory custom fields
 </h5>
 <div class="card-text listing-description">
-Create and edit custom fields that appear on all models in your model inventory.
+
 </div>
 </div>
 </div>
@@ -970,8 +788,8 @@ No matching items
 <p>To document and test your models in your own model development environment:</p>
 <div id="listing-guides-developer-framework" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1718389854000" data-listing-file-modified-sort="1718389854580" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="463">
-<a href="../guide/get-started-developer-framework.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418737" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="465">
+<a href="../developer/get-started-developer-framework.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -984,8 +802,8 @@ The ValidMind Developer Framework helps you streamline model documentation by au
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454965" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="249">
-<a href="../guide/samples-jupyter-notebooks.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418739" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="249">
+<a href="../developer/samples-jupyter-notebooks.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -1006,22 +824,22 @@ No matching items
 <p>To work with documentation, documentation templates, and model documentation in the platform UI, and to collaborate with model validators:</p>
 <div id="listing-guides-model-documentation" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1715796722000" data-listing-file-modified-sort="1715796722947" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="26">
-<a href="../guide/working-with-documentation-templates.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418779" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="26">
+<a href="../guide/model-documentation/working-with-documentation-templates.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Working with documentation templates
 </h5>
 <div class="card-text listing-description">
-Documentation templates offer a standardized approach to creating consistent and comprehensive model documentation and validation reports. You customize these templates to fit your specific project needs.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1719516118000" data-listing-file-modified-sort="1719516118792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="348">
-<a href="../guide/working-with-model-documentation.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418779" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="350">
+<a href="../guide/model-documentation/working-with-model-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -1034,15 +852,15 @@ After you upload initial model documentation through the developer framework, us
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="383">
-<a href="../guide/export-documentation.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1720046715000" data-listing-file-modified-sort="1720046715877" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="397">
+<a href="../guide/model-documentation/export-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Export documentation
 </h5>
 <div class="card-text listing-description">
-If you need access to your model model documentation or validation reports outside of the ValidMind platform, you can export your model documentation and validation report as Word or PDF files.
+
 </div>
 </div>
 </div>
@@ -1059,22 +877,22 @@ No matching items
 <p>To set up approvals, prepare validation reports, collaborate with model developers, link evidence to your reports, or work with model documentation findings:</p>
 <div id="listing-guides-model-validation" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454964" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="323">
-<a href="../guide/preparing-validation-reports.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1720046715000" data-listing-file-modified-sort="1720046715880" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="331">
+<a href="../guide/model-validation/preparing-validation-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Preparing validation reports
 </h5>
 <div class="card-text listing-description">
-As part of preparing validation reports, you can view the guidelines, collaborate with model developers, add or edit content to your draft validation report, link to evidence, or work with project findings.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1719516118000" data-listing-file-modified-sort="1719516118792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="817">
-<a href="../guide/work-with-model-findings.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1720047089000" data-listing-file-modified-sort="1720047089445" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="813">
+<a href="../guide/model-validation/work-with-model-findings.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -1087,29 +905,29 @@ Model findings are detailed observations identified during the model validation 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454968" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="558">
-<a href="../guide/view-reports.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1720045418000" data-listing-file-modified-sort="1720045418798" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="567">
+<a href="../guide/model-validation/view-reports.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 View reports
 </h5>
 <div class="card-text listing-description">
-Reports provide quick insights into your model validation efforts, detailing critical findings, risk exposure, and compliance status to ensure effective oversight and management of model-related risks.
+
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1718987454000" data-listing-file-modified-sort="1718987454962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="383">
-<a href="../guide/export-documentation.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1720046715000" data-listing-file-modified-sort="1720046715877" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="397">
+<a href="../guide/model-documentation/export-documentation.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Export documentation
 </h5>
 <div class="card-text listing-description">
-If you need access to your model model documentation or validation reports outside of the ValidMind platform, you can export your model documentation and validation report as Word or PDF files.
+
 </div>
 </div>
 </div>
