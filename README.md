@@ -85,3 +85,39 @@ These directories may have sub-directories depending on their size and grouped s
 - `site-unused` — Archived files get moved here. 
 - `templates` — You can find generic structural templates in this folder here to help you build your guides.
 
+## Working with files
+
+### `.qmd`
+> Files for the docs site are created using [Quarto Markdown](https://quarto.org/docs/authoring/markdown-basics.html) (`.qmd`). These, along with any Jupyter Notebooks pulled in from `developer-framework`, get rendered into HTML files. 
+
+#### Hyperlinks
+When constructing links, refer to the `.qmd` file as Quarto will properly render these into `.html` links on your behalf and check to see if the destinations are able to be resolved:
+
+| Correct | Incorrect |
+|---|---|
+| `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.qmd)` | `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.html)` |
+
+The only exceptions are within HTML, such as CSS-styled buttons which necessitate usage of `.html` href links:
+
+```html
+<a class="btn btn-primary" role="button" style="padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">QuickStart</a>
+```
+
+> You'll need to pay special attention to these links and manually test them to ensure that they are not broken whenever any changes to file destinations are made. 
+
+When constructing filepaths, including while using [Quarto's Includes](https://quarto.org/docs/authoring/includes.html) (single-sourcing feature), you'll also want start with the root directory whenever possible as this minimizes usage of unclear relative paths: 
+
+| Correct | Incorrect |
+|---|---|
+| `[Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)` | `[Register models in the inventory](../../register-models-in-inventory.qmd)` |
+
+### Jupyter Notebooks
+> Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
+
+Changes need to be made in the [root repository `developer-framework`](https://github.com/validmind/developer-framework) and pulled into this one with:
+
+```bash
+make get-source
+```
+
+
