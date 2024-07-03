@@ -1,0 +1,48 @@
+name: Check rendered site for broken links
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Quarto
+      run: |
+        wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.2.269/quarto-1.2.269-linux-amd64.deb
+        sudo dpkg -i quarto-1.2.269-linux-amd64.deb
+# idk about this
+
+    - name: Install dependencies
+      run: |
+        if [ -f _extensions/quarto-ext.yml ]; then
+          quarto install extension
+        fi
+# idk about this one too
+
+    - name: Render Site
+      run: quarto render
+
+    - name: Upload Quarto output
+      uses: actions/upload-artifact@v2
+      with:
+        name: quarto-output
+        path: _site # not sure about this as output
+  
+# I don't think we need this next one:
+
+    - name: Upload Quarto HTML report
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: link-check-report
+        path: .quarto/check/links
