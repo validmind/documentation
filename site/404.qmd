@@ -1,0 +1,96 @@
+---
+title: "inValidPage (404)"
+html:
+  page-layout: full
+filters:
+  - tachyons
+---
+
+```{=html}
+<style>
+a {
+  color: #DE257E;
+  text-decoration: none;
+}
+
+a:hover {
+  /* color: #DE257E; */
+  text-decoration: none;
+}
+
+</style>
+```
+
+<div class="sidebar-search">
+  <div id="quarto-search" class="type-textbox" title="Search" style="margin-bottom:60px;">
+
+  </div>
+</div>
+
+
+::: {.column-screen}
+
+
+```{=html}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvalidPage</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-rain"></canvas>
+    <script>
+        const canvas = document.getElementById('matrix-rain');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize);
+        const chars = 'ValidMind'.split('');
+        const drops = new Array(columns).fill(0);
+
+        function randomChar() {
+            return chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = `${fontSize}px monospace`;
+            ctx.fillStyle = 'rgba(255, 20, 147, 1)'; // Change text color to pink
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = randomChar();
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() < 0.1) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 50);
+    </script>
+</body>
+</html>
+```
+
+:::
