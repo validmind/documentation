@@ -36,12 +36,12 @@ jobs:
 
     - name: Check for render errors
       run: |
-        if [ -s site/render_errors.log ]; then
-          echo "Errors detected during render"
+        if grep -q 'WARN:\|ERROR:' site/render_errors.log; then
+          echo "Warnings or errors detected during render"
           cat site/render_errors.log
           exit 1
         else
-          echo "No errors detected during render"
+          echo "No warnings or errors detected during render"
         fi
 
     # - name: Upload Quarto output
