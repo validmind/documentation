@@ -77,6 +77,7 @@ These directories may have sub-directories depending on their size and grouped s
 #### Supporting `site` directories
 - `_site` — This is where static files rendered by `quarto render` get placed.
 - `assets` — This is where general shared assets live (stylesheets, promotional images, etc.).
+- `internal` — For internal testing only.
 - `notebooks` — This is where notebooks retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
 - `tests` — This is where tests retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
 - `wip` — Work in progress files should live here, and have [the `search` flag set to `false`](https://quarto.org/docs/websites/website-search.html#disabling-search).
