@@ -82,12 +82,17 @@ docs-site: clean clone notebooks python-docs test-descriptions
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
-	quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
+		echo "You're not on the docs-demo branch, no action taken."; \
+	else \
+		echo "\nDeploying docs-demo site ..."; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+	fi
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "nrichers/sc-4580/bny-create-training-collateral" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
-		echo "You're not on the main or prod branches, no action taken."; \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
 		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
