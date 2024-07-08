@@ -85,7 +85,7 @@ deploy-demo:
 	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
 		echo "You're not on the docs-demo branch, no action taken."; \
 	else \
-		echo "\nDeploying prod site ..."; \
+		echo "\nDeploying docs-demo site ..."; \
 		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
