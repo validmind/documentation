@@ -12,17 +12,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Set up Quarto
-    #   run: |
-    #     wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.5.53/quarto-1.5.53-linux-amd64.deb
-    #     sudo dpkg -i quarto-1.5.53-linux-amd64.deb
-
-    # - name: Set up Quarto
-    #   run: |
-    #     latest_version=$(curl -s https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | grep 'tag_name' | cut -d\" -f4)
-    #     wget https://github.com/quarto-dev/quarto-cli/releases/download/${latest_version}/quarto-${latest_version}-linux-amd64.deb
-    #     sudo dpkg -i quarto-${latest_version}-linux-amd64.deb
-
     - name: Get latest Quarto release URL
       id: get-quarto-url
       run: |
@@ -34,13 +23,6 @@ jobs:
       run: |
         wget ${{ env.DOWNLOAD_URL }} -O quarto-latest-linux-amd64.deb
         sudo dpkg -i quarto-latest-linux-amd64.deb
-
-    # - name: Install dependencies
-    #   run: |
-    #     if [ -f _extensions/quarto-ext.yml ]; then
-    #       quarto install extension
-    #     fi
-# idk about this one too
 
     - name: Render Site
       run: |
