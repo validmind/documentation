@@ -2,6 +2,9 @@ project:
   type: website
   post-render: make python-docs
 website:
+  announcement: 
+    content: "[**{{< fa graduation-cap >}} ValidMind Academy**](/training/training-overview.qmd) — Gain hands-on experience and explore what ValidMind has to offer with our training environment." 
+    position: below-navbar 
   favicon: validmind.png
   title: "ValidMind"
   cookie-consent:
@@ -20,6 +23,7 @@ website:
   repo-actions: [edit, issue]
 
   navbar:
+    collapse-below: xl
     logo: about/ValidMind-logo-color.svg
     background: white
     title: false
@@ -55,7 +59,7 @@ website:
           file: https://jupyterhub.validmind.ai/
         - text: "---"
         - text: "{{< fa book >}} REFERENCE"
-        - text: "{{< fa external-link >}} {{< var vm_framework >}}"
+        - text: "{{< fa external-link >}} {{< var validmind_developer >}}"
           file: validmind/validmind.html
           target: _blank
       - text: "FAQ"
@@ -65,6 +69,10 @@ website:
       - text: "validmind.com {{< fa external-link >}}"
         file: https://validmind.com/
         target: _blank
+
+#  COMMENT THIS OUT WHEN DONE TESTING
+#       - text: "{{< fa flask >}} Testing"
+#         file: internal/testing.qmd
 
   sidebar: 
     - title: "Home"
@@ -82,8 +90,7 @@ website:
           contents:
           - text: "Automated testing & documentation"
             file: about/overview-model-documentation.qmd
-          - text: "Model risk governance management"
-            file: about/overview-model-risk-management.qmd
+          - about/overview-model-risk-management.qmd
         - about/glossary/glossary.qmd
 
         - text: "---"
@@ -161,15 +168,17 @@ website:
         - guide/guides.qmd
         - text: "---"
         - text: "CONFIGURATION"
-        - guide/configuration/set-up-your-organization.qmd
-        - file: guide/configuration/onboarding-users.qmd
+        - file: guide/configuration/managing-your-organization.qmd
+          contents:
+            - guide/configuration/set-up-your-organization.qmd
+            - guide/configuration/configure-aws-privatelink.qmd
+        - file: guide/configuration/managing-users.qmd
           contents:
           - guide/configuration/manage-users.qmd
           - guide/configuration/manage-groups.qmd
           - guide/configuration/manage-roles.qmd
           - guide/configuration/manage-permissions.qmd
         - guide/configuration/view-your-profile.qmd
-        - guide/configuration/configure-aws-privatelink.qmd
         - text: "---"
         - text: "MODEL WORKFLOWS"
         - text: "Working with workflows"
@@ -251,7 +260,7 @@ website:
           contents: "notebooks/code_samples/**"
         - text: "---"
         - text: "REFERENCE"
-        - text: "{{< var vm_framework >}} {{< fa external-link >}}"
+        - text: "{{< var validmind_developer >}} {{< fa external-link >}}"
           file: validmind/validmind.html
           target: _blank
 
@@ -274,6 +283,19 @@ website:
         - text: "---"
         - support/troubleshooting.qmd
 
+# COMMENT THIS OUT WHEN DONE TESTING
+#     - title: "Testing"
+#       contents:
+#         - internal/testing.qmd
+#         - text: "---"
+#         - text: "EXPERIMENTS"
+#         - file: internal/footnotes/footnotes.qmd
+#           contents:
+#             - internal/footnotes/hover-only.qmd
+#             - internal/footnotes/margin-only.qmd
+#             - internal/footnotes/margin-hover.qmd
+#             - internal/footnotes/text-notes.qmd
+
   page-footer:
     background: "#DE257E"
     left: "© Copyright 2023-2024 ValidMind Inc. All Rights Reserved."
@@ -292,6 +314,12 @@ website:
 
 format:
   html:
+    grid:
+      body-width: 1000px
+    footnotes-hover: true
+    reference-location: margin
+    include-in-header: 
+      - heap-production.html
     code-overflow: wrap
     code-annotations: below
     theme: 
