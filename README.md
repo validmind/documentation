@@ -113,6 +113,11 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 |---|---|
 | `[Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)` | `[Register models in the inventory](../../register-models-in-inventory.qmd)` |
 
+### Column layouts
+> Use the installed [Tachyons Extension For Quarto](https://github.com/nareal/tachyons) to build column layouts so that they are properly mobile responsive. 
+
+Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template for an example.
+
 ### Jupyter Notebooks
 > Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
 
