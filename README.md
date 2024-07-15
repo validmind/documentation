@@ -62,7 +62,7 @@ site
 Core files you manipulate live under `site` in these key directories that more or less correlate to the sections of the docs site reachable via the top navigation bar:
 
 - `about` 
-- `developer-framework` 
+- `developer` 
 - `faq` 
 - `get-started` 
 - `guide`  
