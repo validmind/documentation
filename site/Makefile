@@ -37,6 +37,8 @@ notebooks:
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
+	@echo "Checking out intro_for_model_developers_EXECUTED.ipynb from main ..."
+	@git checkout main -- notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
@@ -44,10 +46,6 @@ notebooks:
 	@if [ -f "$(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb" ]; then mv $(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb $(DEST_DIR_NB)/quickstart_customer_churn_full_suite.ipynb; fi
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
-    # This line fixes text casing in Quarto when notebooks are embedded via wildcard
-	@echo "Renaming code_samples/nlp_and_llm to fix Quarto sidebar ..."
-	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/NLP_and_LLM; fi
-
 
 # Make Python library docs & copy them over
 python-docs:
@@ -80,12 +78,17 @@ docs-site: clean clone notebooks python-docs test-descriptions
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
-	quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
+		echo "You're not on the docs-demo branch, no action taken."; \
+	else \
+		echo "\nDeploying docs-demo site ..."; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+	fi
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "main" ] && [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
-		echo "You're not on the main or prod branches, no action taken."; \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
 		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \

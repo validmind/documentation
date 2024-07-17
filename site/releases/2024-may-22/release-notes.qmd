@@ -1,5 +1,8 @@
 ---
 title: "May 22, 2024"
+filters:
+  - tachyons
+fig-cap-location: top
 ---
 
 ## Release highlights
@@ -11,28 +14,33 @@ Labels: enhancement, highlight
 --->
 ### Introductory notebook for model developers
 
-::: {.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-8}
-Our new end-to-end notebook gives you a full introduction to the {{< var vm_framework >}}. You can use this notebook to learn how the end-to-end documentation process works, based on common scenarios you encounter in model development settings. 
+::: {.w-80-ns}
+
+Our new end-to-end notebook gives you a full introduction to the {{< var validmind_developer >}}. You can use this notebook to learn how the end-to-end documentation process works, based on common scenarios you encounter in model development settings. 
+
 :::
 
-::: {.g-col-4}
+::: {.w-20-ns .content-center}
+
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/intro_for_model_developers.ipynb" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
 </form>
+
 :::
-:::
+
+::::
 
 ![](intro-for-developers-notebook.png){fig-alt="A screenshot showing the new introductory notebook for developers opened on JupyterHub"}
 
 High level sections include:
 
-1. **Initializing the {{< var vm_framework >}}** — The {{< var vm_dev >}} provides tools for documentation and testing, from dataset descriptions to model validation using various open-source frameworks.
+1. **Initializing the {{< var validmind_developer >}}** — The {{< var developer >}} provides tools for documentation and testing, from dataset descriptions to model validation using various open-source frameworks.
 
 2. **Starting the model development process** — Access the test repository to use individual tests as building blocks for model development. Learn to run tests, analyze results, and add evidence to model documentation. 
 
-    See the full list of tests at [Test descriptions](https://docs.validmind.com/guide/test-descriptions.html) or try the [Test sandbox](https://docs.validmind.com/guide/test-sandbox.html).
+    See the full list of tests at [Test descriptions](/developer/model-testing/test-descriptions.qmd) or try the [Test sandbox](/developer/model-testing/test-sandbox.qmd).
 
 3. **Implementing custom tests** — Include custom tests in model documentation. Learn how to add these tests and use them as additional evidence.
 
@@ -45,25 +53,27 @@ Labels: enhancement, highlight
 --->
 ### Support for external models
 
-:::{.grid}
-::: {.g-col-8}
 You can now run documentation tests without passing a Python-native model object. This change enables you to document:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+- Models that are developed in non-Python environments
+- Non-standard model interfaces:
+  - Models deployed as APIs, such as SageMaker model endpoints
+  - Tools such as Spark where a model is not a typical object that exposes a `predict()` interface
+
 :::
 
-::: {.g-col-4}
+::: {.w-30-ns .content-center}
+
 <form method="get" action="https://docs.validmind.ai/validmind/validmind.html" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Read developer documentation</button>
 </form>
 
 :::
 
-:::
-
-
-- Models that are developed in non-Python environments
-- Non-standard model interfaces:
-  - Models deployed as APIs, such as SageMaker model endpoints
-  - Tools such as Spark where a model is not a typical object that exposes a `predict()` interface
+::::
 
 To run tests for these models, you typically must load model predictions from a file, dataset, and so on. The new `init_model` interface does not enforce a Python model object anymore. You only need to pass `attributes` that describe the model which is required as a best practice for model documentation.
 
@@ -94,7 +104,7 @@ vm_model = vm.init_model(
 
 #### Assigning predictions
 
-Since there's no model object available, the {{< var vm_dev >}} won't be able to call `model.predict()` or `model.predict_proba()`. You need to load predictions and probabilities manually. For example:
+Since there's no model object available, the {{< var developer >}} won't be able to call `model.predict()` or `model.predict_proba()`. You need to load predictions and probabilities manually. For example:
 
 ```python
 vm_train_ds.assign_predictions(
@@ -113,19 +123,23 @@ Labels: enhancement, highlight
 --->
 ### Custom metric function decorators
 
-:::{.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-8}
+::: {.w-80-ns}
+
 We introduced a new `metric` decorator that turns any function into a ValidMind Metric that you can use in your documentation. To learn what this decorator can do for you, try our code sample on JupyterHub!
+
 :::
 
-::: {.g-col-4}
+::: {.w-20-ns .content-center}
+
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/custom_tests/implement_custom_tests.ipynb" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
 </form>
-:::
 
 :::
+
+::::
 
 Custom metrics offer added flexibility. They allow you to extend the library of default metrics provided by ValidMind which enables you to document any type of model or use case.
 
@@ -138,19 +152,23 @@ Labels: enhancement, design, highlight
 --->
 ### Documentation overview page
 
-::: {.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-8}
-![](317065110-55d090d3-f32e-4f36-9bdd-cee0f1c4203d.png)
+::: {.w-50-ns}
+
+![](documentation-overview-page.png){fig-alt="A screenshot showing the new Document Overview page in the platform UI"}
+
 :::
 
-::: {.g-col-4}
+::: {.w-40-ns}
+
 Our new documentation is designed to help you find the information you need more quickly. 
 
 Now more distinct from the Model Details page, the new overview page provides easier navigation and enhanced data visualization to better understand the progress of the documentation stage.
-:::
 
 :::
+
+::::
 
 <!---
 PR #696: Added "Generate with AI" button to the CKEditor
@@ -161,13 +179,17 @@ Labels: enhancement, highlight
 
 Our new **Generate with AI** button is now available when you edit text blocks in model documentation or model validation reports. This button replaces the old button that was used to AI-generate content.
 
-Clicking on **Generate with AI** pops up a modal showing the AI content generation:
+Clicking on **Generate Text with AI** pops up a modal showing the AI content generation:
 
-![](323798334-b8cfb363-3dfb-4bfd-a638-cc728a2ad010.png){width="80%" fig-alt="A screenshot showing a text editor with a toolbar. The New Generate with AI button is available on the right."}
+![](generate-with-ai.png){width="80%" fig-alt="A screenshot showing a text editor with a toolbar. The New Generate with AI button is available on the right."}
 
 Here, you can choose to **Accept Text** or **Try Again**:
 
+<<<<<<< HEAD
 ![](323798341-a0da2945-34d8-4bba-ba7a-f41f542a8e11.png){width="80%" fig-alt="A screenshot showing a modal with AI-generated text."}
+=======
+![](ai-content-builder.png){width="80%" fig-alt="A screenshot showing a modal with AI-generated text"}
+>>>>>>> d9d5eb4845731710b497495c7c9888116bd569bf
 --->
 
 <!---
@@ -179,19 +201,26 @@ Labels: enhancement, highlight
 
 We created a new documentation outline page which replaces the existing project overview page. This page shows a section-by-section outline of your project's documentation:
 
-![](319353094-9176b47f-fa44-4deb-bf63-c510e8c12cbb.png){fig-alt="A screenshot showing the new documentation outline page, with numbered model documentation sections from 1. to 3.4"}
+![](overview-conversations.png){fig-alt="A screenshot showing the new documentation outline page, with numbered model documentation sections from 1. to 3.4"}
 
-::: {.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-5}
-It also includes a count of every unresolved conversation within each section. From here, you can hover over the chat icon to see a preview of all unresolved conversations. Click a chat icon to jump to a conversations, or  resolve conversations directly from the popup.
+::: {.w-40-ns}
+
+It also includes a count of every unresolved conversation within each section. 
+
+- From here, you can hover over the chat icon to see a preview of all unresolved conversations. 
+- Click a chat icon to jump to a conversations, or  resolve conversations directly from the popup.
+
 :::
 
-::: {.g-col-6}
-![](319353097-87dd5489-e358-4dea-9316-58df135f45ab.png){fig-alt="A screenshot showing four unresolved conversation between model developers or validator"}
-:::
+::: {.w-50-ns}
+
+![](unresolved-conversations.png){fig-alt="A screenshot showing four unresolved conversation between model developers or validator"}
 
 :::
+
+::::
 
 <!---
 PR #658: feat: add business unit and risk area at organization setting
@@ -220,6 +249,10 @@ Labels: enhancement, servicerocket
 --->
 ### Business unit and risk areas settings for organizations 
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
+
 We have introduced several updates to the Organization settings page, enabling you to manage business units and risk areas for your organization. 
 
 The following features are now available:
@@ -229,7 +262,18 @@ The following features are now available:
 - Remove risk areas from the organization settings page.
 - Add or remove risk areas from your organization.
 
-{{< video 319067297-cfc828b7-c4a8-46a4-89ff-1b7286681189.mp4 width="600" >}}
+:::
+
+::: {.w-50-ns}
+
+![](business-unit-risk-areas.gif){fig-alt="A gif showing new business unit and risk area settings for your organization"}
+
+<!-- {{< video business-unit-risk-areas.mp4 >}} -->
+
+:::
+
+::::
+
 
 <!---
 PR #728: feat: add, remove, and rename sections with the new template editing experience
@@ -254,17 +298,25 @@ This update allows you to edit documentation templates visually, eliminating the
 
 This new visual editing interface streamlines the template editing process, making it more intuitive and user-friendly:
 
-::: {.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-6}
-{{< video 328118693-a8d38a22-d3e5-4d96-8299-f1f19fc64366.mp4 >}}
-:::
+::: {.w-40-ns}
 
-::: {.g-col-6}
-{{< video 328846515-14b8d89d-4438-45b0-a050-60c1e23dc53e.mp4 >}}
-:::
+![Enhanced template setting page](enhanced-templates.gif){fig-alt="A gif showing edits in the new enhanced documentation template editor"}
+
+<!-- {{< video enhanced-templates.mp4 >}} -->
 
 :::
+
+::: {.w-40-ns}
+
+![Edit mode functionality](edit-mode.gif){fig-alt="A gif a template in edit mode"}
+
+<!-- {{< video edit-mode.mp4 >}} -->
+
+:::
+
+::::
 
 ## Enhancements
 
@@ -275,9 +327,10 @@ Labels: enhancement
 --->
 ### Add extra columns on the fly
 
+:::: {.flex .flex-wrap .justify-around}
 
-:::{.grid}
-::: {.g-col-8}
+::: {.w-40-ns}
+
 We added support for two new VMDataset methods:
 
 - `add_extra_column()`
@@ -285,14 +338,16 @@ We added support for two new VMDataset methods:
 
 :::
 
-::: {.g-col-4}
+::: {.w-50-ns .content-center}
+
 <form method="get" action="https://docs.validmind.ai/validmind/validmind.html" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Read developer documentation</button>
 </form>
 
 :::
 
-:::
+::::
+
 
 #### `add_extra_column()`
 
@@ -422,19 +477,23 @@ Labels: enhancement
 --->
 ### Use metric decorators with test providers
 
-:::{.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-8}
+::: {.w-80-ns}
+
 Continuing our efforts to simplify the process for getting your custom code working in ValidMind, we now support functional metrics for internal tests and test providers. Functional metrics are tests that can be defined as pure functions without any boilerplate.
+
 :::
 
-::: {.g-col-4}
+::: {.w-20-ns .content-center}
+
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/custom_tests/integrate_external_test_providers.ipynb" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
 </form>
-:::
 
 :::
+
+::::
 
 <!---
 PR #48: John6797/sc 3881/support for metadata in new metric decorator
@@ -472,23 +531,27 @@ Labels: enhancement
 --->
 ### Assign prediction probabilities
 
-:::{.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-8}
+::: {.w-80-ns}
+
 We added support for assigning `prediction_probabilities` to `assign_predictions`. This support enables you to:
-:::
-
-::: {.g-col-4}
-<form method="get" action="https://github.com/validmind/developer-framework/blob/main/notebooks/code_sharing/credit_risk/assign_prediction_probabilities.ipynb" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on GitHub</button>
-</form>
-:::
-
-:::
 
 - Assign prediction values and probabilities that have been computed outside ValidMind.
 - Incorporate prediction values and probabilities from datasets that already have prediction columns.
 - Automate the assignment of prediction values and probabilities within VM.
+
+:::
+
+::: {.w-20-ns .content-center}
+
+<form method="get" action="https://github.com/validmind/developer-framework/blob/main/notebooks/code_sharing/credit_risk/assign_prediction_probabilities.ipynb" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on GitHub</button>
+</form>
+
+:::
+
+::::
 
 <!---
 PR #686: Ability to associate a Finding with a documentation section.
@@ -530,19 +593,21 @@ We added a status picker to each section of the model documentation page.
 
 This picker allows you to set whether the section is **In Progress** or **Done**. The Documentation overview page displays a total count of how many sections have been completed, as well as a checkmark indicating that the section is done.
 
-:::{.grid}
+:::: {.flex .flex-wrap .justify-around}
 
-::: {.g-col-7}
-![](321852826-1302b07a-4424-4006-818b-b65478e0a893.png){fig-alt="A screenshot of the Documentation overview page displaying a total count of how many sections have been completed."}
-:::
+::: {.w-50-ns}
 
-::: {.g-col-5}
-![](321852830-22bf5a60-3ab9-4201-b613-2d7cbf2f7738.png){width="60%" fig-alt="A screenshot of the status picker of a section of the model documentation page."}
-:::
+![](overview-completion.png){fig-alt="A screenshot of the Documentation overview page displaying a total count of how many sections have been completed"}
 
 :::
 
+::: {.w-40-ns}
 
+![](section-status.png){width="60%" fig-alt="A screenshot of the status picker of a section of the model documentation page"}
+
+:::
+
+::::
 
 <!---
 PR #711: Added feature to specify a template for Rich Text Custom fields
@@ -567,7 +632,7 @@ Labels: enhancement
 
 We created a new Validation Report overview page which shows a section-by-section outline of a model's validation report, including a total compliance summary for all risk areas associated with the model.
 
-![](validation-report-overview-page.png){width="60%" fig-alt="A screenshot showing the section-by-section outline of the validation report, along with a total compliance summary."}
+![](validation-report-overview-page.png){width="60%" fig-alt="A screenshot showing the section-by-section outline of the validation report, along with a total compliance summary"}
 
 You can hover over any section in the report outline to view the current compliance status in the document section. The new validation report page also adds an **Add finding** button.
 
@@ -582,11 +647,11 @@ We added the ability to flag models as `Is Vendor Model` and specify a vendor na
 
 How you add `Vendor Model` as a filtering flag:
 
-![](327548926-6b3fe585-35ba-465b-a3ac-3af2ead8ebe3.png){width="70%" fig-alt="A screenshot showing how you can flag vendor models when registering a model in the inventory."}
+![](is-vendor-model.png){width="70%" fig-alt="A screenshot showing how you can flag vendor models when registering a model in the inventory"}
 
 Also available is an improved look and functionality for model inventory filtering:
 
-![](327548917-d6f0bc14-4a99-440d-bba3-cd578a47fc5d.png){width="80%" fig-alt="A screenshot showing model inventory filtering options"}
+![](model-inventory-filters.png){width="80%" fig-alt="A screenshot showing model inventory filtering options"}
 
 <!---
 PR #737: Display group information for inventory models
@@ -597,7 +662,7 @@ Labels: enhancement
 
 Admin users can now modify the group the inventory model belongs to:
 
-![](329086860-6906834d-83e0-415b-9836-9dabc224bec8.png){width="80%" fig-alt="A screenshot showing how you can modify the group an inventory model belongs to."}
+![](model-group.png){width="80%" fig-alt="A screenshot showing how you can modify the group an inventory model belongs to"}
 
 ## Bug fixes
 
@@ -608,38 +673,35 @@ Labels: bug
 --->
 ### Missing required field card view
 
-:::{.grid}
-
-::: {.g-col-4}
 We added a tooltip for required missing fields on Inventory Model card view.
-:::
 
-::: {.g-col-8}
-![](318640225-1e59865c-3c0e-4600-b490-4a0c22cc4b42.png){width="80%" fig-alt="A screenshot showing a tooltip with the words 'Missing required fields: Vendor Name'"}
-:::
-
-:::
-
+![](missing-vendor-name.png){width="80%" fig-alt="A screenshot showing a tooltip with the words 'Missing required fields: Vendor Name'"}
 
 <!---
 PR #683: Template bugixes
 URL: https://github.com/validmind/frontend/pull/683
 Labels: bug
 --->
+
 ### Template bug fixes
 
-:::{.grid}
-
-::: {.g-col-4}
 We now validate whether a template has duplicate section IDs and return an error if a duplicate ID is found. 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns}
+
+![](template-yaml.png){width="80%" fig-alt="A screenshot showing template YAML"}
+
 :::
 
-::: {.g-col-8}
-![](319061059-a70f36de-cb09-42b0-b46f-0a142e4423e1.png){width="60%" fig-alt="A screenshot showing template YAML"}<br><br>
-![](319060925-3658a36b-ba08-4ebd-bbda-d9b19893272a.png){width="60%" fig-alt="A screenshot showing the error message 'Duplicate section ID test found in template'"}
-:::
+::: {.w-60-ns}
+
+![](duplicate-template-id.png){width="80%" fig-alt="A screenshot showing the error message 'Duplicate section ID test found in template'"}
 
 :::
+
+::::
 
 ## Documentation
 
@@ -655,11 +717,11 @@ Labels: documentation
 --->
 ### Improved site navigation with new "About" section
 
-![](326092230-8bf74eef-f05e-4c50-b18c-2790c43577ca.png){fig-alt="A screenshot of the ValidMind docs site showing the new About section"}
+![](about-section.png){fig-alt="A screenshot of the ValidMind docs site showing the new About section"}
 
 #### About ValidMind
 
-We've revamped our documentation for a cleaner, more intuitive experience. The update features a brand new **[About](../../about/overview.qmd)** section:
+We've revamped our documentation for a cleaner, more intuitive experience. The update features a brand new **[About](/about/overview.qmd)** section:
 
 - **Features** includes product overviews and our glossary.
 - **Contributing** includes community information and our new style guide.
@@ -670,12 +732,12 @@ We've revamped our documentation for a cleaner, more intuitive experience. The u
 
 Find a brand new set of guides on **contributing** to our open source software. Learn how to engage with the ValidMind community, read about our brand voice and vision, and more:
 
-- **[ValidMind community:](../../about/validmind-community.qmd)** You're part of the ValidMind community. Come learn and play with us.
-- **[ValidMind style guide:](../../about/style-guide.qmd)** Check out the first official version of the ValidMind style guide.
+- **[ValidMind community:](/about/contributing/validmind-community.qmd)** You're part of the ValidMind community. Come learn and play with us.
+- **[ValidMind style guide:](/about/contributing/style-guide/style-guide.qmd)** Check out the first official version of the ValidMind style guide.
 
 #### ValidMind style guide
 
-Check out the first official version of the [ValidMind style guide](../../about/style-guide.qmd)!  
+Check out the first official version of the [ValidMind style guide](/about/contributing/style-guide/style-guide.qmd)!  
 
 - Learn about the ValidMind voice
 - Understand our shared vision and goals
@@ -683,13 +745,13 @@ Check out the first official version of the [ValidMind style guide](../../about/
 
 
 <!---
-PR #54: Add more contextual information to Jupyter notebooks 
+PR #54: Add more contextual information to Jupyter Notebooks 
 URL: https://github.com/validmind/developer-framework/pull/54
 Labels: documentation
 --->
-### More contextual information in Jupyter notebooks
+### More contextual information in Jupyter Notebooks
 
-Many of our Jupyter notebooks have received improvements to make them easier to consume and more standalone:
+Many of our Jupyter Notebooks have received improvements to make them easier to consume and more standalone:
 
 - Introductions now include more contextual information
 - A new table of contents makes notebooks easier to navigate
@@ -719,17 +781,9 @@ You can now access the QuickStart directly from the **[homepage of our docs site
 
 #### New QuickStart video
 
-::: {.grid}
-
-::: {.g-col-3}
 A new three-minute video walks you through documenting a model with ValidMind and is now included in the QuickStart for JupyterHub.
-:::
 
-::: {.g-col-9}
 {{< video https://youtu.be/rIR8Mql7eGs?si=d8xDhroXNY9fb0i8 >}}
-:::
-
-:::
 
 <!---
 PR #173: First draft for sandbox instructions
@@ -748,5 +802,5 @@ Most of our model documentation features are available for you to test in the sa
 - Preparing model validation reports
 - Large language model (LLM) support
 
-These features provide a rich context for testing and evaluation. You can use realistic models and datasets without any risk to your production environment. [Learn more...](../../guide/get-started-sandbox.qmd)
+These features provide a rich context for testing and evaluation. You can use realistic models and datasets without any risk to your production environment. [Learn more...](/guide/get-started-sandbox.qmd)
 

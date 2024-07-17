@@ -9,7 +9,7 @@ to weather data. This analysis provides valuable insights into the probability d
 (kurtosis) underlying the data.
 
 **Test Mechanism**: This test operates on a specific column within the dataset that is required to have a datetime
-type index. It goes through each column in the given dataset, creating a histogram with Seaborn's histplot
+type index. It goes through each column in the given dataset, creating a histogram with Plotly's histplot
 function. In cases where the dataset includes more than one time-series (i.e., more than one column with a datetime
 type index), a distinct histogram is plotted for each series. Additionally, a kernel density estimate (KDE) line is
 drawn for each histogram, providing a visualization of the data's underlying probability distribution. The x and

@@ -2,6 +2,9 @@ project:
   type: website
   post-render: make python-docs
 website:
+  announcement: 
+    content: "[**{{< fa graduation-cap >}} ValidMind Academy**](/training/training-overview.qmd) — Try our training environment to explore what ValidMind has to offer" 
+    position: below-navbar 
   favicon: validmind.png
   title: "ValidMind"
   cookie-consent:
@@ -13,12 +16,14 @@ website:
   search: 
     location: sidebar
     type: textbox
+    show-item-context: true
   page-navigation: true
   repo-url: https://github.com/validmind/documentation/
   repo-subdir: site/
   repo-actions: [edit, issue]
 
   navbar:
+    collapse-below: xl
     logo: about/ValidMind-logo-color.svg
     background: white
     title: false
@@ -28,33 +33,33 @@ website:
       - text: "About"
         file: about/overview.qmd
       - text: "Get Started"
-        file: guide/get-started.qmd
+        file: get-started/get-started.qmd
       - text: "Guides"
         file: guide/guides.qmd
       - text: "{{< fa cube >}} Developer Framework"
         menu:
         - text: "{{< fa rocket >}} Get Started"
-          file: guide/get-started-developer-framework.qmd
+          file: developer/get-started-developer-framework.qmd
         - text: "{{< fa cubes >}} Supported Models"
-          file: guide/supported-models.qmd
+          file: developer/model-documentation/supported-models.qmd
         - text: "---"
         - text:  "{{< fa vial >}} TESTING"
         - text: "{{< fa flask-vial >}} Run Tests & Test Suites"
-          file: guide/testing-overview.qmd
+          file: developer/model-testing/testing-overview.qmd
         - text: "{{< fa microscope >}} Test Descriptions"
-          file: guide/test-descriptions.qmd
-        - guide/test-sandbox.qmd
+          file: developer/model-testing/test-descriptions.qmd
+        - developer/model-testing/test-sandbox.qmd
         - text: "---"
         - text: "{{< fa code >}} CODE SAMPLES"
         - text: "{{< fa book-open-reader >}} All Code Samples · `LLM` · `NLP` · `Time Series` · `Etc.`"
-          file: guide/samples-jupyter-notebooks.qmd
+          file: developer/samples-jupyter-notebooks.qmd
         - text: "{{< fa download >}} Download Code Samples · `notebooks.zip`"
           file: notebooks.zip
         - text: "{{< fa hand-point-right >}} Try it on Jupyter Hub {{< fa hand-point-left >}}"
           file: https://jupyterhub.validmind.ai/
         - text: "---"
         - text: "{{< fa book >}} REFERENCE"
-        - text: "{{< fa external-link >}} {{< var vm_framework >}}"
+        - text: "{{< fa external-link >}} {{< var validmind_developer >}}"
           file: validmind/validmind.html
           target: _blank
       - text: "FAQ"
@@ -64,6 +69,10 @@ website:
       - text: "validmind.com {{< fa external-link >}}"
         file: https://validmind.com/
         target: _blank
+
+#  COMMENT THIS OUT WHEN DONE TESTING
+      # - text: "{{< fa flask >}} Testing"
+      #   file: internal/testing.qmd
 
   sidebar: 
     - title: "Home"
@@ -76,143 +85,182 @@ website:
 
     - title: "About"
       contents:
-        - text: "About"
-          file: about/overview.qmd
-        - text: "---"
-        - text: "FEATURES"
-        - text: "Automated testing & documentation"
-          file:  about/overview-model-documentation.qmd
-        - text: "Model risk governance management"
-          file: about/overview-model-risk-management.qmd
+        - file: about/overview.qmd
+          text: "About"
+          contents:
+          - text: "Automated testing & documentation"
+            file: about/overview-model-documentation.qmd
+          - about/overview-model-risk-management.qmd
         - about/glossary/glossary.qmd
 
         - text: "---"
         - text: "CONTRIBUTING"
-        - about/validmind-community.qmd
-        - about/style-guide.qmd
+        - about/contributing/validmind-community.qmd
+        - file: about/contributing/style-guide/style-guide.qmd
+          contents:
+          - about/contributing/style-guide/voice-and-tone.qmd
+          - about/contributing/style-guide/conventions.qmd
         - text: "---"
         - text: "RELEASES"
         # MAKE-RELEASE-NOTES-EMBED-MARKER
+        - releases/2024-jun-10/release-notes.qmd
         - releases/2024-may-22/release-notes.qmd
         - releases/2024-mar-27/highlights.qmd
         - releases/2024-feb-14/highlights.qmd
         - releases/2024-jan-26/highlights.qmd
         - releases/2024-jan-18/highlights.qmd
-        - releases/2023-dec-13/highlights.qmd
-        - releases/2023-nov-09/highlights.qmd
-        - releases/2023-oct-25/highlights.qmd
-        - releases/2023-sep-27/highlights.qmd
-        - releases/2023-aug-15/highlights.qmd
-        - guide/release-notes-2023-jul-24.qmd
-        - guide/release-notes-2023-jun-22.qmd
-        - guide/release-notes-2023-may-30.qmd
+# MOVE THIS ACCORDIAN SECTION INTO A `2024` FOLDER IN 2025 
+# AND ENSURE THAT ALL 2024 RELEASES ARE LISTED UNDER THIS SECTION W/ INTROS >250 CHARS
+# SEE `releases/2023/2023-releases.qmd` SECTION FOR EXAMPLE
+        # - file: releases/2024-releases.qmd
+        #   contents:
+        #   - releases/2024-jun-10/release-notes.qmd
+        - file: releases/2023/2023-releases.qmd
+          contents:
+          - releases/2023/2023-dec-13/highlights.qmd
+          - releases/2023/2023-nov-09/highlights.qmd
+          - releases/2023/2023-oct-25/highlights.qmd
+          - releases/2023/2023-sep-27/highlights.qmd
+          - releases/2023/2023-aug-15/highlights.qmd
+          - releases/2023/release-notes-2023-jul-24.qmd
+          - releases/2023/release-notes-2023-jun-22.qmd
+          - releases/2023/release-notes-2023-may-30.qmd
         - text: "---"
         - text: "FINE PRINT"
-        - about/data-privacy-policy.qmd
+        - about/fine-print/data-privacy-policy.qmd
         - text: "Software license agreement"
-          file: about/license-agreement.qmd
+          file: about/fine-print/license-agreement.qmd
 
     - title: "Get Started"
       contents:
         - text: "Get Started"
-          file: guide/get-started.qmd
+          file: get-started/get-started.qmd
         - text: "---"
         - text: "QuickStart — 15 Minutes"
-          file: guide/quickstart.qmd
+          file: get-started/quickstart.qmd
         - text: "---"
         - text: "DEVELOPER FRAMEWORK"
-        - guide/quickstart-try-developer-framework-with-jupyterhub.qmd
-        - guide/quickstart-try-developer-framework-with-colab.qmd
-        - guide/quickstart-try-developer-framework-in-your-own-developer-environment.qmd
+        - get-started/developer/try-with-jupyterhub.qmd
+        - get-started/developer/try-with-colab.qmd
+        - get-started/developer/try-in-your-own-environment.qmd
         - text: "---"
         - text: "PLATFORM UI"
-        - guide/quickstart-explore-sample-model-documentation.qmd
-        - guide/quickstart-register-your-first-model.qmd
-        - guide/quickstart-generate-documentation-for-your-model.qmd
+        - get-started/platform/explore-sample-model-documentation.qmd
+        - get-started/platform/register-your-first-model.qmd
+        - get-started/platform/generate-documentation-for-your-model.qmd
 #        - text: "Join Our Community" 
 #         file: guide/join-community.qmd
-        - guide/next-steps.qmd
+        - get-started/platform/next-steps.qmd
+        - text: "---"
+        - text: "TRAINING"
+        - text: "Welcome"
+          file: training/training-overview.qmd
+        - text: "For model developers"
+          file: training/training-for-model-developers.qmd
+        - text: "For model validators"
+          file: training/training-for-model-validators.qmd
+        - text: "For administrators"
+          file: training/training-for-administrators.qmd
+#        - text: "For model risk governance"
+#          file: training/training-for-model-risk-governance.qmd
     - title: "Guides"
       contents:
         - guide/guides.qmd
         - text: "---"
-        - text: "ONBOARDING"
-        - guide/set-up-your-organization.qmd
-        - file: guide/onboarding-users.qmd
+        - text: "CONFIGURATION"
+        - file: guide/configuration/managing-your-organization.qmd
           contents:
-          - guide/manage-users.qmd
-          - guide/manage-groups.qmd
-          - guide/manage-roles-and-permissions.qmd
-        - guide/configure-aws-privatelink.qmd
+            - guide/configuration/set-up-your-organization.qmd
+            - guide/configuration/configure-aws-privatelink.qmd
+        - file: guide/configuration/managing-users.qmd
+          contents:
+          - guide/configuration/manage-users.qmd
+          - guide/configuration/manage-groups.qmd
+          - guide/configuration/manage-roles.qmd
+          - guide/configuration/manage-permissions.qmd
+        - guide/configuration/view-your-profile.qmd
+        - text: "---"
+        - text: "MODEL WORKFLOWS"
+        - text: "Working with workflows"
+          file: guide/model-workflows/working-with-model-workflows.qmd
+          contents:
+          - guide/model-workflows/customize-resource-statuses.qmd
+          - text: "Set up workflows"
+            file: guide/model-workflows/set-up-model-workflows.qmd
         - text: "---"
         - text: "MODEL INVENTORY"
-        - guide/register-models-in-model-inventory.qmd
-#        - guide/customize-model-inventory-fields.qmd
-        - guide/edit-model-inventory-fields.qmd
+        - file: guide/model-inventory/working-with-model-inventory.qmd
+          contents:
+          - guide/model-inventory/register-models-in-inventory.qmd
+          - guide/model-inventory/customize-model-inventory-layout.qmd
+          - guide/model-inventory/edit-model-inventory-fields.qmd
+#        - guide/register-models-in-model-inventory.qmd
 #        - guide/customize-model-registration-form.qmd
         - text: "Manage inventory custom fields"
-          file: guide/manage-inventory-custom-fields.qmd
+          file: guide/model-inventory/manage-inventory-custom-fields.qmd
         - text: "---"
         - text: "MODEL DOCUMENTATION"
-        - file: guide/working-with-documentation-templates.qmd
+        - file: guide/model-documentation/working-with-documentation-templates.qmd
           contents:
-          - guide/view-documentation-templates.qmd
+          - guide/model-documentation/view-documentation-templates.qmd
 #          - guide/import-documentation-templates.qmd
-          - guide/customize-documentation-templates.qmd
-          - guide/swap-documentation-templates.qmd
-        - file: guide/working-with-model-documentation.qmd
+          - guide/model-documentation/customize-documentation-templates.qmd
+          - guide/model-documentation/swap-documentation-templates.qmd
+        - file: guide/model-documentation/working-with-model-documentation.qmd
           contents:
-          - guide/view-documentation-guidelines.qmd
-          - guide/work-with-content-blocks.qmd
+          - guide/model-documentation/view-documentation-guidelines.qmd
+          - guide/model-documentation/work-with-content-blocks.qmd
           - text: "Assign section statuses"
-            file: guide/assign-documentation-section-statuses.qmd
-          - guide/collaborate-with-others.qmd
-          - guide/view-documentation-activity.qmd
-          - guide/submit-for-approval.qmd
-        - guide/export-documentation.qmd
+            file: guide/model-documentation/assign-documentation-section-statuses.qmd
+          - guide/model-documentation/collaborate-with-others.qmd
+          - guide/model-documentation/view-documentation-activity.qmd
+          - guide/model-documentation/submit-for-approval.qmd
+        - guide/model-documentation/export-documentation.qmd
         - text: "---"
         - text: "MODEL VALIDATION"
-#        - guide/set-up-approval-workflows.qmd
 #        - guide/customize-validation-report-templates.qmd
-        - file: guide/preparing-validation-reports.qmd
+        - file: guide/model-validation/preparing-validation-reports.qmd
           contents:
-          - guide/view-validation-guidelines.qmd
-          - guide/assess-compliance.qmd
-          - guide/work-with-content-blocks.qmd
-          - guide/collaborate-with-others.qmd
-          - guide/submit-for-approval.qmd
-        - guide/work-with-model-findings.qmd
-        - guide/view-reports.qmd
-        - guide/export-documentation.qmd
+          - guide/model-validation/view-validation-guidelines.qmd
+          - guide/model-validation/review-model-documentation.qmd
+          - guide/model-validation/assess-compliance.qmd
+          - guide/model-documentation/work-with-content-blocks.qmd
+          - guide/model-documentation/collaborate-with-others.qmd
+          - guide/model-documentation/submit-for-approval.qmd
+        - guide/model-validation/work-with-model-findings.qmd
+        - guide/model-validation/view-reports.qmd
+        - guide/model-documentation/export-documentation.qmd
 
     - title: "Developer Framework"
       contents:
         - text: "Developer Framework"
-          file: guide/get-started-developer-framework.qmd
+          file: developer/get-started-developer-framework.qmd
         - text: "---"
         - text: "MODEL DOCUMENTATION"
         - notebooks/quickstart_customer_churn_full_suite.ipynb
-        - guide/supported-models.qmd
-        - guide/generate-model-documentation.qmd
-        - guide/install-and-initialize-developer-framework.qmd 
-        - guide/store-credentials-in-env-file.qmd
+        - text: "Introduction for model developers"
+          file: notebooks/tutorials/intro_for_model_developers.ipynb
+        - developer/model-documentation/supported-models.qmd
+        - developer/model-documentation/generate-model-documentation.qmd
+        - developer/model-documentation/install-and-initialize-developer-framework.qmd 
+        - developer/model-documentation/store-credentials-in-env-file.qmd
         - text: "---"
         - text: "MODEL TESTING"
         - text: "Run tests & test suites"
-          file: guide/testing-overview.qmd
+          file: developer/model-testing/testing-overview.qmd
           contents: "notebooks/how_to/**"
         - text: "Test descriptions"
-          file: guide/test-descriptions.qmd
+          file: developer/model-testing/test-descriptions.qmd
           contents: tests/**
-        - guide/test-sandbox.qmd
+        - developer/model-testing/test-sandbox.qmd
         - text: "---"
         - text: "NOTEBOOKS"
         - text: "Code samples"
-          file: guide/samples-jupyter-notebooks.qmd
+          file: developer/samples-jupyter-notebooks.qmd
           contents: "notebooks/code_samples/**"
         - text: "---"
         - text: "REFERENCE"
-        - text: "{{< var vm_framework >}} {{< fa external-link >}}"
+        - text: "{{< var validmind_developer >}} {{< fa external-link >}}"
           file: validmind/validmind.html
           target: _blank
 
@@ -235,9 +283,23 @@ website:
         - text: "---"
         - support/troubleshooting.qmd
 
+# COMMENT THIS OUT WHEN DONE TESTING
+    # - title: "Testing"
+    #   contents:
+    #     - internal/testing.qmd
+    #     - text: "---"
+    #     - text: "EXPERIMENTS"
+    #     - file: internal/css-grid/tachyons-grid.qmd
+#         - file: internal/footnotes/footnotes.qmd
+#           contents:
+#             - internal/footnotes/hover-only.qmd
+#             - internal/footnotes/margin-only.qmd
+#             - internal/footnotes/margin-hover.qmd
+#             - internal/footnotes/text-notes.qmd
+
   page-footer:
     background: "#DE257E"
-    left: "_© Copyright 2023-2024 ValidMind Inc. All Rights Reserved._"
+    left: "© Copyright 2023-2024 ValidMind Inc. All Rights Reserved."
     right:
       - text: "validmind.com {{< fa external-link >}}"
         href: https://validmind.com/
@@ -253,6 +315,14 @@ website:
 
 format:
   html:
+    grid:
+      body-width: 1000px
+    footnotes-hover: true
+    reference-location: margin
+    include-in-header: 
+      - heap-production.html
+    code-overflow: wrap
+    code-annotations: below
     theme: 
       light: [cosmo, theme.scss]
 #      dark: [cosmo, theme-dark.scss]

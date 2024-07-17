@@ -1,0 +1,73 @@
+---
+title: "Footnotes"
+subtitle: "Example styling"
+search: false
+reference-location: margin
+footnotes-hover: true
+listing: 
+  - id: footnotes
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - hover-only.qmd
+    - margin-only.qmd
+    - margin-hover.qmd
+    - text-notes.qmd
+---
+
+> For **[SC-5288](https://app.shortcut.com/validmind/story/5288/explore-alternative-footnotes-options-for-inline-links)**:
+
+- All footnotes go in the bottom section of the source page, instead of haphazardly stuck in between things as we author!
+- Footnotes can't involve `include` files, unfortunately, so we can't single-source definitions.
+- However, footnotes **can** be hyperlinks, which is handy for our inline instructional asides.
+- The numbering of footnotes is still manual, but at least they are collated in one section so we can tell how many there are at a glance.
+
+### Defining styles
+- Footnote styling can be defined globally (via `_quarto.yml`) or individually in each file's YAML header.
+- While Quarto provides several places footnotes can live, `margin` is the only one that might work well for us as the others place them at the end of section/block/document etc. again taking readers away from the instructional text.
+
+#### Syntax
+
+```markdown
+Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they belong to the previous footnote.
+
+        { some.code }
+
+    The whole paragraph can be indented, or just the first line. 
+    In this way, multi-paragraph footnotes work like multi-paragraph list items.
+
+This paragraph won't be part of the note, because it isn't indented.
+```
+
+Output
+: Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they belong to the previous footnote.
+
+        { some.code }
+
+    The whole paragraph can be indented, or just the first line. 
+    In this way, multi-paragraph footnotes work like multi-paragraph list items.
+
+This paragraph won't be part of the note, because it isn't indented.
+
+## Footnote examples
+
+Please vote on your favourite!
+
+:::{#footnotes}
+:::
+

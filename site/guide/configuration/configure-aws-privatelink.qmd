@@ -1,0 +1,98 @@
+---
+title: "Configure AWS PrivateLink"
+date: last-modified
+---
+
+To keep your network traffic private and minimizes its attack surface, configure AWS PrivateLink to establish a private connection between ValidMind and your company network.
+
+
+![AWS PrivateLink](aws-privatelink.png){fig-alt="A graphic showing AWS PrivateLink establishing a private connection to ValidMind"}
+
+AWS PrivateLink is a networking service that allows secure and private communication between Amazon Virtual Private Cloud (VPC) resources and services hosted in other VPCs or in AWS partner services, such as ValidMind. With AWS PrivateLink, you can connect to services over the Amazon network, without needing to expose your network traffic to the public internet.
+
+PrivateLink works by creating a private _VPC endpoint_ for a supported AWS service within your virtual private cloud. This endpoint acts as a proxy between your VPC and ValidMind, allowing traffic to be routed privately over the AWS network. To make the endpoint easier to use, ValidMind provides a _private DNS name_ that model developers and validators can connect to in a browser.  
+
+::: {.callout-important title="The responsibility of setting up a VPC endpoint for AWS PrivateLink falls to your IT department, such as the cloud engineering, infrastructure, or security teams."}
+ <br>
+To learn more, check [Access an AWS service using an interface VPC endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html#create-interface-endpoint).
+:::
+
+## Prerequisites
+
+You must have access to the AWS Console for your company and the necessary expertise to set up, configure, and maintain AWS services. 
+
+These steps assume that you already have established connectivity between your own company network and AWS VPC and know which company VPC you want to connect to. 
+
+### VPC service information
+
+<!-- VM will provide one endpoint per region: us-east-1, us-west-2; eu-west-1; eu-central-1 
+private.dev.vm.validmind.ai
+private.prod.vm.validmind.ai
+
+SOC 2 requires tracking access request for VPC endpoint
+Recording: 46:00 FR InfoSec log in and set up endpoint > request pending, need to send endpoint ID and Owner (Account ID) to VM
+51:00 VM login accept request pending for endpoint ID after verifying endpoint ID and Owner
+56:00 FR InfoSec login
+58:55 VM login to verify "Owner"
+59:30 FR InfoSec login, verify the endpoint is available, enable private DNS names
+1:03 FR Murat private DNS name is availabe, can log into the ValidMind UI
+--->
+
+| Region       | Service name                                            | Private DNS name             |
+ ------------- | ------------------------------------------------------- | ---------------------------- |
+| `us-west-2`    | Email <support@validmind.com> | Email <support@validmind.com> | 
+
+<!--- | us-west-2    | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | [{{< var vm_privatelink >}}]({{< var vm_privatelink >}}) | --->
+<!--- | us-east-1    | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+<!--- | eu-west-1    | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+<!--- | eu-central-1 | com.amazonaws.vpce.us-west-2.vpce-svc-0b956fa3e03afa538 | private.prod.vm.validmind.ai | --->
+
+## Steps
+
+1. Create a VPC endpoint for ValidMind:
+
+   a. Log into the [AWS Console](https://aws.amazon.com/console/). 
+   b. In the VPC dashboard, click **Endpoints** in the navigation pane.
+   c. Click **Create endpoint**.
+   d. Select **Other endpoint services**.
+   e. Enter the service name from the [VPC service information](#vpc-service-information) table and click **Verify service**.
+   f. Select the company VPC that you want to create the endpoint in.
+   g. Select the subnets where you want to create the endpoint network interfaces.
+   h. Configure the security group for the VPC endpoint. Make sure to allow traffic between your network and the endpoint.
+   i. Click **Create endpoint**.
+
+   The status for the endpoint should show `Pending`.
+
+2. Contact ValidMind at [support@validmind.ai](mailto:support@validmind.ai?subject=VPC%20Endpoint%20Connection%20Request) to get your new VPC endpoint connection request accepted. Include the following information:
+
+   - The owner or account ID
+   - The VPC endpoint ID
+
+3. After ValidMind has accepted your endpoint connection request, verify the endpoint is available:
+
+   a. In the VPC console, go to the **Endpoints** section.
+   b. Verify that status for the endpoint shows `Available`.
+
+4. Enable the private DNS name:
+   a. Check the VPC endpoint you created, click the **Actions** menu, and select **Modify private DNS name**.
+   b. Select **Enable for this endpoint**.
+   c. Click **Save changes**.
+   d. Verify that **Private DNS names** shows the name shown in the [VPC service information](#vpc-service-information).
+
+5. Test the connection:
+
+   a. From your company network, access ValidMind using the private DNS name from the [VPC service information](#vpc-service-information).
+   b. In a browser, confirm that you can successfully connect to ValidMind and log in.
+   c. From your developer environment, confirm that you can connect to ValidMind with the {{< var developer >}}.
+
+
+<!---
+## Troubleshooting
+
+[Include any common issues or errors that may arise during the task and how to resolve them.]
+
+--->
+
+## What's next
+
+After completing these steps, users on your company network can connect to ValidMind via AWS PrivateLink using the private DNS name from the [VPC service information](#vpc-service-information). 
