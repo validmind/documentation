@@ -7,13 +7,11 @@ To keep your network traffic private and minimize its attack surface, configure 
 
 ![Private Service Connect](google-cloud-private-service-connect.png)
 
-Private Service Connect^[[Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)] is a networking service that allows secure and private communication between Google Virtual Private Cloud (VPC) resources and services hosted in other VPCs or Google partner services, such as ValidMind. By creating private endpoints within your VPC, Private Service Connect allows you to connect to services over the Google network without needing to expose your network traffic to the public internet.
-
-Private Service Connect works by creating private _endpoints_ within your Google Virtual Private Cloud (VPC) that act as secure entry points for connecting to Google services and third-party services. These endpoints serve as proxies, forwarding traffic securely within Google's network without exposing it to the public internet. To make the endpoint easier to use, ValidMind provides a _private DNS name_ that model developers and validators can connect to in a browser.
+Private Service Connect is a networking service that allows secure and private communication between Google Virtual Private Cloud (VPC) resources and services hosted in other VPCs or Google partner services, such as ValidMind. By creating private endpoints within your VPC, Private Service Connect allows you to connect to services over the Google network without needing to expose your network traffic to the public internet.
 
 ::: {.callout-important title="The responsibility of setting up a private endpoint for Private Service Connect falls to your IT department, such as the cloud engineering, infrastructure, or security teams."}
 <br>
-To learn more, check [Access Google services using Private Service Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect).
+To learn more about Private Service Connect, check the official Google documentation.[^1]
 :::
 
 ## Prerequisites
@@ -24,32 +22,104 @@ These steps assume that you already have established connectivity between your o
 
 ### VPC service information
 
-| Region       | Service name                                            | Private DNS name             |
-| ------------- | ------------------------------------------------------- | ---------------------------- |
-| `us-west1`    | Email <support@validmind.com> | Email <support@validmind.com> |
+| Name | Provider |  Region       | Service name                                            | Private DNS name             |
+| -- | -- | --------------- | ------------------------------------------------------- | ---------------------------- |
+| US3 | GCP | `us-west1`    | Email <support@validmind.com> | Email <support@validmind.com> |
 
-## Steps
+## Configure your Google Cloud Platform project
 
-1. Create a Private Service Connect endpoint for ValidMind:
+1. Log into the [Google Cloud Console](https://console.cloud.google.com/).
 
-   a. Log into the [Google Cloud Console](https://console.cloud.google.com/).
-   b. In the VPC Network dashboard, click **Private Service Connect** in the navigation pane.
-   c. Click **Create endpoint**.
-   d. Select **Endpoint for services from other VPCs**.
-   e. Enter the service name from the [VPC service information](#vpc-service-information) table and click **Next**.
-   f. Select the company VPC that you want to create the endpoint in.
-   g. Select the subnets where you want to create the endpoint network interfaces.
-   h. Configure the firewall rules for the VPC endpoint. Ensure that you allow traffic between your network and the endpoint.
-   i. Click **Create endpoint**.
+2. From the project drop-down (at the top of the console), select the project where you want to enable the APIs.
 
-   The status for the endpoint should show `Pending`.
+3. In the navigation menu on the left, click **APIs & Services** and then **Library**.
+
+4. In the API Library, use the search bar to find "Cloud DNS API" and click on the search result to open the API page.
+
+5. On the API page for Cloud DNS, click **Enable** to activate the API for your project.
+
+6. Repeat these steps for the Networking API:
+
+   a. Return to the API Library by clicking "Library" in the left navigation menu.
+   b. Search for "Google Compute Engine API" which includes networking services.
+   c. Click on the search result and click **Enable** to activate the API.
+
+After these steps, both the Cloud DNS and the Google Compute Engine API, which covers networking, will be enabled for your project, allowing you to manage DNS configurations and networking resources.
+
+## Request access from ValidMind
 
 2. Contact ValidMind at [support@validmind.ai](mailto:support@validmind.ai?subject=VPC%20Endpoint%20Connection%20Request) to get your new VPC endpoint connection request accepted. Include the following information:
 
+   - The project name
    - The project ID
-   - The VPC endpoint ID
 
-3. After ValidMind has accepted your endpoint connection request, verify the endpoint is available:
+Please provide this information to ValidMind at least 24 hours before attempting to connect, so that ValidMind can add your project to the allowlist.
 
-   a. In the VPC Network console, go to the **Private Service Connect** section.
-   b. Verify that the status for the end
+## Prepare your network for connection
+
+1. Create a subnet in the GCP `us-central1` region with at least a `/28` of usable IP address space. 
+   
+     This subnet will be used to expose two ValidMind services.
+
+2. Optional: Consider enabling Private Google Access.
+<!-- What's the benefit? -->
+
+3. Optional: Pre-provision two IP addresses in this subnet for later use. 
+
+   Alternatively, you can create these IP addresses when configuring Private Service Connect later.
+
+## Create an endpoint to connect to ValidMind
+
+Set up a Private Service Connect endpoint named `private` for accessing the ValidMind service securely and privately, with service discovery managed via Google Cloud’s Service Directory:
+
+1. In Google Cloud Console, click **Network services** the left-hand navigation menu, and then click **Private Service Connect**.
+
+2. Create a new Private Service Connect endpoint:
+
+   a. Click **Create Connection Endpoint**.
+   b. Check **Published service** for the type of target.
+   c. For **Endpoint name**, enter `private`.
+   d. For **Target service**, enter `projects/validmind-us3-prod/regions/us-central1/serviceAttachments/private`.
+   e. For **IP address**, enter `validmind`.
+      
+      ::: {.callout}
+      Make sure this name resolves to an appropriate IP within your network settings or is pre-configured in your DNS.
+      ::: 
+
+   f. Enable Service Directory for this endpoint to provide DNS resolution and enable service discovery:
+   <!-- TO DO What does enabling entail? The screenshot doesn't show -->
+
+      For **Namespace**, enter `validmind`.
+
+      ::: {.callout}
+      Choose the same region as your endpoint to ensure low latency and local management of services.
+      ::: 
+
+4. Click **Add Endpoint**.
+
+After the endpoint is active, test that the service is reachable through the private connection and that DNS requests resolve as expected.
+
+## Connect to the ValidMind authentication service
+
+Repeat the steps [to create an endpoint to connect to ValidMind](#create-an-endpoint-to-connect-to-validmind) to add another endpoint for the ValidMind authentication service:
+
+   a. Check **Published service** for the type of target.
+   b. For **Target service**, enter `projects/validmind-us3-prod/regions/us-central1/serviceAttachments/auth`.
+   c. For **Endpoint name**, enter `auth`.
+   d. Enable Service Directory for this endpoint and for **Namespace**, enter `validmind`.
+
+After the endpoint is active, test that the service is reachable through the private connection and that DNS requests resolve as expected.
+
+## Check connectivity
+
+1. Under Network Services > Cloud DNS, verify that DNS and service discovery are functioning as expected.
+
+2. Test your connection to the following hosts:
+  - {{< var validmind_platform >}}: [{{< var vm_private_service_connect_validmind >}}]({{< var vm_private_service_connect_validmind >}})
+  - ValidMind authentication service: [{{< var vm_private_service_connect_auth >}}]({{< var vm_private_service_connect_auth >}})
+
+This document assumes you have basic knowledge of GCP operations and the specific requirements of your organizational setup for network and API access.
+
+<!-- FOOTNOTES -->
+
+[^1]: Google: [Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)
