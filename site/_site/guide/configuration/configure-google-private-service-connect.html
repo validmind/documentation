@@ -556,9 +556,15 @@ cookieconsent.run({
   <li><a href="#configure-your-google-cloud-platform-project" id="toc-configure-your-google-cloud-platform-project" class="nav-link" data-scroll-target="#configure-your-google-cloud-platform-project">Configure your Google Cloud Platform project</a></li>
   <li><a href="#request-access-from-validmind" id="toc-request-access-from-validmind" class="nav-link" data-scroll-target="#request-access-from-validmind">Request access from ValidMind</a></li>
   <li><a href="#prepare-your-network-for-connection" id="toc-prepare-your-network-for-connection" class="nav-link" data-scroll-target="#prepare-your-network-for-connection">Prepare your network for connection</a></li>
-  <li><a href="#create-an-endpoint-to-connect-to-validmind" id="toc-create-an-endpoint-to-connect-to-validmind" class="nav-link" data-scroll-target="#create-an-endpoint-to-connect-to-validmind">Create an endpoint to connect to ValidMind</a></li>
-  <li><a href="#create-an-endpoint-to-connect-to-the-validmind-authentication-service" id="toc-create-an-endpoint-to-connect-to-the-validmind-authentication-service" class="nav-link" data-scroll-target="#create-an-endpoint-to-connect-to-the-validmind-authentication-service">Create an endpoint to connect to the ValidMind authentication service</a></li>
-  <li><a href="#check-connectivity" id="toc-check-connectivity" class="nav-link" data-scroll-target="#check-connectivity">Check connectivity</a></li>
+  <li><a href="#create-an-endpoint-to-connect-to-validmind" id="toc-create-an-endpoint-to-connect-to-validmind" class="nav-link" data-scroll-target="#create-an-endpoint-to-connect-to-validmind">Create an endpoint to connect to ValidMind</a>
+  <ul class="collapse">
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  </ul></li>
+  <li><a href="#create-an-endpoint-to-connect-to-the-validmind-authentication-service" id="toc-create-an-endpoint-to-connect-to-the-validmind-authentication-service" class="nav-link" data-scroll-target="#create-an-endpoint-to-connect-to-the-validmind-authentication-service">Create an endpoint to connect to the ValidMind authentication service</a>
+  <ul class="collapse">
+  <li><a href="#steps-1" id="toc-steps-1" class="nav-link" data-scroll-target="#steps-1">Steps</a></li>
+  </ul></li>
+  <li><a href="#test-connectivity" id="toc-test-connectivity" class="nav-link" data-scroll-target="#test-connectivity">Test connectivity</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/guide/configuration/configure-google-private-service-connect.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -598,13 +604,13 @@ cookieconsent.run({
 </figure>
 </div>
 <p>Private Service Connect is a networking service that allows secure and private communication between Google Virtual Private Cloud (VPC) resources and services hosted in other VPCs or Google partner services, such as ValidMind. By creating private endpoints within your VPC, Private Service Connect allows you to connect to services over the Google network without needing to expose your network traffic to the public internet.</p>
-<div class="callout callout-style-simple callout-important callout-titled" title="The responsibility of setting up a private endpoint for Private Service Connect falls to your IT department, such as the cloud engineering, infrastructure, or security teams.">
+<div class="callout callout-style-simple callout-important callout-titled" title="The responsibility of setting up endpoints for Private Service Connect falls to your IT department, such as the cloud engineering, infrastructure, or security teams.">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The responsibility of setting up a private endpoint for Private Service Connect falls to your IT department, such as the cloud engineering, infrastructure, or security teams.
+The responsibility of setting up endpoints for Private Service Connect falls to your IT department, such as the cloud engineering, infrastructure, or security teams.
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -641,52 +647,80 @@ The responsibility of setting up a private endpoint for Private Service Connect 
 </section>
 <section id="configure-your-google-cloud-platform-project" class="level2">
 <h2 class="anchored" data-anchor-id="configure-your-google-cloud-platform-project">Configure your Google Cloud Platform project</h2>
+<p>Enable the APIs for cloud DNS and networking to get ready for the next steps:</p>
 <ol type="1">
 <li><p>Log into the <a href="https://console.cloud.google.com/">Google Cloud Console</a>.</p></li>
-<li><p>From the project drop-down (at the top of the console), select the project where you want to enable the APIs.</p></li>
+<li><p>From the <strong>Select a project</strong> drop-down at the top of the console, select the project where you want to enable the Google APIs.</p></li>
 <li><p>In the navigation menu on the left, click <strong>APIs &amp; Services</strong> and then <strong>Library</strong>.</p></li>
-<li><p>In the API Library, use the search bar to find “Cloud DNS API” and click on the search result to open the API page.</p></li>
+<li><p>In the API Library, search for “Cloud DNS API” and click the result to open the API page.</p></li>
 <li><p>On the API page for Cloud DNS, click <strong>Enable</strong> to activate the API for your project.</p></li>
 <li><p>Repeat these steps for the Networking API:</p>
 <ol type="a">
-<li>Return to the API Library by clicking “Library” in the left navigation menu.</li>
+<li>Click <strong>Library</strong> in the left navigation to return to the API Library.</li>
 <li>Search for “Google Compute Engine API” which includes networking services.</li>
 <li>Click on the search result and click <strong>Enable</strong> to activate the API.</li>
 </ol></li>
 </ol>
-<p>After these steps, both the Cloud DNS and the Google Compute Engine API, which covers networking, will be enabled for your project, allowing you to manage DNS configurations and networking resources.</p>
+<p>After these steps, both the Cloud DNS and the Google Compute Engine API should be enabled for your project, allowing you to manage DNS configurations and networking resources.</p>
 </section>
 <section id="request-access-from-validmind" class="level2">
 <h2 class="anchored" data-anchor-id="request-access-from-validmind">Request access from ValidMind</h2>
-<ol start="2" type="1">
-<li><p>Contact ValidMind at <a href="mailto:support@validmind.ai?subject=VPC%20Endpoint%20Connection%20Request">support@validmind.ai</a> to get your new VPC endpoint connection request accepted. Include the following information:</p>
+<p>Contact ValidMind at <a href="mailto:support@validmind.ai?subject=VPC%20Endpoint%20Connection%20Request">support@validmind.ai</a> to get your new VPC endpoint connection request accepted. Include the following information:</p>
 <ul>
 <li>The project name</li>
 <li>The project ID</li>
-</ul></li>
-</ol>
-<p>Please provide this information to ValidMind at least 24 hours before attempting to connect, so that ValidMind can add your project to the allowlist.</p>
+</ul>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Please provide this information to ValidMind <strong>at least 24 hours</strong> before attempting to connect, so that we can add your project to the allowlist.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="prepare-your-network-for-connection" class="level2">
+<section id="prepare-your-network-for-connection" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="prepare-your-network-for-connection">Prepare your network for connection</h2>
+<p>Create a private subnet in a supported GCP region that can be used to expose ValidMind services:</p>
 <ol type="1">
-<li><p>Create a private subnet in a supported GCP region with at least a <code>/28</code> of usable IP address space.</p>
-<p>This subnet will be used to expose two ValidMind services.</p></li>
-<li><p>Optional: Consider enabling Private Google Access to enable access to enable other services. <!-- TO DO Link to Google docs for this --></p></li>
-<li><p>Pre-provision two IP addresses in this subnet for later use.</p></li>
+<li><p>In Google Cloud Console, create the subnet:</p>
+<ol type="a">
+<li>On the VPC networks page, click <strong>Create VPC network</strong>.</li>
+<li>Name your network.</li>
+<li>Configure the IP address range to ensure it includes at least a <code>/28</code> of usable private IP address space.</li>
+<li>Click <strong>Create</strong>.</li>
+</ol></li>
+<li><p>Optional: Enable Private Google Access to provide access to Google APIs and services.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+<li><p>Provision two IP addresses in this subnet for later use:</p>
+<ol type="a">
+<li>On the VPC networks page, select your subnet.</li>
+<li>Note the available IP address range.</li>
+<li>Reserve two IP addresses within this range for future use.</li>
+</ol></li>
 </ol>
-</section>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Google: <a href="https://cloud.google.com/vpc/docs/private-google-access">Private Google Access</a></p></div></div></section>
 <section id="create-an-endpoint-to-connect-to-validmind" class="level2">
 <h2 class="anchored" data-anchor-id="create-an-endpoint-to-connect-to-validmind">Create an endpoint to connect to ValidMind</h2>
-<p>Set up a Private Service Connect endpoint named <code>private</code> for accessing the ValidMind service securely and privately, with service discovery managed via Google Cloud’s Service Directory:</p>
+<p>Create a Private Service Connect endpoint for accessing ValidMind services securely and privately, with service discovery managed via Google Cloud’s Service Directory.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gcp-add-validmind-endpoint-panel.png" class="img-fluid figure-img" alt="Screenshot of an endpoint being created with the options specified in the steps."></p>
+<figcaption>Creating an endpoint in the Google Cloud Console</figcaption>
+</figure>
+</div>
+<section id="steps" class="level3">
+<h3 class="anchored" data-anchor-id="steps">Steps</h3>
 <ol type="1">
-<li><p>In Google Cloud Console, click <strong>Network services</strong> the left-hand navigation menu, and then click <strong>Private Service Connect</strong>.</p></li>
-<li><p>Create a new Private Service Connect endpoint:</p>
+<li><p>In Google Cloud Console, open <strong>Network services</strong> and click <strong>Private Service Connect</strong>.</p></li>
+<li><p>Create the endpoint:</p>
 <ol type="a">
 <li><p>Click <strong>Create Connection Endpoint</strong>.</p></li>
-<li><p>Check <strong>Published service</strong> for the type of target.</p></li>
+<li><p>Check <strong>Published service</strong> for the target.</p></li>
 <li><p>For <strong>Endpoint name</strong>, enter <code>private</code>.</p></li>
-<li><p>For <strong>Target service</strong>, enter <code>projects/validmind-us3-prod/regions/us-central1/serviceAttachments/private</code>.</p></li>
+<li><p>For <strong>Target service</strong>, enter:</p>
+<p><code>projects/validmind-us3-prod/regions/us-central1/serviceAttachments/private</code>.</p></li>
 <li><p>For <strong>IP address</strong>, enter <code>validmind</code>.</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
@@ -694,12 +728,11 @@ The responsibility of setting up a private endpoint for Private Service Connect 
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Make sure this name resolves to an appropriate IP within your network settings or is pre-configured in your DNS.</p>
+<p>Make sure this name resolves to an appropriate IP in your network settings or is preconfigured in your DNS.</p>
 </div>
 </div>
 </div></li>
-<li><p>Enable Service Directory for this endpoint to provide DNS resolution and enable service discovery: <!-- TO DO What does enabling entail? The screenshot doesn't show (There's a checkbox) --></p>
-<p>For <strong>Namespace</strong>, enter <code>validmind</code>.</p>
+<li><p>Enable Service Directory for this endpoint to provide DNS resolution and enable service discovery.</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -710,24 +743,50 @@ The responsibility of setting up a private endpoint for Private Service Connect 
 </div>
 </div>
 </div></li>
-</ol></li>
+<li><p>For <strong>Namespace</strong>, enter <code>validmind</code>.</p></li>
 <li><p>Click <strong>Add Endpoint</strong>.</p></li>
+</ol></li>
 </ol>
 <p>After the endpoint is active, test that the service is reachable through the private connection and that DNS requests resolve as expected.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gcp-add-validmind-endpoint.png" class="img-fluid figure-img"></p>
+<figcaption>Active <code>private</code> endpoint in the Google Cloud Console</figcaption>
+</figure>
+</div>
+</section>
 </section>
 <section id="create-an-endpoint-to-connect-to-the-validmind-authentication-service" class="level2">
 <h2 class="anchored" data-anchor-id="create-an-endpoint-to-connect-to-the-validmind-authentication-service">Create an endpoint to connect to the ValidMind authentication service</h2>
-<p>Repeat the steps <a href="#create-an-endpoint-to-connect-to-validmind">to create an endpoint to connect to ValidMind</a> to add another endpoint for the ValidMind authentication service:</p>
-<ol type="a">
-<li>Check <strong>Published service</strong> for the type of target.</li>
-<li>For <strong>Target service</strong>, enter <code>projects/validmind-us3-prod/regions/us-central1/serviceAttachments/auth</code>.</li>
-<li>For <strong>Endpoint name</strong>, enter <code>auth</code>.</li>
-<li>Enable Service Directory for this endpoint and for <strong>Namespace</strong>, enter <code>validmind</code>.</li>
+<p>Repeat the steps <a href="#create-an-endpoint-to-connect-to-validmind">to create an endpoint to connect to ValidMind</a> to add another endpoint for the ValidMind authentication service.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gcp-add-auth-endpoint-panel.png" class="img-fluid figure-img" alt="Screenshot of an endpoint being created with the options specified in the steps."></p>
+<figcaption>Creating an endpoint in the Google Cloud Console</figcaption>
+</figure>
+</div>
+<section id="steps-1" class="level3">
+<h3 class="anchored" data-anchor-id="steps-1">Steps</h3>
+<ol type="1">
+<li><p>Check <strong>Published service</strong> for the target.</p></li>
+<li><p>For <strong>Target service</strong>, enter:</p>
+<p><code>projects/validmind-us3-prod/regions/us-central1/serviceAttachments/auth</code>.</p></li>
+<li><p>For <strong>Endpoint name</strong>, enter <code>auth</code>.</p></li>
+<li><p>Enable Service Directory for this endpoint</p></li>
+<li><p>For <strong>Namespace</strong>, enter <code>validmind</code>.</p></li>
 </ol>
 <p>After the endpoint is active, test that the service is reachable through the private connection and that DNS requests resolve as expected.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gcp-add-auth-endpoint.png" class="img-fluid figure-img"></p>
+<figcaption>Active <code>auth</code> endpoint in the Google Cloud Console</figcaption>
+</figure>
+</div>
 </section>
-<section id="check-connectivity" class="level2">
-<h2 class="anchored" data-anchor-id="check-connectivity">Check connectivity</h2>
+</section>
+<section id="test-connectivity" class="level2">
+<h2 class="anchored" data-anchor-id="test-connectivity">Test connectivity</h2>
+<p>As a final step, test that everything everything is set up correctly and that you can reach the ValidMind services:</p>
 <ol type="1">
 <li><p>Under Network Services &gt; Cloud DNS, verify that DNS and service discovery are functioning as expected.</p></li>
 <li><p>Test your connection to the following hosts:</p></li>
@@ -736,7 +795,6 @@ The responsibility of setting up a private endpoint for Private Service Connect 
 <li>ValidMind Platform UI: <a href="https://private.us3-prod.validmind.ai">https://private.us3-prod.validmind.ai</a></li>
 <li>ValidMind authentication service: <a href="https://auth.private.validmind.ai">https://auth.private.validmind.ai</a></li>
 </ul>
-<p>This document assumes you have basic knowledge of GCP operations and the specific requirements of your organizational setup for network and API access.</p>
 <!-- FOOTNOTES -->
 
 
