@@ -1,0 +1,292 @@
+---
+title: "July 22, 2024"
+---
+
+## Release highlights
+
+<!---
+PR #123: Support for comparison tests
+URL: https://github.com/validmind/developer-framework/pull/123
+Labels: enhancement, highlight
+--->
+### Support for comparison tests
+
+## support for comparison tests
+
+A crucial feature has been added to the developer framework to support running comparison tests. You can now use this for any case where you might want to run the same test against multiple combinations of models or datasets. This creates a single documentation block that compares the individual results.
+
+The updated `run_test()` function allows you to pass an `input_grid` that runs a test for all combinations of inputs.
+
+Example input grid:
+
+```
+python
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"]
+}
+```
+
+A test runs once for each of the following input groups:
+
+```
+python
+{
+  "model": "XGBoost",
+  "dataset": "train_dataset"
+}
+
+{
+  "model": "XGBoost",
+  "dataset": "test_dataset"
+}
+```
+
+#### example function calls
+
+```
+python
+from validmind.tests import run_test
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"]
+}
+
+result = run_test(
+    "validmind.model_validation.sklearn.ClassifierPerformance",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ConfusionMatrix",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ROCCurve",
+    input_grid,
+)
+```
+
+#### demo video
+
+https://github.com/validmind/developer-framework/assets/21595/af0bfbbf-dbc7-461c-ae7e-4e4ccb26544b
+
+## Enhancements
+
+<!---
+PR #834: John6797/sc 5172/test result interpretations and risk assessment
+URL: https://github.com/validmind/frontend/pull/834
+Labels: enhancement
+--->
+### Test result interpretations and risk assessment
+
+Expand support for figures/plots when using ValidMind AI interpretations and risk assessments.
+
+<!---
+PR #824: [SC-5146] add new role modal
+URL: https://github.com/validmind/frontend/pull/824
+Labels: enhancement
+--->
+### Add new role modal
+
+Users with the `Create_Role` permission can now add a new role under settings -> roles
+
+<!---
+PR #820: Added new report types
+URL: https://github.com/validmind/frontend/pull/820
+Labels: enhancement
+--->
+### Added new report types
+
+Added new report types
+
+- Number of models by business unit and tier
+- Number of models by status
+- Avg. number of days models spend in a status
+- Models by number of findings
+
+Now persisting the report pages' layout
+
+<!---
+PR #127: [SC-5175] Enhance add extra column to support 2d arrays
+URL: https://github.com/validmind/developer-framework/pull/127
+Labels: enhancement
+--->
+### Enhance add extra column to support 2d arrays
+
+description
+
+This PR introduces enhancements to the `VMDataset` class. The `add_extra_column` method now supports adding 2D arrays as single columns in the dataset's DataFrame. These changes ensure that 2D arrays are stored in a single column without altering the DataFrame structure.
+
+changes
+
+- Modified the `add_extra_column` method to handle 2D arrays by storing each row of the 2D array as a single element in the DataFrame column.
+- Added validation to ensure the length of the 2D array matches the number of rows in the DataFrame.
+- Added error handling to raise errors for unsupported array dimensions.
+
+usage
+
+```
+import numpy as np
+import pandas as pd
+
+# sample DataFrame
+df = pd.DataFrame({
+    'A': [1, 2, 3],
+    'B': [4, 5, 6]
+})
+
+# sample 2D array
+array_2d = np.array([
+    [1, 2],
+    [3, 4],
+    [5, 6]
+])
+
+vm_dataset = vm.init_dataset(
+    dataset=df,
+    input_id=dummy_ds
+)
+
+vm_dataset.add_extra_columns(
+    "dummy_column",
+    array_2d
+)
+```
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+<!---
+PR #125: Comparison tests notebook
+URL: https://github.com/validmind/developer-framework/pull/125
+Labels: enhancement
+--->
+### Comparison tests notebook
+
+Support for comparison tests
+
+A crucial feature has been added to the developer framework. You can now run comparison tests. This is useful when you want to run the same test against multiple combinations of models or datasets. It creates a single documentation block that compares the individual results.
+
+The updated `run_test()` function allows you to pass an `input_grid`. This grid will run a test for all combinations of inputs.
+
+Example - input grid:
+
+```
+python
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"],
+}
+```
+
+A test runs once for each of the following input groups:
+
+```
+python
+
+{
+"model": "XGBoost",
+"dataset": "train_dataset"
+}
+
+{
+"model": "XGBoost",
+"dataset": "test_dataset"
+}
+```
+
+Example function calls
+
+```
+python
+
+from validmind.tests import run_test
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"],
+}
+
+result = run_test(
+    "validmind.model_validation.sklearn.ClassifierPerformance",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ConfusionMatrix",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ROCCurve",
+    input_grid,
+)
+```
+
+Demo video
+
+https://github.com/validmind/developer-framework/assets/21595/af0bfbbf-dbc7-461c-ae7e-4e4ccb26544b
+
+## Bug fixes
+
+<!---
+PR #229: Updated test descriptions 
+URL: https://github.com/validmind/documentation/pull/229
+Labels: bug
+--->
+### Updated test descriptions
+
+We fixed a number of missing test descriptions that were caused by a scripting issue.
+ 
+[test descriptions](../../guide/test-descriptions.qmd)
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+## Documentation
+
+<!---
+PR #209: "Model Workflows" section in Guides
+URL: https://github.com/validmind/documentation/pull/209
+Labels: documentation
+--->
+### Model workflows section in guides
+
+See workflow
+
+You can now manage lifecycle processes within your ValidMind Platform UI setup using workflows. Use workflows to match your organizational needs for overseeing model development, validation, or implementation activities.
+
+Check out our new documentation on working with your `model_workflows`
+
+To use workflows, you'll need to:
+
+1. Customize your resource statuses
+2. Then set up your `model_workflows`
+
+<!---
+PR #220: Clarify what review means
+URL: https://github.com/validmind/documentation/pull/220
+Labels: documentation
+--->
+### Clarify what review means
+
+We clarified what the concept of review entails by adding a glossary entry. This includes a new key concepts section in our topic for reviewing model documentation. We also updated our validator training to be more explicit.
+
+Our validator training
+[../training/training-for-model-validators.html]
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+<!---
+PR #200: Create training collateral
+URL: https://github.com/validmind/documentation/pull/200
+Labels: documentation
+--->
+### Create training collateral
+
+We're introducing the first training modules that are part of our training program for model developers, validators, and administrators. 
+
+Our training modules are interactive. They combine instructional content with our live product and are easy to use. Try it: [welcome to ValidMind Academy](../../training/training-overview.qmd).
+
