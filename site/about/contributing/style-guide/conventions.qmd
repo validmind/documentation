@@ -59,6 +59,61 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 |   Login to ValidMind  |  1. Logging into ValidMind.  |
 : **Heading** examples {.hover}
 
+### Responsive columns
+
+To make sure our docs site works well on mobile, we use Tachyons CSS with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
+
+Enable Tachyons CSS in the front matter  with:
+
+```markdown
+filters:
+    - tachyons
+```
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+**Correct:**  
+
+```markdown
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+Column 1, 50% wide
+:::
+
+::: {.w-50-ns}
+Column 2, 50% wide
+:::
+
+::::
+```
+:::
+
+::: {.w-10-ns}
+:::
+
+::: {.w-40-ns}
+**Incorrect:**
+
+```markdown
+::: {.grid}
+
+::: {.g-col-6}
+Column 1, 50% wide
+:::
+
+::: {.g-col-6}
+Column 2, 50% wide
+:::
+
+:::
+```
+:::
+
+::::
+
+
 ### Margin footnotes
 Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
 
