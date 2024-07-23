@@ -82,10 +82,10 @@ These directories may have sub-directories depending on their size and grouped s
 - `tests` — This is where test descriptions generated from the Python source in the [developer-framework repo](https://github.com/validmind/developer-framework) live.
 - `wip` — Work in progress files should live here, and have [the `search` flag set to `false`](https://quarto.org/docs/websites/website-search.html#disabling-search).
 
-### Auxiliary directories
+### Auxiliary `internal` directories
 
-- `site-unused` — Archived files get moved here. 
 - `templates` — You can find generic structural templates in this folder here to help you build your guides.
+- `testing` — When tests are complete, they get moved here from `site/internal`.
 
 ## Working with files
 
