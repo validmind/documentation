@@ -18,7 +18,7 @@ class PR:
         self.url = url
         self.labels = labels if labels is not None else []
         self.cleaned_title = None
-        self.release_notes = None
+        # self.release_notes = None
         self.data_json = None
         self.pr_body = None
         self.generated_lines = None
@@ -187,6 +187,11 @@ class ReleaseURL:
 
         else:
             print(f"Error: No body found in release data for URL '{self.release_url}'.")
+
+    def populate_pr_data(self):
+        for pr in self.prs:
+            pr.load_data_json()
+
             
 
 
@@ -376,49 +381,84 @@ def main():
     append pr details to the release components, placement depends on priority
     """
     # Define label to category mapping and other structures
-    for url in github_urls:
-        # repo_name, pr_numbers = get_pr_numbers_from_url(url)
-        for pr_number in pr_numbers:
-            pr_data = get_pr_data(repo_name, pr_number) 
-            print(f"  Processing {repo_name}/#{pr_number} ...")
-            if pr_data: 
-                release_notes = extract_external_release_notes(pr_data['body']) # 1 & 2 (edit step)
-                cleaned_title = clean_title(pr_data['title']) # 3
-                labels = [label['name'] for label in pr_data['labels']] # 4
-                pr_details = { # 5
-                    'pr_number': pr_number,
-                    'title': cleaned_title,
-                    'full_title': pr_data['title'],
-                    'url': pr_data['url'],
-                    'labels': ", ".join(labels),
-                    'notes': release_notes
-                }
+    # for url in github_urls:
+    #     repo_name, pr_numbers = get_pr_numbers_from_url(url)
+    #     for pr_number in pr_numbers:
+    #         pr_data = get_pr_data(repo_name, pr_number) 
+    #         print(f"  Processing {repo_name}/#{pr_number} ...")
+    #         if pr_data: 
+    #             release_notes = extract_external_release_notes(pr_data['body']) # 1 & 2 (edit step)
+    #             cleaned_title = clean_title(pr_data['title']) # 3
+    #             labels = [label['name'] for label in pr_data['labels']] # 4
+    #             pr_details = { # 5
+    #                 'pr_number': pr_number,
+    #                 'title': cleaned_title,
+    #                 'full_title': pr_data['title'],
+    #                 'url': pr_data['url'],
+    #                 'labels': ", ".join(labels),
+    #                 'notes': release_notes
+    #             }
 
-                assigned = False # 6
-                for priority_label in label_hierarchy:
-                    if priority_label in labels:
-                        categories[priority_label].append(pr_details)
-                        assigned = True
-                        break
-                if not assigned:
-                    categories.setdefault('other', []).append(pr_details)
+    #             assigned = False # 6
+    #             for priority_label in label_hierarchy:
+    #                 if priority_label in labels:
+    #                     categories[priority_label].append(pr_details)
+    #                     assigned = True
+    #                     break
+    #             if not assigned:
+    #                 categories.setdefault('other', []).append(pr_details)
 
     # new one starts here
     release_components = []
     release_components.append(categories)
 
     for url in github_urls:
-        url.set_repo_and_tag_name()
+        url.set_repo_and_tag_name() 
 
     for url in github_urls:
-        url.extract_prs()
+        url.extract_prs() # initializes PR objects into a list for each URL
+
+    for url in github_urls:
+        url.populate_pr_data() # loads json file into object
+
+    for url in github_urls:
+        for pr in url.prs:
+            pr.extract_external_release_notes()
+
+    for url in github_urls:
+        for pr in url.prs:
+            pr.clean_title()
+
+    for url in github_urls:
+        for pr in url.prs:
+            pr.labels = [label['name'] for label in pr.data_json['labels']]
+
+    for url in github_urls:
+        for pr in url.prs:
+            pr.pr_details = {
+                'pr_number': pr.pr_number,
+                'title': pr.cleaned_title,
+                'full_title': pr.data_json['title'],
+                'url': pr.data_json['url'],
+                'labels': ", ".join(pr.labels),
+                'notes': pr.edited_text
+            }
+
+    for url in github_urls:
+        for pr in url.prs:
+            assigned = False 
+            for priority_label in label_hierarchy:
+                if priority_label in pr.labels:
+                    release_components[priority_label].append(pr.pr_details)
+                    assigned = True
+                    break
+            if not assigned:
+                release_components.setdefault('other', []).append(pr.pr_details)
 
     
 
 
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    # append release notes to full_release_notes
 
     # Write categorized PRs to the file
     with open(output_file, "a") as file:
