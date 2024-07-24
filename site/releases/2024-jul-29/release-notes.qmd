@@ -2,6 +2,224 @@
 title: "July 29, 2024"
 ---
 
+## Release highlights
+
+<!---
+PR #123: Support for comparison tests
+URL: https://github.com/validmind/developer-framework/pull/123
+Labels: enhancement, highlight
+--->
+### Support for comparison tests
+
+Support for comparison tests  
+
+A crucial feature has been added to the developer framework to support running comparison tests. This is useful for any situation where you want to run the same test against multiple combinations of models or datasets and create a single documentation block that compares individual results.
+
+The updated `run_test()` function now allows you to pass an `input_grid` that runs a test for all combinations of inputs.
+
+Example - for this input grid:
+
+```
+python
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"]
+}
+```
+
+A test runs once for each of the following input groups:
+
+```
+python
+
+{
+    "model": "XGBoost",
+    "dataset": "train_dataset"
+}
+
+{
+    "model": "XGBoost",
+    "dataset": "test_dataset"
+}
+```
+
+example function calls  
+
+```
+python
+
+from validmind.tests import run_test
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"]
+}
+
+result = run_test(
+    "validmind.model_validation.sklearn.ClassifierPerformance",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ConfusionMatrix",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ROCCurve",
+    input_grid,
+)
+```
+
+demo video  
+
+https://github.com/validmind/developer-framework/assets/21595/af0bfbbf-dbc7-461c-ae7e-4e4ccb26544b
+
+## Enhancements
+
+<!---
+PR #125: Comparison tests notebook
+URL: https://github.com/validmind/developer-framework/pull/125
+Labels: enhancement
+--->
+### Comparison tests notebook
+
+Support for comparison tests
+
+A crucial feature has been added to the Developer Framework to support running comparison tests. This is useful for any situation where you want to run the same test against multiple combinations of models or datasets and create a single documentation block that compares the individual results.
+
+The updated `run_test()` function now allows you to pass an `input_grid` that runs a test for all combinations of inputs.
+
+Example input grid
+
+```python
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"],
+}
+```
+
+A test runs once for each of the following input groups:
+
+```python
+{
+    "model": "XGBoost",
+    "dataset": "train_dataset"
+}
+
+{
+    "model": "XGBoost",
+    "dataset": "test_dataset"
+}
+```
+#### Example function calls
+
+```python
+from validmind.tests import run_test
+
+input_grid = {
+    "model": ["XGBoost"],
+    "dataset": ["train_dataset", "test_dataset"],
+}
+
+result = run_test(
+    "validmind.model_validation.sklearn.ClassifierPerformance",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ConfusionMatrix",
+    input_grid,
+)
+
+result = run_test(
+    "validmind.model_validation.sklearn.ROC.Curve",
+    input_grid,
+)
+```
+#### Demo video
+
+https://github.com/validmind/developer-framework/assets/21595/af0bfbbf-dbc7-461c-ae7e-4e4ccb26544b
+
+<!---
+PR #127: [SC-5175] Enhance add extra column to support 2d arrays
+URL: https://github.com/validmind/developer-framework/pull/127
+Labels: enhancement
+--->
+### Enhance add extra column to support 2d arrays
+
+Description
+
+This PR introduces enhancements to the `VMDataset` class. It updates the `add_extra_column` method to support adding 2D arrays as single columns in the dataset's DataFrame. These changes ensure that 2D arrays are stored in a single column without altering the DataFrame structure.
+
+Changes
+
+- Modified the `add_extra_column` method to handle 2D arrays by storing each row of the 2D array as a single element in the DataFrame column.
+- Added validation to ensure the length of the 2D array matches the number of rows in the DataFrame.
+- Added error handling to raise errors for unsupported array dimensions.
+
+Usage
+
+```
+import numpy as np
+import pandas as pd
+
+# Sample DataFrame
+df = pd.DataFrame({
+    'A': [1, 2, 3],
+    'B': [4, 5, 6]
+})
+
+# Sample 2D array
+array_2d = np.array([
+    [1, 2],
+    [3, 4],
+    [5, 6]
+])
+
+vm_dataset = vm.init_dataset(dataset=df, input_id=dummy_ds)
+vm_dataset.add_extra_columns("dummy_column", array_2d)
+```
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+<!---
+PR #834: John6797/sc 5172/test result interpretations and risk assessment
+URL: https://github.com/validmind/frontend/pull/834
+Labels: enhancement
+--->
+### Test result interpretations and risk assessment
+
+Expand support for figures/plots when using ValidMind AI interpretations and risk assessments.
+
+<!---
+PR #820: Added new report types
+URL: https://github.com/validmind/frontend/pull/820
+Labels: enhancement
+--->
+### Added new report types
+
+Added new report types
+
+- Number of models by business unit and tier
+- Number of models by status
+- Avg. number of days models spend in a status
+- Models by number of findings
+
+Now persisting the report pages' layout.
+
+<!---
+PR #824: [SC-5146] add new role modal
+URL: https://github.com/validmind/frontend/pull/824
+Labels: enhancement
+--->
+### Add new role modal
+
+Users with the `Create_Role` permission can now add a new role under
+
+Settings -> Roles
+
 ## Bug fixes
 
 <!---
@@ -11,11 +229,7 @@ Labels: bug
 --->
 ### Updated test descriptions
 
-We fixed a number of missing test descriptions caused by a scripting issue. 
-
-Test descriptions
-
-[More details](../../guide/test-descriptions.qmd)  
+We fixed a number of missing test descriptions that were caused by a scripting issue. [Test descriptions](../../guide/test-descriptions.qmd)
 
 <!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
 
@@ -28,16 +242,16 @@ Labels: documentation
 --->
 ### Model workflows section in guides
 
-See workflow
+[see workflow](https://github.com/validmind/documentation/assets/164545837/e2f93d8a-25ba-4155-afbc-16f4416a9528)
 
 You can now manage lifecycle processes within your ValidMind Platform UI setup using workflows. Use workflows to match your organizational needs for overseeing model development, validation, or implementation activities.
 
-Check out our new documentation on working with your model workflows
+Check out our **[new documentation on working with your model workflows](../guide/working-with-model-workflows.qmd)**
 
-To use `workflows`, you'll need to:
+To use workflows, you'll need to:
 
-1. Customize your resource statuses
-2. Then set up your model workflows
+1. [Customize your resource statuses](../guide/customize-resource-statuses.qmd)
+2. [Then set up your model workflows](../guide/set-up-model-workflows.qmd)
 
 <!---
 PR #200: Create training collateral
@@ -48,11 +262,10 @@ Labels: documentation
 
 We're introducing the first training modules that are part of our training program for model developers, validators, and administrators. 
 
-Our training modules are interactive. They combine instructional content with our live product and are easy to use.
+Our training modules are interactive. They combine instructional content with our live product and are easy to use. 
 
-try it
-
-[welcome to validmind academy](../../training/training-overview.qmd)
+Try it:
+[Welcome to ValidMind Academy](../../training/training-overview.qmd)
 
 <!---
 PR #220: Clarify what review means
@@ -61,9 +274,205 @@ Labels: documentation
 --->
 ### Clarify what review means
 
-We clarified what the concept of review entails by adding a glossary entry. You can find this in a new key concepts section in our topic for reviewing model documentation. We also updated our validator training to be more explicit.
+We clarified what the concept of review entails by adding a glossary entry.
 
+Including that in a new key concepts section in our topic for reviewing model documentation, and updating our validator training to be more explicit. 
 [../training/training-for-model-validators.html]
 
 <!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+## Other
+
+<!---
+PR #571: Cachafla/sc 4364/authorization bypass f 2024 0676 2
+URL: https://github.com/validmind/backend/pull/571
+Labels: 
+--->
+### Authorization bypass
+
+f 202406762
+
+<!---
+PR #586: Hotfix: fixing result interpretations
+URL: https://github.com/validmind/backend/pull/586
+Labels: 
+--->
+### Hotfix
+
+Fixing result interpretations
+
+<!---
+PR #615: Prod 1.19.11 to staging
+URL: https://github.com/validmind/backend/pull/615
+Labels: 
+--->
+### Prod 1.19.11 to staging
+
+<!---
+PR #616: Staging 1.19.21 to main
+URL: https://github.com/validmind/backend/pull/616
+Labels: 
+--->
+### Staging 1.19.21 to main
+
+<!---
+PR #617: 1.20.0
+URL: https://github.com/validmind/backend/pull/617
+Labels: 
+--->
+### 1 
+2
+0 
+0
+
+<!---
+PR #592: John6797/sc 4713/setup default config logging and alerting
+URL: https://github.com/validmind/backend/pull/592
+Labels: 
+--->
+### Setup default config logging and alerting
+
+<!---
+PR #620: Nibz/fix litellm container
+URL: https://github.com/validmind/backend/pull/620
+Labels: 
+--->
+### Fix litellm container
+
+<!---
+PR #621: feat: use a valid fargate memory allocation
+URL: https://github.com/validmind/backend/pull/621
+Labels: 
+--->
+### Use a valid fargate memory allocation
+
+<!---
+PR #624: feat: fargate memory constraints, again
+URL: https://github.com/validmind/backend/pull/624
+Labels: 
+--->
+### Fargate memory constraints, again
+
+<!---
+PR #623: Support for guideline content type
+URL: https://github.com/validmind/backend/pull/623
+Labels: 
+--->
+### Support for guideline content type
+
+<!---
+PR #625: Update assessment options colors
+URL: https://github.com/validmind/backend/pull/625
+Labels: 
+--->
+### Update assessment options colors
+
+<!---
+PR #627: fix: use correct healthcheck endpoint
+URL: https://github.com/validmind/backend/pull/627
+Labels: 
+--->
+### Fix
+Use correct `healthcheck` endpoint
+
+<!---
+PR #629: Nibz/fix litellm gcp
+URL: https://github.com/validmind/backend/pull/629
+Labels: 
+--->
+### Fix Litellm GCP
+
+<!---
+PR #628: feat: run ci less often
+URL: https://github.com/validmind/backend/pull/628
+Labels: 
+--->
+### Run `ci` less often
+
+<!---
+PR #622: Juan5508/sc 4848/improve timeseries forecasting demo
+URL: https://github.com/validmind/backend/pull/622
+Labels: 
+--->
+### Improve time series forecasting demo
+
+<!---
+PR #630: feat: add DB_URL as DATABASE_URL (not namespaced) to litellm
+URL: https://github.com/validmind/backend/pull/630
+Labels: 
+--->
+### Add `DB_URL` as `DATABASE_URL` (not `namespace`) to litellm
+
+<!---
+PR #631: fix: further work to get litellm working on ecs
+URL: https://github.com/validmind/backend/pull/631
+Labels: 
+--->
+### fix
+further work to get `litellm` working on ECS
+
+<!---
+PR #632: John6797/sc 4914/make text generation temperature configurable
+URL: https://github.com/validmind/backend/pull/632
+Labels: 
+--->
+### Make text generation temperature configurable
+
+<!---
+PR #626: [SC-4950] api credentials not set when added to new org
+URL: https://github.com/validmind/backend/pull/626
+Labels: 
+--->
+### Api credentials not set when added to new org
+
+<!---
+PR #633: feat: repair gcp and add litellm service discovery urls
+URL: https://github.com/validmind/backend/pull/633
+Labels: 
+--->
+### Repair GCP and add Litellm service discovery URLs
+
+<!---
+PR #634: use full url for litellm
+URL: https://github.com/validmind/backend/pull/634
+Labels: 
+--->
+### Use full URL for `litellm`
+
+<!---
+PR #636: feat: add litellm deploy files to staging and prod
+URL: https://github.com/validmind/backend/pull/636
+Labels: 
+--->
+### add litellm deploy files to staging and prod
+
+<!---
+PR #637: fix: repair gcp sites
+URL: https://github.com/validmind/backend/pull/637
+Labels: 
+--->
+### Fix
+
+Repair GCP sites
+
+<!---
+PR #639: fix: typo in namespaced secret name
+URL: https://github.com/validmind/backend/pull/639
+Labels: 
+--->
+### Fix typo in `namespace` `secret_name`
+
+<!---
+PR #641: [SC-5025] adding a staff user to an org should not trigger email
+URL: https://github.com/validmind/backend/pull/641
+Labels: 
+--->
+### Adding a staff user to an org should not trigger email
+
+<!---
+PR #640: [SC-4075] cli tool to manage roles
+URL: https://github.com/validmind/backend/pull/640
+Labels: 
+--->
+### Cli tool to manage roles
 

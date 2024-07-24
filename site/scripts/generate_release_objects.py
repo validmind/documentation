@@ -57,6 +57,9 @@ class PR:
             extracted_text = match.group(1).strip()
             # Process each line to add an extra '#' if the line starts with three or more '#'
             self.generated_lines = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))  
+            return True
+        else:
+            return None
 
     def edit_text_with_openai(self, isTitle):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
@@ -263,7 +266,7 @@ def get_release_date():
     three_business_days = three_business_days.astype('datetime64[D]').astype(datetime.date)
     default_date = three_business_days.strftime("%B %d, %Y")
 
-    date_input = input(f"Enter the release date (Month Day, Year) [{default_date}]: ") or default_date
+    date_input = input(f"Enter the release date (Month Day, Year) (leave empty for default date [{default_date}]): ") or default_date
     try:
         validated_date = datetime.datetime.strptime(date_input, "%B %d, %Y")
         return validated_date
@@ -435,8 +438,7 @@ def main():
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json: 
-                pr.extract_external_release_notes()
-                pr.edit_text_with_openai(False)
+                if pr.extract_external_release_notes(): pr.edit_text_with_openai(False)
 
     for url in github_urls:
         for pr in url.prs:
