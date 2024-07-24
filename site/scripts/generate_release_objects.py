@@ -58,7 +58,7 @@ class PR:
             # Process each line to add an extra '#' if the line starts with three or more '#'
             self.generated_lines = '\n'.join(''.join(['#', line]) if line.lstrip().startswith('###') else line for line in extracted_text.split('\n'))  
 
-    def edit_text_with_openai(self):
+    def edit_text_with_openai(self, isTitle):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
         Make editing_instructions global for notebook?
 
@@ -68,7 +68,11 @@ class PR:
         Raises:
             Exception: When our call to OpenAI fails 
         """
-        original_text = "\n".join(self.generated_lines)
+        if isTitle:
+            original_text = "\n".join(self.title)
+        else:
+            original_text = "\n".join(self.generated_lines)
+
         client = openai.OpenAI() 
 
         editing_instructions = """
@@ -109,11 +113,14 @@ class PR:
                 frequency_penalty=0.5,  # Modify repetition tendencies
                 presence_penalty=0.5  # Encourage diversity in responses
             )
-            self.edited_text = response.choices[0].message.content
+            if isTitle:
+                self.cleaned_title = response.choices[0].message.content
+            else:
+                self.edited_text = response.choices[0].message.content
 
         except Exception as e:
             print(f"\nFailed to edit text with OpenAI: {str(e)}")
-            print(f"\n{self.generated_lines}\n")
+            print(f"\n{original_text}\n")
 
     def clean_title(self):
         """Cleans title by fixing capitalization and removing special character. Edits with ChatGPT
@@ -123,6 +130,7 @@ class PR:
         """
         # Remove text in square brackets, process '/' character, and trim the title
         title = re.sub(r"\[.*?\]", "", self.title)
+        print(title) #@@@@@@
         parts = title.split('/')
         if len(parts) > 1:
             title = parts[-1].strip()  # Get the part after the last '/'
@@ -130,15 +138,18 @@ class PR:
                 title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
 
         title = title.strip()
+        print(title) #@@@@@
 
         # Edit the pull request title with ChatGPT
         # print(f"ORIGINAL TITLE: {title}")
-        temp = self.generated_lines
-        self.generated_lines = self.title
-        edited_title = self.edit_text_with_openai
-        self.generated_lines = temp
-
-        title = edited_title.rstrip('.')
+        # temp = self.generated_lines
+        # self.generated_lines = title
+        # print(self.generated_lines)
+        self.title = title
+        self.edit_text_with_openai(True)
+        # self.generated_lines = temp
+        print(self.cleaned_title) #@@@@@
+        title = self.cleaned_title.rstrip('.')
         self.cleaned_title = title
 
 
@@ -409,8 +420,8 @@ def main():
     #                 categories.setdefault('other', []).append(pr_details)
 
     # new one starts here
-    release_components = []
-    release_components.append(categories)
+    release_components = dict()
+    release_components.update(categories)
 
     for url in github_urls:
         url.set_repo_and_tag_name() 
@@ -423,19 +434,23 @@ def main():
 
     for url in github_urls:
         for pr in url.prs:
-            pr.extract_external_release_notes()
+            if pr.data_json: 
+                pr.extract_external_release_notes()
+                pr.edit_text_with_openai(False)
 
     for url in github_urls:
         for pr in url.prs:
-            pr.clean_title()
+            if pr.data_json: 
+                pr.title = pr.data_json['title']
+                pr.clean_title()
 
     for url in github_urls:
         for pr in url.prs:
-            pr.labels = [label['name'] for label in pr.data_json['labels']]
+            if pr.data_json: pr.labels = [label['name'] for label in pr.data_json['labels']]
 
     for url in github_urls:
         for pr in url.prs:
-            pr.pr_details = {
+            if pr.data_json: pr.pr_details = {
                 'pr_number': pr.pr_number,
                 'title': pr.cleaned_title,
                 'full_title': pr.data_json['title'],
@@ -446,14 +461,15 @@ def main():
 
     for url in github_urls:
         for pr in url.prs:
-            assigned = False 
-            for priority_label in label_hierarchy:
-                if priority_label in pr.labels:
-                    release_components[priority_label].append(pr.pr_details)
-                    assigned = True
-                    break
-            if not assigned:
-                release_components.setdefault('other', []).append(pr.pr_details)
+            if pr.data_json:
+                assigned = False 
+                for priority_label in label_hierarchy:
+                    if priority_label in pr.labels:
+                        release_components[priority_label].append(pr.pr_details)
+                        assigned = True
+                        break
+                if not assigned:
+                    release_components.setdefault('other', []).append(pr.pr_details)
 
     
 
