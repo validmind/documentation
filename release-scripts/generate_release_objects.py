@@ -24,6 +24,9 @@ class PR:
         self.generated_lines = None
         self.edited_text = None
         self.pr_details = None
+        self.git_diff = None
+        self.explained_diff = None
+        self.final_text = None
 
     def load_data_json(self):
         """Loads the JSON data from a PR to self.data_json, sets to None if any labels are 'internal'
@@ -35,7 +38,6 @@ class PR:
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
 
-
         try:
             self.data_json = json.loads(output)
         except json.JSONDecodeError:
@@ -45,7 +47,58 @@ class PR:
         if any(label['name'] == 'internal' for label in self.data_json['labels']):
             self.data_json = None  # Ignore PRs with the 'internal' label
 
+    def load_git_diff(self):
+        """Fetches the git diff between the pr and the last commit and stores it in self.git_diff
 
+        Modifies:
+            self.git_diff
+        """
+        cmd = ['gh', 'pr', 'diff', self.pr_number, '--repo', self.repo_name]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode != 0:
+            print("Error executing command:")
+            print(result.stderr)
+        else:
+            self.git_diff = result.stdout
+            print("Command executed successfully:")
+            print(self.git_diff)
+            return True
+        
+
+    def interpret_git_diff(self, diff_instructions):
+        """Reads the git diff from load_git_diff and asks ChatGPT to do a code explain
+
+        Modifies:
+            self.explained_diff
+        """
+
+        client = openai.OpenAI()
+
+        try:
+            response = client.chat.completions.create(
+                model = "gpt-4o",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": diff_instructions
+                    },
+                    {
+                        "role": "user",
+                        "content": self.git_diff
+                    }
+                ],
+                max_tokens = 4096,
+                frequency_penalty = 0.5,
+                presence_penalty = 0.5
+            )
+            self.explained_diff = response.choices[0].message.content
+
+        except Exception as e:
+            print(f"\nFailed to explain diff with OpenAI: {str(e)}")
+            print(f"\n{self.git_diff}\n")
+
+        
     def extract_external_release_notes(self):
         """Turns the JSON body into lines (str) that are ready for ChatGPT
         
