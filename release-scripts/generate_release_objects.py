@@ -55,24 +55,52 @@ class PR:
         """
         cmd = ['gh', 'pr', 'diff', self.pr_number, '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
+        output = result.stdout.strip()
 
-        if result.returncode != 0:
-            print("Error executing command:")
-            print(result.stderr)
-        else:
-            self.git_diff = result.stdout
-            print("Command executed successfully:")
-            print(self.git_diff)
-            return True
-        
+        self.git_diff = output
+
+    def split_diff(self, max_length=1000):
+        """Takes the git diff and splits them into chunks that are small enough for ChatGPT
+
+        Returns:
+            list - chunks, a list of chunks that came from the git diff.
+        """
+        lines = self.git_diff.splitlines(True)
+        chunks = []
+        chunk = []
+        chunk_size = 0
+        for line in lines:
+            if len(line) <= max_length:
+                chunk_size += len(line)
+                if chunk_size > max_length:
+                    chunks.append(''.join(chunk)) 
+                    chunk = [line]
+                    chunk_size = len(line) 
+                else:
+                    chunk.append(line)
+        if chunk:
+            chunks.append(''.join(chunk))
+        return chunks
 
     def interpret_git_diff(self, diff_instructions):
-        """Reads the git diff from load_git_diff and asks ChatGPT to do a code explain
+        """Takes the git diff, splits it into chunks, feeds them into chatGPT, then appends all the outputs together.
 
         Modifies:
             self.explained_diff
         """
+        chunks = self.split_diff() 
+        explanations = []
+        for chunk in chunks:
+            explanation = self.interpret_git_diff_chunk(chunk, diff_instructions)
+            explanations.append(explanation)
+        self.explained_diff = '\n'.join(explanations)
 
+    def interpret_git_diff_chunk(self, chunk, diff_instructions):
+        """Reads the git diff from load_git_diff and asks ChatGPT to do a code explain
+
+        Returns:
+            str - explanation of input 
+        """
         client = openai.OpenAI()
 
         try:
@@ -85,18 +113,18 @@ class PR:
                     },
                     {
                         "role": "user",
-                        "content": self.git_diff
+                        "content": chunk
                     }
                 ],
                 max_tokens = 4096,
                 frequency_penalty = 0.5,
                 presence_penalty = 0.5
             )
-            self.explained_diff = response.choices[0].message.content
+            return response.choices[0].message.content
 
         except Exception as e:
-            print(f"\nFailed to explain diff with OpenAI: {str(e)}")
-            print(f"\n{self.git_diff}\n")
+            print(f"\nFailed to explain diff section with OpenAI: {str(e)}")
+            print(f"\n{chunk}\n")        
 
         
     def extract_external_release_notes(self):
@@ -426,42 +454,6 @@ def main():
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
 
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    """
-    iterate through github urls
-    in each url, iterate through each pr
-    assign stuff from pr data into pr details
-    append pr details to the release components, placement depends on priority
-    """
-    # Define label to category mapping and other structures
-    # for url in github_urls:
-    #     repo_name, pr_numbers = get_pr_numbers_from_url(url)
-    #     for pr_number in pr_numbers:
-    #         pr_data = get_pr_data(repo_name, pr_number) 
-    #         print(f"  Processing {repo_name}/#{pr_number} ...")
-    #         if pr_data: 
-    #             release_notes = extract_external_release_notes(pr_data['body']) # 1 & 2 (edit step)
-    #             cleaned_title = clean_title(pr_data['title']) # 3
-    #             labels = [label['name'] for label in pr_data['labels']] # 4
-    #             pr_details = { # 5
-    #                 'pr_number': pr_number,
-    #                 'title': cleaned_title,
-    #                 'full_title': pr_data['title'],
-    #                 'url': pr_data['url'],
-    #                 'labels': ", ".join(labels),
-    #                 'notes': release_notes
-    #             }
-
-    #             assigned = False # 6
-    #             for priority_label in label_hierarchy:
-    #                 if priority_label in labels:
-    #                     categories[priority_label].append(pr_details)
-    #                     assigned = True
-    #                     break
-    #             if not assigned:
-    #                 categories.setdefault('other', []).append(pr_details)
-
-    # new one starts here
     release_components = dict()
     release_components.update(categories)
 
@@ -553,11 +545,6 @@ def main():
                         break
                 if not assigned:
                     release_components.setdefault('other', []).append(pr.pr_details)
-
-    
-
-
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     # Write categorized PRs to the file
     with open(output_file, "a") as file:
