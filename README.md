@@ -118,13 +118,13 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 
 Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template for an example.
 
-### Video files
-> All video files must go in `/assets/videos`, and referenced in `index.qmd` in the YAML header under `resources` so that they are correctly rendered with the rest of the site by Quarto.
+### Asset files
+> All video, stylesheet, and font files must go in `/assets`, and referenced in `index.qmd` in the YAML header under `resources` so that they are correctly rendered with the rest of the site by Quarto.
 
 e.g.: 
 ```yml
 resources:
-  - assets/video/releases/*
+  - assets/**
 ```
 
 ### Jupyter Notebooks
