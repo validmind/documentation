@@ -125,12 +125,6 @@ Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template f
 - Stylesheets
 - Font files
 
-e.g.: 
-```yml
-resources:
-  - assets/**
-```
-
 ### Jupyter Notebooks
 > Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
 
