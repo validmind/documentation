@@ -76,7 +76,7 @@ These directories may have sub-directories depending on their size and grouped s
 
 #### Supporting `site` directories
 - `_site` — This is where static files rendered by `quarto render` get placed.
-- `assets` — This is where general shared assets live (stylesheets, promotional images, etc.).
+- `assets` — This is where general shared assets live (stylesheets, promotional images, all videos, etc.).
 - `internal` — For internal testing only.
 - `notebooks` — This is where notebooks retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
 - `tests` — This is where test descriptions generated from the Python source in the [developer-framework repo](https://github.com/validmind/developer-framework) live.
@@ -117,6 +117,15 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 > Use the installed [Tachyons Extension For Quarto](https://github.com/nareal/tachyons) to build column layouts so that they are properly mobile responsive. 
 
 Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template for an example.
+
+### Video files
+> All video files must go in `/assets/videos`, and referenced in `index.qmd` in the YAML header under `resources` so that they are correctly rendered with the rest of the site by Quarto.
+
+e.g.: 
+```yml
+resources:
+  - assets/video/releases/*
+```
 
 ### Jupyter Notebooks
 > Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
