@@ -119,7 +119,11 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template for an example.
 
 ### Asset files
-> All video, stylesheet, and font files must go in `/assets`, and referenced in `index.qmd` in the YAML header under `resources` so that they are correctly rendered with the rest of the site by Quarto.
+> If there are additional files that Quarto does not copy over automatically, place them into `/assets`. These files might include: 
+
+- Videos
+- Stylesheets
+- Font files
 
 e.g.: 
 ```yml
