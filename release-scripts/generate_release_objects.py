@@ -9,6 +9,8 @@ import openai
 from dotenv import load_dotenv
 import os
 
+ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+
 class PR:
     def __init__(self, repo_name=None, pr_number=None, title=None, body=None, url=None, labels=None):
         self.repo_name = repo_name
@@ -16,17 +18,21 @@ class PR:
         self.title = title
         self.body = body 
         self.url = url
-        self.labels = labels if labels is not None else []
-        self.cleaned_title = None
-        # self.release_notes = None
-        self.data_json = None
-        self.pr_body = None
-        self.generated_lines = None
-        self.edited_text = None
-        self.pr_details = None
+
+        self.commit_data = None
+        self.base_commit = None
+        self.head_commit = None
         self.git_diff = None
         self.explained_diff = None
         self.final_text = None
+
+        self.data_json = None
+        self.labels = labels if labels is not None else []
+        self.cleaned_title = None
+        self.pr_body = None
+        self.generated_lines = None
+        self.edited_text = None
+        self.pr_details = None # final form
 
     def load_data_json(self):
         """Loads the JSON data from a PR to self.data_json, sets to None if any labels are 'internal'
@@ -38,8 +44,10 @@ class PR:
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
 
+        output_clean = ansi_escape.sub('', output)
+
         try:
-            self.data_json = json.loads(output)
+            self.data_json = json.loads(output_clean)
         except json.JSONDecodeError:
             print(f"Error: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}.")
             return None
@@ -47,17 +55,50 @@ class PR:
         if any(label['name'] == 'internal' for label in self.data_json['labels']):
             self.data_json = None  # Ignore PRs with the 'internal' label
 
+    
+    # DELETE |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    def get_pr_commits(pr_number, repo_name, github_token):
+        url = f"https://api.github.com/repos/{repo_name}/pulls/{pr_number}"
+        headers = {
+            "Authorization": f"token {github_token}"
+        }
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        pr_details = response.json()
+        base_commit_sha = pr_details['base']['sha']
+        head_commit_sha = pr_details['head']['sha']
+        return base_commit_sha, head_commit_sha
+
+    def load_commit_data(self):
+        """Takes the commit data
+
+        Modifies:
+            self.commit_data
+        """
+        cmd = ['gh', 'pr', 'view', self.pr_number, '--repo', self.repo_name, '--json', 'mergeCommit']
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        try: 
+            self.commit_data = json.loads(output)
+            self.commit_number = self.commit_data['mergeCommit']['oid']
+        except json.JSONDecodeError:
+            print(f"Error: Unable to parse commit data for PR {self.pr_number} in repository {self.repo_name}.")
+            return None
+
     def load_git_diff(self):
         """Fetches the git diff between the pr and the last commit and stores it in self.git_diff
 
         Modifies:
             self.git_diff
         """
-        cmd = ['gh', 'pr', 'diff', self.pr_number, '--repo', self.repo_name]
+        cmd = ['git', 'diff', '--stat', self.pr_number, '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
 
-        self.git_diff = output
+        output_clean = ansi_escape.sub('', output)
+
+        self.git_diff = output_clean
 
     def split_diff(self, max_length=1000):
         """Takes the git diff and splits them into chunks that are small enough for ChatGPT
@@ -126,6 +167,7 @@ class PR:
             print(f"\nFailed to explain diff section with OpenAI: {str(e)}")
             print(f"\n{chunk}\n")        
 
+# DELETE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         
     def extract_external_release_notes(self):
         """Turns the JSON body into lines (str) that are ready for ChatGPT
@@ -146,10 +188,10 @@ class PR:
 
     def edit_text_with_openai(self, isTitle, editing_instructions):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
-        Make editing_instructions global for notebook?
 
         Modifies:
-            self.edited_text
+            self.edited_text if isTitle = False
+            self.cleaned_title if isTitle = True
 
         Raises:
             Exception: When our call to OpenAI fails 
@@ -251,10 +293,12 @@ class ReleaseURL:
         result_release = subprocess.run(cmd_release, capture_output=True, text=True)
         output_release = result_release.stdout.strip()
 
+        output_release_clean = ansi_escape.sub('', output_release) # to clean up notebook output
+
         try:
-            self.data_json = json.loads(output_release)
+            self.data_json = json.loads(output_release_clean)
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse release data for URL '{self.url}'.")
+            print(f"Error: Unable to parse release data for URL '{self.url}'.")      
         
         if 'body' in self.data_json:
             body = self.data_json['body']
@@ -268,10 +312,10 @@ class ReleaseURL:
             print(f"Error: No body found in release data for URL '{self.url}'.")
 
     def populate_pr_data(self):
+        """Helper method. Calls JSON loader on each PR in a URL.
+        """
         for pr in self.prs:
             pr.load_data_json()
-
-            
 
 
 def setup_openai_api():
@@ -382,7 +426,7 @@ def update_quarto_yaml(release_date):
 def write_prs_to_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
     Args:
-        file (desired file path)
+        file - desired file path
         release_components
         label_to_category
 
@@ -464,7 +508,7 @@ def main():
         url.extract_prs() # initializes PR objects into a list for each URL
 
     for url in github_urls:
-        url.populate_pr_data() # loads json file into object
+        url.populate_pr_data() # loads json file into the object data
 
     editing_instructions_body = """
         Please edit the provided technical content according to the following guidelines:
