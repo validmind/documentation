@@ -40,7 +40,7 @@ When a workflow is edited, the new flow will only apply to new models created af
 
 To add or edit workflow steps:
 
-1. [Log into the {{< var validmind_platform >}}](/guide/configuration/log-into-validmind.qmd).
+1. {{< var link.login >}}
 
 2. In the left sidebar, click **{{< fa gear >}} Settings**.
 
@@ -107,17 +107,17 @@ Example
 ::::
 
 #### Approval
-- When your resource reaches the approval step, users in the selected **Approval Group** will receive your configured message. 
-- Requires a **User Type** custom field[^8] to select from, and must be connected to both an approval and rejection Status Change step.[^9]
+- When your resource reaches the approval step, roles or users in the selected **Approval Group** will receive your configured message. 
+- Requires either a **User Role**[^8] or **User Type** custom field[^9] to select from, and must be connected to both an approval and rejection Status Change step.[^10]
 
 ::: callout 
-Please note that users must be assigned to the **Approval Group** custom field before it is transitioned into the **Approval** workflow step in order for the message to be displayed to them. 
+Please note that roles or users must be assigned to the **Approval Group** field before the workflow is transitioned into the **Approval** step in order for the message to be displayed to those roles or users. 
 :::
 
 | Field | Description |
 |---:|---|
-| Approval group (required) | Select the **User Type** custom field that indicates users responsible for approval. |
-| Threshold (required) | Percentage of approvers required for the resource to be approved.[^10] |
+| Approval Group (required) | Select the **User Role** or **User Type** custom field that indicates roles or users responsible for approval. |
+| Threshold (required) | Percentage of approvers required for the resource to be approved.[^11] |
 | Approval Message (required) | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
 : **Approval Group** step configuration {.hover tbl-colwidths="[35,65]"}
 
@@ -135,7 +135,7 @@ Please note that users must be assigned to the **Approval Group** custom field b
 ::: {.w-40-ns}
 
 Example
-: A message shown to the Approval Group users requesting approval of model documentation.
+: A message shown to the user type custom field `Approval Group` users requesting approval of model documentation.
 
 :::
 
@@ -152,14 +152,14 @@ Conditional requirements can be configured for all three available step types:
 | Approval | Under **Threshold**, you are able to set the minimum percentage of approvers required for the resource to be approved. |
 : Step type conditional options {.hover tbl-colwidths="[20,80]"}
 
-For Status Change[^11] and User Action[^12] conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
+For Status Change[^12] and User Action[^13] conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
 
 - Click **+ Rule** to add an independent rule.
 - Click **+ Group** to add a linked group of rules that all must be true to qualify. 
 
 ## Link workflow together
 
-To initiate the beginning of your workflow:[^13]
+To initiate the beginning of your workflow:[^14]
 
 1. Locate the **Start** of your workflow.
 
@@ -180,9 +180,9 @@ To link subsequent steps together:
 #### Link approval steps
 Approval steps need to be subsequently linked to both a `Rejected` and an `Approved` Status Change step:
 
-1. First, configure an **Approval** step.[^14]
+1. First, configure an **Approval** step.[^15]
 
-2. Then, drag two **Status Change** steps onto the canvas:[^15]
+2. Then, drag two **Status Change** steps onto the canvas:[^16]
 
     - Assign a `Rejected` status to one in the **Set Document Status** field.
     - Assign an `Approved` status to the other in the **Set Document Status** field.
@@ -234,22 +234,24 @@ Approval steps need to be subsequently linked to both a `Rejected` and an `Appro
 
 [^7]: [Manage inventory custom fields](/guide/model-inventory/manage-inventory-custom-fields.qmd)
 
-[^8]: [Manage inventory custom fields](/guide/model-inventory/manage-inventory-custom-fields.qmd)
+[^8]: [Manage roles](/guide/configuration/manage-roles.qmd)
 
-[^9]: [Status Change](#status-change) steps
+[^9]: [Manage inventory custom fields](/guide/model-inventory/manage-inventory-custom-fields.qmd)
 
-[^10]: [Add conditional requirements](#add-conditional-requirements)
+[^10]: [Status Change](#status-change) steps
 
-[^11]: [Status Change](#status-change) steps
+[^11]: [Add conditional requirements](#add-conditional-requirements)
 
-[^12]: [User Action](#user-action) steps
+[^12]: [Status Change](#status-change) steps
 
-[^13]: After you’ve [configured your workflow steps](#configure-workflow-steps), you can then link your workflow together.
+[^13]: [User Action](#user-action) steps
 
-[^14]: 
+[^14]: After you’ve [configured your workflow steps](#configure-workflow-steps), you can then link your workflow together.
+
+[^15]: 
 
     - [Configure workflow steps](#configure-workflow-steps)
     - [Approval](#approval) steps
 
-[^15]: [Status Change](#status-change) steps
+[^16]: [Status Change](#status-change) steps
 
