@@ -40,6 +40,7 @@ class PR:
         Modifies:
             self.data_json
         """
+        print(f"Extracting data from PR #{self.pr_number} in {self.repo_name}...\n")
         cmd = ['gh', 'pr', 'view', self.pr_number, '--json', 'title,body,url,labels', '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
@@ -281,6 +282,7 @@ class ReleaseURL:
             print(f"Error: Invalid URL format '{self.url}'.")
       
         self.repo_name, self.tag_name = match.groups()
+        print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tage name: {self.tag_name}\n")
 
     def extract_prs(self):
         """Extracts PRs from the release URL.
@@ -289,6 +291,7 @@ class ReleaseURL:
             self.prs
             self.data_json
         """
+        print(f"Extracting PRs from {self.url}...\n")
         cmd_release = ['gh', 'api', f'repos/{self.repo_name}/releases/tags/{self.tag_name}']
         result_release = subprocess.run(cmd_release, capture_output=True, text=True)
         output_release = result_release.stdout.strip()
@@ -307,6 +310,7 @@ class ReleaseURL:
             for pr_number in pr_numbers: # initialize PR objects using pr_numbers and add to list of PRs
                 curr_PR = PR(self.repo_name, pr_number)
                 self.prs.append(curr_PR)
+                print(f"PR #{pr_number} added.\n")
 
         else:
             print(f"Error: No body found in release data for URL '{self.url}'.")
@@ -355,6 +359,7 @@ def collect_github_urls():
                 exit(1)  # Exit the script with an error code
             break
         urls.append(ReleaseURL(url))
+        print(f"{url} added.\n")
     return urls 
 
 
@@ -378,6 +383,7 @@ def get_release_date():
     date_input = input(f"Enter the release date (Month Day, Year) (leave empty for default date [{default_date}]): ") or default_date
     try:
         validated_date = datetime.datetime.strptime(date_input, "%B %d, %Y")
+        print(f"Release date: {validated_date}\n")
         return validated_date
     except ValueError:
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")

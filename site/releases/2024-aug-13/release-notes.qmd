@@ -1,0 +1,152 @@
+---
+title: "August 13, 2024"
+---
+
+## Release highlights
+
+<!---
+PR #853: Ability to customize dashboard using widgets
+URL: https://github.com/validmind/frontend/pull/853
+Labels: enhancement
+--->
+### Ability to customize dashboard using widgets
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+We enhanced the dashboard with new customization options. Users can now resize and rearrange dashboard widgets to better suit their preferences. Additionally, you can easily add charts from the Reports section to your dashboard and remove them as needed, providing a more personalized and flexible user experience.
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="../../guide/model-workflows/set-up-model-workflows.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Learn more</button>
+</form>
+:::
+
+::::
+
+<!---
+PR #865: Added counts to reports
+URL: https://github.com/validmind/frontend/pull/865
+Labels: enhancement
+--->
+### Added counts to reports
+
+Added new widgets to the Reports tab
+
+- Total models
+- Total findings
+- Open findings
+- Past due findings
+- Closed findings
+
+![New widgets](new-reports-widget.png){fig-alt="An image showing the new widgets added to the Reports tab."}
+
+<!---
+PR #144: Generalize support for comparison tests
+URL: https://github.com/validmind/developer-framework/pull/144
+Labels: enhancement
+--->
+
+## Enhancements
+
+### Generalize support for comparison tests
+
+To make comparison tests easier to analyze, we've added support to specify an input grid when a test has many `datasets` or `models`.
+
+::: {.callout-important}
+For this to work, you need to pass a list of lists for `datasets` or `models`, since the original input is a list of inputs.
+::: 
+
+For example, the following test produces a combined GINI table:
+
+- XGBoost on training and test dataset
+- RandomForest on training and test dataset
+
+```py
+vm.tests.run_test(
+    "validmind.model_validation.statsmodels.GINITable",
+
+    input_grid={
+        "datasets": [
+            [vm_train_ds, vm_test_ds],
+        ],
+        "model": [vm_model_xgb, vm_model_rf],
+    },
+)
+```
+
+This test produces a combined PSI report for XGBoost and RandomForest on training and test datasets.
+
+```py
+vm.tests.run_test(
+    "validmind.model_validation.sklearn.PopulationStabilityIndex",
+
+    input_grid={
+        "datasets": [
+            [vm_train_ds, vm_test_ds],
+        ],
+        "model": [vm_model_xgb, vm_model_rf],
+    },
+)
+```
+
+
+
+<!---
+PR #829: Workflow approval step should allow selecting a user role as "approval group"
+URL: https://github.com/validmind/frontend/pull/829
+Labels: enhancement
+--->
+<!-- ### Workflow approval step should allow selecting a user role as `approval_group`
+
+Approval steps now allow selecting a user role as an approval group -->
+
+<!---
+PR #874: Rod/sc 5517/ability to configure model dependencies
+URL: https://github.com/validmind/frontend/pull/874
+Labels: enhancement
+--->
+### Ability to configure model dependencies
+
+Model dependencies can now be configured on the inventory model overview page.
+
+- Edit upstream model dependencies
+- Edit downstream model dependencies
+- If you add model A as an upstream dependency to model B, then model B becomes a downstream dependency to model A.
+
+![Model Dependencies](model-dependencies.png){fig-alt="A diagram of model interdependencies."}
+
+![List of Model Dependencies](list-model-interdependencies.png){fig-alt="An image of a list of model interdependencies."}
+
+
+## Bug fixes
+
+<!---
+PR #140: [SC-5466] Exclude categorical and binary features from outlier tests
+URL: https://github.com/validmind/developer-framework/pull/140
+Labels: bug
+--->
+### Exclude categorical and binary features from outlier tests
+
+Excluded categorical and binary features from outliers tests
+
+`IQROutliersTable` and `IQROutliersBarPlot`
+
+<!---
+PR #251: Add Private Service Connect & rework login info
+URL: https://github.com/validmind/documentation/pull/251
+Labels: enhancement
+--->
+## Documentation
+
+### Add private service connect and rework login info
+
+We've introduced support for Google Cloud Private Service Connect for enhanced network security and privacy. This is in addition to the existing support for AWS PrivateLink.
+
+Google Cloud Private Service Connect allows private connections between ValidMind and your company network. It ensures secure communication over the Google network without exposing traffic to the public internet. 
+
+By using private endpoints within your `VPC`, you can reduce your network's attack surface and maintain traffic privacy.
+
+[Read more...](../../guide/configuration/configure-google-private-service-connect.qmd)
