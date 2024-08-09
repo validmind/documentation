@@ -1,8 +1,12 @@
 ---
 title: "August 13, 2024"
+filters:
+  - tachyons
 ---
 
 ## Release highlights
+This release brings many user experience upgrades to ValidMind, including widgets, model dependency configuration, and support for more input types in comparison tests.
+
 
 <!---
 PR #853: Ability to customize dashboard using widgets
@@ -13,15 +17,14 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-60-ns}
-We enhanced the dashboard with new customization options. 
-Now, you can resize and rearrange widgets to suit your preferences. 
+::: {.w-75-ns}
+We enhanced the dashboard with new customization options. Now, you can resize and rearrange widgets to suit your preferences. 
 Additionally, you can add charts from the Reports section to your dashboard, providing a more personalized and flexible experience.
 
 ![Customizing your dashboard](customize-dashboard-demo.gif){width=85% fig-alt="A demonstration of dashboard widgets being moved and resized."}
 :::
 
-::: {.w-40-ns}
+::: {.w-25-ns}
 <form method="get" action="../../guide/configuration/customize-your-dashboard.html" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Learn more...</button>
 </form>
@@ -39,7 +42,7 @@ Labels: enhancement
 To make comparison tests easier to analyze, we've added support to specify an input grid when a test has many `datasets` or `models`.
 
 ::: {.callout-important}
-You need to pass a list of lists for `datasets` or `models`, since the original input is a list of inputs.
+You'll need to pass a list of lists for `datasets` or `models`, since the original input is a list of inputs.
 ::: 
 
 For example, the following test produces a combined GINI table:
@@ -60,7 +63,7 @@ vm.tests.run_test(
 )
 ```
 
-This test produces a combined PSI report for XGBoost and RandomForest on training and test datasets.
+This test produces a combined PSI report for XGBoost and RandomForest on training and test datasets:
 
 ```py
 vm.tests.run_test(
@@ -92,7 +95,7 @@ We added new widgets to the Reports tab, including:
 - Past due findings
 - Closed findings
 
-This summarizes key information from your reports for you to view at a glance.
+This summarizes key information from your reports, available at a glance.
 
 ![New widgets on the Reports page](new-reports-widget.png){fig-alt="An image showing the new widgets added to the Reports tab."}
 
@@ -113,7 +116,7 @@ Labels: enhancement
 --->
 ### Configure model dependencies
 
-Now, you can configure model dependencies on the inventory model overview page. You can edit upstream and downstream model dependencies as shown in the images below.
+Now, you can configure model dependencies on the model inventory overview page. You can edit upstream and downstream model dependencies as shown in the images below:
 
 ![Model dependencies diagram](model-dependencies.png){fig-alt="A diagram of model interdependencies."}
 
@@ -129,9 +132,7 @@ Labels: bug
 --->
 ### Exclude categorical and binary features from outlier tests
 
-Excluded categorical and binary features from outliers tests
-
-`IQROutliersTable` and `IQROutliersBarPlot`
+We've excluded categorical and binary features from the outlier tests `IQROutliersTable` and `IQROutliersBarPlot`.
 
 <!---
 PR #251: Add Private Service Connect & rework login info
@@ -144,7 +145,7 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-60-ns}
+::: {.w-75-ns}
 We've introduced support for Google Cloud Private Service Connect for enhanced network security and privacy. This is in addition to the existing support for AWS PrivateLink.
 
 Google Cloud Private Service Connect allows private connections between ValidMind and your company network. It ensures secure communication over the Google network without exposing traffic to the public internet. 
@@ -152,7 +153,7 @@ Google Cloud Private Service Connect allows private connections between ValidMin
 By using private endpoints within your `VPC`, you can reduce your network's attack surface and maintain traffic privacy.
 :::
 
-::: {.w-40-ns}
+::: {.w-25-ns}
 <form method="get" action="../../guide/configuration/configure-google-private-service-connect.html" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Read more...</button>
 </form>
