@@ -274,13 +274,13 @@ def main():
         repo_name, pr_numbers = get_pr_numbers_from_url(url)
         if pr_numbers:
             for pr_number in pr_numbers:
-                pr_data = get_pr_data(repo_name, pr_number)
+                pr_data = get_pr_data(repo_name, pr_number) # use 2d array for this and pass as parameter to fn, populate when defining get_pr_data()
                 print(f"  Processing {repo_name}/#{pr_number} ...")
-                if pr_data:
-                    release_notes = extract_external_release_notes(pr_data['body'])
-                    cleaned_title = clean_title(pr_data['title'])
-                    labels = [label['name'] for label in pr_data['labels']]
-                    pr_details = {
+                if pr_data: # this will be guaranteed if we're iterating through the array
+                    release_notes = extract_external_release_notes(pr_data['body']) # 1 & 2 (edit step)
+                    cleaned_title = clean_title(pr_data['title']) # 3
+                    labels = [label['name'] for label in pr_data['labels']] # 4
+                    pr_details = { # 5
                         'pr_number': pr_number,
                         'title': cleaned_title,
                         'full_title': pr_data['title'],
@@ -289,7 +289,7 @@ def main():
                         'notes': release_notes
                     }
 
-                    assigned = False
+                    assigned = False # 6
                     for priority_label in label_hierarchy:
                         if priority_label in labels:
                             categories[priority_label].append(pr_details)

@@ -96,4 +96,4 @@ deploy-prod:
 
 # Generate release notes
 release-notes:
-	@python scripts/generate_release_notes.py
+	@python ../release-scripts/generate_release_objects.py
