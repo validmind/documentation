@@ -106,6 +106,40 @@ class PR:
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
+    def convert_summary_to_release_notes(self, editing_instructions):
+        """Takes the PR summary and gets ChatGPT to turn them into a release notes format.
+
+        Returns: str 
+        """
+        original_text = self.pr_auto_summary
+
+        client = openai.OpenAI() 
+
+        print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name}...\n")
+
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "system", 
+                        "content": editing_instructions
+                    },
+                    {
+                        "role": "user", 
+                        "content": original_text
+                    }
+                    ],
+                max_tokens=4096,  # Adjust the token limit as needed
+                frequency_penalty=0.5,  # Modify repetition tendencies
+                presence_penalty=0.5  # Encourage diversity in responses
+            )
+            return response.choices[0].message.content
+
+        except Exception as e:
+            print(f"\nFailed to edit text with OpenAI: {str(e)}")
+            print(f"\n{original_text}\n")
+
     def edit_text_with_openai(self, isTitle, editing_instructions):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
 
