@@ -15,23 +15,18 @@ class PR:
     def __init__(self, repo_name=None, pr_number=None, title=None, body=None, url=None, labels=None):
         self.repo_name = repo_name
         self.pr_number = pr_number
-        self.title = title
-        self.body = body 
         self.url = url
-
-        self.commit_data = None
-        self.base_commit = None
-        self.head_commit = None
-        self.git_diff = None
-        self.explained_diff = None
-        self.final_text = None
-
         self.data_json = None
-        self.labels = labels if labels is not None else []
+        
+        self.title = title
         self.cleaned_title = None
         self.pr_body = None
+        self.labels = labels if labels is not None else []
+
         self.generated_lines = None
         self.edited_text = None
+        
+        self.pr_auto_summary = None
         self.pr_details = None # final form
 
     def load_data_json(self):
@@ -72,6 +67,44 @@ class PR:
             return True
         else:
             return None
+        
+    def extract_pr_summary_comment(self):
+        """Takes the github bot's comment containing an auto-generated summary of the PR.
+
+        Modifies:
+            self.pr_auto_summary
+        """
+        # Run the GitHub CLI command and capture the output
+        cmd = f'gh pr view {self.pr_number} --repo {self.repo_name} --comments'
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+        if result.returncode == 0:
+            output = result.stdout
+            
+            # Extract the content under '# PR Summary' from comments by github-actions
+            lines = output.splitlines()
+            capture = False
+            summary_content = []
+
+            for line in lines:
+                if "github-actions" in line:
+                    capture = False
+                if "# PR Summary" in line:
+                    capture = True
+                    continue
+                if capture:
+                    if "## Test Suggestions" in line:
+                        break
+                    summary_content.append(line)
+
+            # Join and print the captured summary content
+            summary = "\n".join(summary_content).strip()
+            if summary:
+                self.pr_auto_summary = summary
+            else:
+                print("No PR Summary found.")
+        else:
+            print(f"Failed to fetch comments: {result.stderr}")
 
     def edit_text_with_openai(self, isTitle, editing_instructions):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
