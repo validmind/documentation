@@ -124,7 +124,7 @@ class PR:
         """
         # Remove text in square brackets, process '/' character, and trim the title
         title = re.sub(r"\[.*?\]", "", self.title)
-        print(title) #@@@@@@
+        print(f"After some trimming: {title}\n") #@@@@@@
         parts = title.split('/')
         if len(parts) > 1:
             title = parts[-1].strip()  # Get the part after the last '/'
@@ -132,7 +132,7 @@ class PR:
                 title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
 
         title = title.strip()
-        print(title) #@@@@@
+        print(f"After stripping more: {title}\n") #@@@@@
 
         # Edit the pull request title with ChatGPT
         # print(f"ORIGINAL TITLE: {title}")
@@ -142,10 +142,10 @@ class PR:
         self.title = title
         
         self.edit_text_with_openai(True, editing_instructions)
-        # self.generated_lines = temp
-        print(self.cleaned_title) #@@@@@
+
         title = self.cleaned_title.rstrip('.')
         self.cleaned_title = title
+        print(f"After ChatGPT: {self.cleaned_title}\n") #@@@@@
 
 
 class ReleaseURL:
