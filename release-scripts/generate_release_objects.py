@@ -27,6 +27,7 @@ class PR:
         self.edited_text = None
         
         self.pr_auto_summary = None
+        self.pr_interpreted_summary = None
         self.pr_details = None # final form
 
     def load_data_json(self):
@@ -48,8 +49,8 @@ class PR:
             print(f"Error: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}.")
             return None
         
-        if any(label['name'] == 'internal' for label in self.data_json['labels']):
-            self.data_json = None  # Ignore PRs with the 'internal' label
+        # if any(label['name'] == 'internal' for label in self.data_json['labels']):
+        #     self.data_json = None  # Ignore PRs with the 'internal' label
         
     def extract_external_release_notes(self):
         """Turns the JSON body into lines (str) that are ready for ChatGPT
@@ -109,7 +110,7 @@ class PR:
     def convert_summary_to_release_notes(self, editing_instructions):
         """Takes the PR summary and gets ChatGPT to turn them into a release notes format.
 
-        Returns: str 
+        Modifies: self.pr_interpreted_summary
         """
         original_text = self.pr_auto_summary
 
@@ -134,7 +135,9 @@ class PR:
                 frequency_penalty=0.5,  # Modify repetition tendencies
                 presence_penalty=0.5  # Encourage diversity in responses
             )
-            return response.choices[0].message.content
+            self.pr_interpreted_summary = "Generated PR summary: \n \n"
+            self.pr_interpreted_summary += response.choices[0].message.content
+            self.edited_text += self.pr_interpreted_summary
 
         except Exception as e:
             print(f"\nFailed to edit text with OpenAI: {str(e)}")
