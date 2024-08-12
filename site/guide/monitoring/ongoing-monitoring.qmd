@@ -16,6 +16,16 @@ filters:
 
 Monitoring model performance involves regularly assessing accuracy, stability, and effectiveness to ensure reliability. It includes tracking metrics, detecting drift, recalibrating, validating assumptions, backtesting, and ensuring compliance.
 
+## Monitoring scenarios
+
+Key scenarios where ongoing monitoring is warranted:
+
+- **Post-production monitoring**: After deployment into production, models should be regularly assessed against performance benchmarks to identify deviations, enabling timely recalibrations or adjustments. The model's output should be continuously assessed against predefined performance benchmarks to ensure it meets the required standards. Any deviations from expected performance should be quickly identified, allowing for timely intervention
+
+- **Pre-approval monitoring of new models**: New models should undergo a trial phase of monitoring before full approval and subsequent deployment, particularly for high-risk or regulatory models, to ensure reliability before deployment. Trial phases where a model is subject to ongoing monitoring are typically fairly short, ranging from a few days to several weeks.
+
+- **Monitoring during significant updates**: When a model undergoes a significant update, ongoing monitoring should compare the updated model's performance to the original. This process, called parallel runs, involves running both models simultaneously for a set period. Model outputs should be closely monitored to assess whether the update improves performance or introduces new risks. The results help determine if the updated model should replace the original or if further adjustments are needed. Parallel runs are especially important for regulatory or critical models, ensuring changes don't harm performance.
+
 ## Key concepts
 
 <!-- TO EDIT THESE KEY CONCEPTS, SEE `about/glossary/_monitoring.qmd` -->
@@ -50,24 +60,53 @@ Monitoring model performance involves regularly assessing accuracy, stability, a
 
 ## Prerequisites
 
-- You are logged into the 
+- You are logged into the {{< var validmind.platform >}}.
 - You hold the `Developer` role.[^1]
-- The model is has been approved and is in production.
+- The model is has been approved and is in production or the model  in a pre-approval stage where performance is verified during a trial phase.
 
 ## Enable ongoing monitoring
 
-<!-- STEP ONE BELOW IS LOGIN TO THE VM, REPLACE IF NECESSARY -->
+ValidMind generates a unique _code snippet_ for each registered model to connect with your developer environment. You initialize the client library with this code snippet, which ensures that your documentation and tests are uploaded to the correct model when you run the notebook. To enable monitoring, you add `monitoring=True` to this code snippet. You can enable monitoring on both new and existing models. 
 
-1. {{< var link.login >}}
-2. [Step 2]
-   - [Include any sub-steps or details needed to complete this step]
-3. [Step 3]
-   - [Include any sub-steps or details needed to complete this step]
-   - [If applicable, include screenshots or images to illustrate the step]
-4. [Step 4]
-   - [Include any sub-steps or details needed to complete this step]
+
+1. In the {{< var validmind.platform >}}, navigate to **Model Inventory** in the left sidebar. 
+
+2. Either register a new model or sland click the **+ register model**.
+
+2. Go to **Getting Started** and click **Copy snippet to clipboard**.
+
+3. Add `monitoring=True` parameter to the `vm.init` method.
+
+Next, replace this placeholder with your own code snippet:
+
+```python
+import validmind as vm
+
+vm.init(
+    api_host="https://api.prod.validmind.ai/api/v1/tracking",
+    api_key="...",
+    api_secret="...",
+    project="...",
+    monitoring=True,
+)
+```
+
+After you run your code, TO DO 
+
+::: {.callout}
+Want to try out how monitoring works? [Check out out our code sample for ongoing monitoring](../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb).
+:::
+
 
 ## Select monitoring template
+
+1. [Step 2]
+   - [Include any sub-steps or details needed to complete this step]
+2. [Step 3]
+   - [Include any sub-steps or details needed to complete this step]
+   - [If applicable, include screenshots or images to illustrate the step]
+3. [Step 4]
+   - [Include any sub-steps or details needed to complete this step]
 
 <!-- ## Troubleshooting
 
@@ -82,4 +121,3 @@ Monitoring model performance involves regularly assessing accuracy, stability, a
 
 [^1]: [Managing users (Supported roles)](/guide/configuration/managing-users.qmd#supported-roles)
 
-[^2]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
