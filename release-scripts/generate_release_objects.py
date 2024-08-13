@@ -49,8 +49,8 @@ class PR:
             print(f"Error: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}.")
             return None
         
-        # if any(label['name'] == 'internal' for label in self.data_json['labels']):
-        #     self.data_json = None  # Ignore PRs with the 'internal' label
+        if any(label['name'] == 'internal' for label in self.data_json['labels']):
+            self.data_json = None  # Ignore PRs with the 'internal' label
         
     def extract_external_release_notes(self):
         """Turns the JSON body into lines (str) that are ready for ChatGPT
@@ -112,36 +112,37 @@ class PR:
 
         Modifies: self.pr_interpreted_summary
         """
-        original_text = self.pr_auto_summary
+        if self.pr_auto_summary:
+            original_text = self.pr_auto_summary
 
-        client = openai.OpenAI() 
+            client = openai.OpenAI() 
 
-        print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name}...\n")
+            print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name}...\n")
 
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {
-                        "role": "system", 
-                        "content": editing_instructions
-                    },
-                    {
-                        "role": "user", 
-                        "content": original_text
-                    }
-                    ],
-                max_tokens=4096,  # Adjust the token limit as needed
-                frequency_penalty=0.5,  # Modify repetition tendencies
-                presence_penalty=0.5  # Encourage diversity in responses
-            )
-            self.pr_interpreted_summary = "Generated PR summary: \n \n"
-            self.pr_interpreted_summary += response.choices[0].message.content
-            self.edited_text += self.pr_interpreted_summary
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {
+                            "role": "system", 
+                            "content": editing_instructions
+                        },
+                        {
+                            "role": "user", 
+                            "content": original_text
+                        }
+                        ],
+                    max_tokens=4096,  # Adjust the token limit as needed
+                    frequency_penalty=0.5,  # Modify repetition tendencies
+                    presence_penalty=0.5  # Encourage diversity in responses
+                )
+                self.pr_interpreted_summary = "\n \nGenerated PR summary: \n \n"
+                self.pr_interpreted_summary += response.choices[0].message.content
+                self.edited_text += self.pr_interpreted_summary
 
-        except Exception as e:
-            print(f"\nFailed to edit text with OpenAI: {str(e)}")
-            print(f"\n{original_text}\n")
+            except Exception as e:
+                print(f"\nFailed to edit text with OpenAI: {str(e)}")
+                print(f"\n{original_text}\n")
 
     def edit_text_with_openai(self, isTitle, editing_instructions):
         """Uses OpenAI/ChatGPT to edit our text from self.generated_lines using a prompt (editing_instructions)
