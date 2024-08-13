@@ -13,21 +13,27 @@ PR #853: Ability to customize dashboard using widgets
 URL: https://github.com/validmind/frontend/pull/853
 Labels: enhancement
 --->
-### Customize your dashboard using widgets
+### Customize your dashboard
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-75-ns}
-We enhanced the dashboard with new customization options. Now, you can resize and rearrange widgets to suit your preferences. 
-Additionally, you can add charts from the Reports section to your dashboard, providing a more personalized and flexible experience.
+::: {.w-50-ns}
 
-![Customizing your dashboard](customize-dashboard-demo.gif){width=85% fig-alt="A demonstration of dashboard widgets being moved and resized."}
-:::
+We enhanced the {{< var validmind.platform >}} **{{< fa home >}} Dashboard** with new customization options: 
 
-::: {.w-25-ns}
-<form method="get" action="../../guide/configuration/customize-your-dashboard.html" target="_blank">
+- Rearrange and resize widgets to suit your preferences. 
+- Add charts from [**Reports**](/guide/model-validation/view-reports.qmd) to your Dashboard, for a more personalized and streamlined experience.
+
+<form method="get" action="/guide/configuration/customize-your-dashboard.html" target="_blank">
    <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Learn more...</button>
 </form>
+
+:::
+
+::: {.w-50-ns}
+
+![Customizing your dashboard](customize-dashboard-demo.gif){width=85% fig-alt="A gif demonstrating dashboard widgets being moved and resized"}
+
 :::
 
 ::::
@@ -39,11 +45,16 @@ Labels: enhancement
 --->
 ### Generalize support for comparison tests
 
-To make comparison tests easier to analyze, we've added support to specify an input grid when a test has many `datasets` or `models`.
+To make [comparison tests](/notebooks/how_to/run_tests/2_run_comparison_tests.ipynb) easier to analyze, we've added support to specify an input grid when a test has many `datasets` or `models`.
 
-::: {.callout-important}
+::: {.callout}
 You'll need to pass a list of lists for `datasets` or `models`, since the original input is a list of inputs.
 ::: 
+
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
 
 For example, the following test produces a combined GINI table:
 
@@ -63,6 +74,10 @@ vm.tests.run_test(
 )
 ```
 
+:::
+
+::: {.w-40-ns}
+
 This test produces a combined PSI report for XGBoost and RandomForest on training and test datasets:
 
 ```py
@@ -78,6 +93,11 @@ vm.tests.run_test(
 )
 ```
 
+:::
+
+::::
+
+
 ## Enhancements
 
 <!---
@@ -87,17 +107,17 @@ Labels: enhancement
 --->
 ### Reports page improvements
 
-We added new widgets to the Reports tab, including:
+We added new summary widgets to the **Reports** tab, including:
 
-- Total models
-- Total findings
-- Open findings
-- Past due findings
-- Closed findings
+- Total Models
+- Total Findings
+- Open Findings
+- Past Due Findings
+- Closed Findings
 
-This summarizes key information from your reports, available at a glance.
+These widgets summarize key information from your reports, making the data available at a glance:
 
-![New widgets on the Reports page](new-reports-widget.png){fig-alt="An image showing the new widgets added to the Reports tab."}
+![New `Findings` Report summary widgets](new-reports-widget.png){fig-alt="An image showing the new summary widgets added to Reports on the Findings tab"}
 
 
 <!---
@@ -116,11 +136,25 @@ Labels: enhancement
 --->
 ### Configure model dependencies
 
-Now, you can configure model dependencies on the model inventory overview page. You can edit upstream and downstream model dependencies as shown in the images below:
+:::: {.flex .flex-wrap .justify-around}
 
-![Model dependencies diagram](model-dependencies.png){fig-alt="A diagram of model interdependencies."}
+::: {.w-50-ns}
 
-![List of model dependencies](list-model-interdependencies.png){fig-alt="An image of a list of model interdependencies."}
+You can now configure model dependencies in your Model Inventory. 
+
+Manage both upstream and downstream model interdependencies:
+
+![Model dependencies diagram](model-dependencies.png){fig-alt="A diagram of model interdependencies"}
+
+:::
+
+::: {.w-50-ns}
+
+![Model dependency management](manage-model-interdependencies.png){fig-alt="An screenshot showcasing the Manage Model Interdependences screen"}
+
+:::
+
+::::
 
 
 ## Bug fixes
@@ -130,9 +164,11 @@ PR #140: [SC-5466] Exclude categorical and binary features from outlier tests
 URL: https://github.com/validmind/developer-framework/pull/140
 Labels: bug
 --->
-### Exclude categorical and binary features from outlier tests
+### Exclude categorical & binary features from outlier tests
 
-We've excluded categorical and binary features from the outlier tests `IQROutliersTable` and `IQROutliersBarPlot`.
+We've excluded categorical and binary features from the outlier tests [`IQROutliersTable`](/tests/data_validation/IQROutliersTable.md) and [`IQROutliersBarPlot`](/tests/data_validation/IQROutliersBarPlot.md).
+
+This fix ensures that outlier detection is applied correctly and appropriately, improving computational efficiency and leading to more relevant, accurate, and meaningful insights from the data.
 
 <!---
 PR #251: Add Private Service Connect & rework login info
@@ -141,16 +177,17 @@ Labels: enhancement
 --->
 ## Documentation
 
-### Add private service connect and rework login info
+### Support for GCP Private Service Connect 
 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-75-ns}
+
 We've introduced support for Google Cloud Private Service Connect for enhanced network security and privacy. This is in addition to the existing support for AWS PrivateLink.
 
-Google Cloud Private Service Connect allows private connections between ValidMind and your company network. It ensures secure communication over the Google network without exposing traffic to the public internet. 
+- Google Cloud Private Service Connect allows private connections between ValidMind and your company network. It ensures secure communication over the Google network without exposing traffic to the public internet. 
+- By using private endpoints within your `VPC`, you can reduce your network's attack surface and maintain traffic privacy.
 
-By using private endpoints within your `VPC`, you can reduce your network's attack surface and maintain traffic privacy.
 :::
 
 ::: {.w-25-ns}
