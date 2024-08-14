@@ -14,13 +14,13 @@ real-world scenarios where the input data might be incomplete or corrupted.
 
 This test is conducted by adding Gaussian noise, proportional to a particular standard deviation scale, to numeric
 input features of both the training and testing datasets. The model performance in the face of these perturbed
-features is then evaluated using metrics (default: 'accuracy'). This process is iterated over a range of scale
-factors. The resulting accuracy trend against the amount of noise introduced is illustrated with a line chart. A
-predetermined threshold determines what level of accuracy decay due to perturbation is considered acceptable.
+features is then evaluated using the ROC_AUC score. This process is iterated over a range of scale
+factors. The resulting auc trend against the amount of noise introduced is illustrated with a line chart. A
+predetermined threshold determines what level of auc decay due to perturbation is considered acceptable.
 
 **Signs of High Risk**:
-- Substantial decreases in accuracy when noise is introduced to feature inputs.
-- The decay in accuracy surpasses the configured threshold, indicating that the model is not robust against input
+- Substantial decreases in auc when noise is introduced to feature inputs.
+- The decay in auc surpasses the configured threshold, indicating that the model is not robust against input
 noise.
 - Instances where one or more elements provided in the features list don't match with the training dataset's
 numerical feature columns.
@@ -32,12 +32,9 @@ insights into the model's stability.
 - Detailed results visualization helps in interpreting the outcome of robustness testing.
 
 **Limitations**:
+- The default threshold for auc decay is set to 0.05, which is unlikely to be optimal for most use cases and
+should be adjusted based on domain expertise to suit the needs of the specific model.
 - Only numerical features are perturbed, leaving out non-numerical features, which can lead to an incomplete
 analysis of robustness.
-- The default metric used is accuracy, which might not always give the best measure of a model's success,
-particularly for imbalanced datasets.
 - The test is contingent on the assumption that the added Gaussian noise sufficiently represents potential data
 corruption or incompleteness in real-world scenarios.
-- There might be a requirement to fine-tune the set decay threshold for accuracy with the help of domain knowledge
-or specific project requisites.
-- The robustness test might not deliver the expected results for datasets with a text column.

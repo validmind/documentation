@@ -61,7 +61,7 @@ python-docs:
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	@cd _source/developer-framework && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd $(SRC_DIR) && make install && poetry run python scripts/extract_descriptions.py validmind/tests
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
