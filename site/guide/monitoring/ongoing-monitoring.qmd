@@ -8,6 +8,8 @@ listing:
     sort: false
     fields: [title, description]
     contents:
+      - enable-monitoring.qmd
+      - review-monitoring-results.qmd
       - ../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb
   - id: ongoing-monitoring
     contents: "../../tests/ongoing_monitoring/**"
@@ -21,13 +23,10 @@ filters:
 
 {{< include /about/glossary/monitoring/_monitoring-intro.qmd >}}
 
-## Prerequisites
+::: {.column-margin}
+![Sample monitoring results](target-prediction-distribution-plot-zoomed.png){fig-alt="An image showing sample monitoring results in the ValidMind platform"}
+:::
 
-<!-- UPDATE THIS SECTION TO THE NEW PREREQ CONVENTION WHEN MERGED -->
-
-- [You are logged in to ValidMind.](/guide/configuration/log-in-to-validmind.qmd)
-- You are a `Developer` or `Validator`, or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
-- The model is in the pre-approval stage for performance testing or the model has been approved and is in production.
 
 ## Monitoring scenarios
 
@@ -47,7 +46,7 @@ Scenarios where ongoing monitoring is warranted:
 
 ## Ongoing monitoring plan
 
-A robust ongoing monitoring plan is crucial for maintaining model accuracy and reliability. Model developers should start regular monitoring from the outset, ideally during the pre-approval phase of model development, refining the plan as new insights are gained. This plan should be included in the initial model documentation, with clear instructions for execution and use of results.[^2]
+A robust ongoing monitoring plan is crucial for maintaining model accuracy and reliability. Model developers should start regular monitoring from the outset, ideally during the pre-approval phase of model development, refining the plan as new insights are gained. This plan should be included in the initial model documentation, with clear instructions for execution and use of results.[^1]
 
 As monitoring continues, it's important to report model status to key stakeholders, such as your model risk management committee. Regular updates with summary metrics will keep stakeholder informed of findings and emerging risks, highlighting significant trends or issues that may need action.
 
@@ -94,7 +93,7 @@ Your ongoing monitoring plan should define:
 
 The design of your ongoing monitoring plan overall should be a collaborative effort between the first line of defense, typically business units or model owners, and the second line of defense, namely your risk management team. Together, they should select the performance metrics, determine monitoring frequency, and tailor the ongoing monitoring plan to the model's specific use case and risk profile.
 
-This entails that the ongoing monitoring plan is primarily designed and implemented by the developers involved in the model's development and deployment. Their work is then reviewed during model validation to ensure the effectiveness of the ongoing monitoring plan and alignment with risk management goals. 
+This entails that the ongoing monitoring plan is primarily designed and implemented by the developers involved in the model's development and deployment. Their work is then reviewed during model validation to ensure the robustness of the ongoing monitoring plan and alignment with risk management goals. 
 
 The implementation of the ongoing monitoring plan typically also falls on model developers. This effort includes executing the monitoring activities, collecting performance data, and generating reports. The model developers also ensure that the monitoring is carried out according to the established schedule and that any anomalies or deviations are promptly identified and addressed.
 
@@ -109,88 +108,14 @@ Key test areas to pay attention to:
 - **Analysis of overrides** — Evaluate any adjustments made to the model to understand their impact.
 - **Parallel outcomes analysis** — Assess whether new data should be included in the model’s calibration to enhance its performance.
 
+::: {.callout}
+To try out monitoring, check out the code sample for ongoing monitoring of models.[^2]
+:::
+
 #### {{< fa desktop >}} Available tests
 
 :::{#ongoing-monitoring}
 :::
-
-## Enable monitoring for models
-
- To enable monitoring and start uploading ongoing monitoring results, you need to:
-
-1. [Add `monitoring=True` to your code snippet](#add-monitoringtrue-to-your-code-snippet)
-2. [Select a monitoring template](#select-a-monitoring-template)
-3. [Review the monitoring results](#review-the-monitoring-results)
-
-You can enable monitoring on both new and existing models.
-
-::: {.callout}
-To gain hands-on experience, check out out our code sample for ongoing monitoring of models.[^4]
-:::
-
-### Add `monitoring=True` to your code snippet 
-
-ValidMind generates a unique _code snippet_ for each registered model to connect with your developer environment. You initialize the client library with this code snippet, which ensures that your documentation and tests are uploaded to the correct model when you run the notebook. 
-
-To enable ongoing monitoring for a model, add `monitoring=True` to your code snippet: 
-
-1. In the {{< var validmind.platform >}}, navigate to **Model Inventory** in the left sidebar. 
-
-2. Either register a new model[^3] first or locate an existing model:
-
-   a. In the left sidebar, click **Model Inventory**.
-
-   b. Select a model by clicking on it or find your model by applying a filter or searching for it.
-
-3. Copy the code snippet for the model: 
-
-   a. In the left sidebar that appears for your model, click **Getting Started**.
-
-   b. Locate the code snippet and click **{{< fa regular copy >}} Copy snippet to clipboard**. 
-
-3. Paste the code snippet into your code and add `monitoring=True` to the `vm.init` method, similar to this example:
-   
-   ```python
-   import validmind as vm
-   
-   vm.init(
-       api_host="https://api.prod.validmind.ai/api/v1/tracking",
-       api_key="...",
-       api_secret="...",
-       project="...",
-       monitoring=True
-   )
-   ```
-
-### Select a monitoring template
-
-Before you can start sending ongoing monitoring data from your developer environment to ValidMind, you must select a monitoring template:
-
-1. In the {{< var validmind.platform >}}, navigate to **Model Inventory** in the left sidebar.
-
-2. Select a model by clicking on it or find your model by applying a filter or searching for it.
-
-3. In the left sidebar, click **Ongoing Monitoring**.
-
-4. From the **Template** drop-down, select one of the available monitoring templates. 
-
-5. Click **Use Template**.
-
-After you select a template, the initial document where your ongoing monitoring results will be stored becomes available. You can review this documents structure and then start running your code to populate the template with monitoring results. 
-
-## Review the monitoring results 
-
-![](ongoing-monitoring-template.png){width=85% fig-alt="An image showing the template that gets populated with monitoring results"}
-
-As you run your code, the monitoring template for your model gets populated. To review the monitoring results:
-
-1. In the {{< var validmind.platform >}}, navigate to **Model Inventory** in the left sidebar.
-
-2. Select a model by clicking on it or find your model by applying a filter or searching for it.
-
-3. In the left sidebar, click **Ongoing Monitoring**.
-
-You can now explore the different sections of the template and review the results. Any deviations from the expected performance should be identified and acted on if necessary.
 
 ## What's next
 
@@ -199,10 +124,6 @@ You can now explore the different sections of the template and review the result
 
 <!-- FOOTNOTES -->
 
-[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+[^1]: [Working with model documentation](/guide/model-documentation/working-with-model-documentation.qmd)
 
-[^2]: [Working with model documentation](/guide/model-documentation/working-with-model-documentation.qmd)
-
-[^3]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
-
-[^4]: [Quickstart for ongoing monitoring of models with ValidMind](../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb)
+[^2]: [Quickstart for ongoing monitoring of models with ValidMind](../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb)
