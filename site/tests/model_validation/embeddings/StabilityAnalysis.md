@@ -7,7 +7,7 @@ default_params = {
 mean_similarity_threshold": 0.7,
 }
 tasks = ["feature_extraction"]
-tags = ["llm", "text_data", "text_embeddings", "visualization"]
+tags = ["llm", "text_data", "embeddings", "visualization"]
 
 @abstractmethod
 def perturb_data(self, data: str) -> str:
