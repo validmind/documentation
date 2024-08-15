@@ -61,7 +61,11 @@ python-docs:
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
+<<<<<<< HEAD
 	@cd $(SRC_DIR) && make install && poetry run python scripts/extract_descriptions.py validmind/tests
+=======
+	@cd _source/developer-framework && make install && poetry run python scripts/extract_descriptions.py validmind/tests
+>>>>>>> 288b4b4d084a2f1df4336824b20d6ef2cebe0ba8
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
@@ -96,4 +100,4 @@ deploy-prod:
 
 # Generate release notes
 release-notes:
-	@python scripts/generate_release_notes.py
+	@python ../release-scripts/generate_release_objects.py

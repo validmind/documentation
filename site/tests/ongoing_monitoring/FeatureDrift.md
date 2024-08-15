@@ -1,6 +1,12 @@
 # FeatureDrift
 
+<<<<<<< HEAD
 **Purpose**: The Feature Drift test aims to evaluate how much the distribution of features has shifted over time between two
+=======
+**Purpose**:
+
+The Feature Drift test aims to evaluate how much the distribution of features has shifted over time between two
+>>>>>>> 288b4b4d084a2f1df4336824b20d6ef2cebe0ba8
 datasets, typically training and monitoring datasets. It uses the Population Stability Index (PSI) to quantify this
 change, providing insights into the model's robustness and the necessity for retraining or feature engineering.
 
