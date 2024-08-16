@@ -1785,7 +1785,6 @@ cookieconsent.run({
   <li><a href="#answer-similarity" id="toc-answer-similarity" class="nav-link" data-scroll-target="#answer-similarity">Answer Similarity</a></li>
   <li><a href="#context-entity-recall" id="toc-context-entity-recall" class="nav-link" data-scroll-target="#context-entity-recall">Context Entity Recall</a></li>
   <li><a href="#context-precision" id="toc-context-precision" class="nav-link" data-scroll-target="#context-precision">Context Precision</a></li>
-  <li><a href="#context-relevancy" id="toc-context-relevancy" class="nav-link" data-scroll-target="#context-relevancy">Context Relevancy</a></li>
   <li><a href="#faithfulness" id="toc-faithfulness" class="nav-link" data-scroll-target="#faithfulness">Faithfulness</a></li>
   <li><a href="#answer-relevance" id="toc-answer-relevance" class="nav-link" data-scroll-target="#answer-relevance">Answer Relevance</a></li>
   <li><a href="#context-recall" id="toc-context-recall" class="nav-link" data-scroll-target="#context-recall">Context Recall</a></li>
@@ -1853,7 +1852,7 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <h1>Pre-requisites</h1>
 <p>Let’s go ahead and install the <code>validmind</code> library if its not already installed… Then we can install the <code>qdrant-client</code> library for our vector store and <code>langchain</code> for everything else:</p>
 <div id="cell-4" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install -q validmind</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q validmind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-5" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q qdrant<span class="op">-</span>client langchain langchain<span class="op">-</span>openai sentencepiece</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2367,13 +2366,13 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="context-relevancy" class="level3">
-<h3 class="anchored" data-anchor-id="context-relevancy">Context Relevancy</h3>
-<p>This test gauges the relevancy of the retrieved context, calculated based on both the question and contexts. The values fall within the range of (0, 1), with higher values indicating better relevancy.</p>
-<p>Ideally, the retrieved context should exclusively contain essential information to address the provided query. To compute this, we initially estimate the value of by identifying sentences within the retrieved context that are relevant for answering the given question.</p>
+<section id="faithfulness" class="level3">
+<h3 class="anchored" data-anchor-id="faithfulness">Faithfulness</h3>
+<p>This measures the factual consistency of the generated answer against the given context. It is calculated from answer and retrieved context. The answer is scaled to (0,1) range. Higher the better.</p>
+<p>The generated answer is regarded as faithful if all the claims that are made in the answer can be inferred from the given context. To calculate this a set of claims from the generated answer is first identified. Then each one of these claims are cross checked with given context to determine if it can be inferred from given context or not.</p>
 <div id="cell-76" class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextRelevancy"</span>,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.Faithfulness"</span>,</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
 <span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
@@ -2385,13 +2384,18 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="faithfulness" class="level3">
-<h3 class="anchored" data-anchor-id="faithfulness">Faithfulness</h3>
-<p>This measures the factual consistency of the generated answer against the given context. It is calculated from answer and retrieved context. The answer is scaled to (0,1) range. Higher the better.</p>
-<p>The generated answer is regarded as faithful if all the claims that are made in the answer can be inferred from the given context. To calculate this a set of claims from the generated answer is first identified. Then each one of these claims are cross checked with given context to determine if it can be inferred from given context or not.</p>
+<section id="answer-relevance" class="level3">
+<h3 class="anchored" data-anchor-id="answer-relevance">Answer Relevance</h3>
+<p>The Answer Relevancy test, focuses on assessing how pertinent the generated answer is to the given prompt. A lower score is assigned to answers that are incomplete or contain redundant information and higher scores indicate better relevancy. This test is computed using the question, the context and the answer.</p>
+<p>The Answer Relevancy is defined as the mean cosine similartiy of the original question to a number of artifical questions, which where generated (reverse engineered) based on the answer.</p>
+<p>Please note, that eventhough in practice the score will range between 0 and 1 most of the time, this is not mathematically guranteed, due to the nature of the cosine similarity ranging from -1 to 1.</p>
+<blockquote class="blockquote">
+<p>Note: This is a reference free test. If you’re looking to compare ground truth answer with generated answer refer to Answer Correctness.</p>
+</blockquote>
+<p>An answer is deemed relevant when it directly and appropriately addresses the original question. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the answer lacks completeness or contains redundant details. To calculate this score, the LLM is prompted to generate an appropriate question for the generated answer multiple times, and the mean cosine similarity between these generated questions and the original question is measured. The underlying idea is that if the generated answer accurately addresses the initial question, the LLM should be able to generate questions from the answer that align with the original question.</p>
 <div id="cell-78" class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.Faithfulness"</span>,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerRelevance"</span>,</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
@@ -2403,18 +2407,13 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="answer-relevance" class="level3">
-<h3 class="anchored" data-anchor-id="answer-relevance">Answer Relevance</h3>
-<p>The Answer Relevancy test, focuses on assessing how pertinent the generated answer is to the given prompt. A lower score is assigned to answers that are incomplete or contain redundant information and higher scores indicate better relevancy. This test is computed using the question, the context and the answer.</p>
-<p>The Answer Relevancy is defined as the mean cosine similartiy of the original question to a number of artifical questions, which where generated (reverse engineered) based on the answer.</p>
-<p>Please note, that eventhough in practice the score will range between 0 and 1 most of the time, this is not mathematically guranteed, due to the nature of the cosine similarity ranging from -1 to 1.</p>
-<blockquote class="blockquote">
-<p>Note: This is a reference free test. If you’re looking to compare ground truth answer with generated answer refer to Answer Correctness.</p>
-</blockquote>
-<p>An answer is deemed relevant when it directly and appropriately addresses the original question. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the answer lacks completeness or contains redundant details. To calculate this score, the LLM is prompted to generate an appropriate question for the generated answer multiple times, and the mean cosine similarity between these generated questions and the original question is measured. The underlying idea is that if the generated answer accurately addresses the initial question, the LLM should be able to generate questions from the answer that align with the original question.</p>
+<section id="context-recall" class="level3">
+<h3 class="anchored" data-anchor-id="context-recall">Context Recall</h3>
+<p>Context recall measures the extent to which the retrieved context aligns with the annotated answer, treated as the ground truth. It is computed based on the ground truth and the retrieved context, and the values range between 0 and 1, with higher values indicating better performance.</p>
+<p>To estimate context recall from the ground truth answer, each sentence in the ground truth answer is analyzed to determine whether it can be attributed to the retrieved context or not. In an ideal scenario, all sentences in the ground truth answer should be attributable to the retrieved context.</p>
 <div id="cell-80" class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerRelevance"</span>,</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextRecall"</span>,</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
@@ -2424,24 +2423,6 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="context-recall" class="level3">
-<h3 class="anchored" data-anchor-id="context-recall">Context Recall</h3>
-<p>Context recall measures the extent to which the retrieved context aligns with the annotated answer, treated as the ground truth. It is computed based on the ground truth and the retrieved context, and the values range between 0 and 1, with higher values indicating better performance.</p>
-<p>To estimate context recall from the ground truth answer, each sentence in the ground truth answer is analyzed to determine whether it can be attributed to the retrieved context or not. In an ideal scenario, all sentences in the ground truth answer should be attributable to the retrieved context.</p>
-<div id="cell-82" class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.ContextRecall"</span>,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="answer-correctness" class="level3">
@@ -2454,9 +2435,27 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <li>FP (False Positive): Facts or statements that are present in the generated answer but not in the ground truth.</li>
 <li>FN (False Negative): Facts or statements that are present in the ground truth but not in the generated answer.</li>
 </ul>
+<div id="cell-82" class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerCorrectness"</span>,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="aspect-critique" class="level3">
+<h3 class="anchored" data-anchor-id="aspect-critique">Aspect Critique</h3>
+<p>This is designed to assess submissions based on predefined aspects such as harmlessness and correctness. Additionally, users have the flexibility to define their own aspects for evaluating submissions according to their specific criteria. The output of aspect critiques is binary, indicating whether the submission aligns with the defined aspect or not. This evaluation is performed using the ‘answer’ as input.</p>
+<p>Critiques within the LLM evaluators evaluate submissions based on the provided aspect. Ragas Critiques offers a range of predefined aspects like correctness, harmfulness, etc. Users can also define their own aspects for evaluating submissions based on their specific criteria. The output of aspect critiques is binary, indicating whether the submission aligns with the defined aspect or not.</p>
 <div id="cell-84" class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AnswerCorrectness"</span>,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AspectCritique"</span>,</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
@@ -2466,24 +2465,6 @@ Signing up is FREE — <a href="https://app.prod.validmind.ai"><b>Sign up now</b
 <span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="aspect-critique" class="level3">
-<h3 class="anchored" data-anchor-id="aspect-critique">Aspect Critique</h3>
-<p>This is designed to assess submissions based on predefined aspects such as harmlessness and correctness. Additionally, users have the flexibility to define their own aspects for evaluating submissions according to their specific criteria. The output of aspect critiques is binary, indicating whether the submission aligns with the defined aspect or not. This evaluation is performed using the ‘answer’ as input.</p>
-<p>Critiques within the LLM evaluators evaluate submissions based on the provided aspect. Ragas Critiques offers a range of predefined aspects like correctness, harmfulness, etc. Users can also define their own aspects for evaluating submissions based on their specific criteria. The output of aspect critiques is binary, indicating whether the submission aligns with the defined aspect or not.</p>
-<div id="cell-86" class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> run_test(</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.model_validation.ragas.AspectCritique"</span>,</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">=</span>{<span class="st">"dataset"</span>: vm_test_ds},</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"question_column"</span>: <span class="st">"question"</span>,</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"answer_column"</span>: <span class="st">"rag_model_prediction"</span>,</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ground_truth_column"</span>: <span class="st">"ground_truth"</span>,</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"contexts_column"</span>: <span class="st">"retrieval_model_prediction"</span>,</span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>result.log()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>

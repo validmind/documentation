@@ -1,0 +1,102 @@
+---
+title: "Enable monitoring"
+date: last-modified
+filters:
+  - tachyons
+---
+
+To start uploading ongoing monitoring results for a model to ValidMind, you enable monitoring in your code snippet and then select a monitoring template. You can enable monitoring for both new and existing models. 
+
+The process requires two steps:
+
+1. [Add `monitoring=True` to your code snippet](#add-monitoringtrue-to-your-code-snippet)
+2. [Select a monitoring template](#select-a-monitoring-template)
+
+::: {.callout title="To try out monitoring, check out the code sample for ongoing monitoring of models."}
+[Quickstart for ongoing monitoring of models with ValidMind {{< fa hand-point-right >}}](/notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb)
+:::
+
+::: {.prereq}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a `Developer` or `Validator`, or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
+- [x] The model is in the pre-approval stage for performance testing or the model has been approved and is in production.
+
+:::
+
+## Add `monitoring=True` to your code snippet 
+
+ValidMind generates a unique _code snippet_ for each registered model to connect with your developer environment. You initialize the client library with this code snippet, which ensures that your documentation and tests are uploaded to the correct model when you run the notebook. 
+
+To enable ongoing monitoring for a model, add `monitoring=True` to your code snippet: 
+
+1. In the {{< var validmind.platform >}}, either register a new model[^2] or locate an existing model:
+
+   - In the left sidebar, click **Model Inventory**.
+   - Select a model by clicking on it or find your model by applying a filter or searching for it.[^3]
+
+2. Copy the code snippet for the model: 
+
+   - In the left sidebar that appears for your model, click **{{< fa rocket >}} Getting Started**.
+   - Locate the code snippet and click **{{< fa regular copy >}} Copy snippet to clipboard**. 
+
+3. Paste the code snippet into your code and add `monitoring=True` to the `vm.init` method, similar to this example:
+   
+   ```python
+   import validmind as vm
+   
+   vm.init(
+       api_host="https://api.prod.validmind.ai/api/v1/tracking",
+       api_key="...",
+       api_secret="...",
+       project="...",
+       monitoring=True
+   )
+   ```
+
+## Select a monitoring template
+
+Before you can start sending ongoing monitoring data from your developer environment to ValidMind, you must select a monitoring template:
+
+1. In the {{< var validmind.platform >}}, click **Model Inventory** in the left sidebar.
+
+2. Select a model by clicking on it or find your model by applying a filter or searching for it.[^4]
+
+3. In the left sidebar, click **{{< fa desktop >}} Ongoing Monitoring**.
+
+4. From the **Template** drop-down, select one of the available monitoring templates. 
+
+5. Click **Use Template**.
+
+![](ongoing-monitoring-template.png){width=85% fig-alt="An image showing the template that gets populated with monitoring results"}
+
+After you select a template, the initial document where your ongoing monitoring results will be stored becomes available. You can review this documents structure and then start running your code to populate the template with monitoring results. 
+
+
+## Troubleshooting
+
+If you see errors similar to this one when running your code, make sure that you have selected your monitoring template and then re-run your code: 
+
+```bash
+APIRequestError: Please select an ongoing monitoring template on the ValidMind platform first
+```
+
+
+## What's next
+
+After you have enabled ongoing monitoring and run your code to generate some output, you can start reviewing the monitoring results.[^5]
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^3]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^4]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^5]: [Review monitoring results](review-monitoring-results.qmd)
