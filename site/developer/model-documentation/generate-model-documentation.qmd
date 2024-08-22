@@ -1,128 +1,76 @@
 ---
-title: "Generate model documentation"
+title: "Document models"
 date: last-modified
 ---
 
-## How do I use the {{< var validmind.developer >}}?
+Generate model documentation starting with your model or model predictions, load your model or predictions into the {{< var vm.developer >}}, then finally view the results and refine your documentation in the {{< var vm.platform >}} to make it ready for approval.
 
-A typical high-level workflow for model developers consists of four major steps:
+::: {.prereq}
 
-```{mermaid}
-graph LR
-    A[Develop<br>model] --> B[Generate model<br>documentation]
-    B --> C[Refine model<br>documentation]
-    C --> D[Submit for review]
-    C --> B
-```
-<br> 
+## Prerequisites 
 
-1. **Develop your model**[^1] — In your existing developer environment, build one or more candidate models that need to be validated. This step includes all the usual activities you already follow as a model developer. 
+- [x] {{< var link.login >}}
+- [x] You are the model owner.
+- [x] You are a `Developer` or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
 
-2. **Generate model documentation** — With the {{< var validmind.developer >}}, generate automated model documentation and run validation tests. This step includes making use of the automation and testing functionality provided by the {{< var vm.developer >}} and uploading the output to the {{< var vm.platform >}}. You can iteratively regenerate the documentation as you work though the next step of refining your documentation.
-
-3. **Refine model documentation** — In the {{< var validmind.platform >}}, review the generated documentation and test output. Iterate over the documentation and test output to refine your model documentation. Collaborate with other developers and model validators to finalize the model documentation and get it ready for review. 
-
-4. **Submit for review** — In the {{< var validmind.platform >}}, you submit the model documentation for review which moves the documentation workflow moves to the next phase where a model validator will review it.
-
-Before you can use the {{< var validmind.developer >}}, you need to verify that the current documentation template contains all the necessary tests for the model you are developing: 
-
-- The template might already be sufficient and you only need to run the template within the {{< var vm.developer >}} to populate documentation. 
-
-- Or, more likely, the template might need additional tests that you can add these tests via the {{< var vm.developer >}}. 
-
-## How do I generate documentation?
-
-This process of verifying the suitability of the the current documentation template and adding more tests to the template is an iterative process:
-
-```{mermaid}
-graph LR
-    A[Verify template] --> B[Build template]
-    B --> D[Add tests and<br>content blocks]
-    D --> E[Add external<br>test providers]
-    E --> C[Run template]
-    C --> B
-
-```
-<br>
-
-Build the template
-: When the documentation template requires more tests to be added, or if the documentation template does not include a specific content or test block you need: 
-   
-   - For functionality provided by the {{< var validmind.developer >}} — [Add the relevant tests or content blocks](/guide/model-documentation/work-with-content-blocks.qmd) for the model use case. 
-    
-   - For tests not provided by the {{< var vm.developer >}} — [Add your own external test provider](/notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb).
-
-
-Run the template
-: When you have registered all the required tests as content blocks in the documentation template, populate the necessary model documentation by adding this call to your model:
-   
-
-   ```python
-   run_documentation_tests()
-   ```
-
-
-::: {.callout-important title="ValidMind may not support all potential use cases or provide a universally applicable documentation template."}
- Typically, you initiate the process of putting ValidMind into production by constructing a template specific for your own use case and then refine your the documentation project.
 :::
 
-## End-to end workflow
+## End-to-end workflow  
 
-### In your modeling environment
+### 1. In your modeling environment
 
-1. Build your model.
+1. Build your model or your model predictions.[^2]
 
-2. Export the datasets and model.
+2. Export the datasets and model or predictions.
 
-Next, go to **With the {{< var validmind.developer >}}, Step 2**.  {{< fa arrow-right >}}
+### 2. With the {{< var validmind.developer >}}
 
-### With the {{< var validmind.developer >}}
+1. **From your modeling environment**, load the trained datasets and models or predictions.
 
-1. Create a notebook to select and build the relevant tests.
+2. [Install and initialize ValidMind.](install-and-initialize-validmind.qmd)
 
-2. {{< fa arrow-right >}} **From your modeling environment**, load the trained datasets and models.
+3. Select the relevant tests.
 
-3. {{< fa arrow-right >}} Use the instructions from **In the {{< var vm.platform >}}, Step 3**, [initialize the {{< var validmind.developer >}}](install-and-initialize-developer-framework.qmd).
-
-4. Select the relevant tests.
-
-5. Review if all tests are covered by ValidMind or your external test provider:
+4. Review if all tests are covered by ValidMind or your external test provider:
     
-   - If all tests are NOT covered — Create and register additional tests.
-   - If all tests are covered — 
+   - **If all tests are NOT covered** — Create and register additional tests.
+   - **If all tests are covered** — 
       a. Run the selected tests.
       b. Review your test results. 
 
-Next, go to **In the {{< var validmind.platform >}}, Step 5**.  {{< fa arrow-right >}} 
+### 3. In the {{< var validmind.platform >}}
 
-### In the {{< var validmind.platform >}}
-
-1. [Register a new model](/guide/model-inventory/register-models-in-inventory.qmd).
-
-2. Review the template structure.
-
-3. [Locate the {{< var vm.developer >}} integration instructions](install-and-initialize-developer-framework.qmd#locate-the-framework-integration-instructions). 
-   
-4.  Go to **With the {{< var validmind.developer >}}, Step 3**. {{< fa arrow-right >}}
-
-5. {{< fa arrow-right >}} After **With the {{< var validmind.developer >}}, Step 6**, [add content blocks](/guide/model-documentation/work-with-content-blocks.qmd) to your model documentation: 
+1. **After installing and initalizing the {{< var validmind.developer >}}**,[^4] add content blocks[^3] to your model documentation: 
    
    Select the block type:
    
-      - For test-driven blocks: Select from available test provider results
-      - For text blocks: 
+      - **For test-driven blocks** — Select from available test provider results[^5]
+      - **For text blocks** — 
          
-         - For new block:
-            - Add new editable text content block
-            - Review and collaborate on the content block
-         - For existing blocks: Select from available texts from content provider
+         a. For new block:
+            1. Add new editable text content block
+            2. Review and collaborate on the content block
+         b. For existing blocks: Select from available texts from content provider
 
-6. [Submit your model documentation for review](/guide/model-documentation/submit-for-approval.qmd).
+2. [Submit your model documentation for review](/guide/model-documentation/submit-for-approval.qmd).
+
+## What's next 
+
+- [Store project credentials in `.env` files](store-credentials-in-env-file.qmd)
+- [Work with test results](work-with-test-results.qmd)
 
 
 <!-- FOOTNOTES -->
 
-[^1]: 
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: 
 
    **No available model?**<br>
    You can still run tests and log documentation with ValidMind as long as you're able to [load the model predictions](/faq/faq-documentation.qmd#can-i-run-tests-and-log-documentation-without-having-a-model-available). 
+
+[^3]: [Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd)
+
+[^4]: [Install and initialize ValidMind](install-and-initialize-validmind.qmd)
+
+[^5]: [Work with test results](work-with-test-results.qmd)
