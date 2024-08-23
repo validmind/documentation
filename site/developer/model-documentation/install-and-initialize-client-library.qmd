@@ -1,0 +1,80 @@
+---
+title: "Install and initialize the client library"
+date: last-modified
+---
+
+ValidMind generates a unique _code snippet_ for each registered model to connect with your developer environment. You initialize the client library with this code snippet, ensuring that your documentation and tests are uploaded to the correct model. 
+
+::: {.prereq}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are the model owner.
+- [x] You are a `Developer` or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
+
+In order to integrate the {{< var vm.developer >}} and to be able to upload to the {{< var vm.platform >}}, you must provide the following information through a code snippet that you copy from the {{< var validmind.platform >}}:
+
+| Argument      | Description                        |
+|---------------|------------------------------------|
+| `api_host`    | The location of the ValidMind API  |
+| `api_key`     | The account API key                |
+| `api_secret`  | The account secret key             |
+| `project`     | The project identifier             |
+
+If you do not have a suitable model with a code snippet to use, you can register a model first.[^2] 
+
+The {{< var vm.developer >}} also requires access to the data sources where data sets used for training, testing, and trained model files are stored. This access is needed to run model documentation and validation tests, and to upload to the {{< var vm.platform >}} to populate the model documentation and validation reports.
+
+:::
+
+## Locate the {{< var vm.developer >}} integration instructions
+
+For existing projects, this information can be found in the {{< var validmind.platform >}}:
+
+1. In the left sidebar, click **Model Inventory**.
+
+2. Select a model by clicking on it or find your model by applying a filter or searching for it.[^3]
+
+3. In the left sidebar that appears for your model, click **Getting Started**.
+
+4. Locate the code snippet and click **{{< fa regular copy >}} Copy snippet to clipboard**. 
+
+## Install the client library
+
+To install the client library:
+
+```python
+%pip install validmind
+```
+
+## Initialize the client library
+
+To initialize the client library, paste the code snippet with the client integration details directly into your development source code, replacing this example with your own:
+
+```python
+import validmind as vm
+
+vm.init(
+  api_host = "{{< var api.host >}}/tracking",
+  api_key = "API_KEY",
+  api_secret = "API_SECRET",
+  project = "PROJECT-IDENTIFIER"
+)
+```
+
+:::{.callout}
+To also enable monitoring, add `monitoring=True` to the `vm.init` method in your code snippet. [^4]
+:::
+
+After you have pasted the code snippet into your development source code and run your code, the Python client library will connect and register with ValidMind. You can now use the {{< var vm.developer >}} to document and test your models, and to upload model documentation and test results to the {{< var vm.platform >}}.
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^3]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^4]: [Ongoing monitoring](/guide/monitoring/ongoing-monitoring.qmd)

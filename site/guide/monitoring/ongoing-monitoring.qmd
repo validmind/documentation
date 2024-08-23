@@ -1,0 +1,139 @@
+---
+title: "Ongoing monitoring"
+date: last-modified
+listing:
+  - id: ongoing-monitoring-listing
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - enable-monitoring.qmd
+      - review-monitoring-results.qmd
+      - ../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb
+  - id: ongoing-monitoring
+    contents: "../../tests/ongoing_monitoring/**"
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    page-size: 150
+    fields: [title, description]  
+filters:
+  - tachyons
+---
+
+Monitoring of model performance in model risk management involves regularly assessing a model's accuracy, stability, and robustness to ensure it remains reliable after deployment. 
+
+Monitoring is a critical component of model risk management, as emphasized in regulations such as SR 11-7, SS1/23, and E-24,[^1] and includes:
+
+- Tracking key performance indicators, detecting model drift, recalibrating as needed, and validating assumptions. 
+- Backtesting to verify predictive power, maintaining transparent reporting and governance, and ensuring ongoing compliance with regulatory standards. 
+- Continuous monitoring to sustain the model's integrity and mitigating risks associated with its use as they arise.
+
+
+::: {.column-margin}
+![Sample monitoring results](target-prediction-distribution-plot-zoomed.png){fig-alt="An image showing sample monitoring results in the ValidMind platform"}
+:::
+
+
+## Monitoring scenarios
+
+Scenarios where ongoing monitoring is warranted:
+
+- **Pre-approval monitoring of new models** — New models should undergo a trial phase of monitoring before full approval and subsequent deployment, particularly for high-risk or regulatory models, to ensure reliability before deployment. 
+
+  Trial phases where a model is subject to ongoing monitoring are typically fairly short, ranging from a few days to several weeks.
+
+- **Monitoring during significant updates** — When a model undergoes a significant update, ongoing monitoring should compare the updated model's performance to the original. This process, called _parallel runs_, involves running both models simultaneously for a set period. 
+
+  Model outputs should be closely monitored to assess whether the update improves performance or introduces new risks. The results help determine if the updated model should replace the original or if further adjustments are needed. Parallel runs are especially important for regulatory or critical models, ensuring changes don't harm performance.
+
+- **Post-production monitoring** — After deployment into production, models should be regularly tested against performance benchmarks to identify deviations, enabling timely recalibrations or adjustments. 
+
+  The model's output should be assessed regularly against predefined performance benchmarks to ensure it meets the required standards. Any deviations from the expected performance should be quickly identified, allowing for timely intervention.
+
+## Ongoing monitoring plan
+
+A robust ongoing monitoring plan is crucial for maintaining model accuracy and reliability. Model developers should start regular monitoring from the outset, ideally during the pre-approval phase of model development, refining the plan as new insights are gained. This plan should be included in the initial model documentation, with clear instructions for execution and use of results.[^2]
+
+As monitoring continues, it's important to report model status to key stakeholders, such as your model risk management committee. Regular updates with summary metrics will keep stakeholder informed of findings and emerging risks, highlighting significant trends or issues that may need action.
+
+Your ongoing monitoring plan should define:
+
+- **Metrics and models** — Specify which models and performance metrics will be monitored.
+- **Monitoring frequency** — Set how often each metric will be monitored, based on the model's risk and importance.
+- **Risk thresholds** — Establish thresholds that trigger alerts or actions when metrics deviate from expected ranges.
+- **Notification system** — Implement a system to notify stakeholders when significant issues or deviations occur.
+- **Regular reports**— Present monitoring results using visual tools for clear and accessible decision-making.
+
+### Key concepts
+
+<!-- TO EDIT THESE KEY CONCEPTS, SEE `about/glossary/_monitoring.qmd` -->
+
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+
+{{< include /about/glossary/monitoring/_backtesting.qmd >}}
+
+{{< include /about/glossary/monitoring/_compliance-and-regulatory-adherence.qmd >}}
+
+{{< include /about/glossary/monitoring/_model-drift.qmd >}}
+
+{{< include /about/glossary/monitoring/_model-performance.qmd >}}
+
+:::
+
+::: {.w-40-ns}
+
+{{< include /about/glossary/monitoring/_ongoing-monitoring.qmd >}}
+
+{{< include /about/glossary/monitoring/_recalibrating-models.qmd >}}
+
+{{< include /about/glossary/monitoring/_reporting-and-governance.qmd >}}
+
+:::
+
+::::
+
+### Design and implementation
+
+The design of your ongoing monitoring plan overall should be a collaborative effort between the first line of defense, typically business units or model owners, and the second line of defense, namely your risk management team. Together, they should select the performance metrics, determine monitoring frequency, and tailor the ongoing monitoring plan to the model's specific use case and risk profile.
+
+This entails that the ongoing monitoring plan is primarily designed and implemented by the developers involved in the model's development and deployment. Their work is then reviewed during model validation to ensure the robustness of the ongoing monitoring plan and alignment with risk management goals. 
+
+The implementation of the ongoing monitoring plan typically also falls on model developers. This effort includes executing the monitoring activities, collecting performance data, and generating reports. The model developers also ensure that the monitoring is carried out according to the established schedule and that any anomalies or deviations are promptly identified and addressed.
+
+### Testing
+
+Model monitoring should incorporate a variety of tests to ensure ongoing accuracy and reliability. 
+
+Key test areas to pay attention to:
+
+- **Benchmarking** — Compare model estimates with alternative estimates to validate their accuracy.
+- **Sensitivity testing** — Reaffirm the model's robustness and stability under different conditions.
+- **Analysis of overrides** — Evaluate any adjustments made to the model to understand their impact.
+- **Parallel outcomes analysis** — Assess whether new data should be included in the model’s calibration to enhance its performance.
+
+::: {.callout}
+To try out monitoring, check out the code sample for ongoing monitoring of models.[^3]
+:::
+
+#### {{< fa desktop >}} Available tests
+
+:::{#ongoing-monitoring}
+:::
+
+## What's next
+
+:::{#ongoing-monitoring-listing}
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Model risk management (Regulatory requirements)](/about/overview-model-risk-management.qmd#regulatory-requirements)
+
+[^2]: [Working with model documentation](/guide/model-documentation/working-with-model-documentation.qmd)
+
+[^3]: [Quickstart for ongoing monitoring of models with ValidMind](../../notebooks/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb)
