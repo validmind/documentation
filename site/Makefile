@@ -49,10 +49,6 @@ notebooks:
 	@if [ -f "$(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb" ]; then mv $(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb $(DEST_DIR_NB)/quickstart_customer_churn_full_suite.ipynb; fi
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
-    # This line fixes text casing in Quarto when notebooks are embedded via wildcard
-	@echo "Renaming code_samples/nlp_and_llm to fix Quarto sidebar ..."
-	@if [ -d "$(DEST_DIR_NB)/code_samples/nlp_and_llm" ]; then mv $(DEST_DIR_NB)/code_samples/nlp_and_llm $(DEST_DIR_NB)/code_samples/NLP_and_LLM; fi
-
 
 # Make Python library docs & copy them over
 python-docs:
@@ -68,7 +64,7 @@ python-docs:
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	@cd _source/developer-framework && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd _source/developer-framework && make install && poetry run python scripts/extract_descriptions.py validmind/tests
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
@@ -113,4 +109,4 @@ deploy-prod:
 
 # Generate release notes
 release-notes:
-	@python scripts/generate_release_notes.py
+	@python ../release-scripts/generate_release_objects.py
