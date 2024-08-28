@@ -1,0 +1,28 @@
+name: Rebase staging onto main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  rebase-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Rebase staging onto main
+        run: |
+          git checkout staging
+          git rebase main
+          git push origin staging --force
