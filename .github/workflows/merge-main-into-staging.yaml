@@ -1,0 +1,56 @@
+name: Merge main into staging
+
+on:
+  push:
+    branches:
+      - nrichers/sc-1582/add-staging-branch-for-docs-repo
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history to ensure all branches are available
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch origin
+
+      - name: Create new branch from main
+        run: |
+          git checkout -b update-staging-$(date +%s)
+          git push origin HEAD
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: staging
+          head: update-staging-$(date +%s)
+          title: 'Merge main into staging'
+          body: 'Automatically merging main into staging branch.'
+
+  merge-pr:
+    needs: create-pr
+    runs-on: ubuntu-latest
+    if: success() && steps.create-pr.outputs.pull-request-number != ''
+    steps:
+      - name: Merge PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = ${{ steps.create-pr.outputs.pull-request-number }};
+            await github.pulls.merge({
+              owner,
+              repo,
+              pull_number: prNumber,
+            });
+          github-token: ${{ secrets.GITHUB_TOKEN }}
