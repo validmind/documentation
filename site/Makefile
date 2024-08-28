@@ -85,7 +85,7 @@ deploy-demo:
 		echo "You're not on the docs-demo branch, no action taken."; \
 	else \
 		echo "\nDeploying docs-demo site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deploy PR branch to https://docs-demo.vm.validmind.ai/
