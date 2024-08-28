@@ -1,4 +1,4 @@
-name: Merge main into staging branch
+name: Merge main into staging
 
 on:
   push:
@@ -8,6 +8,9 @@ on:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
+
+    outputs:
+      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
     steps:
       - name: Checkout repository
@@ -29,6 +32,7 @@ jobs:
           git push origin HEAD
 
       - name: Create Pull Request
+        id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,14 +44,15 @@ jobs:
   merge-pr:
     needs: create-pr
     runs-on: ubuntu-latest
-    if: success() && steps.create-pr.outputs.pull-request-number != ''
+    if: ${{ success() && needs.create-pr.outputs.pull-request-number != '' }}
+
     steps:
       - name: Merge PR
         uses: actions/github-script@v6
         with:
           script: |
             const { owner, repo } = context.repo;
-            const prNumber = ${{ steps.create-pr.outputs.pull-request-number }};
+            const prNumber = ${{ needs.create-pr.outputs.pull-request-number }};
             await github.pulls.merge({
               owner,
               repo,
