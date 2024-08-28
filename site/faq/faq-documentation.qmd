@@ -3,6 +3,26 @@ title: "Documentation"
 date: last-modified
 ---
 
+## Can I run tests and log documentation without having a model available?
+
+If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation with ValidMind as long as you're able to load the model predictions.
+
+- Use [`assign_predictions()`](https://docs.validmind.ai/validmind/validmind/vm_models.html#VMDataset.assign_predictions) to load predictions from a separate file or a dataset with predictions.
+- Call [`init_model()`](https://docs.validmind.ai/validmind/validmind.html#init_model) but instead of a trained model instance, pass an `input_id` and model metadata. [`ModelMetadata()`](https://docs.validmind.ai/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata) will use the provided metadata instead of trying to calculate it from the model's library. 
+
+    For example: 
+
+    ```python
+    external_model = vm.init_model(
+        input_id="spark_ml_model",
+        metadata={...}
+    )
+    ```
+
+::: {.callout title="If neither a trained model instance nor metadata is provided, `init_model()` will return an error.  "}
+However, tests that need a trained model will not work with "empty" models.
+:::
+
 ## Can documentation templates be configured per model use case or to match our existing templates?
 
 ValidMind's platform allows you to configure multiple templates based on documentation requirements for each model use case. During the model registration process, the platform automatically selects the template based on the provided model use case information.
