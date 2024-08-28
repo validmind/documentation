@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history to ensure all branches are available
 
       - name: Set up Git
         run: |
@@ -19,10 +21,15 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch all branches
-        run: git fetch --all
+        run: git fetch origin +refs/heads/*:refs/remotes/origin/*
 
-      - name: Rebase staging onto main
+      - name: Checkout and update main
+        run: |
+          git checkout main
+          git pull origin main
+
+      - name: Checkout and rebase staging onto main
         run: |
           git checkout staging
-          git rebase main
+          git rebase origin/main  # Use origin/main to specify remote tracking branch
           git push origin staging --force
