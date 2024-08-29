@@ -33,8 +33,11 @@ jobs:
 
       - name: Create new branch from main
         run: |
-          git checkout -b update-staging-$(date +%s)
-          git push origin HEAD
+          BRANCH_NAME=update-staging-$(date +%s)
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+        env:
+          BRANCH_NAME: update-staging-$(date +%s)
 
       - name: Create Pull Request
         id: create-pull-request
@@ -42,7 +45,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: staging
-          head: update-staging-$(date +%s)
+          head: ${{ env.BRANCH_NAME }}
           title: 'Merge main into staging'
           body: 'Automatically merging main into staging branch.'
 
