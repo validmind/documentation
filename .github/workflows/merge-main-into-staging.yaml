@@ -51,3 +51,17 @@ jobs:
         run: gh pr merge --merge --auto "${{ needs.create-pr.outputs.pr-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  delete-branch:
+    needs: merge-pr
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Delete branch
+        run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/update-staging-${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
