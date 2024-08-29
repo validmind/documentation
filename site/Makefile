@@ -3,23 +3,26 @@ SRC_DIR := _source/developer-framework
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 DEST_DIR_TESTS := tests
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-prod release-notes
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod release-notes
 
 # Help section
 help:
 	@echo "Available targets:"
-	@echo "  clean          Remove the _source/ directory"
-	@echo "  clone          Clone the developer-framework repository into _source/"
-	@echo "  notebooks      Copy Jupyter notebooks into notebooks/"
-	@echo "  python-docs    Copy the Python library docs into _site/validmind"
-	@echo "  get-source     Get all source files (clean, clone, notebooks, python-docs)"
-	@echo "  docs-site      Get all source files and render the docs site with Quarto"
-	@echo "  deploy-demo    Render the docs site & deploy to docs-ci-cd-demo and clear cache"
-	@echo "  deploy-prod    Render the docs site & deploy to docs-ci-cd-prod and clear cache"
-	@echo "  help           Display this help message (default target)"
-	@echo "  release-notes  Generate release notes from pull requests since latest tag and update _quarto.yml"
+	@echo "  clean                Remove the _source/ directory"
+	@echo "  clone                Clone the developer-framework repository into _source/"
+	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
+	@echo "  python-docs          Copy the Python library docs into _site/validmind"
+	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
+	@echo "  docs-site            Get all source files and render the docs site with Quarto"
+	@echo "  deploy-demo          Deploy docs demo site to s3://docs-ci-cd-demo/site/"
+	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
+	@echo "  help                 Display this help message (default target)"
+	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 
 # Clean up source directory
 clean:
@@ -82,8 +85,18 @@ deploy-demo:
 		echo "You're not on the docs-demo branch, no action taken."; \
 	else \
 		echo "\nDeploying docs-demo site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
 	fi
+
+# Deploy PR branch to https://docs-demo.vm.validmind.ai/
+deploy-demo-branch:
+	@quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
+	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
+
+# Delete PR branch on https://docs-demo.vm.validmind.ai/
+delete-demo-branch:
+	@aws s3 rm s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
+	@echo "\nDeleted https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/"
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
