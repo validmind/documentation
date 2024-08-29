@@ -1,0 +1,101 @@
+---
+title: "Documenting models"
+date: last-modified
+listing:
+  - id: generate-documentation
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - generate-model-documentation.qmd
+    - install-and-initialize-validmind.qmd
+    - work-with-test-results.qmd
+    - store-credentials-in-env-file.qmd
+---
+
+Use the {{< var vm.developer >}} to generate model documentation, view the results and refine your documentation in the {{< var vm.platform >}}, and collaborate with your team to complete documentation and validation projects within the same interface.
+
+## How do I use the {{< var validmind.developer >}}?
+
+A typical high-level workflow for model developers consists of four major steps:
+
+```{mermaid}
+%%| fig-align: center
+graph LR
+    A[Develop<br>model] --> B[Generate model<br>documentation]
+    B --> C[Refine model<br>documentation]
+    C --> D[Submit for review]
+    C --> B
+```
+<br> 
+
+#### 1. Develop your model[^1]  
+
+In your existing developer environment, build one or more candidate models that need to be validated. This step includes all the usual activities you already follow as a model developer. 
+
+#### 2. Generate model documentation
+
+With the {{< var validmind.developer >}}, generate automated model documentation and run validation tests. This step includes making use of the automation and testing functionality provided by the {{< var vm.developer >}} and uploading the output to the {{< var vm.platform >}}. You can iteratively regenerate the documentation as you work though the next step of refining your documentation.
+
+#### 3. Refine model documentation
+In the {{< var validmind.platform >}}, review the generated documentation and test output. Iterate over the documentation and test output to refine your model documentation. Collaborate with other developers and model validators to finalize the model documentation and get it ready for review. 
+
+#### 4. Submit for review
+In the {{< var validmind.platform >}}, you submit the model documentation for review which moves the documentation workflow moves to the next phase where a model validator will review it.
+
+Before you can use the {{< var validmind.developer >}}, you need to verify that the current documentation template contains all the necessary tests for the model you are developing: 
+
+- The template might already be sufficient and you only need to run the template within the {{< var vm.developer >}} to populate documentation. 
+- Or, more likely, the template might need additional tests that you can add these tests via the {{< var vm.developer >}}. 
+
+## How do I generate documentation?
+
+This process of verifying the suitability of the the current documentation template and adding more tests to the template is an iterative process:
+
+```{mermaid}
+%%| fig-align: center
+graph LR
+    A[Verify template] --> B[Build template]
+    B --> D[Add tests and<br>content blocks]
+    D --> E[Add external<br>test providers]
+    E --> C[Run template]
+    C --> B
+
+```
+<br>
+
+#### Build the template
+
+When the documentation template requires more tests to be added, or if the documentation template does not include a specific content or test block you need: 
+   
+   - **For functionality provided by the {{< var validmind.developer >}}** — [Add the relevant tests or content blocks](/guide/model-documentation/work-with-content-blocks.qmd) for the model use case. 
+   - **For tests not provided by the {{< var vm.developer >}}** — [Add your own external test provider](/notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb).
+
+
+#### Run the template
+
+When you have registered all the required tests as content blocks in the documentation template, populate the necessary model documentation by adding this call to your model:
+
+   ```python
+   run_documentation_tests()
+   ```
+
+::: {.callout-important title="ValidMind may not support all potential use cases or provide a universally applicable documentation template."}
+ Typically, you initiate the process of putting ValidMind into production by constructing a template specific for your own use case and then refine your the documentation project.
+:::
+
+
+## What's next
+
+:::{#generate-documentation}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: 
+
+   **No available model?**<br>
+   You can still run tests and log documentation with ValidMind as long as you're able to [load the model predictions](/faq/faq-documentation.qmd#can-i-run-tests-and-log-documentation-without-having-a-model-available). 
