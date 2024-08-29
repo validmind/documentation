@@ -1,4 +1,4 @@
-name: Merge main into staging
+name: Merge main into staging branch
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
     env:
-      BRANCH_NAME: update-staging-${{ github.run_id }}
+      BRANCH_NAME: update-staging
 
     steps:
       - name: Checkout repository
@@ -34,6 +34,19 @@ jobs:
       - name: Fetch all branches
         run: git fetch origin
 
+      - name: Check for changes
+        run: |
+          git checkout staging
+          git pull origin staging
+          git checkout main
+          git pull origin main
+          if git diff --quiet staging main; then
+            echo "No changes to merge"
+            exit 0
+          else
+            echo "Changes detected"
+          fi
+
       - name: Create new branch from main
         run: |
           git checkout -b $BRANCH_NAME
@@ -41,7 +54,7 @@ jobs:
         env:
           BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
-      - name: Create PR
+      - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
