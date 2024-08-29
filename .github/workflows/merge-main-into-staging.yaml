@@ -35,7 +35,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-staging-${{ github.run_id }}
           title: 'Merge main into staging'
-          body: 'Automatically merging main into staging branch.'
+          body: 'Automatically merge main into staging branch.'
+      - name: Output PR number
+        run: echo "Pull request number: ${{ steps.create-pull-request.outputs.pull-request-number }}"
 
   merge-pr:
     needs: create-pr
