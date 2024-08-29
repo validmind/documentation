@@ -17,10 +17,10 @@ help:
 	@echo "  python-docs          Copy the Python library docs into _site/validmind"
 	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
 	@echo "  docs-site            Get all source files and render the docs site with Quarto"
-	@echo "  deploy-demo          Render the docs site & deploy to docs-ci-cd-demo and clear cache"
-	@echo "  deploy-demo-branch   Like deploy-demo, but deploy to \"pr_previews/$(GIT_BRANCH)/\""
-	@echo "  delete-demo-branch   Remove up folders created by `deploy-demo-branch` (delete \"pr_previews/$(GIT_BRANCH)/\"")
-	@echo "  deploy-prod          Render the docs site & deploy to docs-ci-cd-prod and clear cache"
+	@echo "  deploy-demo          Deploy docs demo site to s3://docs-ci-cd-demo/site/"
+	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 
