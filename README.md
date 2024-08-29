@@ -139,3 +139,4 @@ Changes need to be made in the [root repository `developer-framework`](https://g
 make get-source
 ```
 
+After you pull in the changes, commit them to this repo.
