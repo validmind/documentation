@@ -20,7 +20,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: staging
-      - name: Reset staging branch
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Merge in main branch
         run: |
           git fetch origin main:main
           git merge main --no-ff -m "Merging latest changes from main into staging"
