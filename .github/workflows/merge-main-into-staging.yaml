@@ -45,6 +45,8 @@ jobs:
     if: ${{ needs.create-pr.outputs.pr-number != '' }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Merge PR
         run: gh pr merge --merge --auto "${{ needs.create-pr.outputs.pr-number }}"
         env:
