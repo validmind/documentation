@@ -1,4 +1,4 @@
-name: Merge main into staging branch
+name: Merge main into staging
 
 on:
   push:
@@ -18,13 +18,13 @@ jobs:
       pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
     env:
-      BRANCH_NAME: update-staging-${{ github.run_id }}  # Use a unique and consistent naming convention
+      BRANCH_NAME: update-staging-${{ github.run_id }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch all history to ensure all branches are available
+          fetch-depth: 0
 
       - name: Set up Git
         run: |
@@ -41,13 +41,13 @@ jobs:
         env:
           BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
-      - name: Create Pull Request
+      - name: Create PR
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: staging
-          branch: ${{ env.BRANCH_NAME }}  # Ensure consistent branch naming
+          branch: ${{ env.BRANCH_NAME }}
           title: 'Merge main into staging'
           body: 'Automatically merging main into staging branch.'
 
