@@ -13,8 +13,6 @@ permissions:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-    outputs:
-      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
     steps:
       - name: Checkout staging branch
@@ -30,42 +28,21 @@ jobs:
           git fetch origin main:main
           git merge main --no-ff -m "Merging latest changes from main into staging"
       - name: Create Pull Request
-        id: create-pull-request
+        id: pr-number
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-staging-${{ github.run_id }}
           title: 'Merge main into staging'
           body: 'Automatically merge main into staging branch.'
-      - name: Debug Pull Request Number
-        run: |
-          echo "Pull request number: ${{ steps.create-pull-request.outputs.pull-request-number }}"
 
   merge-pr:
     needs: create-pr
     runs-on: ubuntu-latest
-    if: ${{ success() && needs.create-pr.outputs.pull-request-number != '' }}
+    if: ${{ needs.create-pr.outputs.pr-number != '' }}
 
     steps:
       - name: Merge PR
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = ${{ needs.create-pr.outputs.pull-request-number }};
-            await github.pulls.merge({
-              owner,
-              repo,
-              pull_number: prNumber,
-            });
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  delete-branch:
-    needs: merge-pr
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-    steps:
-      - name: Delete Branch
-        run: gh api -X DELETE "repos/{owner}/{repo}/git/refs/heads/update-staging-${{ github.run_id }}"
+        run: gh pr merge --merge --auto "${{ needs.create-pr.outputs.pr-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
