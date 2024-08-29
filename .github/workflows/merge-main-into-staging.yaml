@@ -3,7 +3,7 @@ name: Merge main into staging branch
 on:
   push:
     branches:
-      - main
+      - nrichers/sc-1582/add-staging-branch-for-docs-repo
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
         run: |
           git fetch origin main:main
           git merge main --no-ff -m "Merging latest changes from main into staging"
-      - name: Create Pull Request
+      - name: Create pull request
         id: pr-number
         uses: peter-evans/create-pull-request@v5
         with:
@@ -47,12 +47,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Merge PR
+      - name: Merge pull request
         run: gh pr merge --merge --auto "${{ needs.create-pr.outputs.pr-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  delete-branch:
+  delete-pr-branch:
     needs: merge-pr
     runs-on: ubuntu-latest
     if: ${{ success() }}
