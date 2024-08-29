@@ -25,7 +25,8 @@ You need:
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
 ## How to contribute
-> First, read through and familiarize yourself with our [ValidMind style guide](https://docs.validmind.ai/about/contributing/style-guide/style-guide.html).
+
+First, read through and familiarize yourself with our [ValidMind style guide](https://docs.validmind.ai/about/contributing/style-guide/style-guide.html).
 
 - Our core user guides are sourced in Quarto Markdown under [`site/guide`](https://github.com/validmind/documentation/tree/main/site/guide). 
 - If you create new documentation, make sure to add it to the [`_quarto.yml`](https://github.com/validmind/documentation/blob/main/site/_quarto.yml) file.
@@ -89,9 +90,11 @@ These directories may have sub-directories depending on their size and grouped s
 ## Working with files
 
 ### `.qmd`
-> Files for the docs site are created using [Quarto Markdown](https://quarto.org/docs/authoring/markdown-basics.html) (`.qmd`). These, along with any Jupyter Notebooks pulled in from `developer-framework`, get rendered into HTML files. 
+
+Files for the docs site are created using [Quarto Markdown](https://quarto.org/docs/authoring/markdown-basics.html) (`.qmd`). These, along with any Jupyter Notebooks pulled in from `developer-framework`, get rendered into HTML files. 
 
 #### Hyperlinks
+
 When constructing links, refer to the `.qmd` file as Quarto will properly render these into `.html` links on your behalf and check to see if the destinations are able to be resolved:
 
 | Correct | Incorrect |
@@ -113,24 +116,26 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 | `[Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)` | `[Register models in the inventory](../../register-models-in-inventory.qmd)` |
 
 ### Column layouts
-> Use the installed [Tachyons Extension For Quarto](https://github.com/nareal/tachyons) to build column layouts so that they are properly mobile responsive. 
+
+Use the installed [Tachyons Extension For Quarto](https://github.com/nareal/tachyons) to build column layouts so that they are properly mobile responsive. 
 
 Refer to the [`tachyons-flexbox.qmd`](templates/tachyons-flexbox.qmd) template for an example.
 
 ### Asset files
-> If there are additional files that Quarto does not copy over automatically, place them into `/assets`. These files might include: 
+
+If there are additional files that Quarto does not copy over automatically, place them into `/assets`. These files might include: 
 
 - Videos
 - Stylesheets
 - Font files
 
 ### Jupyter Notebooks
-> Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
+
+Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
 
 Changes need to be made in the [root repository `developer-framework`](https://github.com/validmind/developer-framework) and pulled into this one with:
 
 ```bash
 make get-source
 ```
-
 
