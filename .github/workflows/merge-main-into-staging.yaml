@@ -13,72 +13,35 @@ permissions:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-
-    outputs:
-      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
-
-    env:
-      BRANCH_NAME: update-staging-${{ github.run_id }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      - name: Set up Git
+          ref: staging
+      - name: Reset staging branch
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch all branches
-        run: git fetch origin
-
-      - name: Check for changes
-        run: |
-          git checkout staging
-          git pull origin staging
-          git checkout main
-          git pull origin main
-          if git diff --quiet staging main; then
-            echo "No changes to merge"
-            exit 0
-          else
-            echo "Changes detected"
-          fi
-
-      - name: Create new branch from main
-        run: |
-          git checkout -b $BRANCH_NAME
-          git push origin $BRANCH_NAME
-        env:
-          BRANCH_NAME: ${{ env.BRANCH_NAME }}
-
+          git fetch origin main:main
+          git reset --hard main
       - name: Create Pull Request
-        id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: staging
-          branch: ${{ env.BRANCH_NAME }}
-          title: 'Merge main into staging'
-          body: 'Automatically merging main into staging branch.'
+          branch: update-staging-${{ github.run_id }}
 
-  merge-pr:
-    needs: create-pr
-    runs-on: ubuntu-latest
-    if: ${{ success() && needs.create-pr.outputs.pull-request-number != '' }}
-
-    steps:
-      - name: Merge PR
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = ${{ needs.create-pr.outputs.pull-request-number }};
-            await github.pulls.merge({
-              owner,
-              repo,
-              pull_number: prNumber,
-            });
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+#  merge-pr:
+#    needs: create-pr
+#    runs-on: ubuntu-latest
+#    if: ${{ success() && needs.create-pr.outputs.pull-request-number != '' }}
+#
+#    steps:
+#      - name: Merge PR
+#        uses: actions/github-script@v6
+#        with:
+#          script: |
+#            const { owner, repo } = context.repo;
+#            const prNumber = ${{ needs.create-pr.outputs.pull-request-number }};
+#            await github.pulls.merge({
+#              owner,
+#              repo,
+#              pull_number: prNumber,
+#            });
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
