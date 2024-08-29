@@ -17,6 +17,9 @@ jobs:
     outputs:
       pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
+    env:
+      BRANCH_NAME: update-staging-${{ github.run_id }}  # Use a unique and consistent naming convention
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -33,11 +36,10 @@ jobs:
 
       - name: Create new branch from main
         run: |
-          BRANCH_NAME=update-staging-$(date +%s)
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
         env:
-          BRANCH_NAME: update-staging-$(date +%s)
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
       - name: Create Pull Request
         id: create-pull-request
@@ -45,7 +47,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: staging
-          branch: ${{ env.BRANCH_NAME }}  # The dynamically created branch name
+          branch: ${{ env.BRANCH_NAME }}  # Ensure consistent branch naming
           title: 'Merge main into staging'
           body: 'Automatically merging main into staging branch.'
 
