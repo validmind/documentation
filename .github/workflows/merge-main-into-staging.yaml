@@ -13,8 +13,11 @@ permissions:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
+    outputs:
+      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Create PR
+        uses: actions/checkout@v3
         with:
           ref: staging
       - name: Reset staging branch
@@ -26,7 +29,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-staging-${{ github.run_id }}
-
+          title: 'Merge main into staging'
+          body: 'Automatically merging main into staging branch.'
 #  merge-pr:
 #    needs: create-pr
 #    runs-on: ubuntu-latest
