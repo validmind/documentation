@@ -13,8 +13,6 @@ permissions:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-    outputs:
-      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}  # Correctly capture the output
 
     steps:
       - name: Checkout staging branch
@@ -30,32 +28,18 @@ jobs:
           git fetch origin main:main
           git merge main --no-ff -m "Merging latest changes from main into staging"
       - name: Create Pull Request
-        id: create-pull-request  # Set an ID for the step
+        id: pr-number
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-staging-${{ github.run_id }}
           title: 'Merge main into staging'
           body: 'Automatically merge main into staging branch.'
-      - name: Output PR number
-        run: | 
-          echo "PR number: ${{ steps.create-pull-request.outputs.pull-request-number }}"
 
-  merge-pr:
-    needs: create-pr
-    runs-on: ubuntu-latest
-    if: ${{ success() && needs.create-pr.outputs.pull-request-number != '' }}
-
-    steps:
-      - name: Merge PR
-        uses: actions/github-script@v6
+      - name: Automerge PR
+        if: steps.pr-number.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = ${{ needs.create-pr.outputs.pull-request-number }};
-            await github.pulls.merge({
-              owner,
-              repo,
-              pull_number: prNumber,
-            });
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.pr-number.outputs.pull-request-number }}
+          merge-method: squash
