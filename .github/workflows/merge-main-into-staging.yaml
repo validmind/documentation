@@ -14,10 +14,10 @@ jobs:
   create-pr:
     runs-on: ubuntu-latest
     outputs:
-      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+      pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}  # Correctly capture the output
 
     steps:
-      - name: Create PR
+      - name: Checkout staging branch
         uses: actions/checkout@v3
         with:
           ref: staging
@@ -30,6 +30,7 @@ jobs:
           git fetch origin main:main
           git merge main --no-ff -m "Merging latest changes from main into staging"
       - name: Create Pull Request
+        id: create-pull-request  # Set an ID for the step
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,8 +38,8 @@ jobs:
           title: 'Merge main into staging'
           body: 'Automatically merge main into staging branch.'
       - name: Output PR number
-        run: |
-          echo 'Pull request number: ${{ steps.create-pull-request.outputs.pull-request-number }}'
+        run: | 
+          echo "PR number: ${{ steps.create-pull-request.outputs.pull-request-number }}"
 
   merge-pr:
     needs: create-pr
