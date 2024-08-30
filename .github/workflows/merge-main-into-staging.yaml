@@ -11,25 +11,25 @@ permissions:
   pull-requests: write
 
 jobs:
-  create-pr:
+  merge-main-into-staging:
     runs-on: ubuntu-latest
-
-    outputs:
-      pr-number: ${{ steps.pr-number.outputs.pull-request-number }}
 
     steps:
       - name: Checkout staging branch
         uses: actions/checkout@v3
         with:
           ref: staging
+
       - name: Configure git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Merge in main branch
         run: |
           git fetch origin main:main
           git merge main --no-ff --allow-unrelated-histories --strategy-option theirs -m "Merging latest changes from main into staging"
+
       - name: Create pull request
         id: pr-number
         uses: peter-evans/create-pull-request@v5
@@ -39,29 +39,14 @@ jobs:
           title: 'Merge main into staging'
           body: 'Automatically merge main into staging branch.'
 
-  merge-pr:
-    needs: create-pr
-    runs-on: ubuntu-latest
-    if: ${{ needs.create-pr.outputs.pr-number != '' }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
       - name: Merge pull request
-        run: gh pr merge --merge --auto "${{ needs.create-pr.outputs.pr-number }}"
+        if: ${{ steps.pr-number.outputs.pull-request-number != '' }}
+        run: gh pr merge --merge --auto "${{ steps.pr-number.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  delete-pr-branch:
-    needs: merge-pr
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Delete branch
+      - name: Delete pull request branch
+        if: ${{ success() && steps.pr-number.outputs.pull-request-number != '' }}
         run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/update-staging-${{ github.run_id }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
