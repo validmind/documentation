@@ -1,4 +1,4 @@
-name: Run quarto render
+name: Validate docs site
 
 on:
   pull_request:
@@ -25,7 +25,7 @@ jobs:
         wget ${{ env.DOWNLOAD_URL }} -O quarto-latest-linux-amd64.deb
         sudo dpkg -i quarto-latest-linux-amd64.deb
 
-    - name: Render Site
+    - name: Render site
       run: |
           cd ./site 
           quarto render &> render_errors.log || { 
@@ -34,7 +34,7 @@ jobs:
           exit 1;
           }
 
-    - name: Check for render errors 
+    - name: Check for warnings or errors 
       run: |
         if grep -q 'WARN:\|ERROR:' site/render_errors.log; then
           echo "Warnings or errors detected during Quarto render"
@@ -43,3 +43,10 @@ jobs:
         else
           echo "No warnings or errors detected during Quarto render"
         fi
+
+    - name: Configure AWS credentials
+      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+
+    - name: Deploy PR preview
+      run: 
+        aws s3 sync site/_site s3://${{ vars.S3_BUCKET_DEMO }}/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
