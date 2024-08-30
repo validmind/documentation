@@ -141,4 +141,4 @@ make get-source
 
 After you pull in the changes, commit them to this repo.
 
-<!-- Need to add Python docs -->
+<!-- Need to mention Python docs and test descriptions -->
