@@ -49,3 +49,15 @@ jobs:
 
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://${{ vars.S3_BUCKET_DEMO }}/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
+
+    - name: Post comment with preview URL
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const url = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: `A PR preview is available at: [Preview URL](${url})`
+          });
