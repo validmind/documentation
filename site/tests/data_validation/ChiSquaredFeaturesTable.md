@@ -1,38 +1,41 @@
 # ChiSquaredFeaturesTable
 
-Executes Chi-Squared test for each categorical feature against a target column to assess significant association.
+Assesses the statistical association between categorical features and a target variable using the Chi-Squared test.
 
-**Purpose**: The `ChiSquaredFeaturesTable` metric is used to carry out a Chi-Squared test of independence for each
-categorical feature variable against a designated target column. The primary goal is to determine if a significant
-association exists between the categorical features and the target variable. This method typically finds its use in
-the context of Model Risk Management to understand feature relevance and detect potential bias in a classification
-model.
+### Purpose
 
-**Test Mechanism**: The testing process generates a contingency table for each categorical variable and the target
-variable, after which a Chi-Squared test is performed. Using this approach, the Chi-Squared statistic and the
-p-value for each feature are calculated. The p-value threshold is a modifiable parameter, and a test will qualify
-as passed if the p-value is less than or equal to this threshold. If not, the test is labeled as failed. The
-outcome for each feature - comprising the variable name, Chi-squared statistic, p-value, threshold, and pass/fail
-status - is incorporated into a final summary table.
+The `ChiSquaredFeaturesTable` function is designed to evaluate the relationship between categorical features and a
+target variable in a dataset. It performs a Chi-Squared test of independence for each categorical feature to
+determine whether a statistically significant association exists with the target variable. This is particularly
+useful in Model Risk Management for understanding the relevance of features and identifying potential biases in a
+classification model.
 
-**Signs of High Risk**:
-- High p-values (greater than the set threshold) for specific variables could indicate a high risk.
-- These high p-values allude to the absence of a statistically significant relationship between the feature and the
-target variables, resulting in a 'Fail' status.
-- A categorical feature lacking a relevant association with the target variable could be a warning that the machine
-learning model might not be performing optimally.
+### Test Mechanism
 
-**Strengths**:
-- The test allows for a comprehensive understanding of the interaction between a model's input features and the
-target output, thus validating the relevance of categorical features.
-- It also produces an unambiguous 'Pass/Fail' output for each categorical feature.
-- The opportunity to adjust the p-value threshold contributes to flexibility in accommodating different statistical
-standards.
+The function creates a contingency table for each categorical feature and the target variable, then applies the
+Chi-Squared test to compute the Chi-squared statistic and the p-value. The results for each feature include the
+variable name, Chi-squared statistic, p-value, p-value threshold, and a pass/fail status based on whether the
+p-value is below the specified threshold. The output is a DataFrame summarizing these results, sorted by p-value to
+highlight the most statistically significant associations.
 
-**Limitations**:
-- The metric presupposes that data is tabular and categorical, which may not always be the case with all datasets.
-- It is distinctively designed for classification tasks, hence unsuitable for regression scenarios.
-- The Chi-squared test, akin to any hypothesis testing-based test, cannot identify causal relationships, but only
-associations.
-- Furthermore, the test hinges on an adjustable p-value threshold, and varying threshold selections might lead to
-different conclusions regarding feature relevance.
+### Signs of High Risk
+
+- High p-values (greater than the set threshold) indicate a lack of significant association between a feature and
+the target variable, resulting in a 'Fail' status.
+- Features with a 'Fail' status might not be relevant for the model, which could negatively impact model
+performance.
+
+### Strengths
+
+- Provides a clear, statistical assessment of the relationship between categorical features and the target variable.
+- Produces an easily interpretable summary with a 'Pass/Fail' outcome for each feature, helping in feature
+selection.
+- The p-value threshold is adjustable, allowing for flexibility in statistical rigor.
+
+### Limitations
+
+- Assumes the dataset is tabular and consists of categorical variables, which may not be suitable for all datasets.
+- The test is designed for classification tasks and is not applicable to regression problems.
+- As with all hypothesis tests, the Chi-Squared test can only detect associations, not causal relationships.
+- The choice of p-value threshold can affect the interpretation of feature relevance, and different thresholds may
+lead to different conclusions.
