@@ -1,0 +1,19 @@
+name: Delete PR preview
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+
+      - name: Delete PR preview
+        run: aws s3 rm s3://${{ vars.S3_BUCKET_DEMO }}/site/pr_previews/${{ github.head_ref }}/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null
