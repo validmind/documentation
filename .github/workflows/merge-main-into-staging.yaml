@@ -30,13 +30,21 @@ jobs:
           git fetch origin main:main
           git merge main --no-ff --allow-unrelated-histories --strategy-option theirs -m "Merging latest changes from main into staging"
 
+      - name: Extract PR details
+        id: pr-details
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+
       - name: Create pull request
         id: pr-number
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-staging-${{ github.run_id }}
-          title: 'Merge main into staging'
+          title: 'Merge main into staging - PR #${{ env.PR_NUMBER }}: ${{ env.PR_TITLE }}'
           body: 'Automatically merge main into staging branch.'
 
       - name: Merge pull request
