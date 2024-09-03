@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-08-16">
+<meta name="dcterms.date" content="2024-09-03">
 
 <title>Documentation – ValidMind</title>
 <style>
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -149,6 +183,10 @@ cookieconsent.run({
         <li>
     <a class="dropdown-item" href="../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
   </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
@@ -291,7 +329,8 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates" id="toc-can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates" class="nav-link active" data-scroll-target="#can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates">Can documentation templates be configured per model use case or to match our existing templates?</a></li>
+  <li><a href="#can-i-run-tests-and-log-documentation-without-having-a-model-available" id="toc-can-i-run-tests-and-log-documentation-without-having-a-model-available" class="nav-link active" data-scroll-target="#can-i-run-tests-and-log-documentation-without-having-a-model-available">Can I run tests and log documentation without having a model available?</a></li>
+  <li><a href="#can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates" id="toc-can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates" class="nav-link" data-scroll-target="#can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates">Can documentation templates be configured per model use case or to match our existing templates?</a></li>
   <li><a href="#can-the-documentation-be-exported" id="toc-can-the-documentation-be-exported" class="nav-link" data-scroll-target="#can-the-documentation-be-exported">Can the documentation be exported?</a></li>
   <li><a href="#can-we-attach-files-to-the-documentation-on-the-ui-what-file-formats-are-supported" id="toc-can-we-attach-files-to-the-documentation-on-the-ui-what-file-formats-are-supported" class="nav-link" data-scroll-target="#can-we-attach-files-to-the-documentation-on-the-ui-what-file-formats-are-supported">Can we attach files to the documentation on the UI? What file formats are supported?</a></li>
   <li><a href="#can-the-documentation-be-initialized-from-the-ui-instead-of-the" id="toc-can-the-documentation-be-initialized-from-the-ui-instead-of-the" class="nav-link" data-scroll-target="#can-the-documentation-be-initialized-from-the-ui-instead-of-the">Can the documentation be initialized from the UI instead of the developer framework?</a></li>
@@ -315,7 +354,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 16, 2024</p>
+      <p class="date">September 3, 2024</p>
     </div>
   </div>
   
@@ -327,6 +366,32 @@ cookieconsent.run({
 </header>
 
 
+<section id="can-i-run-tests-and-log-documentation-without-having-a-model-available" class="level2">
+<h2 class="anchored" data-anchor-id="can-i-run-tests-and-log-documentation-without-having-a-model-available">Can I run tests and log documentation without having a model available?</h2>
+<p>If you do not have a model ready, or your model can’t be loaded directly, or you only have access to model predictions, you can still run tests and log documentation with ValidMind as long as you’re able to load the model predictions.</p>
+<ul>
+<li><p>Use <a href="https://docs.validmind.ai/validmind/validmind/vm_models.html#VMDataset.assign_predictions"><code>assign_predictions()</code></a> to load predictions from a separate file or a dataset with predictions.</p></li>
+<li><p>Call <a href="https://docs.validmind.ai/validmind/validmind.html#init_model"><code>init_model()</code></a> but instead of a trained model instance, pass an <code>input_id</code> and model metadata. <a href="https://docs.validmind.ai/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata"><code>ModelMetadata()</code></a> will use the provided metadata instead of trying to calculate it from the model’s library.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>external_model <span class="op">=</span> vm.init_model(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"spark_ml_model"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    metadata<span class="op">=</span>{...}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<div class="callout callout-style-simple callout-none no-icon callout-titled" title="If neither a trained model instance nor metadata is provided, `init_model()` will return an error.  ">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+If neither a trained model instance nor metadata is provided, <code>init_model()</code> will return an error.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>However, tests that need a trained model will not work with “empty” models.</p>
+</div>
+</div>
+</section>
 <section id="can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates" class="level2">
 <h2 class="anchored" data-anchor-id="can-documentation-templates-be-configured-per-model-use-case-or-to-match-our-existing-templates">Can documentation templates be configured per model use case or to match our existing templates?</h2>
 <p>ValidMind’s platform allows you to configure multiple templates based on documentation requirements for each model use case. During the model registration process, the platform automatically selects the template based on the provided model use case information.</p>

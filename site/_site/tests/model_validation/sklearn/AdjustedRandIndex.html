@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#adjustedrandindex" id="toc-adjustedrandindex" class="nav-link active" data-scroll-target="#adjustedrandindex">AdjustedRandIndex</a></li>
+  <li><a href="#adjustedrandindex" id="toc-adjustedrandindex" class="nav-link active" data-scroll-target="#adjustedrandindex">AdjustedRandIndex</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/AdjustedRandIndex.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,13 +1748,39 @@ cookieconsent.run({
 <section id="adjustedrandindex" class="level1">
 <h1>AdjustedRandIndex</h1>
 <p>Measures the similarity between two data clusters using the Adjusted Rand Index (ARI) metric in clustering machine learning models.</p>
-<p><strong>1. Purpose:</strong> The Adjusted Rand Index (ARI) metric is intended to measure the similarity between two data clusters. This metric is specifically being used for clustering machine learning models to validly quantify how well the model is clustering and producing data groups. It involves comparing the model’s produced clusters against the actual (true) clusters found in the dataset.</p>
-<p><strong>2. Test Mechanism:</strong> The Adjusted Rand Index (ARI) is calculated by using the <code>adjusted_rand_score</code> method from the sklearn metrics in Python. The test requires inputs including the model itself and the model’s training and test datasets. The model’s computed clusters and the true clusters are compared, and the similarities are measured to compute the ARI.</p>
-<p><strong>3. Signs of High Risk:</strong> - If the ARI is close to zero, it signifies that the model’s cluster assignments are random and don’t match the actual dataset clusters, indicating a high risk. - An ARI of less than zero indicates that the model’s clustering performance is worse than random.</p>
-<p><strong>4. Strengths:</strong> - ARI is normalized and it hence gives a consistent metric between -1 and +1, irrespective of raw cluster sizes or dataset size variations. - It doesn’t require a ground truth for computation which makes it ideal for unsupervised learning model evaluations. - It penalizes for false positives and false negatives, providing a robust measure of clustering quality.</p>
-<p><strong>5. Limitations:</strong> - In real-world situations, true clustering is often unknown, which can hinder the practical application of the ARI. - The ARI requires all individual data instances to be independent, which may not always hold true. - It may be difficult to interpret the implications of an ARI score without a context or a benchmark, as it is heavily dependent on the characteristics of the dataset used.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Adjusted Rand Index (ARI) metric is intended to measure the similarity between two data clusters. This metric is specifically used for clustering machine learning models to quantify how well the model is clustering and producing data groups. It involves comparing the model’s produced clusters against the actual (true) clusters found in the dataset.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The Adjusted Rand Index (ARI) is calculated using the <code>adjusted_rand_score</code> method from the <code>sklearn.metrics</code> module in Python. The test requires inputs including the model itself and the model’s training and test datasets. The model’s computed clusters and the true clusters are compared, and the similarities are measured to compute the ARI.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>If the ARI is close to zero, it signifies that the model’s cluster assignments are random and do not match the actual dataset clusters, indicating a high risk.</li>
+<li>An ARI of less than zero indicates that the model’s clustering performance is worse than random.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>ARI is normalized and provides a consistent metric between -1 and +1, irrespective of raw cluster sizes or dataset size variations.</li>
+<li>It does not require a ground truth for computation, making it ideal for unsupervised learning model evaluations.</li>
+<li>It penalizes for false positives and false negatives, providing a robust measure of clustering quality.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>In real-world situations, true clustering is often unknown, which can hinder the practical application of the ARI.</li>
+<li>The ARI requires all individual data instances to be independent, which may not always hold true.</li>
+<li>It may be difficult to interpret the implications of an ARI score without context or a benchmark, as it is heavily dependent on the characteristics of the dataset used.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

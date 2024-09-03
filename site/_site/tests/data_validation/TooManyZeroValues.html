@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#toomanyzerovalues" id="toc-toomanyzerovalues" class="nav-link active" data-scroll-target="#toomanyzerovalues">TooManyZeroValues</a></li>
+  <li><a href="#toomanyzerovalues" id="toc-toomanyzerovalues" class="nav-link active" data-scroll-target="#toomanyzerovalues">TooManyZeroValues</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/TooManyZeroValues.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,13 +1748,42 @@ cookieconsent.run({
 <section id="toomanyzerovalues" class="level1">
 <h1>TooManyZeroValues</h1>
 <p>Identifies numerical columns in a dataset that contain an excessive number of zero values, defined by a threshold percentage.</p>
-<p><strong>Purpose</strong>: The ‘TooManyZeroValues’ test is utilized to identify numerical columns in the dataset that may present a quantity of zero values considered excessive. The aim is to detect situations where these may implicate data sparsity or a lack of variation, limiting their effectiveness within a machine learning model. The definition of ‘too many’ is quantified as a percentage of total values, with a default set to 3%.</p>
-<p><strong>Test Mechanism</strong>: This test is conducted by looping through each column in the dataset and categorizing those that pertain to numerical data. On identifying a numerical column, the function computes the total quantity of zero values and their ratio to the total row count. Should the proportion exceed a pre-set threshold parameter, set by default at 0.03 or 3%, the column is considered to have failed the test. The results for each column are summarised and reported, indicating the count and percentage of zero values for each numerical column, alongside a status indicating whether the column has passed or failed the test.</p>
-<p><strong>Signs of High Risk</strong>: - Indicators evidencing a high risk connected with this test would include numerical columns showing a high ratio of zero values when compared to the total count of rows (exceeding a pre-determined threshold). - Columns characterized by zero values across the board suggest a complete lack of data variation, signifying high risk.</p>
-<p><strong>Strengths</strong>: - Assists in highlighting columns featuring an excess of zero values that could otherwise go unnoticed within a large dataset. - Provides the flexibility to alter the threshold that determines when the quantity of zero values becomes ‘too many’, thus catering to specific needs of a particular analysis or model. - Offers feedback in the form of both counts and percentages of zero values, which allows a closer inspection of the distribution and proportion of zeros within a column. - Targets specifically numerical data, thereby avoiding inappropriate application to non-numerical columns and mitigating the risk of false test failures.</p>
-<p><strong>Limitations</strong>: - Is exclusively designed to check for zero values, and doesn’t assesses the potential impact of other values that could affect the dataset, such as extremely high or low figures, missing values or outliers. - Lacks the ability to detect a repetitive pattern of zeros, which could be significant in time-series or longitudinal data. - Zero values can actually be meaningful in some contexts, therefore tagging them as ‘too many’ could potentially misinterpret the data to some extent. - This test does not take into consideration the context of the dataset, and fails to recognize that within certain columns, a high number of zero values could be quite normal and not necessarily an indicator of poor data quality. - Cannot evaluate non-numerical or categorical columns, which might bring with them different types of concerns or issues.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The ‘TooManyZeroValues’ test is utilized to identify numerical columns in the dataset that may present a quantity of zero values considered excessive. The aim is to detect situations where these may implicate data sparsity or a lack of variation, limiting their effectiveness within a machine learning model. The definition of ‘too many’ is quantified as a percentage of total values, with a default set to 3%.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test is conducted by looping through each column in the dataset and categorizing those that pertain to numerical data. On identifying a numerical column, the function computes the total quantity of zero values and their ratio to the total row count. Should the proportion exceed a pre-set threshold parameter, set by default at 0.03 or 3%, the column is considered to have failed the test. The results for each column are summarized and reported, indicating the count and percentage of zero values for each numerical column, alongside a status indicating whether the column has passed or failed the test.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Numerical columns showing a high ratio of zero values when compared to the total count of rows (exceeding the predetermined threshold).</li>
+<li>Columns characterized by zero values across the board suggest a complete lack of data variation, signifying high risk.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Assists in highlighting columns featuring an excess of zero values that could otherwise go unnoticed within a large dataset.</li>
+<li>Provides the flexibility to alter the threshold that determines when the quantity of zero values becomes ‘too many’, thus catering to specific needs of a particular analysis or model.</li>
+<li>Offers feedback in the form of both counts and percentages of zero values, which allows a closer inspection of the distribution and proportion of zeros within a column.</li>
+<li>Targets specifically numerical data, thereby avoiding inappropriate application to non-numerical columns and mitigating the risk of false test failures.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Is exclusively designed to check for zero values and doesn’t assess the potential impact of other values that could affect the dataset, such as extremely high or low figures, missing values, or outliers.</li>
+<li>Lacks the ability to detect a repetitive pattern of zeros, which could be significant in time-series or longitudinal data.</li>
+<li>Zero values can actually be meaningful in some contexts; therefore, tagging them as ‘too many’ could potentially misinterpret the data to some extent.</li>
+<li>This test does not take into consideration the context of the dataset, and fails to recognize that within certain columns, a high number of zero values could be quite normal and not necessarily an indicator of poor data quality.</li>
+<li>Cannot evaluate non-numerical or categorical columns, which might bring with them different types of concerns or issues.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

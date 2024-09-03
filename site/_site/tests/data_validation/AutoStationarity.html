@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#autostationarity" id="toc-autostationarity" class="nav-link active" data-scroll-target="#autostationarity">AutoStationarity</a></li>
+  <li><a href="#autostationarity" id="toc-autostationarity" class="nav-link active" data-scroll-target="#autostationarity">AutoStationarity</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/AutoStationarity.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,13 +1748,39 @@ cookieconsent.run({
 <section id="autostationarity" class="level1">
 <h1>AutoStationarity</h1>
 <p>Automates Augmented Dickey-Fuller test to assess stationarity across multiple time series in a DataFrame.</p>
-<p><strong>Purpose</strong>: The AutoStationarity metric is intended to automatically detect and evaluate the stationary nature of each time series in a DataFrame. It incorporates the Augmented Dickey-Fuller (ADF) test, a statistical approach used to assess stationarity. Stationarity is a fundamental property suggesting that statistic features like mean and variance remain unchanged over time. This is necessary for many time-series models.</p>
-<p><strong>Test Mechanism</strong>: The mechanism for the AutoStationarity test involves applying the Augmented Dicky-Fuller test to each time series within the given dataframe to assess if they are stationary. Every series in the dataframe is looped, using the ADF test up to a defined maximum order (configurable and by default set to 5). The p-value resulting from the ADF test is compared against a predetermined threshold (also configurable and by default set to 0.05). The time series is deemed stationary at its current differencing order if the p-value is less than the threshold.</p>
-<p><strong>Signs of High Risk</strong>: - A significant number of series not achieving stationarity even at the maximum order of differencing can indicate high risk or potential failure in the model. - This could suggest the series may not be appropriately modeled by a stationary process, hence other modeling approaches might be required.</p>
-<p><strong>Strengths</strong>: - The key strength in this metric lies in the automation of the ADF test, enabling mass stationarity analysis across various time series and boosting the efficiency and credibility of the analysis. - The utilization of the ADF test, a widely accepted method for testing stationarity, lends authenticity to the results derived. - The introduction of the max order and threshold parameters give users the autonomy to determine their preferred levels of stringency in the tests.</p>
-<p><strong>Limitations</strong>: - The Augumented Dicky-Fuller test and the stationarity test are not without their limitations. These tests are premised on the assumption that the series can be modeled by an autoregressive process, which may not always hold true. - The stationarity check is highly sensitive to the choice of threshold for the significance level; an extremely high or low threshold could lead to incorrect results regarding the stationarity properties. - There’s also a risk of over-differencing if the maximum order is set too high, which could induce unnecessary cycles.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The AutoStationarity metric is intended to automatically detect and evaluate the stationary nature of each time series in a DataFrame. It incorporates the Augmented Dickey-Fuller (ADF) test, a statistical approach used to assess stationarity. Stationarity is a fundamental property suggesting that statistic features like mean and variance remain unchanged over time. This is necessary for many time-series models.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The mechanism for the AutoStationarity test involves applying the Augmented Dicky-Fuller test to each time series within the given dataframe to assess if they are stationary. Every series in the dataframe is looped, using the ADF test up to a defined maximum order (configurable and by default set to 5). The p-value resulting from the ADF test is compared against a predetermined threshold (also configurable and by default set to 0.05). The time series is deemed stationary at its current differencing order if the p-value is less than the threshold.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A significant number of series not achieving stationarity even at the maximum order of differencing can indicate high risk or potential failure in the model.</li>
+<li>This could suggest the series may not be appropriately modeled by a stationary process, hence other modeling approaches might be required.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The key strength in this metric lies in the automation of the ADF test, enabling mass stationarity analysis across various time series and boosting the efficiency and credibility of the analysis.</li>
+<li>The utilization of the ADF test, a widely accepted method for testing stationarity, lends authenticity to the results derived.</li>
+<li>The introduction of the max order and threshold parameters give users the autonomy to determine their preferred levels of stringency in the tests.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The Augmented Dickey-Fuller test and the stationarity test are not without their limitations. These tests are premised on the assumption that the series can be modeled by an autoregressive process, which may not always hold true.</li>
+<li>The stationarity check is highly sensitive to the choice of threshold for the significance level; an extremely high or low threshold could lead to incorrect results regarding the stationarity properties.</li>
+<li>There’s also a risk of over-differencing if the maximum order is set too high, which could induce unnecessary cycles.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

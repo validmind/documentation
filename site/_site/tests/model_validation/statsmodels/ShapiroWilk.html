@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#shapirowilk" id="toc-shapirowilk" class="nav-link active" data-scroll-target="#shapirowilk">ShapiroWilk</a></li>
+  <li><a href="#shapirowilk" id="toc-shapirowilk" class="nav-link active" data-scroll-target="#shapirowilk">ShapiroWilk</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/ShapiroWilk.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,13 +1748,39 @@ cookieconsent.run({
 <section id="shapirowilk" class="level1">
 <h1>ShapiroWilk</h1>
 <p>Evaluates feature-wise normality of training data using the Shapiro-Wilk test.</p>
-<p><strong>Purpose</strong>: The Shapiro-Wilk test is utilized to investigate whether a particular dataset conforms to the standard normal distribution. This analysis is crucial in machine learning modeling because the normality of the data can profoundly impact the performance of the model. This metric is especially useful in evaluating various features of the dataset in both classification and regression tasks.</p>
-<p><strong>Test Mechanism</strong>: The Shapiro-Wilk test is conducted on each feature column of the training dataset to determine if the data contained fall within the normal distribution. The test presents a statistic and a p-value, with the p-value serving to validate or repudiate the null hypothesis, which is that the tested data is normally distributed.</p>
-<p><strong>Signs of High Risk</strong>: - A p-value that falls below 0.05 signifies a high risk as it discards the null hypothesis, indicating that the data does not adhere to the normal distribution. - For machine learning models built on the presumption of data normality, such an outcome could result in subpar performance or incorrect predictions.</p>
-<p><strong>Strengths</strong>: - The Shapiro-Wilk test is esteemed for its level of accuracy, thereby making it particularly well-suited to datasets of small to moderate sizes. - It proves its versatility through its efficient functioning in both classification and regression tasks. - By separately testing each feature column, the Shapiro-Wilk test can raise an alarm if a specific feature does not comply with the normality.</p>
-<p><strong>Limitations</strong>: - The Shapiro-Wilk test’s sensitivity can be a disadvantage as it often rejects the null hypothesis (i.e., data is normally distributed), even for minor deviations, especially in large datasets. This may lead to unwarranted ‘false alarms’ of high risk by deeming the data as not normally distributed even if it approximates normal distribution. - Exceptional care must be taken in managing missing data or outliers prior to testing as these can greatly skew the results. - Lastly, the Shapiro-Wilk test is not optimally suited for processing data with pronounced skewness or kurtosis.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Shapiro-Wilk test is utilized to investigate whether a particular dataset conforms to the standard normal distribution. This analysis is crucial in machine learning modeling because the normality of the data can profoundly impact the performance of the model. This metric is especially useful in evaluating various features of the dataset in both classification and regression tasks.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The Shapiro-Wilk test is conducted on each feature column of the training dataset to determine if the data contained fall within the normal distribution. The test presents a statistic and a p-value, with the p-value serving to validate or repudiate the null hypothesis, which is that the tested data is normally distributed.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A p-value that falls below 0.05 signifies a high risk as it discards the null hypothesis, indicating that the data does not adhere to the normal distribution.</li>
+<li>For machine learning models built on the presumption of data normality, such an outcome could result in subpar performance or incorrect predictions.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The Shapiro-Wilk test is esteemed for its level of accuracy, thereby making it particularly well-suited to datasets of small to moderate sizes.</li>
+<li>It proves its versatility through its efficient functioning in both classification and regression tasks.</li>
+<li>By separately testing each feature column, the Shapiro-Wilk test can raise an alarm if a specific feature does not comply with the normality.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The Shapiro-Wilk test’s sensitivity can be a disadvantage as it often rejects the null hypothesis (i.e., data is normally distributed), even for minor deviations, especially in large datasets. This may lead to unwarranted ‘false alarms’ of high risk by deeming the data as not normally distributed even if it approximates normal distribution.</li>
+<li>Exceptional care must be taken in managing missing data or outliers prior to testing as these can greatly skew the results.</li>
+<li>Lastly, the Shapiro-Wilk test is not optimally suited for processing data with pronounced skewness or kurtosis.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

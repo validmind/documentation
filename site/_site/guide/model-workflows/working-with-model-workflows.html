@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-08-16">
+<meta name="dcterms.date" content="2024-09-03">
 
 <title>Working with model workflows – ValidMind</title>
 <style>
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../guide/model-workflows/customize-resource-statuses.html" rel="next">
+<link href="../../guide/model-workflows/customize-model-lifecycle-statuses.html" rel="next">
 <link href="../../validmind.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-listing/list.min.js"></script>
 <script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
@@ -208,6 +208,10 @@ window.Quarto = {
         <li>
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
   </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
@@ -409,8 +413,8 @@ window.Quarto = {
       <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../guide/model-workflows/customize-resource-statuses.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Customize resource statuses</span></a>
+  <a href="../../guide/model-workflows/customize-model-lifecycle-statuses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customize lifecycle statuses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -454,12 +458,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../guide/model-inventory/managing-model-inventory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Managing the model inventory</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../guide/model-inventory/manage-inventory-custom-fields.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Manage inventory custom fields</span></a>
+  <a href="../../guide/model-inventory/configure-model-interdependencies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure model interdependencies</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/model-inventory/manage-model-inventory-fields.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manage model inventory fields</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL DOCUMENTATION</span>
@@ -550,6 +571,12 @@ window.Quarto = {
         <li class="sidebar-item">
  <span class="menu-text">MODEL VALIDATION</span>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../guide/model-validation/manage-validation-guidelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manage validation guidelines</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../guide/model-validation/preparing-validation-reports.html" class="sidebar-item-text sidebar-link">
@@ -559,12 +586,6 @@ window.Quarto = {
           </a> 
       </div>
       <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../guide/model-validation/view-validation-guidelines.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">View validation guidelines</span></a>
-  </div>
-</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../guide/model-validation/review-model-documentation.html" class="sidebar-item-text sidebar-link">
@@ -653,7 +674,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#see-model-statuses" id="toc-see-model-statuses" class="nav-link" data-scroll-target="#see-model-statuses">See model statuses</a></li>
+  <li><a href="#see-workflow-statuses" id="toc-see-workflow-statuses" class="nav-link" data-scroll-target="#see-workflow-statuses">See workflow statuses</a></li>
   <li><a href="#transition-workflow-statuses" id="toc-transition-workflow-statuses" class="nav-link" data-scroll-target="#transition-workflow-statuses">Transition workflow statuses</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next</a></li>
   </ul>
@@ -675,7 +696,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 16, 2024</p>
+      <p class="date">September 3, 2024</p>
     </div>
   </div>
   
@@ -693,13 +714,13 @@ window.Quarto = {
 <ul class="task-list">
 <li><label><input type="checkbox" checked=""><a href="../../guide/configuration/log-in-to-validmind.html">You are logged in to ValidMind.</a></label></li>
 <li><label><input type="checkbox" checked="">The model is registered in the model inventory.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></label></li>
-<li><label><input type="checkbox" checked="">Resource statuses have already been customized for use in workflows.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></label></li>
+<li><label><input type="checkbox" checked="">Model lifecycle statuses have already been customized for use in workflows.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></label></li>
 <li><label><input type="checkbox" checked="">Workflows have already been set up for use with your models.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></label></li>
 <li><label><input type="checkbox" checked="">You are a <code>Customer Admin</code> or assigned another role with sufficient permissions to perform the tasks in this guide.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></label></li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="../../guide/model-inventory/register-models-in-inventory.html">Register models in the inventory</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="../../guide/model-workflows/customize-resource-statuses.html">Customize resource statuses</a></p></div><div id="fn3"><p><sup>3</sup>&nbsp;<a href="../../guide/model-workflows/set-up-model-workflows.html">Working with model workflows</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="../../guide/configuration/manage-permissions.html">Manage permissions</a></p></div></div></section>
-<section id="see-model-statuses" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="see-model-statuses">See model statuses</h2>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="../../guide/model-inventory/register-models-in-inventory.html">Register models in the inventory</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="../../guide/model-workflows/customize-model-lifecycle-statuses.html">Customize model lifecycle statuses</a></p></div><div id="fn3"><p><sup>3</sup>&nbsp;<a href="../../guide/model-workflows/set-up-model-workflows.html">Working with model workflows</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="../../guide/configuration/manage-permissions.html">Manage permissions</a></p></div></div></section>
+<section id="see-workflow-statuses" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="see-workflow-statuses">See workflow statuses</h2>
 <p>To review the overall workflow status for a model:</p>
 <ol type="1">
 <li><p>In the left sidebar, click <strong>Model Inventory</strong>.</p></li>
@@ -711,20 +732,21 @@ window.Quarto = {
 </ul></li>
 </ol>
 <div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;<a href="../../guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models">Working with the model inventory</a></p></div></div><p><img src="see-workflow.gif" class="img-fluid" alt="A gif showing the detailed workflow under the MODEL STATUS section"></p>
-<section id="see-model-documentation-statuses" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="see-model-documentation-statuses">See model documentation statuses</h4>
-<p>To review the workflow status of a model’s documentation:</p>
-<ol type="1">
-<li><p>In the left sidebar, click <strong>Model Inventory</strong>.</p></li>
-<li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p></li>
-<li><p>In the left sidebar that appears for your model, click <strong>Documentation</strong>.</p>
-<p>On this <strong>Documentation</strong> page, locate <span class="smallcaps">document status</span>:</p>
-<ul>
-<li>Click <strong><i class="fa-solid fa-arrow-right-arrow-left" aria-label="arrow-right-arrow-left"></i> See workflow</strong> to open the detailed workflow associated with that model’s documentation.</li>
-<li>The current workflow state will be highlighted on this detail view.</li>
-</ul></li>
-</ol>
-<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;<a href="../../guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models">Working with the model inventory</a></p></div></div></section>
+<!-- Model documentation stauses/workflows have been removed from the UI as of Aug 2024 -->
+<!-- #### See model documentation statuses
+
+To review the workflow status of a model's documentation:
+
+1. In the left sidebar, click **Model Inventory**.
+
+2. Select a model by clicking on it or find your model by applying a filter or searching for it.[^6]
+
+3. In the left sidebar that appears for your model, click **Documentation**. 
+
+    On this **Documentation** page, locate [document status]{.smallcaps}:
+
+    - Click ** See workflow** to open the detailed workflow associated with that model's documentation.
+    - The current workflow state will be highlighted on this detail view.  -->
 </section>
 <section id="transition-workflow-statuses" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="transition-workflow-statuses">Transition workflow statuses</h2>
@@ -739,54 +761,54 @@ Roles and action visbility
 </div>
 <div class="callout-body-container callout-body">
 <p>Depending on the configuration of your workflows, you may or may not be able to move a model into another workflow state as actions can be gated to only users of certain roles.</p>
-<p>When all the actions that can be performed by your role are completed for that model or model documentation at that stage of the workflow, the Actions section will disappear from view.</p>
+<p>When all the actions that can be performed by your role are completed for that model at that stage of the workflow, the Actions section will disappear from view.</p>
 </div>
 </div>
 <p>To transition the overall workflow status for a model:</p>
 <ol type="1">
 <li><p>In the left sidebar, click <strong>Model Inventory</strong>.</p></li>
-<li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p></li>
+<li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p></li>
 <li><p>If an action is available to your role, you’ll see it listed under your model status on the model’s landing page.</p>
 <ul>
 <li>Click <strong><i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i></strong> to open up the transition panel for your selected action. This arrow will be followed by the action name.</li>
 <li>Enter your <strong>Notes</strong> then click <strong>Submit</strong>.</li>
 </ul></li>
 </ol>
-<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;<a href="../../guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models">Working with the model inventory</a></p></div></div><p><img src="transition-workflow.gif" class="img-fluid" alt="A gif showing transitioning a workflow status under the Actions section"></p>
-<section id="transition-model-documentation-statuses" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="transition-model-documentation-statuses">Transition model documentation statuses</h4>
-<p>To transition the workflow status of a model’s documentation:</p>
-<ol type="1">
-<li><p>In the left sidebar, click <strong>Model Inventory</strong>.</p></li>
-<li><p>Select a model by clicking on it or find your model by applying a filter or searching for it.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p></li>
-<li><p>In the left sidebar that appears for your model, click <strong>Documentation</strong>.</p></li>
-<li><p>If an action is available to your role, you’ll see it listed under your document status under your <strong>Documentation</strong> or <strong>Validation Report</strong>.</p>
-<ul>
-<li>Click <strong><i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i></strong> to open up the transition panel for your selected action. This arrow will be followed by the action name.</li>
-<li>Enter your <strong>Notes</strong> then click <strong>Submit</strong>.</li>
-</ul></li>
-</ol>
-<div class="no-row-height column-margin column-container"><div id="fn8"><p><sup>8</sup>&nbsp;<a href="../../guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models">Working with the model inventory</a></p></div></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;<a href="../../guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models">Working with the model inventory</a></p></div></div><p><img src="transition-workflow.gif" class="img-fluid" alt="A gif showing transitioning a workflow status under the Actions section"></p>
+<!-- #### Transition model documentation statuses
+
+To transition the workflow status of a model's documentation:
+
+1. In the left sidebar, click **Model Inventory**.
+
+2. Select a model by clicking on it or find your model by applying a filter or searching for it.[^8]
+
+3. In the left sidebar that appears for your model, click **Documentation**.
+
+4.  If an action is available to your role, you'll see it listed under your document status under your **Documentation** or **Validation Report**. 
+
+    - Click **** to open up the transition panel for your selected action. This arrow will be followed by the action name.
+    - Enter your **Notes** then click **Submit**.  -->
 </section>
 <section id="whats-next" class="level2">
 <h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
 <div id="listing-model-workflows-listing" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-2">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1723846545000" data-listing-file-modified-sort="1723846545705" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="278">
-<a href="../../guide/model-workflows/customize-resource-statuses.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1725395890000" data-listing-file-modified-sort="1725395890732" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="244">
+<a href="../../guide/model-workflows/customize-model-lifecycle-statuses.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Customize resource statuses
+Customize model lifecycle statuses
 </h5>
 <div class="card-text listing-description">
-Statuses are manipulated via workflow transitions and are used to track the progress of resources through your organization’s processes.
+Model lifecycle statuses are manipulated via workflow transitions and are used to track the progress of resources through your organization’s processes.
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1723846545000" data-listing-file-modified-sort="1723846545705" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1332">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1725395890000" data-listing-file-modified-sort="1725395890733" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1330">
 <a href="../../guide/model-workflows/set-up-model-workflows.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -1244,8 +1266,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../guide/model-workflows/customize-resource-statuses.html" class="pagination-link" aria-label="Customize resource statuses">
-        <span class="nav-page-text">Customize resource statuses</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../guide/model-workflows/customize-model-lifecycle-statuses.html" class="pagination-link" aria-label="Customize lifecycle statuses">
+        <span class="nav-page-text">Customize lifecycle statuses</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

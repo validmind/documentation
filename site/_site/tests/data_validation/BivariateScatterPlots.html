@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bivariatescatterplots" id="toc-bivariatescatterplots" class="nav-link active" data-scroll-target="#bivariatescatterplots">BivariateScatterPlots</a></li>
+  <li><a href="#bivariatescatterplots" id="toc-bivariatescatterplots" class="nav-link active" data-scroll-target="#bivariatescatterplots">BivariateScatterPlots</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/BivariateScatterPlots.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1719,14 +1747,41 @@ cookieconsent.run({
 
 <section id="bivariatescatterplots" class="level1">
 <h1>BivariateScatterPlots</h1>
-<p>Generates bivariate scatterplots to visually inspect relationships between pairs of predictor variables in machine learning classification tasks.</p>
-<p><strong>Purpose</strong>: This metric is intended for visual inspection and monitoring of relationships between pairs of variables in a machine learning model targeting classification tasks. It is especially useful for understanding how predictor variables (features) behave in relation to each other and how they are distributed for different classes of the target variable, which could inform feature selection, model-building strategies, and even alert to possible biases and irregularities in the data.</p>
-<p><strong>Test Mechanism</strong>: This metric operates by creating a scatter plot for each pair of the selected features in the dataset. If the parameters “selected_columns” are not specified, an error will be thrown. The metric offers flexibility by allowing the user to filter on a specific target class - specified by the “target_filter” parameter - for more granified insights. Each scatterplot is then color-coded based on the category of the target variable for better visual differentiation. The seaborn scatterplot library is used for generating the plots.</p>
-<p><strong>Signs of High Risk</strong>: - Visual patterns which might suggest non-linear relationships, substantial skewness, multicollinearity, clustering, or isolated outlier points in the scatter plot. - Such issues could affect the assumptions and performance of some models, especially the ones assuming linearity like linear regression or logistic regression.</p>
-<p><strong>Strengths</strong>: - Scatterplots are simple and intuitive for users to understand, providing a visual tool to pinpoint complex relationships between two variables. - They are useful for outlier detection, identification of variable associations and trends, including non-linear patterns which can be overlooked by other linear-focused metrics or tests. - The implementation also supports visualizing binary or multi-class classification datasets.</p>
-<p><strong>Limitations</strong>: - Scatterplots are limited to bivariate analysis - the relationship of two variables at a time - and might not reveal the full picture in higher dimensions or where interactions are present. - They are not ideal for very large datasets as points will overlap and render the visualization less informative. - Scatterplots are more of an exploratory tool rather than a formal statistical test, so they don’t provide any quantitative measure of model quality or performance. - Interpretation of scatterplots relies heavily on the domain knowledge and judgment of the viewer, which can introduce subjective bias.</p>
+<p>Generates bivariate scatterplots to visually inspect relationships between pairs of numerical predictor variables in machine learning classification tasks.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>This function is intended for visual inspection and monitoring of relationships between pairs of numerical variables in a machine learning model targeting classification tasks. It helps in understanding how predictor variables (features) interact with each other, which can inform feature selection, model-building strategies, and identify potential biases or irregularities in the data.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The function creates scatter plots for each pair of numerical features in the dataset. It first filters out non-numerical and binary features, ensuring the plots focus on meaningful numerical relationships. The resulting scatterplots are color-coded uniformly to avoid visual distraction, and the function returns a tuple of Plotly figure objects, each representing a scatter plot for a pair of features.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Visual patterns suggesting non-linear relationships, multicollinearity, clustering, or outlier points in the scatter plots.</li>
+<li>Such issues could affect the assumptions and performance of certain models, especially those assuming linearity, like logistic regression.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Scatterplots provide an intuitive and visual tool to explore relationships between two variables.</li>
+<li>They are useful for identifying outliers, variable associations, and trends, including non-linear patterns.</li>
+<li>Supports visualization of binary or multi-class classification datasets, focusing on numerical features.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Scatterplots are limited to bivariate analysis, showing relationships between only two variables at a time.</li>
+<li>Not ideal for very large datasets where overlapping points can reduce the clarity of the visualization.</li>
+<li>Scatterplots are exploratory tools and do not provide quantitative measures of model quality or performance.</li>
+<li>Interpretation is subjective and relies on the domain knowledge and judgment of the viewer.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

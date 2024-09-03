@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regressioncoeffsplot" id="toc-regressioncoeffsplot" class="nav-link active" data-scroll-target="#regressioncoeffsplot">RegressionCoeffsPlot</a></li>
+  <li><a href="#regressioncoeffsplot" id="toc-regressioncoeffsplot" class="nav-link active" data-scroll-target="#regressioncoeffsplot">RegressionCoeffsPlot</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/RegressionCoeffsPlot.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1719,14 +1747,40 @@ cookieconsent.run({
 
 <section id="regressioncoeffsplot" class="level1">
 <h1>RegressionCoeffsPlot</h1>
-<p>Visualizes regression coefficients with 95% confidence intervals to assess predictor variables’ impact on response variable.</p>
-<p><strong>Purpose</strong>: The Regression Coefficients with Confidence Intervals plot and metric aims to understand the impact of predictor variables on the response variable in question. This understanding is achieved via the visualization and analysis of the regression model by presenting the coefficients derived from the model along with their associated 95% confidence intervals. By doing so, it offers insights into the variability and uncertainty associated with the model’s estimates.</p>
-<p><strong>Test Mechanism</strong>: The test begins by extracting the estimated coefficients and their related standard errors from the regression model under test. It then calculates and draws confidence intervals based on a 95% confidence level (a standard convention in statistics). These intervals provide a range wherein the true value can be expected to fall 95% of the time if the same regression were re-run multiple times with samples drawn from the same population. This information is then visualized as a bar plot, with the predictor variables and their coefficients on the x-axis and y-axis respectively and the confidence intervals represented as error bars.</p>
-<p><strong>Signs of High Risk</strong>: * If the calculated confidence interval contains the zero value, it could mean the feature/coefficient in question doesn’t significantly contribute to prediction in the model. * If there are multiple coefficients exhibiting this behavior, it might raise concerns about overall model reliability. * Very wide confidence intervals might indicate high uncertainty in the associated coefficient estimates.</p>
-<p><strong>Strengths</strong>: * This metric offers a simple and easily comprehendible visualization of the significance and impact of individual predictor variables in a regression model. * By including confidence intervals, it enables an observer to evaluate the uncertainty around each coefficient estimate.</p>
-<p><strong>Limitations</strong>: * The test is dependent on a few assumptions about the data, namely normality of residuals and independence of observations, which may not always be true for all types of datasets. * The test does not consider multi-collinearity (correlation among predictor variables), which can potentially distort the model and make interpretation of coefficients challenging. * The test’s application is limited to regression tasks and tabular datasets and is not suitable for other types of machine learning assignments or data structures.</p>
+<p>Assesses the significance and uncertainty of predictor variables in a regression model through visualization of coefficients and their 95% confidence intervals.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The test visualizes regression coefficients along with their 95% confidence intervals to assess the impact of predictor variables on the response variable. This visualization offers insights into the variability and uncertainty of the model’s estimates, helping to understand the significance of each predictor.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test involves extracting the estimated coefficients and their standard errors from the regression model. It then calculates the confidence intervals at a 95% confidence level, which indicates the range within which the true value is expected to fall 95% of the time. This information is visualized using a bar plot, where the x-axis represents predictor variables, the y-axis represents coefficients, and the error bars depict the confidence intervals.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>The confidence interval contains the zero value, indicating insignificant contribution from the feature.</li>
+<li>Multiple coefficients exhibit confidence intervals containing zero, suggesting overall model reliability issues.</li>
+<li>Very wide confidence intervals, indicating high uncertainty in the coefficient estimates.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a clear and comprehensible visualization of the significance and impact of predictor variables.</li>
+<li>Enables evaluation of uncertainty around each coefficient estimate through the inclusion of confidence intervals.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes normality of residuals and independence of observations, which may not always hold true.</li>
+<li>Does not address multi-collinearity, which can impact the interpretation of coefficients.</li>
+<li>Limited to regression tasks and tabular datasets, and not applicable to other machine learning assignments or data structures.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

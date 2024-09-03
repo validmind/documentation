@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#predictionacrosseachfeature" id="toc-predictionacrosseachfeature" class="nav-link active" data-scroll-target="#predictionacrosseachfeature">PredictionAcrossEachFeature</a></li>
+  <li><a href="#predictionacrosseachfeature" id="toc-predictionacrosseachfeature" class="nav-link active" data-scroll-target="#predictionacrosseachfeature">PredictionAcrossEachFeature</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/ongoing_monitoring/PredictionAcrossEachFeature.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1719,13 +1747,40 @@ cookieconsent.run({
 
 <section id="predictionacrosseachfeature" class="level1">
 <h1>PredictionAcrossEachFeature</h1>
-<p><strong>Purpose:</strong> This test shows visually the prediction using reference data and monitoring data across each individual feature. If there are significant differences in predictions across feature values from reference to monitoring dataset, then further investigation is needed as the model is producing predictions that are different than what was observed during the training of the model.</p>
-<p><strong>Test Mechanism:</strong> The test creates scatter plots for each feature, comparing the reference dataset (used for training) with the monitoring dataset (used in production). Each plot has two subplots: one for the reference data and one for the monitoring data, visualizing the prediction probabilities. This allows for a visual comparison of the model’s behavior across different datasets.</p>
-<p><strong>Signs of High Risk:</strong> - Significant discrepancies between the reference and monitoring subplots for the same feature - Unexpected patterns or trends in monitoring data that weren’t present in reference data</p>
-<p><strong>Strengths:</strong> - Provides a clear visual representation of model performance across different features - Allows for easy identification of features where the model’s predictions have changed - Facilitates quick detection of potential issues with the model when deployed in production</p>
-<p><strong>Limitations:</strong> - Interpretation of scatter plots can be subjective and may require expertise - Visualizations do not provide quantitative metrics for objective evaluation - May not capture all types of distribution changes or issues with the model’s predictions</p>
+<p>Assesses differences in model predictions across individual features between reference and monitoring datasets through visual analysis.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Prediction Across Each Feature test aims to visually compare model predictions for each feature between reference (training) and monitoring (production) datasets. It helps identify significant differences in prediction patterns for further investigation and ensures the model’s consistency and stability over time.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test generates scatter plots for each feature, comparing prediction probabilities between the reference and monitoring datasets. Each plot consists of two subplots: one for reference data and one for monitoring data, enabling visual comparison of the model’s predictive behavior.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Significant discrepancies between the reference and monitoring subplots for the same feature.</li>
+<li>Unexpected patterns or trends in monitoring data that were absent in reference data.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a clear visual representation of model performance across different features.</li>
+<li>Facilitates easy identification of features where the model’s predictions have diverged.</li>
+<li>Enables quick detection of potential model performance issues in production.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Interpretation of scatter plots can be subjective and may require expertise.</li>
+<li>Visualizations do not provide quantitative metrics for objective evaluation.</li>
+<li>May not capture all types of distribution changes or issues with the model’s predictions.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

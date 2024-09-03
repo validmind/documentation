@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#datasetsplit" id="toc-datasetsplit" class="nav-link active" data-scroll-target="#datasetsplit">DatasetSplit</a></li>
+  <li><a href="#datasetsplit" id="toc-datasetsplit" class="nav-link active" data-scroll-target="#datasetsplit">DatasetSplit</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/DatasetSplit.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,21 +1748,32 @@ cookieconsent.run({
 <section id="datasetsplit" class="level1">
 <h1>DatasetSplit</h1>
 <p>Evaluates and visualizes the distribution proportions among training, testing, and validation datasets of an ML model.</p>
-<p><strong>Purpose:</strong> The DatasetSplit test is designed to evaluate and visualize the distribution of data among training, testing, and validation datasets, if available, within a given machine learning model. The main purpose is to assess whether the model’s datasets are split appropriately, as an imbalanced split might affect the model’s ability to learn from the data and generalize to unseen data.</p>
-<p><strong>Test Mechanism:</strong> The DatasetSplit test first calculates the total size of all available datasets in the model. Then, for each individual dataset, the methodology involves determining the size of the dataset and its proportion relative to the total size. The results are then conveniently summarized in a table that shows dataset names, sizes, and proportions. Absolute size and proportion of the total dataset size are displayed for each individual dataset.</p>
-<p><strong>Signs of High Risk:</strong></p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The DatasetSplit test is designed to evaluate and visualize the distribution of data among training, testing, and validation datasets, if available, within a given machine learning model. The main purpose is to assess whether the model’s datasets are split appropriately, as an imbalanced split might affect the model’s ability to learn from the data and generalize to unseen data.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The DatasetSplit test first calculates the total size of all available datasets in the model. Then, for each individual dataset, the methodology involves determining the size of the dataset and its proportion relative to the total size. The results are then conveniently summarized in a table that shows dataset names, sizes, and proportions. Absolute size and proportion of the total dataset size are displayed for each individual dataset.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>A very small training dataset, which may result in the model not learning enough from the data.</li>
 <li>A very large training dataset and a small test dataset, which may lead to model overfitting and poor generalization to unseen data.</li>
 <li>A small or non-existent validation dataset, which might complicate the model’s performance assessment.</li>
 </ul>
-<p><strong>Strengths:</strong></p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>The DatasetSplit test provides a clear, understandable visualization of dataset split proportions, which can highlight any potential imbalance in dataset splits quickly.</li>
 <li>It covers a wide range of task types including classification, regression, and text-related tasks.</li>
 <li>The metric is not tied to any specific data type and is applicable to tabular data, time series data, or text data.</li>
 </ul>
-<p><strong>Limitations:</strong></p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>The DatasetSplit test does not provide any insight into the quality or diversity of the data within each split, just the size and proportion.</li>
 <li>The test does not give any recommendations or adjustments for imbalanced datasets.</li>
@@ -1742,6 +1781,7 @@ cookieconsent.run({
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#stabilityanalysissynonyms" id="toc-stabilityanalysissynonyms" class="nav-link active" data-scroll-target="#stabilityanalysissynonyms">StabilityAnalysisSynonyms</a></li>
+  <li><a href="#stabilityanalysissynonyms" id="toc-stabilityanalysissynonyms" class="nav-link active" data-scroll-target="#stabilityanalysissynonyms">StabilityAnalysisSynonyms</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/embeddings/StabilityAnalysisSynonyms.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,31 +1748,42 @@ cookieconsent.run({
 <section id="stabilityanalysissynonyms" class="level1">
 <h1>StabilityAnalysisSynonyms</h1>
 <p>Evaluates the stability of text embeddings models when words in test data are replaced by their synonyms randomly.</p>
-<p>This test uses WordNet to find synonyms for words in the test dataset and expects a parameter <code>probability</code> that determines the probability of swapping a word with a synonym.</p>
-<p><strong>Purpose:</strong> The Stability Analysis Synonyms test is designed to gauge the robustness and stability of an embeddings model on text-based data. The test does so by introducing random word changes through replacing words in the test dataset with their synonyms.</p>
-<p><strong>Test Mechanism:</strong> This test utilizes WordNet to find synonyms for a given word present in the test data, replacing the original word with this synonym based on a given probability. The probability is defined as a parameter and determines the likelihood of swapping a word with its synonym. By default, this is set at 0.02 but can be adjusted based on specific test requirements. This methodology enables an evaluation of how such replacements can affect the model’s performance.</p>
-<p><strong>Signs of High Risk:</strong></p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Stability Analysis Synonyms test is designed to gauge the robustness and stability of an embeddings model on text-based data. The test does so by introducing random word changes through replacing words in the test dataset with their synonyms.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test utilizes WordNet to find synonyms for a given word present in the test data, replacing the original word with this synonym based on a given probability. The probability is defined as a parameter and determines the likelihood of swapping a word with its synonym. By default, this is set at 0.02 but can be adjusted based on specific test requirements. This methodology enables an evaluation of how such replacements can affect the model’s performance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>The model’s performance or predictions change significantly after swapping words with their synonyms.</li>
 <li>The model shows high sensitivity to small perturbations, like modifying the data with synonyms.</li>
-<li>The embeddings model fails to identify similar meanings between the original words and their synonyms, which means it lacks semantic understanding.</li>
+<li>The embeddings model fails to identify similar meanings between the original words and their synonyms, indicating it lacks semantic understanding.</li>
 </ul>
-<p><strong>Strengths:</strong></p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>The test is flexible in its application. The ‘probability’ parameter can be adjusted based on the degree of synonym swapping required.</li>
 <li>Efficient in gauging a model’s sensitivity or robustness with respect to small changes in input data.</li>
-<li>The test can provide insights into the semantic understanding of the model as it monitors the impact of swapping words with synonyms.</li>
+<li>Provides insights into the semantic understanding of the model as it monitors the impact of swapping words with synonyms.</li>
 </ul>
-<p><strong>Limitations:</strong></p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>The ability to perturb data is reliant on the availability of synonyms, limiting its efficiency.</li>
-<li>The test assumes that the synonyms provided by WordNet are accurate and interchangeable in all contexts, which may not always be the case given the intricacies of language and context-specific meanings.</li>
-<li>This test does not consider the influence of multi-word expressions or phrases, as synonyms are considered at the word level only.</li>
-<li>Relies solely on the WordNet corpus for synonyms, which would limit its effectiveness for specialized or domain-specific jargon not included in that corpus.</li>
-<li>It does not consider the semantic role of the words in the sentence, so the swapped synonym could potentially alter the overall meaning of the sentence, leading to a false perception of the model’s stability.</li>
+<li>It assumes that the synonyms provided by WordNet are accurate and interchangeable in all contexts, which may not always be the case given the intricacies of language and context-specific meanings.</li>
+<li>It does not consider the influence of multi-word expressions or phrases, as synonyms are considered at the word level only.</li>
+<li>Relies solely on the WordNet corpus for synonyms, limiting its effectiveness for specialized or domain-specific jargon not included in that corpus.</li>
+<li>Does not consider the semantic role of the words in the sentence, meaning the swapped synonym could potentially alter the overall meaning of the sentence, leading to a false perception of the model’s stability.</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

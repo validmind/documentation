@@ -149,6 +149,10 @@ cookieconsent.run({
     <a class="dropdown-item" href="../../../developer/model-documentation/supported-models.html">
  <span class="dropdown-text"><i class="fa-solid fa-cubes" aria-label="cubes"></i> Supported Models</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../developer/model-documentation/documenting-models.html">
+ <span class="dropdown-text"><i class="fa-solid fa-book-medical" aria-label="book-medical"></i> Documenting Models</span></a>
+  </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header"><i class="fa-solid fa-vial" aria-label="vial"></i> TESTING</li>
         <li>
@@ -259,24 +263,41 @@ cookieconsent.run({
  <span class="menu-text">Supported models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/model-documentation/documenting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Documenting models</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/generate-model-documentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Generate model documentation</span></a>
+  <a href="../../../developer/model-documentation/document-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document models</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../developer/model-documentation/install-and-initialize-developer-framework.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Install and initialize the developer framework</span></a>
+  <a href="../../../developer/model-documentation/install-and-initialize-client-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize client library</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/model-documentation/work-with-test-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Work with test results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../developer/model-documentation/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Store project credentials in <code>.env</code> files</span></a>
   </div>
 </li>
+      </ul>
+  </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
  <span class="menu-text">MODEL TESTING</span>
@@ -347,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1707,7 +1728,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#clustercosinesimilarity" id="toc-clustercosinesimilarity" class="nav-link active" data-scroll-target="#clustercosinesimilarity">ClusterCosineSimilarity</a></li>
+  <li><a href="#clustercosinesimilarity" id="toc-clustercosinesimilarity" class="nav-link active" data-scroll-target="#clustercosinesimilarity">ClusterCosineSimilarity</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/ClusterCosineSimilarity.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1720,20 +1748,31 @@ cookieconsent.run({
 <section id="clustercosinesimilarity" class="level1">
 <h1>ClusterCosineSimilarity</h1>
 <p>Measures the intra-cluster similarity of a clustering model using cosine similarity.</p>
-<p><strong>1. Purpose:</strong> The purpose of this metric is to measure how similar the data points within each cluster of a clustering model are. This is done using cosine similarity, which compares the multi-dimensional direction (but not magnitude) of data vectors. From a Model Risk Management perspective, this metric is used to quantitatively validate that clusters formed by a model have high intra-cluster similarity.</p>
-<p><strong>2. Test Mechanism:</strong> This test works by first extracting the true and predicted clusters of the model’s training data. Then, it computes the centroid (average data point) of each cluster. Next, it calculates the cosine similarity between each data point within a cluster and its respective centroid. Finally, it outputs the mean cosine similarity of each cluster, highlighting how similar, on average, data points in a cluster are to the cluster’s centroid.</p>
-<p><strong>3. Signs of High Risk:</strong></p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The purpose of this metric is to measure how similar the data points within each cluster of a clustering model are. This is done using cosine similarity, which compares the multi-dimensional direction (but not magnitude) of data vectors. From a Model Risk Management perspective, this metric is used to quantitatively validate that clusters formed by a model have high intra-cluster similarity.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test works by first extracting the true and predicted clusters of the model’s training data. Then, it computes the centroid (average data point) of each cluster. Next, it calculates the cosine similarity between each data point within a cluster and its respective centroid. Finally, it outputs the mean cosine similarity of each cluster, highlighting how similar, on average, data points in a cluster are to the cluster’s centroid.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>Low mean cosine similarity for one or more clusters: If the mean cosine similarity is low, the data points within the respective cluster have high variance in their directions. This can be indicative of poor clustering, suggesting that the model might not be suitably separating the data into distinct patterns.</li>
 <li>High disparity between mean cosine similarity values across clusters: If there’s a significant difference in mean cosine similarity across different clusters, this could indicate imbalance in how the model forms clusters.</li>
 </ul>
-<p><strong>4. Strengths:</strong></p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>Cosine similarity operates in a multi-dimensional space, making it effective for measuring similarity in high dimensional datasets, typical for many machine learning problems.</li>
 <li>It provides an agnostic view of the cluster performance by only considering the direction (and not the magnitude) of each vector.</li>
 <li>This metric is not dependent on the scale of the variables, making it equally effective on different scales.</li>
 </ul>
-<p><strong>5. Limitations:</strong></p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>Cosine similarity does not consider magnitudes (i.e.&nbsp;lengths) of vectors, only their direction. This means it may overlook instances where clusters have been adequately separated in terms of magnitude.</li>
 <li>This method summarily assumes that centroids represent the average behavior of data points in each cluster. This might not always be true, especially in clusters with high amounts of variance or non-spherical shapes.</li>
@@ -1742,6 +1781,7 @@ cookieconsent.run({
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
