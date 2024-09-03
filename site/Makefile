@@ -111,7 +111,7 @@ deploy-prod:
 # Deployment to https://docs.validmind.ai/
 # TO DO Fix Cloudfront distribution ID
 deploy-staging:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "staging" ]; then \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "nrichers/sc-6277/deploy-staging-docs-site-workflow" ]; then \
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
