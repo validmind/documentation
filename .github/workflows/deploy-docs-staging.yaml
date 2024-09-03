@@ -5,7 +5,7 @@ name: Deploy docs site to staging
 on:
   push:
     branches:
-      - nrichers/sc-6277/deploy-staging-docs-site-workflow
+      - staging
 
 jobs:
   deploy:
@@ -45,4 +45,4 @@ jobs:
 # TO DO Fix Cloudfront distribution ID
       - name: Sync to S3
         run: 
-          aws s3 sync site/_site s3://${{ vars.S3_BUCKET_STAGING }}/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+          aws s3 sync ./_site s3://${{ vars.S3_BUCKET_STAGING }}/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
