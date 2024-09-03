@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#hyperparameterstuning" id="toc-hyperparameterstuning" class="nav-link active" data-scroll-target="#hyperparameterstuning">HyperParametersTuning</a></li>
+  <li><a href="#hyperparameterstuning" id="toc-hyperparameterstuning" class="nav-link active" data-scroll-target="#hyperparameterstuning">HyperParametersTuning</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose:</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism:</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk:</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths:</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations:</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/HyperParametersTuning.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,39 @@ cookieconsent.run({
 <section id="hyperparameterstuning" class="level1">
 <h1>HyperParametersTuning</h1>
 <p>Exerts exhaustive grid search to identify optimal hyperparameters for the model, improving performance.</p>
-<p><strong>Purpose:</strong> The “HyperParametersTuning” metric being used here is intended to find the optimal set of hyperparameters for a given model. The test essentially aims to enhance the performance of the model under scrutiny by determining the best configuration of hyperparameters. The parameters that are being optimized are defined by the parameter grid that is passed to the metric.</p>
-<p><strong>Test Mechanism:</strong> The HyperParametersTuning test employs a grid search mechanism using the function GridSearchCV from the scikit-learn library. The grid search algorithm is exhaustive: it systematically works through multiple combinations of the parameter tunes, cross-validated to determine which tune gives the best model performance. The chosen model and the parameters grid that are to be passed for tuning are the required inputs. Once the grid search is complete, the test caches and returns the details of the best model and its associated parameters.</p>
-<p><strong>Signs of High Risk:</strong> - The test raises a SkipTestError if the param_grid is not supplied. This suggests that there are no specific parameters to optimize, which is a risk in certain model types that rely heavily on parameter tuning. - Poorly chosen scoring metrics that don’t align well with the specific model or problem at hand might also reflect as a potential risk or failure in achieving the best performance.</p>
-<p><strong>Strengths:</strong> - The test is a comprehensive exploratory mechanism that figures out the best set of hyperparameters for the supplied model, thereby helping improve its performance. - The implementation of GridSearchCV simplifies and automates the time-consuming task of hyperparameter tuning.</p>
-<p><strong>Limitations:</strong> - The grid search algorithm can be computationally expensive, particularly with a large dataset or complex models. This grid search approach can be time-consuming as it tries out all possible combinations within the specified parameter grid. - The suitability of the tuning heavily relies on the quality of the data and it only accepts datasets with numerical or ordered categories. - The functionality assumes that the same set of hyperparameters is optimal for all problem sets, which may not hold true in every scenario. - There is a potential risk of overfitting the model if the training set is not representative of the data the model will be applied to.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose:</h3>
+<p>The “HyperParametersTuning” metric aims to find the optimal set of hyperparameters for a given model. The test is designed to enhance the performance of the model by determining the best configuration of hyperparameters. The parameters that are being optimized are defined by the parameter grid provided to the metric.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism:</h3>
+<p>The HyperParametersTuning test employs a grid search mechanism using the GridSearchCV function from the scikit-learn library. The grid search algorithm systematically works through multiple combinations of parameter values, cross-validating to determine which combination gives the best model performance. The chosen model and the parameter grid passed for tuning are necessary inputs. Once the grid search is complete, the test caches and returns details of the best model and its associated parameters.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk:</h3>
+<ul>
+<li>The test raises a SkipTestError if the param_grid is not supplied, indicating a lack of specific parameters to optimize, which can be risky for certain model types reliant on parameter tuning.</li>
+<li>Poorly chosen scoring metrics that do not align well with the specific model or problem at hand could reflect potential risks or failures in achieving optimal performance.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths:</h3>
+<ul>
+<li>Provides a comprehensive exploration mechanism to identify the best set of hyperparameters for the supplied model, thereby enhancing its performance.</li>
+<li>Implements GridSearchCV, simplifying and automating the time-consuming task of hyperparameter tuning.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations:</h3>
+<ul>
+<li>The grid search algorithm can be computationally expensive, especially with large datasets or complex models, and can be time-consuming as it tests all possible combinations within the specified parameter grid.</li>
+<li>The effectiveness of the tuning is heavily dependent on the quality of data and only accepts datasets with numerical or ordered categories.</li>
+<li>Assumes that the same set of hyperparameters is optimal for all problem sets, which may not be true in every scenario.</li>
+<li>There’s a potential risk of overfitting the model if the training set is not representative of the data that the model will be applied to.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

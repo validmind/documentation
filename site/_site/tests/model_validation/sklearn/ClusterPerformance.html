@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#clusterperformance" id="toc-clusterperformance" class="nav-link active" data-scroll-target="#clusterperformance">ClusterPerformance</a></li>
+  <li><a href="#clusterperformance" id="toc-clusterperformance" class="nav-link active" data-scroll-target="#clusterperformance">ClusterPerformance</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/ClusterPerformance.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,41 @@ cookieconsent.run({
 <section id="clusterperformance" class="level1">
 <h1>ClusterPerformance</h1>
 <p>Evaluates and compares a clustering model’s performance on training and testing datasets using multiple defined metrics.</p>
-<p><strong>Purpose:</strong> This metric, ClusterPerformance, evaluates the performance of a clustering model on both the training and testing datasets. It assesses how well the model defines, forms, and distinguishes clusters of data.</p>
-<p><strong>Test Mechanism:</strong> The metric is applied by first predicting the clusters of the training and testing datasets using the clustering model. Next, performance metrics, defined in the method <code>metric_info()</code>, are calculated against the true labels of the datasets. The results for each metric for both datasets are then collated and returned in a summarized table form listing each metric along with its corresponding train and test values.</p>
-<p><strong>Signs of High Risk:</strong> - High discrepancy between the performance metric values on the training and testing datasets. This could signify problems such as overfitting or underfitting. - Low performance metric values on the training and testing datasets. There might be a problem with the model itself or the chosen hyperparameters. - If the model’s performance deteriorates consistently across different sets of metrics, this may suggest a broader issue with the model or the dataset.</p>
-<p><strong>Strengths:</strong> - Tests the model’s performance on both the training and testing datasets, which helps to identify issues such as overfitting or underfitting. - Allows for a broad range of performance metrics to be used, thus providing a comprehensive evaluation of the model’s clustering capabilities. - Returns a summarized table, which makes it easy to compare the model’s performance across different metrics and datasets.</p>
-<p><strong>Limitations:</strong> - The method <code>metric_info()</code> needs to be properly overridden in a subclass for this class to be used, and the metrics to be used must be manually defined. - The performance metrics are calculated on predicted cluster labels, so the metric may not capture the model’s performance well if the clusters are not well separated or if the model has difficulties with certain kinds of clusters. - Doesn’t consider the computational and time complexity of the model. While the model may perform well in terms of the performance metrics, it might be time or resource-intensive. This metric does not account for such scenarios. - Because the comparison is binary (train and test), it might not capture scenarios where the performance changes drastically under different circumstances or categories within the dataset.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Cluster Performance test evaluates the performance of a clustering model on both the training and testing datasets. It assesses how well the model defines, forms, and distinguishes clusters of data.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test mechanism involves predicting the clusters of the training and testing datasets using the clustering model. After prediction, performance metrics defined in the <code>metric_info()</code> method are calculated against the true labels of the datasets. The results for each metric for both datasets are then collated and returned in a summarized table form listing each metric along with its corresponding train and test values.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>High discrepancy between the performance metric values on the training and testing datasets.</li>
+<li>Low performance metric values on both the training and testing datasets.</li>
+<li>Consistent deterioration of performance across different metrics.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Tests the model’s performance on both training and testing datasets, helping to identify overfitting or underfitting.</li>
+<li>Allows for the use of a broad range of performance metrics, providing a comprehensive evaluation.</li>
+<li>Returns a summarized table, making it easy to compare performance across different metrics and datasets.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The <code>metric_info()</code> method needs to be properly overridden in a subclass and metrics must be manually defined.</li>
+<li>The test may not capture the model’s performance well if clusters are not well-separated or the model struggles with certain clusters.</li>
+<li>Does not consider the computational and time complexity of the model.</li>
+<li>Binary comparison (train and test) might not capture performance changes under different circumstances or dataset categories.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

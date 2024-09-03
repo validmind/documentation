@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#contextualrecall" id="toc-contextualrecall" class="nav-link active" data-scroll-target="#contextualrecall">ContextualRecall</a></li>
+  <li><a href="#contextualrecall" id="toc-contextualrecall" class="nav-link active" data-scroll-target="#contextualrecall">ContextualRecall</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/ContextualRecall.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,39 @@ cookieconsent.run({
 <section id="contextualrecall" class="level1">
 <h1>ContextualRecall</h1>
 <p>Evaluates a Natural Language Generation model’s ability to generate contextually relevant and factually correct text, visualizing the results through histograms and bar charts, alongside compiling a comprehensive table of descriptive statistics for contextual recall scores.</p>
-<p><strong>Purpose:</strong> The Contextual Recall metric is used to evaluate the ability of a natural language generation (NLG) model to generate text that appropriately reflects the given context or prompt. It measures the model’s capability to remember and reproduce the main context in its resulting output. This metric is critical in natural language processing tasks, as the coherency and contextuality of the generated text are essential.</p>
-<p><strong>Test Mechanism:</strong> The function starts by extracting the true and predicted values from the provided dataset and model. It then tokenizes the reference and candidate texts into discernible words or tokens using NLTK. The token overlap between the reference and candidate texts is identified, and the Contextual Recall score is computed by dividing the number of overlapping tokens by the total number of tokens in the reference text. Scores are calculated for each test dataset instance, resulting in an array of scores. These scores are visualized using a histogram and a bar chart to show score variations across different rows. Additionally, a table of descriptive statistics (mean, median, standard deviation, minimum, and maximum) is compiled for the contextual recall scores, providing a comprehensive summary of the model’s performance.</p>
-<p><strong>Signs of High Risk:</strong> - Low contextual recall scores could indicate that the model is not effectively reflecting the original context in its output, leading to incoherent or contextually misaligned text. - A consistent trend of low recall scores could suggest underperformance of the model.</p>
-<p><strong>Strengths:</strong> - Provides a quantifiable measure of a model’s adherence to the context and factual elements of the generated narrative. - Visual representations (histograms and bar charts) make it easier to interpret the distribution and trends of contextual recall scores. - Descriptive statistics offer a concise summary of the model’s performance in generating contextually relevant texts.</p>
-<p><strong>Limitations:</strong> - The focus on word overlap could result in high scores for texts that use many common words, even when these texts lack coherence or meaningful context. - This metric does not consider the order of words, which could lead to overestimated scores for scrambled outputs. - Models that effectively use infrequent words might be undervalued, as these words might not overlap as often.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Contextual Recall metric is used to evaluate the ability of a natural language generation (NLG) model to generate text that appropriately reflects the given context or prompt. It measures the model’s capability to remember and reproduce the main context in its resulting output. This metric is critical in natural language processing tasks, as the coherency and contextuality of the generated text are essential.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The function starts by extracting the true and predicted values from the provided dataset and model. It then tokenizes the reference and candidate texts into discernible words or tokens using NLTK. The token overlap between the reference and candidate texts is identified, and the Contextual Recall score is computed by dividing the number of overlapping tokens by the total number of tokens in the reference text. Scores are calculated for each test dataset instance, resulting in an array of scores. These scores are visualized using a histogram and a bar chart to show score variations across different rows. Additionally, a table of descriptive statistics (mean, median, standard deviation, minimum, and maximum) is compiled for the contextual recall scores, providing a comprehensive summary of the model’s performance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Low contextual recall scores could indicate that the model is not effectively reflecting the original context in its output, leading to incoherent or contextually misaligned text.</li>
+<li>A consistent trend of low recall scores could suggest underperformance of the model.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a quantifiable measure of a model’s adherence to the context and factual elements of the generated narrative.</li>
+<li>Visual representations (histograms and bar charts) make it easier to interpret the distribution and trends of contextual recall scores.</li>
+<li>Descriptive statistics offer a concise summary of the model’s performance in generating contextually relevant texts.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The focus on word overlap could result in high scores for texts that use many common words, even when these texts lack coherence or meaningful context.</li>
+<li>This metric does not consider the order of words, which could lead to overestimated scores for scrambled outputs.</li>
+<li>Models that effectively use infrequent words might be undervalued, as these words might not overlap as often.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

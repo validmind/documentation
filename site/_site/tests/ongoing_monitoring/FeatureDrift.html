@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featuredrift" id="toc-featuredrift" class="nav-link active" data-scroll-target="#featuredrift">FeatureDrift</a></li>
+  <li><a href="#featuredrift" id="toc-featuredrift" class="nav-link active" data-scroll-target="#featuredrift">FeatureDrift</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/ongoing_monitoring/FeatureDrift.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,24 +1717,44 @@ cookieconsent.run({
 
 <section id="featuredrift" class="level1">
 <h1>FeatureDrift</h1>
-<p><strong>Purpose</strong>:</p>
+<p>Evaluates changes in feature distribution over time to identify potential model drift.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
 <p>The Feature Drift test aims to evaluate how much the distribution of features has shifted over time between two datasets, typically training and monitoring datasets. It uses the Population Stability Index (PSI) to quantify this change, providing insights into the model’s robustness and the necessity for retraining or feature engineering.</p>
-<p><strong>Test Mechanism</strong>:</p>
-<p>This test calculates the PSI by: - Bucketing the distributions of each feature in both datasets. - Comparing the percentage of observations in each bucket between the two datasets. - Aggregating the differences across all buckets for each feature to produce the PSI score for that feature.</p>
-<p>The PSI score is interpreted as: - PSI &lt; 0.1: No significant population change. - PSI &lt; 0.2: Moderate population change. - PSI &gt;= 0.2: Significant population change.</p>
-<p><strong>Signs of High Risk</strong>:</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test calculates the PSI by:</p>
+<ul>
+<li>Bucketing the distributions of each feature in both datasets.</li>
+<li>Comparing the percentage of observations in each bucket between the two datasets.</li>
+<li>Aggregating the differences across all buckets for each feature to produce the PSI score for that feature.</li>
+</ul>
+<p>The PSI score is interpreted as:</p>
+<ul>
+<li>PSI &lt; 0.1: No significant population change.</li>
+<li>PSI &lt; 0.2: Moderate population change.</li>
+<li>PSI &gt;= 0.2: Significant population change.</li>
+</ul>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>PSI &gt;= 0.2 for any feature, indicating a significant distribution shift.</li>
 <li>Consistently high PSI scores across multiple features.</li>
 <li>Sudden spikes in PSI in recent monitoring data compared to historical data.</li>
 </ul>
-<p><strong>Strengths</strong>:</p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>Provides a quantitative measure of feature distribution changes.</li>
 <li>Easily interpretable thresholds for decision-making.</li>
 <li>Helps in early detection of data drift, prompting timely interventions.</li>
 </ul>
-<p><strong>Limitations</strong>:</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>May not capture more intricate changes in data distribution nuances.</li>
 <li>Assumes that bucket thresholds (quantiles) adequately represent distribution shifts.</li>
@@ -1735,6 +1762,7 @@ cookieconsent.run({
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#targetratebarplots" id="toc-targetratebarplots" class="nav-link active" data-scroll-target="#targetratebarplots">TargetRateBarPlots</a></li>
+  <li><a href="#targetratebarplots" id="toc-targetratebarplots" class="nav-link active" data-scroll-target="#targetratebarplots">TargetRateBarPlots</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/TargetRateBarPlots.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,38 @@ cookieconsent.run({
 <section id="targetratebarplots" class="level1">
 <h1>TargetRateBarPlots</h1>
 <p>Generates bar plots visualizing the default rates of categorical features for a classification machine learning model.</p>
-<p><strong>Purpose</strong>: This test, implemented as a metric, is designed to provide an intuitive, graphical summary of the decision-making patterns exhibited by a categorical classification machine learning model. The model’s performance is evaluated using bar plots depicting the ratio of target rates—meaning the proportion of positive classes—for different categorical inputs. This allows for an easy, at-a-glance understanding of the model’s accuracy.</p>
-<p><strong>Test Mechanism</strong>: The test involves creating a pair of bar plots for each categorical feature in the dataset. The first plot depicts the frequency of each category in the dataset, with each category visually distinguished by its unique color. The second plot shows the mean target rate of each category (sourced from the “default_column”). Plotly, a Python library, is used to generate these plots, with distinct plots created for each feature. If no specific columns are selected, the test will generate plots for each categorical column in the dataset.</p>
-<p><strong>Signs of High Risk</strong>: - Inconsistent or non-binary values in the “default_column” could complicate or render impossible the calculation of average target rates. - Particularly low or high target rates for a specific category might suggest that the model is misclassifying instances of that category.</p>
-<p><strong>Strengths</strong>: - This test offers a visually interpretable breakdown of the model’s decisions, providing an easy way to spot irregularities, inconsistencies, or patterns. - Its flexibility allows for the inspection of one or multiple columns, as needed.</p>
-<p><strong>Limitations</strong>: - The test is less useful when dealing with numeric or continuous data, as it’s designed specifically for categorical features. - If the model in question is dealing with a multi-class problem rather than binary classification, the test’s assumption of binary target values (0s and 1s) becomes a significant limitation. - The readability of the bar plots drops as the number of distinct categories increases in the dataset, which can make them harder to understand and less useful.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>This test, implemented as a metric, is designed to provide an intuitive, graphical summary of the decision-making patterns exhibited by a categorical classification machine learning model. The model’s performance is evaluated using bar plots depicting the ratio of target rates—meaning the proportion of positive classes—for different categorical inputs. This allows for an easy, at-a-glance understanding of the model’s accuracy.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test involves creating a pair of bar plots for each categorical feature in the dataset. The first plot depicts the frequency of each category in the dataset, with each category visually distinguished by its unique color. The second plot shows the mean target rate of each category (sourced from the “default_column”). Plotly, a Python library, is used to generate these plots, with distinct plots created for each feature. If no specific columns are selected, the test will generate plots for each categorical column in the dataset.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Inconsistent or non-binary values in the “default_column” could complicate or render impossible the calculation of average target rates.</li>
+<li>Particularly low or high target rates for a specific category might suggest that the model is misclassifying instances of that category.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>This test offers a visually interpretable breakdown of the model’s decisions, providing an easy way to spot irregularities, inconsistencies, or patterns.</li>
+<li>Its flexibility allows for the inspection of one or multiple columns, as needed.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The test is less useful when dealing with numeric or continuous data, as it’s designed specifically for categorical features.</li>
+<li>If the model in question is dealing with a multi-class problem rather than binary classification, the test’s assumption of binary target values (0s and 1s) becomes a significant limitation.</li>
+<li>The readability of the bar plots drops as the number of distinct categories increases in the dataset, which can make them harder to understand and less useful.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

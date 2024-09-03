@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-08-23">
+<meta name="dcterms.date" content="2024-09-03">
 
 <title>Run tests and test suites – ValidMind</title>
 <style>
@@ -176,6 +176,34 @@ ul.task-list li input[type="checkbox"] {
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-tests-advanced'] = new List('listing-tests-advanced', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-tests-custom .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-tests-custom'] = new List('listing-tests-custom', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -513,7 +541,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1869,7 +1897,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 23, 2024</p>
+      <p class="date">September 3, 2024</p>
     </div>
   </div>
   
@@ -1948,17 +1976,17 @@ Objects to be evaluated and documented in the developer framework. They can be a
 <ul>
 <li><strong>model</strong>: A single model that has been initialized in ValidMind with <code>vm.init_model()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_model">Model Documentation</a> or the for more information.</li>
 <li><strong>dataset</strong>: Single dataset that has been initialized in ValidMind with <code>vm.init_dataset()</code>. See the <a href="https://docs.validmind.ai/validmind/validmind.html#init_dataset">Dataset Documentation</a> for more information.</li>
-<li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.</li>
-<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this <a href="../../notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
+<li><strong>models</strong>: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom tests.</li>
+<li><strong>datasets</strong>: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom tests. See this <a href="../../notebooks/how_to/run_tests_that_require_multiple_datasets.html">example</a> for more information.</li>
 </ul>
 <dl>
 <dt>parameters</dt>
 <dd>
-Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.
+Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a test, customize its behavior, or provide additional context.
 </dd>
 <dt>outputs</dt>
 <dd>
-Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas DataFrame</a>. Plots may be <a href="https://matplotlib.org/">matplotlib</a> or <a href="https://plotly.com/">plotly</a> figures.
+Custom tests can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas DataFrame</a>. Plots may be <a href="https://matplotlib.org/">matplotlib</a> or <a href="https://plotly.com/">plotly</a> figures.
 </dd>
 <dt>test suite</dt>
 <dd>
@@ -1974,7 +2002,7 @@ A collection of tests which are run together to generate model documentation end
 <p>Start by running a pre-made test, then modify it, and finally create your own test:</p>
 <div id="listing-tests-beginner" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1724455598185" data-listing-reading-time-sort="9" data-listing-word-count-sort="1796">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1725393729045" data-listing-reading-time-sort="9" data-listing-word-count-sort="1796">
 <a href="../../notebooks/how_to/run_tests/1_run_dataset_based_tests.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -1988,7 +2016,7 @@ Use the ValidMind Developer Framework’s <code>run_test</code> function to run 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1724455598166" data-listing-reading-time-sort="14" data-listing-word-count-sort="2776">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1725393729023" data-listing-reading-time-sort="14" data-listing-word-count-sort="2776">
 <a href="../../notebooks/code_samples/custom_tests/implement_custom_tests.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2013,7 +2041,7 @@ No matching items
 <p>Next, find available tests and test suites using the developer framework or the interactive test sandbox:</p>
 <div id="listing-tests-explore" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1724455598184" data-listing-reading-time-sort="4" data-listing-word-count-sort="741">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1725393729043" data-listing-reading-time-sort="4" data-listing-word-count-sort="741">
 <a href="../../notebooks/how_to/explore_tests.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2027,7 +2055,7 @@ View and learn more about the tests available in the ValidMind Developer Framewo
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1724455598186" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1725393729045" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
 <a href="../../notebooks/how_to/explore_test_suites.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2041,7 +2069,7 @@ Explore the the test suites and tests that are available in the ValidMind Develo
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1724083891000" data-listing-file-modified-sort="1724083891110" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="48">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1724802614000" data-listing-file-modified-sort="1724802614403" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="48">
 <a href="../../developer/model-testing/test-sandbox.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2066,7 +2094,7 @@ No matching items
 <p>Building on previous sections, add your own test provider, set up datasets, run tests on individual sections in your model documentation, and more:</p>
 <div id="listing-tests-intermediate" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1724455598166" data-listing-reading-time-sort="13" data-listing-word-count-sort="2551">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1725393729024" data-listing-reading-time-sort="13" data-listing-word-count-sort="2551">
 <a href="../../notebooks/code_samples/custom_tests/integrate_external_test_providers.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2080,7 +2108,7 @@ Register a custom test provider with the ValidMind Developer Framework to run yo
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1724455598185" data-listing-reading-time-sort="7" data-listing-word-count-sort="1305">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1725393729044" data-listing-reading-time-sort="7" data-listing-word-count-sort="1305">
 <a href="../../notebooks/how_to/configure_dataset_features.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2094,7 +2122,7 @@ When initializing a ValidMind dataset object, you can pass in a list of features
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1724455598186" data-listing-reading-time-sort="8" data-listing-word-count-sort="1452">
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1725393729045" data-listing-reading-time-sort="8" data-listing-word-count-sort="1452">
 <a href="../../notebooks/how_to/run_documentation_sections.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2108,7 +2136,7 @@ For targeted testing, you can run tests on individual sections or specific group
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1724455598185" data-listing-reading-time-sort="9" data-listing-word-count-sort="1761">
+<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1725393729044" data-listing-reading-time-sort="9" data-listing-word-count-sort="1761">
 <a href="../../notebooks/how_to/run_documentation_tests_with_config.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2122,7 +2150,7 @@ When running documentation tests, you can configure inputs and parameters for in
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1724455598187" data-listing-reading-time-sort="8" data-listing-word-count-sort="1584">
+<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1725393729046" data-listing-reading-time-sort="8" data-listing-word-count-sort="1584">
 <a href="../../notebooks/how_to/run_tests_that_require_multiple_datasets.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2136,12 +2164,12 @@ To support running tests that require more than one dataset, ValidMind provides 
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-listing-file-modified-sort="1724455598184" data-listing-reading-time-sort="14" data-listing-word-count-sort="2762">
+<div class="g-col-1" data-index="5" data-listing-file-modified-sort="1725393729043" data-listing-reading-time-sort="11" data-listing-word-count-sort="2021">
 <a href="../../notebooks/how_to/run_unit_metrics.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Run unit metrics
+Intro to Unit Metrics
 </h5>
 <div class="card-text listing-description">
 To turn complex evidence into actionable insights, you can run a unit metric as a single-value measure to quantify and monitor risks throughout a model’s lifecycle.
@@ -2161,7 +2189,7 @@ No matching items
 <p>Need more? Try some of the advanced features provided by the developer framework:</p>
 <div id="listing-tests-advanced" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1724455598186" data-listing-reading-time-sort="10" data-listing-word-count-sort="1846">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1725393729046" data-listing-reading-time-sort="10" data-listing-word-count-sort="1846">
 <a href="../../notebooks/how_to/document_multiple_results_for_the_same_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2175,7 +2203,7 @@ Documentation templates facilitate the presentation of multiple unique test resu
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1724455598184" data-listing-reading-time-sort="10" data-listing-word-count-sort="1903">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1725393729043" data-listing-reading-time-sort="10" data-listing-word-count-sort="1903">
 <a href="../../notebooks/how_to/load_datasets_predictions.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="card-body post-contents">
@@ -2225,14 +2253,45 @@ No matching items
 <section id="can-i-use-my-own-tests" class="level2">
 <h2 class="anchored" data-anchor-id="can-i-use-my-own-tests">Can I use my own tests?</h2>
 <p>Absolutely! ValidMind supports custom tests that you develop yourself or that are provided by third-party test libraries, also referred to as <em>test providers</em>. We provide instructions with code examples that you can adapt:</p>
-<ul>
-<li><a href="../../notebooks/code_samples/custom_tests/implement_custom_tests.html">Implement Custom Metrics and Threshold Tests</a></li>
-<li><a href="../../notebooks/code_samples/custom_tests/integrate_external_test_providers.html">Integrate an External Test Provider</a></li>
-</ul>
+<div id="listing-tests-custom" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1725393729023" data-listing-reading-time-sort="14" data-listing-word-count-sort="2776">
+<a href="../../notebooks/code_samples/custom_tests/implement_custom_tests.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Implement custom tests
+</h5>
+<div class="card-text listing-description">
+Custom tests extend the functionality of ValidMind, allowing you to document any model or use case with added flexibility.
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1725393729024" data-listing-reading-time-sort="13" data-listing-word-count-sort="2551">
+<a href="../../notebooks/code_samples/custom_tests/integrate_external_test_providers.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Integrate external test providers
+</h5>
+<div class="card-text listing-description">
+Register a custom test provider with the ValidMind Developer Framework to run your own tests.
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
 </section>
 <section id="reference" class="level2">
 <h2 class="anchored" data-anchor-id="reference">Reference</h2>
-<p><a href="https://docs.validmind.ai/validmind/validmind.html" target="_blank">ValidMind Developer Framework Reference</a> <i class="fa-solid fa-external-link" aria-label="external-link"></i></p>
+<p><a href="https://docs.validmind.ai/validmind/validmind.html" target="_blank">ValidMind Developer Framework Reference</a></p>
 
 
 

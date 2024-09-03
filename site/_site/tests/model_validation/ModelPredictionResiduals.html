@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#modelpredictionresiduals" id="toc-modelpredictionresiduals" class="nav-link active" data-scroll-target="#modelpredictionresiduals">ModelPredictionResiduals</a></li>
+  <li><a href="#modelpredictionresiduals" id="toc-modelpredictionresiduals" class="nav-link active" data-scroll-target="#modelpredictionresiduals">ModelPredictionResiduals</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/ModelPredictionResiduals.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,44 @@ cookieconsent.run({
 
 <section id="modelpredictionresiduals" class="level1">
 <h1>ModelPredictionResiduals</h1>
-<p>Plot the residuals and histograms for each model, and generate a summary table with the Kolmogorov-Smirnov normality test results.</p>
-<p><strong>Purpose</strong>: The purpose of this function is to visualize the residuals of model predictions and assess the normality of residuals using the Kolmogorov-Smirnov test.</p>
-<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates residuals, and generates two figures for each model: one for the time series of residuals and one for the histogram of residuals. It also calculates the KS test for normality and summarizes the results in a table.</p>
-<p><strong>Signs of High Risk</strong>: - If the residuals are not normally distributed, it could indicate issues with model assumptions. - High skewness or kurtosis in the residuals may indicate model misspecification.</p>
-<p><strong>Strengths</strong>: - Provides a clear visualization of residuals over time and their distribution. - Includes statistical tests to assess the normality of residuals.</p>
-<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with a .df attribute to access the pandas DataFrame. - Only generates plots for datasets with a datetime index, and will raise an error for other types of indices.</p>
+<p>Assesses normality and behavior of residuals in regression models through visualization and statistical tests.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Model Prediction Residuals test aims to visualize the residuals of model predictions and assess their normality using the Kolmogorov-Smirnov (KS) test. It helps to identify potential issues related to model assumptions and effectiveness.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test involves the following steps for each dataset-model pair:</p>
+<ul>
+<li>Calculate the residuals by subtracting predicted values from the actual values.</li>
+<li>Generate two types of plots: a time series plot of residuals and a histogram of residuals.</li>
+<li>Perform the KS test to assess the normality of the residuals and summarize the results in a table.</li>
+</ul>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Residuals are not normally distributed, indicating potential issues with model assumptions.</li>
+<li>High skewness or kurtosis in the residuals, which may suggest model misspecification.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides clear visualizations of residuals over time and their distribution.</li>
+<li>Includes statistical tests to assess the normality of residuals.</li>
+<li>Helps in identifying potential model misspecifications and assumption violations.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes that the dataset is provided as a DataFrameDataset object with a .df attribute to access the pandas DataFrame.</li>
+<li>Only generates plots for datasets with a datetime index, resulting in errors for other types of indices.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

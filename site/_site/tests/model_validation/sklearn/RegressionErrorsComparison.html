@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regressionerrorscomparison" id="toc-regressionerrorscomparison" class="nav-link active" data-scroll-target="#regressionerrorscomparison">RegressionErrorsComparison</a></li>
+  <li><a href="#regressionerrorscomparison" id="toc-regressionerrorscomparison" class="nav-link active" data-scroll-target="#regressionerrorscomparison">RegressionErrorsComparison</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/RegressionErrorsComparison.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,40 @@ cookieconsent.run({
 
 <section id="regressionerrorscomparison" class="level1">
 <h1>RegressionErrorsComparison</h1>
-<p>Compare regression error metrics for each model and generate a summary table with the results.</p>
-<p><strong>Purpose</strong>: The purpose of this function is to compare the regression errors for different models applied to various datasets.</p>
-<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates various error metrics (MAE, MSE, MAPE, MBD), and generates a summary table with these results.</p>
-<p><strong>Signs of High Risk</strong>: - High Mean Absolute Error (MAE) or Mean Squared Error (MSE) indicates poor model performance. - High Mean Absolute Percentage Error (MAPE) suggests large percentage errors, especially problematic if the true values are small. - Mean Bias Deviation (MBD) significantly different from zero indicates systematic overestimation or underestimation by the model.</p>
-<p><strong>Strengths</strong>: - Provides multiple error metrics to assess model performance from different perspectives. - Includes a check to avoid division by zero when calculating MAPE.</p>
-<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes. - The function relies on the <code>logger</code> from <code>validmind.logging</code> to warn about zero values in <code>y_true</code>, which should be correctly implemented and imported. - Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model.</p>
+<p>Assesses multiple regression error metrics to compare model performance across different datasets, emphasizing systematic overestimation or underestimation and large percentage errors.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The purpose of this test is to compare regression errors for different models applied to various datasets. It aims to examine model performance using multiple error metrics, thereby identifying areas where models may be underperforming or exhibiting bias.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The function iterates through each dataset-model pair and calculates various error metrics, including Mean Absolute Error (MAE), Mean Squared Error (MSE), Mean Absolute Percentage Error (MAPE), and Mean Bias Deviation (MBD). The results are summarized in a table, which provides a comprehensive view of each model’s performance on the datasets.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>High Mean Absolute Error (MAE) or Mean Squared Error (MSE), indicating poor model performance.</li>
+<li>High Mean Absolute Percentage Error (MAPE), suggesting large percentage errors, especially problematic if the true values are small.</li>
+<li>Mean Bias Deviation (MBD) significantly different from zero, indicating systematic overestimation or underestimation by the model.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides multiple error metrics to assess model performance from different perspectives.</li>
+<li>Includes a check to avoid division by zero when calculating MAPE.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes that the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes.</li>
+<li>Relies on the <code>logger</code> from <code>validmind.logging</code> to warn about zero values in <code>y_true</code>, which should be correctly implemented and imported.</li>
+<li>Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

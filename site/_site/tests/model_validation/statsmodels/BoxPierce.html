@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#boxpierce" id="toc-boxpierce" class="nav-link active" data-scroll-target="#boxpierce">BoxPierce</a></li>
+  <li><a href="#boxpierce" id="toc-boxpierce" class="nav-link active" data-scroll-target="#boxpierce">BoxPierce</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/BoxPierce.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,29 +1718,41 @@ cookieconsent.run({
 <section id="boxpierce" class="level1">
 <h1>BoxPierce</h1>
 <p>Detects autocorrelation in time-series data through the Box-Pierce test to validate model performance.</p>
-<p><strong>Purpose:</strong> The Box-Pierce test is utilized to detect the presence of autocorrelation in a time-series dataset. Autocorrelation, or serial correlation, refers to the degree of similarity between observations based on the temporal spacing between them. This test is essential for affirming the quality of a time-series model by ensuring that the error terms in the model are random and do not adhere to a specific pattern.</p>
-<p><strong>Test Mechanism:</strong> The implementation of the Box-Pierce test involves calculating a test statistic along with a corresponding p-value derived from the dataset features. These quantities are used to test the null hypothesis that posits the data to be independently distributed. This is achieved by iterating over every feature column in the time-series data and applying the <code>acorr_ljungbox</code> function of the statsmodels library. The function yields the Box-Pierce test statistic as well as the respective p-value, all of which are cached as test results.</p>
-<p><strong>Signs of High Risk:</strong></p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Box-Pierce test is utilized to detect the presence of autocorrelation in a time-series dataset. Autocorrelation, or serial correlation, refers to the degree of similarity between observations based on the temporal spacing between them. This test is essential for affirming the quality of a time-series model by ensuring that the error terms in the model are random and do not adhere to a specific pattern.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The implementation of the Box-Pierce test involves calculating a test statistic along with a corresponding p-value derived from the dataset features. These quantities are used to test the null hypothesis that posits the data to be independently distributed. This is achieved by iterating over every feature column in the time-series data and applying the <code>acorr_ljungbox</code> function of the statsmodels library. The function yields the Box-Pierce test statistic as well as the respective p-value, all of which are cached as test results.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>A low p-value, typically under 0.05 as per statistical convention, throws the null hypothesis of independence into question. This implies that the dataset potentially houses autocorrelations, thus indicating a high-risk scenario concerning model performance.</li>
 <li>Large Box-Pierce test statistic values may indicate the presence of autocorrelation.</li>
 </ul>
-<p><strong>Strengths:</strong></p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>Detects patterns in data that are supposed to be random, thereby ensuring no underlying autocorrelation.</li>
 <li>Can be computed efficiently given its low computational complexity.</li>
 <li>Can be widely applied to most regression problems, making it very versatile.</li>
 </ul>
-<p><strong>Limitations:</strong></p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>Assumes homoscedasticity (constant variance) and normality of residuals, which may not always be the case in real-world datasets.</li>
 <li>May exhibit reduced power for detecting complex autocorrelation schemes such as higher-order or negative correlations.</li>
 <li>It only provides a general indication of the existence of autocorrelation, without providing specific insights into the nature or patterns of the detected autocorrelation.</li>
-<li>In the presence of exhibits trends or seasonal patterns, the Box-Pierce test may yield misleading results.</li>
+<li>In the presence of trends or seasonal patterns, the Box-Pierce test may yield misleading results.</li>
 <li>Applicability is limited to time-series data, which limits its overall utility.</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

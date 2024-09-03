@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#kmeansclustersoptimization" id="toc-kmeansclustersoptimization" class="nav-link active" data-scroll-target="#kmeansclustersoptimization">KMeansClustersOptimization</a></li>
+  <li><a href="#kmeansclustersoptimization" id="toc-kmeansclustersoptimization" class="nav-link active" data-scroll-target="#kmeansclustersoptimization">KMeansClustersOptimization</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/KMeansClustersOptimization.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,41 @@ cookieconsent.run({
 <section id="kmeansclustersoptimization" class="level1">
 <h1>KMeansClustersOptimization</h1>
 <p>Optimizes the number of clusters in K-means models using Elbow and Silhouette methods.</p>
-<p><strong>Purpose:</strong> This metric is used to optimize the number of clusters used in K-means clustering models. It intends to measure and evaluate the optimal number of clusters by leveraging two methodologies, namely the Elbow method and the Silhouette method. This is crucial as an inappropriate number of clusters can either overly simplify or overcomplicate the structure of the data, thereby undermining the effectiveness of the model.</p>
-<p><strong>Test Mechanism:</strong> The test mechanism involves iterating over a predefined range of cluster numbers and applying both the Elbow method and the Silhouette method. The Elbow method computes the sum of the minimum euclidean distances between data points and their respective cluster centers (distortion). This value decreases as the number of clusters increases; the optimal number is typically at the ‘elbow’ point where the decrease in distortion becomes less pronounced. Meanwhile, the Silhouette method calculates the average silhouette score for each data point in the dataset, providing a measure of how similar each item is to its own cluster compared to other clusters. The optimal number of clusters under this method is the one that maximizes the average silhouette score. The results of both methods are plotted for visual inspection.</p>
-<p><strong>Signs of High Risk:</strong> - A high distortion value or a low silhouette average score for the optimal number of clusters. - No clear ‘elbow’ point or plateau observed in the distortion plot, or a uniformly low silhouette average score across different numbers of clusters, suggesting the data is not amenable to clustering. - An optimal cluster number that is unreasonably high or low, suggestive of overfitting or underfitting, respectively.</p>
-<p><strong>Strengths:</strong> - Provides both a visual and quantitative method to determine the optimal number of clusters. - Leverages two different methods (Elbow and Silhouette), thereby affording robustness and versatility in assessing the data’s clusterability. - Facilitates improved model performance by allowing for an informed selection of the number of clusters.</p>
-<p><strong>Limitations:</strong> - Assumes that a suitable number of clusters exists in the data, which may not always be true, especially for complex or noisy data. - Both methods may fail to provide definitive answers when the data lacks clear cluster structures. - Might not be straightforward to determine the ‘elbow’ point or maximize the silhouette average score, especially in larger and complicated datasets. - Assumes spherical clusters (due to using the Euclidean distance in the Elbow method), which might not align with the actual structure of the data.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>This metric is used to optimize the number of clusters used in K-means clustering models. It intends to measure and evaluate the optimal number of clusters by leveraging two methodologies, namely the Elbow method and the Silhouette method. This is crucial as an inappropriate number of clusters can either overly simplify or overcomplicate the structure of the data, thereby undermining the effectiveness of the model.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test mechanism involves iterating over a predefined range of cluster numbers and applying both the Elbow method and the Silhouette method. The Elbow method computes the sum of the minimum euclidean distances between data points and their respective cluster centers (distortion). This value decreases as the number of clusters increases; the optimal number is typically at the ‘elbow’ point where the decrease in distortion becomes less pronounced. Meanwhile, the Silhouette method calculates the average silhouette score for each data point in the dataset, providing a measure of how similar each item is to its own cluster compared to other clusters. The optimal number of clusters under this method is the one that maximizes the average silhouette score. The results of both methods are plotted for visual inspection.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A high distortion value or a low silhouette average score for the optimal number of clusters.</li>
+<li>No clear ‘elbow’ point or plateau observed in the distortion plot, or a uniformly low silhouette average score across different numbers of clusters, suggesting the data is not amenable to clustering.</li>
+<li>An optimal cluster number that is unreasonably high or low, suggestive of overfitting or underfitting, respectively.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides both a visual and quantitative method to determine the optimal number of clusters.</li>
+<li>Leverages two different methods (Elbow and Silhouette), thereby affording robustness and versatility in assessing the data’s clusterability.</li>
+<li>Facilitates improved model performance by allowing for an informed selection of the number of clusters.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes that a suitable number of clusters exists in the data, which may not always be true, especially for complex or noisy data.</li>
+<li>Both methods may fail to provide definitive answers when the data lacks clear cluster structures.</li>
+<li>Might not be straightforward to determine the ‘elbow’ point or maximize the silhouette average score, especially in larger and complicated datasets.</li>
+<li>Assumes spherical clusters (due to using the Euclidean distance in the Elbow method), which might not align with the actual structure of the data.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#homogeneityscore" id="toc-homogeneityscore" class="nav-link active" data-scroll-target="#homogeneityscore">HomogeneityScore</a></li>
+  <li><a href="#homogeneityscore" id="toc-homogeneityscore" class="nav-link active" data-scroll-target="#homogeneityscore">HomogeneityScore</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/HomogeneityScore.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,39 @@ cookieconsent.run({
 <section id="homogeneityscore" class="level1">
 <h1>HomogeneityScore</h1>
 <p>Assesses clustering homogeneity by comparing true and predicted labels, scoring from 0 (heterogeneous) to 1 (homogeneous).</p>
-<p><strong>Purpose</strong>: The Homogeneity Score encapsulated in this performance test is used to measure the homogeneity of the clusters formed by a machine learning model. In simple terms, a clustering result satisfies homogeneity if all of its clusters contain only points which are members of a single class.</p>
-<p><strong>Test Mechanism</strong>: This test uses the <code>homogeneity_score</code> function from the <code>sklearn.metrics</code> library to compare the ground truth class labels of the training and testing sets with the labels predicted by the given model. The returned score is a metric of the clustering accuracy, and ranges from 0.0 to 1.0, with 1.0 denoting the highest possible degree of homogeneity.</p>
-<p><strong>Signs of High Risk</strong>: - A score close to 0: This denotes that clusters are highly heterogenous and points within the same cluster might not belong to the same class. - A significantly lower score for testing data compared to the score for training data: This can indicate overfitting, where the model has learned to perfectly match the training data but fails to perform well on unseen data.</p>
-<p><strong>Strengths</strong>: - It provides a simple quantitative measure of the degree to which clusters contain points from only one class. - Useful for validating clustering solutions where the ground truth - class membership of points - is known. - It’s agnostic to the absolute labels, and cares only that the points within the same cluster have the same class label.</p>
-<p><strong>Limitations</strong>: - The Homogeneity Score is not useful for clustering solutions where the ground truth labels are not known. - It doesn’t work well with differently sized clusters since it gives predominance to larger clusters. - The score does not address the actual number of clusters formed, or the evenness of cluster sizes. It only checks the homogeneity within the given clusters created by the model.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Homogeneity Score encapsulated in this performance test is used to measure the homogeneity of the clusters formed by a machine learning model. In simple terms, a clustering result satisfies homogeneity if all of its clusters contain only points which are members of a single class.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test uses the <code>homogeneity_score</code> function from the <code>sklearn.metrics</code> library to compare the ground truth class labels of the training and testing sets with the labels predicted by the given model. The returned score is a metric of the clustering accuracy, and ranges from 0.0 to 1.0, with 1.0 denoting the highest possible degree of homogeneity.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A score close to 0: This denotes that clusters are highly heterogenous and points within the same cluster might not belong to the same class.</li>
+<li>A significantly lower score for testing data compared to the score for training data: This can indicate overfitting, where the model has learned to perfectly match the training data but fails to perform well on unseen data.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>It provides a simple quantitative measure of the degree to which clusters contain points from only one class.</li>
+<li>Useful for validating clustering solutions where the ground truth — class membership of points — is known.</li>
+<li>It’s agnostic to the absolute labels, and cares only that the points within the same cluster have the same class label.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The Homogeneity Score is not useful for clustering solutions where the ground truth labels are not known.</li>
+<li>It doesn’t work well with differently sized clusters since it gives predominance to larger clusters.</li>
+<li>The score does not address the actual number of clusters formed, or the evenness of cluster sizes. It only checks the homogeneity within the given clusters created by the model.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

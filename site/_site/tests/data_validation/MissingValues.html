@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#missingvalues" id="toc-missingvalues" class="nav-link active" data-scroll-target="#missingvalues">MissingValues</a></li>
+  <li><a href="#missingvalues" id="toc-missingvalues" class="nav-link active" data-scroll-target="#missingvalues">MissingValues</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/MissingValues.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,38 @@ cookieconsent.run({
 <section id="missingvalues" class="level1">
 <h1>MissingValues</h1>
 <p>Evaluates dataset quality by ensuring missing value ratio across all features does not exceed a set threshold.</p>
-<p><strong>Purpose</strong>: This test is designed to evaluate the quality of a dataset by measuring the number of missing values across all features. The objective is to ensure that the ratio of missing data to total data is less than a predefined threshold, defaulting to 1, to maintain the data quality necessary for reliable predictive strength in a machine learning model.</p>
-<p><strong>Test Mechanism</strong>: The mechanism for this test involves iterating through each column of the dataset, counting missing values (represented as NaNs), and calculating the percentage they represent against the total number of rows. The test then checks if these missing value counts are less than the predefined <code>min_threshold</code>. The results are shown in a table summarizing each column, the number of missing values, the percentage of missing values in each column, and a Pass/Fail status based on the threshold comparison.</p>
-<p><strong>Signs of High Risk</strong>: - When the number of missing values in any column exceeds the <code>min_threshold</code> value, it indicates a high risk. - A high risk is also flagged when missing values are present across many columns. In both instances, the test would return a “Fail” mark.</p>
-<p><strong>Strengths</strong>: - The test offers a quick and granular identification of missing data across each feature in the dataset. - It provides an effective, straightforward means of maintaining data quality, which is vital for constructing efficient machine learning models.</p>
-<p><strong>Limitations</strong>: - Even though the test can efficiently identify missing values, it does not suggest the root causes of these missing values or recommend ways to impute or handle them. - The test might overlook features with a significant amount of missing data, but still less than the <code>min_threshold</code>. This could impact the model, especially if <code>min_threshold</code> is set too high. - The test does not account for data encoded as values (like “-999” or “None”), which might not technically classify as missing but could bear similar implications.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Missing Values test is designed to evaluate the quality of a dataset by measuring the number of missing values across all features. The objective is to ensure that the ratio of missing data to total data is less than a predefined threshold, defaulting to 1, in order to maintain the data quality necessary for reliable predictive strength in a machine learning model.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The mechanism for this test involves iterating through each column of the dataset, counting missing values (represented as NaNs), and calculating the percentage they represent against the total number of rows. The test then checks if these missing value counts are less than the predefined <code>min_threshold</code>. The results are shown in a table summarizing each column, the number of missing values, the percentage of missing values in each column, and a Pass/Fail status based on the threshold comparison.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>When the number of missing values in any column exceeds the <code>min_threshold</code> value.</li>
+<li>Presence of missing values across many columns, leading to multiple instances of failing the threshold.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Quick and granular identification of missing data across each feature in the dataset.</li>
+<li>Provides an effective and straightforward means of maintaining data quality, essential for constructing efficient machine learning models.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Does not suggest the root causes of the missing values or recommend ways to impute or handle them.</li>
+<li>May overlook features with significant missing data but still less than the <code>min_threshold</code>, potentially impacting the model.</li>
+<li>Does not account for data encoded as values like “-999” or “None,” which might not technically classify as missing but could bear similar implications.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#durbinwatsontest" id="toc-durbinwatsontest" class="nav-link active" data-scroll-target="#durbinwatsontest">DurbinWatsonTest</a></li>
+  <li><a href="#durbinwatsontest" id="toc-durbinwatsontest" class="nav-link active" data-scroll-target="#durbinwatsontest">DurbinWatsonTest</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/DurbinWatsonTest.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,38 @@ cookieconsent.run({
 <section id="durbinwatsontest" class="level1">
 <h1>DurbinWatsonTest</h1>
 <p>Assesses autocorrelation in time series data features using the Durbin-Watson statistic.</p>
-<p><strong>Purpose</strong>: The Durbin-Watson Test metric detects autocorrelation in time series data (where a set of data values influences their predecessors). Autocorrelation is a crucial factor for regression tasks as these often assume the independence of residuals. A model with significant autocorrelation may give unreliable predictions.</p>
-<p><strong>Test Mechanism</strong>: Utilizing the <code>durbin_watson</code> function in the <code>statsmodels</code> Python library, the Durbin-Watson (DW) Test metric generates a statistical value for each feature of the training dataset. The function is looped over all columns of the dataset, calculating and caching the DW value for each column for further analysis. A DW metric value nearing 2 indicates no autocorrelation. Conversely, values approaching 0 suggest positive autocorrelation, and those leaning towards 4 imply negative autocorrelation.</p>
-<p><strong>Signs of High Risk</strong>: - If a feature’s DW value significantly deviates from 2, it could signal a high risk due to potential autocorrelation issues in the dataset. - A value closer to ‘0’ could imply positive autocorrelation, while a value nearer to ‘4’ could point to negative autocorrelation, both leading to potentially unreliable prediction models.</p>
-<p><strong>Strengths</strong>: - The metric specializes in identifying autocorrelation in prediction model residuals. - Autocorrelation detection assists in diagnosing violation of various modeling technique assumptions, particularly in regression analysis and time-series data modeling.</p>
-<p><strong>Limitations</strong>: - The Durbin-Watson Test mainly detects linear autocorrelation and could overlook other types of relationships. - The metric is highly sensitive to data points order. Shuffling the order could lead to notably different results. - The test only checks for first-order autocorrelation (between a variable and its immediate predecessor) and fails to detect higher order autocorrelation.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Durbin-Watson Test metric detects autocorrelation in time series data (where a set of data values influences their predecessors). Autocorrelation is a crucial factor for regression tasks as these often assume the independence of residuals. A model with significant autocorrelation may give unreliable predictions.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>Utilizing the <code>durbin_watson</code> function in the <code>statsmodels</code> Python library, the Durbin-Watson (DW) Test metric generates a statistical value for each feature of the training dataset. The function is looped over all columns of the dataset, calculating and caching the DW value for each column for further analysis. A DW metric value nearing 2 indicates no autocorrelation. Conversely, values approaching 0 suggest positive autocorrelation, and those leaning towards 4 imply negative autocorrelation.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>If a feature’s DW value significantly deviates from 2, it could signal a high risk due to potential autocorrelation issues in the dataset.</li>
+<li>A value closer to 0 could imply positive autocorrelation, while a value nearer to 4 could point to negative autocorrelation, both leading to potentially unreliable prediction models.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The metric specializes in identifying autocorrelation in prediction model residuals.</li>
+<li>Autocorrelation detection assists in diagnosing violation of various modeling technique assumptions, particularly in regression analysis and time-series data modeling.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The Durbin-Watson Test mainly detects linear autocorrelation and could overlook other types of relationships.</li>
+<li>The metric is highly sensitive to data points order. Shuffling the order could lead to notably different results.</li>
+<li>The test only checks for first-order autocorrelation (between a variable and its immediate predecessor) and fails to detect higher-order autocorrelation.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#scatterplot" id="toc-scatterplot" class="nav-link active" data-scroll-target="#scatterplot">ScatterPlot</a></li>
+  <li><a href="#scatterplot" id="toc-scatterplot" class="nav-link active" data-scroll-target="#scatterplot">ScatterPlot</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/ScatterPlot.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,45 @@ cookieconsent.run({
 
 <section id="scatterplot" class="level1">
 <h1>ScatterPlot</h1>
-<p>Creates a scatter plot matrix to visually analyze feature relationships, patterns, and outliers in a dataset.</p>
-<p><strong>Purpose</strong>: The ScatterPlot metric is designed to offer a visual analysis of a given dataset by constructing a scatter plot matrix encapsulating the dataset’s numerical features. Its primary function is to uncover relationships, patterns, or outliers across different features, thus providing both quantitative and qualitative insights into the multidimensional relationships within the dataset. This visual assessment aids in understanding the efficacy of the chosen features for model training and their overall suitability.</p>
-<p><strong>Test Mechanism</strong>: Using the Plotly library, the ScatterPlot function creates the scatter plot matrix. The process involves retrieving all numerical columns from the dataset and subsequently generating a scatter matrix for these columns. The resulting Plotly figure provides interactive capabilities, enabling users to explore relationships between features dynamically. The final plot is returned as a Plotly Figure object for further analysis and visualization.</p>
-<p><strong>Signs of High Risk</strong>: - The emergence of non-linear or random patterns across different feature pairs. This may suggest intricate relationships unfit for linear presumptions. - A lack of clear patterns or clusters, which might point to weak or non-existent correlations among features, thus creating challenges for certain model types. - The presence of outliers, as visual outliers in your data can adversely influence the model’s performance.</p>
-<p><strong>Strengths</strong>: - It provides insight into the multidimensional relationships among multiple features. - It assists in identifying trends, correlations, and outliers that could potentially affect the model’s performance. - As a diagnostic tool, it can validate whether certain assumptions made during the model-creation process, such as linearity, hold true. - The tool’s versatility extends to its application for both regression and classification tasks. - The use of Plotly offers interactive exploration of the data, which can be valuable for deeper analysis.</p>
-<p><strong>Limitations</strong>: - Scatter plot matrices may become cluttered and hard to decipher as the number of features increases, leading to complexity and confusion. - While extremely proficient in revealing pairwise relationships, these matrices may fail to illuminate complex interactions that involve three or more features. - These matrices are primarily visual tools, so the precision of quantitative analysis may be compromised. - If not clearly visible, outliers can be missed, which could negatively affect model performance. - It assumes that the dataset can fit into the computer’s memory, which might not always be valid, particularly for extremely large datasets.</p>
+<p>Assesses visual relationships, patterns, and outliers among features in a dataset through scatter plot matrices.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The ScatterPlot test aims to visually analyze a given dataset by constructing a scatter plot matrix of its numerical features. The primary goal is to uncover relationships, patterns, and outliers across different features to provide both quantitative and qualitative insights into multidimensional relationships within the dataset. This visual assessment aids in understanding the efficacy of the chosen features for model training and their suitability.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>Using the Seaborn library, the ScatterPlot function creates the scatter plot matrix. The process involves retrieving all numerical columns from the dataset and generating a scatter matrix for these columns. The resulting scatter plot provides visual representations of feature relationships. The function also adjusts axis labels for readability and returns the final plot as a Matplotlib Figure object for further analysis and visualization.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>The emergence of non-linear or random patterns across different feature pairs, suggesting complex relationships unsuitable for linear assumptions.</li>
+<li>Lack of clear patterns or clusters, indicating weak or non-existent correlations among features, which could challenge certain model types.</li>
+<li>Presence of outliers, as visual outliers can adversely influence the model’s performance.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides insight into the multidimensional relationships among multiple features.</li>
+<li>Assists in identifying trends, correlations, and outliers that could affect model performance.</li>
+<li>Validates assumptions made during model creation, such as linearity.</li>
+<li>Versatile for application in both regression and classification tasks.</li>
+<li>Using Seaborn facilitates an intuitive and detailed visual exploration of data.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Scatter plot matrices may become cluttered and hard to decipher as the number of features increases.</li>
+<li>Primarily reveals pairwise relationships and may fail to illuminate complex interactions involving three or more features.</li>
+<li>Being a visual tool, precision in quantitative analysis might be compromised.</li>
+<li>Outliers not clearly visible in plots can be missed, affecting model performance.</li>
+<li>Assumes that the dataset can fit into the computer’s memory, which might not be valid for extremely large datasets.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

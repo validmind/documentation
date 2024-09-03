@@ -19,6 +19,7 @@ $$
 ### Configuring Columns
 
 This metric requires the following columns in your dataset:
+
 - `question` (str): The text query that was input into the model.
 - `contexts` (List[str]): A list of text contexts which are retrieved and which
 will be evaluated to make sure they contain all items in the ground truth.

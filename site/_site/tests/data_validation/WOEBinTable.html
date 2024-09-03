@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#woebintable" id="toc-woebintable" class="nav-link active" data-scroll-target="#woebintable">WOEBinTable</a></li>
+  <li><a href="#woebintable" id="toc-woebintable" class="nav-link active" data-scroll-target="#woebintable">WOEBinTable</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/WOEBinTable.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,39 @@ cookieconsent.run({
 
 <section id="woebintable" class="level1">
 <h1>WOEBinTable</h1>
-<p>Calculates and assesses the Weight of Evidence (WoE) and Information Value (IV) of each feature in a ML model.</p>
-<p><strong>Purpose</strong>: The Weight of Evidence (WoE) and Information Value (IV) test is intended to evaluate the predictive power of each feature in the machine learning model. The test generates binned groups of values from each feature in a dataset, computes the WoE value and the IV value for each bin. These values provide insights on the relationship between each feature and the target variable and their contribution towards the predictive output of the model.</p>
-<p><strong>Test Mechanism</strong>: The metric leverages the <code>scorecardpy.woebin</code> method to perform WoE-based automatic binning on the dataset. Depending on the parameter <code>breaks_adj</code>, the method adjusts the cut-off points for binning numeric variables. The bins are then used to calculate the WoE and IV. The metric requires a dataset with the target variable defined. The metric outputs a dataframe that comprises the bin boundaries, WoE, and IV values for each feature.</p>
-<p><strong>Signs of High Risk</strong>: - High IV values, which denote variables with too much predictive power which might lead to overfitting - Errors during the binning process, which might be due to inappropriate data types or poorly defined bins</p>
-<p><strong>Strengths</strong>: - The WoE and IV test is highly effective for feature selection in binary classification problems, as it quantifies how much predictive information is packed within each feature regarding the binary outcome - The WoE transformation creates a monotonic relationship between the target and independent variables</p>
-<p><strong>Limitations</strong>: - Mainly designed for binary classification tasks, therefore it might not be applicable or reliable for multi-class classification or regression tasks - If the dataset has many features or the features are not binnable or they are non-numeric, this process might encounter difficulties - This metric doesn’t help in identifying if the predictive factor being observed is a coincidence or a real phenomenon due to data randomness</p>
+<p>Assesses the Weight of Evidence (WoE) and Information Value (IV) of each feature to evaluate its predictive power in a binary classification model.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Weight of Evidence (WoE) and Information Value (IV) test is designed to evaluate the predictive power of each feature in a machine learning model. This test generates binned groups of values from each feature, computes the WoE and IV for each bin, and provides insights into the relationship between each feature and the target variable, illustrating their contribution to the model’s predictive capabilities.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test uses the <code>scorecardpy.woebin</code> method to perform automatic binning of the dataset based on WoE. The method adjusts the cut-off points for binning numeric variables based on the parameter <code>breaks_adj</code>. The bins are then used to calculate the WoE and IV values, effectively creating a dataframe that includes the bin boundaries, WoE, and IV values for each feature. A target variable is required in the dataset to perform this analysis.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>High IV values, indicating variables with excessive predictive power which might lead to overfitting.</li>
+<li>Errors during the binning process, potentially due to inappropriate data types or poorly defined bins.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Highly effective for feature selection in binary classification problems, as it quantifies the predictive information within each feature concerning the binary outcome.</li>
+<li>The WoE transformation creates a monotonic relationship between the target and independent variables.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Primarily designed for binary classification tasks, making it less applicable or reliable for multi-class classification or regression tasks.</li>
+<li>Potential difficulties if the dataset has many features, non-binnable features, or non-numeric features.</li>
+<li>The metric does not help in distinguishing whether the observed predictive factor is due to data randomness or a true phenomenon.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

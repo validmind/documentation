@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#meteorscore" id="toc-meteorscore" class="nav-link active" data-scroll-target="#meteorscore">MeteorScore</a></li>
+  <li><a href="#meteorscore" id="toc-meteorscore" class="nav-link active" data-scroll-target="#meteorscore">MeteorScore</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/MeteorScore.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,40 @@ cookieconsent.run({
 
 <section id="meteorscore" class="level1">
 <h1>MeteorScore</h1>
-<p>Computes and visualizes the METEOR score for each text generation instance, assessing translation quality.</p>
-<p><strong>Purpose:</strong> METEOR (Metric for Evaluation of Translation with Explicit ORdering) is designed to evaluate the quality of machine translations by comparing them against reference translations. It emphasizes both the accuracy and fluency of translations, incorporating precision, recall, and word order into its assessment.</p>
-<p><strong>Test Mechanism:</strong> The function starts by extracting the true and predicted values from the provided dataset and model. The METEOR score is computed for each pair of machine-generated translation (prediction) and its corresponding human-produced reference. This is done by considering unigram matches between the translations, including matches based on surface forms, stemmed forms, and synonyms. The score is a combination of unigram precision and recall, adjusted for word order through a fragmentation penalty. Scores are compiled into a dataframe, and histograms and bar charts are generated to visualize the distribution of METEOR scores. Additionally, a table of descriptive statistics (mean, median, standard deviation, minimum, and maximum) is compiled for the METEOR scores, providing a comprehensive summary of the model’s performance.</p>
-<p><strong>Signs of High Risk:</strong> - Lower METEOR scores can indicate a lack of alignment between the machine-generated translations and their human-produced references, highlighting potential deficiencies in both the accuracy and fluency of translations. - Significant discrepancies in word order or an excessive fragmentation penalty could signal issues with how the translation model processes and reconstructs sentence structures, potentially compromising the natural flow of translated text. - Persistent underperformance across a variety of text types or linguistic contexts might suggest a broader inability of the model to adapt to the nuances of different languages or dialects, pointing towards gaps in its training or inherent limitations.</p>
-<p><strong>Strengths:</strong> - Incorporates a balanced consideration of precision and recall, weighted towards recall to reflect the importance of content coverage in translations. - Directly accounts for word order, offering a nuanced evaluation of translation fluency beyond simple lexical matching. - Adapts to various forms of lexical similarity, including synonyms and stemmed forms, allowing for flexible matching.</p>
-<p><strong>Limitations:</strong> - While comprehensive, the complexity of METEOR’s calculation can make it computationally intensive, especially for large datasets. - The use of external resources for synonym and stemming matching may introduce variability based on the resources’ quality and relevance to the specific translation task.</p>
+<p>Assesses the quality of machine-generated translations by comparing them to human-produced references using the METEOR score, which evaluates precision, recall, and word order.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The METEOR (Metric for Evaluation of Translation with Explicit ORdering) score is designed to evaluate the quality of machine translations by comparing them against reference translations. It emphasizes both the accuracy and fluency of translations, incorporating precision, recall, and word order into its assessment.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The function starts by extracting the true and predicted values from the provided dataset and model. The METEOR score is computed for each pair of machine-generated translation (prediction) and its corresponding human-produced reference. This is done by considering unigram matches between the translations, including matches based on surface forms, stemmed forms, and synonyms. The score is a combination of unigram precision and recall, adjusted for word order through a fragmentation penalty. Scores are compiled into a dataframe, and histograms and bar charts are generated to visualize the distribution of METEOR scores. Additionally, a table of descriptive statistics (mean, median, standard deviation, minimum, and maximum) is compiled for the METEOR scores, providing a comprehensive summary of the model’s performance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Lower METEOR scores can indicate a lack of alignment between the machine-generated translations and their human-produced references, highlighting potential deficiencies in both the accuracy and fluency of translations.</li>
+<li>Significant discrepancies in word order or an excessive fragmentation penalty could signal issues with how the translation model processes and reconstructs sentence structures, potentially compromising the natural flow of translated text.</li>
+<li>Persistent underperformance across a variety of text types or linguistic contexts might suggest a broader inability of the model to adapt to the nuances of different languages or dialects, pointing towards gaps in its training or inherent limitations.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Incorporates a balanced consideration of precision and recall, weighted towards recall to reflect the importance of content coverage in translations.</li>
+<li>Directly accounts for word order, offering a nuanced evaluation of translation fluency beyond simple lexical matching.</li>
+<li>Adapts to various forms of lexical similarity, including synonyms and stemmed forms, allowing for flexible matching.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>While comprehensive, the complexity of METEOR’s calculation can make it computationally intensive, especially for large datasets.</li>
+<li>The use of external resources for synonym and stemming matching may introduce variability based on the resources quality and relevance to the specific translation task.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

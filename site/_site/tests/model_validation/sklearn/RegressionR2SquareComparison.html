@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regressionr2squarecomparison" id="toc-regressionr2squarecomparison" class="nav-link active" data-scroll-target="#regressionr2squarecomparison">RegressionR2SquareComparison</a></li>
+  <li><a href="#regressionr2squarecomparison" id="toc-regressionr2squarecomparison" class="nav-link active" data-scroll-target="#regressionr2squarecomparison">RegressionR2SquareComparison</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/RegressionR2SquareComparison.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,46 @@ cookieconsent.run({
 
 <section id="regressionr2squarecomparison" class="level1">
 <h1>RegressionR2SquareComparison</h1>
-<p>Compare R-Squared and Adjusted R-Squared values for each model and generate a summary table with the results.</p>
-<p><strong>Purpose</strong>: The purpose of this function is to compare the R-Squared and Adjusted R-Squared values for different models applied to various datasets.</p>
-<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates the R-Squared and Adjusted R-Squared values, and generates a summary table with these results.</p>
-<p><strong>Signs of High Risk</strong>: - If the R-Squared values are significantly low, it could indicate that the model is not explaining much of the variability in the dataset. - A significant difference between R-Squared and Adjusted R-Squared values might indicate that the model includes irrelevant features.</p>
-<p><strong>Strengths</strong>: - Provides a quantitative measure of model performance in terms of variance explained. - Adjusted R-Squared accounts for the number of predictors, making it a more reliable measure when comparing models with different numbers of features.</p>
-<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes. - The function relies on <code>adj_r2_score</code> from the <code>statsmodels.statsutils</code> module, which should be correctly implemented and imported. - Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model.</p>
+<p>Compares R-Squared and Adjusted R-Squared values for different regression models across multiple datasets to assess model performance and relevance of features.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Regression R2 Square Comparison test aims to compare the R-Squared and Adjusted R-Squared values for different regression models across various datasets. It helps in assessing how well each model explains the variability in the dataset, and whether the models include irrelevant features.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test operates by:</p>
+<ul>
+<li>Iterating through each dataset-model pair.</li>
+<li>Calculating the R-Squared values to measure how much of the variability in the dataset is explained by the model.</li>
+<li>Calculating the Adjusted R-Squared values, which adjust the R-Squared based on the number of predictors in the model, making it more reliable when comparing models with different numbers of features.</li>
+<li>Generating a summary table containing these values for each combination of dataset and model.</li>
+</ul>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>If the R-Squared values are significantly low, it indicates the model isn’t explaining much of the variability in the dataset.</li>
+<li>A significant difference between R-Squared and Adjusted R-Squared values might indicate that the model includes irrelevant features.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a quantitative measure of model performance in terms of variance explained.</li>
+<li>Adjusted R-Squared accounts for the number of predictors, making it a more reliable measure when comparing models with different numbers of features.</li>
+<li>Useful for time-series forecasting and regression tasks.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes.</li>
+<li>Relies on <code>adj_r2_score</code> from the <code>statsmodels.statsutils</code> module, which needs to be correctly implemented and imported.</li>
+<li>Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

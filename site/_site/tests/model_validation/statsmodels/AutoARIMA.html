@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#autoarima" id="toc-autoarima" class="nav-link active" data-scroll-target="#autoarima">AutoARIMA</a></li>
+  <li><a href="#autoarima" id="toc-autoarima" class="nav-link active" data-scroll-target="#autoarima">AutoARIMA</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/AutoARIMA.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,40 @@ cookieconsent.run({
 <section id="autoarima" class="level1">
 <h1>AutoARIMA</h1>
 <p>Evaluates ARIMA models for time-series forecasting, ranking them using Bayesian and Akaike Information Criteria.</p>
-<p><strong>Purpose</strong>: The AutoARIMA validation test is designed to evaluate and rank AutoRegressive Integrated Moving Average (ARIMA) models. These models are primarily used for forecasting time-series data. The validation test automatically fits multiple ARIMA models, with varying parameters, to every variable within the given dataset. The models are then ranked based on their Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values, which provide a basis for the efficient model selection process.</p>
-<p><strong>Test Mechanism</strong>: This metric proceeds by generating an array of feasible combinations of ARIMA model parameters which are within a prescribed limit. These limits include <code>max_p</code>, <code>max_d</code>, <code>max_q</code>; they represent the autoregressive, differencing, and moving average components respectively. Upon applying these sets of parameters, the validation test fits each ARIMA model to the time-series data provided. For each model, it subsequently proceeds to calculate and record both the BIC and AIC values, which serve as performance indicators for the model fit. Prior to this parameter fitting process, the Augmented Dickey-Fuller test for data stationarity is conducted on the data series. If a series is found to be non-stationary, a warning message is sent out, given that ARIMA models necessitate input series to be stationary.</p>
-<p><strong>Signs of High Risk</strong>: * If the p-value of the Augmented Dickey-Fuller test for a variable exceeds 0.05, a warning is logged. This warning indicates that the series might not be stationary, leading to potentially inaccurate results. * Consistent failure in fitting ARIMA models (as made evident through logged errors) might disclose issues with either the data or model stability.</p>
-<p><strong>Strengths</strong>: * The AutoARIMA validation test simplifies the often complex task of selecting the most suitable ARIMA model based on BIC and AIC criteria. * The mechanism incorporates a check for non-stationarity within the data, which is a critical prerequisite for ARIMA models. * The exhaustive search through all possible combinations of model parameters enhances the likelihood of identifying the best-fit model.</p>
-<p><strong>Limitations</strong>: * This validation test can be computationally costly as it involves creating and fitting multiple ARIMA models for every variable. * Although the test checks for non-stationarity and logs warnings where present, it does not apply any transformations to the data to establish stationarity. * The selection of models leans solely on BIC and AIC criteria, which may not yield the best predictive model in all scenarios. * The test is only applicable to regression tasks involving time-series data, and may not work effectively for other types of machine learning tasks.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The AutoARIMA validation test is designed to evaluate and rank AutoRegressive Integrated Moving Average (ARIMA) models. These models are primarily used for forecasting time-series data. The validation test automatically fits multiple ARIMA models, with varying parameters, to every variable within the given dataset. The models are then ranked based on their Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values, which provide a basis for the efficient model selection process.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This metric proceeds by generating an array of feasible combinations of ARIMA model parameters which are within a prescribed limit. These limits include <code>max_p</code>, <code>max_d</code>, <code>max_q</code>; they represent the autoregressive, differencing, and moving average components respectively. Upon applying these sets of parameters, the validation test fits each ARIMA model to the time-series data provided. For each model, it subsequently proceeds to calculate and record both the BIC and AIC values, which serve as performance indicators for the model fit. Prior to this parameter fitting process, the Augmented Dickey-Fuller test for data stationarity is conducted on the data series. If a series is found to be non-stationary, a warning message is sent out, given that ARIMA models necessitate input series to be stationary.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>If the p-value of the Augmented Dickey-Fuller test for a variable exceeds 0.05, a warning is logged. This warning indicates that the series might not be stationary, leading to potentially inaccurate results.</li>
+<li>Consistent failure in fitting ARIMA models (as made evident through logged errors) might disclose issues with either the data or model stability.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The AutoARIMA validation test simplifies the often complex task of selecting the most suitable ARIMA model based on BIC and AIC criteria.</li>
+<li>The mechanism incorporates a check for non-stationarity within the data, which is a critical prerequisite for ARIMA models.</li>
+<li>The exhaustive search through all possible combinations of model parameters enhances the likelihood of identifying the best-fit model.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>This validation test can be computationally costly as it involves creating and fitting multiple ARIMA models for every variable.</li>
+<li>Although the test checks for non-stationarity and logs warnings where present, it does not apply any transformations to the data to establish stationarity.</li>
+<li>The selection of models leans solely on BIC and AIC criteria, which may not yield the best predictive model in all scenarios.</li>
+<li>The test is only applicable to regression tasks involving time-series data, and may not work effectively for other types of machine learning tasks.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

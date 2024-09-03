@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regressionerrors" id="toc-regressionerrors" class="nav-link active" data-scroll-target="#regressionerrors">RegressionErrors</a></li>
+  <li><a href="#regressionerrors" id="toc-regressionerrors" class="nav-link active" data-scroll-target="#regressionerrors">RegressionErrors</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/RegressionErrors.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,13 +1717,46 @@ cookieconsent.run({
 
 <section id="regressionerrors" class="level1">
 <h1>RegressionErrors</h1>
-<p><strong>Purpose</strong>: This metric is used to measure the performance of a regression model. It gauges the model’s accuracy by computing several error metrics such as Mean Absolute Error (MAE), Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Mean Absolute Percentage Error (MAPE), and Mean Bias Deviation (MBD) on both the training and testing dataset.</p>
-<p><strong>Test Mechanism</strong>: The test computes each of the aforementioned metrics. MAE calculates the average of the absolute difference between the true value and the predicted value. MSE squares the difference before averaging it. RMSE then takes the square root of the MSE. MAPE evaluates the average of the absolute difference between true and predicted values divided by the true value, expressed as a percentage. Lastly, MBD is a measure of average bias in the prediction. The results are compared between the training dataset and the testing dataset.</p>
-<p><strong>Signs of High Risk</strong>: High values for any of the metrics, or particularly different metric outcomes for the training set versus the test set, are signs of high risk. Specifically, high MAE, MSE, RMSE, or MAPE values could indicate poor model performance and overfitting. If MBD is significantly different from zero, it could signify that the model’s predictions are systematically biased.</p>
-<p><strong>Strengths</strong>: These metrics collectively provide a comprehensive view of model performance and error distribution. Individually, MAE provides a linear score that could be more interpretable, while MSE gives more weight to larger errors. RMSE is useful because it is in the same unit as the target variable. MAPE expresses error as a percentage, making it a good measure of prediction accuracy. MBD helps to detect systematic bias in predictions.</p>
-<p><strong>Limitations</strong>: Each of these metrics has its own limitations. MAE and MSE are sensitive to outliers. While RMSE is good for giving high weight to larger errors, it might too heavily penalize these errors. MAPE might be biased if actual values are near zero, and MBD would not work well if the difference between predictions and actual values changes with the magnitude of the actual values. Overall, these metrics will not capture all model performance nuances, and they should be used with contextual understanding of the problem at hand.</p>
+<p>Assesses the performance and error distribution of a regression model using various error metrics.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The purpose of the Regression Errors test is to measure the performance of a regression model by calculating several error metrics. This evaluation helps determine the model’s accuracy and potential issues like overfitting or bias by analyzing differences in error metrics between the training and testing datasets.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test computes the following error metrics: - <strong>Mean Absolute Error (MAE)</strong>: Average of the absolute differences between true values and predicted values. - <strong>Mean Squared Error (MSE)</strong>: Average of the squared differences between true values and predicted values. - <strong>Root Mean Squared Error (RMSE)</strong>: Square root of the mean squared error. - <strong>Mean Absolute Percentage Error (MAPE)</strong>: Average of the absolute differences between true values and predicted values, divided by the true values, and expressed as a percentage. - <strong>Mean Bias Deviation (MBD)</strong>: Average bias between true values and predicted values.</p>
+<p>These metrics are calculated separately for the training and testing datasets and compared to identify discrepancies.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>High values for MAE, MSE, RMSE, or MAPE indicating poor model performance.</li>
+<li>Large differences in error metrics between the training and testing datasets, suggesting overfitting.</li>
+<li>Significant deviation of MBD from zero, indicating systematic bias in model predictions.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a comprehensive overview of model performance through multiple error metrics.</li>
+<li>Individual metrics offer specific insights, e.g., MAE for interpretability, MSE for emphasizing larger errors.</li>
+<li>RMSE is useful for being in the same unit as the target variable.</li>
+<li>MAPE allows the error to be expressed as a percentage.</li>
+<li>MBD detects systematic bias in model predictions.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>MAE and MSE are sensitive to outliers.</li>
+<li>RMSE heavily penalizes larger errors, which might not always be desirable.</li>
+<li>MAPE can be misleading when actual values are near zero.</li>
+<li>MBD may not be suitable if bias varies with the magnitude of actual values.</li>
+<li>These metrics may not capture all nuances of model performance and should be interpreted with domain-specific context.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

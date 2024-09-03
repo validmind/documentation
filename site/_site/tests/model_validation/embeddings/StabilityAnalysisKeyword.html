@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#stabilityanalysiskeyword" id="toc-stabilityanalysiskeyword" class="nav-link active" data-scroll-target="#stabilityanalysiskeyword">StabilityAnalysisKeyword</a></li>
+  <li><a href="#stabilityanalysiskeyword" id="toc-stabilityanalysiskeyword" class="nav-link active" data-scroll-target="#stabilityanalysiskeyword">StabilityAnalysisKeyword</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/embeddings/StabilityAnalysisKeyword.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,15 +1717,40 @@ cookieconsent.run({
 
 <section id="stabilityanalysiskeyword" class="level1">
 <h1>StabilityAnalysisKeyword</h1>
-<p>Evaluate robustness of embeddings models to keyword swaps on the test dataset</p>
-<p>This tests expects a parameter <code>keyword_dict</code> that maps words to other words so that any instances of the key words in the test dataset will be replaced with the corresponding value.</p>
-<p><strong>Purpose:</strong> This test metric is used to evaluate the robustness of text embedding machine learning models to keyword swaps. A keyword swap is a scenario where instances of certain specified keywords in the dataset are replaced with other specified words (usually synonyms). The purpose of this metric is to ensure that these models maintain performance stability even when the input data slightly deviates, imitating real-world variability.</p>
-<p><strong>Test Mechanism:</strong> The test mechanism involves perturbation of the dataset used in testing the model. Each instance of a specific word found in the dataset is replaced with the corresponding word as specified in a keyword_dict’ mapping. The model is then re-run with the perturbed dataset and the results are compared with the non-perturbed dataset. This comparison quantifies the extent to which keyword swaps impact the model’s performance.</p>
-<p><strong>Signs of High Risk:</strong> - A significant drop in model performance after keyword swaps indicates a high risk of model failure in real-world scenarios. - The model results being heavily reliant on specific word choices instead of capturing the context properly.</p>
-<p><strong>Strengths:</strong> - This test provides a way to measure model robustness to small changes in input data, which reinforces its applicability and reliability in real-world scenarios. - This test encourages a model to understand the context of a sentence rather than memorizing specific words. - It helps to detect overfitting - a situation where a model performs well on training data but poorly on new or slightly altered data.</p>
-<p><strong>Limitations:</strong> - It may not fully address semantic differences that can be introduced through keyword swaps. That is, the replacement words might not preserve the exact semantic meaning of the original words. - It only tests for changes in keywords (word-level alterations) and might not expose model limitations related to structural data changes. - It assumes that the provided ‘keyword_dict’ is an accurate representation of possible real-world variations, which might not always be the case.</p>
+<p>Evaluates robustness of embedding models to keyword swaps in the test dataset.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>This test metric is used to evaluate the robustness of text embedding machine learning models to keyword swaps. A keyword swap is a scenario where instances of certain specified keywords in the dataset are replaced with other specified words (usually synonyms). The purpose of this metric is to ensure that these models maintain performance stability even when the input data slightly deviates, imitating real-world variability.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test mechanism involves a perturbation of the dataset used in testing the model. Each instance of a specific word found in the dataset is replaced with the corresponding word as specified in a ‘keyword_dict’ mapping. The model is then re-run with the perturbed dataset and the results are compared with the non-perturbed dataset. This comparison quantifies the extent to which keyword swaps impact the model’s performance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A significant drop in model performance after keyword swaps indicates a high risk of model failure in real-world scenarios.</li>
+<li>The model results being heavily reliant on specific word choices instead of capturing the context properly.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>This test provides a way to measure model robustness to small changes in input data, which reinforces its applicability and reliability in real-world scenarios.</li>
+<li>This test encourages a model to understand the context of a sentence rather than memorizing specific words.</li>
+<li>It helps to detect overfitting - a situation where a model performs well on training data but poorly on new or slightly altered data.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>It may not fully address semantic differences that can be introduced through keyword swaps. That is, the replacement words might not preserve the exact semantic meaning of the original words.</li>
+<li>It only tests for changes in keywords (word-level alterations) and might not expose model limitations related to structural data changes.</li>
+<li>It assumes that the provided ‘keyword_dict’ is an accurate representation of possible real-world variations, which might not always be the case.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

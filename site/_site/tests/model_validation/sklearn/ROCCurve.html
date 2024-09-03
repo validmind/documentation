@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#roccurve" id="toc-roccurve" class="nav-link active" data-scroll-target="#roccurve">ROCCurve</a></li>
+  <li><a href="#roccurve" id="toc-roccurve" class="nav-link active" data-scroll-target="#roccurve">ROCCurve</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/ROCCurve.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,39 @@ cookieconsent.run({
 <section id="roccurve" class="level1">
 <h1>ROCCurve</h1>
 <p>Evaluates binary classification model performance by generating and plotting the Receiver Operating Characteristic (ROC) curve and calculating the Area Under Curve (AUC) score.</p>
-<p><strong>Purpose</strong>: The Receiver Operating Characteristic (ROC) curve is designed to evaluate the performance of binary classification models. This curve illustrates the balance between the True Positive Rate (TPR) and False Positive Rate (FPR) across various threshold levels. In combination with the Area Under the Curve (AUC), the ROC curve aims to measure the model’s discrimination ability between the two defined classes in a binary classification problem (e.g., default vs non-default). Ideally, a higher AUC score signifies superior model performance in accurately distinguishing between the positive and negative classes.</p>
-<p><strong>Test Mechanism</strong>: First, this script selects the target model and datasets that require binary classification. It then calculates the predicted probabilities for the test set, and uses this data, along with the true outcomes, to generate and plot the ROC curve. Additionally, it concludes a line signifying randomness (AUC of 0.5). The AUC score for the model’s ROC curve is also computed, presenting a numerical estimation of the model’s performance. If any Infinite values are detected in the ROC threshold, these are effectively eliminated. The resulting ROC curve, AUC score, and thresholds are consequently saved for future reference.</p>
-<p><strong>Signs of High Risk</strong>: - A high risk is potentially linked to the model’s performance if the AUC score drops below or nears 0.5. - Another warning sign would be the ROC curve lying closer to the line of randomness, indicating no discriminative ability. - For the model to be deemed competent at its classification tasks, it is crucial that the AUC score is significantly above 0.5.</p>
-<p><strong>Strengths</strong>: - This ROC Curve offers an inclusive visual depiction of a model’s discriminative power throughout all conceivable classification thresholds, unlike other metrics that solely disclose model performance at one fixed threshold. - Despite the proportions of the dataset, the AUC Score, which represents the entire ROC curve as a single data point, continues to be consistent, proving to be the ideal choice for such situations.</p>
-<p><strong>Limitations</strong>: - The primary limitation is that this test is exclusively structured for binary classification tasks, thus limiting its application towards other model types. - Furthermore, its performance might be subpar with models that output probabilities highly skewed towards 0 or 1. - At the extreme, the ROC curve could reflect high performance even when the majority of classifications are incorrect, provided that the model’s ranking format is retained. This phenomenon is commonly termed the “Class Imbalance Problem”.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Receiver Operating Characteristic (ROC) curve is designed to evaluate the performance of binary classification models. This curve illustrates the balance between the True Positive Rate (TPR) and False Positive Rate (FPR) across various threshold levels. In combination with the Area Under the Curve (AUC), the ROC curve aims to measure the model’s discrimination ability between the two defined classes in a binary classification problem (e.g., default vs non-default). Ideally, a higher AUC score signifies superior model performance in accurately distinguishing between the positive and negative classes.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>First, this script selects the target model and datasets that require binary classification. It then calculates the predicted probabilities for the test set, and uses this data, along with the true outcomes, to generate and plot the ROC curve. Additionally, it includes a line signifying randomness (AUC of 0.5). The AUC score for the model’s ROC curve is also computed, presenting a numerical estimation of the model’s performance. If any Infinite values are detected in the ROC threshold, these are effectively eliminated. The resulting ROC curve, AUC score, and thresholds are consequently saved for future reference.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A high risk is potentially linked to the model’s performance if the AUC score drops below or nears 0.5.</li>
+<li>Another warning sign would be the ROC curve lying closer to the line of randomness, indicating no discriminative ability.</li>
+<li>For the model to be deemed competent at its classification tasks, it is crucial that the AUC score is significantly above 0.5.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The ROC Curve offers an inclusive visual depiction of a model’s discriminative power throughout all conceivable classification thresholds, unlike other metrics that solely disclose model performance at one fixed threshold.</li>
+<li>Despite the proportions of the dataset, the AUC Score, which represents the entire ROC curve as a single data point, continues to be consistent, proving to be the ideal choice for such situations.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The primary limitation is that this test is exclusively structured for binary classification tasks, thus limiting its application towards other model types.</li>
+<li>Furthermore, its performance might be subpar with models that output probabilities highly skewed towards 0 or 1.</li>
+<li>At the extreme, the ROC curve could reflect high performance even when the majority of classifications are incorrect, provided that the model’s ranking format is retained. This phenomenon is commonly termed the “Class Imbalance Problem”.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

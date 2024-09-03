@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#descriptivestatistics" id="toc-descriptivestatistics" class="nav-link active" data-scroll-target="#descriptivestatistics">DescriptiveStatistics</a></li>
+  <li><a href="#descriptivestatistics" id="toc-descriptivestatistics" class="nav-link active" data-scroll-target="#descriptivestatistics">DescriptiveStatistics</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/DescriptiveStatistics.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,40 @@ cookieconsent.run({
 <section id="descriptivestatistics" class="level1">
 <h1>DescriptiveStatistics</h1>
 <p>Performs a detailed descriptive statistical analysis of both numerical and categorical data within a model’s dataset.</p>
-<p><strong>Purpose</strong>: The purpose of the Descriptive Statistics metric is to provide a comprehensive summary of both numerical and categorical data within a dataset. This involves statistics such as count, mean, standard deviation, minimum and maximum values for numerical data. For categorical data, it calculates the count, number of unique values, most common value and its frequency, and the proportion of the most frequent value relative to the total. The goal is to visualize the overall distribution of the variables in the dataset, aiding in understanding the model’s behavior and predicting its performance.</p>
-<p><strong>Test Mechanism</strong>: The testing mechanism utilizes two in-built functions of pandas dataframes: describe() for numerical fields and value_counts() for categorical fields. The describe() function pulls out several summary statistics, while value_counts() accounts for unique values. The resulting data is formatted into two distinct tables, one for numerical and another for categorical variable summaries. These tables provide a clear summary of the main characteristics of the variables, which can be instrumental in assessing the model’s performance.</p>
-<p><strong>Signs of High Risk</strong>: - Skewed data or significant outliers can represent high risk. For numerical data, this may be reflected via a significant difference between the mean and median (50% percentile). - For categorical data, a lack of diversity (low count of unique values), or overdominance of a single category (high frequency of the top value) can indicate high risk.</p>
-<p><strong>Strengths</strong>: - This metric provides a comprehensive summary of the dataset, shedding light on the distribution and characteristics of the variables under consideration. - It is a versatile and robust method, applicable to both numerical and categorical data. - It helps highlight crucial anomalies such as outliers, extreme skewness, or lack of diversity, which are vital in understanding model behavior during testing and validation.</p>
-<p><strong>Limitations</strong>: - While this metric offers a high-level overview of the data, it may fail to detect subtle correlations or complex patterns. - It does not offer any insights on the relationship between variables. - Alone, descriptive statistics cannot be used to infer properties about future unseen data. - It should be used in conjunction with other statistical tests to provide a comprehensive understanding of the model’s data.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The purpose of the Descriptive Statistics metric is to provide a comprehensive summary of both numerical and categorical data within a dataset. This involves statistics such as count, mean, standard deviation, minimum and maximum values for numerical data. For categorical data, it calculates the count, number of unique values, most common value and its frequency, and the proportion of the most frequent value relative to the total. The goal is to visualize the overall distribution of the variables in the dataset, aiding in understanding the model’s behavior and predicting its performance.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The testing mechanism utilizes two in-built functions of pandas dataframes: <code>describe()</code> for numerical fields and <code>value_counts()</code> for categorical fields. The <code>describe()</code> function pulls out several summary statistics, while <code>value_counts()</code> accounts for unique values. The resulting data is formatted into two distinct tables, one for numerical and another for categorical variable summaries. These tables provide a clear summary of the main characteristics of the variables, which can be instrumental in assessing the model’s performance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Skewed data or significant outliers can represent high risk. For numerical data, this may be reflected via a significant difference between the mean and median (50% percentile).</li>
+<li>For categorical data, a lack of diversity (low count of unique values), or overdominance of a single category (high frequency of the top value) can indicate high risk.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a comprehensive summary of the dataset, shedding light on the distribution and characteristics of the variables under consideration.</li>
+<li>It is a versatile and robust method, applicable to both numerical and categorical data.</li>
+<li>Helps highlight crucial anomalies such as outliers, extreme skewness, or lack of diversity, which are vital in understanding model behavior during testing and validation.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>While this metric offers a high-level overview of the data, it may fail to detect subtle correlations or complex patterns.</li>
+<li>Does not offer any insights on the relationship between variables.</li>
+<li>Alone, descriptive statistics cannot be used to infer properties about future unseen data.</li>
+<li>Should be used in conjunction with other statistical tests to provide a comprehensive understanding of the model’s data.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#regressionfeaturesignificance" id="toc-regressionfeaturesignificance" class="nav-link active" data-scroll-target="#regressionfeaturesignificance">RegressionFeatureSignificance</a></li>
+  <li><a href="#regressionfeaturesignificance" id="toc-regressionfeaturesignificance" class="nav-link active" data-scroll-target="#regressionfeaturesignificance">RegressionFeatureSignificance</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/statsmodels/RegressionFeatureSignificance.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,40 @@ cookieconsent.run({
 <section id="regressionfeaturesignificance" class="level1">
 <h1>RegressionFeatureSignificance</h1>
 <p>Assesses and visualizes the statistical significance of features in a set of regression models.</p>
-<p><strong>Purpose</strong>: The Regression Feature Significance metric assesses the significance of each feature in a given set of regression models. It creates a visualization displaying p-values for every feature of each model, assisting model developers in understanding which features are most influential in their models.</p>
-<p><strong>Test Mechanism</strong>: The test mechanism involves going through each fitted regression model in a given list, extracting the model coefficients and p-values for each feature, and then plotting these values. The x-axis on the plot contains the p-values while the y-axis denotes the coefficients of each feature. A vertical red line is drawn at the threshold for p-value significance, which is 0.05 by default. Any features with p-values to the left of this line are considered statistically significant at the chosen level.</p>
-<p><strong>Signs of High Risk</strong>: - Any feature with a high p-value (greater than the threshold) is considered a potential high risk, as it suggests the feature is not statistically significant and may not be reliably contributing to the model’s predictions. - A high number of such features may indicate problems with the model validation, variable selection, and overall reliability of the model predictions.</p>
-<p><strong>Strengths</strong>: - Helps identify the features that significantly contribute to a model’s prediction, providing insights into the feature importance. - Provides tangible, easy-to-understand visualizations to interpret the feature significance. - Facilitates comparison of feature importance across multiple models.</p>
-<p><strong>Limitations</strong>: - This metric assumes model features are independent, which may not always be the case. Multicollinearity (high correlation amongst predictors) can cause high variance and unreliable statistical tests of significance. - The p-value strategy for feature selection doesn’t take into account the magnitude of the effect, focusing solely on whether the feature is likely non-zero. - This test is specific to regression models and wouldn’t be suitable for other types of ML models. - P-value thresholds are somewhat arbitrary and do not always indicate practical significance, only statistical significance.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Regression Feature Significance metric assesses the significance of each feature in a given set of regression models. It creates a visualization displaying p-values for every feature of each model, assisting model developers in understanding which features are most influential in their models.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test mechanism involves going through each fitted regression model in a given list, extracting the model coefficients and p-values for each feature, and then plotting these values. The x-axis on the plot contains the p-values while the y-axis denotes the coefficients of each feature. A vertical red line is drawn at the threshold for p-value significance, which is 0.05 by default. Any features with p-values to the left of this line are considered statistically significant at the chosen level.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Any feature with a high p-value (greater than the threshold) is considered a potential high risk, as it suggests the feature is not statistically significant and may not be reliably contributing to the model’s predictions.</li>
+<li>A high number of such features may indicate problems with the model validation, variable selection, and overall reliability of the model predictions.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Helps identify the features that significantly contribute to a model’s prediction, providing insights into the feature importance.</li>
+<li>Provides tangible, easy-to-understand visualizations to interpret the feature significance.</li>
+<li>Facilitates comparison of feature importance across multiple models.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>This metric assumes model features are independent, which may not always be the case. Multicollinearity (high correlation amongst predictors) can cause high variance and unreliable statistical tests of significance.</li>
+<li>The p-value strategy for feature selection doesn’t take into account the magnitude of the effect, focusing solely on whether the feature is likely non-zero.</li>
+<li>This test is specific to regression models and wouldn’t be suitable for other types of ML models.</li>
+<li>P-value thresholds are somewhat arbitrary and do not always indicate practical significance, only statistical significance.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

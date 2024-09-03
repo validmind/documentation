@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#dfglsarch" id="toc-dfglsarch" class="nav-link active" data-scroll-target="#dfglsarch">DFGLSArch</a></li>
+  <li><a href="#dfglsarch" id="toc-dfglsarch" class="nav-link active" data-scroll-target="#dfglsarch">DFGLSArch</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/DFGLSArch.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,39 @@ cookieconsent.run({
 
 <section id="dfglsarch" class="level1">
 <h1>DFGLSArch</h1>
-<p>Executes Dickey-Fuller GLS metric to determine order of integration and check stationarity in time series data.</p>
-<p><strong>Purpose</strong>: The Dickey-Fuller GLS (DFGLS) Arch metric is utilized to determine the order of integration in time series data. For machine learning models dealing with time series and forecasting, this metric evaluates the existence of a unit root, thereby checking whether a time series is non-stationary. This analysis is a crucial initial step when dealing with time series data.</p>
-<p><strong>Test Mechanism</strong>: This code implements the Dickey-Fuller GLS unit root test on each attribute of the dataset. This process involves iterating through every column of the dataset and applying the DFGLS test to assess the presence of a unit root. The resulting information, including the test statistic (‘stat’), the p-value (‘pvalue’), the quantity of lagged differences utilized in the regression (‘usedlag’), and the number of observations (‘nobs’), is subsequently stored.</p>
-<p><strong>Signs of High Risk</strong>: - A high p-value for the DFGLS test represents a high risk. Specifically, a p-value above a typical threshold of 0.05 suggests that the time series data is quite likely to be non-stationary, thus presenting a high risk for generating unreliable forecasts.</p>
-<p><strong>Strengths</strong>: - The Dickey-Fuller GLS test is a potent tool for checking the stationarity of time series data. - It helps to verify the assumptions of the models before the actual construction of the machine learning models proceeds. - The results produced by this metric offer a clear insight into whether the data is appropriate for specific machine learning models, especially those demanding the stationarity of time series data.</p>
-<p><strong>Limitations</strong>: - Despite its benefits, the DFGLS test does present some drawbacks. It can potentially lead to inaccurate conclusions if the time series data incorporates a structural break. - If the time series tends to follow a trend while still being stationary, the test might misinterpret it, necessitating further detrending. - The test also presents challenges when dealing with shorter time series data or volatile data, not producing reliable results in these cases.</p>
+<p>Assesses stationarity in time series data using the Dickey-Fuller GLS test to determine the order of integration.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Dickey-Fuller GLS (DFGLS) test is utilized to determine the order of integration in time series data. For machine learning models dealing with time series and forecasting, this metric evaluates the existence of a unit root, thereby checking whether a time series is non-stationary. This analysis is a crucial initial step when dealing with time series data.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This code implements the Dickey-Fuller GLS unit root test on each attribute of the dataset. This process involves iterating through every column of the dataset and applying the DFGLS test to assess the presence of a unit root. The resulting information, including the test statistic (‘stat’), the p-value (‘pvalue’), the quantity of lagged differences utilized in the regression (‘usedlag’), and the number of observations (‘nobs’), is subsequently stored.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A high p-value for the DFGLS test represents a high risk. Specifically, a p-value above a typical threshold of 0.05 suggests that the time series data is quite likely to be non-stationary, thus presenting a high risk for generating unreliable forecasts.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>The Dickey-Fuller GLS test is a potent tool for checking the stationarity of time series data.</li>
+<li>It helps to verify the assumptions of the models before the actual construction of the machine learning models proceeds.</li>
+<li>The results produced by this metric offer a clear insight into whether the data is appropriate for specific machine learning models, especially those demanding the stationarity of time series data.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Despite its benefits, the DFGLS test does present some drawbacks. It can potentially lead to inaccurate conclusions if the time series data incorporates a structural break.</li>
+<li>If the time series tends to follow a trend while still being stationary, the test might misinterpret it, necessitating further detrending.</li>
+<li>The test also presents challenges when dealing with shorter time series data or volatile data, not producing reliable results in these cases.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

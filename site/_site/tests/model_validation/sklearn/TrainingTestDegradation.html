@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#trainingtestdegradation" id="toc-trainingtestdegradation" class="nav-link active" data-scroll-target="#trainingtestdegradation">TrainingTestDegradation</a></li>
+  <li><a href="#trainingtestdegradation" id="toc-trainingtestdegradation" class="nav-link active" data-scroll-target="#trainingtestdegradation">TrainingTestDegradation</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/sklearn/TrainingTestDegradation.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,13 +1718,40 @@ cookieconsent.run({
 <section id="trainingtestdegradation" class="level1">
 <h1>TrainingTestDegradation</h1>
 <p>Tests if model performance degradation between training and test datasets exceeds a predefined threshold.</p>
-<p><strong>Purpose</strong>: The ‘TrainingTestDegradation’ class serves as a test to verify that the degradation in performance between the training and test datasets does not exceed a predefined threshold. This test serves as a measure to check the model’s ability to generalize from its training data to unseen test data. It assesses key classification metric scores such as accuracy, precision, recall and f1 score, to verify the model’s robustness and reliability.</p>
-<p><strong>Test Mechanism</strong>: The code applies several predefined metrics including accuracy, precision, recall and f1 scores to the model’s predictions for both the training and test datasets. It calculates the degradation as the difference between the training score and test score divided by the training score. The test is considered successful if the degradation for each metric is less than the preset maximum threshold of 10%. The results are summarized in a table showing each metric’s train score, test score, degradation percentage, and pass/fail status.</p>
-<p><strong>Signs of High Risk</strong>: - A degradation percentage that exceeds the maximum allowed threshold of 10% for any of the evaluated metrics. - A high difference or gap between the metric scores on the training and the test datasets. - The ‘Pass/Fail’ column displaying ‘Fail’ for any of the evaluated metrics.</p>
-<p><strong>Strengths</strong>: - This test provides a quantitative measure of the model’s ability to generalize to unseen data, which is key for predicting its practical real-world performance. - By evaluating multiple metrics, it takes into account different facets of model performance and enables a more holistic evaluation. - The use of a variable predefined threshold allows the flexibility to adjust the acceptability criteria for different scenarios.</p>
-<p><strong>Limitations</strong>: - The test compares raw performance on training and test data, but does not factor in the nature of the data. Areas with less representation in the training set, for instance, might still perform poorly on unseen data. - It requires good coverage and balance in the test and training datasets to produce reliable results, which may not always be available. - The test is currently only designed for classification tasks.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The <code>TrainingTestDegradation</code> class serves as a test to verify that the degradation in performance between the training and test datasets does not exceed a predefined threshold. This test measures the model’s ability to generalize from its training data to unseen test data, assessing key classification metrics such as accuracy, precision, recall, and f1 score to verify the model’s robustness and reliability.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The code applies several predefined metrics, including accuracy, precision, recall, and f1 scores, to the model’s predictions for both the training and test datasets. It calculates the degradation as the difference between the training score and test score divided by the training score. The test is considered successful if the degradation for each metric is less than the preset maximum threshold of 10%. The results are summarized in a table showing each metric’s train score, test score, degradation percentage, and pass/fail status.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A degradation percentage that exceeds the maximum allowed threshold of 10% for any of the evaluated metrics.</li>
+<li>A high difference or gap between the metric scores on the training and the test datasets.</li>
+<li>The ‘Pass/Fail’ column displaying ‘Fail’ for any of the evaluated metrics.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a quantitative measure of the model’s ability to generalize to unseen data, which is key for predicting its practical real-world performance.</li>
+<li>By evaluating multiple metrics, it takes into account different facets of model performance and enables a more holistic evaluation.</li>
+<li>The use of a variable predefined threshold allows the flexibility to adjust the acceptability criteria for different scenarios.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>The test compares raw performance on training and test data but does not factor in the nature of the data. Areas with less representation in the training set might still perform poorly on unseen data.</li>
+<li>It requires good coverage and balance in the test and training datasets to produce reliable results, which may not always be available.</li>
+<li>The test is currently only designed for classification tasks.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

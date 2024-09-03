@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#autoar" id="toc-autoar" class="nav-link active" data-scroll-target="#autoar">AutoAR</a></li>
+  <li><a href="#autoar" id="toc-autoar" class="nav-link active" data-scroll-target="#autoar">AutoAR</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/AutoAR.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1711,24 +1718,33 @@ cookieconsent.run({
 <section id="autoar" class="level1">
 <h1>AutoAR</h1>
 <p>Automatically identifies the optimal Autoregressive (AR) order for a time series using BIC and AIC criteria.</p>
-<p><strong>Purpose</strong>:</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
 <p>The AutoAR test is intended to automatically identify the Autoregressive (AR) order of a time series by utilizing the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC). AR order is crucial in forecasting tasks as it dictates the quantity of prior terms in the sequence to use for predicting the current term. The objective is to select the most fitting AR model that encapsulates the trend and seasonality in the time series data.</p>
-<p><strong>Test Mechanism</strong>:</p>
-<p>The test mechanism operates by iterating through a possible range of AR orders up to a defined maximum. An AR model is fitted for each order, and the corresponding BIC and AIC are computed. BIC and AIC statistical measures are designed to penalize models for complexity, preferring simpler models that fit the data proficiently. To verify the stationarity of the time series, the Augmented Dickey-Fuller test is executed. The AR order, BIC, and AIC findings, are compiled into a dataframe for effortless comparison. Then, the AR order with the smallest BIC is established as the desirable order for each variable.</p>
-<p><strong>Signs of High Risk</strong>:</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test mechanism operates by iterating through a possible range of AR orders up to a defined maximum. An AR model is fitted for each order, and the corresponding BIC and AIC are computed. BIC and AIC statistical measures are designed to penalize models for complexity, preferring simpler models that fit the data proficiently. To verify the stationarity of the time series, the Augmented Dickey-Fuller test is executed. The AR order, BIC, and AIC findings are compiled into a dataframe for effortless comparison. Then, the AR order with the smallest BIC is established as the desirable order for each variable.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
 <ul>
 <li>An augmented Dickey Fuller test p-value &gt; 0.05, indicating the time series isn’t stationary, may lead to inaccurate results.</li>
 <li>Problems with the model fitting procedure, such as computational or convergence issues.</li>
-<li>Continuous selection of the maximum specified AR order may suggest insufficient set limit.</li>
+<li>Continuous selection of the maximum specified AR order may suggest an insufficient set limit.</li>
 </ul>
-<p><strong>Strengths</strong>:</p>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
 <ul>
 <li>The test independently pinpoints the optimal AR order, thereby reducing potential human bias.</li>
 <li>It strikes a balance between model simplicity and goodness-of-fit to avoid overfitting.</li>
-<li>Has the capability to account for stationarity in a time series, an essential aspect for dependable AR modelling.</li>
-<li>The results are aggregated into an comprehensive table, enabling an easy interpretation.</li>
+<li>Has the capability to account for stationarity in a time series, an essential aspect for dependable AR modeling.</li>
+<li>The results are aggregated into a comprehensive table, enabling an easy interpretation.</li>
 </ul>
-<p><strong>Limitations</strong>:</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <ul>
 <li>The tests need a stationary time series input.</li>
 <li>They presume a linear relationship between the series and its lags.</li>
@@ -1737,6 +1753,7 @@ cookieconsent.run({
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

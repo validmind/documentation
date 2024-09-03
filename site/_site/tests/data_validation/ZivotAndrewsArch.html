@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#zivotandrewsarch" id="toc-zivotandrewsarch" class="nav-link active" data-scroll-target="#zivotandrewsarch">ZivotAndrewsArch</a></li>
+  <li><a href="#zivotandrewsarch" id="toc-zivotandrewsarch" class="nav-link active" data-scroll-target="#zivotandrewsarch">ZivotAndrewsArch</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/data_validation/ZivotAndrewsArch.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,14 +1717,38 @@ cookieconsent.run({
 
 <section id="zivotandrewsarch" class="level1">
 <h1>ZivotAndrewsArch</h1>
-<p>Evaluates the order of integration and stationarity of time series data using Zivot-Andrews unit root test.</p>
-<p><strong>Purpose</strong>: The Zivot-Andrews Arch metric is used to evaluate the order of integration for a time series data in a machine learning model. It’s designed to test for stationarity, a crucial aspect in time series analysis where data points are not dependent on time. Stationarity means that the statistical properties such as mean, variance and autocorrelation are all constant over time.</p>
-<p><strong>Test Mechanism</strong>: The Zivot-Andrews unit root test is performed on each feature in the dataset using the <code>ZivotAndrews</code> function from the <code>arch.unitroot</code> module. This function returns the Zivot-Andrews metric for each feature, which includes the statistical value, p-value (probability value), the number of used lags, and the number of observations. The p-value is later used to decide on the null hypothesis (the time series has a unit root and is non-stationary) based on a chosen level of significance.</p>
-<p><strong>Signs of High Risk</strong>: - A high p-value can suggest high risk. This might indicate that there’s insufficient evidence to reject the null hypothesis, which would mean the time series has a unit root and is therefore non-stationary. - Non-stationary time series data can lead to misleading statistics and unreliable machine learning models.</p>
-<p><strong>Strengths</strong>: - The Zivot-Andrews Arch metric dynamically tests for stationarity against structural breaks in time series data, offering robust evaluation of stationarity in features. - This metric is especially beneficial with financial, economic, or other time-series data where data observations lack a consistent pattern and structural breaks may occur.</p>
-<p><strong>Limitations</strong>: - The Zivot-Andrews Arch metric assumes that data is derived from a single-equation, autoregressive model. It may, therefore, not be appropriate for multivariate time series data or data which does not align with the autoregressive model assumption. - It might not take into account unexpected shocks or changes in the series trend which can both have a significant impact on the stationarity of the data.</p>
+<p>Evaluates the order of integration and stationarity of time series data using the Zivot-Andrews unit root test.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The Zivot-Andrews Arch metric is used to evaluate the order of integration for time series data in a machine learning model. It’s designed to test for stationarity, a crucial aspect of time series analysis, where data points are independent of time. Stationarity means that the statistical properties such as mean, variance, and autocorrelation are constant over time.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The Zivot-Andrews unit root test is performed on each feature in the dataset using the <code>ZivotAndrews</code> function from the <code>arch.unitroot</code> module. This function returns several metrics for each feature, including the statistical value, p-value (probability value), the number of lags used, and the number of observations. The p-value is used to decide on the null hypothesis (the time series has a unit root and is non-stationary) based on a chosen level of significance.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>A high p-value suggests high risk, indicating insufficient evidence to reject the null hypothesis, implying that the time series has a unit root and is non-stationary.</li>
+<li>Non-stationary time series data can lead to misleading statistics and unreliable machine learning models.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Dynamically tests for stationarity against structural breaks in time series data, offering robust evaluation of stationarity in features.</li>
+<li>Especially beneficial with financial, economic, or other time-series data where data observations lack a consistent pattern and structural breaks may occur.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes data is derived from a single-equation, autoregressive model, making it less appropriate for multivariate time series data or data not aligning with this model.</li>
+<li>May not account for unexpected shocks or changes in the series trend, both of which can significantly impact data stationarity.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

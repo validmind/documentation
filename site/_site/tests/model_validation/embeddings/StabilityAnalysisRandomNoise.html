@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#stabilityanalysisrandomnoise" id="toc-stabilityanalysisrandomnoise" class="nav-link active" data-scroll-target="#stabilityanalysisrandomnoise">StabilityAnalysisRandomNoise</a></li>
+  <li><a href="#stabilityanalysisrandomnoise" id="toc-stabilityanalysisrandomnoise" class="nav-link active" data-scroll-target="#stabilityanalysisrandomnoise">StabilityAnalysisRandomNoise</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/embeddings/StabilityAnalysisRandomNoise.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,21 +1717,52 @@ cookieconsent.run({
 
 <section id="stabilityanalysisrandomnoise" class="level1">
 <h1>StabilityAnalysisRandomNoise</h1>
-<p>Evaluate robustness of embeddings models to random noise introduced by using a <code>probability</code> parameter to choose random locations in the text to apply random perturbations. These perturbations include:</p>
+<p>Assesses the robustness of text embeddings models to random noise introduced via text perturbations.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The purpose of this test is to evaluate the robustness of a text embeddings model to random noise. It introduces perturbations such as swapping adjacent words, inserting typos, deleting words, or inserting random words within the text to determine how well the model performs under such noisy conditions.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>The test applies a series of pre-defined random perturbations to the text data. These perturbations include:</p>
 <ul>
-<li>Swapping two adjacent words</li>
-<li>Introducing a random typo in a word</li>
-<li>Deleting a random word</li>
-<li>Inserting a random word at a random position</li>
+<li>Swapping two adjacent words using the <code>random_swap</code> function.</li>
+<li>Introducing a typo in a word using the <code>introduce_typo</code> function.</li>
+<li>Deleting a word using the <code>random_deletion</code> function.</li>
+<li>Inserting a random word at a random position using the <code>random_insertion</code> function.</li>
 </ul>
-<p><strong>Purpose:</strong> The purpose of the stability analysis is to evaluate the robustness of a text embeddings model to random noise. Random perturbations such as swapping adjacent words, introducing random typos, deleting random words, or inserting random words at random positions in the text are introduced, to gauge the model’s performance and stability.</p>
-<p><strong>Test Mechanism:</strong> The test mechanism includes a series of function-defined random perturbations like swapping two words <code>random_swap</code>, introducing a typo in a word <code>introduce_typo</code>, deleting a random word <code>random_deletion</code>, and inserting a random word at a random position <code>random_insertion</code>. A probability parameter determines the likelihood or frequency of these perturbations within the text data.</p>
-<p>The <code>perturb_data</code> function initally tokenizes the string data based on spaces then applies selected random perturbations based on the provided probability for each word in the text.</p>
-<p><strong>Signs of High Risk:</strong> - High error rates in model predictions or classifications after the introduction of the random noise - Greater sensitivity to certain types and degrees of noise such as typographical errors, insertion or deletion of words - Significant change in loss function or accuracy metric - Inconsistency in model outputs for slightly perturbed inputs</p>
-<p><strong>Strengths:</strong> - Measures model robustness against noise thereby reflecting real-world scenarios where data may contain errors or inconsistencies. - Easy to implement with adjustable perturbation severity through probability parameter. - Enables identification of model sensitivity to certain noise types, providing grounding for model improvement. - Useful for testing models designed to handle text data.</p>
-<p><strong>Limitations:</strong> - The test might not be effective for models that have been designed with a high resistance to noise or models that are inherently designed to handle such perturbations. - Pseudo-randomness may not accurately represent real-world distribution of noise or typographical errors, which could be biased towards certain types of errors or malware injections. - Highly dependent on the probability parameter to introduce noise, with artificial adjusting required to achieve an optimal balance. - Only validates the model’s performance against noise in input data, not its ability to capture complex language structures or semantics. - Does not guarantee the model’s performance in new, unseen, real-world data beyond what is represented by the noise-introduced test data.</p>
+<p>A probability parameter dictates the likelihood of each perturbation being applied to the words in the text. The text is initially tokenized into words, and selected perturbations are applied based on this probability.</p>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>High error rates in model predictions or classifications after the introduction of random noise.</li>
+<li>Greater sensitivity to specific types of noise, such as typographical errors or word deletions.</li>
+<li>Significant change in loss function or accuracy metrics.</li>
+<li>Inconsistent model outputs for slightly perturbed inputs.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Measures model robustness against noise, reflecting real-world scenarios where data may contain errors or inconsistencies.</li>
+<li>Easy to implement with adjustable perturbation severity through a probability parameter.</li>
+<li>Identifies model sensitivity to specific types of noise, offering insights for model improvement.</li>
+<li>Useful for testing models designed to handle text data.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>May be ineffective for models that are inherently resistant to noise or designed to handle such perturbations.</li>
+<li>Pseudo-randomness may not accurately represent the real-world distribution of noise or typographical errors.</li>
+<li>Highly dependent on the probability parameter, requiring fine-tuning to achieve an optimal balance.</li>
+<li>Only assesses performance against noise in input data, not the ability to capture complex language structures or semantics.</li>
+<li>Does not guarantee model performance on new, unseen, real-world data beyond the generated noisy test data.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -368,7 +368,7 @@ cookieconsent.run({
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/how_to/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Run unit metrics</span></a>
+ <span class="menu-text">Intro to Unit Metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1698,7 +1698,14 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#timeseriesr2squarebysegments" id="toc-timeseriesr2squarebysegments" class="nav-link active" data-scroll-target="#timeseriesr2squarebysegments">TimeSeriesR2SquareBySegments</a></li>
+  <li><a href="#timeseriesr2squarebysegments" id="toc-timeseriesr2squarebysegments" class="nav-link active" data-scroll-target="#timeseriesr2squarebysegments">TimeSeriesR2SquareBySegments</a>
+  <ul class="collapse">
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#test-mechanism" id="toc-test-mechanism" class="nav-link" data-scroll-target="#test-mechanism">Test Mechanism</a></li>
+  <li><a href="#signs-of-high-risk" id="toc-signs-of-high-risk" class="nav-link" data-scroll-target="#signs-of-high-risk">Signs of High Risk</a></li>
+  <li><a href="#strengths" id="toc-strengths" class="nav-link" data-scroll-target="#strengths">Strengths</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/validmind/documentation/edit/main/site/tests/model_validation/TimeSeriesR2SquareBySegments.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1710,15 +1717,47 @@ cookieconsent.run({
 
 <section id="timeseriesr2squarebysegments" class="level1">
 <h1>TimeSeriesR2SquareBySegments</h1>
-<p>Plot R-Squared values for each model over specified time segments and generate a bar chart with the results.</p>
-<p><strong>Purpose</strong>: The purpose of this function is to plot the R-Squared values for different models applied to various segments of the time series data.</p>
-<p><strong>Parameters</strong>: - datasets: List of datasets to evaluate. - models: List of models to evaluate. - segments: Dictionary with ‘start_date’ and ‘end_date’ keys containing lists of start and end dates for each segments. If None, the time series will be segmented into two halves.</p>
-<p><strong>Test Mechanism</strong>: The function iterates through each dataset-model pair, calculates the R-Squared values for specified time segments, and generates a bar chart with these results.</p>
-<p><strong>Signs of High Risk</strong>: - If the R-Squared values are significantly low for certain segments, it could indicate that the model is not explaining much of the variability in the dataset for those segments.</p>
-<p><strong>Strengths</strong>: - Provides a visual representation of model performance across different time segments. - Allows for identification of segments where models perform poorly.</p>
-<p><strong>Limitations</strong>: - Assumes that the dataset is provided as a DataFrameDataset object with <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code> attributes. - Requires that <code>dataset.y_pred(model)</code> returns the predicted values for the model. - Assumes that <code>y_true</code> and <code>y_pred</code> are pandas Series with datetime indices.</p>
+<p>Evaluates the R-Squared values of regression models over specified time segments in time series data to assess segment-wise model performance.</p>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The TimeSeriesR2SquareBySegments test aims to evaluate the R-Squared values for several regression models across different segments of time series data. This helps in determining how well the models explain the variability in the data within each specific time segment.</p>
+</section>
+<section id="test-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="test-mechanism">Test Mechanism</h3>
+<p>This test functions by:</p>
+<ul>
+<li>Iterating through each dataset-model pair provided.</li>
+<li>Segmenting the time series data either as specified by the user or by splitting the data into two halves if no segments are provided.</li>
+<li>Calculating the R-Squared values for each segment.</li>
+<li>Generating a bar chart to visually represent the R-Squared values across different models and segments.</li>
+</ul>
+</section>
+<section id="signs-of-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="signs-of-high-risk">Signs of High Risk</h3>
+<ul>
+<li>Significantly low R-Squared values for certain time segments, indicating poor model performance in those periods.</li>
+<li>Large variability in R-Squared values across different segments for the same model, suggesting inconsistent performance.</li>
+</ul>
+</section>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">Strengths</h3>
+<ul>
+<li>Provides a visual representation of how well models perform over different time periods.</li>
+<li>Helps identify time segments where models may need improvement or retraining.</li>
+<li>Facilitates comparison between multiple models in a straightforward manner.</li>
+</ul>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li>Assumes datasets are provided as DataFrameDataset objects with the attributes <code>y</code>, <code>y_pred</code>, and <code>feature_columns</code>.</li>
+<li>Requires that <code>dataset.y_pred(model)</code> returns predicted values for the model.</li>
+<li>Assumes that both <code>y_true</code> and <code>y_pred</code> are pandas Series with datetime indices, which may not always be the case.</li>
+<li>May not account for more nuanced temporal dependencies within the segments.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
