@@ -6,7 +6,7 @@ DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod release-notes
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes
 
 # Help section
 help:
@@ -21,6 +21,7 @@ help:
 	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
+	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 
@@ -105,6 +106,16 @@ deploy-prod:
 	else \
 		echo "\nDeploying prod site ..."; \
 		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+	fi
+
+# Deployment to https://docs.validmind.ai/
+# TO DO Fix Cloudfront distribution ID
+deploy-staging:
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "nrichers/sc-6277/deploy-staging-docs-site-workflow" ]; then \
+		echo "You're not on the staging branch, no action taken."; \
+	else \
+		echo "\nDeploying staging site ..."; \
+		quarto render && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Generate release notes
