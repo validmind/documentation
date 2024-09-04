@@ -1,0 +1,97 @@
+---
+title: "September 9, 2024"
+---
+
+## Release highlights
+
+<!---
+PR #906: Added new page to manage Risk Areas and guidelines
+URL: https://github.com/validmind/frontend/pull/906
+Labels: enhancement
+--->
+
+### Manage validation guidelines
+
+Added a new page in settings to manage risk areas and validation guidelines.
+
+<img width="1202" alt="Screenshot 2024-08-13 at 15348 PM" src="https://github.com/user-attachments/assets/36b71683-ef7f-4b5b-a442-f4a6eddfd5d4">
+ 
+Generated PR summary: 
+ 
+This update brings various enhancements to the management of Risk Areas and Validation Guidelines. You will find a new `RiskAreas` page in the settings section where you can manage Risk Areas and their associated Validation Guidelines. New components such as `RiskAreaAccordionItem`, `GuidelineItem`, `UpdateGuidelineModal`, `UpdateRiskArea`, `DeleteRiskAreaModal`, and `DeleteGuidelineModal` support these functionalities.
+
+The API now includes methods for creating, updating, deleting, and fetching dependencies for Risk Areas and Guidelines, which are integrated into the actions object. In terms of navigation, a new route for the Risk Areas page is added to `src/App.tsx`. The Settings Sidebar and main Settings pages also provide links to this new page.
+
+Model updates include new types in guideline.ts and risk_area.ts files to support the enhanced API methods and data structures. Additionally, role.ts is updated with new permission actions related to guidelines.
+
+On the user interface side, you will notice an improved GuidelineItem component that better handles display and management tasks. New modals have been introduced for creating, updating, and deleting Risk Areas and Guidelines with appropriate validation.
+
+Lastly, note that the RiskAreasPanel has been removed from the Organization page as its function is now managed separately. There are also minor UI tweaks for an improved user experience.
+
+<!---
+PR #921: Added "Reset Workflow" on the model inventory page
+URL: https://github.com/validmind/frontend/pull/921
+Labels: enhancement
+--->
+### Reset your model workflow
+
+Reset workflow
+
+You can now perform the `reset_workflow` action on an inventory model by clicking on the model status as a customer admin.
+
+<img width="265" alt="Screenshot 2024-08-20 at 10 25 48 AM" src="https://github.com/user-attachments/assets/ea36515a-2502-4ec0-a08e-fb2cb224231f">
+
+ 
+Generated PR summary: 
+ 
+This release introduces several significant updates:
+
+A new reset workflow functionality is now available. You can reset workflows using the new `ResetWorkflow` API method, which sends a PATCH request to the specified endpoint. This method is easily accessible through the actions object and includes a new event renderer for displaying reset workflow events in the activity feed. A confirmation modal has been added to verify the reset action before proceeding, and once confirmed, the page reloads to reflect the changes.
+
+Enhancements have been made to the `EditableField` component. It now supports optional `onSave` and `onCancel` callbacks, allowing for more customizable interactions. Additionally, you can now set a custom label for the save button through the new `saveButtonLabel` prop and display extra information using the `moreInfoPopoverProps` prop with the `MoreInfoPopOver` component. The sub-component `FieldTitle` now conditionally renders tooltips or custom elements based on an override property. These enhancements are integrated into managing model status on the InventoryModelOverview page.
+
+General improvements include exporting the `MoreInfoPopOver` component for reuse across different components and minor refactoring efforts aimed at improving code readability and maintainability throughout various parts of the application.
+
+<!---
+PR #930: Renamed "Custom Fields" to "Model Inventory Fields" in the UI
+URL: https://github.com/validmind/frontend/pull/930
+Labels: enhancement
+--->
+
+## Enhancements
+
+### Model inventory fields
+
+Custom fields have been renamed to model inventory fields
+ 
+Generated PR summary: 
+ 
+This update changes all instances of 'Custom Fields' to 'Model Inventory Fields' throughout the codebase. Several components, hooks, and pages have been edited for consistency in naming, including success and error messages, modal headers, helper texts, button labels, popover headers, sidebar labels, and toast messages. The functional behavior of the application remains unchanged; only the terminology displayed to you has been modified. Affected files include key components such as `CustomFieldModal`, `ModelInventoryTableColumnsPicker`, `CustomFieldRenderer`, and several settings-related pages and hooks. Additionally, redundant import statements have been removed in certain approval-related components.
+
+<!---
+PR #929: Renamed Statuses to Model Lifecycle Statuses
+URL: https://github.com/validmind/frontend/pull/929
+Labels: enhancement
+--->
+### Model lifecyle statuses
+
+Renamed statuses to model lifecycle status
+ 
+Generated PR summary: 
+ 
+This update changes the terminology in various UI components from 'Statuses' to 'Model Lifecycle Statuses' to enhance clarity and consistency. You will notice updates in several areas, including modal headers and error messages within `AddStatusModal`. The label for the statuses section in the `SettingsSidebar` also reflects the new terminology. On the `Status` page, button labels, empty state messages, and headings are updated. Similarly, on the `StatusesWorkflows` page, titles and descriptive text are revised. Additionally, setting link titles and descriptions have been updated on the `Settings` page. These adjustments aim to provide a more consistent user experience when managing model lifecycle statuses across the application.
+
+## Bug fixes
+
+<!---
+PR #910: fix template editor showing multiorg roles
+URL: https://github.com/validmind/frontend/pull/910
+Labels: bug
+--->
+### Multi-organizational roles display issue 
+N/A
+ 
+Generated PR summary: 
+ 
+This update enhances role and permission handling within the `Template` component in the `Settings/Templates/Template/index.tsx` file. The modifications include an updated `TUserRole` type in `src/models/role.ts` to incorporate a new `scope` field. Additionally, the `Template` component now uses the `currentOrganization` from the `UsersContext`. The roles displayed for both the template's current version and selected version are now filtered based on the `currentOrganization`'s `cuid`, improving the accuracy and relevance of role-related information presented in the component.
+
