@@ -30,13 +30,18 @@ jobs:
           git fetch origin main-test:main-test
           git merge main-test --no-ff --allow-unrelated-histories --strategy-option theirs -m "Merging latest changes from main-test into staging-test"
 
-      - name: Extract merged pull request details
+      - name: Get last merged pull request details
         id: pr-details
         run: |
-          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
-          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_INFO=$(gh pr list --repo "${{ github.repository }}" --state merged --base main-test --limit 1 --json number,title --jq '.[0]')
+          PR_NUMBER=$(echo "$PR_INFO" | jq -r '.number')
+          PR_TITLE=$(echo "$PR_INFO" | jq -r '.title')
+          echo "PR_NUMBER=$PR_NUMBER"
+          echo "PR_TITLE=$PR_TITLE"
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
         id: pr-number
