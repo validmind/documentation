@@ -29,7 +29,7 @@ jobs:
   
       - name: Render docs site
         run: |
-            cd ./site 
+            cd site 
             quarto render &> render_errors.log || { 
             echo "Quarto render failed immediately";
             cat render_errors.log;
@@ -41,4 +41,4 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
       - name: Deploy docs site
-        run: aws s3 sync ./_site s3://docs-ci-cd-prod/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://docs-ci-cd-prod/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
