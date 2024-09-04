@@ -33,9 +33,13 @@ jobs:
       - name: Get last merged pull request details
         id: pr-details
         run: |
-          PR_INFO=$(gh pr list --repo "${{ github.repository }}" --state merged --base main-test --limit 1 --json number,title --jq '.[0]')
-          PR_NUMBER=$(echo "$PR_INFO" | jq -r '.number')
-          PR_TITLE=$(echo "$PR_INFO" | jq -r '.title')
+          echo "Fetching the last merged PR details..."
+          PR_INFO=$(gh pr list --repo "${{ github.repository }}" --state merged --base main-test --limit 1 --json number,title)
+          echo "Raw PR info: $PR_INFO"  # Debug: Show raw output
+          PR_NUMBER=$(echo "$PR_INFO" | jq -r '.[0].number')
+          PR_TITLE=$(echo "$PR_INFO" | jq -r '.[0].title')
+          echo "Extracted PR_NUMBER=$PR_NUMBER"
+          echo "Extracted PR_TITLE=$PR_TITLE"
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
         env:
