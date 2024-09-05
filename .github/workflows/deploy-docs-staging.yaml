@@ -1,11 +1,11 @@
 # Deploy our docs site to S3 whenever we push a commit to the main branch
 
-name: Deploy docs site to production
+name: Deploy docs site to staging
 
 on:
   push:
     branches:
-      - prod
+      - staging
 
 jobs:
   deploy:
@@ -36,9 +36,9 @@ jobs:
             exit 1;
             }
 
-      # Prod bucket is in us-east-1
+      # Staging bucket is in us-west-2
       - name: Configure AWS credentials
-        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
 
       - name: Deploy docs site
-        run: aws s3 sync site/_site s3://docs-ci-cd-prod/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://docs-ci-cd-staging/site --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager
