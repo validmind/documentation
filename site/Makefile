@@ -1,6 +1,7 @@
 # Define source and destination directories
 SRC_DIR := _source/developer-framework
 DEST_DIR_NB := notebooks
+SRC_DIR_PYTHON := python-docs
 DEST_DIR_PYTHON := _site/validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
@@ -55,13 +56,14 @@ notebooks:
 python-docs:
 	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
 		echo "\nUpdating Python documentation ..."; \
-		rm -rf $(DEST_DIR_PYTHON); \
-		mkdir -p $(DEST_DIR_PYTHON); \
-		cp -r $(SRC_DIR)/docs/_build/. $(DEST_DIR_PYTHON); \
-	else \
-		echo "\nNo updated Python documentation available locally, skipping step ..."; \
-	fi
-
+		rm -rf $(SRC_DIR_PYTHON); \
+		mkdir -p $(SRC_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/_build/. $(SRC_DIR_PYTHON); \
+	fi; \
+	echo "Copying Python documentation into docs site ..."; \
+	rm -rf $(DEST_DIR_PYTHON); \
+	mkdir -p $(DEST_DIR_PYTHON); \
+	cp -r $(SRC_DIR_PYTHON)/. $(DEST_DIR_PYTHON);
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
