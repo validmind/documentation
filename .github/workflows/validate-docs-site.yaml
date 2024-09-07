@@ -31,9 +31,12 @@ jobs:
 
     - name: Render site
       run: |
-          cd site
-          quarto check
-          quarto render
+          cd site 
+          quarto render &> render_errors.log || { 
+          echo "Quarto render failed immediately";
+          cat render_errors.log;
+          exit 1;
+          }
 
     - name: Test for warnings or errors 
       run: |
