@@ -27,6 +27,7 @@ $$
 ### Configuring Columns
 
 This metric requires the following columns in your dataset:
+
 - `contexts` (List[str]): A list of text contexts which will be evaluated to make
 sure if they contain the entities present in the ground truth.
 - `ground_truth` (str): The ground truth text from which the entities will be

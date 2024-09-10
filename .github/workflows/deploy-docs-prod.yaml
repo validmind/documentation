@@ -1,6 +1,6 @@
 # Deploy our docs site to S3 whenever we push a commit to the main branch
 
-name: Deploy to S3 production bucket
+name: Deploy docs site to production
 
 on:
   push:
@@ -12,13 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Check out repository
         uses: actions/checkout@v2
+  
+      - name: Get latest Quarto release URL
+        id: get-quarto-url
+        run: |
+          API_URL="https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest"
+          DOWNLOAD_URL=$(curl -s $API_URL | jq -r '.assets[] | select(.name | endswith("linux-amd64.deb")).browser_download_url')
+          echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_ENV
+  
+      - name: Download and install Quarto
+        run: |
+          wget ${{ env.DOWNLOAD_URL }} -O quarto-latest-linux-amd64.deb
+          sudo dpkg -i quarto-latest-linux-amd64.deb
+  
+      - name: Render docs site
+        run: |
+            cd site 
+            quarto render &> render_errors.log || { 
+            echo "Quarto render failed immediately";
+            cat render_errors.log;
+            exit 1;
+            }
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
-      - name: Sync to S3
-        run: 
-          aws s3 sync site/_site s3://${{ vars.S3_BUCKET_PROD }}/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+      - name: Deploy docs site
+        run: aws s3 sync site/_site s3://docs-ci-cd-prod/site --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager

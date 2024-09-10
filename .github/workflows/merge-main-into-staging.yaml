@@ -1,0 +1,52 @@
+name: Merge main into staging
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  merge-main-into-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v3
+        with:
+          ref: staging
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge in main branch
+        run: |
+          git fetch origin main:main
+          git merge main --no-ff --allow-unrelated-histories --strategy-option theirs -m "Merging latest changes from main into staging"
+
+      - name: Create pull request
+        id: pr-number
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-staging-${{ github.run_id }}
+          title: 'Merge main into staging'
+          body: 'Automatically merge main into staging branch.'
+
+      - name: Merge pull request
+        if: ${{ steps.pr-number.outputs.pull-request-number != '' }}
+        run: gh pr merge --merge --auto "${{ steps.pr-number.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete pull request branch
+        if: ${{ success() && steps.pr-number.outputs.pull-request-number != '' }}
+        run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/update-staging-${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
