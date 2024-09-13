@@ -114,10 +114,14 @@ Column 2, 50% wide
 ::::
 
 
-### Margin footnotes
-Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
+### Inline links
 
-- When possible — such as any time instructions are not single-sourced — instead of multiple inline links, make use of Quarto's footnote functionality.[^4]
+- Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. 
+- When possible — such as any time instructions are not single-sourced — instead of multiple inline links, make use of margin footnotes.[^4]
+- Whenever possible, make the link the title of the destination article. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
+
+#### Margin footnotes
+
 - Other than in single-sourced files, number all footnotes and place the footnotes at the very end of the page:
 
     ```markdown
@@ -138,7 +142,35 @@ Keep hyperlinks in instructional text minimal — too many links can misdirect t
     [^4]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
     ```
 
-Footnotes will automatically appear in the correct location in the margin.
+- In single-source files, either place the link inline for training materials formatted in `revealjs`, or use an embedded footnote for our normal user guides. 
+  
+  You can use Quarto's ability to display conditional content to do both in the same file:
+
+  ```markdown
+  To view model activity:
+
+  <!-- EMBEDDED FOOTNOTES FOR STANDARD USER GUIDES -->
+  :::: {.content-visible unless-format="revealjs"}
+  1. In the left sidebar, click **Model Inventory**.
+
+  1. Select a model by clicking on it or find your model by applying a filter or searching for it.^[[Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)]
+
+  1. In the expanded sidebar that appears for your model, click **Model Activity**.
+
+  ::::
+
+  <!-- INLINE LINKS FOR REVEALJS TRAINING -->
+  :::: {.content-hidden unless-format="revealjs"}
+  1. In the left sidebar, click **Model Inventory**.
+
+  1. Select a model by clicking on it or [find your model by applying a filter or searching for it](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models).
+
+  1. In the expanded sidebar that appears for your model, click **Model Activity**.
+  ::::
+
+  ```
+
+Footnotes will automatically appear in the correct location in the margin, regardless of their origin or format.
 
 | Correct | Incorrect | 
 |------|-----|
@@ -273,6 +305,29 @@ Within our documentation (`https://docs.validmind.ai/`), you are able to referen
 ::: {.callout}
 Refer also to [the glossary](/about/glossary/glossary.qmd) for extended information on product names. 
 :::
+
+## Training materials
+
+The ValidMind Academy is delivered in Revealjs presentation format, with a slightly different set of conventions:
+
+- It makes use of Tachyons CSS to provide demostration overlays:
+
+  ```css
+  :::: {.fr .f3 .mv5 .nr4 .pa5 .bg-near-white .ba .b--dark-pink .bw1 .br3 .near-black .shadow-5}
+  From  **{{< fa gear >}} Settings** in the {{< var validmind.platform >}}, <br>you can: 
+
+  - Set up your organization
+  - Onboard new users
+  - Manage roles, groups and <br>permissions
+  - Configure the model inventory
+  - Manage templates and workflows
+  - And much more!
+
+  Try it **live** on the next page. {{< fa hand-point-right >}}
+  ::::
+  ```
+- It uses inline links only instead of footnotes, as footnotes are not visible in presentation mode.
+
 
 ## What's next
 - [Voice and tone](voice-and-tone.qmd)
