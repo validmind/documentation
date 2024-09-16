@@ -1,11 +1,14 @@
-# Deploy our docs site to S3 whenever we push a commit to the main branch
-
 name: Deploy docs site to staging
 
 on:
   push:
     branches:
       - staging
+  workflow_run:
+    workflows: ["Merge main into staging"]
+    types:
+      - completed
+    workflow_dispatch:
 
 jobs:
   deploy:
