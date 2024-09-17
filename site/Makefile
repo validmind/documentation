@@ -107,7 +107,7 @@ deploy-prod:
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs.validmind.ai/
@@ -117,7 +117,7 @@ deploy-staging:
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Generate release notes
