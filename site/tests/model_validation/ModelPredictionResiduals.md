@@ -10,11 +10,9 @@ effectiveness.
 
 ### Test Mechanism
 
-This test involves the following steps for each dataset-model pair:
-
-- Calculate the residuals by subtracting predicted values from the actual values.
-- Generate two types of plots: a time series plot of residuals and a histogram of residuals.
-- Perform the KS test to assess the normality of the residuals and summarize the results in a table.
+The function calculates residuals and generates
+two figures: one for the time series of residuals and one for the histogram of residuals.
+It also calculates the KS test for normality and summarizes the results in a table.
 
 ### Signs of High Risk
 

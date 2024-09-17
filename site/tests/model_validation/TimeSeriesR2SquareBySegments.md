@@ -10,12 +10,8 @@ different segments of time series data. This helps in determining how well the m
 the data within each specific time segment.
 
 ### Test Mechanism
-
-This test functions by:
-
-- Iterating through each dataset-model pair provided.
-- Segmenting the time series data either as specified by the user or by splitting the data into two halves if no
-segments are provided.
+- Provides a visual representation of model performance across different time segments.
+- Allows for identification of segments where the model performs poorly.
 - Calculating the R-Squared values for each segment.
 - Generating a bar chart to visually represent the R-Squared values across different models and segments.
 
