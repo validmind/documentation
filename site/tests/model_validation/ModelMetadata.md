@@ -1,38 +1,21 @@
 # ModelMetadata
 
-Extracts and summarizes critical metadata from a machine learning model instance for comprehensive analysis.
+Compare metadata of different models and generate a summary table with the results.
 
-### Purpose
+**Purpose**: The purpose of this function is to compare the metadata of different models, including information about their architecture, framework, framework version, and programming language.
 
-This test is designed to collect and summarize important metadata related to a particular machine learning model.
-Such metadata includes the model's architecture (modeling technique), the version and type of modeling framework
-used, and the programming language the model is written in.
+**Test Mechanism**: The function retrieves the metadata for each model using `get_model_info`, renames columns according to a predefined set of labels, and compiles this information into a summary table.
 
-### Test Mechanism
+**Signs of High Risk**:
+- Inconsistent or missing metadata across models can indicate potential issues in model documentation or management.
+- Significant differences in framework versions or programming languages might pose challenges in model integration and deployment.
 
-The mechanism of this test consists of extracting information from the model instance. It tries to extract the
-model information such as the modeling technique used, the modeling framework version, and the programming
-language. It decorates this information into a data frame and returns a summary of the results.
+**Strengths**:
+- Provides a clear comparison of essential model metadata.
+- Standardizes metadata labels for easier interpretation and comparison.
+- Helps identify potential compatibility or consistency issues across models.
 
-### Signs of High Risk
-
-- High risk could be determined by a lack of documentation or inscrutable metadata for the model.
-- Unidentifiable language, outdated or unsupported versions of modeling frameworks, or undisclosed model
-architectures reflect risky situations, as they could hinder future reproducibility, support, and debugging of the
-model.
-
-### Strengths
-
-- Increased transparency and understanding regarding the model's setup.
-- Supports better error understanding and debugging.
-- Facilitates model reuse.
-- Aids compliance of software policies.
-- Assists in planning for model obsolescence due to evolving or discontinuing software and dependencies.
-
-### Limitations
-
-- Dependent on the compliance and correctness of information provided by the model or the model developer.
-- If the model's built-in methods for describing its architecture, framework, or language are incorrect or lack
-necessary information, this test will hold limitations.
-- Not designed to directly evaluate the performance or accuracy of the model, rather it provides supplementary
-information which aids in comprehensive analysis.
+**Limitations**:
+- Assumes that the `get_model_info` function returns all necessary metadata fields.
+- Relies on the correctness and completeness of the metadata provided by each model.
+- Does not include detailed parameter information, focusing instead on high-level metadata.
