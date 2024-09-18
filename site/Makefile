@@ -78,7 +78,7 @@ get-source: clean clone notebooks python-docs test-descriptions
 
 # Get all source files
 docs-site: clean clone notebooks python-docs test-descriptions
-	quarto render
+	quarto render --profile development
 #	quarto render notebooks/how_to/explore_tests.ipynb --execute
 #	quarto render notebooks/how_to/explore_test_suites.ipynb --execute
 
@@ -88,12 +88,12 @@ deploy-demo:
 		echo "You're not on the docs-demo branch, no action taken."; \
 	else \
 		echo "\nDeploying docs-demo site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deploy PR branch to https://docs-demo.vm.validmind.ai/
 deploy-demo-branch:
-	@quarto render && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
+	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
 	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
 
 # Delete PR branch on https://docs-demo.vm.validmind.ai/
@@ -107,7 +107,7 @@ deploy-prod:
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs.validmind.ai/
@@ -117,7 +117,7 @@ deploy-staging:
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
-		quarto render && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Generate release notes

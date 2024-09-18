@@ -61,11 +61,11 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 
 ### Responsive columns
 
-To make sure our docs site works well on mobile, we use Tachyons CSS with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
+To make sure our docs site works well on mobile, we use Tachyons CSS[^4] with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
 
 Enable Tachyons CSS in the front matter  with:
 
-```markdown
+```yaml
 filters:
     - tachyons
 ```
@@ -114,10 +114,14 @@ Column 2, 50% wide
 ::::
 
 
-### Margin footnotes
-Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
+### Inline links
 
-- When possible — such as any time instructions are not single-sourced — instead of multiple inline links, make use of Quarto's footnote functionality.[^4]
+- Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. 
+- When possible — such as any time instructions are not single-sourced — instead of multiple inline links, make use of margin footnotes.[^5]
+- Whenever possible, make the link the title of the destination article. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
+
+#### Margin footnotes
+
 - Other than in single-sourced files, number all footnotes and place the footnotes at the very end of the page:
 
     ```markdown
@@ -125,7 +129,7 @@ Keep hyperlinks in instructional text minimal — too many links can misdirect t
     - The model is registered in the model inventory.[^1]
     - You've already customized your model lifecycle statuses for use in workflows.[^2]
     - Workflows have already been set up for use with your models.[^3]
-    - You are assigned a role that has access to complete actions set up by workflows.[^4]
+    - You are assigned a role that has access to complete actions set up by workflows.[^5]
 
     <!-- AT THE END OF YOUR .QMD PAGE -->
     <!-- FOOTNOTES -->
@@ -135,10 +139,41 @@ Keep hyperlinks in instructional text minimal — too many links can misdirect t
 
     [^3]: [Working with model workflows](set-up-model-workflows.qmd)
 
-    [^4]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+    [^5]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
     ```
 
-Footnotes will automatically appear in the correct location in the margin.
+- In single-source files, either place the link inline for training materials formatted in `revealjs`,[^6] or use an embedded footnote for our normal user guides. 
+  
+  You can use Quarto's ability to display conditional content[^7] to do both in the same file:
+
+  ```markdown
+  To view model activity:
+
+  <!-- EMBEDDED FOOTNOTES FOR STANDARD USER GUIDES -->
+  :::: {.content-visible unless-format="revealjs"}
+  1. In the left sidebar, click **Model Inventory**.
+
+  1. Select a model by clicking on it or find your model by applying a filter or searching for it.^[[Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)]
+
+  1. In the expanded sidebar that appears for your model, click **Model Activity**.
+
+  ::::
+
+  <!-- INLINE LINKS FOR REVEALJS TRAINING -->
+  :::: {.content-hidden unless-format="revealjs"}
+  1. In the left sidebar, click **Model Inventory**.
+
+  1. Select a model by clicking on it or [find your model by applying a filter or searching for it](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models).
+
+  1. In the expanded sidebar that appears for your model, click **Model Activity**.
+  ::::
+  ```
+  | Inline links in training | Footnotes in user guides | 
+  |------|-----|
+  | ![](training_inline-links.png){fig-alt="A screenshot showing an example of inline links in training materials"} | ![](user-guide_footenotes.png){fig-alt="A screenshot showing an example of margin footnotes in a user guide"} |
+  : **Inline vs footnotes links** examples {.hover}
+
+Footnotes will automatically appear in the correct location in the margin, regardless of their origin or format.
 
 | Correct | Incorrect | 
 |------|-----|
@@ -161,7 +196,7 @@ Use emphatic styling sparingly, in order not to overwhelm the reader with visual
 : **Emphasis** examples {.hover}
 
 #### Callouts
-We use two types of callouts[^5] to call attention to supplementary information or issue warnings:
+We use two types of callouts[^8] to call attention to supplementary information or issue warnings:
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -193,7 +228,7 @@ For warnings and caveats. Warnings, important information, and cautions should f
 ### Content types
 
 #### Filenames
-Filenames should generally match the title of the article[^6] or concisely summarize the content, and be descriptive but not overly lengthy. 
+Filenames should generally match the title of the article[^9] or concisely summarize the content, and be descriptive but not overly lengthy. 
 
 - Filenames for concepts should generally only be made up of nouns and end in `-overview` if they introduce a product area.
 - Do not include extraneous keywords. 
@@ -208,10 +243,10 @@ Filenames should generally match the title of the article[^6] or concisely summa
 : **Filenames** examples {.hover}
 
 #### Code
-- Format code in its own code block.[^7]
+- Format code in its own code block.[^10]
 - Declare the code language within the pre-formatted block to properly trigger syntax highlighting.
 
-Within a Jupyter Notebook, simply use a **code cell**[^8] rather than a markdown cell.
+Within a Jupyter Notebook, simply use a **code cell**[^11] rather than a markdown cell.
 
 > **Correct**:
 >```python
@@ -232,8 +267,8 @@ Use backticks to enclose keyboard commands, parameters, field values, and file n
 : **Backtick** examples {.hover}
 
 #### Mathematics
-- Mathematical formulas should be rendered using LaTeX formatting.[^9] 
-- On our WordPress blog posts, this is taken care of by the WP Quick LaTeX plugin.[^10]
+- Mathematical formulas should be rendered using LaTeX formatting.[^12] 
+- On our WordPress blog posts, this is taken care of by the WP Quick LaTeX plugin.[^13]
 
 | Correct | Incorrect | 
 |------|-----|
@@ -254,11 +289,11 @@ In the context of model risk management, proper nouns include specific models, l
 : **Proper noun** examples {.hover}
 
 ## Product names
-Within our documentation (`https://docs.validmind.ai/`), you are able to reference constants such as the {{< var validmind.developer >}} and {{< var validmind.platform >}} via variables.[^11]
+Within our documentation (`https://docs.validmind.ai/`), you are able to reference constants such as the {{< var validmind.developer >}} and {{< var validmind.platform >}} via variables.[^14]
 
-- Use the variables shown on the table below instead of writing out the phrases to enable consistency between guides everywhere except for image alt text or Mermaid charts.[^12]
-- If product names need to be updated, simply amend the `_variables.yml` file[^13] to see changes reflected throughout all guides. 
-- Please note that variables will not work within any of the Jupyter Notebook code samples[^14] as these are technically standalone files.
+- Use the variables shown on the table below instead of writing out the phrases to enable consistency between guides everywhere except for image alt text or Mermaid charts.[^15]
+- If product names need to be updated, simply amend the `_variables.yml` file[^16] to see changes reflected throughout all guides. 
+- Please note that variables will not work within any of the Jupyter Notebook code samples[^17] as these are technically standalone files.
 
 | Product Name | Variable Key | Description |
 |---:|---|---|
@@ -274,6 +309,53 @@ Within our documentation (`https://docs.validmind.ai/`), you are able to referen
 Refer also to [the glossary](/about/glossary/glossary.qmd) for extended information on product names. 
 :::
 
+## Training materials
+
+The ValidMind Academy is delivered in Revealjs presentation format,[^18] with a slightly different set of conventions:
+
+- It makes use of Tachyons CSS[^19] to provide demonstration overlays.
+
+  Enable Tachyons CSS in the front matter with:
+
+    ```yaml
+    filters:
+        - tachyons
+    ```
+
+  :::: {.flex .flex-wrap .justify-around}
+
+  ::: {.w-50-ns}
+
+  Example overlay box:
+
+  ```css
+  :::: {.fr .f3 .mv5 .nr4 .pa5 .bg-near-white .ba .b--dark-pink .bw1 .br3 .near-black .shadow-5}
+  From  **{{< fa gear >}} Settings** in the {{< var validmind.platform >}}, <br>you can: 
+      
+  - Set up your organization
+  - Onboard new users
+  - Manage roles, groups and <br>permissions
+  - Configure the model inventory
+  - Manage templates and workflows
+  - And much more! 
+
+  Try it **live** on the next page. {{< fa hand-point-right >}}
+  ::::
+  ```
+
+  :::
+
+  ::: {.w-50-ns}
+
+  ![](training-overlay.png){fig-alt="A screenshot showing an example of a training overlay"} 
+
+  :::
+
+  ::::
+
+
+- It uses inline links only instead of footnotes,[^20] as footnotes are not visible in presentation mode.
+
 ## What's next
 - [Voice and tone](voice-and-tone.qmd)
 
@@ -286,24 +368,36 @@ Refer also to [the glossary](/about/glossary/glossary.qmd) for extended informat
 
 [^3]: **Microsoft:** [Capitalization](https://learn.microsoft.com/en-us/style-guide/capitalization)
 
-[^4]: **Quarto:** [Footnotes](https://quarto.org/docs/authoring/markdown-basics.html#footnotes)
+[^4]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
 
-[^5]: **Quarto:** [Callout Blocks](https://quarto.org/docs/authoring/callouts.html)
+[^5]: **Quarto:** [Footnotes](https://quarto.org/docs/authoring/markdown-basics.html#footnotes)
 
-[^6]: [Titles](#titles)
+[^6]: [Training materials](#training-materials)
 
-[^7]:  **Quarto:** [Source Code](https://quarto.org/docs/authoring/markdown-basics.html#source-code)
+[^7]: **Quarto:** [Conditional Content](https://quarto.org/docs/authoring/conditional.html)
 
-[^8]: **Jupyter Notebooks:** [Code Cells](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#code-cells)
+[^8]: **Quarto:** [Callout Blocks](https://quarto.org/docs/authoring/callouts.html)
 
-[^9]: **Quarto:** [LaTeX Equations](https://quarto.org/docs/output-formats/html-basics.html#latex-equations)
+[^9]: [Titles](#titles)
 
-[^10]: **WordPress:** [WP QuickLaTeX](https://en-gb.wordpress.org/plugins/wp-quicklatex/)
+[^10]:  **Quarto:** [Source Code](https://quarto.org/docs/authoring/markdown-basics.html#source-code)
 
-[^11]: **Quarto:** [Variables](https://quarto.org/docs/authoring/variables.html#var)
+[^11]: **Jupyter Notebooks:** [Code Cells](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#code-cells)
 
-[^12]: [Mermaid charts](https://mermaid.js.org/)
+[^12]: **Quarto:** [LaTeX Equations](https://quarto.org/docs/output-formats/html-basics.html#latex-equations)
 
-[^13]: [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml) file
+[^13]: **WordPress:** [WP QuickLaTeX](https://en-gb.wordpress.org/plugins/wp-quicklatex/)
 
-[^14]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
+[^14]: **Quarto:** [Variables](https://quarto.org/docs/authoring/variables.html#var)
+
+[^15]: [Mermaid charts](https://mermaid.js.org/)
+
+[^16]: [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml) file
+
+[^17]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
+
+[^18]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
+
+[^19]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+
+[^20]: [Inline links](#inline-links)
