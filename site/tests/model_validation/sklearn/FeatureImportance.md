@@ -1,7 +1,7 @@
-# FeatureImportanceComparison
+# FeatureImportance
 
-Compares feature importance scores across different models and datasets to generate a summary table of top
-important features.
+Compute feature importance scores for a given model and generate a summary table
+with the top important features.
 
 ### Purpose
 

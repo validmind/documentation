@@ -1,4 +1,4 @@
-# RegressionModelsPerformanceComparison
+# RegressionPerformance
 
 Compares and evaluates the performance of multiple regression models using five different metrics: MAE, MSE, RMSE,
 MAPE, and MBD.
