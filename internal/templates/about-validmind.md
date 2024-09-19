@@ -16,7 +16,7 @@ If you haven't already seen our [Get started with the ValidMind Developer Framew
 
 For access to all features available in this notebook, create a free ValidMind account.
 
-Signing up is FREE — [**Sign up now**](https://app.prod.validmind.ai)
+Signing up is FREE — {{< var link.register >}} 
 
 :::
 
