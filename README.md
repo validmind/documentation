@@ -140,5 +140,3 @@ make get-source
 ```
 
 After you pull in the changes, commit them to this repo as part of the release notes process.
-
-<!-- September 18, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
