@@ -1,11 +1,14 @@
-# Deploy our docs site to S3 whenever we push a commit to the main branch
-
 name: Deploy docs site to staging
 
 on:
   push:
     branches:
       - staging
+  workflow_run:
+    workflows: ["Merge main into staging"]
+    types:
+      - completed
+    workflow_dispatch:
 
 jobs:
   deploy:
@@ -30,7 +33,7 @@ jobs:
       - name: Render docs site
         run: |
             cd site 
-            quarto render &> render_errors.log || { 
+            quarto render --profile staging &> render_errors.log || { 
             echo "Quarto render failed immediately";
             cat render_errors.log;
             exit 1;
