@@ -110,10 +110,9 @@ deploy-prod:
 		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
-# Deployment to https://docs.validmind.ai/
-# TO DO Fix Cloudfront distribution ID
+# Deployment to https://docs-staging.validmind.ai/
 deploy-staging:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "nrichers/sc-6277/deploy-staging-docs-site-workflow" ]; then \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "staging" ]; then \
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
