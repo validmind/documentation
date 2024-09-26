@@ -92,22 +92,27 @@ Calculation
     2. Replace the demonstration formula with your own in the code box provided.
     3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
 
-    ::: {.callout title="Stick to basic operations."}
-    Keep your code simple and avoid complex logic and imports.
-    :::
+::: {.callout title="Stick to basic operations."}
+Keep your code simple and avoid complex logic and imports.
+:::
 
-    - For example, say you have numeric model inventory fields of `Materiality` and `Complexity`, where a larger value indicates a lower risk.
-    - You want to calculate a binary risk tier for when `complexity` is greater than `materiality`, you want to return a "Low Risk" rating: 
+For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk: 
 
-        ```python
-        def formula(params):
-            if params.complexity > params.materiality:
-                return "Low Risk"
-            return "High Risk"
-        ```
-    If `complexity` is less than `materiality`, then a "High Risk" rating will be returned instead.
+![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" class="screenshot"}
 
-    ![Adding a calculation type field](calculation-field.png){width=80% fig-alt="A screenshot showing the screen for adding a calculation type field" class="screenshot"}
+::: {.column-margin}
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+:::
 
 ## Delete inventory fields
 
