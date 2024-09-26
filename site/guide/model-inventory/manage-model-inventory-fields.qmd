@@ -86,7 +86,7 @@ User
 : Select list pre-populated with users from your User Directory.[^3] 
 
 Calculation
-: Define a `formula(params)` function that automatically returns a value using the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
 
     1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
     2. Replace the demonstration formula with your own in the code box provided.
@@ -99,26 +99,15 @@ Calculation
     - For example, say you have numeric model inventory fields of `Materiality` and `Complexity`, where a larger value indicates a lower risk.
     - You want to calculate a binary risk tier for when `complexity` is greater than `materiality`, you want to return a "Low Risk" rating: 
 
-    :::: {.flex .flex-wrap .justify-around}
-
-    ::: {.w-40-ns}
-
-    ```python
-    def formula(params):
-    if params.complexity > params.materiality:
-        return "Low Risk"
-    return "High Risk"
-    ```
-
+        ```python
+        def formula(params):
+            if params.complexity > params.materiality:
+                return "Low Risk"
+            return "High Risk"
+        ```
     If `complexity` is less than `materiality`, then a "High Risk" rating will be returned instead.
 
-    :::
-
-    ::: {.w-50-ns}
-
-    ![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" class="screenshot"}
-
-    :::
+    ![Adding a calculation type field](calculation-field.png){width=80% fig-alt="A screenshot showing the screen for adding a calculation type field" class="screenshot"}
 
 ## Delete inventory fields
 
