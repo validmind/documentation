@@ -1,0 +1,82 @@
+---
+title: "Configure Azure Private Link"
+date: last-modified
+aliases:
+  - ../configure-aws-privatelink.html
+---
+
+To keep your network traffic private and minimizes its attack surface, configure Azure Private Link[^1] to establish a private connection between ValidMind and your company network.
+
+![Azure Private Link establishing a private connection to ValidMind](azure-private-link.png){fig-alt="A graphic showing Azure Private Link establishing a private connection to ValidMind"}
+
+Azure Private Link is a networking service that allows secure and private communication between Azure Virtual Network (VNet) resources and services hosted in other VNets or in Azure partner services, such as ValidMind. With Azure Private Link, you can connect to services over the Azure network, without needing to expose your network traffic to the public internet.
+
+Private Link works by creating a _private endpoint_ for a supported Azure service within your virtual private cloud. This endpoint acts as a proxy between your VNet and ValidMind, allowing traffic to be routed privately over the Azure network. To make the endpoint easier to use, ValidMind provides a _private DNS name_ that model developers and validators can connect to in a browser.  
+
+::: {.callout-important title="The responsibility of setting up a private endpoint for Azure Private Link falls to your IT department, such as the cloud engineering, infrastructure, or security teams."}
+ <br>
+To learn more, check [Access an Azure service using an interface private endpoint](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview).
+:::
+
+::: {.prereq}
+
+## Prerequisites
+
+You must have access to the Azure portal for your company and the necessary expertise to set up, configure, and maintain Azure services. 
+
+These steps assume that you already have established connectivity between your own company network and an Azure virtual network (VNet) and know which company VNet you want to connect to. 
+
+### VNet service information
+
+| Region       | Service name                                            | Private DNS name             |
+ ------------- | ------------------------------------------------------- | ---------------------------- |
+| `us-west-2`    | Email <support@validmind.com> | Email <support@validmind.com> | 
+
+
+:::
+
+## Steps
+
+1. Create an Azure Private Endpoint:
+
+   a. Log in to the [Azure portal](https://portal.azure.com).
+   b. Search for **Private Endpoints** under the services section and click **Create**:
+   
+      - Select the **subscription** and **resource group**.
+      - Provide a name for the endpoint.
+   c. Select the resource to connect: In the **Resource** tab, choose the **resource type**, the specific **resource**, and the **sub-resource**.
+   d. Configure the networking: Choose the **virtual network** (VNet) and **subnet** for the private endpoint. Ensure the selected subnet complies with your security policies.
+   e. Configure DNS: When prompted, integrate with an Azure **Private DNS zone** to simplify private IP name resolution.
+   f. Review the configuration and then click **Create** to deploy the private endpoint.
+
+2. Contact ValidMind at [support@validmind.ai](mailto:support@validmind.ai?subject=VNet%20Endpoint%20Connection%20Request) to get your new private endpoint connection request accepted. Include the following information:
+
+   - The owner or account ID
+   - The private endpoint IP address 
+
+3. After ValidMind has accepted your endpoint connection request, verify the endpoint is available:
+
+   a. In the Azure portal, go to the **Private Endpoints** section.
+   b. Verify that the Connection status is `Approved`. This indicates that the endpoint is properly connected to the target service.
+
+4. Enable the private DNS name:
+   a. Check the private endpoint you created, click the **Actions** menu, and select **Modify private DNS name**.
+   b. Select **Enable for this endpoint**.
+   c. Click **Save changes**.
+   d. Verify that **Private DNS names** shows the name shown in the [VNet service information](#vpc-service-information).
+
+5. Test the connection:
+
+   a. From your company network, access ValidMind using the private DNS name from the [VNet service information](#vpc-service-information).
+   b. In a browser, confirm that you can successfully connect to ValidMind and log in.
+   c. From your developer environment, confirm that you can connect to ValidMind with the {{< var vm.developer >}}.
+
+
+## What's next
+
+After completing these steps, users on your company network can connect to ValidMind via Azure Private Link using the private DNS name from the [VNet service information](#vpc-service-information). 
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Azure Private Link: Create a private enpoint](https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip#create-a-private-endpoint)
