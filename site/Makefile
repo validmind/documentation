@@ -1,7 +1,6 @@
 # Define source and destination directories
 SRC_DIR := _source/developer-framework
 DEST_DIR_NB := notebooks
-SRC_DIR_PYTHON := python-docs
 DEST_DIR_PYTHON := _site/validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
@@ -57,12 +56,12 @@ python-docs:
 	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
 		echo "\nUpdating Python documentation ..."; \
 		rm -f python-docs.zip; \
-		zip -r python-docs.zip $(SRC_DIR)/docs/_build/; \
+		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip . > /dev/null ); \
 	fi; \
 	echo "Copying Python documentation into docs site ..."; \
 	rm -rf $(DEST_DIR_PYTHON); \
 	mkdir -p $(DEST_DIR_PYTHON); \
-	unzip python-docs.zip -d $(DEST_DIR_PYTHON);
+	unzip python-docs.zip -d $(DEST_DIR_PYTHON) > /dev/null;
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
