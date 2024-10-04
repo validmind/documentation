@@ -86,18 +86,43 @@ a:hover {
   background-color: #F9F9F9;
 }
 
-#hits {
-  border: 1px solid #ccc;
+#searchbox {
   padding: 10px;
-  margin-top: 10px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+#hits {
+  display: none;
   max-height: 300px;
   overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 10px;
+  max-width: 600px;
+  background-color: #fff;
 }
+
 #hits div {
+  border-bottom: 1px solid #ccc; 
+  border-radius: 4px;
   padding: 5px;
   margin-bottom: 5px;
-  border-bottom: 1px solid #eee;
 }
+
+#hits div:hover {
+  background-color: #f0f0f0;   /* Light grey background for the entire search result on hover */
+}
+
+#hits a {
+  color: #222425;
+  text-decoration: none;
+}
+
+
 </style>
 ```
 
@@ -117,15 +142,10 @@ a:hover {
 The **purpose-built platform** for model risk management teams to test, document, validate, and govern AI, machine learning, and statistical models with speed and confidence.
 ::::
 
-[search documentation]{.smallcaps}
-
-<!-- <div class="sidebar-search">
-  <div id="quarto-search" class="type-textbox" title="Search">
-  </div>
-</div> -->
+[ask a question]{.smallcaps}
 
 <!-- Add a search box to home page-->
-<input id="searchbox" placeholder="How do I ...?">
+<input id="searchbox" placeholder="How do I ... ?">
 <div id="hits"></div>
 
 <!-- Use Lunr.js as the search library -->
@@ -137,57 +157,70 @@ const SEARCH_INDEX_URL = 'search.json';
 
 // Function to load search.json file and return it as a JavaScript object
 async function loadSearchIndex() {
-    const response = await fetch(SEARCH_INDEX_URL);  // Fetch the JSON file
-    const searchData = await response.json();  // Parse the JSON into an object
-    return searchData;  // Return the parsed JSON data
+    const response = await fetch(SEARCH_INDEX_URL);
+    const searchData = await response.json();
+    return searchData;
 }
 
 // Function to initialize Lunr.js and index your documents for searching
 async function setupLunr() {
-    const searchData = await loadSearchIndex();  // Load search.json data
+    const searchData = await loadSearchIndex();
 
     // Create Lunr.js index
     const idx = lunr(function () {
         // Define the fields to index
-        this.ref('href');  // The unique reference field (URL)
-        this.field('title');  // Index the title field
-        this.field('content');  // Index the content field
+        this.ref('href');
+        this.field('title');
+        this.field('content');
 
         // Add each document from searchData to the index
         searchData.forEach(function (doc) {
-            this.add(doc);  // Add document to the index
-        }, this);  // 'this' refers to the Lunr.js instance
+            this.add(doc);
+        }, this);
     });
 
-    return { idx, searchData };  // Return both the index and the raw data
+    return { idx, searchData };
 }
+
+// Clear the search input when the page loads
+window.onload = function() {
+    document.getElementById('searchbox').value = '';  // Clear the search box input
+};
 
 // Call setupLunr to initialize the search index and prepare it for queries
 setupLunr().then(({ idx, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', function (event) {
-        const query = event.target.value;  // Get the current search query from the input field
-        const results = idx.search(query);  // Perform a search with Lunr.js
+        const query = event.target.value.trim();  // Trim any extra spaces
+        const hitsContainer = document.getElementById('hits');
+        hitsContainer.innerHTML = '';  // Clear previous results
 
-        const hitsContainer = document.getElementById('hits');  // Get the container for displaying search results
-        hitsContainer.innerHTML = '';  // Clear previous search results
+        // Check if the input is empty
+        if (query === '') {
+            hitsContainer.style.display = 'none';  // Hide the hits container if input is empty
+            return;  // Exit the function early
+        }
 
-        // Iterate over the search results
-        results.forEach((result) => {
-            // Find the original document by matching the href (result.ref) with the searchData
-            const doc = searchData.find(d => d.href === result.ref);
+        const results = idx.search(query);
 
-            // Check if doc exists to avoid errors
-            if (doc) {
-                const resultElement = document.createElement('div');
-                // Add the title and a preview of the content (first 100 characters)
-                resultElement.innerHTML = `<a href="${doc.href}"><strong>${doc.title}</strong><br>${doc.text.substring(0, 100)}...</a>`;
-                hitsContainer.appendChild(resultElement);  // Append the result to the hits container
-            } else {
-                console.warn(`Document not found for href: ${result.ref}`);
-            }
-        });
+        if (results.length > 0) {
+            hitsContainer.style.display = 'block';  // Show the hits container if there are results
+
+            // Display all results
+            results.forEach((result) => {
+                const doc = searchData.find(d => d.href === result.ref);
+
+                if (doc) {
+                    const resultElement = document.createElement('div');
+                    resultElement.innerHTML = `<a href="${doc.href}"><strong>${doc.title}</strong><br>${doc.text.substring(0, 100)}...</a>`;
+                    hitsContainer.appendChild(resultElement);
+                }
+            });
+        } else {
+            hitsContainer.style.display = 'none';  // Hide the hits container if no results
+        }
     });
 });
+
 </script>
 
 <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">quickstart</a> <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 40px; margin-left: 18px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-white);" href="https://github.com/validmind/developer-framework/">open-source software</a>
