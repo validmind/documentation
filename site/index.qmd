@@ -171,11 +171,17 @@ async function setupLunr() {
         // Define the fields to index
         this.ref('href');
         this.field('title');
-        this.field('content');
+        this.field('text');
+        this.field('section');
+        this.field('crumbs');  // Make sure crumbs is also indexed
 
-        // Add each document from searchData to the index
+        // Index crumbs as a space-separated string
         searchData.forEach(function (doc) {
-            this.add(doc);
+            const modifiedDoc = {
+                ...doc,
+                crumbs: Array.isArray(doc.crumbs) ? doc.crumbs.join(' ') : doc.crumbs  // Convert crumbs array to string
+            };
+            this.add(modifiedDoc);  // Add the modified document with stringified crumbs
         }, this);
     });
 
@@ -187,7 +193,6 @@ window.onload = function() {
     document.getElementById('searchbox').value = '';  // Clear the search box input
 };
 
-// Call setupLunr to initialize the search index and prepare it for queries
 setupLunr().then(({ idx, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', function (event) {
         const query = event.target.value.trim();  // Trim any extra spaces
@@ -196,30 +201,49 @@ setupLunr().then(({ idx, searchData }) => {
 
         // Check if the input is empty
         if (query === '') {
-            hitsContainer.style.display = 'none';  // Hide the hits container if input is empty
-            return;  // Exit the function early
+            hitsContainer.style.display = 'none';
+            return;
         }
 
-        const results = idx.search(query);
+        // Perform an exact phrase search first
+        const exactResults = idx.search(`"${query}"`);
+
+        let results;
+        if (exactResults.length > 0) {
+            results = exactResults;  // Use exact phrase matches first
+        } else {
+            // If no exact matches, perform a regular search
+            results = idx.search(query);
+        }
 
         if (results.length > 0) {
-            hitsContainer.style.display = 'block';  // Show the hits container if there are results
+            hitsContainer.style.display = 'block';
 
-            // Display all results
             results.forEach((result) => {
                 const doc = searchData.find(d => d.href === result.ref);
 
                 if (doc) {
                     const resultElement = document.createElement('div');
-                    resultElement.innerHTML = `<a href="${doc.href}"><strong>${doc.title}</strong><br>${doc.text.substring(0, 100)}...</a>`;
+
+                    const crumbs = Array.isArray(doc.crumbs) ? doc.crumbs.join(' > ') : doc.crumbs;
+
+                    resultElement.innerHTML = `
+                        <a href="${doc.href}">
+                            <strong>${doc.title}</strong><br>
+                            <em>${doc.section}</em><br>
+                            <small>${crumbs}</small><br>
+                            ${doc.text.substring(0, 100)}...
+                        </a>
+                    `;
                     hitsContainer.appendChild(resultElement);
                 }
             });
         } else {
-            hitsContainer.style.display = 'none';  // Hide the hits container if no results
+            hitsContainer.style.display = 'none';
         }
     });
 });
+
 
 </script>
 
