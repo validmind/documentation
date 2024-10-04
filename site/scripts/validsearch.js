@@ -45,10 +45,11 @@ window.onload = function() {
 
 setupLunr().then(({ idx, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', function (event) {
-        const query = event.target.value.trim();  // Trim any extra spaces
+        const query = event.target.value.trim();
         const hitsContainer = document.getElementById('hits');
         hitsContainer.innerHTML = '';  // Clear previous results
 
+        // Hide the hits container if the search box is empty
         if (query === '') {
             hitsContainer.style.display = 'none';
             return;
@@ -57,32 +58,30 @@ setupLunr().then(({ idx, searchData }) => {
         const exactResults = idx.search(`"${query}"`);
         let results = exactResults.length > 0 ? exactResults : idx.search(query);
 
+        // Show the hits container if there are results, otherwise hide it
         if (results.length > 0) {
-            hitsContainer.style.display = 'block';
-
+            hitsContainer.style.display = 'block';  // Show the container
             results.forEach((result) => {
                 const doc = searchData.find(d => d.href === result.ref);
-
                 if (doc) {
                     const resultElement = document.createElement('div');
-                    const crumbs = Array.isArray(doc.crumbs) ? doc.crumbs.join(' > ') : doc.crumbs;  // Join crumbs with a '>' separator
+                    const crumbs = Array.isArray(doc.crumbs) ? doc.crumbs.join(' > ') : doc.crumbs;
 
                     resultElement.innerHTML = `
                         <a href="${doc.href}">
                             <strong>${doc.title}</strong><br>
                             <em>${doc.section}</em><br>
                             <small>${doc.text.substring(0, 100)}...</small><br>
-                            <div class="crumbs" style="margin-top: 5px; font-size: small; color: grey;">
+                            <div class="crumbs" style="margin-top: 10px; font-size: small; color: grey;">
                                 ${crumbs}
                             </div>
                         </a>
                     `;
-
                     hitsContainer.appendChild(resultElement);
                 }
             });
         } else {
-            hitsContainer.style.display = 'none';
+            hitsContainer.style.display = 'none';  // Hide the container if no results
         }
     });
 });
