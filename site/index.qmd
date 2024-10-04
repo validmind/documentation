@@ -86,6 +86,18 @@ a:hover {
   background-color: #F9F9F9;
 }
 
+#hits {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+#hits div {
+  padding: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
 </style>
 ```
 
@@ -107,11 +119,76 @@ The **purpose-built platform** for model risk management teams to test, document
 
 [search documentation]{.smallcaps}
 
-<div class="sidebar-search">
+<!-- <div class="sidebar-search">
   <div id="quarto-search" class="type-textbox" title="Search">
-
   </div>
-</div>
+</div> -->
+
+<!-- Add a search box to home page-->
+<input id="searchbox" placeholder="How do I ...?">
+<div id="hits"></div>
+
+<!-- Use Lunr.js as the search library -->
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script type="text/javascript">
+// Fetch the generated Algolia search index
+const SEARCH_INDEX_URL = 'search.json';
+
+// Function to load search.json file and return it as a JavaScript object
+async function loadSearchIndex() {
+    const response = await fetch(SEARCH_INDEX_URL);  // Fetch the JSON file
+    const searchData = await response.json();  // Parse the JSON into an object
+    return searchData;  // Return the parsed JSON data
+}
+
+// Function to initialize Lunr.js and index your documents for searching
+async function setupLunr() {
+    const searchData = await loadSearchIndex();  // Load search.json data
+
+    // Create Lunr.js index
+    const idx = lunr(function () {
+        // Define the fields to index
+        this.ref('href');  // The unique reference field (URL)
+        this.field('title');  // Index the title field
+        this.field('content');  // Index the content field
+
+        // Add each document from searchData to the index
+        searchData.forEach(function (doc) {
+            this.add(doc);  // Add document to the index
+        }, this);  // 'this' refers to the Lunr.js instance
+    });
+
+    return { idx, searchData };  // Return both the index and the raw data
+}
+
+// Call setupLunr to initialize the search index and prepare it for queries
+setupLunr().then(({ idx, searchData }) => {
+    document.getElementById('searchbox').addEventListener('input', function (event) {
+        const query = event.target.value;  // Get the current search query from the input field
+        const results = idx.search(query);  // Perform a search with Lunr.js
+
+        const hitsContainer = document.getElementById('hits');  // Get the container for displaying search results
+        hitsContainer.innerHTML = '';  // Clear previous search results
+
+        // Iterate over the search results
+        results.forEach((result) => {
+            // Find the original document by matching the href (result.ref) with the searchData
+            const doc = searchData.find(d => d.href === result.ref);
+
+            // Check if doc exists to avoid errors
+            if (doc) {
+                const resultElement = document.createElement('div');
+                // Add the title and a preview of the content (first 100 characters)
+                resultElement.innerHTML = `<a href="${doc.href}"><strong>${doc.title}</strong><br>${doc.text.substring(0, 100)}...</a>`;
+                hitsContainer.appendChild(resultElement);  // Append the result to the hits container
+            } else {
+                console.warn(`Document not found for href: ${result.ref}`);
+            }
+        });
+    });
+});
+</script>
 
 <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">quickstart</a> <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 40px; margin-left: 18px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-white);" href="https://github.com/validmind/developer-framework/">open-source software</a>
 
