@@ -1,3 +1,50 @@
+// Function to stream the explanation results from the backend using Server-Sent Events (SSE)
+async function streamExplainResults(query) {
+    const explainUrl = 'http://localhost:3333/explain-results';
+
+    try {
+        const response = await fetch(explainUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userQuery: query })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Create a reader to handle the stream
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let result = '';
+
+        // Read the stream chunk by chunk
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            // Decode the chunk and process "data: " lines
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+            lines.forEach(line => {
+                const content = line.replace(/^data: /, '').trim();  // Remove 'data: ' prefix and trim
+                if (content !== '[DONE]') {
+                    result += content + ' ';  // Append each chunk to the result
+                }
+            });
+
+            // Update the UI incrementally
+            document.getElementById('explain').innerText = result.trim();  // Display the result
+        }
+
+    } catch (error) {
+        console.error("Error with SSE:", error);
+    }
+}
+
+
 // Fetch the local Algolia search index
 const SEARCH_INDEX_URL = 'search.json';
 
@@ -23,28 +70,12 @@ async function testPing() {
     }
 }
 
-// Function to test the /test-openai endpoint
-async function testOpenAI() {
-    const openaiUrl = 'http://localhost:3333/test-openai';  // Replace with your backend's actual URL
-
-    try {
-        const response = await fetch(openaiUrl);
-        const data = await response.json();
-
-        // Log the response to the console
-        console.log("OpenAI test response from backend:", data);
-    } catch (error) {
-        console.error("Error fetching OpenAI test result:", error);
-    }
-}
-
 // Function to initialize Lunr.js and index your documents for searching
 async function setupLunr() {
     const searchData = await loadSearchIndex();
 
     // Create Lunr.js index
     const idx = lunr(function () {
-        // Define the fields to index
         this.ref('href');
         this.field('title');
         this.field('text');
@@ -63,54 +94,6 @@ async function setupLunr() {
     return { idx, searchData };
 }
 
-// Function to call the explain-results endpoint from our backend server
-async function fetchExplainResults(query) {
-    const explainUrl = 'http://localhost:3333/explain-results';
-
-    try {
-        const response = await fetch(explainUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userQuery: query })  // Send the query to the backend
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            return {
-                success: true,
-                result: data.explanation,  // This contains the explanation from the backend
-                message: "Successfully connected to the backend and retrieved the explanation."
-            };
-        } else {
-            return {
-                success: false,
-                result: "Sorry, I couldn't generate a result at this time.",
-                message: `Failed to connect to the backend. Status code: ${response.status}`
-            };
-        }
-    } catch (error) {
-        console.error("Error fetching explanation from backend:", error);
-        return {
-            success: false,
-            result: "An error occurred while trying to generate a result.",
-            message: "Failed to connect to the backend due to a network or server error."
-        };
-    }
-}
-
-// Clear the search input when the page loads
-window.onload = function() {
-    document.getElementById('searchbox').value = '';  // Clear the search box input
-
-    // Call the testPing function
-    // testPing();
-
-    // Call the testOpenAI function
-    // testOpenAI();
-};
-
 // Set up Lunr.js and add search functionality
 setupLunr().then(({ idx, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', function (event) {
@@ -118,7 +101,6 @@ setupLunr().then(({ idx, searchData }) => {
         const hitsContainer = document.getElementById('hits');
         hitsContainer.innerHTML = '';  // Clear previous results
 
-        // Check if the input is empty
         if (query === '') {
             hitsContainer.style.display = 'none';
             return;
@@ -161,23 +143,8 @@ setupLunr().then(({ idx, searchData }) => {
             // Add click event listener to all "Explain this" buttons
             document.querySelectorAll('.explain-button').forEach(button => {
                 button.addEventListener('click', async (e) => {
-                    const explainContainer = document.getElementById('explain');  // Container for explanation results
-                    explainContainer.innerHTML = '';  // Clear previous explanation
-
                     const query = e.target.getAttribute('data-query');  // Get the query from the button's data attribute
-                    const explanationResult = await fetchExplainResults(query);  // Fetch the explanation
-
-                    const explainElement = document.createElement('div');
-                    explainElement.innerHTML = `
-                        <div style="margin-top: 10px; background-color: #f9f9f9; padding: 10px; border-radius: 4px; color: #333;">
-                            <strong style="color: #000;">AI Generated Suggestion:</strong><br>
-                            <p style="color: #000;">${explanationResult.result}</p>
-                            <small style="color: #666;">${explanationResult.message}</small> <!-- Display connection info -->
-                        </div>
-                    `;
-
-                    explainContainer.style.display = 'block';  // Show the 'explain' div
-                    explainContainer.appendChild(explainElement);
+                    streamExplainResults(query);  // Stream the explanation
                 });
             });
         } else {
