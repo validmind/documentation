@@ -3,6 +3,14 @@ pagetitle: "Welcome to our documentation"
 page-layout: full
 sidebar: false
 repo-actions: false
+format: html
+#engine: jupyter
+#webr:
+#  packages:
+#    - attrs
+#    - lunr
+#execute:
+#  echo: false
 resources:
   - assets/**
 filters:
@@ -89,14 +97,15 @@ a:hover {
 #hits {
   display: none;
   overflow-y: auto;
-  width: 100vw;
-  max-width: 800px;
+  width: 100%; /* Match the width of the searchbox */
+  max-width: 600px; /* Match the max-width of the searchbox */
   max-height: 400px;
   margin: 20px auto;
   padding: 15px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 8px;
+  box-sizing: border-box; /* Ensure padding doesn't affect the width */
 }
 
 #hits div {
@@ -115,6 +124,27 @@ a:hover {
   text-decoration: none;
 }
 
+#explain {
+  /* display: none; */
+  overflow-y: auto;
+  width: 100%; /* Match the width of the searchbox */
+  max-width: 600px; /* Match the max-width of the searchbox */
+  max-height: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  color: #222425
+  background-color: black;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box; /* Ensure padding doesn't affect the width */
+}
+
+#explain div {
+  border-bottom: 1px solid #ccc; 
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
 
 </style>
 ```
@@ -144,15 +174,8 @@ The **purpose-built platform** for model risk management teams to test, document
 <!-- Use Lunr.js as the search library -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 
-```{python}
-import os
-
-# Access the environment variable in Python
-api_key = os.getenv("OPENAI_API_KEY")
-
-# Check if the API key is loaded
-#print(api_key)
-```
+<!-- Use Pyodide with JavaScript, so help us all -->
+<!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js"></script> -->
 
 <!-- Enable ValidMind search functionality-->
 <script src="scripts/validsearch.js"></script>
@@ -163,13 +186,15 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 ::: {.w-40-ns}
 
-::: {.image-container}
+<!-- ::: {.image-container}
 ![](assets/img/platform-line-1.png){class="fade-img"}
 ![](assets/img/platform-line-2.png){class="fade-img"}
 ![](assets/img/platform-line-3.png){class="fade-img"}
 ![](assets/img/platform-line-4.png){class="fade-img"}
 ![](assets/img/platform-line-5.png){class="fade-img"}
-:::
+::: -->
+
+<div id="explain"></div> 
 
 :::
 
@@ -401,3 +426,4 @@ What's New?
 ::::
 
 :::
+
