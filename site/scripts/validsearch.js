@@ -59,8 +59,13 @@ async function fetchExplainResults(query) {
 
             const chunk = decoder.decode(value, { stream: true });
             const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+
             lines.forEach(line => {
-                const content = line.replace(/^data: /, '').trim();
+                let content = line.replace(/^data: /, '').trim();
+
+                // Fix spaces before punctuation
+                content = content.replace(/\s+([.,'()])/g, '$1');
+
                 if (content !== '[DONE]') {
                     result += content + ' ';
                 }
@@ -73,6 +78,7 @@ async function fetchExplainResults(query) {
         console.error("Error with fetching explanation:", error);
     }
 }
+
 
 // Clear the search input when the page loads
 window.onload = function() {
