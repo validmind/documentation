@@ -41,7 +41,6 @@ async function setupLunr() {
 
 // Clean out the text to make sure that words are actually, you know, words
 function cleanText(text) {
-    // Remove spaces before punctuation, fix hyphenation, and clean up parentheses
     return text
         .replace(/\s+([,.;!?()])/g, '$1')  // Remove space before punctuation
         .replace(/\(\s+/g, '(')  // Remove space after opening parenthesis
@@ -53,7 +52,6 @@ function cleanText(text) {
 
 // Prompt the user to hit Enter for more info
 function showToast() {
-    // console.log('Toast shown');
     const toast = document.getElementById('toast');
     const searchbox = document.getElementById('searchbox');
     
@@ -70,6 +68,7 @@ function showToast() {
 // Function to fetch and render streaming explanation
 async function fetchExplainResults(query) {
     const explainUrl = 'http://localhost:3333/explain-results';
+    const explainContainer = document.getElementById('explain');
 
     try {
         const response = await fetch(explainUrl, {
@@ -109,7 +108,7 @@ async function fetchExplainResults(query) {
                     }
 
                     // Update the explain div with the new content
-                    document.getElementById('explain').innerText = result.trim();
+                    explainContainer.innerText = result.trim();
 
                     // Clear the buffer after processing
                     buffer = '';
@@ -141,11 +140,9 @@ setupLunr().then(({ idx, searchData }) => {
         if (query === '') {
             hitsContainer.style.display = 'none';
             explainContainer.innerHTML = ''; // Clear the explain div content
-            explainContainer.style.display = 'none'; // Optionally hide the explain div
+            explainContainer.style.display = 'none'; // Hide the explain div
             return;
         }
-
-        explainContainer.style.display = 'block'; // Ensure explain div is visible when there is input
 
         // Perform a search with Lunr.js
         let lunrResults = idx.search(query);
@@ -181,7 +178,10 @@ setupLunr().then(({ idx, searchData }) => {
     document.getElementById('searchbox').addEventListener('keydown', async function (event) {
         if (event.key === 'Enter') {
             const query = document.getElementById('searchbox').value.trim();
+            const explainContainer = document.getElementById('explain');
+
             if (query) {
+                explainContainer.style.display = 'block';  // Only show when Enter is pressed
                 await fetchExplainResults(query);  // Trigger the explanation on Enter
             }
         }
