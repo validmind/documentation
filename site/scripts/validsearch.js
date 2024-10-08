@@ -47,6 +47,19 @@ function cleanText(text) {
         .trim();  // Trim any extra spaces
 }
 
+function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000); // Hide after 3 seconds
+}
+
+// Show the toast when a user starts typing in the searchbox
+document.getElementById('searchbox').addEventListener('input', function() {
+    showToast();
+});
+
 // Function to fetch and render streaming explanation
 async function fetchExplainResults(query) {
     const explainUrl = 'http://localhost:3333/explain-results';
