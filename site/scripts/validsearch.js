@@ -20,7 +20,7 @@ async function setupLunr() {
     const searchData = await loadSearchIndex();
 
     // Create Lunr.js index
-    const idx = lunr(function () {
+    const searchIndex = lunr(function () {
         this.ref('href');
         this.field('title', { boost: 10 });
         this.field('text', { boost: 5 });
@@ -36,7 +36,7 @@ async function setupLunr() {
         }, this);
     });
 
-    return { idx, searchData };
+    return { searchIndex, searchData };
 }
 
 // Clean out the text to make sure that words are actually, you know, words
@@ -128,7 +128,7 @@ window.onload = function() {
 };
 
 // Function to handle the search and display results
-setupLunr().then(({ idx, searchData }) => {
+setupLunr().then(({ searchIndex, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', async function (event) {
         const query = event.target.value.trim();
         const hitsContainer = document.getElementById('hits');
@@ -145,7 +145,7 @@ setupLunr().then(({ idx, searchData }) => {
         }
 
         // Perform a search with Lunr.js
-        let lunrResults = idx.search(query);
+        let lunrResults = searchIndex.search(query);
         lunrResults = lunrResults.slice(0, 20);
 
         if (lunrResults.length > 0) {
