@@ -3,6 +3,9 @@ title: "Manage model inventory fields"
 date: last-modified
 filters:
   - tachyons
+aliases:
+  - manage-inventory-custom-fields.html
+  - ../manage-inventory-custom-fields.html
 ---
 
 Create and edit the fields that appear on all models in your model inventory. Choose from an array of field types with different properties and use cases.
@@ -36,6 +39,9 @@ Create and edit the fields that appear on all models in your model inventory. Ch
 Single Line Text
 : Simple text value.
 
+Attachments
+: Upload supporting files for your model.[^3] Files must be less than 50 MB each in size.
+
 Long Text
 : Toggle **Enable rich text formatting** to create a template using the rich text editor.
 
@@ -58,13 +64,13 @@ Number
 
 ::: {.w-50-ns}
 
-![Simple number field type](number-simple.png){fig-alt="A screenshot showing a simple number field type"} 
+![Simple number field type](number-simple.png){fig-alt="A screenshot showing a simple number field type" class="screenshot"} 
 
 :::
 
 ::: {.w-40-ns}
 
-![Currency number field type](number-currency.png){fig-alt="A screenshot showing a currency number field type"}
+![Currency number field type](number-currency.png){fig-alt="A screenshot showing a currency number field type" class="screenshot"}
 
 :::
 
@@ -83,10 +89,36 @@ Email
 : Text value in valid email (`user@domain.com`) format.
 
 User
-: Select list pre-populated with users from your User Directory.[^3] 
+: Select list pre-populated with users from your User Directory.[^4] 
 
 Calculation
-: Define a `formula(params)` function that returns a value using the params dictionary, which includes selected custom field keys.
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+
+    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
+    2. Replace the demonstration formula with your own in the code box provided.
+    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
+
+::: {.callout title="Stick to basic operations."}
+Keep your code simple and avoid complex logic and imports.
+:::
+
+For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk: 
+
+![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" class="screenshot"}
+
+::: {.column-margin}
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+:::
 
 ## Delete inventory fields
 
@@ -111,4 +143,6 @@ Calculation
 
 [^2]: [Inventory field types](#inventory-field-types)
 
-[^3]: [Managing users](/guide/configuration/managing-users.qmd)
+[^3]: [Edit model inventory fields](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)
+
+[^4]: [Managing users](/guide/configuration/managing-users.qmd)
