@@ -1,3 +1,7 @@
+// Copyright © 2024 ValidMind Inc. All rights reserved.
+// See the LICENSE file in the root of this repository for details.
+// SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+
 // Fetch the local Algolia search index
 const SEARCH_INDEX_URL = 'search.json';
 
@@ -47,18 +51,21 @@ function cleanText(text) {
         .trim();  // Trim any extra spaces
 }
 
+// Prompt the user to hit Enter for more info
 function showToast() {
+    // console.log('Toast shown');
     const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000); // Hide after 3 seconds
+    const searchbox = document.getElementById('searchbox');
+    
+    // Listen to input events on the searchbox
+    searchbox.addEventListener('input', function () {
+        if (searchbox.value.trim() !== '') {
+            toast.classList.add('show');  // Show the toast when there is input
+        } else {
+            toast.classList.remove('show');  // Hide the toast if input is cleared
+        }
+    });
 }
-
-// Show the toast when a user starts typing in the searchbox
-document.getElementById('searchbox').addEventListener('input', function() {
-    showToast();
-});
 
 // Function to fetch and render streaming explanation
 async function fetchExplainResults(query) {
@@ -117,7 +124,8 @@ async function fetchExplainResults(query) {
 
 // Clear the search input when the page loads
 window.onload = function() {
-    document.getElementById('searchbox').value = '';  // Clear the search box input
+    document.getElementById('searchbox').value = ''; 
+    showToast();
 };
 
 // Function to handle the search and display results

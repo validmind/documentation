@@ -78,25 +78,53 @@ a:hover {
   background-color: #F9F9F9;
 }
 
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0; /* Ensure no extra margins */
+    padding: 0; /* Remove padding */
+}
+
 #searchbox {
-  max-width: 600px;
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+#toast {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    color: white;
+    padding-left: 10px; /* Padding to shift text */
+    text-align: left;
+    z-index: 1000;
+    font-weight: bold; /* Make the text bold for better visibility */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s ease;
+    background-color: transparent; /* Ensure no background color */
+    box-shadow: none; /* Remove any potential box shadows */
+    border: none; /* Remove any borders */
+}
+
+#toast.show {
+    opacity: 1; /* Show the text */
 }
 
 #hits {
-  display: none;
-  overflow-y: auto;
-  width: 100%; /* Match the width of the searchbox */
-  max-width: 600px; /* Match the max-width of the searchbox */
-  max-height: 400px;
-  margin: 20px auto;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+    display: none;
+    overflow-y: auto;
+    width: 100%; /* Match the width of the searchbox */
+    max-width: 600px;
+    max-height: 400px;
+    margin-top: 50px; /* Add margin to avoid overlap with the toast */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
 
 #hits div {
@@ -141,19 +169,7 @@ a:hover {
   padding: 5px;
   margin-bottom: 5px;
 } */
-#toast {
-  display: none; /* Hidden by default */gst
-  bottom: 10px;
-  left: 10px;
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1000;
-}
 
-#toast.show {
-  display: block; /* Show the toast */
 }
 </style>
 ```
@@ -180,16 +196,17 @@ The **purpose-built platform** for model risk management teams to test, document
 
 [ask a question]{.smallcaps}
 
-<!-- Add a search box to home page-->
-<input id="searchbox" placeholder="How do I ... ?">
+<!-- Add the search box, toast area, and  search hits area to home page-->
+<div class="search-wrapper">
+  <input id="searchbox" placeholder="How do I ... ?" />
+  <div id="toast" class="toast">Press Enter for more context.</div> <!-- Toast directly below search box -->
+</div>
 <div id="hits"></div>
-
-<div id="toast">Press Enter for more context</div>
 
 <!-- Use Lunr.js as the search library -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 
-<!-- Enable ValidMind search functionality-->
+<!-- Enable ValidMind search and explain functionality-->
 <script src="scripts/validsearch.js"></script>
 
 <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">quickstart</a> <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: #083E44;background: #EAF8FA;border-radius: 4px;margin-top: 40px; margin-left: 18px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #BBF1F8;" href="https://github.com/validmind/developer-framework/">open-source software</a>
@@ -198,13 +215,15 @@ The **purpose-built platform** for model risk management teams to test, document
 
 ::: {.w-40-ns}
 
-::: {.image-container}
+<!-- ::: {.image-container}
 ![](assets/img/platform-line-1.png)
 ![](assets/img/platform-line-2.png)
 ![](assets/img/platform-line-3.png)
 ![](assets/img/platform-line-4.png)
 ![](assets/img/platform-line-5.png)
-:::
+::: -->
+
+<div id="explain"></div>
 
 :::
 
@@ -382,10 +401,6 @@ Accelerate innovation, unlock advanced potential, and deploy with compliance.
 
 <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);"  href="https://validmind.com/contact/">request a demo</a>
 
-:::: {.pa2 .tc}
-<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);"  href="https://validmind.com/contact/">request a demo</a>
-::::
-::::
 :::
 
 ::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
@@ -448,12 +463,6 @@ Gain insights through our original content on model risk management.
 :::
 ::::
 
-:::: {.pt2 .tc}
-<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;margin-right: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="https://validmind.com/events/">find events</a>
-<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="https://validmind.com/blog/">read our blog</a>
-
-::::
-::::
 :::: 
 
 ::: -->
@@ -478,29 +487,7 @@ Gain insights through our original content on model risk management.
 </div>
 
 ::::
-:::: 
-:::
 
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-::::
-:::
-
-::: {.column-screen}
-
-<!-- RELEASES SECTION -->
-
-:::: {.flex .flex-wrap .justify-around .releases}
-
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-
-::: {.w-80-ns .mb4}
-
-:::: {.f2}
-What's New?
 :::: 
 
 ::: -->
