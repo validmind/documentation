@@ -1,6 +1,9 @@
 // Fetch the local Algolia search index
 const SEARCH_INDEX_URL = 'search.json';
 
+// Set to 'true' to disable cleaning up the streaming text
+let disableCleanText = true;  
+
 // Function to load search.json file and return it as a JavaScript object
 async function loadSearchIndex() {
     const response = await fetch(SEARCH_INDEX_URL);
@@ -32,7 +35,19 @@ async function setupLunr() {
     return { idx, searchData };
 }
 
-// Function to fetch the explanation from the backend
+// Clean out the text to make sure that words are actually, you know, words
+function cleanText(text) {
+    // Remove spaces before punctuation, fix hyphenation, and clean up parentheses
+    return text
+        .replace(/\s+([,.;!?()])/g, '$1')  // Remove space before punctuation
+        .replace(/\(\s+/g, '(')  // Remove space after opening parenthesis
+        .replace(/\s+\)/g, ')')  // Remove space before closing parenthesis
+        .replace(/\s+-\s+/g, '-')  // Remove spaces around hyphens
+        .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
+        .trim();  // Trim any extra spaces
+}
+
+// Function to fetch and render streaming explanation
 async function fetchExplainResults(query) {
     const explainUrl = 'http://localhost:3333/explain-results';
 
@@ -51,7 +66,8 @@ async function fetchExplainResults(query) {
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        let result = '';
+        let result = '';  // Initialize an empty string to store the final result
+        let buffer = '';  // Buffer to handle incomplete words
 
         while (true) {
             const { done, value } = await reader.read();
@@ -61,24 +77,30 @@ async function fetchExplainResults(query) {
             const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
 
             lines.forEach(line => {
-                let content = line.replace(/^data: /, '').trim();
-
-                // Fix spaces before punctuation
-                content = content.replace(/\s+([.,'()])/g, '$1');
-
+                const content = line.replace(/^data: /, '').trim();
                 if (content !== '[DONE]') {
-                    result += content + ' ';
+                    buffer += content;
+
+                    // Clean up the buffer text if cleanText is enabled
+                    if (!disableCleanText) {
+                        result += cleanText(buffer) + ' ';
+                    } else {
+                        result += buffer + ' ';  // Skip cleanText if disabled
+                    }
+
+                    // Update the explain div with the new content
+                    document.getElementById('explain').innerText = result.trim();
+
+                    // Clear the buffer after processing
+                    buffer = '';
                 }
             });
-
-            document.getElementById('explain').innerText = result.trim();
         }
 
     } catch (error) {
-        console.error("Error with fetching explanation:", error);
+        console.error("Error fetching explanation:", error);
     }
 }
-
 
 // Clear the search input when the page loads
 window.onload = function() {
