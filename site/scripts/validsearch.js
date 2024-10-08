@@ -1,7 +1,7 @@
 // Fetch the local Algolia search index
 const SEARCH_INDEX_URL = 'search.json';
 
-// Set to 'true' to disable cleaning up the streaming text
+// Set to 'true' to disable cleaning up the streaming text — should be disabled by default
 let disableCleanText = true;  
 
 // Function to load search.json file and return it as a JavaScript object
@@ -152,18 +152,14 @@ setupLunr().then(({ idx, searchData }) => {
             hitsContainer.style.display = 'none';
         }
     });
-});
 
-// Add the Explain button just below the search box
-const explainButton = document.createElement('button');
-explainButton.innerText = 'Explain';
-explainButton.style.marginTop = '10px';  // Add some margin
-document.getElementById('searchbox').insertAdjacentElement('afterend', explainButton);
-
-// Add event listener to the Explain button
-explainButton.addEventListener('click', async () => {
-    const query = document.getElementById('searchbox').value.trim();
-    if (query) {
-        await fetchExplainResults(query);
-    }
+    // Add event listener for hitting Enter to start explanation
+    document.getElementById('searchbox').addEventListener('keydown', async function (event) {
+        if (event.key === 'Enter') {
+            const query = document.getElementById('searchbox').value.trim();
+            if (query) {
+                await fetchExplainResults(query);  // Trigger the explanation on Enter
+            }
+        }
+    });
 });
