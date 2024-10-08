@@ -22,8 +22,8 @@ async function setupLunr() {
     // Create Lunr.js index
     const idx = lunr(function () {
         this.ref('href');
-        this.field('title');
-        this.field('text');
+        this.field('title', { boost: 10 });
+        this.field('text', { boost: 5 });
         this.field('section');
         this.field('crumbs');
 
