@@ -136,13 +136,16 @@ setupLunr().then(({ idx, searchData }) => {
         const explainContainer = document.getElementById('explain');
 
         hitsContainer.innerHTML = '';
-        explainContainer.innerHTML = '';
-
+        
+        // Clear the explain div when the input is empty
         if (query === '') {
             hitsContainer.style.display = 'none';
-            explainContainer.style.display = 'none';
+            explainContainer.innerHTML = ''; // Clear the explain div content
+            explainContainer.style.display = 'none'; // Optionally hide the explain div
             return;
         }
+
+        explainContainer.style.display = 'block'; // Ensure explain div is visible when there is input
 
         // Perform a search with Lunr.js
         let lunrResults = idx.search(query);
