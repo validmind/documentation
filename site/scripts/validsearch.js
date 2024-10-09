@@ -24,8 +24,8 @@ async function setupLunr() {
         this.ref('href');
         this.field('title', { boost: 10 });
         this.field('text', { boost: 5 });
-        this.field('section');
-        this.field('crumbs');
+        this.field('section', { boost: 0.5 });
+        this.field('crumbs', { boost: 0.2 });
 
         searchData.forEach(function (doc) {
             const modifiedDoc = {
@@ -144,8 +144,15 @@ setupLunr().then(({ searchIndex, searchData }) => {
             return;
         }
 
-        // Perform a search with Lunr.js
-        let lunrResults = searchIndex.search(query);
+        // Perform an exact match search first
+        let lunrResults = searchIndex.search(`"${query}"`);
+
+        // If no exact matches found, fall back to a regular search
+        if (lunrResults.length === 0) {
+            lunrResults = searchIndex.search(query);
+        }
+
+        // Ensure that you limit the results to the top 20 in both cases
         lunrResults = lunrResults.slice(0, 20);
 
         if (lunrResults.length > 0) {
