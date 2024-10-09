@@ -5,7 +5,7 @@
 // Fetch the local Algolia search index
 const SEARCH_INDEX_URL = 'search.json';
 
-// Set to 'true' to disable cleaning up the streaming text — should be disabled by default
+// Set to 'true' to disable cleaning up the streaming text (editing is done on the backend)
 let disableCleanText = true;  
 
 // Function to load search.json file and return it as a JavaScript object
@@ -39,7 +39,18 @@ async function setupLunr() {
     return { searchIndex, searchData };
 }
 
-// Clean out the text to make sure that words are actually, you know, words
+// Strip out text that can cause poor search ranking
+function sanitizeInput(input) {
+    let sanitized = input.toLowerCase(); // Convert to lowercase for consistent matching
+    sanitized = sanitized.replace(/^how do i\s+/, ''); // Remove common phrases like "how do I"
+
+    sanitized = sanitized.replace(/[?.!]/g, '');  // Remove punctuation marks like ? or !
+    sanitized = sanitized.trim(); // Trim any leading or trailing spaces
+
+    return sanitized;
+}
+
+// Clean up response text for minor tweaks, disabled by default (and major changes should be done on the backend)
 function cleanText(text) {
     return text
         .replace(/\s+([,.;!?()])/g, '$1')  // Remove space before punctuation
@@ -50,6 +61,7 @@ function cleanText(text) {
         .trim();  // Trim any extra spaces
 }
 
+
 // Prompt the user to hit Enter for more info
 function showToast() {
     const toast = document.getElementById('toast');
@@ -58,9 +70,9 @@ function showToast() {
     // Listen to input events on the searchbox
     searchbox.addEventListener('input', function () {
         if (searchbox.value.trim() !== '') {
-            toast.classList.add('show');  // Show the toast when there is input
+            toast.classList.add('show');
         } else {
-            toast.classList.remove('show');  // Hide the toast if input is cleared
+            toast.classList.remove('show');
         }
     });
 }
@@ -69,6 +81,8 @@ function showToast() {
 async function fetchExplainResults(query) {
     const explainUrl = 'http://localhost:3333/explain-results';
     const explainContainer = document.getElementById('explain');
+    
+    let buffer = '';  // Buffer to accumulate incoming HTML chunks
 
     try {
         const response = await fetch(explainUrl, {
@@ -85,35 +99,24 @@ async function fetchExplainResults(query) {
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        let result = '';  // Initialize an empty string to store the final result
-        let buffer = '';  // Buffer to handle incomplete words
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
 
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+            let chunk = decoder.decode(value, { stream: true });
+            
+            // Remove "data: " and "data: [DONE]"
+            chunk = chunk.replace(/data: /g, '').replace(/\[DONE\]/g, '');
 
-            lines.forEach(line => {
-                const content = line.replace(/^data: /, '').trim();
-                if (content !== '[DONE]') {
-                    buffer += content;
+            // Add the cleaned chunk to the buffer
+            buffer += chunk;
 
-                    // Clean up the buffer text if cleanText is enabled
-                    if (!disableCleanText) {
-                        result += cleanText(buffer) + ' ';
-                    } else {
-                        result += buffer + ' ';  // Skip cleanText if disabled
-                    }
+            // Append the cleaned HTML directly to the explainContainer
+            explainContainer.innerHTML += buffer;
 
-                    // Update the explain div with the new content
-                    explainContainer.innerText = result.trim();
-
-                    // Clear the buffer after processing
-                    buffer = '';
-                }
-            });
+            // Clear the buffer after appending
+            buffer = '';
         }
 
     } catch (error) {
@@ -130,17 +133,21 @@ window.onload = function() {
 // Function to handle the search and display results
 setupLunr().then(({ searchIndex, searchData }) => {
     document.getElementById('searchbox').addEventListener('input', async function (event) {
-        const query = event.target.value.trim();
+        let query = event.target.value.trim();
+        
+        // Sanitize the query
+        query = sanitizeInput(query);  // Call the sanitizeInput function here
+
         const hitsContainer = document.getElementById('hits');
         const explainContainer = document.getElementById('explain');
 
         hitsContainer.innerHTML = '';
-        
+
         // Clear the explain div when the input is empty
         if (query === '') {
             hitsContainer.style.display = 'none';
-            explainContainer.innerHTML = ''; // Clear the explain div content
-            explainContainer.style.display = 'none'; // Hide the explain div
+            explainContainer.innerHTML = '';
+            explainContainer.style.display = 'none';
             return;
         }
 
@@ -184,12 +191,16 @@ setupLunr().then(({ searchIndex, searchData }) => {
     // Add event listener for hitting Enter to start explanation
     document.getElementById('searchbox').addEventListener('keydown', async function (event) {
         if (event.key === 'Enter') {
-            const query = document.getElementById('searchbox').value.trim();
+            let query = document.getElementById('searchbox').value.trim();
+
+            // Sanitize the query before fetching the explanation
+            query = sanitizeInput(query);
+
             const explainContainer = document.getElementById('explain');
 
             if (query) {
-                explainContainer.style.display = 'block';  // Only show when Enter is pressed
-                await fetchExplainResults(query);  // Trigger the explanation on Enter
+                explainContainer.style.display = 'block';
+                await fetchExplainResults(query);
             }
         }
     });
