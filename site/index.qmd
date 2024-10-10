@@ -7,6 +7,50 @@ resources:
   - assets/**
 filters:
     - tachyons
+listing:
+  - id: admin
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - /guide/configuration/accessing-validmind.qmd
+    - /guide/configuration/managing-your-organization.qmd
+    - /guide/configuration/managing-users.qmd
+  - id: developer
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - /developer/get-started-developer-framework.qmd
+    - /developer/model-documentation/supported-models.qmd
+    - /developer/model-documentation/documenting-models.qmd
+  - id: validator
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - /guide/model-validation/preparing-validation-reports.qmd
+    - /guide/model-validation/working-with-model-findings.qmd
+    - /guide/model-validation/view-reports.qmd
+  - id: releases
+    type: grid
+    grid-columns: 3
+    max-description-length: 150
+    sort: false
+    fields: [title, description]
+    contents:
+      - 2024-sep-25/release-notes.qmd
+      - 2024-sep-09/release-notes.qmd
+      - 2024-aug-13/release-notes.qmd
+      - 2024-jul-22/release-notes.qmd
+      - 2024-jun-10/release-notes.qmd
+      - 2024-may-22/release-notes.qmd
 ---
 
 ```{=html}
@@ -21,6 +65,53 @@ a:hover {
   text-decoration: none;
 }
 
+.card:hover {
+  border: 1px solid #083E44;
+  background-color: #F9F9F9;
+}
+
+#searchbox {
+  max-width: 600px;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#hits {
+  display: none;
+  overflow-y: auto;
+  width: 100vw;
+  max-width: 800px;
+  max-height: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#hits div {
+  border-bottom: 1px solid #ccc; 
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+#hits div:hover {
+  background-color: #EAF8FA;   /* Light green background for the entire search result on hover */
+}
+
+#hits a strong {
+  color: #083E44;
+  text-decoration: none;
+}
+
+#hits a {
+  color: #222425;
+  text-decoration: none;
+}
+
 </style>
 ```
 
@@ -28,7 +119,7 @@ a:hover {
 
 <!-- INTRO BANNER -->
 
-:::: {.flex .flex-wrap .justify-around .hero-flex}
+:::: {.flex .flex-wrap .justify-around .hero}
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
@@ -36,34 +127,185 @@ a:hover {
 
 ::: {.w-30-ns .mr2 .mb4}
 
-:::: {.f6}
-Documentation
-:::: 
+<!-- :::: {.f1}
+<span style="color: #de257e">Valid</span>**Mind**
+::::  -->
 
-:::: {.f2}
-The guide to elevating your AI model risk workflow
+:::: {.f3}
+The **purpose-built platform** for model risk management teams to test, document, validate, and govern Generative AI, AI, and statistical models with speed and confidence.
 ::::
 
-Need help? Find all the information you need to use our platform for model risk management (AI model risk).
+[ask a question]{.smallcaps}
 
-<div class="sidebar-search">
-  <div id="quarto-search" class="type-textbox" title="Search">
+<!-- Add a search box to home page-->
+<input id="searchbox" placeholder="How do I ... ?">
+<div id="hits"></div>
 
-  </div>
-</div>
+<!-- Use Lunr.js as the search library -->
+<script src="https://unpkg.com/lunr/lunr.js"></script>
 
-<a class="btn btn-primary" role="button" style="padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">QuickStart</a>
+<!-- Enable ValidMind search functionality-->
+<script src="scripts/validsearch.js"></script>
+
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">quickstart</a> <a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: #083E44;background: #EAF8FA;border-radius: 4px;margin-top: 40px; margin-left: 18px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #BBF1F8;" href="https://github.com/validmind/developer-framework/">open-source software</a>
 
 :::
 
 ::: {.w-40-ns}
 
-![](assets/img/validmind-demo-screen.png){fig-alt="A decorative screenshot showing ValidMind"}
+::: {.image-container}
+![](assets/img/platform-line-1.png)
+![](assets/img/platform-line-2.png)
+![](assets/img/platform-line-3.png)
+![](assets/img/platform-line-4.png)
+![](assets/img/platform-line-5.png)
+:::
 
 :::
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+::::
+
+:::
+
+<!-- GET STARTED SECTION -->
+
+::: {.column-screen}
+
+:::: {.flex .flex-wrap .justify-around .get-started}
+
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+
+::: {.w-25-ns .mb4}
+
+:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow}
+
+
+![](assets/img/admin-diagram.png){height=250px}
+
+:::: {.ph4}
+
+:::: {.navy .f4}
+[administrators]{.smallcaps}
+::::
+
+:::{#admin}
+:::
+
+<div style="text-align: center;">
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="guide/guides.html">all user guides</a>
+</div>
+
+::::
+
+
+:::: 
+
+:::
+
+::: {.w-25-ns .mb4}
+
+:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow}
+
+
+![](assets/img/developer-diagram.png){height=250px}
+
+:::: {.ph4}
+
+:::: {.navy .f4}
+[model developers]{.smallcaps}
+::::
+
+:::{#developer}
+:::
+
+<div style="text-align: center;">
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="https://docs.validmind.ai/validmind/validmind.html">developer reference</a>
+</div>
+
+
+::::
+
+:::: 
+
+:::
+
+::: {.w-25-ns .mb4}
+
+:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow}
+
+
+![](assets/img/validator-diagram.png){height=250px}
+
+:::: {.ph4}
+
+:::: {.navy .f4}
+[model validators]{.smallcaps}
+::::
+
+:::{#validator}
+:::
+
+<div style="text-align: center;">
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="guide/model-validation/manage-validation-guidelines.html">validation guidelines</a>
+</div>
+
+::::
+
+:::: 
+
+:::
+
+
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+::::
+
+:::
+
+<!-- TRAINING SECTION -->
+
+::: {.column-page}
+
+
+:::: {.flex .flex-wrap .justify-around .training}
+
+
+:::: {.f2}
+![](about/ValidMind-logo-color.svg){height=50px} **Academy**
+:::: 
+
+:::: {.f4}
+Gain **hands-on experience** and explore what ValidMind has to offer with our interactive training environment.
+::::
+
+::: {.w-100-ns .content-center .mt2}
+
+<div style="text-align: center;">
+<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425;background: #DE257E;margin-left: 40px;margin-right: 40px">
+  <iframe src="/training/training-for-administrators.html" width="270" height="125" style="border:none; border-radius: 5px;"></iframe>
+  <a href="/training/training-for-administrators.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
+</div>
+<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425;background: #DE257E;margin-left: 40p;xmargin-right: 40px">
+  <iframe src="/training/training-for-model-developers.html" width="270" height="125" style="border:none; border-radius: 5px;"></iframe>
+  <a href="/training/training-for-model-developers.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
+</div>
+<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425;background: #DE257E;margin-left: 40px;margin-right: 40px">
+  <iframe src="/training/training-for-model-validators.html" width="270" height="125" style="border:none; border-radius: 5px;"></iframe>
+  <a href="/training/training-for-model-validators.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
+</div>
+</div>
+
+
+
 :::
 
 ::::
@@ -74,76 +316,122 @@ Need help? Find all the information you need to use our platform for model risk 
 
 ::: {.column-screen}
 
-:::: {.flex .flex-wrap .justify-around .overview-flex}
+:::: {.flex .flex-wrap .justify-around .overview}
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
 :::
 
-::: {.w-25-ns .mb4}
+::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
 
-## Overview
+![](assets/img/icon-trust.svg)
 
-Automating key aspects of the model risk management process, ValidMind is an AI model risk solution designed for the unique documentation and validation needs of model developers and validators.
-
-:::: {.navy}
-{{< fa check >}} Model Documentation Automation
-
-{{< fa check >}} AI Model Risk & Lifecycle Management
-
-{{< fa check >}} Communication & Tracking
+:::: {.f3}
+<span style="color: #de257e">Be</span>**Valid.**
 :::: 
 
-<a class="btn btn-primary" role="button" style="padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 20px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;border: 1px solid var(--bs-pink);" href="guide/guides.html">User Guides</a>
+:::: {.f4}
+Accelerate innovation, unlock advanced potential, and deploy with compliance.
+::::
+
+<!-- :::: {.navy .f4 .lh-copy}
+![](assets/img/bevalid-check.svg){width=20px} You can learn more about effective model risk management by **requesting a demo with ValidMind.**
+
+:::: -->
+
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);"  href="https://validmind.com/contact/">request a demo</a>
 
 :::
 
-::: {.w-25-ns .mb4}
+::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
+
+![](assets/img/icon-connect.svg)
+
+:::: {.f3}
+Events
+:::: 
+
+:::: {.f4}
+Connect with the ValidMind team at events for the model and AI risk community.
+::::
+
+<!-- :::: {.navy .f4 .lh-copy}
+![](assets/img/bevalid-check.svg){width=20px} You can learn more about effective model risk management by **requesting a demo with ValidMind.**
+
+:::: -->
+
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);"  href="https://validmind.com/events/">find events</a>
+
+:::
+
+::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
+
+![](assets/img/icon-automate.svg)
+
+:::: {.f3}
+Blog
+:::: 
+
+:::: {.f4}
+Gain insights through our original content on model risk management.
+::::
+
+<!-- :::: {.navy .f4 .lh-copy}
+![](assets/img/bevalid-check.svg){width=20px} You can learn more about effective model risk management by **requesting a demo with ValidMind.**
+
+:::: -->
+
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid var(--bs-pink);"  href="https://validmind.com/blog/">read our blog</a>
+
+:::
+
+
+<!-- ::: {.w-25-ns .mb4}
 
 :::: {.ba .b--black-10 .br3 .shadow-4 .h-100}
 
-
-![](assets/img/validmind-flowchart.png){fig-alt="A decorative stylized flowchart"}
+![](assets/img/hero-platform.png){.br3}
 
 :::: {.ph4}
 
 :::: {.navy .f4}
-Model Developers
+[about validmind]{.smallcaps}
 ::::
 
-Automate your model documentation and testing tasks within your native development environment with ValidMind.
 
-[Get started {{< fa hand-point-right >}}](developer/get-started-developer-framework.qmd)
-
+:::{#about}
+:::
 ::::
 
 :::: 
 
-:::
+::: -->
 
-::: {.w-25-ns .mb4}
+<!-- ::: {.w-25-ns .mb4}
 
 :::: {.ba .b--black-10 .br3 .shadow-4 .h-100}
 
-
-![](assets/img/validmind-validation.png){fig-alt="A decorative stylized checklist"}
+![](assets/img/hero-dots.png){.br3}
 
 :::: {.ph4}
 
 :::: {.navy .f4}
-Model Validators
+[connect with us]{.smallcaps}
 ::::
 
-Review and evaluate models and documentation to ensure they comply with organizational & regulatory requirements.
+:::{#community}
+:::
 
-[Get started {{< fa hand-point-right >}}](guide/model-validation/preparing-validation-reports.qmd)
+<div style="text-align: center;">
+<a class="btn btn-primary" role="button" style="font-variant: small-caps;padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 20px;line-height: 100%;border: 1px solid #083E44;" href="https://validmind.com/blog/">read our blog</a>  
+</div>
 
 ::::
 
 :::: 
 
+::: -->
 
-:::
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
@@ -154,31 +442,30 @@ Review and evaluate models and documentation to ensure they comply with organiza
 :::
 
 
-<!-- SUPPORT SECTION -->
+<!-- RELEASES SECTION -->
 
-::: {.column-page}
+::: {.column-screen}
 
-:::: {.flex .flex-wrap .justify-around .support-flex}
+:::: {.flex .flex-wrap .justify-around .releases}
 
-::: {.w-50-ns .mb4}
-
-## Support & Training
-
-You can learn more about effective model risk management by requesting a demo with ValidMind.
-
-::: {.callout}
-Need some help? Try our self-service documentation or email us at: [support@validmind.com](mailto:support@validmind.com)
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
 :::
 
-<a class="btn btn-secondary" role="button" style="padding: 12px;color: #083E44;background: transparent;border-radius: 4px;margin-top: 4px;margin-bottom: 14px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;margin-right: 18px;border: 1px solid #083E44;border-left-color: #083E44;" href="faq/faq.html">Frequently Asked Questions</a>
-<a class="btn btn-primary" role="button" style="padding: 12px;color: var(--bs-white);background: #083E44;border-radius: 4px;margin-top: 4px;margin-bottom: 14px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;border: 1px solid #083E44;" href="https://validmind.com/contact/">Request A Demo</a>
+::: {.w-80-ns .mb4}
+
+:::: {.f2}
+Latest Releases
+:::: 
+
+:::{#releases}
+:::
+
 
 :::
 
-::: {.w-40-ns .content-end}
-
-![](assets/img/validmind-support.png){fig-alt="A decorative stylized document"}
-
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
 :::
 
 ::::
