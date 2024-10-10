@@ -56,7 +56,7 @@ python-docs:
 	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
 		echo "\nUpdating Python documentation ..."; \
 		rm -f python-docs.zip; \
-		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip . > /dev/null ); \
+		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip ./* > /dev/null ); \
 	fi; \
 	echo "Copying Python documentation into docs site ..."; \
 	rm -rf $(DEST_DIR_PYTHON); \
