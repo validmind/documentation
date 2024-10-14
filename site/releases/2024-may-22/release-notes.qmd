@@ -2,7 +2,6 @@
 title: "May 22, 2024"
 filters:
   - tachyons
-fig-cap-location: top
 ---
 
 ## Release highlights
@@ -14,36 +13,34 @@ Labels: enhancement, highlight
 --->
 ### Introductory notebook for model developers
 
+Our new end-to-end notebook gives you a full introduction to the {{< var validmind.developer >}}. 
+
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-80-ns}
-
-Our new end-to-end notebook gives you a full introduction to the {{< var validmind.developer >}}. You can use this notebook to learn how the end-to-end documentation process works, based on common scenarios you encounter in model development settings. 
+::: {.w-40-ns}
+You can use this notebook to learn how the end-to-end documentation process works, based on common scenarios you encounter in model development settings. 
 
 :::
 
-::: {.w-20-ns .content-center}
+::: {.w-50-ns}
+
+**Try it on JupyterHub:**
 
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/intro_for_model_developers.ipynb" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">ValidMind Introduction for Model Developers</button>
 </form>
 
 :::
 
 ::::
 
-![](intro-for-developers-notebook.png){width=90% fig-alt="A screenshot showing the new introductory notebook for developers opened on JupyterHub" class="screenshot"}
+![New introductionary notebook for developers opened in JupyterHub](intro-for-developers-notebook.png){width=90% fig-alt="A screenshot showing the new introductory notebook for developers opened in JupyterHub" class="screenshot"}
 
 High level sections include:
 
 1. **Initializing the {{< var validmind.developer >}}** — The {{< var vm.developer >}} provides tools for documentation and testing, from dataset descriptions to model validation using various open-source frameworks.
-
-2. **Starting the model development process** — Access the test repository to use individual tests as building blocks for model development. Learn to run tests, analyze results, and add evidence to model documentation. 
-
-    See the full list of tests at [Test descriptions](/developer/model-testing/test-descriptions.qmd) or try the [Test sandbox](/developer/model-testing/test-sandbox.qmd).
-
+2. **Starting the model development process** — Access the test repository[^1] to use individual tests as building blocks for model development. Learn to run tests, analyze results, and add evidence to model documentation. 
 3. **Implementing custom tests** — Include custom tests in model documentation. Learn how to add these tests and use them as additional evidence.
-
 4. **Finalizing testing and documentation** — Ensure model documentation includes custom tests and configure settings for all tests in the template. By the end, you should have a fully documented model ready for review.
 
 <!---
@@ -53,7 +50,9 @@ Labels: enhancement, highlight
 --->
 ### Support for external models
 
-You can now run documentation tests without passing a Python-native model object. This change enables you to document:
+You can now run documentation tests without passing a Python-native model object. 
+
+**This change enables you to document:**
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -65,17 +64,22 @@ You can now run documentation tests without passing a Python-native model object
 
 :::
 
-::: {.w-30-ns .content-center}
+::: {.w-40-ns}
+
+**Read our developer reference:**
 
 <form method="get" action="https://docs.validmind.ai/validmind/validmind.html" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Read developer documentation</button>
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">ValidMind Developer Framework</button>
 </form>
 
 :::
 
 ::::
 
-To run tests for these models, you typically must load model predictions from a file, dataset, and so on. The new `init_model` interface does not enforce a Python model object anymore. You only need to pass `attributes` that describe the model which is required as a best practice for model documentation.
+To run tests for these models, you typically must load model predictions from a file, dataset, and so on. 
+
+- The new `init_model` interface does not enforce a Python model object anymore. 
+- You only need to pass `attributes` that describe the model which is required as a best practice for model documentation.
 
 #### Initializing an external model
 
@@ -104,7 +108,9 @@ vm_model = vm.init_model(
 
 #### Assigning predictions
 
-Since there's no model object available, the {{< var vm.developer >}} won't be able to call `model.predict()` or `model.predict_proba()`. You need to load predictions and probabilities manually. For example:
+Since there's no model object available, the {{< var vm.developer >}} won't be able to call `model.predict()` or `model.predict_proba()`; you need to load predictions and probabilities manually. 
+
+**For example:**
 
 ```python
 vm_train_ds.assign_predictions(
@@ -125,46 +131,50 @@ Labels: enhancement, highlight
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-80-ns}
+::: {.w-70-ns}
 
 We introduced a new `metric` decorator that turns any function into a ValidMind Test that you can use in your documentation. To learn what this decorator can do for you, try our code sample on JupyterHub!
 
 :::
 
-::: {.w-20-ns .content-center}
+::: {.w-30-ns}
+
+**Try it on JupyterHub:**
 
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/custom_tests/implement_custom_tests.ipynb" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Implement custom tests</button>
 </form>
 
 :::
 
 ::::
 
-Custom tests offer added flexibility. They allow you to extend the library of default tests provided by ValidMind which enables you to document any type of model or use case.
-
-This new decorator simplifies creating and using custom tests by almost completely eliminating the boilerplate code required to define and register a custom test.
+- Custom tests offer added flexibility. They allow you to extend the library of default tests provided by ValidMind which enables you to document any type of model or use case.
+- This new decorator simplifies creating and using custom tests by almost completely eliminating the boilerplate code required to define and register a custom test.
 
 <!---
 PR #668: New Documentation Overview Page
 URL: https://github.com/validmind/frontend/pull/668
 Labels: enhancement, design, highlight
 --->
-### Documentation overview page
+### New Document Overview
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-50-ns}
+::: {.w-40-ns}
 
-![](documentation-overview-page.png){fig-alt="A screenshot showing the new Document Overview page in the platform UI"class="screenshot"}
+Our new **Document Overview** is designed to help you find the information you need more quickly. 
+
+Now more distinct from the Model Details page, the new overview page provides easier navigation and enhanced data visualization to better understand the progress of the documentation stage.
+
+<form method="get" action="/guide/model-documentation/working-with-model-documentation.html#document-overview" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Document Overview</button>
+</form>
 
 :::
 
-::: {.w-40-ns}
-
-Our new documentation is designed to help you find the information you need more quickly. 
-
-Now more distinct from the Model Details page, the new overview page provides easier navigation and enhanced data visualization to better understand the progress of the documentation stage.
+::: {.w-50-ns}
+![New Document Overview page in the platform UI](documentation-overview-page.png){fig-alt="A screenshot showing the new Document Overview page in the platform UI"class="screenshot"}
 
 :::
 
@@ -195,13 +205,30 @@ Labels: enhancement, highlight
 --->
 ### Documentation outline page with conversations
 
-We created a new documentation outline page which replaces the existing model overview page. This page shows a section-by-section outline of your model's documentation:
+:::: {.flex .flex-wrap .justify-around}
 
-![](overview-conversations.png){width=80% fig-alt="A screenshot showing the new documentation outline page, with numbered model documentation sections from 1. to 3.4" class="screenshot"}
+::: {.w-60-ns}
+We created a new documentation outline page which replaces the existing model overview page. 
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="/guide/model-documentation/working-with-model-documentation.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Working with model documentation
+</button>
+</form>
+
+:::
+
+::::
+
+This page shows a section-by-section outline of your model's documentation:
+
+![New documentation outline page, with numbered model documentation sections from 1. to 3.4](overview-conversations.png){width=80% fig-alt="A screenshot showing the new documentation outline page, with numbered model documentation sections from 1. to 3.4" class="screenshot"}
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-40-ns}
+::: {.w-60-ns}
 
 It also includes a count of every unresolved conversation within each section. 
 
@@ -210,9 +237,9 @@ It also includes a count of every unresolved conversation within each section.
 
 :::
 
-::: {.w-50-ns}
+::: {.w-40-ns}
 
-![](unresolved-conversations.png){fig-alt="A screenshot showing four unresolved conversation between model developers or validator" class="screenshot"}
+![Four unresolved conversations preview](unresolved-conversations.png){fig-alt="A screenshot showing a preview of four unresolved conversations" class="screenshot"}
 
 :::
 
@@ -243,26 +270,31 @@ PR #643: [VALIDMIND-161] Add Business Units from the organization settings page
 URL: https://github.com/validmind/frontend/pull/643
 Labels: enhancement, servicerocket
 --->
-### Business unit and risk areas settings for organizations 
+### Business unit and risk areas settings
+
+We have introduced several updates to the Organization settings page, enabling you to manage business units and risk areas for your organization. 
 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-40-ns}
 
-We have introduced several updates to the Organization settings page, enabling you to manage business units and risk areas for your organization. 
-
-The following features are now available:
+**The following features are now available:**
 
 - Add or remove business units from your organization.
 - Remove business units from the organization settings page.
 - Remove risk areas from the organization settings page.
 - Add or remove risk areas from your organization.
 
+<form method="get" action="/guide/configuration/set-up-your-organization.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Set up your organization
+</button>
+</form>
+
 :::
 
 ::: {.w-50-ns}
 
-![](business-unit-risk-areas.gif){fig-alt="A gif showing new business unit and risk area settings for your organization" class="screenshot"}
+![New business unit and risk area settings for your organization](business-unit-risk-areas.gif){fig-alt="A gif showing new business unit and risk area settings for your organization" class="screenshot"}
 
 :::
 
@@ -276,12 +308,37 @@ Labels: highlight, servicerocket
 --->
 ### New documentation template editor
 
-This update allows you to edit documentation templates visually, eliminating the need to manually edit YAML files. Add, remove, and rename sections with the new editor.
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+- This update allows you to edit documentation templates visually, eliminating the need to manually edit YAML files. 
+- Add, remove, and rename sections with the new editor. 
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="/guide/model-documentation/customize-documentation-templates.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Customize documentation templates
+</button>
+</form>
+
+:::
+
+::::
+
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns}
 
 #### Enhanced template setting page
 
 - The edit button next to the version dropdown is now hidden.
 - A new edit button is displayed above the accordions. Clicking this button activates the edit mode for the accordion.
+
+:::
+
+::: {.w-60-ns}
 
 #### Edit mode functionality
 
@@ -289,6 +346,10 @@ This update allows you to edit documentation templates visually, eliminating the
 - You can edit section titles when the accordion is in edit mode.
 - You can insert new sections before or after an existing section or insert a sub-section.
 - You can remove sections, with a confirmation alert to ensure the action.
+
+:::
+
+::::
 
 This new visual editing interface streamlines the template editing process, making it more intuitive and user-friendly:
 
@@ -320,7 +381,7 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-40-ns}
+::: {.w-60-ns}
 
 We added support for two new VMDataset methods:
 
@@ -329,10 +390,12 @@ We added support for two new VMDataset methods:
 
 :::
 
-::: {.w-50-ns .content-center}
+::: {.w-40-ns .content-center}
+
+**Read our developer reference:**
 
 <form method="get" action="https://docs.validmind.ai/validmind/validmind.html" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Read developer documentation</button>
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">ValidMind Developer Framework</button>
 </form>
 
 :::
@@ -344,10 +407,30 @@ We added support for two new VMDataset methods:
 
 You can now register arbitrary extra columns in a dataset when a test needs to compute metrics outside of the existing sets of columns (features, targets, predictions). 
 
-For example, credit risk-related metrics may require access to a list of scores computed from predictions. In this case, an extra column called `scores` is needed for computing the metrics.
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- For example, credit risk-related metrics may require access to a list of scores computed from predictions. 
+- In this case, an extra column called `scores` is needed for computing the metrics.
+
+:::
+
+::: {.w-30-ns .content-center}
+
+<form method="get" action="/validmind/validmind/vm_models.html#VMDataset.add_extra_column" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">add_extra_column()</button>
+</form>
+
+:::
+
+::::
+
 
 **Example usage:**
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
 ```python
 # Init your dataset as usual
 vm_train_ds = vm.init_dataset(
@@ -363,6 +446,9 @@ scores = compute_my_scores(x_train)
 vm_train_ds.add_extra_column("scores", scores)
 ```
 
+:::
+
+::: {.w-40-ns}
 This function returns an error if no column values are passed:
 
 ```python
@@ -371,8 +457,15 @@ vm_train_ds.add_extra_column("scores")
 ValueError: Column values must be provided when the column doesn't exist in the dataset
 ```
 
+:::
+
+::::
+
 It's also possible to use `init_dataset` with a dataset that has precomputed scores, for example:
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
 ```python
 > train_df.columns
 Index(['CreditScore', 'Gender', 'Age', 'Tenure', 'Balance', 'NumOfProducts',
@@ -380,7 +473,9 @@ Index(['CreditScore', 'Gender', 'Age', 'Tenure', 'Balance', 'NumOfProducts',
        'Geography_France', 'Geography_Germany', 'Geography_Spain'],
       dtype='object')
 ```
+:::
 
+::: {.w-40-ns}
 ```python
 > train_df["my_scores"] = scores
 > train_df.columns
@@ -391,6 +486,13 @@ Index(['CreditScore', 'Gender', 'Age', 'Tenure', 'Balance', 'NumOfProducts',
       dtype='object')
 ```
 
+:::
+
+::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
 Make sure you set the `feature_columns` correctly:
 
 ```python
@@ -415,7 +517,9 @@ vm_train_ds = vm.init_dataset(
     target_column=customer_churn.target_column,
 )
 ```
+:::
 
+::: {.w-40-ns}
 Then, call `add_extra_column()` to register the extra column:
 
 ```python
@@ -423,15 +527,30 @@ Then, call `add_extra_column()` to register the extra column:
 Column my_scores exists in the dataset, registering as an extra column
 ```
 
+:::
+
+::::
+
+
 #### `get_extra_column()`
 
-You can use this inside a test to retrieve the extra column values. 
+:::: {.flex .flex-wrap .justify-around}
 
+::: {.w-30-ns}
+You can use this inside a test to retrieve the extra column values.
+
+:::
+
+::: {.w-60-ns}
 **Example usage:**
 
 ```python
 scores = self.inputs.dataset.get_extra_column("scores")
 ```
+
+:::
+
+::::
 
 <!---
 PR #18: John6797/sc 3412/ability to compose a test by combining
@@ -442,7 +561,8 @@ Labels: enhancement
 
 ValidMind now supports the ability to compose multiple Unit Tests into complex outputs.
 
-These composite tests can be logged as a single result that can be used as a content block in your documentation. The results from composite tests automatically update whenever you re-run the documentation test suite.
+- These composite tests can be logged as a single result that can be used as a content block in your documentation. 
+- The results from composite tests automatically update whenever you re-run the documentation test suite.
 
 <!---
 PR #76: [SC 4208] Define and implement required text data validation tests
@@ -470,16 +590,18 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-80-ns}
-
-Continuing our efforts to simplify the process for getting your custom code working in ValidMind, we now support functional tests for internal tests and test providers. Functional tests are tests that can be defined as pure functions without any boilerplate.
+::: {.w-60-ns}
+- Continuing our efforts to simplify the process for getting your custom code working in ValidMind, we now support functional tests for internal tests and test providers. 
+- Functional tests are tests that can be defined as pure functions without any boilerplate.
 
 :::
 
-::: {.w-20-ns .content-center}
+::: {.w-35-ns}
+
+**Try it on JupyterHub:**
 
 <form method="get" action="https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/custom_tests/integrate_external_test_providers.ipynb" target="_blank">
-   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Try it on JupyterHub</button>
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Integrate external test providers</button>
 </form>
 
 :::
@@ -772,9 +894,9 @@ You can now access the QuickStart directly from the **[homepage of our docs site
 
 #### New QuickStart video
 
-A new three-minute video walks you through documenting a model with ValidMind and is now included in the QuickStart for JupyterHub.
+A new three-minute video walks you through documenting a model with ValidMind and is now included in the QuickStart for JupyterHub:
 
-<iframe width="1120" height="630" src="https://www.youtube.com/embed/rIR8Mql7eGs?si=vnZA_zP4tAjFjI4r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
+<iframe width="900" height="410" src="https://www.youtube.com/embed/rIR8Mql7eGs?si=vnZA_zP4tAjFjI4r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
 
 <!---
 PR #173: First draft for sandbox instructions
@@ -789,9 +911,27 @@ The sandbox mimics a production environment. It includes comprehensive resources
 
 Most of our model documentation features are available for you to test in the sandbox. These include:
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
 - Automated model testing & documentation
 - Preparing model validation reports
 - Large language model (LLM) support
 
-These features provide a rich context for testing and evaluation. You can use realistic models and datasets without any risk to your production environment. [Learn more...](/training/training.qmd)
+These features provide a rich context for testing and evaluation. You can use realistic models and datasets without any risk to your production environment. 
+:::
+
+::: {.w-40-ns}
+::: {.callout title="Gain hands-on experience and explore what ValidMind has to offer with our training environment."}
+[Welcome to ValidMind Training {{< fa hand-point-right >}}](/training/training.qmd)
+:::
+
+:::
+
+::::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: See the full list of tests at [Test descriptions](/developer/model-testing/test-descriptions.qmd) or try the [Test sandbox](/developer/model-testing/test-sandbox.qmd).
 
