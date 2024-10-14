@@ -1,5 +1,7 @@
 ---
 title: "January 26, 2024"
+filters:
+  - tachyons
 ---
 
 ## Release highlights
@@ -10,11 +12,33 @@ This release includes numerous improvements to the {{< var vm.developer >}}, inc
 
 <!---[SC-2628] `init_model` improvements  by @AnilSorathiya in [#304](https://github.com/validmind/developer-framework/pull/304)--->
 
-#### Improvements to `init_model`
+#### Improvements to `init_model()`
 
-When initializing a model, you can now pass a dataset with pre-computed model predictions if they are available. By default, if no prediction column is specified when calling `init_model`, the {{< var validmind.developer >}} will compute the model predictions on the entire dataset.
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+
+- When initializing a model, you can now pass a dataset with pre-computed model predictions if they are available. 
+- By default, if no prediction column is specified when calling `init_model()`, the {{< var validmind.developer >}} will compute the model predictions on the entire dataset.
+
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/validmind/validmind.html#init_model" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">init_model()
+</button>
+</form>
+
+:::
+
+::::
 
 To illustrate how passing a dataset that includes a prediction column can help, consider the following example without a prediction column: 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
 
 ```python
 vm_model = vm.init_model(
@@ -24,16 +48,30 @@ vm_model = vm.init_model(
 )
 ```
 
-Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. This approach can be problematic with large datasets: `init_model` can simply take too long to compute.
+Internally, this example invokes the `predict()` method of the model for the training and test datasets when the model is initialized. 
 
-You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. If `init_model` detects this column, it will not generate model predictions at runtime. 
+This approach can be problematic with large datasets: `init_model` can simply take too long to compute.
+
+:::
+
+::: {.w-40-ns}
+
+You can now avoid this issue by providing a dataset with a column containing pre-computed predictions, similar to the following example. 
+
+If `init_model` detects this column, it will not generate model predictions at runtime. 
 
 |x1|x2|...|target_column|prediction_column|
 |-|-|-|-|-|
 |0.1|0.2|...|0|0|
 |0.2|0.4|1...|1|1|
 
-Usage example with a prediction column:
+
+:::
+
+::::
+
+::: {.column-margin}
+Usage example with a prediction column: 
 
 ```python
 vm.init_dataset(
@@ -45,15 +83,39 @@ vm.init_dataset(
     },
 )
 ```
+:::
+
 
 <!---[SC-2438] Support for adding feature columns parameter to init dataset by @juanmleng in [#279](https://github.com/validmind/developer-framework/pull/279)--->
-#### Improvements to `init_dataset`
+#### Improvements to `init_dataset()`
 
 When initializing a dataset, the new `feature_columns` argument lets you specify a list of feature names for prediction to improve efficiency. Internally, the function filters the dataset to retain only these specified features for prediction-related tasks, leaving the remaining dataset available for other purposes, such as segmentation. 
 
-This improvement replaces the existing behavior of `init_dataset`, which loaded the entire dataset, incorporating all available features for prediction tasks. While this approach worked well, it could impose limitations when generating segmented tests and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.
+:::: {.flex .flex-wrap .justify-around}
 
-Usage example:
+::: {.w-80-ns}
+
+- This improvement replaces the existing behavior of `init_dataset()`, which loaded the entire dataset, incorporating all available features for prediction tasks. 
+- While this approach worked well, it could impose limitations when generating segmented tests and proved somewhat inefficient with large datasets containing numerous features, of which only a small subset were relevant for prediction.
+
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/validmind/validmind.html#init_dataset" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">init_dataset()
+</button>
+</form>
+
+:::
+
+::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
+
+**Usage example:**
 
 ```python
 feature_columns = ['CreditScore', 'Age', 'Balance', 'NumOfProducts', 'EstimatedSalary']
@@ -65,19 +127,56 @@ vm_train_ds = vm.init_dataset(
 )
 ```
 
-A new notebook illustrates how you can configure these dataset features:
+:::
+
+::: {.w-50-ns}
+
+
+A new notebook illustrates how you can configure these dataset features: 
 
 - How to utilize the `feature_columns` parameter when initizalizing `validmind` datasets and model objects
 - How `feature_columns` can be used to report by segment
 
-Try it: [Configuring and Using Dataset Features](/notebooks/how_to/configure_dataset_features.ipynb)
+<form method="get" action="/notebooks/how_to/configure_dataset_features.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Configure dataset features
+</button>
+</form>
+
+:::
+
+::::
+
 
 <!---[SC-2707] Support for multiple sections in run_documentation_tests() by @juanmleng in [#307](https://github.com/validmind/developer-framework/pull/307)--->
 #### Improvements to `run_documentation_tests()`
 
-The `run_documentation_tests()` function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. This means that you no longer need to call the same function twice for two different sections, reducing the potential for errors and enabling you to use a single `config` object. The previous behavior was to allow running only one section at a time. This change maintains backward compatibility with the existing syntax, requiring no updates to your code.
+The `run_documentation_tests()` function, used to collect and run all the tests associated with a template, now supports running multiple sections at a time. 
 
-Existing example usage: Multiple function calls are needed to run multiple sections
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- This means that you no longer need to call the same function twice for two different sections, reducing the potential for errors and enabling you to use a single `config` object. 
+- The previous behavior was to allow running only one section at a time. 
+- This change maintains backward compatibility with the existing syntax, requiring no updates to your code.
+
+:::
+
+::: {.w-30-ns}
+
+
+<form method="get" action="/validmind/validmind.html#run_documentation_tests" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">run_documentation_tests()
+</button>
+</form>
+
+:::
+
+::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+**Existing example usage:** Multiple function calls are needed to run multiple sections.
 
 ```python
 full_suite = vm.run_documentation_tests(
@@ -101,7 +200,10 @@ full_suite = vm.run_documentation_tests(
 )
 ```
 
-New example usage: A single function call runs multiple sections
+:::
+
+::: {.w-40-ns}
+**New example usage:** A single function call runs multiple sections.
 
 ```python
 full_suite = vm.run_documentation_tests(
@@ -116,14 +218,24 @@ full_suite = vm.run_documentation_tests(
 )
 ```
 
-Try it: [Running Individual Documentation Sections](/notebooks/how_to/run_documentation_sections.ipynb)
+<form method="get" action="/notebooks/how_to/run_documentation_sections.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Run individual documentation sections
+</button>
+</form>
+
+:::
+
+::::
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
 #### Support for custom inputs
 
 The {{< var validmind.developer >}} now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. This support replaces the standard inputs `dataset`, `model`, and `models`, which are now deprecated.
 
-New recommended syntax for passing inputs:
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+**New recommended syntax for passing inputs:**
 
 ```python
 test_suite = vm.run_documentation_tests(
@@ -134,34 +246,58 @@ test_suite = vm.run_documentation_tests(
 )
 ```
 
+:::
+
+::: {.w-40-ns}
 <!---[SC-2770] Update code samples and how to notebooks to use test inputs by @juanmleng in [#313](https://github.com/validmind/developer-framework/pull/313)--->
 To make it easier for you to adopt custom inputs, we have updated our how-to notebooks and code samples to use the new recommended syntax:
 
-- How-to notebooks, including:
-  - [Integrate An External Test Provider](/notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb)
-  - [Configuring And Using Dataset Features](/notebooks/how_to/configure_dataset_features.ipynb)
-  <!-- - [Configure Parameters for a Specific Test](/notebooks/how_to/configure_test_parameters.ipynb)
-  - [Running an Individual Test](/notebooks/how_to/run_a_test.ipynb) -->
-<!---  - [Running an Individual Test Suite](/notebooks/how_to/run_a_test_suite.ipynb) --->
+<form method="get" action="/developer/samples-jupyter-notebooks.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Code samples
+</button>
+</form>
 
-- [Code samples](/developer/samples-jupyter-notebooks.qmd), including:
-  - NLP and LLM models
-  - Regression models
-  - Time series models
+:::
 
-Also check [Standard inputs are deprecated](#custom-input-legacy).
+::::
+
+::: {.callout title="Refer also to:"}
+[Standard inputs are deprecated](#custom-input-legacy)
+:::
 
 ## Enhancements
 
 <!---John6797/sc 2524/support for azure open ai api keys dev framework by @johnwalz97 in [#300](https://github.com/validmind/developer-framework/pull/300)--->
-- **Support for Azure OpenAI Service**. The {{< var validmind.developer >}} now supports running LLM-powered tests with the Azure OpenAI Service via API, in addition to the previously supported OpenAI API. To work with Azure OpenAI API endpoints, you need to set the following environment variables before calling `vm.init()`:
+#### Support for Azure OpenAI Service 
 
+The {{< var validmind.developer >}} now supports running LLM-powered tests with the Azure OpenAI Service via API, in addition to the previously supported OpenAI API. 
+
+To work with Azure OpenAI API endpoints, you need to set the following environment variables before calling `init()`:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
   - `AZURE_OPENAI_KEY`: API key for authentication
   - `AZURE_OPENAI_ENDPOINT`: API endpoint URL
   - `AZURE_OPENAI_MODEL`: Specifies the language model or service to use
   - `AZURE_OPENAI_VERSION` (optional): Allows specifying a specific version of the service if available
 
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/validmind/validmind.html#init" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">init()
+</button>
+</form>
+
+:::
+
+::::
+
+::: {.column-margin}
 To learn more about configuring Azure OpenAI Service, see [Authentication](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints#authentication) in the official Microsoft documentation.
+:::
 
 <!---R package plus corresponding RMarkdown updates for tighter integration by @erichare in [#265](https://github.com/validmind/developer-framework/pull/265)--->
 <!---- **R package plus corresponding RMarkdown updates for tighter integration**. Coming soon--->
@@ -174,57 +310,85 @@ To learn more about configuring Azure OpenAI Service, see [Authentication](https
 ## Bug fixes
 
 <!---Fix support for openai >=1.0 by @cachafla in [#311](https://github.com/validmind/developer-framework/pull/311)--->
-- **Fixed support for OpenAI library >=1.0**. We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for `openai >= 1.0.0`. Previously, some notebooks were using an older version of the OpenAI client API.
+####  Fixed support for OpenAI library >=1.0
+- We have updated our demonstration notebooks for large language models (LLMs) to provide the correct support for `openai >= 1.0.0`. 
+- Previously, some notebooks were using an older version of the OpenAI client API.
 
 ## Deprecations
 
 <!---feat: [sc-2468] Allow arbitrary test context (V2) by @johnwalz97 in [#312](https://github.com/validmind/developer-framework/pull/312)--->
-- <span id="custom-input-legacy"> **Standard inputs are deprecated**.</span> The {{< var validmind.developer >}} now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release. If you are a developer, you should update your code to use the new, recommended syntax.
+#### <span id="custom-input-legacy">Standard inputs are deprecated</span> 
 
-  Deprecated legacy usage for passing inputs:
+The {{< var validmind.developer >}} now supports passing custom inputs as an `inputs` dictionary when running individual tests or test suites. 
 
-  ```python
+- As a result, the standard inputs `dataset`, `model`, and `models` are deprecated and might be removed in a future release.
+- You should update your code to use the new, recommended syntax.
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
+**Deprecated legacy usage for passing inputs:**
+
+```python
   test_suite = vm.run_documentation_tests(
       dataset=vm_dataset,
       model=vm_model
   )
-  ```
+```
 
-  New recommended usage for passing inputs:
+:::
 
-  ```python
+::: {.w-50-ns}
+**New recommended usage for passing inputs:**
+
+```python
   test_suite = vm.run_documentation_tests(
       inputs={
           "dataset": vm_dataset,
           "model": vm_model,
       },
   )
-  ```
+```
 
-  Also check [Support for custom inputs](#support-for-custom-inputs).
+:::
+
+::::
+
+::: {.callout title="Refer also to:"}
+[Support for custom inputs](#support-for-custom-inputs)
+:::
 
 <!---[SC-2771] Remove deprecated high level api methods by @juanmleng in [#310](https://github.com/validmind/developer-framework/pull/310)--->
-- **Removed deprecated high-level API methods**: The API methods `run_template` and `run_test_plan` had been deprecated previously. They have now been removed from the {{< var validmind.developer >}}.
+#### Removed deprecated high-level API methods
 
-  If you are a developer, you should update your code to use the recommended high-level API methods:
+The API methods `run_template` and `run_test_plan` had been deprecated previously. They have now been removed from the {{< var validmind.developer >}}.
 
-  - `run_template` (removed): Use [`vm.run_documentation_tests`](https://docs.validmind.ai/validmind/validmind.html#run_documentation_tests)
-  - `run_test_plan` (removed) : Use [`vm.run_test_suite`](https://docs.validmind.ai/validmind/validmind.html#run_test_suite)
+You'll need to update your code to use the recommended high-level API methods:
+
+  - **`run_template` (removed):** Use [`run_documentation_tests()`](https://docs.validmind.ai/validmind/validmind.html#run_documentation_tests)
+  - **`run_test_plan` (removed):** Use [`run_test_suite()`](https://docs.validmind.ai/validmind/validmind.html#run_test_suite)
 
 ## User guide
 
-**Updated Python requirements**. We have updated our user guide to clarify the Python versions supported by the {{< var validmind.developer >}}. We now support **Python {{< var version.python >}}**. 
+#### Updated Python requirements
+
+- We have updated our user guide to clarify the Python versions supported by the {{< var validmind.developer >}}. 
+- We now support **Python {{< var version.python >}}**. 
 
 ## How to upgrade
 
-To access the latest version of the [{{< var validmind.platform >}}](http://app.prod.validmind.ai/), reload your browser tab.
+#### {{< var validmind.platform >}}
+
+To access the latest version of the [{{< var validmind.platform >}}](/guide/configuration/log-in-to-validmind.qmd), reload your browser tab.
+
+#### {{< var validmind.developer >}}
 
 To upgrade the {{< var validmind.developer >}}:
 
 - [Using JupyterHub](/get-started/developer/try-with-jupyterhub.qmd): Reload your browser tab and re-run the `%pip install --upgrade validmind` cell.
 
 - [In your own developer environment](/developer/model-documentation/install-and-initialize-client-library.qmd): Restart your notebook and re-run:
-
+    
     ```python
     %pip install validmind
     ```
