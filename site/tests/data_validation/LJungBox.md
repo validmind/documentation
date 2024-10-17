@@ -11,11 +11,11 @@ forecasting.
 
 ### Test Mechanism
 
-The test operates by iterating over each feature within the training dataset and applying the `acorr_ljungbox`
+The test operates by iterating over each feature within the dataset and applying the `acorr_ljungbox`
 function from the `statsmodels.stats.diagnostic` library. This function calculates the Ljung-Box statistic and
-p-value for each feature. These results are then stored in a dictionary where the keys are the feature names and
-the values are dictionaries containing the statistic and p-value respectively. Generally, a lower p-value indicates
-a higher likelihood of significant autocorrelations within the feature.
+p-value for each feature. These results are then stored in a pandas DataFrame where the columns are the feature names,
+statistic, and p-value respectively. Generally, a lower p-value indicates a higher likelihood of significant
+autocorrelations within the feature.
 
 ### Signs of High Risk
 
@@ -32,7 +32,6 @@ a higher likelihood of significant autocorrelations within the feature.
 ### Limitations
 
 - Cannot detect all types of non-linearity or complex interrelationships among variables.
-- Testing individual features may not fully encapsulate the dynamics of the data if features interact with each
-other.
+- Testing individual features may not fully encapsulate the dynamics of the data if features interact with each other.
 - Designed more for traditional statistical models and may not be fully compatible with certain types of complex
 machine learning models.
