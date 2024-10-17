@@ -1,5 +1,7 @@
 ---
 title: "October 25, 2023"
+filters:
+  - tachyons
 ---
 
 ## Release highlights
@@ -60,13 +62,30 @@ This notebook serves as a guide for modifying configuration and parameters withi
 <!---Feature: Remove block from documentation by @gtagle in [#467](https://github.com/validmind/frontend/pull/467)--->
 #### Remove blocks from documentation
 
-You can now remove blocks of text or test-related content from model documentation in the editor of the {{< var vm.platform >}}. This new feature gives you more control over your documentation and enables you to remove content that is no longer needed.
+:::: {.flex .flex-wrap .justify-around}
 
-![](/guide/model-documentation/remove-test-driven-block.gif){width=80% fig-alt="A gif showcasing the process of removing a test-driven block" class="screenshot"}
+::: {.w-40-ns}
+You can now remove blocks of text or test-related content from model documentation in the editor of the {{< var vm.platform >}}. 
 
-To remove text blocks and test-driven blocks from model documentation, you first select the block you want to remove and click {{< fa trash-can >}}, either in the text-block's toolbar or in the test-driven's block single-button toolbar:
+- This new feature gives you more control over your documentation and enables you to remove content that is no longer needed.
+- To remove text blocks and test-driven blocks from model documentation, you first select the block you want to remove and click {{< fa trash-can >}}, either in the text-block's toolbar or in the test-driven's block single-button toolbar.
 
-[Try it ...](/guide/model-documentation/work-with-content-blocks.qmd#remove-content-blocks)
+<form method="get" action="/guide/model-documentation/work-with-content-blocks.html#remove-content-blocks" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Remove content blocks
+</button>
+</form>
+
+:::
+
+::: {.w-50-ns}
+
+![Removing a test-driven block](/guide/model-documentation/remove-test-driven-block.gif){fig-alt="A gif showcasing the process of removing a test-driven block" class="screenshot"}
+
+:::
+
+::::
+
+
 
 <!--- NR I don't think we have any user-facing docs for this feature ... 
   [Try it ...]()--->
@@ -76,66 +95,169 @@ To remove text blocks and test-driven blocks from model documentation, you first
 
 A new **{{< fa gear >}} Settings** landing page now organizes more of your settings for the ValidMind platform in one convenient place.
 
-![New Settings page](settings-page.png){width=80% fig-alt="A screenshot showing the new platform UI settings page" class="screenshot"}
+:::: {.flex .flex-wrap .justify-around}
 
+::: {.w-40-ns}
 From this page you can manage:
 
 - Your organization, including the name and the API and secret key you use to connect to the ValidMind platform.
 - The documentation templates that standardize the documentation table of contents for your projects and configure the required validation tests for specific model use cases.
 - Workflows that determine the statuses of your model and how it transitions through your model risk management process according to your requirements.
 
-[Try it ...](https://app.dev.vm.validmind.ai/settings/)
+:::
+
+::: {.w-50-ns}
+
+![New Settings page](settings-page.png){fig-alt="A screenshot showing the new platform UI settings page" class="screenshot"}
+
+:::
+
+::::
+
 
 ## Enhancements
 
 <!---[SC-2346] Rouge and Bert score tests should show average scores by @juanmleng in [#263](https://github.com/validmind/developer-framework/pull/263)--->
-- **Rouge and Bert Score tests now show average scores**: Introduced `RougeMetricsAggregate` and `BertScoreAggregate` to offer a high-level overview of model performance across a large number of text rows. These tests complement the detailed row-by-row analysis provided by `RougeMetrics` and `BertScore`.
+#### Rouge and Bert Score tests now show average scores
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+- Introduced `RougeMetricsAggregate` and `BertScoreAggregate` to offer a high-level overview of model performance across a large number of text rows. 
+- These tests complement the detailed row-by-row analysis provided by `RougeScore` and `BertScore`.
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/tests/model_validation/RougeScore.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">RougeScore
+</button>
+</form>
+
+
+<form method="get" action="/tests/model_validation/BertScore.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">BertScore
+</button>
+</form>
+
+:::
+
+::::
+
 <!--- NR this notebook is not currently included in our docs site:
 Tested these metrics running `foundational_models_summarization_high_code.ipynb` --->
 
 <!---[SC-2143] Tests for safety toxicity and bias in text summarization by @juanmleng in [#258](https://github.com/validmind/developer-framework/pull/258)--->
-- **Added tests for safety toxicity and bias in text summarization**. We introduced several new tests to evaluate safety and bias risks in text summarization:
-  
-  - `ToxicityScore`: Measures safety risk
-  - `ToxicityHistogram`: Provides a distribution of safety risk scores
-  - `RegardScore`: Evaluates bias risk
-  - `RegardHistogram`: Shows distribution of bias risk scores
+#### Tests for safety toxicity and bias in text summarization
+
+We introduced several new tests to evaluate safety and bias risks in text summarization:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- `ToxicityScore`: Measures safety risk
+- `ToxicityHistogram`: Provides a distribution of safety risk scores
+- `RegardScore`: Evaluates bias risk
+- `RegardHistogram`: Shows distribution of bias risk scores
+
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/tests/model_validation/ToxicityScore.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">ToxicityScore
+</button>
+</form>
+
+<form method="get" action="/tests/model_validation/RegardScore.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">RegardScore
+</button>
+</form>
+
+:::
+
+::::
+
 <!--- NR this notebook is not currently included in our docs site:
 To test these metrics, see notebook `foundation_models_summarization_bias.ipynb`---> 
 
 ## Bug fixes
 
 <!---[SC-2303] Shap test issue resolved by @juanmleng in [#262](https://github.com/validmind/developer-framework/pull/262)--->
-- **Shap test issue resolved**. - We set `matplotlib` to version `3.7.x` in `pyproject.toml` to fix an incompatibility with the latest `matplotlib` version (`3.8.0`). This incompatibility was causing SHAP plot errors. We will keep track of `matplotlib` releases for future updates. Once fixed, we will consider updating the version. 
+#### Shap test issue resolved
+- We set `matplotlib` to version `3.7.x` in `pyproject.toml` to fix an incompatibility with the latest `matplotlib` version (`3.8.0`). 
+- This incompatibility was causing SHAP plot errors. We will keep track of `matplotlib` releases for future updates. Once fixed, we will consider updating the version. 
 
 ## Documentation updates
 
 <!---Platform overview rewrite by @nrichers in [#138](https://github.com/validmind/documentation/pull/138)--->
-- **Platform overview rewrite**. We expanded our platform overview to provide more background information about what ValidMind offers and how we enable you to comply with policies and regulations such as SR 11-7 and SS1/23. [Try it ...](/about/overview.qmd)
+#### Platform overview rewrite
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+We expanded our platform overview to provide more background information about what ValidMind offers and how we enable you to comply with policies and regulations such as SR 11-7 and SS1/23. 
+
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/about/overview.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">About ValidMind
+</button>
+</form>
+
+:::
+
+::::
+
 
 <!---QuickStart updates for the closed beta by @nrichers in [#141](https://github.com/validmind/documentation/pull/141)--->
-- **QuickStart updates for the closed beta**. We updated the QuickStart section of our documentation to reflect recent UI and sign-up flow changes. [Try it ...](/get-started/quickstart.qmd)
+#### QuickStart updates for the closed beta
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+We updated the QuickStart section of our documentation to reflect recent UI and sign-up flow changes. 
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/get-started/quickstart.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">QuickStart
+</button>
+</form>
+
+:::
+
+::::
+
+
 
 <!---John6797/sc 2211/update test descriptions by @johnwalz97 in [#244](https://github.com/validmind/developer-framework/pull/244)
 - **John6797/sc 2211/update test descriptions**. Add full markdown descriptions to all tests
 --->
 
 <!--- Rework how we include notebooks in our docs site [#139](https://github.com/validmind/documentation/pull/139)--->
-- **Improved handling of Jupyter Notebooks for code samples and testing how-to content**. We now programmatically embed these notebooks in our documentation site and generate a downloadable `notebooks.zip` file with all notebooks and supporting datasets. Try it:
-  
-  - [Code samples](/developer/samples-jupyter-notebooks.qmd)
-  - [Tests and test suites](/developer/model-testing/testing-overview.qmd)
+#### Improved handling of Jupyter Notebooks
 
-## How to upgrade
+We now programmatically embed our Jupyter Notebooks in our documentation site and generate a downloadable `notebooks.zip` file with all notebooks and supporting datasets. 
 
-To access the latest version of the [{{< var validmind.platform >}}](http://app.prod.validmind.ai/), reload your browser tab.
+:::: {.flex .flex-wrap .justify-around}
 
-To upgrade the {{< var validmind.developer >}}:
+::: {.w-30-ns}
+<form method="get" action="/developer/samples-jupyter-notebooks.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Code samples
+</button>
+</form>
+:::
 
-- [Using JupyterHub](/get-started/developer/try-with-jupyterhub.qmd): Reload your browser tab and re-run the `%pip install --upgrade validmind` cell.
+::: {.w-30-ns}
+<form method="get" action="/developer/model-testing/testing-overview.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Run tests and test suites
+</button>
+</form>
 
-- [In your own developer environment](/developer/model-documentation/install-and-initialize-client-library.qmd): Restart your notebook and re-run:
-  
-  ```python
-  %pip install validmind
-  ```
+:::
+
+::::
+
+{{< include /releases/_how-to-upgrade.qmd >}}
