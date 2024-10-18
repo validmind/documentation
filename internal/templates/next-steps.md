@@ -1,10 +1,10 @@
 ## Next steps
 
-You can look at the output produced by the {{< var validmind.developer >}} right in the notebook where you ran the code, as you would expect. But there is a better way: use the ValidMind platform to work with your model documentation.
+You can look at the output produced by the {{< var validmind.developer >}} right in the notebook where you ran the code, as you would expect. But there is a better way: use the ValidMind Platform to work with your model documentation.
 
 ### Work with your model documentation
 
-1. From the [**Model Inventory**](https://app.prod.validmind.ai/model-inventory) in the ValidMind Platform UI, go to the model you registered earlier.
+1. From the [**Model Inventory**](https://app.prod.validmind.ai/model-inventory) in the {{< var validmind.platform >}}, go to the model you registered earlier.
 
 2. Click and expand the **Model Development** section.
 

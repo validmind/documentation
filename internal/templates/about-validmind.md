@@ -1,6 +1,6 @@
 ## About ValidMind
 
-ValidMind is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the ValidMind AI Risk Platform UI to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
+ValidMind is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the ValidMind Platform to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
 
 ### Before you begin
 
