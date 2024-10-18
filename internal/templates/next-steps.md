@@ -1,6 +1,6 @@
 ## Next steps
 
-You can look at the output produced by the ValidMind Developer Framework right in the notebook where you ran the code, as you would expect. But there is a better way: use the ValidMind platform to work with your model documentation.
+You can look at the output produced by the {{< var validmind.developer >}} right in the notebook where you ran the code, as you would expect. But there is a better way: use the ValidMind platform to work with your model documentation.
 
 ### Work with your model documentation
 

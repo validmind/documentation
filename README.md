@@ -8,9 +8,9 @@ This is the home for the user-facing documentation and related infrastructure fo
 
 We believe in the power of collaboration and welcome contributions from the community. If you've noticed an issue or have ideas for improvement, please create a pull request or submit an issue. A member of ValidMind's documentation team will review your suggestions and support you in contributing to the docs. 
 
-- Follow the [Quickstart](https://docs.validmind.ai/get-started/developer/try-with-jupyterhub.html) for a 15-minute introduction to the Developer Framework and ValidMind Platform.
+- Follow the [Quickstart](https://docs.validmind.ai/get-started/developer/try-with-jupyterhub.html) for a 15-minute introduction to the ValidMind Library and ValidMind Platform.
 
-- Read the [Developer Framework docs](https://docs.validmind.ai/developer/get-started-developer-framework.html) for more information about ValidMind's open source tests and Jupyter notebooks.
+- Read the [ValidMind Library docs](https://docs.validmind.ai/developer/get-started-developer-framework.html) for more information about ValidMind's open source tests and Jupyter notebooks.
 
 - Join the [Community Slack](https://docs.validmind.ai/about/contributing/join-community.html) to ask questions, get support, and connect with Model Risk Management (MRM) practioners.
 

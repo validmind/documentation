@@ -1,6 +1,6 @@
 ## About ValidMind
 
-ValidMind is a platform for managing model risk, including risk associated with AI and statistical models. You use the ValidMind Developer Framework to automate documentation and validation tests, and then use the ValidMind AI Risk Platform UI to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
+ValidMind is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the ValidMind AI Risk Platform UI to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
 
 ### Before you begin
 
@@ -10,7 +10,7 @@ If you encounter errors due to missing modules in your Python environment, insta
 
 ### New to ValidMind?
 
-If you haven't already seen our [Get started with the ValidMind Developer Framework](https://docs.validmind.ai/guide/get-started-developer-framework.html), we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.
+If you haven't already seen our [Get started with the {{< var validmind.developer >}}](https://docs.validmind.ai/guide/get-started-developer-framework.html), we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.
 
 ::: {.callout-tip}
 
@@ -26,7 +26,7 @@ Signing up is FREE — {{< var link.register >}}
 
 **Documentation template**: Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.
 
-**Tests**: A function contained in the ValidMind Developer Framework, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.
+**Tests**: A function contained in the {{< var validmind.developer >}}, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.
 
 **Metrics**: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.
 
