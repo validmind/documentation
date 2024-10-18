@@ -10,7 +10,7 @@ We believe in the power of collaboration and welcome contributions from the comm
 
 - Follow the [Quickstart](https://docs.validmind.ai/get-started/developer/try-with-jupyterhub.html) for a 15-minute introduction to the ValidMind Library and ValidMind Platform.
 
-- Read the [ValidMind Library docs](https://docs.validmind.ai/developer/get-started-developer-framework.html) for more information about ValidMind's open source tests and Jupyter notebooks.
+- Read the [ValidMind Library docs](https://docs.validmind.ai/developer/get-started-validmind-library.html) for more information about ValidMind's open source tests and Jupyter notebooks.
 
 - Join the [Community Slack](https://docs.validmind.ai/about/contributing/join-community.html) to ask questions, get support, and connect with Model Risk Management (MRM) practioners.
 

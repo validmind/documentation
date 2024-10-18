@@ -10,7 +10,7 @@ If you encounter errors due to missing modules in your Python environment, insta
 
 ### New to ValidMind?
 
-If you haven't already seen our [Get started with the {{< var validmind.developer >}}](https://docs.validmind.ai/guide/get-started-developer-framework.html), we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.
+If you haven't already seen our [Get started with the {{< var validmind.developer >}}](https://docs.validmind.ai/guide/get-started-validmind-library.html), we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.
 
 ::: {.callout-tip}
 
@@ -32,7 +32,7 @@ Signing up is FREE — {{< var link.register >}}
 
 **Custom metrics**: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.
 
-**Inputs**: Objects to be evaluated and documented in the ValidMind framework. They can be any of the following:
+**Inputs**: Objects to be evaluated and documented in the ValidMind Library. They can be any of the following:
 
   - **model**: A single model that has been initialized in ValidMind with [`vm.init_model()`](https://docs.validmind.ai/validmind/validmind.html#init_model).
   - **dataset**: Single dataset that has been initialized in ValidMind with [`vm.init_dataset()`](https://docs.validmind.ai/validmind/validmind.html#init_dataset).
