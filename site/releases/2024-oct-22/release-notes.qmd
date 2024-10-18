@@ -9,9 +9,7 @@ PR #272: Add monitoring section to user guides
 URL: https://github.com/validmind/documentation/pull/272
 Labels: documentation, highlight
 --->
-### Add monitoring section to user guides
-
-Monitoring
+### Support for ongoing monitoring
 
 Monitoring is a critical component of model risk management, as emphasized in regulations such as `SR_11-7`, `SS1/23`, and `E-24`. With this release of ValidMind, we officially support ongoing monitoring. You can enable this for both existing and new models.
 
@@ -26,31 +24,19 @@ Scenarios where ongoing monitoring is warranted:
 As your code runs, the monitoring template for your model automatically populates with data. It provides a comprehensive view of your model's performance over time. You access and examine these results within the ValidMind Platform UI. This allows you to identify any deviations from expected performance and take corrective actions as needed.
 
 [Learn more...](../../guide/monitoring/ongoing-monitoring.qmd)
- 
-Generated PR summary: 
- 
-This update introduces significant enhancements to the documentation by adding a comprehensive section on monitoring capabilities. The new 'Monitoring' section includes detailed guides on how to enable monitoring for models and review ongoing monitoring results in the ValidMind Platform UI. Instructions are provided for adding `monitoring=True` to code snippets and selecting a monitoring template, along with steps to access and review results. 
-
-The glossary now features new terms related to monitoring, with definitions for concepts like backtesting, model drift, model performance, ongoing monitoring, recalibrating models, and reporting and governance. To aid visual understanding, images and examples of monitoring results have been added.
-
-In the test descriptions section, updates include ongoing monitoring tests such as Feature Drift, Prediction Across Each Feature, Prediction Correlation, and Target Prediction Distribution Plot. Code samples now demonstrate how to enable and use monitoring within the platform. Additionally, minor updates were made throughout the documentation to ensure consistency and clarity regarding these new capabilities.
-
-## Enhancements
 
 <!---
 PR #351: Doc: Archive and delete inventory models
 URL: https://github.com/validmind/documentation/pull/351
 Labels: enhancement
 --->
-### Doc: Archive and delete inventory models
+### You can now archive models
 
-You can now archive models
+When you decommission models or delete models that you no longer need, you can now archive them. This helps keep your ValidMind inventory accurate and up to date with your organization's current resources.
 
-When you decommission models or delete models that you no longer need, you can archive them. This helps keep your ValidMind inventory accurate and up to date with your organization's current resources.
- 
-Generated PR summary: 
- 
-This update introduces new documentation to help you manage models within the model inventory. The guide, `archive-delete-models.qmd`, provides detailed instructions on archiving decommissioned models and deleting those that are no longer needed. You'll find prerequisites and step-by-step instructions for changing a model's stage, archiving, activating, and deleting models. Additionally, the `_quarto.yml` file has been updated to include this guide in the navigation, and the `managing-model-inventory.qmd` document now references this comprehensive new resource.
+
+[Learn more...](/guide/model-inventory/archive-delete-models.qmd)
+
 
 <!---
 PR #191: [SC-6060] Initial support for bias and fairness tests
@@ -59,38 +45,42 @@ Labels: enhancement
 --->
 ### Initial support for bias and fairness tests
 
-Added a new use case for bias and fairness analysis
+The latest update to the {{< var validmind.developer >}} introduces new features and improvements that enhance bias and fairness testing.
 
 Includes four new metrics and a new notebook:
+
+To let you evaluate model bias and fairness effectively across protected classes, four new metrics are introduced: 
 
 - `ProtectedClassesCombination.py`
 - `ProtectedClassesDescription.py`
 - `ProtectedClassesDisparity.py`
 - `ProtectedClassesThresholdOptimizer.py`
-- `application_scorecard_with_bias.ipynb`
 
-<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
- 
-Generated PR summary: 
- 
-The latest update to the ValidMind Developer Framework introduces new features and improvements that enhance bias and fairness testing. You can now install new dependencies `aequitas`, `fairlearn`, and `vl-convert-python` through updated GitHub Actions workflows, crucial for bias analysis. A new Jupyter notebook, `application_scorecard_with_bias.ipynb`, guides you in building a credit risk model with integrated bias and fairness analysis using ValidMind. Accompanying this, a dataset called `lending_club_biased.csv.gz` and its processing script have been added for testing purposes, alongside an update to the dataset module initializer.
+Existing test modules have been refactored for improved code quality. Lastly, there is an additional parameter `class_of_interest` in the SHAPGlobalImportance tool for better SHAP 
+value selection. 
 
-To evaluate model fairness more effectively across protected classes, new test modules are introduced: `ProtectedClassesCombination.py`, `ProtectedClassesDescription.py`, `ProtectedClassesDisparity.py`, and `ProtectedClassesThresholdOptimizer.py`. Existing test modules have been refactored for improved code quality. Lastly, there is an additional parameter `class_of_interest` in the SHAPGlobalImportance tool for better SHAP value selection. These updates are reflected in the version increase from 2.5.17 to 2.5.18.
+A new Jupyter notebook, `application_scorecard_with_bias.ipynb`, guides you in building a credit risk model with integrated bias and fairness analysis using ValidMind. Accompanying this, a dataset called `lending_club_biased.csv.gz` and its processing script have been added for testing purposes, alongside an update to the dataset module initializer.
+
+[Try it ...](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_bias.ipynb)
+
+## Enhancements
 
 <!---
 PR #155: Feat: Mechanism for Filtering Columns in a Dataset when Running a Test
 URL: https://github.com/validmind/developer-framework/pull/155
 Labels: enhancement
 --->
-### Mechanism for filtering columns
+
+
+### Filtering columns when running tests
 
 <!--- COMMENT --->
 
-When running a test, you have the option to filter specific columns in your dataset. You can do this to focus on relevant data. This feature helps simplify and analyze your results more efficiently. Remember, you can select which columns to include in your analysis based on your criteria
+When running a test, you now have the option to filter specific columns in your dataset. This feature helps simplify and analyze your results more efficiently. For example, you can use this enhancement to focus on relevant data. 
 
-Support for column filtering when running tests
+Tests can run on a subset of columns in a dataset without creating a new dataset with columns removed. 
 
-Tests can run on a subset of columns in a dataset without creating a new dataset with columns removed. See the following example to learn how to run the `DatasetDescription` test with only a single column from a dataset:
+The following example shows how to run the `DatasetDescription` test with only a single column from a dataset:
 
 ```python
 from validmind.tests import run_test
@@ -109,7 +99,9 @@ result = run_test(
 <!--- COMMENT --->
 Notice how the `dataset` input is set to a dictionary whose key `input_id` maps to a particular input dataset. And whose `columns` key sets the subset of columns from the original dataset to pass to the `DatasetDescription` test.
 
-See this [example notebook](https://github.com/validmind/developer-framework/blob/main/notebooks/how_to/input_column_filtering.ipynb) for more information.
+A new new notebook  You can select which columns to include in your analysis based on your criteria.
+
+[Try it ...](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/how_to/filter_input_columns.ipynb)
 
 <!---
 PR #996: Added page and api call to handle unverified emails
