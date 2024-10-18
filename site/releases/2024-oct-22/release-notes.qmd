@@ -1,0 +1,531 @@
+---
+title: "October 22, 2024"
+---
+
+## Release highlights
+
+<!---
+PR #272: Add monitoring section to user guides
+URL: https://github.com/validmind/documentation/pull/272
+Labels: documentation, highlight
+--->
+### Add monitoring section to user guides
+
+Monitoring
+
+Monitoring is a critical component of model risk management, as emphasized in regulations such as `SR_11-7`, `SS1/23`, and `E-24`. With this release of ValidMind, we officially support ongoing monitoring. You can enable this for both existing and new models.
+
+![image](https://github.com/user-attachments/assets/02a6d5b9-0521-4110-b45c-b91e06798a97)
+
+Scenarios where ongoing monitoring is warranted:
+
+- Pre-approval monitoring of new models  
+- Monitoring during significant updates  
+- Post-production monitoring  
+
+As your code runs, the monitoring template for your model automatically populates with data. It provides a comprehensive view of your model's performance over time. You access and examine these results within the ValidMind Platform UI. This allows you to identify any deviations from expected performance and take corrective actions as needed.
+
+[Learn more...](../../guide/monitoring/ongoing-monitoring.qmd)
+ 
+Generated PR summary: 
+ 
+This update introduces significant enhancements to the documentation by adding a comprehensive section on monitoring capabilities. The new 'Monitoring' section includes detailed guides on how to enable monitoring for models and review ongoing monitoring results in the ValidMind Platform UI. Instructions are provided for adding `monitoring=True` to code snippets and selecting a monitoring template, along with steps to access and review results. 
+
+The glossary now features new terms related to monitoring, with definitions for concepts like backtesting, model drift, model performance, ongoing monitoring, recalibrating models, and reporting and governance. To aid visual understanding, images and examples of monitoring results have been added.
+
+In the test descriptions section, updates include ongoing monitoring tests such as Feature Drift, Prediction Across Each Feature, Prediction Correlation, and Target Prediction Distribution Plot. Code samples now demonstrate how to enable and use monitoring within the platform. Additionally, minor updates were made throughout the documentation to ensure consistency and clarity regarding these new capabilities.
+
+## Enhancements
+
+<!---
+PR #351: Doc: Archive and delete inventory models
+URL: https://github.com/validmind/documentation/pull/351
+Labels: enhancement
+--->
+### Doc: Archive and delete inventory models
+
+You can now archive models
+
+When you decommission models or delete models that you no longer need, you can archive them. This helps keep your ValidMind inventory accurate and up to date with your organization's current resources.
+ 
+Generated PR summary: 
+ 
+This update introduces new documentation to help you manage models within the model inventory. The guide, `archive-delete-models.qmd`, provides detailed instructions on archiving decommissioned models and deleting those that are no longer needed. You'll find prerequisites and step-by-step instructions for changing a model's stage, archiving, activating, and deleting models. Additionally, the `_quarto.yml` file has been updated to include this guide in the navigation, and the `managing-model-inventory.qmd` document now references this comprehensive new resource.
+
+<!---
+PR #191: [SC-6060] Initial support for bias and fairness tests
+URL: https://github.com/validmind/developer-framework/pull/191
+Labels: enhancement
+--->
+### Initial support for bias and fairness tests
+
+Added a new use case for bias and fairness analysis
+
+Includes four new metrics and a new notebook:
+
+- `ProtectedClassesCombination.py`
+- `ProtectedClassesDescription.py`
+- `ProtectedClassesDisparity.py`
+- `ProtectedClassesThresholdOptimizer.py`
+- `application_scorecard_with_bias.ipynb`
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+The latest update to the ValidMind Developer Framework introduces new features and improvements that enhance bias and fairness testing. You can now install new dependencies `aequitas`, `fairlearn`, and `vl-convert-python` through updated GitHub Actions workflows, crucial for bias analysis. A new Jupyter notebook, `application_scorecard_with_bias.ipynb`, guides you in building a credit risk model with integrated bias and fairness analysis using ValidMind. Accompanying this, a dataset called `lending_club_biased.csv.gz` and its processing script have been added for testing purposes, alongside an update to the dataset module initializer.
+
+To evaluate model fairness more effectively across protected classes, new test modules are introduced: `ProtectedClassesCombination.py`, `ProtectedClassesDescription.py`, `ProtectedClassesDisparity.py`, and `ProtectedClassesThresholdOptimizer.py`. Existing test modules have been refactored for improved code quality. Lastly, there is an additional parameter `class_of_interest` in the SHAPGlobalImportance tool for better SHAP value selection. These updates are reflected in the version increase from 2.5.17 to 2.5.18.
+
+<!---
+PR #155: Feat: Mechanism for Filtering Columns in a Dataset when Running a Test
+URL: https://github.com/validmind/developer-framework/pull/155
+Labels: enhancement
+--->
+### Mechanism for filtering columns
+
+<!--- COMMENT --->
+
+When running a test, you have the option to filter specific columns in your dataset. You can do this to focus on relevant data. This feature helps simplify and analyze your results more efficiently. Remember, you can select which columns to include in your analysis based on your criteria
+
+Support for column filtering when running tests
+
+Tests can run on a subset of columns in a dataset without creating a new dataset with columns removed. See the following example to learn how to run the `DatasetDescription` test with only a single column from a dataset:
+
+```python
+from validmind.tests import run_test
+
+result = run_test(
+    test_id="validmind.data_validation.DatasetDescription",
+    inputs={
+        "dataset": {
+            "input_id": "my_dataset",
+            "columns": ["col1"]
+        }
+    },
+)
+```
+
+<!--- COMMENT --->
+Notice how the `dataset` input is set to a dictionary whose key `input_id` maps to a particular input dataset. And whose `columns` key sets the subset of columns from the original dataset to pass to the `DatasetDescription` test.
+
+See this [example notebook](https://github.com/validmind/developer-framework/blob/main/notebooks/how_to/input_column_filtering.ipynb) for more information.
+
+<!---
+PR #996: Added page and api call to handle unverified emails
+URL: https://github.com/validmind/frontend/pull/996
+Labels: enhancement
+--->
+### Added page and API call to handle unverified emails
+
+Emails are now required to be verified before using the Validmind app.
+ 
+Generated PR summary: 
+ 
+This update enhances the user experience by introducing a new email verification error page. If you need to verify your email address, this page allows you to resend the verification email and navigate to the dashboard once verification is complete. A new API function supports resending the verification email for users who haven't yet verified their addresses. The application now includes updated routing to accommodate the `/verify-email` route, presenting the email verification error page. Additionally, minor code refactoring has improved readability and maintainability in the codebase.
+
+<!---
+PR #983: [6248] - feat: add attachments feature on inventory model page
+URL: https://github.com/validmind/frontend/pull/983
+Labels: enhancement
+--->
+### Add attachments feature on inventory model page
+
+
+You can now define attachments as model inventory fields. Each attachment field can be unique. This allows you to attach different sets of files for a model.
+
+The inventory model page now exposes the attachments UI when you have defined attachment fields in the inventory.
+
+![image](https://github.com/user-attachments/assets/a7f6b364-7e7a-483e-8bc8-01a0ac9c7158)
+ 
+Generated PR summary: 
+ 
+This update introduces several enhancements and bug fixes to the project. A new schema type called `Attachments` has been added, allowing the system to handle attachment fields as arrays. The `ManageAttachmentsField` component now supports an optional `title` prop, which defaults to 'Attachments', enabling dynamic titles for enhanced flexibility. Additionally, the `InventoryModelOverview` page has been updated to accommodate the new `Attachments` field type; attachment fields are now distinct from other fields and are displayed at the end of the main custom fields section using the `ManageAttachmentsField` component. These improvements enhance your ability to manage attachments more effectively.
+
+<!---
+PR #982: Added new custom field type for Currency
+URL: https://github.com/validmind/frontend/pull/982
+Labels: enhancement
+--->
+### Added new custom field type for currency
+
+Added new `Currency` type for `Number` fields
+
+This field allows you to record pricing data within a model, for example. 
+
+You can configure the currency type as well as the precision (decimals) when creating the field.
+
+![Image](https://github.com/user-attachments/assets/4fb7e8e1-5a43-490d-b17d-a80b7d30cfba)
+
+![Screenshot 2024-09-13 at 22 52 PM](https://github.com/user-attachments/assets/50f19b63-1bc4-438b-8fd7-702e6b2f5ca9)
+ 
+Generated PR summary: 
+ 
+This update enhances custom fields by adding support for number types, including currency formatting and large number abbreviations. A new `NumberFields` component allows you to manage options like type (simple or currency), currency code, decimal places, and abbreviations for thousands, millions, or billions. The `CustomNumber` component lets you render number fields in both read-only and editable modes. A new utility module, `currencyUtils.ts`, provides tools for currency formatting and a list of supported currencies. Schema and model definitions now include a `NumberProperty` to handle these settings. Validation rules for custom fields are updated to validate number entries. Additionally, this functionality integrates with existing components such as `CustomFieldModal` and `CustomFieldRenderer`, enhancing the flexibility and usability of custom fields with various number format options.
+
+<!---
+PR #970: Rod/sc 6226/design for validchecker poc
+URL: https://github.com/validmind/frontend/pull/970
+Labels: enhancement
+--->
+### Design for `validchecker` POC
+
+Note  
+  
+This is in private beta mode.  
+It's not a public feature release yet.  
+
+1. Document checker  
+
+- You can use the new Document Checker component to enhance model documentation against regulatory guidelines.
+  
+- The Virtual Document Validator analyzes completed documentation.  
+  It provides recommendations for improved compliance.
+  
+- The checker supports regulatory standards such as SR 11-7, SS1/23, and E23.
+
+2. UI enhancements  
+
+- Take advantage of the new card-style UI for the Document Checker in the project overview.
+  
+- A modal interface displays document check results and recommendations.
+ 
+Generated PR summary: 
+ 
+This update introduces the new `DocumentChecker` component to enhance your project documentation validation process. This component is embedded into the `AttributesRailDocumentOverview` and allows you to verify documentation against regulatory standards. Key features include a modal for displaying validation results and a button to initiate the validation. The integration involves a new `isDocumentComplete` prop that checks document readiness for validation.
+
+The `DocumentChecker` communicates with a backend service using socket communication to validate documents. It manages state transitions through different stages of the validation process, such as initial, generating, and idle phases. Additional CSS styles cater to this component's design needs.
+
+A feature flag, `validcheckRecommendationsRegulation`, is implemented to control which regulatory standards are used for validation. There are also UI enhancements like gradient background styling added to cards in the main CSS file, improving overall user experience by ensuring documentation compliance efficiently.
+
+<!---
+PR #947: Panchicore/sc 5147/implement inventory model archive and deletion
+URL: https://github.com/validmind/frontend/pull/947
+Labels: enhancement
+--->
+### Implement inventory model archive and deletion
+
+On the model inventory  
+
+New column for stage
+
+A new field `Model_Stage` is present in the model overview.  
+
+#### What happens when a model is archived?
+
+- When a model is archived, it creates a record on the activity feed.
+
+- The model disappears from the inventory; only admins can see them on the list.
+
+- Not even an admin can edit info about an archived model, but they can change the stage to Active or Deleted. 
+
+- When you have access with a direct URL, it redirects to the inventory index and shows a not found toaster error. Admins see the overview instead.
+
+- Any relative URL to the model, `/model-inventory/<model_cuid>/...`, e.g., documentation, validation report, monitoring, etc., applies here too.
+
+- The findings button disappears when exploring this model.
+
+- The CKEditor becomes read-only. You can't add new comments there.
+
+- Model findings disappear from the general findings page. However, an admin can navigate to the archived model overview and go to findings displayed there.
+
+- Reports exclude them from all boxes.
+  
+Settings 
+
+Templates: These disappear from the `Models_Using_This_Template` widget. 
+
+Groups: They remain visible because they continue as part of a group at @cachafla Is this expected?  
+
+#### What happens when a model is archived?
+
+The outcome is similar to what's described above. So far, deletion is soft; no record gets completely deleted. In theory, you can restore models back to Archived or Active status.
+
+TO DO
+
+CC @jamadriz After releasing the RbAC update, we should create `archive_model` and `delete_model` actions.
+  
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This update introduces a range of enhancements and bug fixes to improve the handling of inventory model stages and event rendering within the application. You now have new stages for inventory models, including `ACTIVE`, `ARCHIVED`, and `DELETED`. A new component, `ModelStageField`, allows you to display and update these stages. Various components have been updated to ensure actions occur only when a model is in the `ACTIVE` stage, with confirmation dialogs added for archiving and deleting models. API calls are also updated to manage these stages effectively.
+
+The release includes new event renderers for `model-archived`, `model-deleted`, and `model-restored` events in the `ActivityFeedWidget`. UI components now conditionally render elements based on the model's stage, with a new column in the models table displaying each model's stage. The update enhances components like `AddFindingModal`, `CommentsFooter`, and `FindingsWidget` to respect these stages.
+
+Improved error handling redirects you to the model inventory page with a toast notification if you encounter 404 errors. Additionally, various components and hooks are updated to support the new stages, ensuring consistent behavior across the application.
+
+<!---
+PR #967: Stevenchand/sc 5986/support displaying results over time as a
+URL: https://github.com/validmind/frontend/pull/967
+Labels: enhancement
+--->
+### Support displaying results over time as a
+
+added a metrics over time block type
+
+You can add a `metrics_over_time` block type to model documentation.
+
+this block type displays unit metrics over time. A line graph and a table of underlying values are shown. 
+
+<img width="1091" alt="Screenshot 2024-09-10 at 10 22 21 AM" src="https://github.com/user-attachments/assets/ce832e92-b8f2-47f1-b2f8-5d4b299fb4a">
+
+<img width="1403" alt="Screenshot 2024-09-10 at 10 22 31 AM" src="https://github.com/user-attachments/assets/b2afc5aa-5a37-4639-8f11-63fea34191c7">
+
+<img width="1085" alt="Screenshot 2024-09-10 at 10 22 41 AM" src="https://github.com/user-attachments/assets/937d5018-ee21-47df-b9d2-b2da5125046d">
+ 
+Generated PR summary: 
+ 
+This update introduces a feature for handling unit metrics within the application. You can now access two new API functions: `GetUnitMetrics`, which fetches unit metrics for a specific inventory model, and `GetUnitMetricsValuesForKey`, which retrieves values for a particular unit metric key over a specified time range. New components include the `AddBlockMetricOverTimeModal` for adding unit metrics over time blocks to documentation, a `ChartTooltip` for displaying chart data, and `UnitMetricContent` for showing unit metric data in chart and table formats. Additionally, the UI has been enhanced with an updated `BlockExplorer` that includes an option for adding a 'Metric Over Time' block, and the `DocumentationPage` now supports the new `unit_metric` content type. A new model, `TUnitMetric`, is also added to represent unit metrics, enhancing your ability to manage and analyze this data effectively.
+
+<!---
+PR #962: Panchicore/sc 5737/delete finding button
+URL: https://github.com/validmind/frontend/pull/962
+Labels: enhancement
+--->
+### Delete finding button
+
+Validators can now delete findings
+
+A dialog is shown to confirm your action. 
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This release introduces several important updates to enhance the functionality and usability of the project. The `DeleteFinding` API has been refactored to improve flexibility by accepting `projectCuid` and `inventoryModelCuid` as separate parameters. The user interface for the `FindingsList` component is enhanced through the relocation of the delete confirmation dialog logic from this component to the `ViewFinding` component, thus simplifying and improving maintainability. In addition, a delete confirmation dialog is now included in the `ViewFinding` component to prompt you before deleting a finding. Error handling within this component has also been improved; you'll be redirected to the home page with relevant messages if any errors occur during fetching or if a finding is not found. Lastly, there is an update to the data model: the `TFinding` type now includes an optional field for inventory model details, specifically its `cuid` and name. These changes collectively aim to offer a more flexible, user-friendly experience while ensuring robust functionality and error management.
+
+<!---
+PR #905: Custom Field Type Code
+URL: https://github.com/validmind/frontend/pull/905
+Labels: enhancement
+--->
+### Custom field type code
+
+New model inventory field type - calculation
+
+Calculation fields allow you to use `python` code and other inventory field values to calculate an output.
+
+https://www.loom.com/share/4d7d14b21d17416caefddf2b46fe05af?sid=d601139-a54a-40b3-b269-894606e7d0ba
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This update introduces several enhancements to the custom field functionality of the application. You can now define custom Python code for calculations with the new `CodePython` field type. The results of this custom code execution are displayed through the new `CustomCodeResult` component, and you have access to a backend API call, `PostCodeTest`, to test your custom code with provided variables. The `CustomFieldModal` is enhanced to support the `CodePython` field type, featuring a code editor and testing area.
+
+To improve maintainability and modularity, schema type configurations are relocated to a separate file, `schema_types.ts`. There's also a new component named `ExpandableTextDisplay` for managing expandable text displays. Existing components benefit from refactoring to utilize the new `FieldTypeId` enum for better type safety and clarity.
+
+User interface improvements include an upgraded `CustomFieldModal`, now with a drag-and-drop interface for selecting fields within the custom code editor. Error handling and user feedback in the modal are enhanced as well. Additionally, a new `SortableItem` component facilitates sortable list items with drag-and-drop functionality.
+
+Finally, various minor bugs have been fixed to enhance overall code quality and readability. The updates also extend to the `CustomFields` settings page, which now uses the `ExpandableTextDisplay` component for improved text handling.
+
+<!---
+PR #940: Organization roles on settings page: Allow edit name and description
+URL: https://github.com/validmind/frontend/pull/940
+Labels: enhancement
+--->
+### Organization roles on settings page  
+Allowed edit name and description
+
+Organization admins can now rename any system role except `Customer_Admin`.
+ 
+Generated PR summary: 
+ 
+This release introduces enhancements and bug fixes focusing on role management and custom field handling. A new function, `PatchOrganizationRole`, is added to the API for updating organization roles with PATCH requests. The corresponding `actions` object is updated to include this function. A `CustomFieldForm` component is introduced for displaying and editing custom fields with logic for handling click events, key press events, and dynamic styling. Code refactoring improves maintainability by integrating the new component into custom field handling. The Role Details page now supports editable custom fields for role names and descriptions, with added mutation logic for PATCH requests. Additionally, utility functions are provided for creating single-line and multi-line string custom fields. New type definitions are included to define the structure of PATCH requests for roles.
+
+<!---
+PR #949: [5743] - feat: implement filter on Model Activity page
+URL: https://github.com/validmind/frontend/pull/949
+Labels: enhancement
+--->
+### Implement filter on `ModelActivity` page
+
+Added activity type filters  
+
+- Model activity  
+
+- Recent activity section in the model details page
+ 
+Generated PR summary: 
+ 
+This update refactors the `ActivityFeedWidget` component and introduces a new `EventList` component to enhance code modularity and readability. You can expect the following improvements:
+
+The `ActivityFeedWidget` is streamlined by removing unused imports and redundant code, simplifying tab management logic, and replacing inline event list rendering with the new `EventList` component. The newly introduced `EventList` component is responsible for rendering events, tabs, and loading states; it includes properties for managing the state of tabs, loading conditions, and event mentions. Furthermore, updates are made to the `InventoryModelActivity` by integrating the `EventList`, adding state management for tabs and mentions, and modifying queries to include filters based on selected tab states and mentions. These refinements collectively aim to enhance maintainability and readability by separating concerns and reducing complexity within the codebase.
+
+<!---
+PR #950: Added support for managing attachments in findings
+URL: https://github.com/validmind/frontend/pull/950
+Labels: enhancement
+--->
+### Added support for managing attachments in findings
+
+- Added an attachment field to findings
+
+- Added manage attachment permission for roles
+ 
+Generated PR summary: 
+ 
+This update introduces features for managing attachments related to findings, allowing you to upload, delete, and display these attachments. New API methods provide support for these operations, including `GetEntityAttachments`, `UploadEntityAttachmentsFiles`, and `DeleteEntityAttachmentsFiles`. The update includes a new component, `ManageAttachmentsField`, with functionality for managing files such as displaying them and facilitating uploads and deletions. Custom file icon colors based on extensions are specified in the new `file-icon-colors.ts` file. A MIME type mapping has been added to associate MIME types with specific file icons. Entity attachment types are defined within a new model, `entity_attachments.ts`. 
+
+Permission management is updated with a new permission named `manage_finding_attachments`. This feature directly reflects in the finding view where the attached component checks for this specific permission before enabling attachment management actions.
+
+Additional dependencies supporting file icons and byte formatting have been integrated, evident in updates to both `package.json` and `package-lock.json`. These include the additions of `@types/react-file-icon`, `react-file-icon`, and `pretty-bytes`. Additionally, there is a minor version update accompanying these changes.
+
+<!---
+PR #955: [5972] - feat: add toolbar on guidelines editor
+URL: https://github.com/validmind/frontend/pull/955
+Labels: enhancement
+--->
+### Add toolbar on guidelines editor
+
+The validation guideline description dialog
+
+The validation guideline description dialog in Settings -> Risk Areas & Validation Guidelines now supports rich text editing.
+ 
+Generated PR summary: 
+ 
+This release introduces enhancements and bug fixes to the project, improving user interaction and content management. The `guideline.description` field now supports HTML content through `dangerouslySetInnerHTML`, impacting how content is rendered in both the `RiskAssessmentContent` and `RiskAreas` components. Additionally, the `UpdateGuidelineModal` component includes a new editing feature by integrating with `CKEditorWrapper`, offering a richer text editing experience with specific features tailored for guideline descriptions. A bug has also been addressed in the `UpdateGuidelineModal` component by disabling the focus trap (`trapFocus={false}`), improving focus management within the modal during use.
+
+<!---
+PR #949: [5743] - feat: implement filter on Model Activity page
+URL: https://github.com/validmind/frontend/pull/949
+Labels: enhancement
+--->
+### Implement filter on model activity page
+
+Added activity type filters 
+
+Model activity 
+
+Recent activity section in the model details page
+ 
+Generated PR summary: 
+ 
+This release refactors the `ActivityFeedWidget` component and introduces a new `EventList` component to enhance code modularity and readability. The `ActivityFeedWidget` has been refined by removing unused imports, redundant code, and simplifying the tab management logic. It no longer uses conditional rendering based on the `variant` prop, and instead, it leverages the newly created `EventList` component for inline event list rendering.
+
+The newly introduced `EventList` component now handles the rendering of events, tabs, and loading states. It incorporates logic previously embedded in the `ActivityFeedWidget`, allowing for cleaner separation of concerns. This component also includes properties for managing tab states, loading status, and event mentions.
+
+Additionally, updates have been made to the `InventoryModelActivity`. It now utilizes the `EventList` component in place of inline event list rendering. State management for tabs and event mentions has been added, along with an updated query to incorporate filters based on selected tab and mention states.
+
+These changes collectively aim to improve maintainability and readability by reducing complexity within these components.
+
+## Bug fixes
+
+<!---
+PR #952: [5726/5779] - fix: solve ui bug related to scrollbar on windows/macos env
+URL: https://github.com/validmind/frontend/pull/952
+Labels: bug
+--->
+### MacOS environment
+
+Fixed an issue where scrollbars were being displayed in the layout sidebar on any browser running on Windows.
+ 
+Generated PR summary: 
+ 
+This release enhances the web application by improving the user interface and user experience with modifications to scrollbar behavior. You will notice a cleaner UI as scrollbars are now hidden across multiple components and pages through the addition of a `no-scrollbar` class. Scrolling behavior is enhanced by changing the `overflow` property from `scroll` to `auto` in various components. Minor adjustments to HTML and CSS improve readability and maintain consistency, while unused imports have been removed from several components to declutter the codebase. These changes aim to standardize scrollbar behavior and create a more visually appealing and consistent experience for users.
+
+## Documentation
+
+<!---
+PR #412: Make training slides more photogenic
+URL: https://github.com/validmind/documentation/pull/412
+Labels: documentation
+--->
+### Make training slides more photogenic
+
+We updated our training modules
+
+We updated our training modules to use ValidMind's new color scheme and to make them easier to use. Sections in the training modules are now linked to from the training overview. A new URL for our training content makes it easier to find: [docs.validmind.ai/training](docs.validmind.ai/training).
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind project focuses on improving the training documentation and styling. You will notice new CSS rules that ensure links in sections with dark backgrounds appear in white for better visibility. The training documents now feature subtitles with embedded links to the official training site, enhanced title slides with updated background colors and images, and turned plain text list items into clickable links for easier navigation. Additionally, section headers across the training documents have been styled for a consistent appearance, and an alias has been added to the main training page URL for improved management and accessibility. These enhancements are designed to enhance your experience by making the training materials more visually appealing and easier to navigate.
+
+<!---
+PR #446: Embed Validating Models 101 playlist into Guides section
+URL: https://github.com/validmind/documentation/pull/446
+Labels: documentation
+--->
+### Embed validating models 101 playlist into guides section
+
+We created a series of short videos. These videos introduce you to validating models on our platform. [Watch the video series...](../../guide/guides.html#model-validation)
+ 
+Generated PR summary: 
+ 
+The release enhances the model validation guide by embedding a YouTube video series iframe. This addition provides a series of videos to help you better understand the model validation process. You can find the iframe located just before the section on reviewing reports or exporting documentation for external records.
+
+<!---
+PR #450: Embed "How do I ... add tests?" video in developer docs
+URL: https://github.com/validmind/documentation/pull/450
+Labels: documentation
+--->
+### Embed how do I add tests video in developer docs
+
+We added a short FAQ-style video
+
+To our developer documentation, we added a short FAQ-style video. This video shows you how to find tests ValidMind provides and add them to your own model documentation. [Watch it...](../../developer/model-testing/testing-overview.html#explore-tests-and-test-suites)
+
+<!--- Replace this comment with your description --->
+ 
+Generated PR summary: 
+ 
+This release enhances the `testing-overview.qmd` documentation by embedding a YouTube video. This video serves as a visual guide, making it easier for you to understand the available tests and test suites. The video is embedded using the `{{< video >}}` shortcode with specified width and height attributes to ensure optimal viewing.
+
+<!---
+PR #460: Add link to GitHub for code samples
+URL: https://github.com/validmind/documentation/pull/460
+Labels: documentation
+--->
+### Add link to GitHub for code samples
+
+We added a link to our open-source software on GitHub to the code samples page. 
+
+[Try it on GitHub](https://github.com/validmind/developer-framework)
+ 
+Generated PR summary: 
+ 
+The Jupyter Notebooks sample page now includes a "Try it on GitHub" button that links directly to the developer framework's GitHub repository. The layout has been adjusted by adding a spacer and modifying the width of existing elements to accommodate this new feature. This enhancement offers you an easy way to explore the developer framework on GitHub, improving accessibility and user experience.
+
+<!---
+PR #459: Deployment architecture docs
+URL: https://github.com/validmind/documentation/pull/459
+Labels: documentation
+--->
+### Deployment architecture docs
+
+We expanded our documentation on available deployment options for ValidMind. You can now find more information about both multi-tenant cloud and single-tenant options.
+
+[Learn more...](about/deployment/deployment-options.qmd)
+ 
+Generated PR summary: 
+ 
+This update enhances the documentation for the ValidMind platform with several significant improvements. A new section now details the available deployment options, including multi-tenant cloud and Virtual Private ValidMind (VPV) models. The multi-tenant cloud model allows infrastructure sharing among multiple customers while ensuring strict data isolation, whereas VPV offers a single-tenant architecture for greater control, customization, and security. Additionally, a guide has been added to assist you in configuring Azure Private Link for secure and private communication between Azure Virtual Network resources and ValidMind. Existing documentation has received minor updates to align with the new deployment options and improve clarity, including revisions to the data privacy policy and API integration descriptions. New images and diagrams provide visual representations of deployment options and ValidMind's architecture. These enhancements aim to equip you with comprehensive information on deployment choices while boosting your network’s security and privacy configurations.
+
+<!---
+PR #154: [SC 5588] Create demo notebook for ongoing monitoring
+URL: https://github.com/validmind/developer-framework/pull/154
+Labels: documentation
+--->
+### Create demo notebook for ongoing monitoring
+
+Added a new notebook
+
+The new notebook shows how you log ongoing monitoring results for a model.
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind project enhances the ongoing monitoring capabilities for models. It includes a new Jupyter Notebook, `quickstart_customer_churn_ongoing_monitoring.ipynb`, which walks you through setting up and conducting ongoing monitoring tests using the ValidMind platform. The enhancements introduce several new tests located in the `validmind/tests/ongoing_monitoring` directory, such as `FeatureDrift.py` for evaluating feature distribution shifts over time, `PredictionAcrossEachFeature.py` for visualizing predictions across features, `PredictionCorrelation.py` to assess correlation pairs between datasets, and `TargetPredictionDistributionPlot.py` for KDE plots of prediction distributions. Additionally, improvements have been made to existing scripts, like updating the `scripts/add_test_description.py` script to enhance documentation by inserting descriptions after class and function definitions. The project version is updated from 2.4.14 to 2.5.0, and various minor improvements such as import order adjustments and framework version handling in `utils.py` are included.
+
+
+## Other
+
+<!---
+PR #939: Metric Over Time Block
+URL: https://github.com/validmind/frontend/pull/939
+Labels: 
+--->
+### Metric over time block
+
