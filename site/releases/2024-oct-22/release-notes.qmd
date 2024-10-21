@@ -2,6 +2,16 @@
 title: "October 22, 2024"
 filters:
   - tachyons
+listing:
+  id: training
+  type: grid
+  grid-columns: 1
+  # image-height: 100%
+  contents:
+    - path: ../../training/training.qmd
+      title: "Try out ValidMind Academy"
+      description: "Our training modules are interactive. They combine instructional content with our live product and are easy to use."
+  fields: [title, description]
 ---
 
 ## Release highlights
@@ -36,19 +46,24 @@ The monitoring template for your model automatically populates with data as your
 To start uploading ongoing monitoring results for a model to ValidMind, you enable monitoring in your code and then select a monitoring template. Our user guide can walk you through the process of setting up ongoing monitoring step-by-step.
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-30-ns .tc}
+
 [Ongoing monitoring](../../guide/monitoring/ongoing-monitoring.qmd){.button}
+
 :::
 
 ::::
 
+We've also added a new notebook that demonstrates how to log ongoing monitoring results for a model. 
+
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-We've also added a new notebook that demonstrates how to log ongoing monitoring results for a model. This notebook provides a hands-on example of setting up and conducting monitoring tests, helping you ensure your models are performing consistently over time.
+::: {.w-60-ns}
+This notebook provides a hands-on example of setting up and conducting monitoring tests, helping you ensure your models are performing consistently over time.
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-30-ns}
+
 [Try notebook on JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb){.button}
 
 :::
@@ -71,19 +86,23 @@ Labels: enhancement
 
 When you need to decommission models that you no longer need, you can now archive and then delete them. This feature helps keep your model inventory accurate and up to date with your organization's current resources.
 
-You now have new stages for inventory models, including `ACTIVE`, `ARCHIVED`, and `DELETED`, which are shown as a new column in the model inventory and as field in the model overview. 
-
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-Archived models are read-only and do not contribute to statistics or reports. Models must be inactive and archived before they can be deleted. Model archiving and deletion are recorded in the activity feed. An administrator can restore archived models if needed.
+You now have new stages for inventory models, including `ACTIVE`, `ARCHIVED`, and `DELETED`, which are shown as a new column in the model inventory and as field in the model overview. 
+
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-30-ns}
 [Archive and delete models](/guide/model-inventory/archive-delete-models.qmd){.button}
 :::
 
 ::::
+
+- Archived models are read-only and do not contribute to statistics or reports. 
+- Models must be inactive and archived before they can be deleted. 
+- Model archiving and deletion are recorded in the activity feed. 
+- An administrator can restore archived models if needed.
 
 <!---
 PR #191: [SC-6060] Initial support for bias and fairness tests
@@ -96,24 +115,26 @@ The latest update to the {{< var validmind.developer >}} introduces new features
 
 To let you evaluate model bias and fairness effectively across protected classes, four new metrics are available: 
 
-- [`ProtectedClassesCombination`](/validmind/validmind/tests/data_validation/ProtectedClassesCombination.html){target=_blank}
-- [`ProtectedClassesDescription`](/validmind/validmind/tests/data_validation/ProtectedClassesDescription.html){target=_blank}
-- [`ProtectedClassesDisparity`](/validmind/validmind/tests/data_validation/ProtectedClassesDisparity.html){target=_blank}
-- [`ProtectedClassesThresholdOptimizer`](/validmind/validmind/tests/data_validation/ProtectedClassesThresholdOptimizer.html){target=_blank}
+- [`ProtectedClassesCombination`](https://docs.validmind.ai/validmind/validmind/tests/data_validation/ProtectedClassesCombination.html){target=_blank}
+- [`ProtectedClassesDescription`](https://docs.validmind.ai/validmind/validmind/tests/data_validation/ProtectedClassesDescription.html){target=_blank}
+- [`ProtectedClassesDisparity`](https://docs.validmind.ai/validmind/validmind/tests/data_validation/ProtectedClassesDisparity.html){target=_blank}
+- [`ProtectedClassesThresholdOptimizer`](https://docs.validmind.ai/validmind/validmind/tests/data_validation/ProtectedClassesThresholdOptimizer.html){target=_blank}
 
 There is also an additional parameter `class_of_interest` in the SHAPGlobalImportance tool for better SHAP value selection. 
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-A new Jupyter Notebook guides you through building a credit risk model with integrated bias and fairness analysis. Accompanying this, a dataset called `lending_club_biased.csv.gz` and its processing script have been added for testing purposes, alongside an update to the dataset module initializer.
+::: {.w-60-ns}
+A new Jupyter Notebook guides you through building a credit risk model with integrated bias and fairness analysis. 
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-40-ns .tc}
 [Try notebook on JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_bias.ipynb){.button}
 :::
 
 ::::
+
+Accompanying this, a dataset called `lending_club_biased.csv.gz` and its processing script have been added for testing purposes, alongside an update to the dataset module initializer.
 
 
 <!---
@@ -130,15 +151,19 @@ Labels:
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-60-ns}
-You now can add `Metrics Over Time` blocks to model documentation or as part of your ongoing monitoring of a model, in addition to the previously available `Text` and `Test-Driven` blocks. This new block type which retrieves values for a particular unit metric key over a specified time range. A line graph and a table of underlying values are shown as part of your model documentation. 
+::: {.w-70-ns}
+You now can add `Metrics Over Time` blocks to model documentation or as part of your ongoing monitoring of a model, in addition to the previously available `Text` and `Test-Driven` blocks. 
+
 :::
 
-::: {.w-40-ns .tr}
-[Add content blocks](../../guide/model-documentation/work-with-content-blocks.qmd#add-content-blocks){.button}
+::: {.w-30-ns .tc}
+[Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd){.button}
 :::
 
 ::::
+
+- This new block type which retrieves values for a particular unit metric key over a specified time range. 
+- A line graph and a table of underlying values are shown as part of your model documentation. 
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -161,11 +186,14 @@ Labels: enhancement
 --->
 ### Filtering columns when running tests
 
-When running a test, you now have the option to filter specific columns in your dataset. This feature helps simplify and analyze your results more efficiently. For example, you can use this enhancement to focus on relevant data. 
+When running a test, you now have the option to filter specific columns in your dataset.
+
+- This feature helps simplify and analyze your results more efficiently. 
+- For example, you can use this enhancement to focus on relevant data. 
 
 Tests can run on a subset of columns in a dataset without creating a new dataset with columns removed. 
 
-The following example shows how to run the [`DatasetDescription`](/validmind/validmind/tests/data_validation/DatasetDescription.html){target=_blank} test with only a single column from a dataset:
+The following example shows how to run the [`DatasetDescription`](https://docs.validmind.ai/validmind/validmind/tests/data_validation/DatasetDescription.html){target=_blank} test with only a single column from a dataset:
 
 ```python
 from validmind.tests import run_test
@@ -185,11 +213,11 @@ Notice how the `dataset` input is set to a dictionary whose key `input_id` maps 
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
+::: {.w-60-ns}
 A new Jupyter Notebook demonstrates how to selectively include columns in your analysis based on your specific criteria.
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-40-ns .tc}
 [Try notebook on JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/how_to/filter_input_columns.ipynb){.button}
 :::
 
@@ -211,14 +239,19 @@ Labels: enhancement
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-This update enhances the user experience by introducing a new email verification error page. If you need to verify your email address but have been unable to do so, this page allows you to resend the verification email and navigate to the dashboard to access ValidMind once verification is complete. 
+This update enhances the user experience by introducing a new email verification error page. 
+
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-30-ns .tc}
 [Register with ValidMind](/guide/configuration/register-with-validmind.qmd){.button}
+
 :::
 
 ::::
+
+
+If you need to verify your email address but have been unable to do so, this page allows you to resend the verification email and navigate to the dashboard to access ValidMind once verification is complete. 
 
 <!---
 PR #905: Custom Field Type Code
@@ -231,17 +264,19 @@ This update enhances the custom field functionality, making it possible to defin
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-60-ns}
+::: {.w-70-ns}
 The results of your code execution are displayed clearly, and you can test your custom code using a new testing feature directly within the interface.
 :::
 
-::: {.w-40-ns .tr}
+::: {.w-30-ns}
 [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd){.button}
 :::
 
 ::::
 
-The custom field editor has also been upgraded, now including a code editor and testing area, along with a drag-and-drop interface for selecting fields. The overall user experience has been improved with better error handling and feedback. Additionally, managing text fields is now more intuitive with expandable text displays, making it simpler to navigate and modify custom fields.
+- The custom field editor has also been upgraded, now including a code editor and testing area, along with a drag-and-drop interface for selecting fields. 
+- The overall user experience has been improved with better error handling and feedback. 
+- Additionally, managing text fields is now more intuitive with expandable text displays, making it simpler to navigate and modify custom fields.
 
 Watch the demo:
 
@@ -260,14 +295,18 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-60-ns}
-You can now define attachments as model inventory fields for supporting documentation. Each attachment field can be unique. This enhancement allows you to attach different sets of files for a model.
+::: {.w-70-ns}
+You can now define attachments as model inventory fields for supporting documentation. 
+
 :::
 
-::: {.w-40-ns .tr}
-[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd){.button}
+::: {.w-30-ns}
+[Inventory field types](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types){.button}
 :::
 ::::
+
+- Each attachment field can be unique. 
+- This enhancement allows you to attach different sets of files for a model.
 
 The inventory model page displays attachments when the attachment field is defined:
 
@@ -282,15 +321,20 @@ Labels: enhancement
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-You can now manage attachments within findings. This feature allows you to upload, delete, and view attachments directly in the findings section. Permissions have been enhanced, with a new `Manage Attachment` permission for roles, ensuring that only authorized users can handle attachment-related tasks. This update makes it easier to organize and manage any files associated with your findings.
+::: {.w-60-ns}
+You can now manage attachments within findings. 
+
 :::
 
-::: {.w-30-ns .tc}
+::: {.w-40-ns .tc}
 [Manage supporting documentation](/guide/model-validation/add-manage-model-findings.qmd#manage-supporting-documentation){.button}
 :::
 
 ::::
+
+- This feature allows you to upload, delete, and view attachments directly in the findings section. 
+- Permissions have been enhanced, with a new `Manage Attachment` permission for roles, ensuring that only authorized users can handle attachment-related tasks. 
+- This update makes it easier to organize and manage any files associated with your findings.
 
 
 <!---
@@ -298,7 +342,7 @@ PR #982: Added new custom field type for Currency
 URL: https://github.com/validmind/frontend/pull/982
 Labels: enhancement
 --->
-### New custom field type for currency
+### New currency number field option
 
 We added a new `Currency` type for `Number` fields which provides formatting for currencies and large number abbreviations. This field allows you to record pricing data within a model, for example. 
 
@@ -313,8 +357,6 @@ You can configure the currency type as well as the precision (decimals) when cre
 ::: {.w-50-ns .tc}
 ![Currency type in model documentation](/releases/2024-oct-22/367452366-50f19b63-1bc4-438b-8fd7-702e6b2f5ca9.png){width="80%" fig-alt="A screenshot of the ValidMind UI that shows the currency type in model documentation" class="screenshot"}
 
-<br>
-
 [Add or edit inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#add-or-edit-inventory-fields){.button}
 :::
 
@@ -326,20 +368,24 @@ PR #962: Panchicore/sc 5737/delete finding button
 URL: https://github.com/validmind/frontend/pull/962
 Labels: enhancement
 --->
-### Delete finding button
+### Delete findings
 
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-You can now delete findings as a validator. When deleting a finding, a confirmation dialog appears to ensure that you want to proceed. If any errors occur during the process or if the finding is not found, you will be redirected to the home page with a detailed message. 
+::: {.w-50-ns}
+You can now delete findings as a validator. 
+
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-40-ns .tl}
 [Delete model findings](/guide/model-validation/add-manage-model-findings.qmd#delete-model-findings){.button}
 :::
 
 ::::
+
+- When deleting a finding, a confirmation dialog appears to ensure that you want to proceed. 
+- If any errors occur during the process or if the finding is not found, you will be redirected to the home page with a detailed message. 
 
 <!---
 PR #940: Organization roles on settings page: Allow edit name and description
@@ -351,15 +397,18 @@ Labels: enhancement
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-As an organization admin, you can now rename any system role, except for the `Customer Admin` role, and edit the role description. This update makes it easier to manage roles within your organization by allowing you to edit the name and description of roles directly on the settings page. Custom fields for role names and descriptions can now be modified seamlessly, improving the overall experience of managing organizational roles.
+As an organization admin, you can now rename any system role, except for the `Customer Admin` role, and edit the role description. 
+
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-30-ns}
 [Rename existing roles](/guide/configuration/manage-roles.qmd#rename-existing-roles){.button}
 :::
 
 ::::
 
+- This update makes it easier to manage roles within your organization by allowing you to edit the name and description of roles directly on the settings page. 
+- Custom fields for role names and descriptions can now be modified seamlessly, improving the overall experience of managing organizational roles.
 
 <!---
 PR #949: [5743] - feat: implement filter on Model Activity page
@@ -368,20 +417,24 @@ Labels: enhancement
 --->
 ### Better filtering for model activity
 
-You can now filter model activity by type, allowing you to easily view specific actions. The recent activity section on the model details page also provides a clearer overview of updates. This enhancement simplifies navigating through activity logs, making it easier to find relevant information based on the selected filters.
+You can now filter model activity by type, allowing you to easily view specific actions. 
+
+The recent activity section on the model details page also provides a clearer overview of updates. This enhancement simplifies navigating through activity logs, making it easier to find relevant information based on the selected filters.
 
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
+::: {.w-60-ns}
 The new activity type filters are available on:
 
 - The Model Activity page
 - The Recent Activity section on model details pages
 :::
 
-::: {.w-30-ns .tr}
+::: {.w-40-ns}
+
 [Filter activity](/guide/model-inventory/view-model-activity.qmd#filter-activity){.button}
+
 :::
 
 ::::
@@ -398,9 +451,12 @@ You can now use rich text editing in the validation guideline description dialog
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns .pr4}
-This enhancement allows for better formatting and presentation of your guidelines, improving how content is managed and displayed. The rich text editor provides a more flexible way to create and edit guideline descriptions, making the process smoother and more user-friendly.
+- This enhancement allows for better formatting and presentation of your guidelines, improving how content is managed and displayed. 
+- The rich text editor provides a more flexible way to create and edit guideline descriptions, making the process smoother and more user-friendly.
 
+<center>
 [Edit guidelines](/guide/model-validation/manage-validation-guidelines.qmd#edit-guidelines){.button}
+</center>
 :::
 
 ::: {.w-50-ns}
@@ -420,7 +476,8 @@ Labels: bug
 
 Fixed an issue where scrollbars were unnecessarily displayed in the layout sidebar on browsers running on Windows.
 
-This update improves the user interface by ensuring scrollbars are hidden where they are not needed, resulting in a cleaner and more consistent browsing experience across different components and pages. Scrolling behavior has been optimized to make the layout more visually appealing and user-friendly.
+- This update improves the user interface by ensuring scrollbars are hidden where they are not needed, resulting in a cleaner and more consistent browsing experience across different components and pages. 
+- Scrolling behavior has been optimized to make the layout more visually appealing and user-friendly.
 
 ## Documentation
 
@@ -431,25 +488,40 @@ Labels: documentation
 --->
 ### Updated training content
 
+Our training modules now feature ValidMind's new color scheme, making them more visually appealing and easier to use. 
+
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-40-ns .pr2}
-Our training modules now feature ValidMind's new color scheme, making them more visually appealing and easier to use. Sections are linked directly from the training overview for quicker navigation.  These changes aim to improve the overall look and usability of our training materials.
+::: {.w-60-ns .pr2}
+- Sections are linked directly from the training overview for quicker navigation.  
 
-Additionally, we’ve introduced a new, easy-to-remember URL for accessing our training content.
+- These changes aim to improve the overall look and usability of our training materials.
 
-<!-- NOTE THIS URL WORKS ONLY ON PROD VIA A CLOUDFRONT FUNCTION -->
-[docs.validmind.ai/training](docs.validmind.ai/training){.button}
 :::
 
-::: {.w-60-ns .tc}
-<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425;">
-  <iframe src="/training/training.html" width="540" height="325" style="border:none; border-radius: 5px;"></iframe>
-  <a href="/training/training.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
-</div>
+::: {.w-40-ns .tc}
+:::{#training}
+:::
+
 :::
 
 ::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns .pr2}
+Additionally, we’ve introduced a new, easy-to-remember URL for accessing our training content.
+
+:::
+
+::: {.w-30-ns .tc}
+<!-- NOTE THIS URL WORKS ONLY ON PROD VIA A CLOUDFRONT FUNCTION -->
+[docs.validmind.ai/training](https://docs.validmind.ai/training){.button}
+
+:::
+
+::::
+
 
 <!---
 PR #446: Embed Validating Models 101 playlist into Guides section
@@ -460,7 +532,7 @@ Labels: documentation
 
 We created a series of short videos to help you better understand the model validation process. These videos introduce you to the steps you need to follow when validating models on our platform. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=JfBNClmsZYLS7m9F&amp;list=PL7I7ZrCoVCCObEiuLLAL0Wm9GQ6x5U0q5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
+<iframe width="760" height="515" src="https://www.youtube.com/embed/videoseries?si=JfBNClmsZYLS7m9F&amp;list=PL7I7ZrCoVCCObEiuLLAL0Wm9GQ6x5U0q5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
 
 <!---
 PR #450: Embed "How do I ... add tests?" video in developer docs
@@ -471,7 +543,7 @@ Labels: documentation
 
 We added a short FAQ-style video to show you how to find the tests ValidMind provides and add them to your own model documentation. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5J7wysDIXgI?si=KPkFhx3O6NknijRf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
+<iframe width="760" height="515" src="https://www.youtube.com/embed/5J7wysDIXgI?si=KPkFhx3O6NknijRf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="box-shadow: 5px 5px 5px #ccc, -5px 5px 5px #ccc; border-radius: 5px;"></iframe>
 
 <!---
 PR #459: Deployment architecture docs
@@ -483,13 +555,16 @@ Labels: documentation
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-We expanded our documentation on deployment options for ValidMind. You can now find detailed information on both multi-tenant cloud and single-tenant options, giving you more clarity on how to deploy ValidMind based on your needs.
+We expanded our documentation on deployment options for ValidMind. 
+
 :::
 
 ::: {.w-30-ns .tc}
 [Deployment options](/about/deployment/deployment-options.qmd){.button}
 :::
 ::::
+
+You can now find detailed information on both multi-tenant cloud and single-tenant options, giving you more clarity on how to deploy ValidMind based on your needs.
 
 <!---
 PR #460: Add link to GitHub for code samples
@@ -505,7 +580,7 @@ To make it easier to find our open-source software on GitHub, we added a link to
 :::
 
 ::: {.w-30-ns .tc}
-[{{< fa brands github >}} Try it on GitHub](https://github.com/validmind/developer-framework){.button}
+[Code samples](/developer/samples-jupyter-notebooks.qmd){.button}
 :::
 
 ::::
