@@ -11,9 +11,31 @@ We've improved the ValidMind user experience, from more supportive documentation
 ### {{< var validmind.developer >}} (v1.26.6)
 
 <!---[SC-2706] Documentation templates should allow rendering more than one unique test result for the same test by @AnilSorathiya in [#322](https://github.com/validmind/developer-framework/pull/322)--->
-#### Documentation templates now support tracking each test result with a unique identifier
+#### Support for tracking each test result with a unique identifier
 
-Documentation templates have been updated to support logging each test run as a unique result, making it possible to run the same test across different datasets or models. To make use of this new feature, you simply add a unique `result_id` identifier as a suffix to a `content_id` identifier in the content block definition of a `metric` or `test` content type. 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+Documentation templates have been updated to support logging each test run as a unique result, making it possible to run the same test across different datasets or models. 
+
+:::
+
+::: {.w-50-ns}
+
+<form method="get" action="/notebooks/how_to/document_multiple_results_for_the_same_test.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Document multiple results for the same test
+</button>
+</form>
+
+:::
+
+::::
+
+To make use of this new feature, you simply add a unique `result_id` identifier as a suffix to a `content_id` identifier in the content block definition of a `metric` or `test` content type. 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
 
 For example, the following content blocks with the suffixes `training_data` and `test_data` enable you to log two individual results for the same test `validmind.data_validation.Skewness`:
 
@@ -23,6 +45,9 @@ For example, the following content blocks with the suffixes `training_data` and 
 - content_type: metric
   content_id: validmind.data_validation.Skewness:test_data
 ```
+:::
+
+::: {.w-50-ns}
 
 You can configure each of these unique `content_id` identifiers by passing the appropriate `config` and `inputs` in `run_documentation_tests()` or `run_test()`. For example, to configure two separate tests for `Skewness` using different datasets and parameters:
 
@@ -46,10 +71,17 @@ test = vm.tests.run_test(
 test.log()
 ```
 
-Try it yourself: [Rendering more than one unique result for the same test](/notebooks/how_to/document_multiple_results_for_the_same_test.ipynb)
+:::
+
+::::
+
 
 <!---[SC 3073] `run_documentation_tests()` should allow specifying inputs for any test individually by @AnilSorathiya in [#327](https://github.com/validmind/developer-framework/pull/327)--->
-#### Easier specification of inputs for individual tests with `run_documentation_tests()`
+#### Easier specification of inputs for individual tests
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
 
 The `run_documentation_tests()` function has been updated to allow passing both test `inputs` and `params` via the `config` parameter.
 
@@ -67,6 +99,15 @@ full_suite = vm.run_documentation_tests(
     }
 )
 ```
+
+<form method="get" action="/validmind/validmind.html#run_documentation_tests" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">run_documentation_tests()
+</button>
+</form>
+
+:::
+
+::: {.w-50-ns}
 
 With the updated function, `config` can now pass both `params` and `inputs` to each declared test. For example, to specify what model should be passed to each individual test instance:
 
@@ -91,53 +132,96 @@ full_suite = vm.run_documentation_tests(
 
 Here, the top-level `inputs` parameter acts as a global `inputs` parameter, and the individual tests can customize what they see as the input model via their own `config` parameters.
 
+:::
+
+::::
+
+
 <!---[SC-2330] Ability to see available task types and tags by @juanmleng in [#317](https://github.com/validmind/developer-framework/pull/317)--->
 #### View available task types and tags to filter tests
 
 To enable model developers to know what task types and tags are available to filter on, we have made some updates to our {{< var vm.developer >}}:
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
 - New `list_task_types()` and `list_tags()` endpoints enable you to list all available `task_type` and `tags` across all test classes
 - New `list_tasks_and_tags()` endpoint enables you to list which `tags` are associated to which `task_type`
 
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/notebooks/how_to/explore_tests.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Explore tests
+</button>
+</form>
+
+:::
+
+::::
+
 <!-- Using the variable in alt text messes up the image display  -->
 
-![](list-tasks-and-tags.png){fig-alt="New indicator that specifies the user who made updates through the developer framework" fig-align="center" width=90% class="screenshot"}
-
-Try it: [Exploring Tests in the {{< var vm.developer >}}](/notebooks/how_to/explore_tests.ipynb)
+![Explore tests notebook with the Understanding Tags and Task Types code cells run successfully](list-tasks-and-tags.png){width=80% fig-alt="Screenshot showing the Explore tests notebook with the Understanding Tags and Task Types code cells run successfully" fig-align="center" width=90% class="screenshot"}
 
 <!---John6797/sc 2943/developer framework should register documentation by @johnwalz97 in [#324](https://github.com/validmind/developer-framework/pull/324)--->
 #### Developer framework documentation inputs tracking
 
-We have added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with `vm.init_dataset()` and `vm.init_model()`, we link those inputs with the test results they generate. This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code and works with existing `init` methods.
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+- We have added a new feature that tracks which datasets and models are used when running tests. Now, when you initialize datasets or models with `vm.init_dataset()` and `vm.init_model()`, we link those inputs with the test results they generate. 
+- This makes it clear which inputs were used for each result, improving transparency and making it easier to understand test outcomes. This update does not require any changes to your code and works with existing `init` methods.
+
+:::
+
+::: {.w-20-ns}
+
+<form method="get" action="/validmind/validmind.html#init_dataset" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">init_dataset()
+</button>
+</form>
+
+<form method="get" action="/validmind/validmind.html#init_model" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">init_model()
+</button>
+</form>
+
+:::
+
+::::
+
+
 
 ### {{< var validmind.platform >}} (v1.13.13)
 
 <!---Update events to show users who ran the developer framework actions by @cachafla in [#532](https://github.com/validmind/frontend/pull/532)--->
-#### Updated events to show who ran the {{< var vm.developer >}} actions
+#### Updated events to show users
 
 <!-- NOT A PRODUCT NAME IN THIS CASE, JUST A REFERENCE IN THE UI -->
 
-We are now showing the name of the user who ran the action instead of a generic "Developer Framework" name whenever you generate documentation:
+We now display the name of the user who ran the action instead of a generic "Developer Framework" name whenever you generate documentation:
 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-40-ns}
 
-**Before**
+##### Before
 
 <!-- Using the variable in alt text messes up the image display  -->
 
-![](actions-before.png){fig-alt="Old indicator that says that the developer framework logged an event" fig-align="center" class="screenshot"}
+![Old indicator defaulting to the developer framework logging an event](actions-before.png){fig-alt="Screenshot of the old indicator defaulting to the developer framework logging an event" fig-align="center" class="screenshot"}
 
 :::
 
 ::: {.w-40-ns}
 
-**After**
+##### After
 
 <!-- Using the variable in alt text messes up the image display  -->
 
-![](actions-after.png){fig-alt="New indicator that specifies the user who made updates through the developer framework" fig-align="center" class="screenshot"}
+![New indicator specifying the user who made updates via the developer framework](actions-after.png){fig-alt="Screenshot of the new indicator specifying the user who made updates via the developer framework" fig-align="center" class="screenshot"}
 
 :::
 
@@ -146,102 +230,251 @@ We are now showing the name of the user who ran the action instead of a generic 
 <!---Nrichers/sc 2163/revisit once again the getting started page by @nrichers in [#543](https://github.com/validmind/frontend/pull/543)--->
 #### Simplified instructions for developers
 
-We simplified the instructions for getting started with the {{< var validmind.developer >}} in the {{< var validmind.platform >}}. These instructions tell you how to use the code snippet for your model documentation with your own model or with one of our code samples.
+:::: {.flex .flex-wrap .justify-around}
 
-<!-- Using the variable in alt text messes up the image display  -->
+::: {.w-60-ns}
+We simplified the instructions for getting started with the {{< var validmind.developer >}} in the {{< var validmind.platform >}}. 
 
-![](getting-started-instructions.png){width=80% fig-alt="New indicator that specifies the user who made updates through the developer framework" fig-align="center" class="screenshot"}
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="/developer/model-documentation/install-and-initialize-client-library.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Install and initalize the client library</button>
+</form>
+
+:::
+
+::::
+
+These instructions tell you how to use the code snippet for your model documentation with your own model or with one of our code samples:
+
+![Getting Started page for a model with the custom code snippet](getting-started-instructions.png){width=80% fig-alt="Screenshot of the Getting Started page for a model with the custom code snippet" fig-align="center" class="screenshot"}
+
 
 ## Enhancements
 
 <!---Panchicore/sc 2799/model owner should be able to edit model by @panchicore in [#562](https://github.com/validmind/frontend/pull/562)--->
-Model owners can edit model details
-: Model owners can now edit the values for fields displayed on the model details page. Previously it was only possible to edit inventory fields defined by your organization.
+#### Ability to edit model fields
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- You can now edit the values for default fields displayed on the model details page. 
+- Previously it was only possible to edit inventory fields defined by your organization.
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/model-inventory/edit-model-inventory-fields.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Edit model inventory fields</button>
+</form>
+
+:::
+
+::::
+
 
 <!---Reducing load time by using localstorage for Auth0 by @even-steven in [#570](https://github.com/validmind/frontend/pull/570)--->
-Performance improvements for the {{< var validmind.platform >}}
-: We made improvements to page load times on our {{< var vm.platform >}} for a smoother user experience.
+#### Performance improvements for the {{< var validmind.platform >}}
+We made improvements to page load times on our {{< var vm.platform >}} for a smoother user experience.
 
 <!---Added support for filtering model inventory by developers / validators by @even-steven in [#563](https://github.com/validmind/frontend/pull/563)--->
-Added support for filtering model inventory by developers / validators
-: Enhanced navigation of the Model Inventory by enabling filtering based on Developers and Validators involved with each model.
+#### Filter the Model Inventory 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+You can now narrow down models in your **Model Inventory** with our advanced filter, search, and sort options. 
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/model-inventory/working-with-model-inventory.html#search-filter-and-sort-models" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Search, filter, and sort models</button>
+</form>
+
+:::
+
+::::
 
 <!---Support for custom model fields by @panchicore in [#509](https://github.com/validmind/frontend/pull/509)--->
-Support for custom model fields in the model inventory
-: The model inventory has been updated to allow organizations to add additional fields. This enhancement enables administrators to customize the model inventory data schema according to your specific organizational needs. This can be done by accessing **Model Inventory Fields** in the **{{< fa gear >}} Settings** page.
+#### Custom model inventory fields
+:::: {.flex .flex-wrap .justify-around}
 
-The initial release supports the following field types:
+::: {.w-60-ns}
+- The model inventory has been updated to allow organizations to add additional fields. 
+- This enhancement enables administrators to customize the model inventory data schema according to your specific organizational needs. 
+:::
 
-- Single Line Text
-- Long Text
-- Single Select
-- Multiple Select
-- Checkbox
-- Number
-- URL
-- Date
-- Date Time
-- Email
-- Linked Record to User
+::: {.w-40-ns}
+
+<form method="get" action="/guide/model-inventory/manage-model-inventory-fields.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Manage model inventory fields</button>
+</form>
+
+:::
+
+::::
 
 <!---Adds toggle to see only mentions in Recent Activity > Comments by @gtagle in [#525](https://github.com/validmind/frontend/pull/525)--->
-Filter for mentions in recent activity comments
-: We implemented a toggle feature in the **Recent Activity** > **Comments** section to filter and display only specific mentions. By default, all comments where the logged-in user has been tagged are displayed by this filter. 
+#### User mentions in comments
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+We implemented a toggle feature in the **Model Activity** and Recent Activity sections under **Comments** to filter and display only specific user mentions. 
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/model-inventory/view-model-activity.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">View model activity</button>
+</form>
+
+:::
+
+::::
 
 <!---Add CKEditor support to finding description and remediation plan - Introduce the `RichTextContentEditor` component by @panchicore in [#542](https://github.com/validmind/frontend/pull/542)--->
-Expanded rich-text editor support
-: Forms in the **Findings** and **Validation Report** sections now support the rich-text editor interface. This support enables you to use the editor for your finding descriptions and remediation plans, for example. 
+#### Expanded rich-text editor support
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- Forms in the **Model Findings** and **Validation Report** sections now support the rich-text editor interface found in the rest of our content blocks. 
+- This support enables you to use the editor for your finding descriptions and remediation plans, for example. 
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/model-documentation/work-with-content-blocks.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Work with content blocks</button>
+</form>
+
+:::
+
+::::
+
 
 ## Bug fixes
 
 <!---Invalid content blocks create errors in run documentation by @cachafla in [#326](https://github.com/validmind/developer-framework/pull/326)--->
-Invalid content blocks create errors for `run_documentation_tests()`
-: Fixed an issue where using an invalid test identifier would prevent `run_documentation_tests()` from running all available tests. The full test suite now runs as expected, even when an invalid test identifier causes an error for an individual test.
+#### Invalid content blocks for `run_documentation_tests()`
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- We've fixed an issue where previously using an invalid test identifier would prevent `run_documentation_tests()` from running all available tests. 
+- The full test suite now runs as expected, even when an invalid test identifier causes an error for an individual test.
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/validmind/validmind.html#run_documentation_tests" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">run_documentation_tests()</button>
+</form>
+
+:::
+
+::::
 
 <!---Ability to show condensed sections in documentation sidebar by @cachafla in [#565](https://github.com/validmind/frontend/pull/565)--->
-Show all collapsed sections in documentation table of contents
-: Fixed an issue where the table of contents was not displaying every subsection that belongs to the parent section. The table of contents now accurately reflects the complete structure of the documentation, including all subsections.
+#### Show all collapsed sections in documentation 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+- We've fixed an issue where previously the table of contents was not displaying every subsection that belongs to the parent section. 
+- The table of contents now accurately reflects the complete structure of the documentation, including all subsections.
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="/guide/model-documentation/working-with-model-documentation.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Working with model documentation</button>
+</form>
+
+:::
+
+::::
+
 
 <!---Fixed an issue where the diff for validation reports was showing inco… by @even-steven in [#561](https://github.com/validmind/frontend/pull/561)--->
-Template swap shows the wrong diff
-: Fixed an issue where the diff for validation reports was showing incorrectly when swapping templates. The correct diff between the current and the new template is now displayed.
+#### Template swap diffs
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+- We've fixed an issue where previously the diff for validation reports was showing incorrectly when swapping templates. 
+- The correct diff between the current and the new template is now displayed.
+:::
+
+::: {.w-40-ns}
+
+<form method="get" action="/guide/model-documentation/swap-documentation-templates.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Swap documentation templates</button>
+</form>
+
+:::
+
+::::
+
 
 <!---bugfix: [sc-2699] Clicking on a recent activity item should link directly to the associated content block by @panchicore in [#536](https://github.com/validmind/frontend/pull/536)--->
-Clicking on a recent activity item should link to the corresponding content block
-: Fixed an issue where clicking on a recent activity item would not redirect you to the corresponding content block. Clicking on a recent item now takes you to the correct content block as expected.
+#### Activity item links to the corresponding content block
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- We've fixed an issue where previously clicking on an activity item would not redirect you to the corresponding content block. 
+- Clicking on a recent item now takes you to the correct content block as expected.
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/model-inventory/view-model-activity.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">View model activity</button>
+</form>
+
+:::
+
+::::
+
 
 ## Documentation updates
 
 <!---User management docs by @nrichers in [#137](https://github.com/validmind/documentation/pull/137)--->
-New user management documentation
-: Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions. [Learn more ...](/guide/configuration/managing-users.qmd)
+#### New user management documentation
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- Our user guide now includes end-to-end instructions for managing users on the ValidMind platform. 
+- This new content covers common tasks such as inviting new users, adding them to user groups, and managing roles and permissions.
+:::
+
+::: {.w-30-ns}
+
+<form method="get" action="/guide/configuration/managing-users.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Managing users</button>
+</form>
+
+:::
+
+::::
 
 <!---Add input_id usage to notebook samples by @cachafla in [#332](https://github.com/validmind/developer-framework/pull/332)--->
-Updated sample notebooks with current `input_id` usage
-: We updated our sample notebooks to show the current, recommended usage for `input_id` when calling `vm.init_dataset()` or `vm.init_model()`.
+#### Updated sample notebooks with current `input_id` usage
+:::: {.flex .flex-wrap .justify-around}
 
-Learn more:
+::: {.w-70-ns}
+We updated our sample notebooks to show the current, recommended usage for `input_id` when calling `vm.init_dataset()` or `vm.init_model()`.
+:::
 
-- [QuickStart for Customer Churn Model Documentation — Full Suite](/notebooks/quickstart_customer_churn_full_suite.ipynb)
-- [Sentiment Analysis of Financial Data Using a Large Language Model (LLM)](/notebooks/code_samples/nlp_and_llm/foundation_models_integration_demo.ipynb)
-- [Summarization of Financial Data Using a Large Language Model (LLM)](/notebooks/code_samples/nlp_and_llm/foundation_models_summarization_demo.ipynb)
-- [Sentiment Analysis of Financial Data Using Hugging Face NLP Models](/notebooks/code_samples/nlp_and_llm/hugging_face_integration_demo.ipynb)
-- [Summarization of Financial Data Using Hugging Face NLP models](/notebooks/code_samples/nlp_and_llm/hugging_face_summarization_demo.ipynb)
-- [Prompt Validation for Large Language Models (LLMs)](/notebooks/code_samples/nlp_and_llm/prompt_validation_demo.ipynb)
-- [QuickStart for California Housing Regression Model Documentation — Full Suite](/notebooks/code_samples/regression/quickstart_regression_full_suite.ipynb)
-- [Configuring and Using Dataset Features](/notebooks/how_to/configure_dataset_features.ipynb)
-<!-- - [Configure Parameters for a Specific Test](/notebooks/how_to/configure_test_parameters.ipynb) -->
+::: {.w-30-ns}
 
-## How to upgrade
+<form method="get" action="/developer/samples-jupyter-notebooks.html" target="_blank">
+   <button type="submit" style="color: white; background-color: #de257e; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;">Code samples</button>
+</form>
 
-To access the latest version of the [{{< var validmind.platform >}}](http://app.prod.validmind.ai/), reload your browser tab.
+:::
 
-To upgrade the {{< var validmind.developer >}}:
+::::
 
-- [Using JupyterHub](/get-started/developer/try-with-jupyterhub.qmd): Reload your browser tab and re-run the `%pip install --upgrade validmind` cell.
-
-- [In your own developer environment](/developer/model-documentation/install-and-initialize-client-library.qmd): Restart your notebook and re-run:
-    
-    ```python
-    %pip install validmind
-    ```
+{{< include /releases/_how-to-upgrade.qmd >}}
