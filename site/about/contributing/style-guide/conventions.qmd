@@ -119,31 +119,43 @@ Column 2, 50% wide
 - Keep hyperlinks in instructional text minimal — too many links can misdirect the user from the task at hand. 
 - When possible — such as any time instructions are not single-sourced — instead of multiple inline links, make use of margin footnotes.[^5]
 - Whenever possible, make the link the title of the destination article. This also solves the issue of links with nebulous descriptions that do not match article titles, or links whose destinations are not clear to the user such as "Read more." 
+- When constructing links, refer to the `.qmd` file as Quarto will properly render these into `.html` links on your behalf and check to see if the destinations are able to be resolved.
+- When constructing filepaths, you'll also want start with the root directory whenever possible as this minimizes usage of unclear relative paths.
+
+| Correct | Incorrect | 
+|------|-----|
+|   `[Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd)`  |  `[Lean more ...](/../../set-up-model-workflows.html)`  |
+: **Inline links** examples {.hover}
 
 ### Buttons
 
 Sometimes, it's helpful to highlight a call to action with a button that takes you to a topic or to a notebook on JupyterHub. 
 
-Change any Markdown link into a button by appending `{.button}`:
-
-[Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd){.button}
+Change any Markdown link into a our theme-styled button by appending `{.button}`:
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-50-ns}
+::: {.w-30-ns}
 **Correct:**  
 
+[Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd){.button target="_blank"}
+
 ```markdown
-[Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd){.button}
+[Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd){.button target="_blank"}
 ```
 
+::: {.callout}
+Using a markdown button also enables you to link to to the `.qmd` path instead of the rendered `.html` file.
 :::
 
-::: {.w-10-ns}
 :::
 
-::: {.w-40-ns}
+::: {.w-60-ns}
 **Incorrect:**
+
+<form method="get" action="../../guide/model-workflows/set-up-model-workflows.html" target="_blank">
+   <button type="submit" style="color: #de257e; background-color: white; border-radius: 8px; border: none; font-size: 16px; padding: 6.25px 12.5px; margin-left: 16px; margin-bottom: 20px;border: 1px solid #de257e">Set up model workflows</button>
+</form>
 
 ```html
 <form method="get" action="../../guide/model-workflows/set-up-model-workflows.html" target="_blank">
