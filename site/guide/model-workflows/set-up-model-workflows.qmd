@@ -160,22 +160,29 @@ To configure a condition branch:
     To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
 4. When you are finished setting up all your branch paths, click **Update Step** to save your step.
 
+    Proceed with linking the Condition Branch with your subsequent steps.[^13]
+
+For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
+
+- First, you'd set up a Condition Branch path to look for instances where `GenAI Model` is set to `true`.
+- Then, you would add an Approval step[^14] that requests a review of the model from the User group `Legal Team`.
+- Finally, configure the `default` path to bypass this special approval. 
+
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-40-ns}
-
+::: {.w-50-ns}
 ![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" class="screenshot"}
 
 :::
 
 ::: {.w-50-ns}
-
-![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" class="screenshot"}
+![Legal team Approval step configuration](legal-team-approval.png){fig-alt="Screenshot showing the Legal team Approval step configuration" class="screenshot" width=80%}
 
 :::
 
 ::::
 
+![Example Condition Branch where GenAI models require special approval from the User group Legal Team](example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User group Legal Team" class="screenshot"}
 
 ### Add conditional requirements
 
@@ -189,14 +196,14 @@ Conditional requirements can be configured for all four available step types:
 | Condition Branch | Under each branch's **[conditions]{.smallcaps}**, you're able to designate the conditions that apply to that path. |
 : Step type conditional options {.hover tbl-colwidths="[20,80]"}
 
-For Status Change[^13], User Action[^14], and Condition Branch[^15] conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
+For Status Change[^15], User Action[^16], and Condition Branch[^17] conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
 
 - Click **{{< fa plus >}} Rule** to add an independent rule.
 - Click **{{< fa plus >}} Group** to add a linked group of rules that all must be true to qualify. 
 
 ## Link workflow together
 
-To initiate the beginning of your workflow:[^16]
+To initiate the beginning of your workflow:[^18]
 
 1. Locate the **Start** of your workflow.
 
@@ -217,9 +224,9 @@ To link subsequent steps together:
 #### Link approval steps
 Approval steps need to be subsequently linked to both a `Rejected` and an `Approved` Status Change step:
 
-1. First, configure an **Approval** step.[^17]
+1. First, configure an **Approval** step.[^19]
 
-2. Then, drag two **Status Change** steps onto the canvas:[^18]
+2. Then, drag two **Status Change** steps onto the canvas:[^20]
 
     - Assign a `Rejected` status to one in the **Set Document Status** field.
     - Assign an `Approved` status to the other in the **Set Document Status** field.
@@ -280,18 +287,21 @@ Approval steps need to be subsequently linked to both a `Rejected` and an `Appro
 
 [^12]: [Add conditional requirements](#add-conditional-requirements)
 
-[^13]: [Status Change](#status-change) steps
+[^13]: [Link steps together](#link-steps-together) 
 
-[^14]: [User Action](#user-action) steps
+[^14]: [Approval](#approval) steps
 
-[^15]: [Condition Branch](#condition-branch) steps
+[^15]: [Status Change](#status-change) steps
 
-[^16]: After you’ve [configured your workflow steps](#configure-workflow-steps), you can then link your workflow together.
+[^16]: [User Action](#user-action) steps
 
-[^17]: 
+[^17]: [Condition Branch](#condition-branch) steps
+
+[^18]: After you’ve [configured your workflow steps](#configure-workflow-steps), you can then link your workflow together.
+
+[^19]: 
 
     - [Configure workflow steps](#configure-workflow-steps)
     - [Approval](#approval) steps
 
-[^18]: [Status Change](#status-change) steps
-
+[^20]: [Status Change](#status-change) steps
