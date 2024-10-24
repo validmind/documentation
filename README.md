@@ -101,14 +101,6 @@ When constructing links, refer to the `.qmd` file as Quarto will properly render
 |---|---|
 | `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.qmd)` | `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.html)` |
 
-The only exceptions are within HTML, such as CSS-styled buttons which necessitate usage of `.html` href links:
-
-```html
-<a class="btn btn-primary" role="button" style="padding: 12px;color: var(--bs-white);background: #DE257E;border-radius: 4px;margin-top: 40px;font-family: 'Inter';font-style: normal;font-weight: 700;font-size: 14px;line-height: 100%;border: 1px solid var(--bs-pink);" href="get-started/developer/try-with-jupyterhub.html">QuickStart</a>
-```
-
-> You'll need to pay special attention to these links and manually test them to ensure that they are not broken whenever any changes to file destinations are made. 
-
 When constructing filepaths, including while using [Quarto's Includes](https://quarto.org/docs/authoring/includes.html) (single-sourcing feature), you'll also want start with the root directory whenever possible as this minimizes usage of unclear relative paths: 
 
 | Correct | Incorrect |

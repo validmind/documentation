@@ -34,10 +34,10 @@ Signing up is FREE — {{< var link.register >}}
 
 **Inputs**: Objects to be evaluated and documented in the ValidMind Library. They can be any of the following:
 
-  - **model**: A single model that has been initialized in ValidMind with [`vm.init_model()`](https://docs.validmind.ai/validmind/validmind.html#init_model).
-  - **dataset**: Single dataset that has been initialized in ValidMind with [`vm.init_dataset()`](https://docs.validmind.ai/validmind/validmind.html#init_dataset).
+  - **model**: A single model that has been initialized in ValidMind with [`vm.init_model()`](/validmind/validmind.html#init_model).
+  - **dataset**: Single dataset that has been initialized in ValidMind with [`vm.init_dataset()`](/validmind/validmind.html#init_dataset).
   - **models**: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.
-  - **datasets**: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this [example](https://docs.validmind.ai/notebooks/how_to/run_tests_that_require_multiple_datasets.html) for more information.
+  - **datasets**: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this [example](/notebooks/how_to/run_tests_that_require_multiple_datasets.ipynb) for more information.
 
 **Parameters**: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.
 
@@ -45,4 +45,4 @@ Signing up is FREE — {{< var link.register >}}
 
 **Test suites**: Collections of tests designed to run together to automate and generate model documentation end-to-end for specific use-cases.
 
-Example: the [`classifier_full_suite`](https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite runs tests from the [`tabular_dataset`](https://docs.validmind.ai/validmind/validmind/test_suites/tabular_datasets.html) and [`classifier`](https://docs.validmind.ai/validmind/validmind/test_suites/classifier.html) test suites to fully document the data and model sections for binary classification model use-cases.
+Example: the [`classifier_full_suite`](/validmind/validmind/test_suites/classifier.html#ClassifierFullSuite) test suite runs tests from the [`tabular_dataset`](/validmind/validmind/test_suites/tabular_datasets.html) and [`classifier`](/validmind/validmind/test_suites/classifier.html) test suites to fully document the data and model sections for binary classification model use-cases.
