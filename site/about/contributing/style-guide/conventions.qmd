@@ -3,6 +3,7 @@ title: "Conventions"
 date: last-modified
 filters:
   - tachyons
+  - course-preview
 ---
 
 A message can only make an impact when it is received, so presentation is (almost) everything.
@@ -63,7 +64,7 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 
 To make sure our docs site works well on mobile, we use Tachyons CSS[^4] with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
 
-Enable Tachyons CSS in the front matter  with:
+Enable Tachyons CSS in the front matter with:
 
 ```yaml
 filters:
@@ -225,6 +226,47 @@ Footnotes will automatically appear in the correct location in the margin, regar
 |------|-----|
 | ![](margin-footnotes_correct.png){fig-alt="A screenshot showing a correct example of footnote links automatically placed in the margin" class="screenshot"} | ![](inline-links_incorrect.png){fig-alt="A screenshot showing an incorrect example of supplementary links in inline instructional text" class="screenshot"} |
 : **Margin footnotes** examples {.hover}
+
+### Course previews 
+
+We provide live previews of training modules on our course pages. These previews act like links but they provide a live preview of the training module linked to. To simplify embedding these previews, we created a course–preview extension for Quarto that is part of our repository.
+
+Enable course previews in the front matter:
+
+```yaml
+filters:
+  - course-preview
+```
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr3}
+**Correct:**
+
+```markdown
+::: {.course-preview src="administrator-fundamentals.qmd"}
+:::
+```
+
+**Output:**
+
+::: {.course-preview src="../../../training/administrator-fundamentals.qmd"}
+:::
+
+:::
+
+::: {.w-50-ns .pl3}
+**Incorrect:**
+
+```html
+<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425; background: #DE257E;">
+  <iframe src="administrator-fundamentals.html" width="400" height="225" style="border:none; border-radius: 5px;"></iframe>
+  <a href="administrator-fundamentals.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
+</div>
+```
+:::
+
+::::
 
 ### Emphasis
 Use emphatic styling sparingly, in order not to overwhelm the reader with visual distractions.
