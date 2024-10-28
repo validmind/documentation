@@ -1,4 +1,4 @@
--- course-preview.lua
+-- preview.lua
 
 -- Track if CSS has already been added to prevent duplication
 local css_added = false
@@ -6,7 +6,7 @@ local css_added = false
 -- Helper function to add a CSS file to the document header
 function add_css(doc)
   if not css_added then
-    local css_file = "/_extensions/nrichers/course-preview/course-preview.css"
+    local css_file = "/_extensions/nrichers/preview/preview.css"
     table.insert(doc.blocks, 1, pandoc.RawBlock("html", "<link rel=\"stylesheet\" href=\"" .. css_file .. "\">"))
     css_added = true  -- Set the flag so CSS is only added once
   end
@@ -14,7 +14,7 @@ end
 
 -- Main function to apply course preview
 function Div(el)
-  if el.classes:includes("course-preview") then
+  if el.classes:includes("preview") then
     -- Get the `src` attribute, defaulting to "default-page.html" if missing
     local src = el.attributes.src or "default-page.html"
     
@@ -23,7 +23,7 @@ function Div(el)
 
     -- Generate the HTML content for the course preview div
     local iframeHtml = string.format(
-      '<div class="course-preview">\n' ..
+      '<div class="preview">\n' ..
       '  <iframe src="%s" width="400" height="225"></iframe>\n' ..
       '  <a href="%s" target="_blank"></a>\n' ..
       '</div>', src, src
