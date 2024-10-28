@@ -8,19 +8,19 @@ function add_css(doc)
   if not css_added then
     local css_file = "/_extensions/nrichers/preview/preview.css"
     table.insert(doc.blocks, 1, pandoc.RawBlock("html", "<link rel=\"stylesheet\" href=\"" .. css_file .. "\">"))
-    css_added = true  -- Set the flag so CSS is only added once
+    css_added = true
   end
 end
 
 -- Main function to apply preview
 function Div(el)
   if el.classes:includes("preview") then
-    -- Get the `source` attribute, defaulting to "default-page.qmd" if missing
-    local source = el.attributes.source or "/index.qmd"
+    -- Get the `source` attribute, defaulting to "index.qmd" if missing
+    local source = el.attributes.source or "index.qmd"
     source = source:gsub("%.qmd$", ".html")
 
     -- Get the `target` attribute, defaulting to `source` if missing
-    local target = el.attributes.target or el.attributes.source or "/index.qmd"
+    local target = el.attributes.target or el.attributes.source or "index.qmd"
     target = target:gsub("%.qmd$", ".html")
 
     -- Generate the HTML content for the preview div
