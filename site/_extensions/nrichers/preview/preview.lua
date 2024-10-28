@@ -12,21 +12,23 @@ function add_css(doc)
   end
 end
 
--- Main function to apply course preview
+-- Main function to apply preview
 function Div(el)
   if el.classes:includes("preview") then
-    -- Get the `src` attribute, defaulting to "default-page.html" if missing
-    local src = el.attributes.src or "default-page.html"
-    
-    -- Replace .qmd with .html in the source
-    src = src:gsub("%.qmd$", ".html")
+    -- Get the `source` attribute, defaulting to "default-page.qmd" if missing
+    local source = el.attributes.source or "/index.qmd"
+    source = source:gsub("%.qmd$", ".html")
 
-    -- Generate the HTML content for the course preview div
+    -- Get the `target` attribute, defaulting to `source` if missing
+    local target = el.attributes.target or el.attributes.source or "/index.qmd"
+    target = target:gsub("%.qmd$", ".html")
+
+    -- Generate the HTML content for the preview div
     local iframeHtml = string.format(
       '<div class="preview">\n' ..
       '  <iframe src="%s" width="400" height="225"></iframe>\n' ..
       '  <a href="%s" target="_blank"></a>\n' ..
-      '</div>', src, src
+      '</div>', source, target
     )
 
     -- Return the raw HTML to be inserted
