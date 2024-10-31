@@ -3,6 +3,7 @@ title: "Conventions"
 date: last-modified
 filters:
   - tachyons
+  - preview
 ---
 
 A message can only make an impact when it is received, so presentation is (almost) everything.
@@ -63,7 +64,7 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 
 To make sure our docs site works well on mobile, we use Tachyons CSS[^4] with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
 
-Enable Tachyons CSS in the front matter  with:
+Enable Tachyons CSS in the front matter with:
 
 ```yaml
 filters:
@@ -225,6 +226,54 @@ Footnotes will automatically appear in the correct location in the margin, regar
 |------|-----|
 | ![](margin-footnotes_correct.png){fig-alt="A screenshot showing a correct example of footnote links automatically placed in the margin" class="screenshot"} | ![](inline-links_incorrect.png){fig-alt="A screenshot showing an incorrect example of supplementary links in inline instructional text" class="screenshot"} |
 : **Margin footnotes** examples {.hover}
+
+### Page previews 
+
+We provide live previews of training modules on our course pages. These previews act like links but they provide a live preview of the training module linked to. To simplify embedding these previews, we created a preview extension for Quarto that is part of our repository.
+
+Enable course previews in the front matter:
+
+```yaml
+filters:
+  - preview
+```
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr3}
+**Correct:**
+
+```markdown
+::: {.preview source="administrator-fundamentals.qmd"}
+:::
+```
+
+**Output:**
+
+::: {.preview source="../../../training/administrator-fundamentals.qmd"}
+:::
+
+**Optional:** Specify a different `target` for the preview to preview a training course but link to the registration page, for example:
+
+```markdown
+::: {.preview source="administrator-fundamentals.qmd" target="administrator-fundamentals-register.qmd"}
+:::
+```
+
+:::
+
+::: {.w-50-ns .pl3}
+**Incorrect:**
+
+```html
+<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425; background: #DE257E;">
+  <iframe src="administrator-fundamentals.html" width="400" height="225" style="border:none; border-radius: 5px;"></iframe>
+  <a href="administrator-fundamentals.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
+</div>
+```
+:::
+
+::::
 
 ### Emphasis
 Use emphatic styling sparingly, in order not to overwhelm the reader with visual distractions.
@@ -401,9 +450,31 @@ Refer also to [the glossary](/about/glossary/glossary.qmd) for extended informat
 
 ## Training materials
 
-The {{< var vm.product >}} Academy is delivered in Revealjs presentation format,[^20] with a slightly different set of conventions:
+The {{< var vm.product >}} Academy[^20] is delivered in Revealjs presentation format,[^21] with a slightly different set of conventions:
 
-- It makes use of Tachyons CSS[^21] to provide demonstration overlays.
+- Registration landing pages make use of our custom `.preview` class to display the tile card for the course:
+
+  :::: {.flex .flex-wrap .justify-around}
+
+  ::: {.w-40-ns}
+
+    ```markdown
+  ::: {.preview source="/training/administrator-fundamentals.qmd"}
+  :::
+  ```
+
+  :::
+
+  ::: {.w-50-ns}
+
+  ::: {.preview source="/training/administrator-fundamentals.qmd"}
+  :::
+  <br>
+  :::
+
+  ::::
+
+- Training slides make use of Tachyons CSS[^22] to provide demonstration overlays.
 
   Enable Tachyons CSS in the front matter with:
 
@@ -443,8 +514,7 @@ The {{< var vm.product >}} Academy is delivered in Revealjs presentation format,
 
   ::::
 
-
-- It uses inline links only instead of footnotes,[^22] as footnotes are not visible in presentation mode.
+- Training slides use inline links only instead of footnotes,[^23] as footnotes are not visible in presentation mode.
 
 ## What's next
 - [Voice and tone](voice-and-tone.qmd)
@@ -490,8 +560,10 @@ The {{< var vm.product >}} Academy is delivered in Revealjs presentation format,
 
 [^19]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
 
-[^20]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
+[^20]: [Welcome to ValidMind Training](/training/training.qmd)
 
-[^21]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+[^21]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
 
-[^22]: [Inline links](#inline-links)
+[^22]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+
+[^23]: [Inline links](#inline-links)
