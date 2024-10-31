@@ -1,6 +1,6 @@
-## About ValidMind
+## About {{< var vm.product >}}
 
-ValidMind is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the ValidMind Platform to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
+{{< var vm.product >}} is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the {{< var validmind.platform >}} to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
 
 ### Before you begin
 
@@ -8,13 +8,13 @@ This notebook assumes you have basic familiarity with Python, including an under
 
 If you encounter errors due to missing modules in your Python environment, install the modules with `pip install`, and then re-run the notebook. For more help, refer to [Installing Python Modules](https://docs.python.org/3/installing/index.html).
 
-### New to ValidMind?
+### New to {{< var vm.product >}}?
 
 If you haven't already seen our [Get started with the {{< var validmind.developer >}}](https://docs.validmind.ai/guide/get-started-validmind-library.html), we recommend you explore the available resources for developers at some point. There, you can learn more about documenting models, find code samples, or read our developer reference.
 
 ::: {.callout-tip}
 
-For access to all features available in this notebook, create a free ValidMind account.
+For access to all features available in this notebook, create a free {{< var vm.product >}} account.
 
 Signing up is FREE — {{< var link.register >}} 
 
@@ -26,20 +26,20 @@ Signing up is FREE — {{< var link.register >}}
 
 **Documentation template**: Functions as a test suite and lays out the structure of model documentation, segmented into various sections and sub-sections. Documentation templates define the structure of your model documentation, specifying the tests that should be run, and how the results should be displayed.
 
-**Tests**: A function contained in the {{< var validmind.developer >}}, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of ValidMind, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.
+**Tests**: A function contained in the {{< var validmind.developer >}}, designed to run a specific quantitative test on the dataset or model. Tests are the building blocks of {{< var vm.product >}}, used to evaluate and document models and datasets, and can be run individually or as part of a suite defined by your model documentation template.
 
 **Metrics**: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.
 
-**Custom metrics**: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with ValidMind to be used in the platform.
+**Custom metrics**: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with {{< var vm.product >}} to be used in the platform.
 
-**Inputs**: Objects to be evaluated and documented in the ValidMind Library. They can be any of the following:
+**Inputs**: Objects to be evaluated and documented in the {{< var validmind.developer >}}. They can be any of the following:
 
-  - **model**: A single model that has been initialized in ValidMind with [`vm.init_model()`](/validmind/validmind.html#init_model).
-  - **dataset**: Single dataset that has been initialized in ValidMind with [`vm.init_dataset()`](/validmind/validmind.html#init_dataset).
-  - **models**: A list of ValidMind models - usually this is used when you want to compare multiple models in your custom metric.
-  - **datasets**: A list of ValidMind datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this [example](/notebooks/how_to/run_tests_that_require_multiple_datasets.ipynb) for more information.
+  - **model**: A single model that has been initialized in {{< var vm.product >}} with [`vm.init_model()`](/validmind/validmind.html#init_model).
+  - **dataset**: Single dataset that has been initialized in {{< var vm.product >}} with [`vm.init_dataset()`](/validmind/validmind.html#init_dataset).
+  - **models**: A list of {{< var vm.product >}} models - usually this is used when you want to compare multiple models in your custom metric.
+  - **datasets**: A list of {{< var vm.product >}} datasets - usually this is used when you want to compare multiple datasets in your custom metric. See this [example](/notebooks/how_to/run_tests_that_require_multiple_datasets.ipynb) for more information.
 
-**Parameters**: Additional arguments that can be passed when running a ValidMind test, used to pass additional information to a metric, customize its behavior, or provide additional context.
+**Parameters**: Additional arguments that can be passed when running a {{< var vm.product >}} test, used to pass additional information to a metric, customize its behavior, or provide additional context.
 
 **Outputs**: Custom metrics can return elements like tables or plots. Tables may be a list of dictionaries (each representing a row) or a pandas DataFrame. Plots may be matplotlib or plotly figures.
 
