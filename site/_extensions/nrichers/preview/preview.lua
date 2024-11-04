@@ -17,11 +17,18 @@ function Div(el)
   if el.classes:includes("preview") then
     -- Get the `source` attribute, defaulting to "index.qmd" if missing
     local source = el.attributes.source or "index.qmd"
-    source = source:gsub("%.qmd$", ".html")
+    local target = el.attributes.target or source
 
-    -- Get the `target` attribute, defaulting to `source` if missing
-    local target = el.attributes.target or el.attributes.source or "index.qmd"
-    target = target:gsub("%.qmd$", ".html")
+    -- Determine if source and target are external URLs
+    local is_external = source:match("^https?://") or target:match("^https?://")
+
+    -- If source is not external, convert .qmd to .html
+    if not source:match("^https?://") then
+      source = source:gsub("%.qmd$", ".html")
+    end
+    if not target:match("^https?://") then
+      target = target:gsub("%.qmd$", ".html")
+    end
 
     -- Generate the HTML content for the preview div
     local iframeHtml = string.format(
