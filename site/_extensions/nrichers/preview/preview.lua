@@ -15,9 +15,13 @@ end
 -- Main function to apply preview
 function Div(el)
   if el.classes:includes("preview") then
-    -- Get the `source` attribute, defaulting to "index.qmd" if missing
+    -- Get the `source` and `target` attributes, defaulting to "index.qmd" if missing
     local source = el.attributes.source or "index.qmd"
     local target = el.attributes.target or source
+
+    -- Get optional `width` and `height` attributes with defaults if not specified
+    local width = el.attributes.width or "400"
+    local height = el.attributes.height or "225"
 
     -- Determine if source and target are external URLs
     local is_external = source:match("^https?://") or target:match("^https?://")
@@ -30,12 +34,12 @@ function Div(el)
       target = target:gsub("%.qmd$", ".html")
     end
 
-    -- Generate the HTML content for the preview div
+    -- Generate the HTML content for the preview div with inline width and height
     local iframeHtml = string.format(
-      '<div class="preview">\n' ..
-      '  <iframe src="%s" width="400" height="225"></iframe>\n' ..
+      '<div class="preview" style="width:%spx; height:%spx;">\n' ..
+      '  <iframe src="%s" width="100%%" height="100%%"></iframe>\n' ..
       '  <a href="%s" target="_blank"></a>\n' ..
-      '</div>', source, target
+      '</div>', width, height, source, target
     )
 
     -- Return the raw HTML to be inserted
