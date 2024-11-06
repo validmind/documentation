@@ -1,6 +1,6 @@
 ## About {{< var vm.product >}}
 
-{{< var vm.product >}} is a platform for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the {{< var validmind.platform >}} to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
+{{< var vm.product >}} is a suite of tools for managing model risk, including risk associated with AI and statistical models. You use the {{< var validmind.developer >}} to automate documentation and validation tests, and then use the {{< var validmind.platform >}} to collaborate on model documentation. Together, these products simplify model risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and model validators.
 
 ### Before you begin
 
@@ -30,7 +30,7 @@ Signing up is FREE — {{< var link.register >}}
 
 **Metrics**: A subset of tests that do not have thresholds. In the context of this notebook, metrics and tests can be thought of as interchangeable concepts.
 
-**Custom metrics**: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with {{< var vm.product >}} to be used in the platform.
+**Custom metrics**: Custom metrics are functions that you define to evaluate your model or dataset. These functions can be registered with {{< var validmind.developer >}} to be used in the {{< var validmind.platform >}}.
 
 **Inputs**: Objects to be evaluated and documented in the {{< var validmind.developer >}}. They can be any of the following:
 
