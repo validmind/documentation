@@ -15,18 +15,14 @@ end
 -- Main function to apply preview
 function Div(el)
   if el.classes:includes("preview") then
-    -- Get the `source` and `target` attributes, defaulting to "index.qmd" if missing
+    -- Get the `source`, `target`, `width`, `height`, and `offset` attributes, with defaults if not specified
     local source = el.attributes.source or "index.qmd"
     local target = el.attributes.target or source
-
-    -- Get optional `width` and `height` attributes with defaults if not specified
     local width = el.attributes.width or "400"
     local height = el.attributes.height or "225"
+    local offset = el.attributes.offset or "0"  -- Offset in pixels to crop from the top
 
-    -- Determine if source and target are external URLs
-    local is_external = source:match("^https?://") or target:match("^https?://")
-
-    -- If source is not external, convert .qmd to .html
+    -- Convert .qmd to .html for non-external sources
     if not source:match("^https?://") then
       source = source:gsub("%.qmd$", ".html")
     end
@@ -34,12 +30,12 @@ function Div(el)
       target = target:gsub("%.qmd$", ".html")
     end
 
-    -- Generate the HTML content for the preview div with inline width and height
+    -- Generate HTML with clip-path to crop the top content by the specified offset
     local iframeHtml = string.format(
-      '<div class="preview" style="width:%spx; height:%spx;">\n' ..
-      '  <iframe src="%s" width="100%%" height="100%%"></iframe>\n' ..
+      '<div class="preview" style="width:%spx; height:%spx; overflow:hidden;">\n' ..
+      '  <iframe src="%s" style="width:100%%; height:calc(100%% + %spx); position:relative; top:-%spx; border:none; border-radius:5px;"></iframe>\n' ..
       '  <a href="%s" target="_blank"></a>\n' ..
-      '</div>', width, height, source, target
+      '</div>', width, height, source, offset, offset, target
     )
 
     -- Return the raw HTML to be inserted
