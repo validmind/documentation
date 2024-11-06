@@ -227,54 +227,6 @@ Footnotes will automatically appear in the correct location in the margin, regar
 | ![](margin-footnotes_correct.png){fig-alt="A screenshot showing a correct example of footnote links automatically placed in the margin" class="screenshot"} | ![](inline-links_incorrect.png){fig-alt="A screenshot showing an incorrect example of supplementary links in inline instructional text" class="screenshot"} |
 : **Margin footnotes** examples {.hover}
 
-### Page previews 
-
-We provide live previews of training modules on our course pages. These previews act like links but they provide a live preview of the training module linked to. To simplify embedding these previews, we created a preview extension for Quarto that is part of our repository.
-
-Enable course previews in the front matter:
-
-```yaml
-filters:
-  - preview
-```
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr3}
-**Correct:**
-
-```markdown
-::: {.preview source="administrator-fundamentals.qmd"}
-:::
-```
-
-**Output:**
-
-::: {.preview source="../../../training/administrator-fundamentals.qmd"}
-:::
-
-**Optional:** Specify a different `target` for the preview to preview a training course but link to the registration page, for example:
-
-```markdown
-::: {.preview source="administrator-fundamentals.qmd" target="administrator-fundamentals-register.qmd"}
-:::
-```
-
-:::
-
-::: {.w-50-ns .pl3}
-**Incorrect:**
-
-```html
-<div style="position: relative; display: inline-block; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); border-radius: 5px; border: 1px solid #222425; background: #DE257E;">
-  <iframe src="administrator-fundamentals.html" width="400" height="225" style="border:none; border-radius: 5px;"></iframe>
-  <a href="administrator-fundamentals.html" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></a>
-</div>
-```
-:::
-
-::::
-
 ### Emphasis
 Use emphatic styling sparingly, in order not to overwhelm the reader with visual distractions.
 
@@ -452,29 +404,73 @@ Refer also to [the glossary](/about/glossary/glossary.qmd) for extended informat
 
 The {{< var vm.product >}} Academy[^20] is delivered in Revealjs presentation format,[^21] with a slightly different set of conventions:
 
-- Registration landing pages make use of our custom `.preview` class to display the tile card for the course:
+- Training courses consist of:
 
-  :::: {.flex .flex-wrap .justify-around}
+  a. A course registration page.[^22]  
+  b. The course slides themselves.[^23]
 
-  ::: {.w-40-ns}
+- Training materials use several supplementary style sheets to apply an alternate site theme: 
 
-    ```markdown
-  ::: {.preview source="/training/administrator-fundamentals.qmd"}
-  :::
+  a. **ValidMind Academy hub:** `training.css`[^24]
+  b. **Course registration pages:** `training.css`, `training-nav.css`[^25]
+  c. **Course slides:** `slides.scss`[^26]
+
+- Each course lives in its own subdirectory within our training, where the name of the directory reflects the name of the course. 
+
+| Correct | Incorrect | 
+|------|-----|
+|   `/training/administrator-training/administrator-fundamentals.qmd`  |  `/training/administrator-fundamentals/administrator-fundamentals.qmd`  |
+: **Training subdirectory** examples {.hover}
+
+#### Course registration
+
+- Course registration pages outline what the course covers and how to sign up for the course.
+- Registration pages make use of our custom `.preview` extension[^27] to display the tile card for the course. These previews act like links but they provide a live preview of the page linked to. 
+
+  First enable course previews in the front matter:
+
+  ```yaml
+  filters:
+    - preview
   ```
 
-  :::
+:::: {.flex .flex-wrap .justify-around}
 
-  ::: {.w-50-ns}
+::: {.w-40-ns}
 
-  ::: {.preview source="/training/administrator-fundamentals.qmd"}
-  :::
-  <br>
-  :::
+Then reference the file to embed within the body of the page: 
 
-  ::::
+```markdown
+::: {.preview source="/training/administrator-fundamentals/administrator-fundamentals.qmd"}
+:::
+```
 
-- Training slides make use of Tachyons CSS[^22] to provide demonstration overlays.
+:::
+
+::: {.w-50-ns}
+
+::: {.preview source="/training/administrator-fundamentals/administrator-fundamentals.qmd"}
+:::
+
+:::
+
+::::
+
+::: {.column-margin}
+Optional
+: Specify a different `target` for the preview to preview a training course but link to the registration page, for example:
+
+```markdown
+::: {.preview source="administrator-fundamentals.qmd" target="administrator-fundamentals-register.qmd"}
+:::
+```
+:::
+
+![Example of a course registration page](course-registration-page.png){fig-alt="A screenshot showing an example of a course registration page" class="screenshot" width=80%} 
+
+#### Course slides
+
+- Training slides make use of Tachyons CSS[^28] styled with our custom `.overlay` class to provide demonstration overlays.
 
   Enable Tachyons CSS in the front matter with:
 
@@ -483,38 +479,37 @@ The {{< var vm.product >}} Academy[^20] is delivered in Revealjs presentation fo
         - tachyons
     ```
 
-  :::: {.flex .flex-wrap .justify-around}
+:::: {.flex .flex-wrap .justify-around}
 
-  ::: {.w-40-ns}
+::: {.w-40-ns}
 
-  Example overlay box:
+Example overlay box:
 
-  ```css
-  :::: {.fr .f3 .mv5 .nr4 .pa5 .bg-near-white .ba .b--dark-pink .bw1 .br3 .near-black .shadow-5}
-  From  **{{< fa gear >}} Settings** in the {{< var validmind.platform >}}, <br>you can: 
-      
-  - Set up your organization
-  - Onboard new users
-  - Manage roles, groups and <br>permissions
-  - Configure the model inventory
-  - Manage templates and workflows
-  - And much more! 
+```css
+:::: {.fr .f3 .mv5 .nr4 .pa5 .overlay}
+From  **{{< fa gear >}} Settings** in the {{< var validmind.platform >}}, <br>you can: 
 
-  Try it **live** on the next page. {{< fa hand-point-right >}}
-  ::::
-  ```
+- Set up your organization
+- Onboard new users
+- Manage roles, groups and <br>permissions
+- Configure the model inventory
+- Manage templates and workflows
+- And much more!
 
-  :::
+Try it **live** on the next page. {{< fa hand-point-right >}}
+::::
+```
 
-  ::: {.w-50-ns}
+:::
 
-  ![](training-overlay.png){fig-alt="A screenshot showing an example of a training overlay" class="screenshot"} 
+::: {.w-50-ns}
+![Example of a training overlay](training-overlay.png){fig-alt="A screenshot showing an example of a training overlay" class="screenshot"} 
 
-  :::
+:::
 
-  ::::
+::::
 
-- Training slides use inline links only instead of footnotes,[^23] as footnotes are not visible in presentation mode.
+- Training slides use inline links only instead of footnotes,[^29] as footnotes are not visible in presentation mode.
 
 ## What's next
 - [Voice and tone](voice-and-tone.qmd)
@@ -556,14 +551,26 @@ The {{< var vm.product >}} Academy[^20] is delivered in Revealjs presentation fo
 
 [^17]: [Mermaid charts](https://mermaid.js.org/)
 
-[^18]: [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml) file
+[^18]: **ValidMind GitHub:** [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml)
 
 [^19]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
 
-[^20]: [Welcome to ValidMind Training](/training/training.qmd)
+[^20]: [ValidMind Academy](/training/training.qmd)
 
 [^21]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
 
-[^22]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+[^22]: [Course registration](#course-registration)
 
-[^23]: [Inline links](#inline-links)
+[^23]: [Course slides](#course-slides)
+
+[^24]: **ValidMind GitHub:** [training.css](https://github.com/validmind/documentation/blob/main/site/training/assets/training.css)
+
+[^25]: **ValidMind GitHub:** [training-nav.css](https://github.com/validmind/documentation/blob/main/site/training/assets/training-nav.css)
+
+[^26]: **ValidMind GitHub:** [slides.scss](https://github.com/validmind/documentation/blob/main/site/training/assets/slides.scss)
+
+[^27]: **ValidMind GitHub:** [preview](https://github.com/validmind/documentation/tree/main/site/_extensions/nrichers/preview) extension
+
+[^28]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+
+[^29]: [Inline links](#inline-links)
