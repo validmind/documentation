@@ -29,7 +29,14 @@ jobs:
         wget ${{ env.DOWNLOAD_URL }} -O quarto-latest-linux-amd64.deb
         sudo dpkg -i quarto-latest-linux-amd64.deb
 
+    - name: Install python3 for Jupyter Notebooks
+      run: |
+        python3 -m pip install jupyter
+
     - name: Render site
+      env:
+        PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
+        PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
       run: |
           cd site 
           quarto render --profile development &> render_errors.log || { 
