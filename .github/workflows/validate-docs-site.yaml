@@ -38,22 +38,13 @@ jobs:
         pip install validmind && pip install validmind[llm] && pip install fairlearn aequitas && pip install -U scikit-learn numpy shap
 
     - name: Render site
-      run: |
-          cd site 
-          quarto render --profile development &> render_errors.log || { 
-          echo "Quarto render failed immediately";
-          cat render_errors.log;
-          exit 1;
-          }
-
-    - name: Excecute Intro for Model Developers notebook
       env:
         PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
         PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
       run: |
           cd site 
-          quarto render --profile development notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb --execute --to html --include-after-body "https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" &> render_errors.log || { 
-          echo "Running intro_for_model_developers_EXECUTED.ipynb failed";
+          quarto render --profile development &> render_errors.log || { 
+          echo "Quarto render failed immediately";
           cat render_errors.log;
           exit 1;
           }
