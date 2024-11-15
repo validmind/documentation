@@ -6,18 +6,48 @@ aliases:
 listing:
   - id: faq-documentation
     type: grid
-    grid-columns: 2
+    grid-columns: 3
     max-description-length: 250
     sort: false
     fields: [title, description]
     contents:
-    - ../guide/model-inventory/register-models-in-inventory.qmd
-    - ../guide/model-inventory/manage-model-inventory-fields.qmd
+    - ../guide/model-documentation/working-with-documentation-templates.qmd
+    - ../guide/model-documentation/working-with-model-documentation.qmd
+    - ../guide/model-documentation/export-documentation.qmd
 ---
 
-## Can I run tests and log documentation without having a model available?
+## What kind of templates are available through {{< var vm.product >}}?
 
-If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation with {{< var vm.product >}} as long as you're able to load the model predictions.
+{{< var vm.product >}} supports the following template types:[^1]
+
+- Documentation
+- Validation Report
+- Ongoing Monitoring
+
+## Can templates be configured per use case or to match our own?
+
+The {{< var validmind.platform >}} allows you to configure versioned templates based on documentation requirements for each model or lifecycle use case. {{< var vm.product >}}'s templates are fully customizable,[^2] and are complemented by the ability to manage validation guidelines.
+
+- You can swap between different versions of templates or apply another version of the current template.[^3]
+- Template outlines can be modified right {{< var validmind.platform >}}. An advanced raw YAML editor is also offered, enabling you to make detailed changes.
+
+::: {.callout}
+## By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^4] has sufficient permissions to manage documentation templates. 
+
+By default, you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap documentation templates.
+:::
+
+## Can documentation be created right in the {{< var validmind.platform >}}?
+
+Yes, you can write documentation directly in the {{< var validmind.platform >}}, without having to first generate anything using the {{< var validmind.developer >}}.[^5]
+
+1. Add and edit text on any documentation within the {{< var vm.platform >}} using our content editing toolbar.[^6]
+2. Using the {{< var vm.developer >}}, execute test suites and generate the corresponding supporting results. These results can then be added to your documentation within the {{< var vm.platform >}}.[^7]
+
+## Can I run tests and log documentation without a model? 
+<span id="no-available-model"><span>
+
+If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the model predictions.
 
 - Use [`assign_predictions()`](/validmind/validmind/vm_models.html#VMDataset.assign_predictions){target="_blank"} to load predictions from a separate file or a dataset with predictions.
 - Call [`init_model()`](/validmind/validmind.html#init_model){target="_blank"} but instead of a trained model instance, pass an `input_id` and model metadata. [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata){target="_blank"} will use the provided metadata instead of trying to calculate it from the model's library. 
@@ -35,45 +65,42 @@ If you do not have a model ready, or your model can't be loaded directly, or you
 However, tests that need a trained model will not work with "empty" models.
 :::
 
-## Can documentation templates be configured per model use case or to match our existing templates?
+## Can we attach files to models, findings, or documentation? 
 
-The {{< var validmind.platform >}} allows you to configure multiple templates based on documentation requirements for each model use case. During the model registration process, the {{< var vm.platform >}} automatically selects the template based on the provided model use case information.
+- Attachment type inventory fields are available for custom use.[^8] Once created, attachment type fields allow you to upload supporting files to your model.
+- Out-of-the-box functionality is included for attaching files to model findings.
+- You can also attach images to documentation content blocks and comments. 
 
-Documentation templates can be modified by configuring a YAML file in the backend.
+::: {.callout}
+By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^4] has sufficient permissions to manage model inventory fields.
+:::
 
-## Can the documentation be exported?
+## Can documentation be exported?
 
-{{< var vm.product >}} supports exporting documentation and validation reports in Word (.docx) or PDF formats.
+{{< var vm.product >}} currently supports exporting documentation and validation reports in Word (.docx) format. 
 
-## Can we attach files to the documentation on the UI? What file formats are supported?
-
-You can attach image files to documentation cells and comments on the UI. The following file formats are supported:
-
-- JPEG
-- PNG
-- GIF
-- TIFF
-- BMP
-- SVG
-- RAW
-- WebP
-- HEIF
-- PSD
-
-Additionally, {{< var vm.product >}} is working on enabling you to attach Excel, CSV, Word, and PDF files to the documentation in the UI (Roadmap item – Q2 2023).
-
-## Can the documentation be initialized from the {{< var validmind.platform >}} instead of the {{< var validmind.developer >}}?
-
-{{< var vm.product >}} allows you to write documentation directly in the {{< var validmind.platform >}}, without having to use the {{< var validmind.developer >}}.
-
-You can edit text and tables and upload your test results using the {{< var vm.platform >}}, including images. Using the {{< var vm.developer >}}, you can execute test suites and generate the corresponding documentation.
-
-## Can we export the documentation produced by {{< var vm.product >}} to the storage/workflow system used by the model validation team?
-
-Documentation and validation reports produced in {{< var vm.product >}} can be exported to Word and PDF formats. Depending on the integration requirements of the systems used by your validation teams, such as connectivity via API, SharePoint, and more, {{< var vm.product >}} can work with you to automate the export and storage of documentation into these systems.
+Depending on the integration requirements of the systems used by your validation teams, such as connectivity via API, SharePoint, and more, {{< var vm.product >}} can work with you to automate the export and storage of documentation into these systems.
 
 ## Learn more
 
-:::{#faq-registration}
+:::{#faq-documentation}
 :::
 
+
+<!-- FOOTNOTES -->
+
+[^1]: [View documentation templates](/guide/model-documentation/view-documentation-templates.qmd)
+
+[^2]: [Customize documentation templates](/guide/model-documentation/customize-documentation-templates.qmd)
+
+[^3]: [Swap documentation templates](/guide/model-documentation/swap-documentation-templates.qmd)
+
+[^4]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^5]: [Get started with the {{< var validmind.developer >}}](/developer/get-started-validmind-library.qmd)
+
+[^6]: [Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd)
+
+[^7]: [Work with test results](/developer/model-documentation/work-with-test-results.qmd)
+
+[^8]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)
