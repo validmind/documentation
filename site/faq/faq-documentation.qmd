@@ -26,16 +26,13 @@ listing:
 
 ## Can templates be configured per use case or to match our own?
 
-The {{< var validmind.platform >}} allows you to configure versioned templates based on documentation requirements for each model or lifecycle use case. {{< var vm.product >}}'s templates are fully customizable,[^2] and are complemented by the ability to manage validation guidelines.
+Yes, the {{< var validmind.platform >}} allows you to configure versioned templates based on documentation requirements for each model or lifecycle use case.
 
+- {{< var vm.product >}}'s templates are fully customizable,[^2] and are complemented by the ability to manage validation guidelines.
 - You can swap between different versions of templates or apply another version of the current template.[^3]
-- Template outlines can be modified right {{< var validmind.platform >}}. An advanced raw YAML editor is also offered, enabling you to make detailed changes.
+- Template outlines can be modified right in the {{< var validmind.platform >}}. We also offer an advanced raw YAML editor, enabling you to make detailed changes.
 
-::: {.callout}
-## By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^4] has sufficient permissions to manage documentation templates. 
-
-By default, you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap documentation templates.
-:::
+By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^4] has sufficient permissions to manage documentation templates, and you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap documentation templates.
 
 ## Can documentation be created right in the {{< var validmind.platform >}}?
 
@@ -46,20 +43,22 @@ Yes, you can write documentation directly in the {{< var validmind.platform >}},
 
 ## Can I run tests and log documentation without a model? 
 <span id="no-available-model"><span>
+Yes! If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the model predictions.
 
-If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the model predictions.
+- Use `assign_predictions()`[^8] to load predictions from a separate file or a dataset with predictions.
+- Call `init_model()`[^9] but instead of a trained model instance, pass an `input_id` and model metadata. `ModelMetadata()`[^10] will use the provided metadata instead of trying to calculate it from the model's library. 
 
-- Use [`assign_predictions()`](/validmind/validmind/vm_models.html#VMDataset.assign_predictions){target="_blank"} to load predictions from a separate file or a dataset with predictions.
-- Call [`init_model()`](/validmind/validmind.html#init_model){target="_blank"} but instead of a trained model instance, pass an `input_id` and model metadata. [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata){target="_blank"} will use the provided metadata instead of trying to calculate it from the model's library. 
 
-    For example: 
+::: {.column-margin}
+**For example:**
 
-    ```python
-    external_model = vm.init_model(
-        input_id="spark_ml_model",
-        metadata={...}
-    )
-    ```
+```python
+  external_model = vm.init_model(
+      input_id="spark_ml_model",
+      metadata={...}
+  )
+```
+:::
 
 ::: {.callout title="If neither a trained model instance nor metadata is provided, `init_model()` will return an error.  "}
 However, tests that need a trained model will not work with "empty" models.
@@ -90,3 +89,9 @@ However, tests that need a trained model will not work with "empty" models.
 [^6]: [Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd)
 
 [^7]: [Work with test results](/developer/model-documentation/work-with-test-results.qmd)
+
+[^8]: [`assign_predictions()`](/validmind/validmind/vm_models.html#VMDataset.assign_predictions)
+
+[^9]: [`init_model()`](/validmind/validmind.html#init_model)
+
+[^10]: [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata)
