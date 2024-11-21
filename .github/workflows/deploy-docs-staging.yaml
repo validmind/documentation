@@ -30,6 +30,22 @@ jobs:
             exit 1;
             }
 
+      - name: Filter changed files
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            notebooks:
+              - 'site/notebooks/**'
+
+      - name: Execute staging Intro for Model Developers notebook
+        if: steps.filter.outputs.notebooks == 'true'
+        uses: ./.github/actions/staging-notebook
+        id: execute-staging-notebook
+        env:
+          PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
+          PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
+
       # Staging bucket is in us-west-2
       - name: Configure AWS credentials
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
