@@ -29,19 +29,11 @@ jobs:
           exit 1;
           }
     
-    - name: Execute Intro for Model Developers notebook (demo ver.)
-        run: |
-            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^site/notebooks/"; then
-              echo "Changes detected in site/notebooks/. Executing Intro for Model Developers notebook."
-              cd site
-              quarto render --profile exe-demo notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
-                echo "No changes to intro_for_model_developers_EXECUTED.ipynb, skipping execution";
-                cat render_errors.log;
-                exit 1;
-              }
-            else
-              echo "No changes detected in site/notebooks/. Skipping execution of Intro for Model Developers notebook."
-            fi
+    - name: Execute demo Intro for Model Developers notebook
+      if: |
+        github.event.pull_request.changed_files && contains(steps.changed_files.outputs.changed, 'site/notebooks/')
+      uses: ./.github/actions/demo-notebook
+      id: execute-demo-notebook
 
     - name: Test for warnings or errors 
       run: |
