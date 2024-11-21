@@ -29,9 +29,16 @@ jobs:
           exit 1;
           }
     
+    - name: Filter changed files
+      uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          notebooks:
+            - 'site/notebooks/**'
+
     - name: Execute demo Intro for Model Developers notebook
-      if: |
-        github.event.pull_request.changed_files && contains(steps.changed_files.outputs.changed, 'site/notebooks/')
+      if: steps.filter.outputs.notebooks == 'true'
       uses: ./.github/actions/demo-notebook
       id: execute-demo-notebook
 

@@ -1,0 +1,41 @@
+name: Execute staging notebook
+description: Installs python3, validmind, checks dependencies then executes ONLY the Intro for Model Developers notebook with staging heap tracking
+
+inputs: {}
+
+runs: 
+  using: "composite"
+  steps: 
+    - name: Install python3 for Jupyter Notebooks
+      shell: bash
+      run: |
+        python3 -m pip install jupyter
+        python -m pip install --upgrade pip
+
+    - name: Install validmind for notebook execution
+      shell: bash
+      run: |
+        pip install validmind 
+        pip install validmind[llm] 
+        pip install fairlearn aequitas 
+        pip install shap==0.44.1
+
+    - name: Check dependencies
+      shell: bash
+      run: |
+        pip install pycairo
+        pip check
+
+    - name: Execute ONLY the Intro for Model Developers notebook with heap staging
+      shell: bash
+      env:
+        PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
+        PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
+      run: |
+          cd site 
+          quarto clean
+          quarto render --profile exe-staging notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
+          echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
+          cat render_errors.log;
+          exit 1;
+          }
