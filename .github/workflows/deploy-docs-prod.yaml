@@ -30,6 +30,7 @@ jobs:
             exit 1;
             }
 
+      # See if site/notebooks/ has updates
       - name: Filter changed files
         uses: dorny/paths-filter@v2
         id: filter
@@ -38,6 +39,7 @@ jobs:
             notebooks:
               - 'site/notebooks/**'
 
+      # If yes then execute the prod notebook
       - name: Execute prod Intro for Model Developers notebook
         if: steps.filter.outputs.notebooks == 'true'
         uses: ./.github/actions/prod-notebook
