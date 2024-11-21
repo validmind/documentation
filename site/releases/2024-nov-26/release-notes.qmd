@@ -131,6 +131,72 @@ In addition to the enhancements in this release, references to the platform UI h
 
 :::
 
+<!---
+PR #1048: Product Feedback
+URL: https://github.com/validmind/frontend/pull/1048
+Labels: enhancement
+--->
+#### Ability to submit product feedback
+
+With this update
+
+We are bringing a way to talk to ValidMind directly.
+
+Submit feedback
+
+You can submit feature requests, bug reports, or any other feedback through the application. You don't need to email or use other communication methods. Do all this directly in the app.
+
+Easy steps
+
+Click on the Talk To Us tab on the right-hand side and follow three easy steps.
+ 
+Generated PR summary: 
+ 
+This update integrates the Sprig feedback feature into your web application by adding the Sprig library as a dependency and configuring it within the application. The feedback button is styled to align with your application's theme, featuring specific styles for both light and dark modes. Additionally, the Sentry library is updated to enhance error tracking capabilities. Specifically, `@sprig-technologies/sprig-browser` version `2.31.2` is now included in the project, while `@sentry/browser` has been updated from version `7.119.1` to `7.51.2`. Configuration changes include setting up Sprig in `App.tsx` with an environment ID sourced from the configuration file, and adding user email and attributes for feedback purposes. The configuration file `src/config.tsx` now includes a new entry for `SPRIG_ENVIRONMENT_ID`. CSS updates in `src/index.css` ensure that the Sprig feedback button matches your application's design, including hover effects and adaptation to dark mode settings.
+
+<!---
+PR #1068: New reporting (Milestone 1)
+URL: https://github.com/validmind/frontend/pull/1068
+Labels: enhancement
+--->
+#### Support for building custom analytics
+
+- You can now add new tabs to the analytics page.
+
+- After adding a new tab you can now define your own report widgets from scratch. 
+
+- Available widget types:
+
+  - Bar chart
+
+  - Pie chart
+
+  - Number
+
+- Available datasets on initial release:
+
+  - Models
+
+  - Findings
+
+- Available widget configurations:
+
+  - Select `group_by` columns (up to 2)
+
+  - Select filters
+
+Preferably we set up a meeting with @nrichers@validbeck to go over the features in depth.
+ 
+Generated PR summary: 
+ 
+This release introduces the new analytics dashboard feature to the web application. You now have access to interactive charts through the inclusion of `echarts` and `echarts-for-react`. A new page supporting the management of dashboards allows you to create, edit, and delete them while incorporating various visualizations like bar charts, pie charts, and counters. These visualizations come with configurable options for metrics, grouping, sorting, and filtering, along with a full-screen viewing option.
+
+New API endpoints facilitate the management of dashboards and visualizations by supporting creation, updates, and deletion. To enhance functionality on this front, additional types and models have been introduced. The user interface now includes components designed for visualization management such as modals for adding or editing visualizations and specific chart components for rendering reports.
+
+A notable addition is the `ColorPicker` component which aids in selecting colors for your visualizations. The sidebar has been updated to include a link to this new analytics page. Routing changes also reflect these updates by replacing the old reports route with one that leads directly to the analytics page.
+
+Finally, adjustments have been made to layout utilities to support new dashboard layouts while updating model types to incorporate fields relevant to filtering and visualization data.
+
 ### Documentation
 
 #### Updated product terminology
@@ -401,29 +467,6 @@ Generated PR summary:
 This release introduces new functionality for managing descriptions of entity attachments within the application. You can now add and remove attachment descriptions through two new API functions: `AddEntityAttachmentsDescription` and `DeleteEntityAttachmentsDescription`, which update the backend based on attachment IDs. The user interface has been enhanced by updating the `ManageAttachmentsField` component, allowing you to add and remove notes (descriptions) for attachments. This includes a new `NoteState` type to manage note states and modifications to the `FileDisplay` component, enabling you to display and edit notes. A vertical stack (`VStack`) is implemented to support the new note features, along with a menu that provides options for adding/removing notes and deleting files. Additionally, the `entity_attachments.ts` model now includes an optional `description` field in the `EntityAttachmentFile` type for storing attachment descriptions.
 
 <!---
-PR #1048: Product Feedback
-URL: https://github.com/validmind/frontend/pull/1048
-Labels: enhancement
---->
-#### Ability to submit product feedback
-
-With this update
-
-We are bringing a way to talk to ValidMind directly.
-
-Submit feedback
-
-You can submit feature requests, bug reports, or any other feedback through the application. You don't need to email or use other communication methods. Do all this directly in the app.
-
-Easy steps
-
-Click on the Talk To Us tab on the right-hand side and follow three easy steps.
- 
-Generated PR summary: 
- 
-This update integrates the Sprig feedback feature into your web application by adding the Sprig library as a dependency and configuring it within the application. The feedback button is styled to align with your application's theme, featuring specific styles for both light and dark modes. Additionally, the Sentry library is updated to enhance error tracking capabilities. Specifically, `@sprig-technologies/sprig-browser` version `2.31.2` is now included in the project, while `@sentry/browser` has been updated from version `7.119.1` to `7.51.2`. Configuration changes include setting up Sprig in `App.tsx` with an environment ID sourced from the configuration file, and adding user email and attributes for feedback purposes. The configuration file `src/config.tsx` now includes a new entry for `SPRIG_ENVIRONMENT_ID`. CSS updates in `src/index.css` ensure that the Sprig feedback button matches your application's design, including hover effects and adaptation to dark mode settings.
-
-<!---
 PR #1039: [6445] - feat: implement filtering and sorting features on historical test runs component
 URL: https://github.com/validmind/frontend/pull/1039
 Labels: enhancement
@@ -457,48 +500,7 @@ The `FileDisplay` component has seen improvements to handle additional props and
 
 Additional improvements include enhancing the `pickProperties` utility function for better type safety, removing unnecessary loading states in the `WorkflowStatusFormModal`, and improving sorting logic in the `FieldForm` to sort available fields by title. These changes are designed to enhance flexibility and usability, providing a more robust and user-friendly experience in managing attachments within the application.
 
-<!---
-PR #1068: New reporting (Milestone 1)
-URL: https://github.com/validmind/frontend/pull/1068
-Labels: enhancement
---->
-#### Support for building custom analytics
 
-- You can now add new tabs to the analytics page.
-
-- After adding a new tab you can now define your own report widgets from scratch. 
-
-- Available widget types:
-
-  - Bar chart
-
-  - Pie chart
-
-  - Number
-
-- Available datasets on initial release:
-
-  - Models
-
-  - Findings
-
-- Available widget configurations:
-
-  - Select `group_by` columns (up to 2)
-
-  - Select filters
-
-Preferably we set up a meeting with @nrichers@validbeck to go over the features in depth.
- 
-Generated PR summary: 
- 
-This release introduces the new analytics dashboard feature to the web application. You now have access to interactive charts through the inclusion of `echarts` and `echarts-for-react`. A new page supporting the management of dashboards allows you to create, edit, and delete them while incorporating various visualizations like bar charts, pie charts, and counters. These visualizations come with configurable options for metrics, grouping, sorting, and filtering, along with a full-screen viewing option.
-
-New API endpoints facilitate the management of dashboards and visualizations by supporting creation, updates, and deletion. To enhance functionality on this front, additional types and models have been introduced. The user interface now includes components designed for visualization management such as modals for adding or editing visualizations and specific chart components for rendering reports.
-
-A notable addition is the `ColorPicker` component which aids in selecting colors for your visualizations. The sidebar has been updated to include a link to this new analytics page. Routing changes also reflect these updates by replacing the old reports route with one that leads directly to the analytics page.
-
-Finally, adjustments have been made to layout utilities to support new dashboard layouts while updating model types to incorporate fields relevant to filtering and visualization data.
 
 <!---
 PR #1045: As a validator, I want to be able to tag a Documentation section as evidence in my validation report
