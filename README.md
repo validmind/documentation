@@ -79,8 +79,8 @@ These directories may have sub-directories depending on their size and grouped s
 - `_site` — This is where static files rendered by `quarto render` get placed.
 - `assets` — This is where general shared assets live (stylesheets, promotional images, all videos, etc.).
 - `internal` — For internal testing only.
-- `notebooks` — This is where notebooks retrieved from the [`developer-framework` repo](https://github.com/validmind/developer-framework) live.
-- `tests` — This is where test descriptions generated from the Python source in the [developer-framework repo](https://github.com/validmind/developer-framework) live.
+- `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
+- `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 
 ### Auxiliary `internal` directories
 
@@ -91,7 +91,7 @@ These directories may have sub-directories depending on their size and grouped s
 
 ### `.qmd`
 
-Files for the docs site are created using [Quarto Markdown](https://quarto.org/docs/authoring/markdown-basics.html) (`.qmd`). These, along with any Jupyter Notebooks pulled in from `developer-framework`, get rendered into HTML files. 
+Files for the docs site are created using [Quarto Markdown](https://quarto.org/docs/authoring/markdown-basics.html) (`.qmd`). These, along with any Jupyter Notebooks pulled in from `validmind-library`, get rendered into HTML files. 
 
 #### Hyperlinks
 
@@ -125,7 +125,7 @@ If there are additional files that Quarto does not copy over automatically, plac
 
 Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
 
-Changes need to be made in the [root repository `developer-framework`](https://github.com/validmind/developer-framework) and pulled into this one with:
+Changes need to be made in the [root repository `validmind-library`](https://github.com/validmind/validmind-library) and pulled into this one with:
 
 ```bash
 make get-source
