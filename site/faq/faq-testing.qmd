@@ -3,29 +3,55 @@ title: "Testing"
 date: last-modified
 aliases:
   - ../guide/faq-testing.html
+listing:
+  - id: faq-testing
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../developer/model-testing/testing-overview.qmd
+    - ../developer/model-testing/test-descriptions.qmd
+    - ../guide/monitoring/ongoing-monitoring.qmd
 ---
 
 ## How do the out-of-the-box tests developed by {{< var vm.product >}} work?
 
 All the default tests are developed using open-source Python and R libraries.
 
-The {{< var validmind.developer >}} test interface is a light wrapper that defines some utility functions to interact with different dataset and model backends in an agnostic way, and contains other functions to collect and post results to the {{< var validmind.platform >}} using a generic results schema.
+The {{< var validmind.developer >}}[^1] test interface is a light wrapper that defines some utility functions to interact with different dataset and model backends in an agnostic way, and contains other functions to collect and post results to the {{< var validmind.platform >}}[^2] using a generic results schema.
+
+## When do I use tests and tests suites?
+
+While you have the flexibility to decide when to use which {{< var vm.product >}} tests, here are a few typical scenarios:[^3]
+
+- **Dataset testing** — To document and validate your dataset.
+- **Model testing** — To document and validate your model.
+- **End-to-end testing** — To document a binary classification model and the relevant dataset end-to-end.
 
 ## Can we configure, customize, or add our own tests?
 
 Yes, {{< var vm.product >}} allows tests to be manipulated at several levels:
 
-- You can configure which tests are required to run programmatically depending on the model use case.
-- You can change the thresholds and parameters for default tests already available in the {{< var vm.developer >}} — for instance, changing the threshold parameter for the class imbalance flag.
-- You can also connect your own custom tests with the {{< var validmind.developer >}}. These custom tests are configurable and are able to run programmatically, just like the rest of the {{< var vm.developer >}}.
+- You can configure which tests are required to run programmatically depending on the model use case.[^4]
+- You can change the thresholds and parameters for default tests already available in the {{< var vm.developer >}} — for instance, changing the threshold parameter for the class imbalance flag.[^5]
+- You can also connect your own custom tests with the {{< var validmind.developer >}}. These custom tests are configurable and are able to run programmatically, just like the rest of the {{< var vm.developer >}}.[^6]
 
 ## Do you include explainability-related testing and documentation? 
 
-Our {{< var vm.developer >}} currently includes test kits to test and document global explainability features of the model, specifically, permutation feature importance and Shapley values.
+The {{< var validmind.developer >}} currently includes test kits to test and document global explainability features of the model, specifically, permutation feature importance and Shapley values.
+
+In addition, {{< var vm.product >}} provides standard documentation via the {{< var vm.developer >}} for the following items and modeling techniques:
+
+- **Conceptual soundness** —
+- **Data evaluation** —
+- **Model evaluation** —
+- **Model techniques** —
 
 <!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
 
-In addition, {{< var vm.product >}} is implementing standard documentation via the {{< var vm.developer >}} for the following items and modeling techniques:
+<!-- In addition, {{< var vm.product >}} is implementing standard documentation via the {{< var vm.developer >}} for the following items and modeling techniques:
 
 - Conceptual soundness
     - Model use case description (Q2’2023)
@@ -53,13 +79,34 @@ In addition, {{< var vm.product >}} is implementing standard documentation via t
     - K-means clustering (Q2 2023)
     - NLP (2024)
     - Deep learning (2024)
-    - Computer vision (2024)
+    - Computer vision (2024) -->
 
 ## Is there a use case for synthetic data within {{< var vm.product >}}?
 
 The {{< var validmind.developer >}} supports you bringing your own datasets, including synthetic datasets, for testing and benchmarking purposes, such as for fair lending and bias testing.
 
-We are happy to discuss exploring specific use cases for synthetic data generation with you further.
+<!-- NTS MOVE THIS TO A FOOTNOTE  -->
+
+If you have a customization in mind, {{< var vm.product >}} is happy to discuss exploring specific use cases for synthetic data generation with you.
 
 {{< include _faq-monitoring.qmd >}}
 
+## Learn more
+
+:::{#faq-testing}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Get started with the {{< var validmind.developer >}}](/developer/get-started-validmind-library.qmd)
+
+[^2]: [Accessing {{< var vm.product >}}](/guide/configuration/accessing-validmind.qmd)
+
+[^3]: [When do I use tests and test suites?](/developer/model-testing/testing-overview.qmd#when-do-i-use-tests-and-test-suites)
+
+[^4]: [`run_documentation_tests()`](/validmind/validmind.html#run_documentation_tests)
+
+[^5]: [`ClassImbalance()`](/validmind/validmind/tests/data_validation/ClassImbalance.html#ClassImbalance)
+
+[^6]: [Can I use my own tests?](/developer/model-testing/testing-overview.qmd#can-i-use-my-own-tests)
