@@ -434,12 +434,14 @@ This update to the CI workflow configuration includes two key improvements. The 
 ### {{< var validmind.platform >}} (v1.27.7)
 <span id="platform-enhancements"></span>
 
+#### User experience
+
 <!---
 PR #1012: [6413] - chore: replace all btns with chakra Button
 URL: https://github.com/validmind/frontend/pull/1012
 Labels: enhancement
 --->
-#### Updated user interface theme
+##### Updated user interface theme
 
 - Replaced all instances of buttons with Chakra UI `Button` component for consistent styling across the application.  
 
@@ -456,48 +458,27 @@ Additionally, new storybook stories have been added to showcase different button
 
 Overall, these changes improve the maintainability and consistency of the UI components, facilitating easier future design updates and ensuring a cohesive look across the application.
 
-<!-- MANUAL ADD:
-Calculated fields: https://github.com/validmind/documentation/pull/443 -->
-
-#### Ability to configure calculated model inventory fields
-
-
 <!---
-PR #1047: [6389] - feat: allow user to add description to each uploaded file
-URL: https://github.com/validmind/frontend/pull/1047
-Labels: enhancement
+PR #989: AI Terms of Use
+URL: https://github.com/validmind/frontend/pull/989
+Labels: documentation
 --->
-#### Ability to add descriptions to attachments
+##### Accepting AI terms of use
 
-- **File description support**
-
-Users can now add descriptions to each uploaded file. This feature enhances file organization and clarity.
+Added accept terms of AI use during account registration. Existing users see the dialog popup next time they log in.
  
 Generated PR summary: 
  
-This release introduces new functionality for managing descriptions of entity attachments within the application. You can now add and remove attachment descriptions through two new API functions: `AddEntityAttachmentsDescription` and `DeleteEntityAttachmentsDescription`, which update the backend based on attachment IDs. The user interface has been enhanced by updating the `ManageAttachmentsField` component, allowing you to add and remove notes (descriptions) for attachments. This includes a new `NoteState` type to manage note states and modifications to the `FileDisplay` component, enabling you to display and edit notes. A vertical stack (`VStack`) is implemented to support the new note features, along with a menu that provides options for adding/removing notes and deleting files. Additionally, the `entity_attachments.ts` model now includes an optional `description` field in the `EntityAttachmentFile` type for storing attachment descriptions.
+This update introduces a new feature that requires you to accept the AI Terms of Use before continuing to use the application. A new component, `AITermsOfUseAlert`, prompts you to review and accept these terms through a checkbox and submit button. Additionally, there is a new API method, `PutUserAcceptTerms`, for updating your acceptance status. The `CreateOrganization` API now includes a field for indicating acceptance of AI terms. Your user profile is updated with an `accepted_ai_terms` field in the user model. The onboarding process now has a checkbox for accepting the AI Terms of Use. Custom styles are applied to match the application's design, including those for alert and checkbox elements. Lastly, a constant `AITermsOfUseUrl` provides access to the AI Terms of Use link. This feature ensures that you are informed about and explicitly accept the AI Terms before proceeding with the application.
 
-<!---
-PR #1039: [6445] - feat: implement filtering and sorting features on historical test runs component
-URL: https://github.com/validmind/frontend/pull/1039
-Labels: enhancement
---->
-#### Ability to filter and sort historical test runs
-
-Filtering and sorting on historical test runs
-
-Added the ability to filter and sort historical test runs. This improvement enhances data navigation and analysis.
- 
-Generated PR summary: 
- 
-This update brings several enhancements and bug fixes focused on API improvements and UI component updates. You can now use the new function `GetTestResultsFiltersForProject` to fetch filter options for test results. The existing API functions `GetMetricHistoryForProject` and `GetTestResultHistoryForProject` have been updated to accept additional parameters for more flexible filtering and sorting. A new type, `TFiltersResult`, is introduced to define the structure of filter results. On the UI side, the `DataTable` component has a streamlined sorting logic, while the `InputInfoModal` now supports filtering and sorting of history data with a new `TestResultsFilter` component for selecting filters. Updates to the `MetricContent` and `TestResultContent` components allow them to pass new filtering and sorting parameters to the API. Additionally, console log statements have been removed from various components, and utility functions in `utils.ts` have been refactored to include new date conversion functions and a query parameter generator. These changes enhance user experience by providing more versatile data filtering choices and improve codebase maintainability.
+#### Model workflows
 
 <!---
 PR #1063: Support attaching files on workflow transitions
 URL: https://github.com/validmind/frontend/pull/1063
 Labels: enhancement
 --->
-#### Support for attaching files on workflow transitions
+##### Support for attaching files on workflow transitions
 
 You can now attach files when transitioning a model's status.
 
@@ -511,7 +492,7 @@ The `FileDisplay` component has seen improvements to handle additional props and
 
 Additional improvements include enhancing the `pickProperties` utility function for better type safety, removing unnecessary loading states in the `WorkflowStatusFormModal`, and improving sorting logic in the `FieldForm` to sort available fields by title. These changes are designed to enhance flexibility and usability, providing a more robust and user-friendly experience in managing attachments within the application.
 
-#### Model workflows**
+#### Ability to configure divergent paths in workflows
 
 <!-- MANUAL ADD — Updated workflows docs:
 Approval step update: https://github.com/validmind/documentation/pull/264 
@@ -520,7 +501,7 @@ Condition branches: https://github.com/validmind/documentation/pull/484  -->
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-We continue to add new functionality to model workflows within the {{< var validmind.platform >}}, including the ability to select a **User Role** or **User Type** inventory fields in Approval steps, and the ability to configure diverging paths in Condition Branch steps and updated our resources to include reference information on these features.
+We continue to add new functionality to model workflows within the {{< var validmind.platform >}}, including the ability to now select a **User Role** or a **User Type** inventory field in an Approval step, and the ability to configure diverging paths with Condition Branch steps.
 :::
 
 ::: {.w-30-ns .tc}
@@ -534,25 +515,28 @@ We continue to add new functionality to model workflows within the {{< var valid
 
 ![Example Condition Branch where GenAI models require special approval from the User group Legal Team](/guide/model-workflows/example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User group Legal Team" .screenshot width=90%}
 
+#### Model inventory fields
+
+<!-- MANUAL ADD:
+Calculated fields: https://github.com/validmind/documentation/pull/443 -->
+
+##### Ability to configure calculated model inventory fields
+
 
 <!---
-PR #1045: As a validator, I want to be able to tag a Documentation section as evidence in my validation report
-URL: https://github.com/validmind/frontend/pull/1045
+PR #1047: [6389] - feat: allow user to add description to each uploaded file
+URL: https://github.com/validmind/frontend/pull/1047
 Labels: enhancement
 --->
-#### Ability to tag documentation sections as evidence
+##### Ability to add descriptions to attachments
 
-You want to tag a documentation section as evidence in your validation report
+- **File description support**
 
-As a validator
-
-You can now tag a documentation section as evidence in your validation report.
-
-See this demo video for more details: https://validmind.slack.com/archives/C031JU5P8G1/p1729716886170779?thread_ts=1729285495.301129&cid=C031JU5P8G1
+Users can now add descriptions to each uploaded file. This feature enhances file organization and clarity.
  
 Generated PR summary: 
  
-This update enhances evidence management, UI elements, and code structure. You can now use new functions for linking and deleting evidence, benefiting from an improved `RiskAssessmentAddEvidenceModal2` that streamlines evidence selection. Changes to evidence-related components cater to handling new types and improve interaction. The UI sees improvements with consistent styling across components by utilizing Chakra UI variants and sizes, alongside a `DangerMenuItem` for actions requiring caution. Layouts, modals, buttons, and other elements have been refined for a better user experience. Code refactoring enhances modularity with updates to `ContentRow` components and the `useTestResult` hook. Utility functions are also improved for section link generation. New dependencies such as `react-reflex`, `lodash.throttle`, and `react-measure` are included to bolster feature support and performance. These enhancements aim to elevate the application's usability in managing evidence and consistency in its interface design.
+This release introduces new functionality for managing descriptions of entity attachments within the application. You can now add and remove attachment descriptions through two new API functions: `AddEntityAttachmentsDescription` and `DeleteEntityAttachmentsDescription`, which update the backend based on attachment IDs. The user interface has been enhanced by updating the `ManageAttachmentsField` component, allowing you to add and remove notes (descriptions) for attachments. This includes a new `NoteState` type to manage note states and modifications to the `FileDisplay` component, enabling you to display and edit notes. A vertical stack (`VStack`) is implemented to support the new note features, along with a menu that provides options for adding/removing notes and deleting files. Additionally, the `entity_attachments.ts` model now includes an optional `description` field in the `EntityAttachmentFile` type for storing attachment descriptions.
 
 <!---
 PR #1078: Support for datetime manipulation in inventory fields
@@ -637,6 +621,42 @@ Generated PR summary:
  
 This update enhances date handling by updating the `CustomDatePicker` component to use `dayjs` for improved reliability and consistency over the native `Date` object. Additionally, the `useField` hook now utilizes the `useEffect` hook to initialize state values, ensuring that the `value` state accurately reflects changes to the `defaultState` prop. These improvements aim to boost the functionality and reliability of these components. -->
 
+#### Model documentation
+
+<!---
+PR #1039: [6445] - feat: implement filtering and sorting features on historical test runs component
+URL: https://github.com/validmind/frontend/pull/1039
+Labels: enhancement
+--->
+##### Ability to filter and sort historical test runs
+
+Filtering and sorting on historical test runs
+
+Added the ability to filter and sort historical test runs. This improvement enhances data navigation and analysis.
+ 
+Generated PR summary: 
+ 
+This update brings several enhancements and bug fixes focused on API improvements and UI component updates. You can now use the new function `GetTestResultsFiltersForProject` to fetch filter options for test results. The existing API functions `GetMetricHistoryForProject` and `GetTestResultHistoryForProject` have been updated to accept additional parameters for more flexible filtering and sorting. A new type, `TFiltersResult`, is introduced to define the structure of filter results. On the UI side, the `DataTable` component has a streamlined sorting logic, while the `InputInfoModal` now supports filtering and sorting of history data with a new `TestResultsFilter` component for selecting filters. Updates to the `MetricContent` and `TestResultContent` components allow them to pass new filtering and sorting parameters to the API. Additionally, console log statements have been removed from various components, and utility functions in `utils.ts` have been refactored to include new date conversion functions and a query parameter generator. These changes enhance user experience by providing more versatile data filtering choices and improve codebase maintainability.
+
+<!---
+PR #1045: As a validator, I want to be able to tag a Documentation section as evidence in my validation report
+URL: https://github.com/validmind/frontend/pull/1045
+Labels: enhancement
+--->
+##### Ability to tag documentation sections as evidence
+
+You want to tag a documentation section as evidence in your validation report
+
+As a validator
+
+You can now tag a documentation section as evidence in your validation report.
+
+See this demo video for more details: https://validmind.slack.com/archives/C031JU5P8G1/p1729716886170779?thread_ts=1729285495.301129&cid=C031JU5P8G1
+ 
+Generated PR summary: 
+ 
+This update enhances evidence management, UI elements, and code structure. You can now use new functions for linking and deleting evidence, benefiting from an improved `RiskAssessmentAddEvidenceModal2` that streamlines evidence selection. Changes to evidence-related components cater to handling new types and improve interaction. The UI sees improvements with consistent styling across components by utilizing Chakra UI variants and sizes, alongside a `DangerMenuItem` for actions requiring caution. Layouts, modals, buttons, and other elements have been refined for a better user experience. Code refactoring enhances modularity with updates to `ContentRow` components and the `useTestResult` hook. Utility functions are also improved for section link generation. New dependencies such as `react-reflex`, `lodash.throttle`, and `react-measure` are included to bolster feature support and performance. These enhancements aim to elevate the application's usability in managing evidence and consistency in its interface design.
+
 <!---
 PR #1025: Updagrade ckeditor 43
 URL: https://github.com/validmind/frontend/pull/1025
@@ -645,19 +665,6 @@ Labels:
 
 <!-- ### Upgrade ckeditor 43 -->
 <!-- There were no notes or an `internal` tag added for this release. -->
-
-<!---
-PR #989: AI Terms of Use
-URL: https://github.com/validmind/frontend/pull/989
-Labels: documentation
---->
-#### Accepting AI terms of use
-
-Added accept terms of AI use during account registration. Existing users see the dialog popup next time they log in.
- 
-Generated PR summary: 
- 
-This update introduces a new feature that requires you to accept the AI Terms of Use before continuing to use the application. A new component, `AITermsOfUseAlert`, prompts you to review and accept these terms through a checkbox and submit button. Additionally, there is a new API method, `PutUserAcceptTerms`, for updating your acceptance status. The `CreateOrganization` API now includes a field for indicating acceptance of AI terms. Your user profile is updated with an `accepted_ai_terms` field in the user model. The onboarding process now has a checkbox for accepting the AI Terms of Use. Custom styles are applied to match the application's design, including those for alert and checkbox elements. Lastly, a constant `AITermsOfUseUrl` provides access to the AI Terms of Use link. This feature ensures that you are informed about and explicitly accept the AI Terms before proceeding with the application.
 
 ## Bug fixes
 
@@ -698,9 +705,6 @@ Fix UI display when multiple user roles are selected
 Generated PR summary: 
  
 This release enhances the `AddUserRolesModal` component by improving how role pills are displayed in the web application. The update involves replacing the `HStack` component with the `Wrap` component from Chakra UI, allowing for better handling of roles when there is limited space, resulting in a more responsive and flexible user interface. Specifically, in `RolesPicker.tsx`, the `HStack` now includes `flexWrap={"wrap"}` to enable this functionality. Similarly, in `index.tsx`, the use of `Wrap` ensures a more adaptable layout for displaying selected roles. Additionally, minor formatting adjustments have been made to improve code readability. These changes are intended to enhance your user experience by ensuring role pills display effectively even if they exceed available horizontal space.
-
-### Removed model documentation workflows
-
 
 ## Documentation
 
