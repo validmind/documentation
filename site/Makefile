@@ -1,5 +1,5 @@
 # Define source and destination directories
-SRC_DIR := _source/developer-framework
+SRC_DIR := _source/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 DEST_DIR_TESTS := tests
@@ -12,7 +12,7 @@ GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 help:
 	@echo "Available targets:"
 	@echo "  clean                Remove the _source/ directory"
-	@echo "  clone                Clone the developer-framework repository into _source/"
+	@echo "  clone                Clone the validmind-library repository into _source/"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into _site/validmind"
 	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
@@ -33,7 +33,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b main git@github.com:validmind/developer-framework.git $(SRC_DIR)
+	git clone -b main git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -65,7 +65,7 @@ python-docs:
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	@cd _source/developer-framework && make install && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
