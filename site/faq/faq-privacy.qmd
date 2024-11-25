@@ -8,20 +8,23 @@ aliases:
 listing:
   - id: faq-privacy
     type: grid
-    grid-columns: 2
+    grid-columns: 3
     max-description-length: 250
     sort: false
     fields: [title, description]
     contents:
+    - ../about/deployment/deployment-options.qmd
     - ../guide/model-inventory/view-model-activity.qmd
     - ../about/fine-print/data-privacy-policy.qmd
 ---
 
-## How does {{< var vm.product >}} handle end-user computing and spreadsheet models?
+{{< include _faq-editions.qmd >}}
 
-Customers can register spreadsheet models in the model inventory and centralize tracking of the associated documentation files with the inventory metadata (roadmap item – Q3’2023). However, {{< var vm.product >}} cannot automate documentation generation for spreadsheet models.
+{{< include _faq-activity.qmd >}}
 
-## What model artifacts are automatically imported into documentation and how are they retained?
+{{< include _faq-model-updates.qmd >}}
+
+## What model artifacts are automatically imported into {{< var vm.product >}}? 
 
 {{< var vm.product >}} stores the following artifacts in the documentation via our {{< var validmind.api >}}:
 
@@ -30,49 +33,46 @@ Customers can register spreadsheet models in the model inventory and centralize 
 - Outputs from executed test suites
 - Images, plots, and visuals generated as part of extracting metrics and running tests
 
-{{< var vm.product >}} is a multi-tenant or single-tenant solution hosted on cloud providers.[^1] With multi-tenant deployments, infrastructure is shared but with strict data isolation protocols that ensure that no tenant can access another's sensitive information. For organizations requiring the highest degree of data security, {{< var vm.product >}} offers a {{< var validmind.vpv >}} (VPV) option to host the solution in a dedicated single-tenant cloud instance on the {{< var vm.product >}} cloud account. Furthermore, {{< var vm.product >}}'s data retention policy complies with the SOC 2 security standard.
+## How is data retained within {{< var vm.product >}}?
 
-## How does {{< var vm.product >}} handle large datasets? What about the confidentiality of data sent to {{< var vm.product >}}?
-
-{{< var vm.product >}} does not send datasets outside the client's environment. The {{< var vm.developer >}} executes test suites and functions locally in your environment and is not limited by dataset size.
+- {{< var vm.product >}} is a multi-tenant or single-tenant solution hosted on cloud providers.
+- With multi-tenant deployments, infrastructure is shared but with strict data isolation protocols that ensure that no tenant can access another's sensitive information. 
 
 ::: {.callout}
-For more information, refer to our [data privacy policy](/about/fine-print/data-privacy-policy.qmd).
+## For organizations requiring the highest degree of data security, {{< var vm.product >}} offers a {{< var validmind.vpv >}} (VPV) option to host the solution in a dedicated single-tenant cloud instance on the {{< var vm.product >}} cloud account. 
+
+Furthermore, {{< var vm.product >}}'s data retention policy complies with the SOC 2 security standard.
 :::
 
-## What solutions do you offer and how do you handle privacy?
+## What about the confidentiality or size of data sent to {{< var vm.product >}}?
 
-{{< var vm.product >}} is a {{< var vm.developer >}} and cloud {{< var vm.platform >}} available in multiple editions catering to different organizational needs:
-
-- **Standard Edition**: Our introductory offering, providing essential features and services.
-- **Enterprise Edition**: Builds upon the Standard Edition by adding features tailored for large-scale organizations.
-- **{{< var validmind.vpv >}} (VPV)**: Our most secure offering for organizations requiring a higher level of privacy, such as financial services handling sensitive data. Includes all Enterprise Edition features but in a separate, isolated {{< var vm.product >}} environment. VPV accounts do not share resources with accounts outside the VPV.
-
-Access to any edition is facilitated through AWS PrivateLink, which provides private connectivity between {{< var vm.product >}} and your on-premises networks without exposing your traffic to the public internet. To learn more, check [Configure AWS PrivateLink](/guide/configuration/configure-aws-privatelink.qmd). {{< var vm.product >}} does not send any personally identifiable information (PII) through our {{< var vm.api >}}.
-
-## Can the tool automatically document other non-standard ETL steps or performance metrics from notebooks?
-
-Support for more complex data processing pipelines is on our roadmap, currently scheduled for Q4'2023. We are implementing connector interfaces that will allow us to extract relationships between raw data sources and final post-processed datasets for Spark and Snowflake.
-
-## How does the tool manage model changes?
-
-{{< var vm.product >}} allows model developers to re-run documentation functions with the {{< var vm.developer >}} to capture changes in the model, such as changes in the number of features or hyperparameters.
-
-After a model developer has made a change in their development environment, such as to a Jupyter Notebook, they can execute the relevant {{< var vm.product >}} documentation function to update the corresponding documentation section. {{< var vm.product >}} will then automatically recreate the relevant figures and tables and update them in the online documentation.
-
-{{< var vm.product >}} is currently working on a version history function, which will allow users to see the history of changes made to the documentation.
+- {{< var vm.product >}} does not send datasets outside the client's environment. 
+- The {{< var validmind.developer >}} executes test suites and functions locally in your environment and is not limited by dataset size.
 
 ## Can you accommodate Spark DataFrames?
 
-Our {{< var validmind.developer >}} can extract dataset quality metrics on Pandas DataFrame, NumPy arrays, or Spark DataFrame instances using standard metrics provided by popular open-source frameworks such as scikit-learn, statsmodels, and more.
+- Yes, the {{< var validmind.developer >}} can extract dataset quality metrics on Pandas DataFrame, NumPy arrays, or Spark DataFrame instances using standard metrics provided by popular open-source frameworks such as scikit-learn, statsmodels, and more.
+- Each test defines a mapping to the different supported dataset and/or model interfaces — when passing a Spark DataFrame, the {{< var vm.developer >}} will directly call native evaluation metrics provided by the SparkML API or custom ones built by the developer, such as via UDFs.
 
-Each test defines a mapping to the different supported dataset and/or model interfaces: when passing a Spark DataFrame, our {{< var vm.developer >}} will directly call native evaluation metrics provided by the SparkML API or custom ones built by the developer (such as via UDFs).
+<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
+
+<!-- ## How does {{< var vm.product >}} handle end-user computing and spreadsheet models?
+
+Customers can register spreadsheet models in the model inventory and centralize tracking of the associated documentation files with the inventory metadata (roadmap item – Q3’2023). However, {{< var vm.product >}} cannot automate documentation generation for spreadsheet models. -->
+
+<!-- ## Can the tool automatically document other non-standard ETL steps or performance metrics from notebooks?
+
+Support for more complex data processing pipelines is on our roadmap, currently scheduled for Q4'2023. We are implementing connector interfaces that will allow us to extract relationships between raw data sources and final post-processed datasets for Spark and Snowflake. -->
+
+<!-- ## Can we customize illustrations?
+
+{{< var vm.product >}} utilizes open-source libraries (such as Seaborn and Matplotlib) to generate plots and illustrations. We are working on implementing the ability for model developers to customize styling parameters for these libraries directly within the {{< var vm.developer >}}.
+
+This feature is currently scheduled for Q4 2023.
+
+Additionally, {{< var vm.product >}} is developing a feature that enables developers to create custom visualization widgets by writing JavaScript-based rendering code. -->
 
 ## Learn more
 
 :::{#faq-privacy}
 :::
-
-
-<!-- FOOTNOTES -->
-[^1]: [Deployment options](/about/deployment/deployment-options.qmd)
