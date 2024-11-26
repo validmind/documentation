@@ -42,34 +42,11 @@ jobs:
     - name: Create .env file
       if: steps.filter.outputs.notebooks == 'true'
       id: create_env
-      run: |
-        touch .env
-        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env 
-        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env 
-        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env 
-        echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env 
+      uses: ./github/actions/create-env   
 
-    # Only upload if .env file creation isn't skipped
-    - name: Upload .env file as an artifact
-      if: ${{ steps.create_env.outcome != 'skipped' }}
-      uses: actions/upload-artifact@v3
-      id: upload_env
-      with:
-        name: env-file
-        path: .env
-
-    # Only download if .env file creation isn't skipped
-    - name: Download .env file into root directory
-      if: ${{ steps.upload_env.outcome != 'skipped' }}
-      id: download_env
-      uses: actions/download-artifact@v3
-      with:
-        name: env-file
-        path: ./  
-
-    # Only execute the demo notebook if .env file is downloaded into root
+    # Only execute the demo notebook if .env file is created
     - name: Execute demo Intro for Model Developers notebook
-      if: ${{ steps.download_env.outcome != 'skipped' }}
+      if: ${{ steps.create_env.outcome == 'success' }}
       uses: ./.github/actions/demo-notebook
       id: execute-demo-notebook
       with:

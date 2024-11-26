@@ -26,6 +26,15 @@ runs:
         pip install pycairo
         pip check
 
+    - name: Ensure .env file is in the root directory
+      shell: bash
+      run: |
+        # Verify that .env file exists in the root directory
+        if [ ! -f .env ]; then
+          echo ".env file not found!"
+          exit 1
+        fi
+
     - name: Execute ONLY the Intro for Model Developers notebook with heap development
       shell: bash
       run: |
