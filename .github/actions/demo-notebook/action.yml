@@ -22,6 +22,10 @@ runs:
         pip install validmind[llm] 
         pip install fairlearn aequitas 
         pip install shap==0.44.1
+        pip install pydantic==2.7.4 
+        pip install langchain-core==0.2.9
+        pip install langchain==0.3.8
+        pip install pydantic==2.7.4
 
     - name: Check dependencies
       shell: bash
@@ -43,12 +47,9 @@ runs:
       if: ${{ steps.find_env.outcome == 'success' }}
       run: |
           cd site 
-        # Set global multiprocessing start method to prevent Polars deadlock
           mkdir -p custom_python_startup
           echo "import multiprocessing; multiprocessing.set_start_method('spawn', force=True)" > custom_python_startup/sitecustomize.py
-        # Add the custom start script to PYTHONPATH
           export PYTHONPATH=$(pwd)/custom_python_startup:$PYTHONPATH
-        # Test multiprocessing start method
           python -c "import multiprocessing; print(multiprocessing.get_start_method())"
           source ../${{ inputs.env_file }}
           quarto render --profile exe-demo notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
