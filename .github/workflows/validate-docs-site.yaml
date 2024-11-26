@@ -17,19 +17,10 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    - name: Get latest Quarto release URL
-      id: get-quarto-url
-      run: |
-        API_URL="https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest"
-        DOWNLOAD_URL=$(curl -s $API_URL | jq -r '.assets[] | select(.name | endswith("linux-amd64.deb")).browser_download_url')
-        echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_ENV
+    - name: Fetch Quarto
+      uses: ./.github/actions/fetch-quarto
 
-    - name: Download and install Quarto
-      run: |
-        wget ${{ env.DOWNLOAD_URL }} -O quarto-latest-linux-amd64.deb
-        sudo dpkg -i quarto-latest-linux-amd64.deb
-
-    - name: Render site
+    - name: Render demo docs site
       run: |
           cd site 
           quarto render --profile development &> render_errors.log || { 
@@ -37,6 +28,24 @@ jobs:
           cat render_errors.log;
           exit 1;
           }
+    
+    # See if site/notebooks/ has updates
+    - name: Filter changed files
+      uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          notebooks:
+            - 'site/notebooks/**'
+
+    # If yes then execute the demo notebook
+    - name: Execute demo Intro for Model Developers notebook
+      if: steps.filter.outputs.notebooks == 'true'
+      uses: ./.github/actions/demo-notebook
+      id: execute-demo-notebook
+      env:
+        PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
+        PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
 
     - name: Test for warnings or errors 
       run: |
@@ -48,7 +57,7 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-      # Demo bucket is in us-east-1
+      # Demo bucket is in us-east-1  
     - name: Configure AWS credentials
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 

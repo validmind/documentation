@@ -10,10 +10,11 @@ summarization.
 
 ### Test Mechanism
 
-The test begins by verifying that the input "dataset" is of the type VMDataset. Following that, a corpus is created
-from the dataset by splitting its text on spaces. Each unique punctuation character in the text corpus is then
-tallied. The frequency distribution of each punctuation symbol is visualized as a bar graph, with these results
-being stored as Figures and associated with the main Punctuations object.
+The test begins by verifying that the input "dataset" is of the type VMDataset. The count_mode parameter must be
+either "token" (counts punctuation marks as individual tokens) or "word" (counts punctuation marks within words).
+Following that, a corpus is created from the dataset by splitting its text on spaces. Each unique punctuation
+character in the text corpus is then tallied. The frequency distribution of each punctuation symbol is visualized
+as a bar graph, with these results being stored as Figures and associated with the main Punctuations object.
 
 ### Signs of High Risk
 
