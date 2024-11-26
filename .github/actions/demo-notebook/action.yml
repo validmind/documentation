@@ -13,7 +13,18 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
-        
+
+    - name: Uninstall conflicting dependencies
+      run: |
+        python -m pip uninstall -y langchain-core langchain pydantic
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install langchain-core==0.3.21  # Version that works with pydantic v2 (no shim)
+        pip install langchain==0.3.8         # Ensure langchain is compatible with langchain-core v0.3.21
+        pip install pydantic==2.7.4         # Compatible version of pydantic (>=2.7.4)
+
     - name: Install python3 for Jupyter Notebooks
       shell: bash
       run: |
@@ -27,9 +38,6 @@ runs:
         pip install validmind[llm] 
         pip install fairlearn aequitas 
         pip install shap==0.44.1
-        pip install langchain-core==0.3.21
-        pip install langchain==0.3.8
-        pip install pydantic==2.7.4 
 
     - name: Check dependencies
       shell: bash
