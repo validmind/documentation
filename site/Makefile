@@ -4,9 +4,11 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := _site/validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+PROFILE := exe-demo
+FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute
 
 # Help section
 help:
@@ -24,6 +26,7 @@ help:
 	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
+	@echo "  execute              Execute a Jupyter Notebook (must have valid .env credentials set up in root)"
 
 # Clean up source directory
 clean:
@@ -77,8 +80,6 @@ get-source: clean clone notebooks python-docs test-descriptions
 # Get all source files
 docs-site: clean clone notebooks python-docs test-descriptions
 	quarto render --profile development
-#	quarto render notebooks/how_to/explore_tests.ipynb --execute
-#	quarto render notebooks/how_to/explore_test_suites.ipynb --execute
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
@@ -120,3 +121,9 @@ deploy-staging:
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py
+
+# Execute a Jupyter Notebook  
+# Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
+# To override: make execute PROFILE=select-profile FILE_PATH=notebooks/notebook-path-here.ipynb
+execute:
+	quarto render --profile $(PROFILE) $(FILE_PATH)
