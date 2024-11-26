@@ -43,12 +43,24 @@ runs:
       if: ${{ steps.find_env.outcome == 'success' }}
       run: |
         cd site
-        mkdir -p custom_python_startup
-        echo "import multiprocessing; multiprocessing.set_start_method('spawn', force=True)" > custom_python_startup/sitecustomize.py
-        export PYTHONPATH=$(pwd)/custom_python_startup:$PYTHONPATH
+
+        cat << 'EOF' > render_with_spawn.py
+        import multiprocessing
+        import subprocess
+
+        if __name__ == '__main__':
+        multiprocessing.set_start_method('spawn', force=True)
+        command = [
+        'quarto', 'render', '--profile', 'exe-demo', 
+        'notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb'
+          ]
+        subprocess.run(command, check=True)
+        EOF
+
         source ../${{ inputs.env_file }}
-        quarto render --profile exe-demo notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
-          echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
-          cat render_errors.log;
-          exit 1;
+
+        python render_with_spawn.py &> render_errors.log || { 
+          echo "Execution failed:"
+          cat render_errors.log
+          exit 1
         }
