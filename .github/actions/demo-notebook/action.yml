@@ -1,7 +1,10 @@
 name: Execute demo notebook
 description: Installs python3, validmind, checks dependencies then executes ONLY the Intro for Model Developers notebook with development heap tracking
 
-inputs: {}
+inputs:
+  env_file:
+    description: "Path to the .env file"
+    required: true
 
 runs: 
   using: "composite"
@@ -26,19 +29,20 @@ runs:
         pip install pycairo
         pip check
 
-    - name: Ensure .env file is in the root directory
+    - name: Ensure .env file is available
       shell: bash
       run: |
-        # Verify that .env file exists in the root directory
-        if [ ! -f .env ]; then
-          echo ".env file not found!"
+        if [ ! -f "${{ inputs.env_file }}" ]; then
+          echo "Error: .env file not found at ${{ inputs.env_file }}"
           exit 1
         fi
+        echo ".env file located at ${{ inputs.env_file }} is available."
 
     - name: Execute ONLY the Intro for Model Developers notebook with heap development
       shell: bash
       run: |
           cd site 
+          source ${{ inputs.env_file }}
           quarto render --profile exe-demo notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
           echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
           cat render_errors.log;
