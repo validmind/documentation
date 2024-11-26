@@ -12,8 +12,8 @@ Language Processing (NLP) tasks such as text classification and text summarizati
 
 The test methodology involves splitting the specified text column's entries into words, collating them into a
 corpus, and then counting the frequency of each word using the Counter. The forty most frequently occurring
-non-stopwords are then visualized in a bar chart, where the x-axis represents the words, and the y-axis indicates
-their frequency of occurrence.
+non-stopwords are then visualized in an interactive bar chart using Plotly, where the x-axis represents the words,
+and the y-axis indicates their frequency of occurrence.
 
 ### Signs of High Risk
 
@@ -27,7 +27,7 @@ effectively implemented without it.
 - The metric provides clear insights into the language features – specifically word frequency – of unstructured
 text data.
 - It can reveal prominent vocabulary and language patterns, which prove vital for feature extraction in NLP tasks.
-- The visualization helps in quickly capturing the patterns and understanding the data intuitively.
+- The interactive visualization helps in quickly capturing the patterns and understanding the data intuitively.
 
 ### Limitations
 
