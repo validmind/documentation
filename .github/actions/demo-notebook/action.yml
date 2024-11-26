@@ -22,7 +22,8 @@ runs:
         pip install validmind[llm] 
         pip install fairlearn aequitas 
         pip install shap==0.44.1
-        
+        pip install pydantic==2.0.0
+
     - name: Check dependencies
       shell: bash
       run: |
@@ -33,14 +34,15 @@ runs:
       shell: bash
       id: set_spawn
       run: |
-        echo "import multiprocessing; multiprocessing.set_start_method('spawn', force=True)" > set_spawn.py
-        echo "PYTHONSTARTUP=$(pwd)/set_spawn.py" >> $GITHUB_ENV
+        mkdir -p custom_python_startup
+        echo "import multiprocessing; multiprocessing.set_start_method('spawn', force=True)" > custom_python_startup/sitecustomize.py
+        echo "PYTHONPATH=$(pwd)/custom_python_startup" >> $GITHUB_ENV
 
-    - name: Debug PYTHONSTARTUP
+    - name: Verify sitecustomize.py execution
       if: ${{ steps.set_spawn.outcome == 'success' }}
       shell: bash
       run: |
-        echo "PYTHONSTARTUP is set to: $PYTHONSTARTUP"
+        python -c "import multiprocessing; print(multiprocessing.get_start_method())"
 
     - name: Ensure .env file is available
       shell: bash
