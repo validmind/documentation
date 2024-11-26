@@ -29,11 +29,11 @@ runs:
         pip install pycairo
         pip check
 
-    - name: Set multiprocessing start method to prevent Polars deadlock
+    - name: Set global multiprocessing start method to prevent Polars deadlock
       shell: bash
       run: |
-        export PYTHONSTARTUP=set_spawn.py
         echo "import multiprocessing; multiprocessing.set_start_method('spawn', force=True)" > set_spawn.py
+        echo "PYTHONSTARTUP=$(pwd)/set_spawn.py" >> $GITHUB_ENV
 
     - name: Ensure .env file is available
       shell: bash
