@@ -38,14 +38,27 @@ jobs:
           notebooks:
             - 'site/notebooks/**'
 
-    # If yes then execute the demo notebook
-    - name: Execute demo Intro for Model Developers notebook
+    # If yes then create the .env file for use in execution step
+    - name: Create .env file
       if: steps.filter.outputs.notebooks == 'true'
+      id: create_env
+      run: |
+        echo "APP_ENV=production" >> .env
+        echo "PLATFORM_API_HOST=${{ secrets.VM_API_HOST }}" >> .env
+        echo "PLATFORM_API_KEY=${{ secrets.VM_API_KEY }}" >> .env
+        echo "PLATFORM_API_SECRET=${{ secrets.VM_API_SECRET }}" >> .env
+        echo "PLATFORM_DEV_MODEL =${{ secrets.VM_API_MODEL }}" >> .env
+
+     - name: Display .env file for debugging, remove on prod
+        run: cat .env
+
+    # Only execute the demo notebook if .env file creation isn't skipped
+    - name: Execute demo Intro for Model Developers notebook
+      if: ${{ steps.create_env.outcome != 'skipped' }}
       uses: ./.github/actions/demo-notebook
       id: execute-demo-notebook
-      env:
-        PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
-        PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
+      with:
+        env_file: .env
 
     - name: Test for warnings or errors 
       run: |
