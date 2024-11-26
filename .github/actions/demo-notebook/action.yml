@@ -42,25 +42,10 @@ runs:
       shell: bash
       if: ${{ steps.find_env.outcome == 'success' }}
       run: |
-        cd site
-
-        cat << 'EOF' > render_with_spawn.py
-        import multiprocessing
-        import subprocess
-
-        if __name__ == '__main__':
-          multiprocessing.set_start_method('spawn', force=True)
-          command = [
-          'quarto', 'render', '--profile', 'exe-demo', 
-          'notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb'
-            ]
-          subprocess.run(command, check=True)
-        EOF
-
-        source ../${{ inputs.env_file }}
-
-        python render_with_spawn.py &> render_errors.log || { 
-          echo "Execution failed:"
-          cat render_errors.log
-          exit 1
-        }
+          cd site 
+          source ../${{ inputs.env_file }}
+          quarto render --profile exe-demo notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
+          echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
+          cat render_errors.log;
+          exit 1;
+          }
