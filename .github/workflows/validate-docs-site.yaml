@@ -43,11 +43,11 @@ jobs:
       if: steps.filter.outputs.notebooks == 'true'
       id: create_env
       run: |
-        echo "APP_ENV=production" >> .env
+        touch .env
         echo "PLATFORM_API_HOST=${{ secrets.VM_API_HOST }}" >> .env
         echo "PLATFORM_API_KEY=${{ secrets.VM_API_KEY }}" >> .env
         echo "PLATFORM_API_SECRET=${{ secrets.VM_API_SECRET }}" >> .env
-        echo "PLATFORM_DEV_MODEL =${{ secrets.VM_API_MODEL }}" >> .env
+        echo "PLATFORM_DEV_MODEL=${{ secrets.VM_API_MODEL }}" >> .env
 
     - name: Display .env file for debugging
       run: cat .env
