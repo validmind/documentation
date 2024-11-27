@@ -1,12 +1,15 @@
 # Robustness
 
-Assesses the robustness of prompts provided to a Large Language Model under varying conditions and contexts.
+Assesses the robustness of prompts provided to a Large Language Model under varying conditions and contexts. This test
+specifically measures the model's ability to generate correct classifications with the given prompt even when the
+inputs are edge cases or otherwise difficult to classify.
 
 ### Purpose
 
 The Robustness test is meant to evaluate the resilience and reliability of prompts provided to a Language Learning
 Model (LLM). The aim of this test is to guarantee that the prompts consistently generate accurate and expected
-outputs, even in diverse or challenging scenarios.
+outputs, even in diverse or challenging scenarios. This test is only applicable to LLM-powered text classification
+tasks where the prompt has a single input variable.
 
 ### Test Mechanism
 
