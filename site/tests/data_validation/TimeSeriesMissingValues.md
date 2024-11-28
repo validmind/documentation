@@ -16,17 +16,11 @@ establishes a lower limit threshold for missing values and performs a missing va
 dataset. An object for the test result is created stating whether the number of missing values is within the
 specified threshold. Additionally, the test calculates the percentage of missing values alongside the raw count.
 
-To aid in data visualization, the test generates two plots - a bar plot and a heatmap - to better illustrate the
-distribution and quantity of missing values per variable. The test results, including a count of missing values,
-the percentage of missing values, and a pass/fail status, are returned in a results table.
-
 ### Signs of High Risk
 
 - The number of missing values in any column of the dataset surpasses the threshold, marking a failure and a
 high-risk scenario. The reasons could range from incomplete data collection, faulty sensors to data preprocessing
 errors.
-- A continuous visual 'streak' in the heatmap may indicate a systematic error during data collection, pointing
-towards another potential risk source.
 
 ### Strengths
 
@@ -34,7 +28,6 @@ towards another potential risk source.
 - Applicable and customizable through the threshold parameter across different data sets.
 - Goes beyond raw numbers by calculating the percentage of missing values, offering a more relative understanding
 of data scarcity.
-- Includes a robust visualization mechanism for easy and fast understanding of data quality.
 
 ### Limitations
 
