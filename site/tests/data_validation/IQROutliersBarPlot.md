@@ -42,8 +42,6 @@ insights into the outliers' possible impact on the model.
 ### Limitations
 
 - Its application is limited to numerical variables and does not extend to categorical ones.
-- Relies on a predefined threshold (default being 1.5) for outlier identification, which may not be suitable for
-all cases.
 - Only reveals the presence and distribution of outliers and does not provide insights into how these outliers
 might affect the model's predictive performance.
 - The assumption that data is unimodal and symmetric may not always hold true. In cases with non-normal

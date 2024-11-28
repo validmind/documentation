@@ -32,10 +32,10 @@ robustness against this type of noise.
 
 ### Strengths
 
-- An effective way to assess the model’s sensitivity and robustness to language translation noise.
+- An effective way to assess the model's sensitivity and robustness to language translation noise.
 - Provides a realistic scenario which the model might encounter in real-world applications by using translation to
 introduce noise.
-- Tests the model’s capacity to maintain semantic meaning under translational perturbations, extending beyond
+- Tests the model's capacity to maintain semantic meaning under translational perturbations, extending beyond
 simple lexical changes.
 
 ### Limitations

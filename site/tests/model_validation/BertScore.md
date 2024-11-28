@@ -16,7 +16,10 @@ initializes the BERTScore evaluator. For each pair of true and predicted texts, 
 BERTScore metrics and compiles them into a dataframe. Histograms and bar charts are generated for each BERTScore
 metric (Precision, Recall, and F1 Score) to visualize their distribution. Additionally, a table of descriptive
 statistics (mean, median, standard deviation, minimum, and maximum) is compiled for each metric, providing a
-comprehensive summary of the model's performance.
+comprehensive summary of the model's performance. The test uses the `evaluation_model` param to specify the
+huggingface model to use for evaluation. `microsoft/deberta-xlarge-mnli` is the best-performing model but is
+very large and may be slow without a GPU. `microsoft/deberta-large-mnli` is a smaller model that is faster to
+run and `distilbert-base-uncased` is much lighter and can run on a CPU but is less accurate.
 
 ### Signs of High Risk
 

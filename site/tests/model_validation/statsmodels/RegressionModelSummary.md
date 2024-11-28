@@ -11,11 +11,8 @@ assess the model's accuracy and fit.
 
 ### Test Mechanism
 
-This test employs the 'train_ds' attribute of the model to gather and analyze the training data. Initially, it
-fetches the independent variables and uses the model to make predictions on these given features. Subsequently, it
-calculates several standard regression performance metrics including R-Squared, Adjusted R-Squared, Mean Squared
-Error (MSE), and Root Mean Squared Error (RMSE), which quantify the approximation of the predicted responses to the
-actual responses.
+This test uses the sklearn library to calculate the R-Squared, Adjusted R-Squared, MSE, and RMSE. It outputs a
+table with the results of these metrics along with the feature columns used by the model.
 
 ### Signs of High Risk
 
@@ -30,7 +27,6 @@ actual responses.
 
 ### Limitations
 
-- Applicable exclusively to regression models.
 - RMSE and MSE might be sensitive to outliers.
 - A high R-Squared or Adjusted R-Squared may not necessarily indicate a good model, especially in cases of
 overfitting.

@@ -13,8 +13,9 @@ learning model's performance and interpretability.
 
 The test works by generating pairwise Pearson correlations for all features in the dataset, then sorting and
 eliminating duplicate and self-correlations. It assigns a Pass or Fail based on whether the absolute value of the
-correlation coefficient surpasses a pre-set threshold (defaulted at 0.3). It lastly returns the top ten strongest
-correlations regardless of passing or failing status.
+correlation coefficient surpasses a pre-set threshold (defaulted at 0.3). It lastly returns the top n strongest
+correlations regardless of passing or failing status (where n is 10 by default but can be configured by passing the
+`top_n_correlations` parameter).
 
 ### Signs of High Risk
 
@@ -37,5 +38,3 @@ and a Pass or Fail status for each.
 - Sensitive to outliers where a few outliers could notably affect the correlation coefficient.
 - Limited to identifying redundancy only within feature pairs; may fail to spot more complex relationships among
 three or more variables.
-- The top 10 result filter might not fully capture the richness of the data; an option to configure the number of
-retained results could be helpful.
