@@ -1,7 +1,10 @@
 name: Execute staging notebook
 description: Installs python3, validmind, checks dependencies then executes ONLY the Intro for Model Developers notebook with staging heap tracking
 
-inputs: {}
+inputs:
+  env_file:
+    description: "Load the created .env file"
+    required: true
 
 runs: 
   using: "composite"
@@ -26,10 +29,21 @@ runs:
         pip install pycairo
         pip check
 
+    - name: Ensure .env file is available
+      shell: bash
+      id: find_env
+      run: |
+        if [ ! -f "${{ inputs.env_file }}" ]; then
+          echo "Error: .env file not found at ${{ inputs.env_file }}"
+          exit 1
+        fi
+
     - name: Execute ONLY the Intro for Model Developers notebook with heap staging
       shell: bash
+      if: ${{ steps.find_env.outcome == 'success' }}
       run: |
           cd site 
+          source ../${{ inputs.env_file }}
           quarto render --profile exe-staging notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
           echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
           cat render_errors.log;
