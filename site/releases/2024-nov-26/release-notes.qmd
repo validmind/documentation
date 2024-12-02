@@ -546,6 +546,37 @@ Calculated fields: https://github.com/validmind/documentation/pull/443 -->
 
 ##### Ability to configure calculated model inventory fields
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+Custom model inventory fields are now more flexible than ever — introducing the ability to define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+
+:::
+
+::: {.w-30-ns .tc}
+[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#calculation){.button}
+
+:::
+
+::::
+
+![Adding a calculation type field](/guide/model-inventory/calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" width=90% .screenshot}
+
+::: {.column-margin}
+**Example formula:**
+
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+:::
 
 <!---
 PR #1047: [6389] - feat: allow user to add description to each uploaded file
@@ -554,13 +585,23 @@ Labels: enhancement
 --->
 ##### Ability to add descriptions to attachments
 
-- **File description support**
+:::: {.flex .flex-wrap .justify-around}
 
-Users can now add descriptions to each uploaded file. This feature enhances file organization and clarity.
- 
-Generated PR summary: 
- 
-This release introduces new functionality for managing descriptions of entity attachments within the application. You can now add and remove attachment descriptions through two new API functions: `AddEntityAttachmentsDescription` and `DeleteEntityAttachmentsDescription`, which update the backend based on attachment IDs. The user interface has been enhanced by updating the `ManageAttachmentsField` component, allowing you to add and remove notes (descriptions) for attachments. This includes a new `NoteState` type to manage note states and modifications to the `FileDisplay` component, enabling you to display and edit notes. A vertical stack (`VStack`) is implemented to support the new note features, along with a menu that provides options for adding/removing notes and deleting files. Additionally, the `entity_attachments.ts` model now includes an optional `description` field in the `EntityAttachmentFile` type for storing attachment descriptions.
+::: {.w-60-ns}
+You can now annotate attachments uploaded to both models or model findings, allowing you to describe the contents of the file or provide commentary. 
+
+:::
+
+::: {.w-40-ns .tc}
+[Edit model inventory fields](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){.button}
+
+[Add and manage model findings](/guide/model-validation/add-manage-model-findings.qmd#manage-supporting-documentation){.button}
+
+:::
+
+::::
+
+![Adding attachment notes](/guide/model-inventory/add-attachment-note.gif){ fig-alt="An animated gif demonstrating how to add attachment notes" .screenshot width=90%}
 
 <!---
 PR #1078: Support for datetime manipulation in inventory fields
