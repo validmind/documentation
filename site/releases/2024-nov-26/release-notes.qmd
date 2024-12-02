@@ -358,11 +358,30 @@ Labels: documentation, enhancement
 --->
 #### Added parameter grid support in comparison tests
 
-We support for comparison tests using the `input_grid` parameter in `run_test` functionality. However, similar support is required for params. This feature is useful when you want to run the same test against multiple combinations of test parameters and create a single documentation block that compares the individual results.
+:::: {.flex .flex-wrap .justify-around}
 
-The updated `run_test()` function allows you to pass a `param_grid`. This grid runs a test for all combinations of parameters.
+::: {.w-70-ns}
+In addition to comparison tests using the `input_grid` parameter in `run_test()` functionality, we've added similar support for `param`s: 
 
-Example - For this param grid:
+:::
+
+::: {.w-30-ns .tc}
+[run_test()](/validmind/validmind/tests.html#run_test){.button}
+
+:::
+
+::::
+
+
+- Useful when you want to run the same test against multiple combinations of test parameters and create a single documentation block that compares the individual results, the updated `run_test()` function allows you to pass a `param_grid`. 
+- This grid runs a test for all combinations of parameters.
+
+**Example**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns}
+For this `param` grid:
 
 ```
 param_grid = {
@@ -371,20 +390,19 @@ param_grid = {
 }
 ```
 
-A test runs once for each of the following param groups:
+:::
+
+::: {.w-40-ns}
+A test runs once for each of the following `param` groups:
 
 ```
 {"param1": 1, "param2": 0.1}
 {"param1": 1, "param2": 0.2}
 ```
- 
-Generated PR summary: 
- 
-This update to the ValidMind test framework brings several enhancements and bug fixes, along with improvements to the associated Jupyter notebooks. In `quickstart_regression_full_suite.ipynb`, the `vm.init` function is modified to use `project` instead of `model`, aligning parameters with the new API structure. Additionally, in `2_run_comparison_tests.ipynb`, a new test that utilizes a `param_grid` for multiple parameter configurations has been added.
 
-Code enhancements include updates to the `ClassifierPerformance` class, now featuring a `default_params` attribute and support for the `average` parameter in ROC AUC calculations. The `run.py` script now accommodates both parameter grids (`param_grid`) and input grids (`input_grid`) during comparison tests, enabling more flexible test configurations with various inputs and parameters. Helper functions have been introduced for validating test inputs and grid setups to enhance testing robustness.
+:::
 
-Furthermore, unnecessary blank lines have been removed from several Python files to improve code readability. These updates aim to increase the flexibility and functionality of the ValidMind testing framework, supporting more comprehensive and varied testing scenarios.
+::::
 
 <!---
 PR #214: [SC-7262] Update RAG documentation demo notebook
