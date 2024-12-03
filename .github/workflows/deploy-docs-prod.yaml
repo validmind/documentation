@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all branches
   
       - name: Fetch Quarto
         uses: ./.github/actions/fetch-quarto
@@ -41,7 +43,7 @@ jobs:
         uses: dorny/paths-filter@v2
         id: filter
         with:
-          base: origin/prod
+          base: prod
           ref: ${{ github.sha }}
           filters: |
             notebooks:
