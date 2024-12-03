@@ -30,13 +30,18 @@ jobs:
             exit 1;
             }
 
+      - name: Fetch staging branch
+        id: fetch_staging
+        run: git fetch origin staging
+
       # See if site/notebooks/ has updates
-      # Checks against the previous commit to the branch prior to the current push event
+      # Checks against the previous commit to staging prior to the current push event
       - name: Filter changed files
+        if: ${{ steps.fetch_staging.outcome == 'success' }}
         uses: dorny/paths-filter@v2
         id: filter
         with:
-          base: ${{ github.event.before }}
+          base: origin/staging
           ref: ${{ github.sha }}
           filters: |
             notebooks:
