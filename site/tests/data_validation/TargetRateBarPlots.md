@@ -33,9 +33,5 @@ irregularities, inconsistencies, or patterns.
 
 ### Limitations
 
-- The test is less useful when dealing with numeric or continuous data, as it's designed specifically for
-categorical features.
-- If the model in question is dealing with a multi-class problem rather than binary classification, the test's
-assumption of binary target values (0s and 1s) becomes a significant limitation.
 - The readability of the bar plots drops as the number of distinct categories increases in the dataset, which can
 make them harder to understand and less useful.

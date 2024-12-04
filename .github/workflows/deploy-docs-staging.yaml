@@ -30,23 +30,42 @@ jobs:
             exit 1;
             }
 
+      - name: Fetch staging branch
+        id: fetch_staging
+        run: git fetch origin staging
+
       # See if site/notebooks/ has updates
+      # Checks against the previous commit to staging prior to the current push event
       - name: Filter changed files
+        if: ${{ steps.fetch_staging.outcome == 'success' }}
         uses: dorny/paths-filter@v2
         id: filter
         with:
+          base: origin/staging
+          ref: ${{ github.sha }}
           filters: |
             notebooks:
               - 'site/notebooks/**'
 
-      # If yes then execute the staging notebook
-      - name: Execute staging Intro for Model Developers notebook
+      # If yes then create the .env file for use in execution step
+      - name: Create .env file
         if: steps.filter.outputs.notebooks == 'true'
+        id: create_env
+        run: |
+          touch .env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env 
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env 
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env 
+          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env 
+          cat .env   
+
+      # Only execute the staging notebook if .env file is created
+      - name: Execute staging Intro for Model Developers notebook
+        if: ${{ steps.create_env.outcome == 'success' }}
         uses: ./.github/actions/staging-notebook
         id: execute-staging-notebook
-        env:
-          PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
-          PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
+        with:
+          env_file: .env
 
       # Staging bucket is in us-west-2
       - name: Configure AWS credentials
