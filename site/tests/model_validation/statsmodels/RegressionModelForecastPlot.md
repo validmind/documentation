@@ -1,23 +1,21 @@
 # RegressionModelForecastPlot
 
-Generates plots to visually compare the forecasted outcomes of one or more regression models against actual
-observed values over a specified date range.
+Generates plots to visually compare the forecasted outcomes of a regression model against actual observed values over
+a specified date range.
 
 ### Purpose
 
-The "regression_forecast_plot" is intended to visually depict the performance of one or more regression models by
-comparing the model's forecasted outcomes against actual observed values within a specified date range. This metric
-is especially useful in time-series models or any model where the outcome changes over time, allowing direct
-comparison of predicted vs actual values.
+This metric is useful for time-series models or any model where the outcome changes over time, allowing direct
+comparison of predicted vs actual values. It can help identify overfitting or underfitting situations as well as
+general model performance.
 
 ### Test Mechanism
 
-This test generates a plot for each fitted model in the list. The x-axis represents the date ranging from the
-specified "start_date" to the "end_date", while the y-axis shows the value of the outcome variable. Two lines are
-plotted: one representing the forecasted values and the other representing the observed values. The "start_date
-and "end_date" can be parameters of this test; if these parameters are not provided, they are set to the minimum
-and maximum date available in the dataset. The test verifies that the provided date range is within the limits of
-the available data.
+This test generates a plot with the x-axis representing the date ranging from the specified "start_date" to the
+end_date", while the y-axis shows the value of the outcome variable. Two lines are plotted: one representing the
+forecasted values and the other representing the observed values. The "start_date" and "end_date" can be parameters
+of this test; if these parameters are not provided, they are set to the minimum and maximum date available in the
+dataset.
 
 ### Signs of High Risk
 

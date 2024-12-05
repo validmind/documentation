@@ -30,23 +30,23 @@ jobs:
             exit 1;
             }
 
-      # See if site/notebooks/ has updates
-      - name: Filter changed files
-        uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            notebooks:
-              - 'site/notebooks/**'
+      - name: Create .env file
+        id: create_env
+        run: |
+          touch .env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env 
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env 
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env 
+          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env 
+          cat .env 
 
-      # If yes then execute the prod notebook
+      # Only execute the prod notebook if .env file is created
       - name: Execute prod Intro for Model Developers notebook
-        if: steps.filter.outputs.notebooks == 'true'
+        if: ${{ steps.create_env.outcome == 'success' }}
         uses: ./.github/actions/prod-notebook
         id: execute-prod-notebook
-        env:
-          PLATFORM_API_KEY: ${{ secrets.PLATFORM_API_KEY }}
-          PLATFORM_API_SECRET: ${{ secrets.PLATFORM_API_SECRET }}
+        with:
+          env_file: .env
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials

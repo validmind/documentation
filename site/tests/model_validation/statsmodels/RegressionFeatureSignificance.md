@@ -1,20 +1,19 @@
 # RegressionFeatureSignificance
 
-Assesses and visualizes the statistical significance of features in a set of regression models.
+Assesses and visualizes the statistical significance of features in a regression model.
 
 ### Purpose
 
 The Regression Feature Significance metric assesses the significance of each feature in a given set of regression
-models. It creates a visualization displaying p-values for every feature of each model, assisting model developers
-in understanding which features are most influential in their models.
+model. It creates a visualization displaying p-values for every feature of the model, assisting model developers
+in understanding which features are most influential in their model.
 
 ### Test Mechanism
 
-The test mechanism involves going through each fitted regression model in a given list, extracting the model
-coefficients and p-values for each feature, and then plotting these values. The x-axis on the plot contains the
-p-values while the y-axis denotes the coefficients of each feature. A vertical red line is drawn at the threshold
-for p-value significance, which is 0.05 by default. Any features with p-values to the left of this line are
-considered statistically significant at the chosen level.
+The test mechanism involves extracting the model's coefficients and p-values for each feature, and then plotting these
+values. The x-axis on the plot contains the p-values while the y-axis denotes the coefficients of each feature. A
+vertical red line is drawn at the threshold for p-value significance, which is 0.05 by default. Any features with
+p-values to the left of this line are considered statistically significant at the chosen level.
 
 ### Signs of High Risk
 
@@ -28,7 +27,6 @@ reliability of the model predictions.
 - Helps identify the features that significantly contribute to a model's prediction, providing insights into the
 feature importance.
 - Provides tangible, easy-to-understand visualizations to interpret the feature significance.
-- Facilitates comparison of feature importance across multiple models.
 
 ### Limitations
 

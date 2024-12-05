@@ -13,9 +13,10 @@ illustrating their contribution to the model's predictive capabilities.
 ### Test Mechanism
 
 The test uses the `scorecardpy.woebin` method to perform automatic binning of the dataset based on WoE. The method
-adjusts the cut-off points for binning numeric variables based on the parameter `breaks_adj`. The bins are then
-used to calculate the WoE and IV values, effectively creating a dataframe that includes the bin boundaries, WoE,
-and IV values for each feature. A target variable is required in the dataset to perform this analysis.
+accepts a list of break points for binning numeric variables through the parameter `breaks_adj`. If no breaks are
+provided, it uses default binning. The bins are then used to calculate the WoE and IV values, effectively creating
+a dataframe that includes the bin boundaries, WoE, and IV values for each feature. A target variable is required
+in the dataset to perform this analysis.
 
 ### Signs of High Risk
 
