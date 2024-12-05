@@ -1,4 +1,4 @@
-# DFGLSArch
+# DickeyFullerGLS
 
 Assesses stationarity in time series data using the Dickey-Fuller GLS test to determine the order of integration.
 
