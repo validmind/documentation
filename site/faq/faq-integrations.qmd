@@ -3,72 +3,89 @@ title: "Integrations and support"
 date: last-modified
 aliases:
   - ../guide/faq-integrations.html
+listing:
+  - id: faq-integrations
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../developer/model-documentation/supported-models.qmd
+    - ../about/overview-llm-features.qmd
+    - ../about/deployment/deployment-options.qmd
 ---
 
-## Can you integrate with JIRA to connect with our Model Development pipeline?
+## Which languages, libraries, and environments do you support?
 
-{{< var vm.product >}} is planning to provide integration with JIRA tickets via the JIRA Python API. You will be able to configure {{< var vm.product >}} to update the status of a particular JIRA ticket when a specific state or approval is triggered from the workflow (roadmap item – Q3’2023).
+- The {{< var validmind.developer >}}[^1] is designed to be platform-agnostic and compatible with most popular open-source programming languages and model development environments in Python and R,[^2] from XGBoost to more sophisticated libraries such as Pytorch and TensorFlow — and many more.
+- We directly support Matplotlib[^3] and Plotly[^4] plotting libraries for visual representations, and you're able to return images from other libraries as bytes-like objects.[^5]
 
-## What libraries beyond XGBoost are supported?
-
-{{< var vm.product >}} supports the most popular open-source model development libraries in Python and R, such as:
-
-- scikit-learn
-- XGBoost
-- statsmodels
-- PyTorch
-- TensorFlow
-
-{{< var vm.product >}} supports ingesting test results from your training and evaluation pipeline, such as using batch prediction or online prediction mechanisms. We are also implementing standard documentation via the {{< var vm.developer >}} for additional modeling techniques, check [Do you include explainability-related testing and documentation?](faq-testing.qmd#do-you-include-explainability-related-testing-and-documentation) for more information.
-
-## What other programming languages and development environments do you support beyond Python and Jupyter Notebook, such as R and SAS?
-
-The {{< var validmind.developer >}} is designed to be platform-agnostic and compatible with the most popular open-source programming languages and model development environments.
-
-Currently, we support **Python {{< var version.python >}}** and the most popular AI/ML and data science libraries (scikit-learn, XGBoost, statsmodels, PyTorch, TensorFlow).
-
-We are working on deploying support for R 4.0+ and associated libraries (roadmap item – Q2’2023).
+::: {.callout}
+## Currently, we support **Python {{< var version.python >}}** and the most popular AI/ML and data science libraries.
 
 Support for commercial and closed-source programming languages such as SAS and Matlab depends on specific deployment details and commercial agreements with customers.
 
-## Do you support integration with data lakes and ETL solutions?
+:::
+
+## What test ingestion or modeling techniques are supported?
+
+- {{< var vm.product >}} supports ingesting test results from your training and evaluation pipeline, such as using batch prediction or online prediction mechanisms.[^6]
+- We are also offer standard documentation via the {{< var vm.developer >}} for additional modeling techniques.[^7] 
+
+{{< include _faq-images.qmd >}}
+
+## What large language model (LLM) features are offered?
+
+{{< var vm.product >}} offers several specialized features that use large language models (LLMs) to streamline model risk management and ensure regulatory compliance:
+ 
+- **Test interpretation** — Interprets results from tests run within {{< var vm.product >}}.
+- **Qualitative checks** — Leverages metadata from the model inventory, test outcomes, and additional data provided to create qualitative sections within model documentation.
+- **Risk assessment** — Using data from test results, generates a tailored risk assessment for each section of model documentation.
+- **Document checker** — Reviews model development documentation to ensure it aligns with relevant regulatory requirements.
+
+{{< include _faq-explainability.qmd >}}
+
+## What deployment options are supported by {{< var vm.product >}}?
+
+{{< include /about/deployment/_deployment-available-options.qmd >}}
+
+<!-- BELOW REMOVED AFTER ANDRES CONFIRMED WE DON'T SUPPORT DATA DICTIONARIES IN A WAY OUR USERS WOULD EXPECT - BC (Nov 27, 2024) -->
+
+<!-- ## Does {{< var vm.product >}} support data dictionaries?
+
+Yes, you can pass data dictionaries to {{< var vm.product >}} via the {{< var vm.developer >}}, such as in CSV format. -->
+
+<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
+
+<!-- ## Can you integrate with JIRA to connect with our Model Development pipeline?
+
+{{< var vm.product >}} is planning to provide integration with JIRA tickets via the JIRA Python API. You will be able to configure {{< var vm.product >}} to update the status of a particular JIRA ticket when a specific state or approval is triggered from the workflow (roadmap item – Q3’2023). -->
+
+<!-- ## Do you support integration with data lakes and ETL solutions?
 
 Support for connecting to data lakes and data processing or ETL pipelines is on our roadmap (Q3’2023+).
 
-We will be implementing connector interfaces allowing extraction of relationships between raw data sources and final post-processed datasets for preloaded session instances received from Spark and Snowflake.
+We will be implementing connector interfaces allowing extraction of relationships between raw data sources and final post-processed datasets for preloaded session instances received from Spark and Snowflake. -->
 
-## Which model development packages/libraries are supported by the {{< var validmind.developer >}}? What about complex/distributed models built with TensorFlow?
+## Learn more
 
-{{< var vm.product >}} supports the most popular open-source model development libraries in Python and R, such as:
+:::{#faq-integrations}
+:::
 
-- scikit-learn
-- XGBoost
-- statsmodels
-- PyTorch
-- TensorFlow
 
-For distributed training pipelines built with frameworks like TensorFlow, {{< var vm.product >}} can directly access the trained model instance to extract metadata stored in the model object, if the {{< var vm.developer >}} is imported from within the pipeline's code. {{< var vm.product >}} can also ingest test results from the customer's training or evaluation pipeline, using batch prediction or online prediction mechanisms.
+<!-- FOOTNOTES -->
 
-## Is it possible for us to integrate the tool with LLMs like GPT-3?
+[^1]: [Get started with the {{< var validmind.developer >}}](/developer/get-started-validmind-library.qmd)
 
-{{< var vm.product >}} is integrating LLMs tools into our documentation features, enabling the following documentation features:
+[^2]: [Supported modeling libraries and other tools](/developer/model-documentation/supported-models.qmd#supported-modeling-libraries-and-other-tools)
 
-- Generating content recommendations (or “starting points”) for model developers for specific sections of the documentation, based on historical documentations (roadmap item — Q3’2023).
-- Providing insights to model developers and model reviewers on possible model risks, and mitigation actions/improvements to the model, based on historical model documentations (roadmap item currently in research – not scheduled).
+[^3]: [Matplotlib](https://matplotlib.org/)
 
-## Can you handle more sophisticated AI/ML libraries such as Pytorch, TensorFlow?
+[^4]: [Plotly](https://plotly.com/)
 
-{{< var vm.product >}} supports the most popular open-source model development libraries in Python, R, such as :
+[^5]: [Do you support including images in model documentation?](#images)
 
-- scikit-learn
-- XGBoost
-- statsmodels
-- PyTorch
-- TensorFlow
+[^6]: [Load dataset predictions](/notebooks/how_to/load_datasets_predictions.ipynb)
 
-For distributed training pipelines built with frameworks, such as TensorFlow, {{< var vm.product >}} can directly access the trained model instance to extract metadata stored in the model object if the {{< var validmind.developer >}} is imported from within the pipeline’s code.
-{{< var vm.product >}} can also ingest test results from the customer’s training/evaluation pipeline, such as using batch prediction or online prediction mechanisms.
-
-## Does {{< var vm.product >}} support data dictionaries?
-
-You can pass a data dictionary to {{< var vm.product >}} via the {{< var vm.developer >}}, such as in CSV format.
+[^7]: [Do you include explainability-related testing and documentation?](#explanability)
