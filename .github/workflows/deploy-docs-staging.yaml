@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Fetch all history
   
       - name: Fetch Quarto
         uses: ./.github/actions/fetch-quarto
@@ -32,26 +30,7 @@ jobs:
             exit 1;
             }
 
-      - name: Fetch staging branch
-        id: fetch_staging
-        run: git fetch origin staging
-
-      # See if site/notebooks/ has updates
-      # Checks against the previous commit to staging prior to the current push event
-      - name: Filter changed files
-        if: ${{ steps.fetch_staging.outcome == 'success' }}
-        uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          base: ${{ github.ref }}
-          ref: ${{ github.sha }}
-          filters: |
-            notebooks:
-              - 'site/notebooks/**'
-
-      # If yes then create the .env file for use in execution step
       - name: Create .env file
-        if: steps.filter.outputs.notebooks == 'true'
         id: create_env
         run: |
           touch .env
