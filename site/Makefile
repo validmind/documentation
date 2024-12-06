@@ -75,6 +75,8 @@ test-descriptions:
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
 	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
+	@echo "Copying _metadata.yml into tests/ ..."
+	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
 
 # Get all source files
 get-source: clean clone notebooks python-docs test-descriptions
