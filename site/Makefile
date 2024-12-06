@@ -51,6 +51,8 @@ notebooks:
 	@rm -rf $(DEST_DIR_NB)/code_sharing
 	@echo "Moving Quickstart notebook into the root of notebooks/ ..."
 	@if [ -f "$(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb" ]; then mv $(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb $(DEST_DIR_NB)/quickstart_customer_churn_full_suite.ipynb; fi
+	@echo "Copying _metadata.yml into notebooks/ ..."
+	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
