@@ -2,6 +2,7 @@
 
 -- Track if CSS has already been added to prevent duplication
 local css_added = false
+local skip_filter = false  -- Default: Do not skip
 
 -- Helper function to add a CSS file to the document header
 function add_css(doc)
@@ -12,8 +13,21 @@ function add_css(doc)
   end
 end
 
+-- Function to check metadata for `skip_preview`
+function Meta(meta)
+  -- Set `skip_filter` to true if `skip_preview` is set in the metadata
+  if meta.skip_preview and meta.skip_preview == true then
+    skip_filter = true
+  end
+end
+
 -- Main function to apply preview
 function Div(el)
+  -- If the filter is skipped, do nothing
+  if skip_filter then
+    return nil
+  end
+
   if el.classes:includes("preview") then
     -- Get the `source`, `target`, `width`, `height`, and `offset` attributes, with defaults if not specified
     local source = el.attributes.source or "index.qmd"
@@ -45,6 +59,11 @@ end
 
 -- Ensure CSS is added once per document
 function Pandoc(doc)
+  -- If the filter is skipped, do nothing
+  if skip_filter then
+    return doc
+  end
+
   add_css(doc)
   return doc
 end
