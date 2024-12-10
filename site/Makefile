@@ -56,11 +56,11 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@if [ -d "$(SRC_DIR)/validmind/" ]; then \
+	@if [ -d "$(SRC_DIR)/docs/validmind" ]; then \
 		echo "\nUpdating Python source ..."; \
 		rm -rf $(DEST_DIR_PYTHON); \
 		mkdir -p $(DEST_DIR_PYTHON); \
-		cp -r $(SRC_DIR)/validmind/. $(DEST_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/validmind/. $(DEST_DIR_PYTHON); \
 	fi
 
 test-descriptions:
