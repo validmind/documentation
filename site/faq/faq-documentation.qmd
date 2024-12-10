@@ -1,63 +1,112 @@
 ---
-title: "Documentation"
+title: "Model documentation and templates"
 date: last-modified
 aliases:
   - ../guide/faq-documentation.html
+listing:
+  - id: faq-documentation
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../guide/model-documentation/working-with-documentation-templates.qmd
+    - ../guide/model-documentation/working-with-model-documentation.qmd
+    - ../guide/model-documentation/export-documentation.qmd
 ---
 
-## Can I run tests and log documentation without having a model available?
+## What kind of templates are available through {{< var vm.product >}}?
 
-If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation with {{< var vm.product >}} as long as you're able to load the model predictions.
+{{< var vm.product >}} supports the following template types:[^1]
 
-- Use [`assign_predictions()`](/validmind/validmind/vm_models.html#VMDataset.assign_predictions){target="_blank"} to load predictions from a separate file or a dataset with predictions.
-- Call [`init_model()`](/validmind/validmind.html#init_model){target="_blank"} but instead of a trained model instance, pass an `input_id` and model metadata. [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata){target="_blank"} will use the provided metadata instead of trying to calculate it from the model's library. 
+- Documentation
+- Validation Report
+- Ongoing Monitoring
 
-    For example: 
+## Can templates be configured per use case or to match our own?
 
-    ```python
-    external_model = vm.init_model(
-        input_id="spark_ml_model",
-        metadata={...}
-    )
-    ```
+Yes, the {{< var validmind.platform >}}[^2] allows you to configure versioned templates based on documentation requirements for each model or lifecycle use case.
+
+- {{< var vm.product >}}'s templates are fully customizable,[^3] and are complemented by the ability to manage validation guidelines.
+- You can swap between different versions of templates or apply another version of the current template.[^4]
+- Template outlines can be modified right in the {{< var validmind.platform >}}. We also offer an advanced raw YAML editor, enabling you to make detailed changes.
+
+By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^5] has sufficient permissions to manage documentation templates, and you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap documentation templates.
+
+## Can documentation be created right in the {{< var validmind.platform >}}?
+
+Yes, you can write documentation directly in the {{< var validmind.platform >}}, without having to first generate anything using the {{< var validmind.developer >}}.[^6]
+
+1. Add and edit text on any documentation within the {{< var vm.platform >}} using our content editing toolbar.[^7]
+2. Using the {{< var vm.developer >}}, execute test suites and generate the corresponding supporting results. These results can then be added to your documentation within the {{< var vm.platform >}}.[^8]
+
+## Can I run tests and log documentation without a model? 
+<span id="no-available-model"><span>
+Yes! If you do not have a model ready, or your model can't be loaded directly, or you only have access to model predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the model predictions.
+
+- Use `assign_predictions()`[^9] to load predictions from a separate file or a dataset with predictions.
+- Call `init_model()`[^10] but instead of a trained model instance, pass an `input_id` and model metadata. `ModelMetadata()`[^11] will use the provided metadata instead of trying to calculate it from the model's library. 
+
+
+::: {.column-margin}
+**For example:**
+
+```python
+  external_model = vm.init_model(
+      input_id="spark_ml_model",
+      metadata={...}
+  )
+```
+:::
 
 ::: {.callout title="If neither a trained model instance nor metadata is provided, `init_model()` will return an error.  "}
 However, tests that need a trained model will not work with "empty" models.
 :::
 
-## Can documentation templates be configured per model use case or to match our existing templates?
+{{< include _faq-attachments.qmd >}}
 
-The {{< var validmind.platform >}} allows you to configure multiple templates based on documentation requirements for each model use case. During the model registration process, the {{< var vm.platform >}} automatically selects the template based on the provided model use case information.
+{{< include _faq-images.qmd >}}
 
-Documentation templates can be modified by configuring a YAML file in the backend.
+{{< include _faq-exporting.qmd >}}
 
-## Can the documentation be exported?
+<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
 
-{{< var vm.product >}} supports exporting documentation and validation reports in Word (.docx) or PDF formats.
+<!-- ## Can we leverage content from historical documentation? 
 
-## Can we attach files to the documentation on the UI? What file formats are supported?
+{{< var vm.product >}} is in the process of developing features that allow you to benefit from content in historical documentation by:
 
-You can attach image files to documentation cells and comments on the UI. The following file formats are supported:
+- Allowing users to select definitions and specific documentation artifacts from previous model documentation for particular model use cases
+- Offering users AI-generated content suggestions for specific areas of the documentation (e.g., qualitative sections) based on high-quality historical documentation
 
-- JPEG
-- PNG
-- GIF
-- TIFF
-- BMP
-- SVG
-- RAW
-- WebP
-- HEIF
-- PSD
+These features are currently on the roadmap and under research, no release schedule is set yet. -->
 
-Additionally, {{< var vm.product >}} is working on enabling you to attach Excel, CSV, Word, and PDF files to the documentation in the UI (Roadmap item – Q2 2023).
+## Learn more
 
-## Can the documentation be initialized from the {{< var validmind.platform >}} instead of the {{< var validmind.developer >}}?
+:::{#faq-documentation}
+:::
 
-{{< var vm.product >}} allows you to write documentation directly in the {{< var validmind.platform >}}, without having to use the {{< var validmind.developer >}}.
 
-You can edit text and tables and upload your test results using the {{< var vm.platform >}}, including images. Using the {{< var vm.developer >}}, you can execute test suites and generate the corresponding documentation.
+<!-- FOOTNOTES -->
 
-## Can we export the documentation produced by {{< var vm.product >}} to the storage/workflow system used by the model validation team?
+[^1]: [View documentation templates](/guide/model-documentation/view-documentation-templates.qmd)
 
-Documentation and validation reports produced in {{< var vm.product >}} can be exported to Word and PDF formats. Depending on the integration requirements of the systems used by your validation teams, such as connectivity via API, SharePoint, and more, {{< var vm.product >}} can work with you to automate the export and storage of documentation into these systems.
+[^2]: [Accessing {{< var vm.product >}}](/guide/configuration/accessing-validmind.qmd)
+
+[^3]: [Customize documentation templates](/guide/model-documentation/customize-documentation-templates.qmd)
+
+[^4]: [Swap documentation templates](/guide/model-documentation/swap-documentation-templates.qmd)
+
+[^5]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^6]: [Get started with the {{< var validmind.developer >}}](/developer/get-started-validmind-library.qmd)
+
+[^7]: [Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd)
+
+[^8]: [Work with test results](/developer/model-documentation/work-with-test-results.qmd)
+
+[^9]: [`assign_predictions()`](/validmind/validmind/vm_models.html#VMDataset.assign_predictions)
+
+[^10]: [`init_model()`](/validmind/validmind.html#init_model)
+
+[^11]: [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.html#ModelMetadata)
