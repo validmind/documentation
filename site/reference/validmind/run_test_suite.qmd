@@ -1,0 +1,41 @@
+# run_test_suite { #validmind.run_test_suite }
+
+```python
+run_test_suite(
+    test_suite_id,
+    send=True,
+    fail_fast=False,
+    config=None,
+    inputs=None,
+    **kwargs,
+)
+```
+
+High Level function for running a test suite
+
+This function provides a high level interface for running a test suite. A test suite is
+a collection of tests. This function will automatically find the correct test suite
+class based on the test_suite_id, initialize each of the tests, and run them.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name          | Type   | Description                                                                                                                                                                                                                                                    | Default    |
+|---------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| test_suite_id | str    | The test suite name (e.g. 'classifier_full_suite')                                                                                                                                                                                                             | _required_ |
+| config        | dict   | A dictionary of parameters to pass to the tests in the test suite. Defaults to None.                                                                                                                                                                           | `None`     |
+| send          | bool   | Whether to post the test results to the API. send=False is useful for testing. Defaults to True.                                                                                                                                                               | `True`     |
+| fail_fast     | bool   | Whether to stop running tests after the first failure. Defaults to False.                                                                                                                                                                                      | `False`    |
+| inputs        | dict   | A dictionary of test inputs to pass to the TestSuite e.g. `model`, `dataset` `models` etc. These inputs will be accessible by any test in the test suite. See the test documentation or `vm.describe_test()` for more details on the inputs required for each. | `None`     |
+| **kwargs      |        | backwards compatibility for passing in test inputs using keyword arguments                                                                                                                                                                                     | `{}`       |
+
+## Raises {.doc-section .doc-section-raises}
+
+| Name   | Type       | Description                                                                             |
+|--------|------------|-----------------------------------------------------------------------------------------|
+|        | ValueError | If the test suite name is not found or if there is an error initializing the test suite |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name      | Type   | Description            |
+|-----------|--------|------------------------|
+| TestSuite |        | the TestSuite instance |

@@ -3,21 +3,44 @@ project:
   post-render: make python-docs
 
 metadata-files:
-  - _sidebar.yml
+- _sidebar.yml
 
 quartodoc:
-  package: quartodoc
-
+  package: validmind
+  dir: docs/validmind
+  out_index: validmind.qmd
   sidebar: _sidebar.yml
-
+  parser: google
+  rewrite_all_pages: true
   sections:
-    - title: Some functions
-      desc: Functions to inspect docstrings.
+    - title: "Python Library API"
+      desc: "Key functions and entry points in the ValidMind Library."
       contents:
-        # the functions being documented in the package.
-        # you can refer to anything: class methods, modules, etc..
-        - get_object
-        - preview
+        - __version__
+        - get_test_suite
+        - init
+        - init_dataset
+        - init_model
+        - init_r_model
+        - preview_template
+        - reload
+        - run_documentation_tests
+        - run_test_suite
+        - tags
+        - tasks
+        - test
+        - log_metric
+
+    - title: "Submodules"
+      desc: "Submodules in the ValidMind package."
+      contents:
+        - __version__
+        - datasets
+        - errors
+        - tests
+        - test_suites
+        - vm_models
+        - unit_metrics
 
 website:
   announcement: 
@@ -78,7 +101,7 @@ website:
         - text: "---"
         - text: "{{< fa book >}} REFERENCE"
         - text: "{{< fa external-link >}} {{< var validmind.developer >}}"
-          file: validmind/validmind.html
+          file: reference/validmind/validmind.qmd
           target: _blank
       - text: "FAQ"
         file: faq/faq.qmd
@@ -333,9 +356,9 @@ website:
           contents: "notebooks/code_samples/**"
         - text: "---"
         - text: "Reference"
-        - text: "{{< var validmind.developer >}} {{< fa external-link >}}"
-          file: validmind/validmind.html
-          target: _blank
+        # - text: "{{< var validmind.developer >}} {{< fa external-link >}}"
+          # file: reference/validmind/validmind.qmd
+          # target: _blank
 
     - title: "FAQ"
       contents:
