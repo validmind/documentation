@@ -51,6 +51,8 @@ notebooks:
 	@rm -rf $(DEST_DIR_NB)/code_sharing
 	@echo "Moving Quickstart notebook into the root of notebooks/ ..."
 	@if [ -f "$(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb" ]; then mv $(DEST_DIR_NB)/code_samples/quickstart_customer_churn_full_suite.ipynb $(DEST_DIR_NB)/quickstart_customer_churn_full_suite.ipynb; fi
+	@echo "Copying _metadata.yml into notebooks/ ..."
+	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
@@ -73,6 +75,8 @@ test-descriptions:
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
 	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
+	@echo "Copying _metadata.yml into tests/ ..."
+	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
 
 # Get all source files
 get-source: clean clone notebooks python-docs test-descriptions
