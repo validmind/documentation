@@ -1,5 +1,6 @@
 # Define source and destination directories
-SRC_DIR := _source/validmind-library
+# SRC_DIR := _source/validmind-library
+SRC_DIR := ../../validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
