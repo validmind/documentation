@@ -35,387 +35,35 @@ library will register with ValidMind. You can now use the ValidMind Library to d
 and to upload to the ValidMind Platform.
 
 
-## api_client
+
+## __all__
+
+**Kind**: attribute
+
+
+
+
+
+
+
+
+
+
+
+## __version__
 
 **Kind**: module
 
 
 
-ValidMind API client
 
-Note that this takes advantage of the fact that python modules are singletons to store and share
-the configuration and session across the entire project regardless of where the client is imported.
 
 
 
 
 
 
-
-
-### aget_metadata
-
-**Kind**: function
-**Labels**: async
-
-
-Gets a metadata object from ValidMind API.
-
-Args:
-    content_id (str): Unique content identifier for the metadata
-
-Raises:
-    Exception: If the API call fails
-
-Returns:
-    dict: Metadata object
-
-
-
-async def aget_metadata(content_id: str) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **content_id** (`str`)
-
-
-
-### alog_figure
-
-**Kind**: function
-**Labels**: async
-
-
-Logs a figure
-
-Args:
-    figure (Figure): The Figure object wrapper
-
-Raises:
-    Exception: If the API call fails
-
-Returns:
-    dict: The response from the API
-
-
-
-async def alog_figure(figure: Figure) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **figure** (`Figure`)
-
-
-
-### alog_input
-
-**Kind**: function
-**Labels**: async
-
-
-Logs input information - internal use for now (don't expose via public API)
-
-Args:
-    input_id (str): The input_id of the input
-    type (str): The type of the input
-    metadata (dict): The metadata of the input
-
-Raises:
-    Exception: If the API call fails
-
-Returns:
-    dict: The response from the API
-
-
-
-async def alog_input(input_id: str, type: str, metadata: Dict) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **input_id** (`str`)
-
-- **type** (`str`)
-
-- **metadata** (`Dict`)
-
-
-
-### alog_metadata
-
-**Kind**: function
-**Labels**: async
-
-
-Logs free-form metadata to ValidMind API.
-
-Args:
-    content_id (str): Unique content identifier for the metadata
-    text (str, optional): Free-form text to assign to the metadata. Defaults to None.
-    _json (dict, optional): Free-form key-value pairs to assign to the metadata. Defaults to None.
-
-Raises:
-    Exception: If the API call fails
-
-Returns:
-    dict: The response from the API
-
-
-
-async def alog_metadata(content_id: str, text: Optional = None, _json: Optional = None) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **content_id** (`str`)
-
-- **text** (`Optional`) = `None`
-
-- **_json** (`Optional`) = `None`
-
-
-
-### alog_metric
-
-**Kind**: function
-**Labels**: async
-
-
-See log_metric for details
-
-
-
-async def alog_metric(key: str, value: Union, inputs: Optional = None, params: Optional = None, recorded_at: Optional = None)
-
-
-
-
-
-#### Parameters:
-
-- **key** (`str`)
-
-- **value** (`Union`)
-
-- **inputs** (`Optional`) = `None`
-
-- **params** (`Optional`) = `None`
-
-- **recorded_at** (`Optional`) = `None`
-
-
-
-### alog_test_result
-
-**Kind**: function
-**Labels**: async
-
-
-Logs test results information
-
-This method will be called automatically from any function running tests but
-can also be called directly if the user wants to run tests on their own.
-
-Args:
-    result (dict): A dictionary representing the test result
-    section_id (str, optional): The section ID add a test driven block to the documentation
-    position (int): The position in the section to add the test driven block
-
-Raises:
-    Exception: If the API call fails
-
-Returns:
-    dict: The response from the API
-
-
-
-async def alog_test_result(result: Dict, section_id: str = None, position: int = None) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **result** (`Dict`)
-
-- **section_id** (`str`) = `None`
-
-- **position** (`int`) = `None`
-
-
-
-### get_ai_key
-
-**Kind**: function
-
-
-Calls the api to get an api key for our LLM proxy
-
-
-
-def get_ai_key() -> Dict[str, Any]
-
-
-
-
-
-
-### get_api_host
-
-**Kind**: function
-
-
-
-
-def get_api_host() -> Optional[str]
-
-
-
-
-
-
-### get_api_model
-
-**Kind**: function
-
-
-
-
-def get_api_model() -> Optional[str]
-
-
-
-
-
-
-### init
-
-**Kind**: function
-
-
-Initializes the API client instances and calls the /ping endpoint to ensure
-the provided credentials are valid and we can connect to the ValidMind API.
-
-If the API key and secret are not provided, the client will attempt to
-retrieve them from the environment variables `VM_API_KEY` and `VM_API_SECRET`.
-
-Args:
-    project (str, optional): The project CUID. Alias for model. Defaults to None. [DEPRECATED]
-    model (str, optional): The model CUID. Defaults to None.
-    api_key (str, optional): The API key. Defaults to None.
-    api_secret (str, optional): The API secret. Defaults to None.
-    api_host (str, optional): The API host. Defaults to None.
-    monitoring (bool): The ongoing monitoring flag. Defaults to False.
-
-Raises:
-    ValueError: If the API key and secret are not provided
-
-
-
-def init(project: Optional = None, api_key: Optional = None, api_secret: Optional = None, api_host: Optional = None, model: Optional = None, monitoring: bool = False)
-
-
-
-
-
-#### Parameters:
-
-- **project** (`Optional`) = `None`
-
-- **api_key** (`Optional`) = `None`
-
-- **api_secret** (`Optional`) = `None`
-
-- **api_host** (`Optional`) = `None`
-
-- **model** (`Optional`) = `None`
-
-- **monitoring** (`bool`) = `False`
-
-
-
-### log_input
-
-**Kind**: function
-
-
-
-
-def log_input(input_id: str, type: str, metadata: Dict) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **input_id** (`str`)
-
-- **type** (`str`)
-
-- **metadata** (`Dict`)
-
-
-
-### log_metric
-
-**Kind**: function
-
-
-Logs a unit metric
-
-Unit metrics are key-value pairs where the key is the metric name and the value is
-a scalar (int or float). These key-value pairs are associated with the currently
-selected model (inventory model in the ValidMind Platform) and keys can be logged
-to over time to create a history of the metric. On the ValidMind Platform, these metrics
-will be used to create plots/visualizations for documentation and dashboards etc.
-
-Args:
-    key (str): The metric key
-    value (float): The metric value
-    inputs (list, optional): A list of input IDs that were used to compute the metric.
-    params (dict, optional): Dictionary of parameters used to compute the metric.
-    recorded_at (str, optional): The timestamp of the metric. Server will use
-        current time if not provided.
-
-
-
-def log_metric(key: str, value: float, inputs: Optional = None, params: Optional = None, recorded_at: Optional = None)
-
-
-
-
-
-#### Parameters:
-
-- **key** (`str`)
-
-- **value** (`float`)
-
-- **inputs** (`Optional`) = `None`
-
-- **params** (`Optional`) = `None`
-
-- **recorded_at** (`Optional`) = `None`
-
-
-
-### logger
+### __version__
 
 **Kind**: attribute
 **Labels**: module-attribute
@@ -425,23 +73,7 @@ def log_metric(key: str, value: float, inputs: Optional = None, params: Optional
 
 
 
-**Value**: ``
-
-
-
-
-### reload
-
-**Kind**: function
-
-
-Reconnect to the ValidMind API and reload the project configuration
-
-
-
-def reload()
-
-
+**Value**: `'2.6.5'`
 
 
 
@@ -461,6 +93,54 @@ Client interface for all data and model validation functions
 
 
 
+
+
+
+### _run_documentation_section
+
+**Kind**: function
+
+
+Run all tests in a template section
+
+This function will collect all tests used in a template section into a TestSuite and then
+run the TestSuite as usual.
+
+Args:
+    template: A valid flat template
+    section: The section of the template to run (if not provided, run all sections)
+    send: Whether to send the results to the ValidMind API
+    fail_fast (bool, optional): Whether to stop running tests after the first failure. Defaults to False.
+    config: A dictionary of test parameters to override the defaults
+    inputs: A dictionary of test inputs to pass to the TestSuite
+    **kwargs: backwards compatibility for passing in test inputs using keyword arguments
+
+Returns:
+    The completed TestSuite instance
+
+
+
+def _run_documentation_section(template, section, send = True, fail_fast = False, config = None, inputs = None, kwargs = {})
+
+
+
+
+
+#### Parameters:
+
+- **template**
+
+- **section**
+
+- **send** = `True`
+
+- **fail_fast** = `False`
+
+- **config** = `None`
+
+- **inputs** = `None`
+
+- **kwargs** (*keyword) = `{}`
 
 
 
@@ -809,56 +489,6 @@ def run_test_suite(test_suite_id, send = True, fail_fast = False, config = None,
 - **inputs** = `None`
 
 - **kwargs** (*keyword) = `{}`
-
-
-
-
-
-
-## client_config
-
-**Kind**: module
-
-
-
-Central class to track configuration of the ValidMind Library
-client against the ValidMind API
-
-
-
-
-
-
-
-
-### ClientConfig
-
-**Kind**: class
-**Labels**: dataclass
-
-
-Configuration class for the ValidMind API client. This is instantiated
-when initializing the API client.
-
-
-
-
-
-
-
-
-### client_config
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
 
 
 
@@ -1499,245 +1129,6 @@ def should_raise_on_fail_fast(error) -> bool
 
 
 
-## html_templates
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-### content_blocks
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-
-
-## input_registry
-
-**Kind**: module
-
-
-
-Central class to register inputs
-
-
-
-
-
-
-
-
-### InputRegistry
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### input_registry
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-
-
-
-## logging
-
-**Kind**: module
-
-
-
-ValidMind logging module.
-
-
-
-
-
-
-
-
-### get_logger
-
-**Kind**: function
-
-
-Get a logger for the given module name
-
-
-
-def get_logger(name = 'validmind', log_level = None)
-
-
-
-
-
-#### Parameters:
-
-- **name** = `'validmind'`
-
-- **log_level** = `None`
-
-
-
-### init_sentry
-
-**Kind**: function
-
-
-Initialize Sentry SDK for sending logs back to ValidMind
-
-This will usually only be called by the api_client module to initialize the
-sentry connection after the user calls `validmind.init()`. This is because the DSN
-and other config options will be returned by the API.
-
-Args:
-    config (dict): The config dictionary returned by the API
-        - send_logs (bool): Whether to send logs to Sentry (gets removed)
-        - dsn (str): The Sentry DSN
-        ...: Other config options for Sentry
-
-
-
-def init_sentry(server_config)
-
-
-
-
-
-#### Parameters:
-
-- **server_config**
-
-
-
-### log_performance
-
-**Kind**: function
-
-
-Decorator to log the time it takes to run a function
-
-Args:
-    name (str, optional): The name of the function. Defaults to None.
-    logger (logging.Logger, optional): The logger to use. Defaults to None.
-    force (bool, optional): Whether to force logging even if env var is off
-
-Returns:
-    function: The decorated function
-
-
-
-def log_performance(name = None, logger = None, force = False)
-
-
-
-
-
-#### Parameters:
-
-- **name** = `None`
-
-- **logger** = `None`
-
-- **force** = `False`
-
-
-
-### log_performance_async
-
-**Kind**: function
-**Labels**: async
-
-
-Decorator to log the time it takes to run an async function
-
-Args:
-    func (function): The function to decorate
-    name (str, optional): The name of the function. Defaults to None.
-    logger (logging.Logger, optional): The logger to use. Defaults to None.
-    force (bool, optional): Whether to force logging even if env var is off
-
-Returns:
-    function: The decorated function
-
-
-
-async def log_performance_async(func, name = None, logger = None, force = False)
-
-
-
-
-
-#### Parameters:
-
-- **func**
-
-- **name** = `None`
-
-- **logger** = `None`
-
-- **force** = `False`
-
-
-
-### send_single_error
-
-**Kind**: function
-
-
-Send a single error to Sentry
-
-Args:
-    error (Exception): The exception to send
-
-
-
-def send_single_error(error: Exception)
-
-
-
-
-
-#### Parameters:
-
-- **error** (`Exception`)
-
-
-
-
-
-
 ## models
 
 **Kind**: module
@@ -1747,6 +1138,21 @@ def send_single_error(error: Exception)
 
 
 
+
+
+
+
+### __all__
+
+**Kind**: attribute
+**Labels**: module-attribute
+
+
+
+
+
+
+**Value**: `'CatBoostModel', 'FoundationModel', 'FunctionModel', 'HFModel', 'MetadataModel', 'Prompt', 'PipelineModel', 'PyTorchModel', 'SKlearnModel', 'StatsModelsModel', 'XGBoostModel'`
 
 
 
@@ -1878,6 +1284,173 @@ def send_single_error(error: Exception)
 
 
 
+### _convert_sections_to_section_tree
+
+**Kind**: function
+
+
+
+
+def _convert_sections_to_section_tree(sections, parent_id = '_root_', start_section_id = None)
+
+
+
+
+
+#### Parameters:
+
+- **sections**
+
+- **parent_id** = `'_root_'`
+
+- **start_section_id** = `None`
+
+
+
+### _create_content_widget
+
+**Kind**: function
+
+
+
+
+def _create_content_widget(content)
+
+
+
+
+
+#### Parameters:
+
+- **content**
+
+
+
+### _create_section_widget
+
+**Kind**: function
+
+
+
+
+def _create_section_widget(tree)
+
+
+
+
+
+#### Parameters:
+
+- **tree**
+
+
+
+### _create_sub_section_widget
+
+**Kind**: function
+
+
+
+
+def _create_sub_section_widget(sub_sections, section_number)
+
+
+
+
+
+#### Parameters:
+
+- **sub_sections**
+
+- **section_number**
+
+
+
+### _create_template_test_suite
+
+**Kind**: function
+
+
+Create and run a test suite from a template.
+
+Args:
+    template: A valid flat template
+    section: The section of the template to run (if not provided, run all sections)
+
+Returns:
+    A dynamically-create TestSuite Class
+
+
+
+def _create_template_test_suite(template, section = None)
+
+
+
+
+
+#### Parameters:
+
+- **template**
+
+- **section** = `None`
+
+
+
+### _create_test_suite_section
+
+**Kind**: function
+
+
+Create a section object for a test suite that contains the tests in a section
+in the template
+
+Args:
+    section: a section of a template (in tree form)
+
+Returns:
+    A TestSuite section dict
+
+
+
+def _create_test_suite_section(section)
+
+
+
+
+
+#### Parameters:
+
+- **section**
+
+
+
+### _get_section_tests
+
+**Kind**: function
+
+
+Get all the tests in a section and its subsections.
+
+Args:
+    section: A dictionary representing a section.
+
+Returns:
+    A list of tests in the section.
+
+
+
+def _get_section_tests(section)
+
+
+
+
+
+#### Parameters:
+
+- **section**
+
+
+
 ### get_template_test_suite
 
 **Kind**: function
@@ -1965,6 +1538,44 @@ Entrypoint for test suites.
 
 
 
+
+
+
+### _get_all_test_suites
+
+**Kind**: function
+
+
+Returns a dictionary of all test suites.
+
+Merge the core and custom test suites, with the custom suites
+taking precedence, i.e. allowing overriding of core test suites
+
+
+
+def _get_all_test_suites()
+
+
+
+
+
+
+### _get_test_suite_test_ids
+
+**Kind**: function
+
+
+
+
+def _get_test_suite_test_ids(test_suite_class: str)
+
+
+
+
+
+#### Parameters:
+
+- **test_suite_class** (`str`)
 
 
 
@@ -2319,6 +1930,52 @@ ValidMind Tests Module
 
 
 
+### __all__
+
+**Kind**: attribute
+**Labels**: module-attribute
+
+
+
+
+
+
+**Value**: `'data_validation', 'model_validation', 'prompt_validation', 'list_tests', 'load_test', 'describe_test', 'run_test', 'register_test_provider', 'LoadTestError', 'LocalTestProvider', 'TestProvider', 'list_tags', 'list_tasks', 'list_tasks_and_tags', 'test', 'tags', 'tasks'`
+
+
+
+
+### __types__
+
+**Kind**: module
+
+
+Literal types for test IDs.
+
+This module is auto-generated by running `make generate-test-id-types`.
+Should not be modified manually.
+
+
+
+
+
+
+
+
+### _store
+
+**Kind**: module
+
+
+Module for storing loaded tests and test providers
+
+
+
+
+
+
+
+
 ### comparison
 
 **Kind**: module
@@ -2489,6 +2146,21 @@ def register_test_provider(namespace: str, test_provider: TestProvider) -> None
 
 
 
+### __all__
+
+**Kind**: attribute
+**Labels**: module-attribute
+
+
+
+
+
+
+**Value**: `'list_metrics', 'describe_metric', 'run_metric'`
+
+
+
+
 ### describe_metric
 
 **Kind**: function
@@ -2610,6 +2282,21 @@ def run_metric(metric_id: str, kwargs = {})
 
 
 
+
+
+
+
+### __loop
+
+**Kind**: attribute
+**Labels**: module-attribute
+
+
+
+
+
+
+**Value**: `None`
 
 
 
@@ -3154,6 +2841,21 @@ Models entrypoint
 
 
 
+
+
+
+
+### __all__
+
+**Kind**: attribute
+**Labels**: module-attribute
+
+
+
+
+
+
+**Value**: `'VMInput', 'VMDataset', 'VMModel', 'Figure', 'ModelAttributes', 'R_MODEL_TYPES', 'ResultTable', 'TestResult', 'TestSuite', 'TestSuiteRunner'`
 
 
 
