@@ -1,8 +1,13 @@
+---
+title: ValidMind Library
+toc-depth: 3
+toc-expand: 3
+toc-location: left
+toc-title: ""
+---
 
----
-title: Validmind Library Reference
-toc-depth: 4
----
+
+
 
 The ValidMind Library is a suite of developer tools and methods designed to automate the documentation and validation of your models.
 
@@ -36,117 +41,238 @@ and to upload to the ValidMind Platform.
 
 
 
-## __all__
+#### Python Library API
 
-**Kind**: attribute
+    
+
+    
+
+    
+
+    
+* [__version__](#__version__)
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+* [get_test_suite](#get_test_suite)
+    
+
+    
+
+    
+* [init](#init)
+    
+
+    
+* [init_dataset](#init_dataset)
+    
+
+    
+* [init_model](#init_model)
+    
+
+    
+* [init_r_model](#init_r_model)
+    
+
+    
+
+    
+* [log_metric](#log_metric)
+    
+
+    
+
+    
+
+    
+* [preview_template](#preview_template)
+    
+
+    
+* [reload](#reload)
+    
+
+    
+* [run_documentation_tests](#run_documentation_tests)
+    
+
+    
+* [run_test_suite](#run_test_suite)
+    
+
+    
+* [tags](#tags)
+    
+
+    
+* [tasks](#tasks)
+    
+
+    
+
+    
+* [test](#test)
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
 
+#### Submodules
+
+    
+
+    
+
+    
+
+    
+* [__version__](__version__.qmd)
+    
+
+    
+
+    
+
+    
+
+    
+* [datasets](datasets.qmd)
+    
+
+    
+* [errors](errors.qmd)
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+* [test_suites](test_suites.qmd)
+    
+
+    
+* [tests](tests.qmd)
+    
+
+    
+* [unit_metrics](unit_metrics.qmd)
+    
+
+    
+
+    
+* [vm_models](vm_models.qmd)
+    
+
+    
 
 
+## Python Library API
 
+    
 
+    
 
+    
 
-
-
-
-## __version__
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
+    
 ### __version__
 
-**Kind**: attribute
-**Labels**: module-attribute
 
 
 
 
 
-
-**Value**: `'2.6.5'`
-
+**Version**: 2.6.5
 
 
 
+    
 
+    
 
+    
 
-## client
+    
 
-**Kind**: module
+    
 
+    
 
-
-Client interface for all data and model validation functions
-
-
-
-
-
-
-
-
-### _run_documentation_section
-
-**Kind**: function
-
-
-Run all tests in a template section
-
-This function will collect all tests used in a template section into a TestSuite and then
-run the TestSuite as usual.
-
-Args:
-    template: A valid flat template
-    section: The section of the template to run (if not provided, run all sections)
-    send: Whether to send the results to the ValidMind API
-    fail_fast (bool, optional): Whether to stop running tests after the first failure. Defaults to False.
-    config: A dictionary of test parameters to override the defaults
-    inputs: A dictionary of test inputs to pass to the TestSuite
-    **kwargs: backwards compatibility for passing in test inputs using keyword arguments
-
-Returns:
-    The completed TestSuite instance
-
-
-
-def _run_documentation_section(template, section, send = True, fail_fast = False, config = None, inputs = None, kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **template**
-
-- **section**
-
-- **send** = `True`
-
-- **fail_fast** = `False`
-
-- **config** = `None`
-
-- **inputs** = `None`
-
-- **kwargs** (*keyword) = `{}`
-
-
-
+    
 ### get_test_suite
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def get_test_suite(test_suite_id: str = None, section: str = None, args = (), kwargs = {}) -> TestSuite
 
 
 Gets a TestSuite object for the current project or a specific test suite
@@ -168,12 +294,6 @@ Args:
 
 
 
-def get_test_suite(test_suite_id: str = None, section: str = None, args = (), kwargs = {}) -> TestSuite
-
-
-
-
-
 #### Parameters:
 
 - **test_suite_id** (`str`) = `None`
@@ -186,9 +306,104 @@ def get_test_suite(test_suite_id: str = None, section: str = None, args = (), kw
 
 
 
+
+#### Returns:
+`TestSuite`
+
+
+
+
+
+
+    
+
+    
+
+    
+### init
+
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def init(project: Optional = None, api_key: Optional = None, api_secret: Optional = None, api_host: Optional = None, model: Optional = None, monitoring: bool = False)
+
+
+Initializes the API client instances and calls the /ping endpoint to ensure
+the provided credentials are valid and we can connect to the ValidMind API.
+
+If the API key and secret are not provided, the client will attempt to
+retrieve them from the environment variables `VM_API_KEY` and `VM_API_SECRET`.
+
+Args:
+    project (str, optional): The project CUID. Alias for model. Defaults to None. [DEPRECATED]
+    model (str, optional): The model CUID. Defaults to None.
+    api_key (str, optional): The API key. Defaults to None.
+    api_secret (str, optional): The API secret. Defaults to None.
+    api_host (str, optional): The API host. Defaults to None.
+    monitoring (bool): The ongoing monitoring flag. Defaults to False.
+
+Raises:
+    ValueError: If the API key and secret are not provided
+
+
+
+#### Parameters:
+
+- **project** (`Optional`) = `None`
+
+- **api_key** (`Optional`) = `None`
+
+- **api_secret** (`Optional`) = `None`
+
+- **api_host** (`Optional`) = `None`
+
+- **model** (`Optional`) = `None`
+
+- **monitoring** (`bool`) = `False`
+
+
+
+
+
+
+
+
+
+    
+
+    
 ### init_dataset
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def init_dataset(dataset, model = None, index = None, index_name: str = None, date_time_index: bool = False, columns: list = None, text_column: str = None, target_column: str = None, feature_columns: list = None, extra_columns: dict = None, class_labels: dict = None, type: str = None, input_id: str = None, __log = True) -> VMDataset
 
 
 Initializes a VM Dataset, which can then be passed to other functions
@@ -224,12 +439,6 @@ Returns:
 
 
 
-def init_dataset(dataset, model = None, index = None, index_name: str = None, date_time_index: bool = False, columns: list = None, text_column: str = None, target_column: str = None, feature_columns: list = None, extra_columns: dict = None, class_labels: dict = None, type: str = None, input_id: str = None, __log = True) -> VMDataset
-
-
-
-
-
 #### Parameters:
 
 - **dataset**
@@ -262,9 +471,37 @@ def init_dataset(dataset, model = None, index = None, index_name: str = None, da
 
 
 
+
+#### Returns:
+`VMDataset`
+
+
+
+
+
+
+    
+
+    
 ### init_model
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def init_model(model: object = None, input_id: str = 'model', attributes: dict = None, predict_fn: callable = None, __log = True, kwargs = {}) -> VMModel
 
 
 Initializes a VM Model, which can then be passed to other functions
@@ -289,12 +526,6 @@ Returns:
 
 
 
-def init_model(model: object = None, input_id: str = 'model', attributes: dict = None, predict_fn: callable = None, __log = True, kwargs = {}) -> VMModel
-
-
-
-
-
 #### Parameters:
 
 - **model** (`object`) = `None`
@@ -311,9 +542,37 @@ def init_model(model: object = None, input_id: str = 'model', attributes: dict =
 
 
 
+
+#### Returns:
+`VMModel`
+
+
+
+
+
+
+    
+
+    
 ### init_r_model
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def init_r_model(model_path: str, input_id: str = 'model') -> VMModel
 
 
 Initializes a VM Model for an R model
@@ -339,12 +598,6 @@ Returns:
 
 
 
-def init_r_model(model_path: str, input_id: str = 'model') -> VMModel
-
-
-
-
-
 #### Parameters:
 
 - **model_path** (`str`)
@@ -353,24 +606,105 @@ def init_r_model(model_path: str, input_id: str = 'model') -> VMModel
 
 
 
-### logger
 
-**Kind**: attribute
-**Labels**: module-attribute
-
+#### Returns:
+`VMModel`
 
 
 
 
 
-**Value**: ``
+
+    
+
+    
+
+    
+### log_metric
+
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def log_metric(key: str, value: float, inputs: Optional = None, params: Optional = None, recorded_at: Optional = None)
+
+
+Logs a unit metric
+
+Unit metrics are key-value pairs where the key is the metric name and the value is
+a scalar (int or float). These key-value pairs are associated with the currently
+selected model (inventory model in the ValidMind Platform) and keys can be logged
+to over time to create a history of the metric. On the ValidMind Platform, these metrics
+will be used to create plots/visualizations for documentation and dashboards etc.
+
+Args:
+    key (str): The metric key
+    value (float): The metric value
+    inputs (list, optional): A list of input IDs that were used to compute the metric.
+    params (dict, optional): Dictionary of parameters used to compute the metric.
+    recorded_at (str, optional): The timestamp of the metric. Server will use
+        current time if not provided.
+
+
+
+#### Parameters:
+
+- **key** (`str`)
+
+- **value** (`float`)
+
+- **inputs** (`Optional`) = `None`
+
+- **params** (`Optional`) = `None`
+
+- **recorded_at** (`Optional`) = `None`
 
 
 
 
+
+
+
+
+
+    
+
+    
+
+    
+
+    
 ### preview_template
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def preview_template()
 
 
 Preview the documentation template for the current project
@@ -383,16 +717,70 @@ Raises:
 
 
 
-def preview_template()
 
 
 
 
 
 
+
+    
+
+    
+### reload
+
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def reload()
+
+
+Reconnect to the ValidMind API and reload the project configuration
+
+
+
+
+
+
+
+
+
+
+    
+
+    
 ### run_documentation_tests
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def run_documentation_tests(section = None, send = True, fail_fast = False, inputs = None, config = None, kwargs = {})
 
 
 Collect and run all the tests associated with a template
@@ -417,12 +805,6 @@ Raises:
 
 
 
-def run_documentation_tests(section = None, send = True, fail_fast = False, inputs = None, config = None, kwargs = {})
-
-
-
-
-
 #### Parameters:
 
 - **section** = `None`
@@ -439,9 +821,34 @@ def run_documentation_tests(section = None, send = True, fail_fast = False, inpu
 
 
 
+
+
+
+
+
+
+    
+
+    
 ### run_test_suite
 
-**Kind**: function
+
+
+    
+    
+          
+        
+            
+              
+            
+                
+            
+        
+    
+
+
+
+def run_test_suite(test_suite_id, send = True, fail_fast = False, config = None, inputs = None, kwargs = {})
 
 
 High Level function for running a test suite
@@ -470,12 +877,6 @@ Returns:
 
 
 
-def run_test_suite(test_suite_id, send = True, fail_fast = False, config = None, inputs = None, kwargs = {})
-
-
-
-
-
 #### Parameters:
 
 - **test_suite_id**
@@ -495,7 +896,114 @@ def run_test_suite(test_suite_id, send = True, fail_fast = False, config = None,
 
 
 
-## datasets
+
+
+
+    
+
+    
+### tags
+
+
+
+    
+    
+          
+        
+    
+
+
+
+**Kind**: alias
+**Import Path**: `validmind.tests.decorator.tags`
+
+
+
+
+    
+
+    
+### tasks
+
+
+
+    
+    
+          
+        
+    
+
+
+
+**Kind**: alias
+**Import Path**: `validmind.tests.decorator.tasks`
+
+
+
+
+    
+
+    
+
+    
+### test
+
+
+
+    
+    
+          
+        
+    
+
+
+
+**Kind**: alias
+**Import Path**: `validmind.tests.decorator.test`
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+## Submodules
+
+    
+
+    
+
+    
+
+    
+### __version__
+
+**Kind**: module
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+### datasets
 
 **Kind**: module
 
@@ -503,73 +1011,10 @@ def run_test_suite(test_suite_id, send = True, fail_fast = False, config = None,
 
 Example datasets that can be used with the ValidMind Library.
 
+    
 
-
-
-
-
-
-
-### classification
-
-**Kind**: module
-
-
-Entrypoint for classification datasets.
-
-
-
-
-
-
-
-
-### credit_risk
-
-**Kind**: module
-
-
-Entrypoint for credit risk datasets.
-
-
-
-
-
-
-
-
-### nlp
-
-**Kind**: module
-
-
-Example datasets that can be used with the ValidMind Library.
-
-
-
-
-
-
-
-
-### regression
-
-**Kind**: module
-
-
-Entrypoint for regression datasets
-
-
-
-
-
-
-
-
-
-
-
-## errors
+    
+### errors
 
 **Kind**: module
 
@@ -581,952 +1026,46 @@ The following base errors are defined for others:
 - BaseError
 - APIRequestError
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-### APIRequestError
+    
 
-**Kind**: class
+    
 
+    
 
-Generic error for API request errors that are not known.
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-### BaseError
+    
 
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### GetTestSuiteError
-
-**Kind**: class
-
-
-When the test suite could not be found.
-
-
-
-
-
-
-
-
-### InitializeTestSuiteError
-
-**Kind**: class
-
-
-When the test suite was found but could not be initialized.
-
-
-
-
-
-
-
-
-### InvalidAPICredentialsError
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### InvalidContentIdPrefixError
-
-**Kind**: class
-
-
-When an invalid text content_id is sent to the API.
-
-
-
-
-
-
-
-
-### InvalidInputError
-
-**Kind**: class
-
-
-When an invalid input object.
-
-
-
-
-
-
-
-
-### InvalidMetricResultsError
-
-**Kind**: class
-
-
-When an invalid metric results object is sent to the API.
-
-
-
-
-
-
-
-
-### InvalidProjectError
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### InvalidRequestBodyError
-
-**Kind**: class
-
-
-When a POST/PUT request is made with an invalid request body.
-
-
-
-
-
-
-
-
-### InvalidTestParametersError
-
-**Kind**: class
-
-
-When an invalid parameters for the test.
-
-
-
-
-
-
-
-
-### InvalidTestResultsError
-
-**Kind**: class
-
-
-When an invalid test results object is sent to the API.
-
-
-
-
-
-
-
-
-### InvalidTextObjectError
-
-**Kind**: class
-
-
-When an invalid Metadat (Text) object is sent to the API.
-
-
-
-
-
-
-
-
-### InvalidValueFormatterError
-
-**Kind**: class
-
-
-When an invalid value formatter is provided when serializing results.
-
-
-
-
-
-
-
-
-### InvalidXGBoostTrainedModelError
-
-**Kind**: class
-
-
-When an invalid XGBoost trained model is used when calling init_r_model.
-
-
-
-
-
-
-
-
-### LoadTestError
-
-**Kind**: class
-
-
-Exception raised when an error occurs while loading a test
-
-
-
-
-
-
-
-
-### MismatchingClassLabelsError
-
-**Kind**: class
-
-
-When the class labels found in the dataset don't match the provided target labels.
-
-
-
-
-
-
-
-
-### MissingAPICredentialsError
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### MissingCacheResultsArgumentsError
-
-**Kind**: class
-
-
-When the cache_results function is missing arguments.
-
-
-
-
-
-
-
-
-### MissingClassLabelError
-
-**Kind**: class
-
-
-When the one or more class labels are missing from provided dataset targets.
-
-
-
-
-
-
-
-
-### MissingDependencyError
-
-**Kind**: class
-
-
-When a required dependency is missing.
-
-
-
-
-
-
-
-
-### MissingDocumentationTemplate
-
-**Kind**: class
-
-
-When the client config is missing the documentation template.
-
-
-
-
-
-
-
-
-### MissingModelIdError
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### MissingOrInvalidModelPredictFnError
-
-**Kind**: class
-
-
-When the pytorch model is missing a predict function or its predict
-method does not have the expected arguments.
-
-
-
-
-
-
-
-
-### MissingRExtrasError
-
-**Kind**: class
-
-
-When the R extras have not been installed.
-
-
-
-
-
-
-
-
-### MissingRequiredTestInputError
-
-**Kind**: class
-
-
-When a required test context variable is missing.
-
-
-
-
-
-
-
-
-### MissingTextContentIdError
-
-**Kind**: class
-
-
-When a Text object is sent to the API without a content_id.
-
-
-
-
-
-
-
-
-### MissingTextContentsError
-
-**Kind**: class
-
-
-When a Text object is sent to the API without a "text" attribute.
-
-
-
-
-
-
-
-
-### SkipTestError
-
-**Kind**: class
-
-
-Useful error to throw when a test cannot be executed.
-
-
-
-
-
-
-
-
-### TestInputInvalidDatasetError
-
-**Kind**: class
-
-
-When an invalid dataset is used in a test context.
-
-
-
-
-
-
-
-
-### UnsupportedColumnTypeError
-
-**Kind**: class
-
-
-When an unsupported column type is found on a dataset.
-
-
-
-
-
-
-
-
-### UnsupportedDatasetError
-
-**Kind**: class
-
-
-When an unsupported dataset is used.
-
-
-
-
-
-
-
-
-### UnsupportedFigureError
-
-**Kind**: class
-
-
-When an unsupported figure object is constructed.
-
-
-
-
-
-
-
-
-### UnsupportedModelError
-
-**Kind**: class
-
-
-When an unsupported model is used.
-
-
-
-
-
-
-
-
-### UnsupportedModelForSHAPError
-
-**Kind**: class
-
-
-When an unsupported model is used for SHAP importance.
-
-
-
-
-
-
-
-
-### UnsupportedRModelError
-
-**Kind**: class
-
-
-When an unsupported R model is used.
-
-
-
-
-
-
-
-
-### raise_api_error
-
-**Kind**: function
-
-
-Safely try to parse JSON from the response message in case the API
-returns a non-JSON string or if the API returns a non-standard error
-
-
-
-def raise_api_error(error_string)
-
-
-
-
-
-#### Parameters:
-
-- **error_string**
-
-
-
-### should_raise_on_fail_fast
-
-**Kind**: function
-
-
-Determine whether an error should be raised when fail_fast is True.
-
-
-
-def should_raise_on_fail_fast(error) -> bool
-
-
-
-
-
-#### Parameters:
-
-- **error**
-
-
-
-
-
-
-## models
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-### __all__
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `'CatBoostModel', 'FoundationModel', 'FunctionModel', 'HFModel', 'MetadataModel', 'Prompt', 'PipelineModel', 'PyTorchModel', 'SKlearnModel', 'StatsModelsModel', 'XGBoostModel'`
-
-
-
-
-### foundation
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### function
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### huggingface
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### metadata
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### pipeline
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### pytorch
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### r_model
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### sklearn
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-
-
-## template
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-### CONTENT_TYPE_MAP
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### _convert_sections_to_section_tree
-
-**Kind**: function
-
-
-
-
-def _convert_sections_to_section_tree(sections, parent_id = '_root_', start_section_id = None)
-
-
-
-
-
-#### Parameters:
-
-- **sections**
-
-- **parent_id** = `'_root_'`
-
-- **start_section_id** = `None`
-
-
-
-### _create_content_widget
-
-**Kind**: function
-
-
-
-
-def _create_content_widget(content)
-
-
-
-
-
-#### Parameters:
-
-- **content**
-
-
-
-### _create_section_widget
-
-**Kind**: function
-
-
-
-
-def _create_section_widget(tree)
-
-
-
-
-
-#### Parameters:
-
-- **tree**
-
-
-
-### _create_sub_section_widget
-
-**Kind**: function
-
-
-
-
-def _create_sub_section_widget(sub_sections, section_number)
-
-
-
-
-
-#### Parameters:
-
-- **sub_sections**
-
-- **section_number**
-
-
-
-### _create_template_test_suite
-
-**Kind**: function
-
-
-Create and run a test suite from a template.
-
-Args:
-    template: A valid flat template
-    section: The section of the template to run (if not provided, run all sections)
-
-Returns:
-    A dynamically-create TestSuite Class
-
-
-
-def _create_template_test_suite(template, section = None)
-
-
-
-
-
-#### Parameters:
-
-- **template**
-
-- **section** = `None`
-
-
-
-### _create_test_suite_section
-
-**Kind**: function
-
-
-Create a section object for a test suite that contains the tests in a section
-in the template
-
-Args:
-    section: a section of a template (in tree form)
-
-Returns:
-    A TestSuite section dict
-
-
-
-def _create_test_suite_section(section)
-
-
-
-
-
-#### Parameters:
-
-- **section**
-
-
-
-### _get_section_tests
-
-**Kind**: function
-
-
-Get all the tests in a section and its subsections.
-
-Args:
-    section: A dictionary representing a section.
-
-Returns:
-    A list of tests in the section.
-
-
-
-def _get_section_tests(section)
-
-
-
-
-
-#### Parameters:
-
-- **section**
-
-
-
-### get_template_test_suite
-
-**Kind**: function
-
-
-Get a TestSuite instance containing all tests in a template
-
-This function will collect all tests used in a template into a dynamically-created
-TestSuite object
-
-Args:
-    template: A valid flat template
-    section: The section of the template to run (if not provided, run all sections)
-
-Returns:
-    The TestSuite instance
-
-
-
-def get_template_test_suite(template, section = None)
-
-
-
-
-
-#### Parameters:
-
-- **template**
-
-- **section** = `None`
-
-
-
-### logger
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### preview_template
-
-**Kind**: function
-
-
-Preview a template in Jupyter Notebook
-
-Args:
-    template (dict): The template to preview
-
-
-
-def preview_template(template)
-
-
-
-
-
-#### Parameters:
-
-- **template**
-
-
-
-
-
-
-## test_suites
+    
+### test_suites
 
 **Kind**: module
 
@@ -1534,388 +1073,10 @@ def preview_template(template)
 
 Entrypoint for test suites.
 
+    
 
-
-
-
-
-
-
-### _get_all_test_suites
-
-**Kind**: function
-
-
-Returns a dictionary of all test suites.
-
-Merge the core and custom test suites, with the custom suites
-taking precedence, i.e. allowing overriding of core test suites
-
-
-
-def _get_all_test_suites()
-
-
-
-
-
-
-### _get_test_suite_test_ids
-
-**Kind**: function
-
-
-
-
-def _get_test_suite_test_ids(test_suite_class: str)
-
-
-
-
-
-#### Parameters:
-
-- **test_suite_class** (`str`)
-
-
-
-### classifier
-
-**Kind**: module
-
-
-Test suites for sklearn-compatible classifier models
-
-Ideal setup is to have the API client to read a
-custom test suite from the project's configuration
-
-
-
-
-
-
-
-
-### cluster
-
-**Kind**: module
-
-
-Test suites for sklearn-compatible clustering models
-
-Ideal setup is to have the API client to read a
-custom test suite from the project's configuration
-
-
-
-
-
-
-
-
-### core_test_suites
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### custom_test_suites
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### describe_suite
-
-**Kind**: function
-
-
-Describes a Test Suite by ID
-
-Args:
-    test_suite_id: Test Suite ID
-    verbose: If True, describe all plans and tests in the Test Suite
-
-Returns:
-    pandas.DataFrame: A formatted table with the Test Suite description
-
-
-
-def describe_suite(test_suite_id: str, verbose = False)
-
-
-
-
-
-#### Parameters:
-
-- **test_suite_id** (`str`)
-
-- **verbose** = `False`
-
-
-
-### describe_test_suite
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### embeddings
-
-**Kind**: module
-
-
-Test suites for embeddings models
-
-Ideal setup is to have the API client to read a
-custom test suite from the project's configuration
-
-
-
-
-
-
-
-
-### get_by_id
-
-**Kind**: function
-
-
-Returns the test suite by ID
-
-
-
-def get_by_id(test_suite_id: str)
-
-
-
-
-
-#### Parameters:
-
-- **test_suite_id** (`str`)
-
-
-
-### list_suites
-
-**Kind**: function
-
-
-Returns a list of all available test suites
-
-
-
-def list_suites(pretty: bool = True)
-
-
-
-
-
-#### Parameters:
-
-- **pretty** (`bool`) = `True`
-
-
-
-### llm
-
-**Kind**: module
-
-
-Test suites for LLMs
-
-
-
-
-
-
-
-
-### logger
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### nlp
-
-**Kind**: module
-
-
-Test suites for NLP models
-
-
-
-
-
-
-
-
-### parameters_optimization
-
-**Kind**: module
-
-
-Test suites for sklearn-compatible hyper parameters tunning
-
-Ideal setup is to have the API client to read a
-custom test suite from the project's configuration
-
-
-
-
-
-
-
-
-### register_test_suite
-
-**Kind**: function
-
-
-Registers a custom test suite
-
-
-
-def register_test_suite(suite_id: str, suite: TestSuite)
-
-
-
-
-
-#### Parameters:
-
-- **suite_id** (`str`)
-
-- **suite** (`TestSuite`)
-
-
-
-### regression
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### statsmodels_timeseries
-
-**Kind**: module
-
-
-Time Series Test Suites from statsmodels
-
-
-
-
-
-
-
-
-### summarization
-
-**Kind**: module
-
-
-Test suites for llm summarization models
-
-
-
-
-
-
-
-
-### tabular_datasets
-
-**Kind**: module
-
-
-Test suites for tabular datasets
-
-
-
-
-
-
-
-
-### text_data
-
-**Kind**: module
-
-
-Test suites for text datasets
-
-
-
-
-
-
-
-
-### time_series
-
-**Kind**: module
-
-
-Time Series Test Suites
-
-
-
-
-
-
-
-
-
-
-
-## tests
+    
+### tests
 
 **Kind**: module
 
@@ -1923,914 +1084,21 @@ Time Series Test Suites
 
 ValidMind Tests Module
 
+    
 
-
-
-
-
-
-
-### __all__
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `'data_validation', 'model_validation', 'prompt_validation', 'list_tests', 'load_test', 'describe_test', 'run_test', 'register_test_provider', 'LoadTestError', 'LocalTestProvider', 'TestProvider', 'list_tags', 'list_tasks', 'list_tasks_and_tags', 'test', 'tags', 'tasks'`
-
-
-
-
-### __types__
-
-**Kind**: module
-
-
-Literal types for test IDs.
-
-This module is auto-generated by running `make generate-test-id-types`.
-Should not be modified manually.
-
-
-
-
-
-
-
-
-### _store
-
-**Kind**: module
-
-
-Module for storing loaded tests and test providers
-
-
-
-
-
-
-
-
-### comparison
+    
+### unit_metrics
 
 **Kind**: module
 
 
 
+    
 
+    
 
-
-
-
-
-### data_validation
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### decorator
-
-**Kind**: module
-
-
-Decorators for creating and registering tests with the ValidMind Library.
-
-
-
-
-
-
-
-
-### load
-
-**Kind**: module
-
-
-Module for listing and loading tests.
-
-
-
-
-
-
-
-
-### logger
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### model_validation
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### output
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### prompt_validation
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### register_test_provider
-
-**Kind**: function
-
-
-Register an external test provider
-
-Args:
-    namespace (str): The namespace of the test provider
-    test_provider (TestProvider): The test provider
-
-
-
-def register_test_provider(namespace: str, test_provider: TestProvider) -> None
-
-
-
-
-
-#### Parameters:
-
-- **namespace** (`str`)
-
-- **test_provider** (`TestProvider`)
-
-
-
-### run
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### test_providers
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-
-
-## unit_metrics
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-### __all__
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `'list_metrics', 'describe_metric', 'run_metric'`
-
-
-
-
-### describe_metric
-
-**Kind**: function
-
-
-Describe a metric
-
-
-
-def describe_metric(metric_id: str, kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **metric_id** (`str`)
-
-- **kwargs** (*keyword) = `{}`
-
-
-
-### list_metrics
-
-**Kind**: function
-
-
-List all metrics
-
-
-
-def list_metrics(kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **kwargs** (*keyword) = `{}`
-
-
-
-### run_metric
-
-**Kind**: function
-
-
-Run a metric
-
-
-
-def run_metric(metric_id: str, kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **metric_id** (`str`)
-
-- **kwargs** (*keyword) = `{}`
-
-
-
-
-
-
-## utils
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
-### DEFAULT_BIG_NUMBER_DECIMALS
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `2`
-
-
-
-
-### DEFAULT_SMALL_NUMBER_DECIMALS
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `4`
-
-
-
-
-### NumpyEncoder
-
-**Kind**: class
-
-
-
-
-
-
-
-
-
-### __loop
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `None`
-
-
-
-
-### display
-
-**Kind**: function
-
-
-Display widgets with extra goodies (syntax highlighting, MathJax, etc.)
-
-
-
-def display(widget_or_html, syntax_highlighting = True, mathjax = True)
-
-
-
-
-
-#### Parameters:
-
-- **widget_or_html**
-
-- **syntax_highlighting** = `True`
-
-- **mathjax** = `True`
-
-
-
-### format_dataframe
-
-**Kind**: function
-
-
-Format a pandas DataFrame for display purposes
-
-
-
-def format_dataframe(df: ) -> {'cls': 'ExprAttribute', 'values': [{'cls': 'ExprName', 'name': 'pd'}, {'cls': 'ExprName', 'name': 'DataFrame'}]}
-
-
-
-
-
-#### Parameters:
-
-- **df** (``)
-
-
-
-### format_key_values
-
-**Kind**: function
-
-
-Round the values on each dict's value to a given number of decimal places.
-
-We do this for display purposes before sending data to ValidMind. Rules:
-
-- Assume the dict is in this form: {key1: value1, key2: value2, ...}
-- Check if we are rendering "big" numbers greater than 10 or just numbers between 0 and 1
-- If the column's smallest number has more decimals 6, use that number's precision
-  so we can avoid rendering a 0 instead
-- If the column's smallest number has less decimals than 6, use 6 decimal places
-
-
-
-def format_key_values(key_values: Dict) -> Dict[str, Any]
-
-
-
-
-
-#### Parameters:
-
-- **key_values** (`Dict`)
-
-
-
-### format_number
-
-**Kind**: function
-
-
-Format a number for display purposes. If the number is a float, round it
-to 4 decimal places.
-
-
-
-def format_number(number)
-
-
-
-
-
-#### Parameters:
-
-- **number**
-
-
-
-### format_records
-
-**Kind**: function
-
-
-Round the values on each dataframe's column to a given number of decimal places.
-The returned value is converted to a dict in "records" with Pandas's to_dict() function.
-
-We do this for display purposes before sending data to ValidMind. Rules:
-
-- Check if we are rendering "big" numbers greater than 10 or just numbers between 0 and 1
-- If the column's smallest number has more decimals 6, use that number's precision
-  so we can avoid rendering a 0 instead
-- If the column's smallest number has less decimals than 6, use 6 decimal places
-
-
-
-def format_records(df: ) -> List[]
-
-
-
-
-
-#### Parameters:
-
-- **df** (``)
-
-
-
-### fuzzy_match
-
-**Kind**: function
-
-
-Check if a string matches another string using fuzzy matching
-
-Args:
-    string (str): The string to check
-    search_string (str): The string to search for
-    threshold (float): The similarity threshold to use (Default: 0.7)
-
-Returns:
-    True if the string matches the search string, False otherwise
-
-
-
-def fuzzy_match(string: str, search_string: str, threshold = 0.7)
-
-
-
-
-
-#### Parameters:
-
-- **string** (`str`)
-
-- **search_string** (`str`)
-
-- **threshold** = `0.7`
-
-
-
-### get_dataset_info
-
-**Kind**: function
-
-
-Attempts to extract all dataset info from a dataset object instance
-
-
-
-def get_dataset_info(dataset)
-
-
-
-
-
-#### Parameters:
-
-- **dataset**
-
-
-
-### get_full_typename
-
-**Kind**: function
-
-
-We determine types based on type names so we don't have to import
-(and therefore depend on) PyTorch, TensorFlow, etc.
-
-
-
-def get_full_typename(o: Any) -> Any
-
-
-
-
-
-#### Parameters:
-
-- **o** (`Any`)
-
-
-
-### get_model_info
-
-**Kind**: function
-
-
-Attempts to extract all model info from a model object instance
-
-
-
-def get_model_info(model)
-
-
-
-
-
-#### Parameters:
-
-- **model**
-
-
-
-### inspect_obj
-
-**Kind**: function
-
-
-
-
-def inspect_obj(obj)
-
-
-
-
-
-#### Parameters:
-
-- **obj**
-
-
-
-### is_matplotlib_typename
-
-**Kind**: function
-
-
-
-
-def is_matplotlib_typename(typename: str) -> bool
-
-
-
-
-
-#### Parameters:
-
-- **typename** (`str`)
-
-
-
-### is_notebook
-
-**Kind**: function
-
-
-Checks if the code is running in a Jupyter notebook or IPython shell
-
-https://stackoverflow.com/questions/15411967/how-can-i-check-if-code-is-executed-in-the-ipython-notebook
-
-
-
-def is_notebook() -> bool
-
-
-
-
-
-
-### is_plotly_typename
-
-**Kind**: function
-
-
-
-
-def is_plotly_typename(typename: str) -> bool
-
-
-
-
-
-#### Parameters:
-
-- **typename** (`str`)
-
-
-
-### logger
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### md_to_html
-
-**Kind**: function
-
-
-Converts Markdown to HTML using mistune with plugins
-
-
-
-def md_to_html(md: str, mathml = False) -> str
-
-
-
-
-
-#### Parameters:
-
-- **md** (`str`)
-
-- **mathml** = `False`
-
-
-
-### nan_to_none
-
-**Kind**: function
-
-
-
-
-def nan_to_none(obj)
-
-
-
-
-
-#### Parameters:
-
-- **obj**
-
-
-
-### params
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: ``
-
-
-
-
-### precision_and_scale
-
-**Kind**: function
-
-
-https://stackoverflow.com/questions/3018758/determine-precision-and-scale-of-particular-number-in-python
-
-Returns a (precision, scale) tuple for a given number.
-
-
-
-def precision_and_scale(x)
-
-
-
-
-
-#### Parameters:
-
-- **x**
-
-
-
-### preview_test_config
-
-**Kind**: function
-
-
-
-
-def preview_test_config(config)
-
-
-
-
-
-#### Parameters:
-
-- **config**
-
-
-
-### run_async
-
-**Kind**: function
-
-
-Helper function to run functions asynchronously
-
-This takes care of the complexity of running the logging functions asynchronously. It will
-detect the type of environment we are running in (ipython notebook or not) and run the
-function accordingly.
-
-Args:
-    func (function): The function to run asynchronously
-    *args: The arguments to pass to the function
-    **kwargs: The keyword arguments to pass to the function
-
-Returns:
-    The result of the function
-
-
-
-def run_async(func, args = (), name = None, kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **func**
-
-- **args** (*positional) = `()`
-
-- **name** = `None`
-
-- **kwargs** (*keyword) = `{}`
-
-
-
-### run_async_check
-
-**Kind**: function
-
-
-Helper function to run functions asynchronously if the task doesn't already exist
-
-
-
-def run_async_check(func, args = (), kwargs = {})
-
-
-
-
-
-#### Parameters:
-
-- **func**
-
-- **args** (*positional) = `()`
-
-- **kwargs** (*keyword) = `{}`
-
-
-
-### summarize_data_quality_results
-
-**Kind**: function
-
-
-TODO: generalize this to work with metrics and test results
-
-Summarize the results of the data quality test suite
-
-
-
-def summarize_data_quality_results(results)
-
-
-
-
-
-#### Parameters:
-
-- **results**
-
-
-
-### test_id_to_name
-
-**Kind**: function
-
-
-Convert a test ID to a human-readable name.
-
-Args:
-    test_id (str): The test identifier, typically in CamelCase or snake_case.
-
-Returns:
-    str: A human-readable name derived from the test ID.
-
-
-
-def test_id_to_name(test_id: str) -> str
-
-
-
-
-
-#### Parameters:
-
-- **test_id** (`str`)
-
-
-
-
-
-
-## vm_models
+    
+### vm_models
 
 **Kind**: module
 
@@ -2838,93 +1106,7 @@ def test_id_to_name(test_id: str) -> str
 
 Models entrypoint
 
+    
 
-
-
-
-
-
-
-### __all__
-
-**Kind**: attribute
-**Labels**: module-attribute
-
-
-
-
-
-
-**Value**: `'VMInput', 'VMDataset', 'VMModel', 'Figure', 'ModelAttributes', 'R_MODEL_TYPES', 'ResultTable', 'TestResult', 'TestSuite', 'TestSuiteRunner'`
-
-
-
-
-### dataset
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-### figure
-
-**Kind**: module
-
-
-Figure objects track the figure schema supported by the ValidMind API
-
-
-
-
-
-
-
-
-### input
-
-**Kind**: module
-
-
-Base class for ValidMind Input types
-
-
-
-
-
-
-
-
-### model
-
-**Kind**: module
-
-
-Model class wrapper module
-
-
-
-
-
-
-
-
-### result
-
-**Kind**: module
-
-
-
-
-
-
-
-
-
-
+    
 
