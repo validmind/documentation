@@ -8,7 +8,7 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-image
 
 # Help section
 help:
@@ -27,6 +27,7 @@ help:
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 	@echo "  execute              Execute a Jupyter Notebook (must have valid .env credentials set up in root)"
+	@echo "  docker-image         Builds a Docker image of site/_site"
 
 # Clean up source directory
 clean:
@@ -82,8 +83,9 @@ test-descriptions:
 get-source: clean clone notebooks python-docs test-descriptions
 
 # Get all source files
-docs-site: clean clone notebooks python-docs test-descriptions
-	quarto render --profile development
+docs-site: get-source
+	@echo "\nRendering the static HTML site ..."
+	quarto render --profile production
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
@@ -106,7 +108,7 @@ delete-demo-branch:
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \runn
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
@@ -131,3 +133,9 @@ release-notes:
 # To override: make execute PROFILE=select-profile FILE_PATH=notebooks/notebook-path-here.ipynb
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
+
+docker-image: docs-site
+	@echo "\nBuilding the Docker image ..."
+	@docker build -f ../Dockerfile -t validmind-docs ..
+	@echo "\nStarting the Docker container on http://localhost:4444/ ..."
+	@docker run -p 4444:80 validmind-docs && echo "Access the docs site at: http://localhost:4444/"
