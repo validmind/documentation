@@ -176,53 +176,71 @@ PR #1100: Mnt analytics improvements
 URL: https://github.com/validmind/frontend/pull/1100
 Labels: enhancement
 --->
-### Mnt analytics improvements
+### Additional custom analytics settings
 
-Changes to analytics
+:::: {.flex .flex-wrap .justify-around}
 
-- Added sorting capability for bar charts.
+::: {.w-70-ns}
+We've extended the available options for custom analytics further — you can now sort bar chart visualizations and retrieve a count percentage metric for all types of visualizations.
 
-- Added a new action for metrics, count %. This feature lets you count the percentage of a given metric.
- 
-Generated PR summary: 
- 
-The latest update to the web application's `AddOrEditVisualizationModal` component brings several enhancements aimed at improving your data visualization experience. You can now sort visualizations using the newly added `SortingComponent`, which allows sorting based on selected metrics or groupings. This feature dynamically generates sorting options with the use of the `useMemo` hook, tailored to your current dataset, metrics, and grouping preferences. Additionally, the `MetricSelector` includes a new 'Count %' option across different metric types (string, number, date, boolean), enabling you to view metrics as percentages. To further enhance usability, minor UI adjustments have been implemented; specifically, the `ModalBody` overflow property has been changed to `hidden`, and a vertical scroll feature has been added to the `VStack`. These improvements provide you with greater flexibility in viewing and interacting with your data within the application.
+:::
+
+::: {.w-30-ns .tc}
+[Manage custom reports](/guide/reporting/manage-custom-reports.qmd){.button .button-green}
+
+:::
+
+::::
 
 <!---
 PR #1076: [7333] - chore: add UI changes for revision history
 URL: https://github.com/validmind/frontend/pull/1076
 Labels: enhancement
 --->
-### Add UI changes for revision history
+### Improved revision history within content blocks
 
-Implemented UI enhancements for the revision history feature
- 
-Generated PR summary: 
- 
-This update introduces the `RevisionHistoryButtonPlugin` to enhance your CKEditor experience. With this new plugin, you can easily navigate revision history through a conveniently added button in the editor's UI. The plugin initializes when the editor is ready and seamlessly integrates with existing UI elements like the toolbar and sticky panel.
+:::: {.flex .flex-wrap .justify-around}
 
-Additionally, extensive CSS modifications improve dark mode styling for CKEditor and related components. These changes ensure that UI elements such as toolbars, buttons, and revision history sidebars are visually consistent and accessible in dark mode by adjusting background colors, text colors, borders, and other styling properties to align with the dark theme.
+::: {.w-70-ns}
+We've improved the way revision history displays within content blocks, allowing you to more easily review changes to model documentation, validation reports, and ongoing monitoring reports. 
+
+:::
+
+::: {.w-30-ns .tc}
+[Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd){.button .button-green}
+
+:::
+
+::::
+
+![Example revision history for a content block](revision-history.png){width=80% fig-alt="A screenshot of example revision history for a content block" .screenshot}
 
 <!---
 PR #1092: [SC-7471] adding custom field permission check
 URL: https://github.com/validmind/frontend/pull/1092
 Labels: enhancement
 --->
-### Adding custom field permission check
+### Granular role permissions for inventory fields
 
-Administrators can now assign write permissions to individual fields in the model inventory.
- 
-Generated PR summary: 
- 
-This update enhances the management of custom field permissions within the application. You will notice a refactoring of permission types, as the `TPermissionAction` type is replaced with a generic `string[]` type across components and contexts, simplifying permission handling logic.
+::: {.column-margin}
+![Setup for an inventory field only editable by developers](developer-only-field.png){fig-alt="A screenshot of the setup for an inventory field only editable by developers" .screenshot}
+:::
 
-The Custom Field Modal now includes new states and logic to manage role changes, allowing you to add or remove roles with specific permissions. A new hook, `useCustomFieldPermissions`, is introduced for fetching and managing role permissions on custom fields. The `onSaveClicked` function is updated to handle role permission updates asynchronously, providing feedback via toast notifications.
+:::: {.flex .flex-wrap .justify-around}
 
-User interface improvements include integrating `chakra-react-select` for an enhanced multi-select experience when managing roles in the Custom Field Modal. The Custom Fields page now handles modal state more effectively, using a single instance for editing and adding new fields.
+::: {.w-70-ns}
+You can now gate edit access to specific model inventory fields to certain roles. 
+:::
 
-Context and hook updates involve changes to `InventoryModelContext` and `UsersContext` to utilize the new permission type. Additionally, a utility function `isReadOnlyField` is added in `InventoryModelOverview` to determine field editability based on permissions.
+::: {.w-30-ns .tc}
+[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd){.button .button-green}
 
-These enhancements aim to improve the flexibility and usability of custom field management regarding role-based permissions.
+:::
+
+::::
+
+- Leave this field blank to allow all users assigned to the model access.
+- By default, the [{{< fa hand >}} Customer Admin]{.bubble} role has the ability to edit all fields on all models.[^4]
 
 ## Bug fixes
 
@@ -313,3 +331,5 @@ Documentation has been enhanced in `store-credentials-in-env-file.qmd` with deta
 [^2]: [Working with analytics](/guide/reporting/working-with-analytics.qmd)
 
 [^3]: [View model activity](/guide/model-inventory/view-model-activity.qmd)
+
+[^4]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
