@@ -108,7 +108,7 @@ delete-demo-branch:
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \runn
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
