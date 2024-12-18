@@ -137,25 +137,32 @@ After you pull in the changes, commit them to this repo as part of the release n
 
 <!-- Testing conditional changes on site/notebooks/  -->
 
-## Build a Docker image  
+## Build and serve the site with Docker
 
-You can build and serve the static HTML site using Docker for deployment as part of our product or to test locally in a consistent environment.
+You can build and serve the static HTML docs site using Docker — for deployment as part of our product or for testing in a consistent local environment.
 
 ### Prerequisites  
 
 - [Docker](https://docs.docker.com/get-docker/)
 
-### Build and serve the site  
-
+### Build the site  
 
 ```bash
 cd site
-make docker-image
+make docker-build
 ```
 
-This command:  
-1. Renders the static site in `site/_site`.  
-2. Builds a Docker image using the `Dockerfile`.  
-3. Serves the site on port **4444**.
+This command:
+
+1. Gets all the source files.
+2. Renders the static site in `site/_site`.  
+3. Builds a Docker image using the `Dockerfile`.  
+
+### Serve the site  
+
+```bash
+cd site
+make docker-serve
+```
 
 Access the site locally: http://localhost:4444  
