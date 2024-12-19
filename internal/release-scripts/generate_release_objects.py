@@ -386,6 +386,66 @@ def update_quarto_yaml(release_date):
     
     print(f"Added release notes to _quarto.yml, line {insert_index + 2}")
 
+def update_index_qmd(release_date):
+    """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
+
+    Params:
+        release_date - release notes use the release date as the file name.
+    
+    Modifies:
+        index.qmd file
+    """
+    index_filename = "../../site/index.qmd"
+    temp_index_filename = "../../site/index_temp.qmd"
+
+    # Copy the original QMD file to a temporary file
+    shutil.copyfile(index_filename, temp_index_filename)
+
+    with open(temp_index_filename, 'r') as file:
+        lines = file.readlines()
+
+    # Format the release date for insertion into the QMD file
+    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+
+    with open(index_filename, 'w') as file:
+        add_release_content = False
+        insert_index = -1
+
+        for i, line in enumerate(lines):
+            file.write(line)
+            if line.strip() == "# MAKE-RELEASE-NOTES-LATEST-MARKER":
+                add_release_content = True
+                insert_index = i
+
+            if add_release_content and i == insert_index:
+                file.write(f'      - /releases/{formatted_release_date}/release-notes.qmd\n')
+                add_release_content = False
+
+    # Remove the temporary file
+    os.remove(temp_index_filename)
+    
+    print(f"Added new release notes to index.qmd, line {insert_index + 2}")
+
+    with open(index_filename, 'r') as file:
+        updated_lines = file.readlines()
+
+    with open(index_filename, 'w') as file:
+        for i, line in enumerate(updated_lines):
+            # Identify the marker line
+            if line.strip() == "# MAKE-RELEASE-NOTES-OLDEST-MARKER":
+                # Check if the line above exists and starts with a list indicator "-"
+                if i > 0 and updated_lines[i - 1].strip().startswith("-"):
+                    # Write all lines up to the one before the line to remove
+                    file.writelines(updated_lines[:i - 1])
+                    # Write the marker and subsequent lines
+                    file.writelines(updated_lines[i:])
+                    break
+        else:
+            # If no marker is found, rewrite the file as is
+            file.writelines(updated_lines)
+
+    print("Removed the oldest release note entry from index.qmd.")
+
 def write_prs_to_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
     Args:
