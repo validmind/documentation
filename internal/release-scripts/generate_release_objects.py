@@ -278,17 +278,32 @@ class ReleaseURL:
         for pr in self.prs:
             pr.load_data_json()
 
+def get_env_location():
+    """
+    Asks the user for the location of their .env file.
+
+    Returns:
+        str: The provided location or a default value (../../.env).
+    """
+    # Default location of the .env file
+    default_env_location = "../../.env"
+
+    # Prompt the user for input
+    env_location = input(
+        f"Enter the location of your .env file (leave empty for default [{default_env_location}]): "
+    ) or default_env_location
+
+    print(f"Using .env file location: {env_location}\n")
+    return env_location
 
 def setup_openai_api():
     """Loads .env file and updates the OpenAI API key. 
-    
-    Replace '../../.env' with the relative path to your .env file.
 
     Modifies:
         openai.api_key
     """
     # Load environment variables
-    load_dotenv('../../.env') # in the script, update to match the correct path
+    load_dotenv('env_location') 
 
     # Get the OpenAI API key
     api_key = os.getenv('OPENAI_API_KEY')
