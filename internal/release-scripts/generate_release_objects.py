@@ -355,8 +355,8 @@ def update_quarto_yaml(release_date):
     Modifies:
         _quarto.yml file
     """
-    yaml_filename = "_quarto.yml"
-    temp_yaml_filename = "_quarto_temp.yml"
+    yaml_filename = "../../site/_quarto.yml"
+    temp_yaml_filename = "../../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -452,7 +452,7 @@ def main():
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
     original_release_date = release_datetime.strftime("%B %-d, %Y")
 
-    directory_path = f"releases/{formatted_release_date}/"
+    directory_path = f"../../site/releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
 
