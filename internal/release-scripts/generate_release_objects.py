@@ -697,6 +697,28 @@ def update_index_qmd(release_date):
 
     print("Removed the oldest release note entry from index.qmd.")
 
+def show_files():
+    """Print files to commit by running 'git status --short'."""
+    try:
+        # Run 'git status --short'
+        result = subprocess.run(
+            ["git", "status", "--short"], check=True, text=True, capture_output=True
+        )
+        
+        # Process and display the output
+        lines = result.stdout.strip().split('\n')
+        if not lines:
+            print("No changes detected.")
+            return
+
+        print("Files to commit:")
+        for line in lines:
+            if line.startswith((' M', '??', 'A ')):
+                print(line)
+
+    except subprocess.CalledProcessError as e:
+        print("Failed to run 'git status':", e)
+
 def write_prs_to_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
     Args:
