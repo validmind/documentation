@@ -875,7 +875,7 @@ def main():
 
     assign_details(github_urls)
 
-    release_components = assemble_release(github_urls, label_hierarchy)
+    assemble_release(github_urls, label_hierarchy)
 
     # Write categorized PRs to the file
     with open(output_file, "a") as file:
