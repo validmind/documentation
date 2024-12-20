@@ -842,10 +842,7 @@ def main():
         - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
         """
     
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: 
-                if pr.extract_external_release_notes(): pr.edit_text_with_openai(False, editing_instructions_body)
+    edit_release_notes(github_urls, editing_instructions_body)
 
     editing_instructions_title = """
         Please edit the provided technical content according to the following guidelines:
