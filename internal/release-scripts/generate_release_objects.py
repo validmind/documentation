@@ -693,7 +693,7 @@ def show_files():
 
         print("Files to commit:")
         for line in lines:
-            if line.startswith((' M', '??', 'A ')) and not line.endswith('.zip'):
+            if line.startswith((' M', '??', 'A ')) and not line.endswith('.zip') and 'site/' in line:
                 print(line)
 
     except subprocess.CalledProcessError as e:
