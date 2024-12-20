@@ -573,7 +573,7 @@ def assemble_release(github_urls, label_hierarchy):
 
     return release_components
 
-def release_output(output_file, release_components, label_to_category):
+def release_output(file, release_components, label_to_category):
     """
     Appends release notes to the specified file.
 
@@ -587,15 +587,11 @@ def release_output(output_file, release_components, label_to_category):
     """
     directory_path = f"releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd"
+    output_file = f"{directory_path}release-notes.qmd
 
     with open(output_file, "a") as file:
-        # Ensure compatibility with the write_prs_to_file function
-        if isinstance(release_components, dict):
-            write_prs_to_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}.")
-        else:
-            raise TypeError("release_components must be a dictionary with labels as keys and PR lists as values.")
+        write_prs_to_file(file, release_components, label_to_category)
+        print(f"Release notes added to {file.name}.")    
 
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
