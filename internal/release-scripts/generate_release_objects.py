@@ -376,6 +376,22 @@ def get_release_date():
     except ValueError:
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
         return get_release_date()
+    
+def create_release_folder(formatted_release_date):
+    """
+    Creates a directory for the release notes based on the provided release date
+    and returns the output file path.
+
+    Args:
+        formatted_release_date (str): The formatted release date string.
+
+    Returns:
+        str: The path to the release notes file.
+    """
+    directory_path = f"../../site/releases/{formatted_release_date}/"
+    os.makedirs(directory_path, exist_ok=True)
+    output_file = f"{directory_path}release-notes.qmd"
+    return output_file
 
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
