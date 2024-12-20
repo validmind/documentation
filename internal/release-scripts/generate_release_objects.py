@@ -561,6 +561,8 @@ def assemble_release(github_urls, label_hierarchy):
     Returns:
         dict: A dictionary where keys are labels from the hierarchy (or 'other') and values are lists of PR details.
     """
+    
+    release_components = dict()
 
     for url in github_urls:
         for pr in url.prs:
