@@ -491,6 +491,25 @@ def auto_summary(github_urls, summary_instructions):
                 pr.extract_pr_summary_comment()
                 pr.convert_summary_to_release_notes(summary_instructions)
 
+def edit_titles(github_urls, editing_instructions_title):
+    """
+    Updates the titles of pull requests (PRs) based on provided JSON data and cleaning instructions.
+
+    Parameters:
+        github_urls (list): A list of GitHub URLs, each containing PRs to process.
+        editing_instructions_title (str): Instructions for cleaning PR titles.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
+                pr.title = pr.data_json['title']
+                pr.clean_title(editing_instructions_title)
+                print("\n")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
