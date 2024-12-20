@@ -393,6 +393,17 @@ def create_release_folder(formatted_release_date):
     output_file = f"{directory_path}release-notes.qmd"
     return output_file
 
+def create_release_qmd(output_file, original_release_date):
+    """
+    Writes metadata to a file with a title set to the original release date.
+
+    Args:
+        output_file (str): The path to the file to write.
+        original_release_date (str): The title to include in the metadata.
+    """
+    with open(output_file, "w") as file:
+        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
