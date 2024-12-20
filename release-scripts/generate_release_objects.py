@@ -810,9 +810,7 @@ def main():
     print(f"{output_file} created.")
 
     print("Generating & editing release notes ...")
-
-    with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+    create_release_qmd(output_file, original_release_date)
 
     release_components = dict()
     release_components.update(categories)
