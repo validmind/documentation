@@ -761,6 +761,7 @@ def write_file(file, release_components, label_to_category):
 
 def main():
     # Set up the OpenAI API key from the .env file
+    get_env_location()
     setup_openai_api()
 
     label_to_category = {
