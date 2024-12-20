@@ -1,4 +1,3 @@
-import requests
 import subprocess
 import json
 import re
