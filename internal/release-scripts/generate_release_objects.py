@@ -510,6 +510,19 @@ def edit_titles(github_urls, editing_instructions_title):
                 pr.clean_title(editing_instructions_title)
                 print("\n")
 
+def set_labels(github_urls):
+    """
+    Processes a list of GitHub URLs and extracts pull request labels, printing them.
+
+    Args:
+        github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                pr.labels = [label['name'] for label in pr.data_json['labels']]
+                print(f"PR #{pr.pr_number} from {pr.repo_name}: {pr.labels}\n")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
