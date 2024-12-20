@@ -404,6 +404,20 @@ def create_release_qmd(output_file, original_release_date):
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
 
+def update_release_components(release_components, categories):
+    """
+    Updates a dictionary of release components with the given categories.
+
+    Parameters:
+        release_components (dict): The dictionary to update.
+        categories (dict): The categories to add to the release components.
+
+    Returns:
+        dict: The updated release components dictionary.
+    """
+    release_components.update(categories)
+    return release_components
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
