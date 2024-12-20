@@ -820,9 +820,7 @@ def main():
     print(f"Available release components: {release_components}")
 
     set_names(github_urls)
-
     extract_urls(github_urls)
-
     populate_data(github_urls)
 
     editing_instructions_body = """
@@ -880,29 +878,15 @@ def main():
         """
     
     edit_titles(github_urls, editing_instructions_title)
-
     set_labels(github_urls)
-
     assign_details(github_urls)
-
     assemble_release(github_urls, label_hierarchy)
 
-    # Write categorized PRs to the file
-    with open(output_file, "a") as file:
-        write_prs_to_file(file, release_components, label_to_category)
-
+    release_output(output_file, release_components, label_to_category)
     update_quarto_yaml(release_datetime)
+    update_index_qmd(release_datetime)
 
-    # After completing all tasks, print git status to show output files
-    try:
-        result = subprocess.run(["git", "status", "--short"], check=True, text=True, capture_output=True)
-        lines = result.stdout.split('\n')
-        print("Files to commit:")
-        for line in lines:
-            if line.startswith((' M', '??', 'A ')):
-                print(line)
-    except subprocess.CalledProcessError as e:
-        print("Failed to run git status:", e)
-
+    gro.show_files()
+    
 if __name__ == "__main__":
     main()
