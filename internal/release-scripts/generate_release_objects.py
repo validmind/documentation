@@ -313,6 +313,22 @@ def setup_openai_api():
     # Set the API key for the OpenAI library
     openai.api_key = api_key
 
+label_to_category = {
+    "highlight": "## Release highlights",
+    "enhancement": "## Enhancements",
+    "deprecation": "## Deprecations",
+    "bug": "## Bug fixes",
+    "documentation": "## Documentation"
+}
+
+categories = { 
+    "highlight": [],
+    "enhancement": [],
+    "deprecation": [],
+    "bug": [],
+    "documentation": []
+}
+
 def collect_github_urls(): 
     """Collects release URLs from user.
 
