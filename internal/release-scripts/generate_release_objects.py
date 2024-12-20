@@ -298,7 +298,7 @@ def get_env_location():
 
 def setup_openai_api(env_location):
     """
-    Loads .env file from the specified location and updates the OpenAI API key.
+    Loads .env file from the specified location and retrieves the OpenAI API key.
 
     Args:
         env_location (str): The location of the .env file.
@@ -341,6 +341,10 @@ categories = {
 }
 
 def display_list(array):
+    """
+    Lists an array in a numbered list. Used to check the `label_hierarchy`.
+    """
+
     for i, item in enumerate(array, start=1):
         print(f"{i}. {item}")
 
@@ -563,7 +567,7 @@ def assign_details(github_urls):
 
 def assemble_release(github_urls, label_hierarchy):
     """
-    Assigns pull requests (PRs) from a list of GitHub URLs to release components based on their labels.
+    Assigns PRs from a list of GitHub release URLs to release components based on their labels.
 
     Parameters:
         github_urls (list): A list of GitHub URL objects, each containing PRs.
@@ -781,7 +785,6 @@ def write_file(file, release_components, label_to_category):
             file.writelines(output_lines)
 
 def main():
-    # Set up the OpenAI API key from the .env file
     env_location = get_env_location()
     setup_openai_api(env_location)
 
