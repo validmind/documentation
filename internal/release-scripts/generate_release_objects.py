@@ -447,6 +447,16 @@ def extract_urls(github_urls):
     for url in github_urls:
         url.extract_prs()
 
+def populate_data(urls):
+    """
+    Populates pull request data for a list of URLs.
+
+    Args:
+        urls (iterable): An iterable of objects with a `populate_pr_data` method.
+    """
+    for url in urls:
+        url.populate_pr_data()
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
