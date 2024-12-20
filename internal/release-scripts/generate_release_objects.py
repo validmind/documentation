@@ -633,6 +633,7 @@ def main():
         write_prs_to_file(file, release_components, label_to_category)
 
     update_quarto_yaml(release_datetime)
+    update_index_qmd(release_datetime)
 
     # After completing all tasks, print git status to show output files
     try:
