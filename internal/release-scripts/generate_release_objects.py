@@ -433,6 +433,20 @@ def set_names(github_urls):
     for url in github_urls:
         url.set_repo_and_tag_name()
 
+def extract_urls(github_urls):
+    """
+    Extracts pull request (PR) objects from a list of GitHub URLs.
+
+    Args:
+        github_urls (iterable): An iterable containing GitHub URL objects that 
+                               have an `extract_prs` method.
+
+    Returns:
+        None: The `extract_prs` method modifies the URL objects in-place.
+    """
+    for url in github_urls:
+        url.extract_prs()
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
