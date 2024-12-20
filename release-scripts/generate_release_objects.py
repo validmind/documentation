@@ -848,6 +848,16 @@ def main():
     
     edit_release_notes(github_urls, editing_instructions_body)
 
+    summary_instructions = """ 
+    Please turn this PR Summary into a summary for release notes, according to the following guidelines:
+    - Use simple and neutral language in the active voice.
+    - Change from numbered list format to paragraph-style text.
+    - Address users directly in the second person with "you".
+    - Use present tense by avoiding the use of "will".
+    """
+
+    auto_summary(github_urls, summary_instructions)
+
     editing_instructions_title = """
         Please edit the provided technical content according to the following guidelines:
 
