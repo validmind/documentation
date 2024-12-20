@@ -523,6 +523,29 @@ def set_labels(github_urls):
                 pr.labels = [label['name'] for label in pr.data_json['labels']]
                 print(f"PR #{pr.pr_number} from {pr.repo_name}: {pr.labels}\n")
 
+def assign_details(github_urls):
+    """
+    Processes a list of GitHub URLs and extracts details for PRs with data in `data_json`.
+
+    Args:
+        github_urls (list): A list of objects representing GitHub URLs, each containing PRs.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                pr.pr_details = {
+                    'pr_number': pr.pr_number,
+                    'title': pr.cleaned_title,
+                    'full_title': pr.data_json['title'],
+                    'url': pr.data_json['url'],
+                    'labels': ", ".join(pr.labels),
+                    'notes': pr.edited_text
+                }
+                print(f"PR #{pr.pr_number} from {pr.repo_name} added.\n")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
@@ -689,7 +712,9 @@ def main():
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
     original_release_date = release_datetime.strftime("%B %-d, %Y")
 
-    create_release_folder(formatted_release_date)
+    directory_path = f"releases/{formatted_release_date}/"
+    os.makedirs(directory_path, exist_ok=True)
+    output_file = f"{directory_path}release-notes.qmd"
 
     print("Generating & editing release notes ...")
 
@@ -793,7 +818,6 @@ def main():
         write_prs_to_file(file, release_components, label_to_category)
 
     update_quarto_yaml(release_datetime)
-    update_index_qmd(release_datetime)
 
     # After completing all tasks, print git status to show output files
     try:
