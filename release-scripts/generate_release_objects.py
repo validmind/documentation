@@ -815,14 +815,11 @@ def main():
     update_release_components(release_components, categories)
     print(f"Available release components: {release_components}")
 
-    for url in github_urls:
-        url.set_repo_and_tag_name() 
+    set_names(github_urls)
 
-    for url in github_urls:
-        url.extract_prs() # initializes PR objects into a list for each URL
+    extract_urls(github_urls)
 
-    for url in github_urls:
-        url.populate_pr_data() # loads json file into the object data
+    populate_data(github_urls)
 
     editing_instructions_body = """
         Please edit the provided technical content according to the following guidelines:
