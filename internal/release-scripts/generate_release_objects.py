@@ -546,6 +546,33 @@ def assign_details(github_urls):
                 }
                 print(f"PR #{pr.pr_number} from {pr.repo_name} added.\n")
 
+def assemble_release(github_urls, label_hierarchy):
+    """
+    Assigns pull requests (PRs) from a list of GitHub URLs to release components based on their labels.
+
+    Parameters:
+        github_urls (list): A list of GitHub URL objects, each containing PRs.
+        label_hierarchy (list): A prioritized list of labels to determine component assignment.
+
+    Returns:
+        dict: A dictionary where keys are labels from the hierarchy (or 'other') and values are lists of PR details.
+    """
+
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Adding PR #{pr.pr_number} from {pr.repo_name}...\n")
+                assigned = False
+                for priority_label in label_hierarchy:
+                    if priority_label in pr.labels:
+                        release_components[priority_label].append(pr.pr_details)
+                        assigned = True
+                        break
+                if not assigned:
+                    release_components['other'].append(pr.pr_details)
+
+    return release_components
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
