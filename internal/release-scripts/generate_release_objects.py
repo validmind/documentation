@@ -673,6 +673,7 @@ def update_index_qmd(release_date):
     Modifies:
         index.qmd file
     """
+
     index_filename = "../../site/index.qmd"
     temp_index_filename = "../../site/index_temp.qmd"
 
@@ -704,6 +705,8 @@ def update_index_qmd(release_date):
     
     print(f"Added new release notes to index.qmd, line {insert_index + 2}")
 
+    removed_line = None  # To store the line that gets removed
+
     with open(index_filename, 'r') as file:
         updated_lines = file.readlines()
 
@@ -713,6 +716,8 @@ def update_index_qmd(release_date):
             if line.strip() == "# MAKE-RELEASE-NOTES-OLDEST-MARKER":
                 # Check if the line above exists and starts with a list indicator "-"
                 if i > 0 and updated_lines[i - 1].strip().startswith("-"):
+                    # Store the line being removed
+                    removed_line = updated_lines[i - 1].strip()
                     # Write all lines up to the one before the line to remove
                     file.writelines(updated_lines[:i - 1])
                     # Write the marker and subsequent lines
@@ -722,7 +727,7 @@ def update_index_qmd(release_date):
             # If no marker is found, rewrite the file as is
             file.writelines(updated_lines)
 
-    print("Removed the oldest release note entry from index.qmd.")
+    print(f"Removed the oldest release note entry: '{removed_line}'")
 
 def show_files():
     """Print files to commit by running 'git status --short'."""
