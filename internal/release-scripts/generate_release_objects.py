@@ -329,6 +329,10 @@ categories = {
     "documentation": []
 }
 
+def display_list(array):
+    for i, item in enumerate(array, start=1):
+        print(f"{i}. {item}")
+
 release_components = {} 
 
 def collect_github_urls(): 
