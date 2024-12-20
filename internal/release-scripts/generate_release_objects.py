@@ -6,7 +6,7 @@ import shutil
 import numpy as np
 import datetime
 import openai
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
 from collections import defaultdict
 
@@ -298,20 +298,31 @@ def get_env_location():
     return env_location
 
 def setup_openai_api(env_location):
-    """Loads .env file and updates the OpenAI API key. 
-
-    Modifies:
-        openai.api_key
     """
-    # Load environment variables
-    load_dotenv(env_location) 
+    Loads .env file from the specified location and updates the OpenAI API key.
 
-    # Get the OpenAI API key
-    api_key = os.getenv('OPENAI_API_KEY')
+    Args:
+        env_location (str): The location of the .env file.
+
+    Raises:
+        FileNotFoundError: If the .env file is not found at the specified location.
+        KeyError: If the OPENAI_API_KEY is not present in the .env file.
+    """
+    # Load environment variables from the provided location without affecting os.environ
+    config = dotenv_values(env_location)
+    if not config:
+        raise FileNotFoundError(f".env file not found or is empty at {env_location}")
+
+    # Check for the required key
+    api_key = config.get('OPENAI_API_KEY')
     if not api_key:
-        raise EnvironmentError("OpenAI API key is not set in .env file.")
+        raise KeyError(
+            f"OPENAI_API_KEY is not set in the .env file at {env_location}. "
+            "Please ensure the .env file contains this key."
+        )
 
     # Set the API key for the OpenAI library
+    print(f"Detected OpenAI API Key in {env_location}.")  # Optional debug message
     openai.api_key = api_key
 
 label_to_category = {
