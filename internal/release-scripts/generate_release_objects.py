@@ -573,26 +573,6 @@ def assemble_release(github_urls, label_hierarchy):
 
     return release_components
 
-def release_output(file, release_components, label_to_category):
-    """
-    Appends release notes to the specified file.
-
-    Args:
-        output_file (str): Path to the output file retrieved from generate_release_objects.py.
-        release_components (dict): Dictionary mapping labels to lists of PRs to be written.
-        label_to_category (dict): Mapping of labels to categories for organizing release notes.
-
-    Returns:
-        None
-    """
-    directory_path = f"releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd
-
-    with open(output_file, "a") as file:
-        write_prs_to_file(file, release_components, label_to_category)
-        print(f"Release notes added to {file.name}.")    
-
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
@@ -715,7 +695,7 @@ def show_files():
     except subprocess.CalledProcessError as e:
         print("Failed to run 'git status':", e)
 
-def write_prs_to_file(file, release_components, label_to_category):
+def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
     Args:
         file - desired file path
