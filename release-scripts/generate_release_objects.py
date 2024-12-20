@@ -886,7 +886,7 @@ def main():
     update_quarto_yaml(release_datetime)
     update_index_qmd(release_datetime)
 
-    gro.show_files()
-    
+    show_files()
+
 if __name__ == "__main__":
     main()
