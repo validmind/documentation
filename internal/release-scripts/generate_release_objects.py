@@ -579,7 +579,7 @@ def release_output(output_file, release_components, label_to_category):
 
     Args:
         output_file (str): Path to the output file retrieved from generate_release_objects.py.
-        release_components (list): Components of the release notes to be written.
+        release_components (dict): Dictionary mapping labels to lists of PRs to be written.
         label_to_category (dict): Mapping of labels to categories for organizing release notes.
 
     Returns:
@@ -590,8 +590,12 @@ def release_output(output_file, release_components, label_to_category):
     output_file = f"{directory_path}release-notes.qmd"
 
     with open(output_file, "a") as file:
-        write_prs_to_file(file, release_components, label_to_category)
-        print(f"Release notes added to {file.name}.")
+        # Ensure compatibility with the write_prs_to_file function
+        if isinstance(release_components, dict):
+            write_prs_to_file(file, release_components, label_to_category)
+            print(f"Release notes added to {file.name}.")
+        else:
+            raise TypeError("release_components must be a dictionary with labels as keys and PR lists as values.")
 
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
