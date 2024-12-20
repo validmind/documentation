@@ -457,6 +457,24 @@ def populate_data(urls):
     for url in urls:
         url.populate_pr_data()
 
+def edit_release_notes(github_urls, editing_instructions_body):
+    """
+    Processes a list of GitHub URLs to extract and edit release notes for pull requests.
+
+    Args:
+        github_urls (list): List of GitHub URL objects containing pull requests.
+        editing_instructions_body (str): Instructions for editing the text with OpenAI.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n") 
+                if pr.extract_external_release_notes():
+                    pr.edit_text_with_openai(False, editing_instructions_body)
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
