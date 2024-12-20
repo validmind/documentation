@@ -297,7 +297,7 @@ def get_env_location():
     print(f"Using .env file location: {env_location}\n")
     return env_location
 
-def setup_openai_api():
+def setup_openai_api(env_location):
     """Loads .env file and updates the OpenAI API key. 
 
     Modifies:
