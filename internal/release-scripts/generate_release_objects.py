@@ -420,6 +420,19 @@ def update_release_components(release_components, categories):
     release_components.update(categories)
     return release_components
 
+def set_names(github_urls):
+    """
+    Iterates over a list of URL objects, calling the `set_repo_and_tag_name` method on each.
+
+    Parameters:
+        github_urls (list): A list of objects, each having the method `set_repo_and_tag_name`.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        url.set_repo_and_tag_name()
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
