@@ -329,6 +329,8 @@ categories = {
     "documentation": []
 }
 
+release_components = {} 
+
 def collect_github_urls(): 
     """Collects release URLs from user.
 
