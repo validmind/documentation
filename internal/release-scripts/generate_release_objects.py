@@ -575,6 +575,9 @@ def assemble_release(github_urls, label_hierarchy):
     # Initialize release_components as a defaultdict with lists
     release_components = defaultdict(list)
 
+    # Process PRs and assign them to components based on label hierarchy
+    unassigned_prs = []  # Track PRs that do not match any label in the hierarchy
+
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -586,9 +589,17 @@ def assemble_release(github_urls, label_hierarchy):
                         assigned = True
                         break
                 if not assigned:
-                    release_components['other'].append(pr.pr_details)
+                    unassigned_prs.append(pr.pr_details)
 
-    return dict(release_components)  # Convert defaultdict back to a regular dict if needed
+    # Add unassigned PRs to the 'other' category
+    release_components['other'].extend(unassigned_prs)
+
+    # Convert defaultdict to a regular dict and ensure 'other' is at the end
+    result = {label: release_components[label] for label in label_hierarchy if label in release_components}
+    if 'other' in release_components:
+        result['other'] = release_components['other']
+
+    return result
 
 def release_output(output_file, release_components, label_to_category):
     """
