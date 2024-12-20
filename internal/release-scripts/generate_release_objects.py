@@ -475,6 +475,22 @@ def edit_release_notes(github_urls, editing_instructions_body):
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
 
+def auto_summary(github_urls, summary_instructions):
+    """
+    Processes GitHub PRs by fetching comments, extracting summaries, and converting 
+    summaries to release notes based on given instructions.
+
+    Args:
+        github_urls (list): A list of GitHub URLs, each containing PR data.
+        summary_instructions (str): Instructions for converting summaries to release notes.
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Fetching github comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
+                pr.extract_pr_summary_comment()
+                pr.convert_summary_to_release_notes(summary_instructions)
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
