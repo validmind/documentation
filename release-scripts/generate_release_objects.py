@@ -283,10 +283,10 @@ def get_env_location():
     Asks the user for the location of their .env file.
 
     Returns:
-        str: The provided location or a default value (../../.env).
+        str: The provided location or a default value (../.env).
     """
     # Default location of the .env file
-    default_env_location = "../../.env"
+    default_env_location = "../.env"
 
     # Prompt the user for input
     env_location = input(
@@ -409,7 +409,7 @@ def create_release_folder(formatted_release_date):
     Returns:
         str: The path to the release notes file.
     """
-    directory_path = f"../../site/releases/{formatted_release_date}/"
+    directory_path = f"../site/releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
     return output_file
@@ -633,8 +633,8 @@ def update_quarto_yaml(release_date):
     Modifies:
         _quarto.yml file
     """
-    yaml_filename = "../../site/_quarto.yml"
-    temp_yaml_filename = "../../site/_quarto_temp.yml"
+    yaml_filename = "../site/_quarto.yml"
+    temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -674,8 +674,8 @@ def update_index_qmd(release_date):
         index.qmd file
     """
 
-    index_filename = "../../site/index.qmd"
-    temp_index_filename = "../../site/index_temp.qmd"
+    index_filename = "../site/index.qmd"
+    temp_index_filename = "../site/index_temp.qmd"
 
     # Copy the original QMD file to a temporary file
     shutil.copyfile(index_filename, temp_index_filename)
