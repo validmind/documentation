@@ -580,6 +580,25 @@ def assemble_release(github_urls, label_hierarchy):
 
     return dict(release_components)  # Convert defaultdict back to a regular dict if needed
 
+def release_output(output_file, release_components, label_to_category):
+    """
+    Appends release notes to the specified file.
+
+    Args:
+        output_file (str): Path to the file to append.
+        release_components (dict): Release notes categorized by labels.
+        label_to_category (dict): Mapping of labels to formatted categories.
+
+    Returns:
+        None
+    """
+    try:
+        with open(output_file, "a") as file:
+            write_file(file, release_components, label_to_category)
+            print(f"Release notes added to {file.name}.")
+    except Exception as e:
+        print(f"Failed to write to {output_file}: {e}")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
