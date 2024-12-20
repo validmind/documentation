@@ -790,6 +790,10 @@ def write_file(file, release_components, label_to_category):
             file.writelines(output_lines)
 
 def main():
+    """
+    Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
+    """
+
     env_location = get_env_location()
     setup_openai_api(env_location)
 
