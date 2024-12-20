@@ -304,7 +304,7 @@ def setup_openai_api():
         openai.api_key
     """
     # Load environment variables
-    load_dotenv('env_location') 
+    load_dotenv(env_location) 
 
     # Get the OpenAI API key
     api_key = os.getenv('OPENAI_API_KEY')
@@ -761,8 +761,8 @@ def write_file(file, release_components, label_to_category):
 
 def main():
     # Set up the OpenAI API key from the .env file
-    get_env_location()
-    setup_openai_api()
+    env_location = get_env_location()
+    setup_openai_api(env_location)
 
     label_to_category = {
         "highlight": "## Release highlights",
