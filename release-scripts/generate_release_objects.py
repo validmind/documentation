@@ -812,8 +812,8 @@ def main():
     print("Generating & editing release notes ...")
     create_release_qmd(output_file, original_release_date)
 
-    release_components = dict()
-    release_components.update(categories)
+    update_release_components(release_components, categories)
+    print(f"Available release components: {release_components}")
 
     for url in github_urls:
         url.set_repo_and_tag_name() 
