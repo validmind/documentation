@@ -793,23 +793,8 @@ def main():
     env_location = get_env_location()
     setup_openai_api(env_location)
 
-    label_to_category = {
-        "highlight": "## Release highlights",
-        "enhancement": "## Enhancements",
-        "deprecation": "## Deprecations",
-        "bug": "## Bug fixes",
-        "documentation": "## Documentation"
-    }
-
-    categories = { 
-        "highlight": [],
-        "enhancement": [],
-        "deprecation": [],
-        "bug": [],
-        "documentation": []
-    }
-
     label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
+    display_list(label_hierarchy)
 
     github_urls = collect_github_urls() # the only big global variable
     
