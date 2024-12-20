@@ -869,38 +869,13 @@ def main():
         - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
         """
     
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: 
-                pr.title = pr.data_json['title']
-                pr.clean_title(editing_instructions_title)
+    edit_titles(github_urls, editing_instructions_title)
 
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: pr.labels = [label['name'] for label in pr.data_json['labels']]
+    set_labels(github_urls)
 
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: pr.pr_details = {
-                'pr_number': pr.pr_number,
-                'title': pr.cleaned_title,
-                'full_title': pr.data_json['title'],
-                'url': pr.data_json['url'],
-                'labels': ", ".join(pr.labels),
-                'notes': pr.edited_text
-            }
+    assign_details(github_urls)
 
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json:
-                assigned = False 
-                for priority_label in label_hierarchy:
-                    if priority_label in pr.labels:
-                        release_components[priority_label].append(pr.pr_details)
-                        assigned = True
-                        break
-                if not assigned:
-                    release_components.setdefault('other', []).append(pr.pr_details)
+    release_components = assemble_release(github_urls, label_hierarchy)
 
     # Write categorized PRs to the file
     with open(output_file, "a") as file:
