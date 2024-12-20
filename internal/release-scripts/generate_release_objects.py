@@ -8,6 +8,7 @@ import datetime
 import openai
 from dotenv import load_dotenv
 import os
+from collections import defaultdict
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -561,8 +562,8 @@ def assemble_release(github_urls, label_hierarchy):
     Returns:
         dict: A dictionary where keys are labels from the hierarchy (or 'other') and values are lists of PR details.
     """
-    
-    release_components = dict()
+    # Initialize release_components as a defaultdict with lists
+    release_components = defaultdict(list)
 
     for url in github_urls:
         for pr in url.prs:
@@ -577,7 +578,7 @@ def assemble_release(github_urls, label_hierarchy):
                 if not assigned:
                     release_components['other'].append(pr.pr_details)
 
-    return release_components
+    return dict(release_components)  # Convert defaultdict back to a regular dict if needed
 
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
