@@ -796,7 +796,7 @@ def main():
     label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
     display_list(label_hierarchy)
 
-    github_urls = collect_github_urls() # the only big global variable
+    github_urls = collect_github_urls() 
     
     release_datetime = get_release_date()
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
@@ -805,6 +805,9 @@ def main():
     directory_path = f"releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
+
+    output_file = create_release_folder(formatted_release_date)
+    print(f"{output_file} created.")
 
     print("Generating & editing release notes ...")
 
