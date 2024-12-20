@@ -559,9 +559,7 @@ def main():
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
     original_release_date = release_datetime.strftime("%B %-d, %Y")
 
-    directory_path = f"../../site/releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd"
+    create_release_folder(formatted_release_date)
 
     print("Generating & editing release notes ...")
 
