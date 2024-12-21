@@ -745,10 +745,19 @@ def show_files():
 
         print("Files to commit:")
         for line in lines:
+            # Extract the file path from the git status output
+            parts = line.split(maxsplit=1)
+            if len(parts) < 2:
+                continue  # Skip lines without a file path
+            file_path = parts[1]
+
+            # Apply filters
             if (
-                line.startswith((' M', '??', 'A ')) 
-                and not line.endswith('.zip')       
-                and 'release-scripts/' not in line 
+                not file_path.endswith('.zip')        # Exclude .zip files
+                and 'release-scripts/' not in file_path  # Exclude files containing 'release-scripts/'
+                and (line.startswith(' M') or         # Modified files
+                     line.startswith('??') or         # Untracked files
+                     line.startswith('A '))           # Added files
             ):
                 print(line)
 
