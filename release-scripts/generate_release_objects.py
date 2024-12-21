@@ -812,6 +812,8 @@ def main():
     label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
     display_list(label_hierarchy)
 
+    release_components = {} 
+
     github_urls = collect_github_urls() 
     
     release_datetime = get_release_date()
@@ -892,7 +894,7 @@ def main():
     edit_titles(github_urls, editing_instructions_title)
     set_labels(github_urls)
     assign_details(github_urls)
-    assemble_release(github_urls, label_hierarchy)
+    release_components = assemble_release(github_urls, label_hierarchy)
 
     release_output(output_file, release_components, label_to_category)
     update_quarto_yaml(release_datetime)
