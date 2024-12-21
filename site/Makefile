@@ -128,6 +128,7 @@ deploy-staging:
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py
+	git status
 	quarto preview
 
 # Execute a Jupyter Notebook  

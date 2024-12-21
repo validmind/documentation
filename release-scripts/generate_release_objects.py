@@ -900,7 +900,5 @@ def main():
     update_quarto_yaml(release_datetime)
     update_index_qmd(release_datetime)
 
-    show_files()
-
 if __name__ == "__main__":
     main()
