@@ -745,9 +745,8 @@ def show_files():
 
         print("Files to commit:")
         for line in lines:
-            # Check if the line starts with the desired status and ends with the desired extensions
-            if (line.startswith((' M', '??', 'A ')) and 
-                (line.endswith('.qmd') or line.endswith('.yml'))):
+            # Check if the line matches the criteria and doesn't contain 'release-scripts'
+            if line.startswith((' M', '??', 'A ')) and 'release-scripts' not in line:
                 print(line)
 
     except subprocess.CalledProcessError as e:
