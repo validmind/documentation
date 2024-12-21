@@ -732,6 +732,9 @@ def update_index_qmd(release_date):
 def show_files():
     """Print files to commit by running 'git status --short'."""
     try:
+        # Get the absolute path of the current directory
+        current_dir = os.getcwd()
+
         # Run 'git status --short'
         result = subprocess.run(
             ["git", "status", "--short"], check=True, text=True, capture_output=True
@@ -739,20 +742,27 @@ def show_files():
         
         # Process and display the output
         lines = result.stdout.strip().split('\n')
-        
+
         # Debugging: Print raw lines for verification
         print("Debug: Raw output lines:")
         for line in lines:
             print(line)
-        
+
         if not lines:
             print("No changes detected.")
             return
 
         print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
-            # Exclude lines that contain 'release-scripts' and filter based on prefixes
-            if 'release-scripts/' not in line and line.startswith((' M', '??', 'A ')):
+            # Get the full path of the file
+            parts = line.split()
+            if len(parts) > 1:
+                file_path = os.path.abspath(parts[-1])
+            else:
+                continue
+
+            # Exclude files in the 'release-scripts' folder
+            if 'release-scripts' not in file_path and line.startswith((' M', '??', 'A ')):
                 print(line)
 
     except subprocess.CalledProcessError as e:
