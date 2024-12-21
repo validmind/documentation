@@ -752,7 +752,7 @@ def show_files():
         print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
             # Exclude lines that contain 'release-scripts' and filter based on prefixes
-            if 'release-scripts' not in line and line.startswith((' M', '??', 'A ')):
+            if 'release-scripts/' not in line and line.startswith((' M', '??', 'A ')):
                 print(line)
 
     except subprocess.CalledProcessError as e:
