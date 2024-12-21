@@ -739,13 +739,19 @@ def show_files():
         
         # Process and display the output
         lines = result.stdout.strip().split('\n')
+        
+        # Debugging: Print raw lines for verification
+        print("Debug: Raw output lines:")
+        for line in lines:
+            print(line)
+        
         if not lines:
             print("No changes detected.")
             return
 
-        print("Files to commit:")
+        print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
-            # Exclude lines that contain 'release-scripts' and check the prefixes
+            # Exclude lines that contain 'release-scripts' and filter based on prefixes
             if 'release-scripts' not in line and line.startswith((' M', '??', 'A ')):
                 print(line)
 
