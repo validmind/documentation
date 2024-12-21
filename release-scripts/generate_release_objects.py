@@ -743,11 +743,6 @@ def show_files():
         # Process and display the output
         lines = result.stdout.strip().split('\n')
 
-        # Debugging: Print raw lines for verification
-        print("Debug: Raw output lines:")
-        for line in lines:
-            print(line)
-
         if not lines:
             print("No changes detected.")
             return
