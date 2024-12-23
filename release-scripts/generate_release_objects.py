@@ -412,6 +412,7 @@ def create_release_folder(formatted_release_date):
     directory_path = f"../site/releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
+    print(f"{output_file} created.")
     return output_file
 
 def create_release_qmd(output_file, original_release_date):
@@ -422,6 +423,8 @@ def create_release_qmd(output_file, original_release_date):
         output_file (str): The path to the file to write.
         original_release_date (str): The title to include in the metadata.
     """
+
+    print("Generating & editing release notes ...")
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
 
@@ -437,6 +440,7 @@ def update_release_components(release_components, categories):
         dict: The updated release components dictionary.
     """
     release_components.update(categories)
+    print(f"Available release components: {release_components}")
     return release_components
 
 def set_names(github_urls):
@@ -844,13 +848,8 @@ def main():
     output_file = f"{directory_path}release-notes.qmd"
 
     output_file = create_release_folder(formatted_release_date)
-    print(f"{output_file} created.")
-
-    print("Generating & editing release notes ...")
     create_release_qmd(output_file, original_release_date)
-
     update_release_components(release_components, categories)
-    print(f"Available release components: {release_components}")
 
     set_names(github_urls)
     extract_urls(github_urls)
@@ -916,6 +915,7 @@ def main():
     release_components = assemble_release(github_urls, label_hierarchy)
 
     release_output(output_file, release_components, label_to_category)
+    upgrade_info(output_file)
     update_quarto_yaml(release_datetime)
     update_index_qmd(release_datetime)
 
