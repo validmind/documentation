@@ -440,7 +440,6 @@ def update_release_components(release_components, categories):
         dict: The updated release components dictionary.
     """
     release_components.update(categories)
-    print(f"Available release components: {release_components}")
     return release_components
 
 def set_names(github_urls):
