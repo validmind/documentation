@@ -624,6 +624,25 @@ def release_output(output_file, release_components, label_to_category):
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
+def upgrade_info(output_file):
+    """
+    Appends the upgrade information single-source to the end of the new release notes.
+
+    Args:
+        output_file (str): Path to the file to append.
+
+    Returns:
+        None
+    """
+    include_directive = "\n\n{{< include /releases/_how-to-upgrade.qmd >}}\n"
+
+    try:
+        with open(output_file, "a") as file:
+            file.write(include_directive)
+            print(f"Include _how-to-upgrade.qmd added to {file.name}.")
+    except Exception as e:
+        print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
+
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
