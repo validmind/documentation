@@ -809,7 +809,7 @@ def main():
     env_location = get_env_location()
     setup_openai_api(env_location)
 
-    label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
+    label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
     display_list(label_hierarchy)
 
     release_components = {} 
