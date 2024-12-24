@@ -343,6 +343,9 @@ def move_year_marker():
 
     Modifies:
         _quarto.yml file
+
+    Returns:
+        dict: A dictionary containing the deleted and inserted line numbers.
     """
     yaml_filename = "../site/_quarto.yml"
     temp_yaml_filename = "../site/_quarto_temp.yml"
@@ -353,12 +356,18 @@ def move_year_marker():
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
 
+    modified_lines = {
+        "deleted_line": None,
+        "inserted_line": None
+    }
+
     with open(yaml_filename, 'w') as file:
         marker_deleted = False
 
-        for line in lines:
+        for line_number, line in enumerate(lines, start=1):
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
                 marker_deleted = True
+                modified_lines["deleted_line"] = line_number
                 continue  # Skip writing this line to effectively delete it
 
             file.write(line)
@@ -366,11 +375,15 @@ def move_year_marker():
             if not marker_deleted and line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
                 # Insert marker immediately after the specific line
                 file.write("        # CURRENT-YEAR-END-MARKER\n")
+                modified_lines["inserted_line"] = line_number + 1
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
     print("Relocated CURRENT-YEAR-END-MARKER in _quarto.yml.")
+    print(f"Deleted line: {modified_lines['deleted_line']}, Inserted line: {modified_lines['inserted_line']}")
+
+    return modified_lines
 
 def update_paths(year):
     """
