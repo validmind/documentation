@@ -29,7 +29,7 @@ def get_year():
         f"Enter the year you want to compile (leave empty for default [{default_year}]): "
     ) or default_year
 
-    print(f"Creating folder for year: {year}\n")
+    print(f"Rounding up releases for: {year}\n")
     return year
 
 def create_year_folder(year):
@@ -137,9 +137,8 @@ def copy_template(yearly_path, year):
 
         # Copy the template to the destination
         shutil.copy(template_path, destination_file)
-        print(f"Copied template to: '{destination_file}'")
+        print(f"Copied ../internal/templates/yearly-releases.qmd template to: '{destination_file}'")
 
-        print(f"Yearly release file created:")
         return destination_file
 
     except Exception as e:
