@@ -457,7 +457,7 @@ def search_links(yearly_path):
                 continue
 
             if matches:
-                print(f"File: {file_path}")
+                print(f"{file_path}:")
                 print("\n".join(matches))
 
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
