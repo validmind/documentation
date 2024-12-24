@@ -752,43 +752,78 @@ def update_index_qmd(release_date):
     print(f"Removed the oldest release note entry: '{removed_line}'")
 
 def show_files():
-    """Print files to commit by running 'git status --short'."""
+    """Print files to commit by running 'git status --short', grouped by status."""
     try:
         # Run 'git status --short'
         result = subprocess.run(
             ["git", "status", "--short"], check=True, text=True, capture_output=True
         )
         
-        # Process and display the output
+        # Process the output
         lines = result.stdout.strip().split('\n')
 
         if not lines:
             print("No changes detected.")
             return
 
-        print("\nFiles to commit (excluding 'release-scripts'):")
+        # Grouped file categories
+        added = []
+        modified = []
+        untracked = []
+        renamed = []
+        deleted = []
+
         for line in lines:
-            # Handle moved/renamed files
-            if " -> " in line:
+            # Handle renamed files
+            if line.startswith('R'):
                 try:
-                    # Extract old and new file paths
-                    status, paths = line.split(maxsplit=1)
+                    _, paths = line.split(maxsplit=1)
                     old_file, new_file = paths.split(' -> ')
                     if 'release-scripts' not in new_file:
-                        print(f"Moved: {old_file.strip()} -> {new_file.strip()}")
+                        renamed.append(f"{old_file.strip()} -> {new_file.strip()}")
                         continue
-                except Exception:
+                except Exception as e:
+                    print(f"Error processing renamed file: {line}. Error: {e}")
                     continue
 
             # Process other file statuses
             parts = line.split(maxsplit=1)
             if len(parts) > 1:
                 status, file_path = parts
-                if (
-                    'release-scripts' not in file_path
-                    and status in ('M', '??', 'A', 'D')
-                ):
-                    print(line)
+                if 'release-scripts' in file_path:
+                    continue
+                
+                file_path = file_path.strip()
+                if status == 'A':
+                    added.append(file_path)
+                elif status == 'M':
+                    modified.append(file_path)
+                elif status == '??':
+                    untracked.append(file_path)
+                elif status == 'D':
+                    deleted.append(file_path)
+
+        # Print grouped files
+        if added:
+            print("Added:")
+            for file in added:
+                print(f" - {file}")
+        if modified:
+            print("\nModified:")
+            for file in modified:
+                print(f" - {file}")
+        if untracked:
+            print("\nUntracked:")
+            for file in untracked:
+                print(f" - {file}")
+        if renamed:
+            print("\nRenamed:")
+            for file in renamed:
+                print(f" - {file}")
+        if deleted:
+            print("\nDeleted:")
+            for file in deleted:
+                print(f" - {file}")
 
     except subprocess.CalledProcessError as e:
         print("Failed to run 'git status':", e)
