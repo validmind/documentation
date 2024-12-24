@@ -114,9 +114,41 @@ def move_yearly_releases(yearly_path, release_folders):
         except Exception as e:
             print(f"Failed to move '{folder}' to '{destination}': {e}")
 
+def copy_template(yearly_path, year):
+    """
+    Copies the template file `../internal/templates/yearly-releases.qmd` to the
+    specified directory, renames it, and returns the path of the newly created file.
+
+    Args:
+        yearly_path (str): The path to the year's folder in the releases directory.
+        year (str): The year to include in the file name.
+
+    Returns:
+        str: The path to the newly created yearly release file.
+    """
+    template_path = "../internal/templates/yearly-releases.qmd"
+    destination_file = f"{yearly_path}{year}-releases.qmd"
+
+    try:
+        # Check if the template exists
+        if not os.path.exists(template_path):
+            print(f"Template file '{template_path}' does not exist.")
+            return None
+
+        # Copy the template to the destination
+        shutil.copy(template_path, destination_file)
+        print(f"Copied template to: '{destination_file}'")
+
+        print(f"Yearly release file created:")
+        return destination_file
+
+    except Exception as e:
+        print(f"Failed to copy the template: {e}")
+        return None
+
 def main():
     year = get_year()
-    
+
     release_folders = []
     get_yearly_releases(year)
     
