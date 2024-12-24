@@ -165,20 +165,26 @@ def update_template(destination_file, year):
         with open(destination_file, 'r') as file:
             content = file.readlines()
 
+        # Track updated lines
+        edited_lines = []
+
         # Update the lines
         updated_content = []
         for i, line in enumerate(content):
             if line.strip() == "# TITLE-MARKER":
                 if i + 1 < len(content):
                     content[i + 1] = content[i + 1].replace("0000", year)
+                    edited_lines.append(i + 2)
 
             if line.strip() == "# LISTING-MARKER":
                 if i + 1 < len(content):
                     content[i + 1] = content[i + 1].replace("0000", year)
+                    edited_lines.append(i + 2)
 
             if line.strip() == "<!-- EMBED-MARKER -->":
                 if i + 1 < len(content):
                     content[i + 1] = content[i + 1].replace("0000", year)
+                    edited_lines.append(i + 2)
 
             updated_content.append(content[i])
 
@@ -186,13 +192,13 @@ def update_template(destination_file, year):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated lines in '{destination_file}' with the year {year}.")
+        print(f"Updated '{destination_file}' with the year {year}. Edited lines: {edited_lines}.")
         return True
 
     except Exception as e:
         print(f"Failed to update '{destination_file}': {e}")
         return False
-
+    
 def main():
     year = get_year()
 
