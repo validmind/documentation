@@ -54,6 +54,8 @@ def create_year_folder(year):
     
     return yearly_path
 
+release_folders = []
+
 def get_yearly_releases(year):
     """
     Finds subdirectories in ../site/releases/ that begin with the specified year.
@@ -64,24 +66,26 @@ def get_yearly_releases(year):
     Returns:
         list: A list of matching subdirectory names.
     """
+    global release_folders 
     releases_dir = "../site/releases/"
 
     if not os.path.exists(releases_dir):
-        print(f"The releases directory '{releases_dir}' does not exist.")
-        return []
+        print(f"'{releases_dir}' does not exist.")
+        release_folders = []  
+        return release_folders
 
-    # List all subdirectories in the releases directory
     subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
-
-    # Filter subdirectories that start with the specified year
     matching_subdirs = [d for d in subdirs if d.startswith(f"{year}-")]
 
     if matching_subdirs:
-        print(f"Found release folders for year {year}: {matching_subdirs}")
+        print(f"Found release folders for year {year}:")
+        for folder in matching_subdirs:
+            print(f"- {folder}")
     else:
         print(f"No release folders found for year {year}.")
 
-    return matching_subdirs
+    release_folders = matching_subdirs
+    return release_folders
 
 def main():
     year = get_year()
