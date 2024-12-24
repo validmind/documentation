@@ -64,7 +64,7 @@ def get_yearly_releases(year):
         year (str): The year prefix to search for in subdirectory names.
 
     Returns:
-        list: A list of matching subdirectory names.
+        list: A list of matching subdirectory names, sorted alphabetically.
     """
     global release_folders 
     releases_dir = "../site/releases/"
@@ -78,11 +78,11 @@ def get_yearly_releases(year):
     matching_subdirs = [d for d in subdirs if d.startswith(f"{year}-")]
 
     if matching_subdirs:
-        print(f"Found release folders for year {year}:")
+        print(f"Found {len(matching_subdirs)} release folders for year {year}:")
     else:
         print(f"No release folders found for year {year}.")
 
-    release_folders = matching_subdirs
+    release_folders = sorted(matching_subdirs)
     return release_folders
 
 def main():
