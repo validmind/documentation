@@ -240,6 +240,61 @@ def get_release_listings(yearly_path):
 
     release_listings = subdirs
     return release_listings
+
+def update_listing(destination_file, release_listings):
+    """
+    Updates the destination file by appending the contents of release_listings under the
+    '# RELEASE-FILES-MARKER' line.
+
+    Args:
+        destination_file (str): The path to the file to be updated.
+        release_listings (list of str): List of release listing file paths to append.
+
+    Returns:
+        bool: True if the file was updated successfully, False otherwise.
+    """
+    if not os.path.exists(destination_file):
+        print(f"File '{destination_file}' does not exist.")
+        return False
+
+    try:
+        # Read the file content
+        with open(destination_file, 'r') as file:
+            content = file.readlines()
+
+        # Track updated lines
+        edited_lines = []
+
+        # Update the lines
+        updated_content = []
+        release_marker_found = False
+        for i, line in enumerate(content):
+            updated_content.append(line)
+
+            if line.strip() == "# RELEASE-FILES-MARKER":
+                release_marker_found = True
+                insertion_index = len(updated_content)
+
+                for listing in release_listings:
+                    new_line = f"        - {listing}\n"
+                    updated_content.append(new_line)
+                    edited_lines.append(insertion_index)
+                    insertion_index += 1
+
+        if not release_marker_found:
+            print("# RELEASE-FILES-MARKER not found in the file.")
+            return False
+
+        # Write the updated content back to the file
+        with open(destination_file, 'w') as file:
+            file.writelines(updated_content)
+
+        print(f"Updated '{destination_file}' with release listings. Added lines: {edited_lines}.")
+        return True
+
+    except Exception as e:
+        print(f"Failed to update '{destination_file}': {e}")
+        return False
     
 def main():
     year = get_year()
