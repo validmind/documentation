@@ -336,7 +336,7 @@ def update_quarto_yaml(year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print("Added {year} folder to the sidebar in _quarto.yml")
+    print(f"Added {year} folder to the sidebar in _quarto.yml")
 
     
 def main():
