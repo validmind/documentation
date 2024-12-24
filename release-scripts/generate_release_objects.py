@@ -768,8 +768,6 @@ def show_files():
 
         print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
-            print(f"DEBUG: Processing line: {line}")  # Debugging statement
-            
             # Handle moved/renamed files
             if " -> " in line:
                 try:
@@ -779,8 +777,7 @@ def show_files():
                     if 'release-scripts' not in new_file:
                         print(f"Moved: {old_file.strip()} -> {new_file.strip()}")
                         continue
-                except Exception as e:
-                    print(f"DEBUG: Error processing moved file: {line}. Error: {e}")
+                except Exception:
                     continue
 
             # Process other file statuses
