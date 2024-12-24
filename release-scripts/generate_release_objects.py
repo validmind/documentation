@@ -768,16 +768,23 @@ def show_files():
 
         print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
-            # Get the full path of the file
-            parts = line.split()
-            if len(parts) > 1:
-                file_path = os.path.abspath(parts[-1])
+            # Check for renamed files (R) with old -> new format
+            if line.startswith('R'):
+                parts = line.split(' -> ')
+                if len(parts) == 2:
+                    old_file = parts[0].strip()[2:]  # Remove 'R ' prefix
+                    new_file = parts[1].strip()
+                    # Check exclusion criteria for the new file
+                    if 'release-scripts' not in new_file:
+                        print(f"Renamed: {old_file} -> {new_file}")
             else:
-                continue
-
-            # Exclude files in the 'release-scripts' folder
-            if 'release-scripts' not in file_path and line.startswith((' M', '??', 'A ', 'R')):
-                print(line)
+                # Process other file statuses
+                parts = line.split(maxsplit=1)
+                if len(parts) > 1:
+                    status, file_path = parts
+                    full_path = os.path.abspath(file_path)
+                    if 'release-scripts' not in full_path and status in ('M', '??', 'A'):
+                        print(line)
 
     except subprocess.CalledProcessError as e:
         print("Failed to run 'git status':", e)
