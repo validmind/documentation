@@ -25,11 +25,11 @@ def get_year():
 
     # Prompt the user for input
     year = input(
-        f"Enter the location of your .env file (leave empty for default [{default_year}]): "
+        f"Enter the year you want to compile (leave empty for default [{default_year}]): "
     ) or default_year
 
     print(f"Year inputted: {year}\n")
-    return year
+    # return year
 
 
 def main():
