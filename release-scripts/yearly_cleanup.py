@@ -183,7 +183,7 @@ def update_template(destination_file, year):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with the year {year}.\n Edited lines: {edited_lines}.")
+        print(f"Updated '{destination_file}' with the year {year}.\nEdited lines: {edited_lines}.")
         return True
 
     except Exception as e:
@@ -282,7 +282,7 @@ def update_listing(destination_file, release_listings):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with release listings.\n Added lines: {edited_lines}.")
+        print(f"Updated '{destination_file}' with release listings.\nAdded lines: {edited_lines}.")
         return True
 
     except Exception as e:
@@ -336,7 +336,7 @@ def update_quarto_yaml(year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Added {year} folder to the sidebar in _quarto.yml")
+    print(f"Added {year} releases folder to the sidebar in _quarto.yml")
 
     
 def main():
