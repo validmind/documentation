@@ -424,7 +424,29 @@ def update_paths(year):
         for line_num, before, after in updates:
             print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
 
+def search_links(yearly_path):
+    """
+    Searches for files in a specified directory and looks for a specific text in them.
+    Prints the file path, line number, and the line containing the text.
+
+    Parameters:
+    - yearly_path (str): The base directory to search in.
+    """
+    search_dir = f"{yearly_path}"
+    search_text = "../"
     
+    for root, _, files in os.walk(search_dir):
+        for file in files:
+            file_path = os.path.join(root, file)
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    for line_number, line in enumerate(f, start=1):
+                        if search_text in line:
+                            print(f"File: {file_path}, Line {line_number}: {line.strip()}")
+            except (UnicodeDecodeError, FileNotFoundError):
+                # Skip files that cannot be opened or read
+                continue
+
 def main():
     year = get_year()
 
