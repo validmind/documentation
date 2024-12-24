@@ -134,7 +134,7 @@ release-notes:
 
 # Collate yearly releases
 yearly-releases:
-	@python ../release-scripts/yearly-cleanup.py
+	@python ../release-scripts/yearly_cleanup.py
 	git status
 	quarto preview
 
