@@ -199,6 +199,8 @@ def update_template(destination_file, year):
         print(f"Failed to update '{destination_file}': {e}")
         return False
     
+release_listings = []
+    
 def get_release_listings(yearly_path):
     """
     Returns moved releases to add to the yearly release listing.
@@ -207,7 +209,7 @@ def get_release_listings(yearly_path):
         yearly_path (str): The path to the year folder to search within.
 
     Returns:
-        list: A list of matching subdirectory names, sorted by the date in the folder names in descending order.
+        list: A list of matching subdirectory names, with '/release-notes.qmd' appended to each, sorted by the date in the folder names in descending order.
     """
     global release_listings 
     listing_dir = f"{yearly_path}"
@@ -220,7 +222,7 @@ def get_release_listings(yearly_path):
     subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
 
     if subdirs:
-        print(f"Found {len(subdirs)} folders in {yearly_path}:")
+        print(f"Found {len(subdirs)} release notes in {yearly_path}:")
         try:
             # Sort subdirs by parsing the date in the folder names
             subdirs = sorted(
@@ -230,6 +232,9 @@ def get_release_listings(yearly_path):
             )
         except ValueError:
             print("Some folder names do not match the expected date format (YYYY-MMM-DD). Skipping sorting.")
+
+        # Append '/release-notes.qmd' to each folder name
+        subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
     else:
         print(f"No folders found in {yearly_path}.")
 
