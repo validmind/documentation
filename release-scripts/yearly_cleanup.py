@@ -77,9 +77,9 @@ def get_yearly_releases(year):
     matching_subdirs = [d for d in subdirs if d.startswith(f"{year}-")]
 
     if matching_subdirs:
-        print(f"Found subdirectories for year {year}: {matching_subdirs}")
+        print(f"Found release folders for year {year}: {matching_subdirs}")
     else:
-        print(f"No subdirectories found for year {year}.")
+        print(f"No release folders found for year {year}.")
 
     return matching_subdirs
 
