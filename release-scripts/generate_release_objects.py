@@ -768,23 +768,28 @@ def show_files():
 
         print("\nFiles to commit (excluding 'release-scripts'):")
         for line in lines:
-            # Check for renamed files (R) with old -> new format
+            print(f"DEBUG: Processing line: {line}")  # Debugging statement
+            
+            # Check for renamed files (R)
             if line.startswith('R'):
-                parts = line.split(' -> ')
-                if len(parts) == 2:
-                    old_file = parts[0].strip()[2:]  # Remove 'R ' prefix
-                    new_file = parts[1].strip()
-                    # Check exclusion criteria for the new file
-                    if 'release-scripts' not in new_file:
-                        print(f"Renamed: {old_file} -> {new_file}")
-            else:
-                # Process other file statuses
-                parts = line.split(maxsplit=1)
-                if len(parts) > 1:
-                    status, file_path = parts
-                    full_path = os.path.abspath(file_path)
-                    if 'release-scripts' not in full_path and status in ('M', '??', 'A'):
-                        print(line)
+                try:
+                    # Split into old and new file names
+                    old_new_split = line[2:].split(' -> ')
+                    if len(old_new_split) == 2:
+                        old_file = old_new_split[0].strip()
+                        new_file = old_new_split[1].strip()
+                        if 'release-scripts' not in new_file:
+                            print(f"Renamed: {old_file} -> {new_file}")
+                        continue
+                except Exception as e:
+                    print(f"DEBUG: Failed to process renamed file: {line}. Error: {e}")
+            
+            # Process other statuses
+            parts = line.split(maxsplit=1)
+            if len(parts) > 1:
+                status, file_path = parts
+                if 'release-scripts' not in file_path and status in ('M', '??', 'A'):
+                    print(line)
 
     except subprocess.CalledProcessError as e:
         print("Failed to run 'git status':", e)
