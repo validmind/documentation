@@ -338,6 +338,40 @@ def update_quarto_yaml(year):
 
     print(f"Added {year} releases folder to the sidebar in _quarto.yml")
 
+def move_year_marker():
+    """Updates the _quarto.yml file to relocate the CURRENT-YEAR-END-MARKER.
+
+    Modifies:
+        _quarto.yml file
+    """
+    yaml_filename = "../site/_quarto.yml"
+    temp_yaml_filename = "../site/_quarto_temp.yml"
+
+    # Copy the original YAML file to a temporary file
+    shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+    with open(temp_yaml_filename, 'r') as file:
+        lines = file.readlines()
+
+    with open(yaml_filename, 'w') as file:
+        marker_deleted = False
+
+        for line in lines:
+            if line.strip() == "# CURRENT-YEAR-END-MARKER":
+                marker_deleted = True
+                continue  # Skip writing this line to effectively delete it
+
+            file.write(line)
+
+            if not marker_deleted and line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+                # Insert marker immediately after the specific line
+                file.write("        # CURRENT-YEAR-END-MARKER\n")
+
+    # Remove the temporary file
+    os.remove(temp_yaml_filename)
+
+    print("Relocated CURRENT-YEAR-END-MARKER in _quarto.yml.")
+
     
 def main():
     year = get_year()
