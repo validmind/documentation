@@ -116,8 +116,12 @@ def move_yearly_releases(yearly_path, release_folders):
 
 def main():
     year = get_year()
-    create_year_folder(year)
+    
+    release_folders = []
     get_yearly_releases(year)
+    
+    yearly_path = create_year_folder(year)
+    move_yearly_releases(yearly_path, release_folders)
 
 if __name__ == "__main__":
     main()
