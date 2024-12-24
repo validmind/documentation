@@ -88,6 +88,7 @@ def get_yearly_releases(year):
 def main():
     year = get_year()
     create_year_folder(year)
+    get_yearly_releases(year)
 
 if __name__ == "__main__":
     main()
