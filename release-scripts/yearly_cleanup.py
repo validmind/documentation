@@ -28,3 +28,10 @@ def get_year():
 
     print(f"Year inputted: {year}\n")
     return year
+
+
+def main():
+    get_year()
+
+if __name__ == "__main__":
+    main()
