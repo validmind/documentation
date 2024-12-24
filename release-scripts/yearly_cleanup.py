@@ -39,7 +39,7 @@ def create_year_folder(year):
     os.makedirs(releases_dir, exist_ok=True)
 
     if os.path.exists(yearly_path):
-        print(f"The directory '{yearly_path}' already exists.")
+        print(f"The directory '{yearly_path}' already exists")
     else:
         os.makedirs(yearly_path)
         print(f"Created folder: {yearly_path}\n")
@@ -62,7 +62,7 @@ def get_yearly_releases(year):
     releases_dir = "../site/releases/"
 
     if not os.path.exists(releases_dir):
-        print(f"'{releases_dir}' does not exist.")
+        print(f"'{releases_dir}' does not exist")
         release_folders = []  
         return release_folders
 
@@ -72,7 +72,7 @@ def get_yearly_releases(year):
     if matching_subdirs:
         print(f"Found {len(matching_subdirs)} release folders for year {year}:")
     else:
-        print(f"No release folders found for year {year}.")
+        print(f"No release folders found for year {year}")
 
     release_folders = sorted(matching_subdirs)
     return release_folders
@@ -90,7 +90,7 @@ def move_yearly_releases(yearly_path, release_folders):
         None
     """
     if not release_folders:
-        print("No release folders to move.")
+        print("No release folders to move")
         return
 
     for folder in release_folders:
@@ -98,7 +98,7 @@ def move_yearly_releases(yearly_path, release_folders):
 
         try:
             if os.path.exists(destination):
-                print(f"Skipping: '{destination}' already exists.")
+                print(f"Skipping: '{destination}' already exists")
             else:
                 shutil.move(folder, destination)
                 print(f"Moved: '{folder}' to '{destination}'")
@@ -123,7 +123,7 @@ def copy_template(yearly_path, year):
     try:
         # Check if the template exists
         if not os.path.exists(template_path):
-            print(f"Template file '{template_path}' does not exist.")
+            print(f"Template file '{template_path}' does not exist")
             return None
 
         # Copy the template to the destination
@@ -148,7 +148,7 @@ def update_template(destination_file, year):
         bool: True if the file was updated successfully, False otherwise.
     """
     if not os.path.exists(destination_file):
-        print(f"File '{destination_file}' does not exist.")
+        print(f"File '{destination_file}' does not exist")
         return False
 
     try:
@@ -183,7 +183,7 @@ def update_template(destination_file, year):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with the year {year}.\nEdited lines: {edited_lines}.")
+        print(f"Updated '{destination_file}' with the year {year}\nEdited lines: {edited_lines}")
         return True
 
     except Exception as e:
@@ -206,7 +206,7 @@ def get_release_listings(yearly_path):
     listing_dir = f"{yearly_path}"
 
     if not os.path.exists(listing_dir):
-        print(f"'{listing_dir}' does not exist.")
+        print(f"'{listing_dir}' does not exist")
         release_listings = []  
         return release_listings
 
@@ -221,7 +221,7 @@ def get_release_listings(yearly_path):
                 reverse=True
             )
         except ValueError:
-            print("Some folder names do not match the expected date format (YYYY-MMM-DD). Skipping sorting.")
+            print("Some folder names do not match the expected date format (YYYY-MMM-DD), skipping sorting")
 
         # Append '/release-notes.qmd' to each folder name
         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
@@ -229,7 +229,7 @@ def get_release_listings(yearly_path):
         for note in subdirs:
             print(note)
     else:
-        print(f"No folders found in {yearly_path}.")
+        print(f"No folders found in {yearly_path}")
 
     release_listings = subdirs
     return release_listings
@@ -247,7 +247,7 @@ def update_listing(destination_file, release_listings):
         bool: True if the file was updated successfully, False otherwise.
     """
     if not os.path.exists(destination_file):
-        print(f"File '{destination_file}' does not exist.")
+        print(f"File '{destination_file}' does not exist")
         return False
 
     try:
@@ -275,14 +275,14 @@ def update_listing(destination_file, release_listings):
                     insertion_index += 1
 
         if not release_marker_found:
-            print("# RELEASE-FILES-MARKER not found in the file.")
+            print("# RELEASE-FILES-MARKER not found in the file")
             return False
 
         # Write the updated content back to the file
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with release listings.\nAdded lines: {edited_lines}.")
+        print(f"Updated '{destination_file}' with release listings\nAdded lines: {edited_lines}")
         return True
 
     except Exception as e:
@@ -377,7 +377,7 @@ def move_year_marker():
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Relocated CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}.")
+    print(f"Relocated CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
 
 def update_paths(year):
     """
@@ -455,7 +455,7 @@ def search_links(yearly_path):
                 # Skip files that cannot be opened or read
                 continue
 
-    print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found.")
+    print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
 def main():
     year = get_year()
