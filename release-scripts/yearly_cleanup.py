@@ -460,6 +460,7 @@ def search_links(yearly_path):
             if matches:
                 print(f"{file_path}:")
                 print("\n".join(matches))
+                print()  # Add an extra empty line between files
 
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
