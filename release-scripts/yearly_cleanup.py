@@ -28,7 +28,7 @@ def get_year():
         f"Enter the year you want to compile (leave empty for default [{default_year}]): "
     ) or default_year
 
-    print(f"Year inputted:")
+    print(f"Creating folder for year: {year}\n")
     return year
 
 def create_year_folder(year):
@@ -55,7 +55,8 @@ def create_year_folder(year):
     return yearly_path
 
 def main():
-    get_year()
+    year = get_year()
+    create_year_folder(year)
 
 if __name__ == "__main__":
     main()
