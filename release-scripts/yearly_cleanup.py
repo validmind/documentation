@@ -1,6 +1,5 @@
 import subprocess
 import json
-import re
 import shutil
 import numpy as np
 import datetime
@@ -10,6 +9,7 @@ from collections import defaultdict
 
 from datetime import datetime
 import os
+import re
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -53,6 +53,35 @@ def create_year_folder(year):
         print(f"Created folder: {yearly_path}")
     
     return yearly_path
+
+def get_yearly_releases(year):
+    """
+    Finds subdirectories in ../site/releases/ that begin with the specified year.
+
+    Args:
+        year (str): The year prefix to search for in subdirectory names.
+
+    Returns:
+        list: A list of matching subdirectory names.
+    """
+    releases_dir = "../site/releases/"
+
+    if not os.path.exists(releases_dir):
+        print(f"The releases directory '{releases_dir}' does not exist.")
+        return []
+
+    # List all subdirectories in the releases directory
+    subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
+
+    # Filter subdirectories that start with the specified year
+    matching_subdirs = [d for d in subdirs if d.startswith(f"{year}-")]
+
+    if matching_subdirs:
+        print(f"Found subdirectories for year {year}: {matching_subdirs}")
+    else:
+        print(f"No subdirectories found for year {year}.")
+
+    return matching_subdirs
 
 def main():
     year = get_year()
