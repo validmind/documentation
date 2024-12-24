@@ -51,7 +51,7 @@ def create_year_folder(year):
         print(f"The directory '{yearly_path}' already exists.")
     else:
         os.makedirs(yearly_path)
-        print(f"Created folder:")
+        print(f"Created folder: {yearly_path}\n")
     
     return yearly_path
 
