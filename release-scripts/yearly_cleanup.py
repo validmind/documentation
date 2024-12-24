@@ -75,7 +75,7 @@ def get_yearly_releases(year):
         return release_folders
 
     subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
-    matching_subdirs = [d for d in subdirs if d.startswith(f"{year}-")]
+    matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}-")]
 
     if matching_subdirs:
         print(f"Found {len(matching_subdirs)} release folders for year {year}:")
