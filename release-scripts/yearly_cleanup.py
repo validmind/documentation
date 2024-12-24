@@ -9,6 +9,8 @@ from dotenv import dotenv_values
 import os
 from collections import defaultdict
 
+from datetime import datetime
+
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 def get_year():
