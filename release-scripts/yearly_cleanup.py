@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 from generate_release_objects import show_files
+from IPython import get_ipython
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -70,12 +71,16 @@ def get_yearly_releases(year):
     subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
     matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}-")]
 
+    release_folders = sorted(matching_subdirs)
+
     if matching_subdirs:
-        print(f"Found {len(matching_subdirs)} release folders for year {year}:")
+        if get_ipython():  # Check if running in Jupyter Notebook
+            print(f"Found {len(matching_subdirs)} release folders for year {year}:")
+        else:
+            print(f"Found {len(release_folders)} release folders for year {year}:\n" + "\n".join(release_folders))
     else:
         print(f"No release folders found for year {year}")
 
-    release_folders = sorted(matching_subdirs)
     return release_folders
 
 def move_yearly_releases(yearly_path, release_folders):
