@@ -1,4 +1,3 @@
-import requests
 import subprocess
 import json
 import re
@@ -6,8 +5,9 @@ import shutil
 import numpy as np
 import datetime
 import openai
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
+from collections import defaultdict
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -278,25 +278,77 @@ class ReleaseURL:
         for pr in self.prs:
             pr.load_data_json()
 
-
-def setup_openai_api():
-    """Loads .env file and updates the OpenAI API key. 
-    
-    Replace '../.env' with the relative path to your .env file.
-
-    Modifies:
-        openai.api_key
+def get_env_location():
     """
-    # Load environment variables
-    load_dotenv('../.env') # in the script, update to match the correct path
+    Asks the user for the location of their .env file.
 
-    # Get the OpenAI API key
-    api_key = os.getenv('OPENAI_API_KEY')
+    Returns:
+        str: The provided location or a default value (../.env).
+    """
+    # Default location of the .env file
+    default_env_location = "../.env"
+
+    # Prompt the user for input
+    env_location = input(
+        f"Enter the location of your .env file (leave empty for default [{default_env_location}]): "
+    ) or default_env_location
+
+    print(f"Using .env file location: {env_location}\n")
+    return env_location
+
+def setup_openai_api(env_location):
+    """
+    Loads .env file from the specified location and retrieves the OpenAI API key.
+
+    Args:
+        env_location (str): The location of the .env file.
+
+    Raises:
+        FileNotFoundError: If the .env file is not found at the specified location.
+        KeyError: If the OPENAI_API_KEY is not present in the .env file.
+    """
+    # Load environment variables from the provided location without affecting os.environ
+    config = dotenv_values(env_location)
+    if not config:
+        raise FileNotFoundError(f".env file not found or is empty at {env_location}")
+
+    # Check for the required key
+    api_key = config.get('OPENAI_API_KEY')
     if not api_key:
-        raise EnvironmentError("OpenAI API key is not set in .env file.")
+        raise KeyError(
+            f"OPENAI_API_KEY is not set in the .env file at {env_location}. "
+            "Please ensure the .env file contains this key."
+        )
 
     # Set the API key for the OpenAI library
+    print(f"Detected OpenAI API Key in {env_location}.")  # Optional debug message
     openai.api_key = api_key
+
+label_to_category = {
+    "highlight": "## Release highlights",
+    "enhancement": "## Enhancements",
+    "deprecation": "## Deprecations",
+    "bug": "## Bug fixes",
+    "documentation": "## Documentation"
+}
+
+categories = { 
+    "highlight": [],
+    "enhancement": [],
+    "deprecation": [],
+    "bug": [],
+    "documentation": []
+}
+
+def display_list(array):
+    """
+    Lists an array in a numbered list. Used to check the `label_hierarchy`.
+    """
+
+    for i, item in enumerate(array, start=1):
+        print(f"{i}. {item}")
+
+release_components = {} 
 
 def collect_github_urls(): 
     """Collects release URLs from user.
@@ -345,6 +397,254 @@ def get_release_date():
     except ValueError:
         print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
         return get_release_date()
+    
+def create_release_folder(formatted_release_date):
+    """
+    Creates a directory for the release notes based on the provided release date
+    and returns the output file path.
+
+    Args:
+        formatted_release_date (str): The formatted release date string.
+
+    Returns:
+        str: The path to the release notes file.
+    """
+    directory_path = f"../site/releases/{formatted_release_date}/"
+    os.makedirs(directory_path, exist_ok=True)
+    output_file = f"{directory_path}release-notes.qmd"
+    print(f"{output_file} created.")
+    return output_file
+
+def create_release_qmd(output_file, original_release_date):
+    """
+    Writes metadata to a file with a title set to the original release date.
+
+    Args:
+        output_file (str): The path to the file to write.
+        original_release_date (str): The title to include in the metadata.
+    """
+
+    print("Generating & editing release notes ...")
+    with open(output_file, "w") as file:
+        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+
+def update_release_components(release_components, categories):
+    """
+    Updates a dictionary of release components with the given categories.
+
+    Parameters:
+        release_components (dict): The dictionary to update.
+        categories (dict): The categories to add to the release components.
+
+    Returns:
+        dict: The updated release components dictionary.
+    """
+    release_components.update(categories)
+    return release_components
+
+def set_names(github_urls):
+    """
+    Iterates over a list of URL objects, calling the `set_repo_and_tag_name` method on each.
+
+    Parameters:
+        github_urls (list): A list of objects, each having the method `set_repo_and_tag_name`.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        url.set_repo_and_tag_name()
+
+def extract_urls(github_urls):
+    """
+    Extracts pull request (PR) objects from a list of GitHub URLs.
+
+    Args:
+        github_urls (iterable): An iterable containing GitHub URL objects that 
+                               have an `extract_prs` method.
+
+    Returns:
+        None: The `extract_prs` method modifies the URL objects in-place.
+    """
+    for url in github_urls:
+        url.extract_prs()
+
+def populate_data(urls):
+    """
+    Populates pull request data for a list of URLs.
+
+    Args:
+        urls (iterable): An iterable of objects with a `populate_pr_data` method.
+    """
+    for url in urls:
+        url.populate_pr_data()
+
+def edit_release_notes(github_urls, editing_instructions_body):
+    """
+    Processes a list of GitHub URLs to extract and edit release notes for pull requests.
+
+    Args:
+        github_urls (list): List of GitHub URL objects containing pull requests.
+        editing_instructions_body (str): Instructions for editing the text with OpenAI.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n") 
+                if pr.extract_external_release_notes():
+                    pr.edit_text_with_openai(False, editing_instructions_body)
+
+def auto_summary(github_urls, summary_instructions):
+    """
+    Processes GitHub PRs by fetching comments, extracting summaries, and converting 
+    summaries to release notes based on given instructions.
+
+    Args:
+        github_urls (list): A list of GitHub URLs, each containing PR data.
+        summary_instructions (str): Instructions for converting summaries to release notes.
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Fetching github comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
+                pr.extract_pr_summary_comment()
+                pr.convert_summary_to_release_notes(summary_instructions)
+
+def edit_titles(github_urls, editing_instructions_title):
+    """
+    Updates the titles of pull requests (PRs) based on provided JSON data and cleaning instructions.
+
+    Parameters:
+        github_urls (list): A list of GitHub URLs, each containing PRs to process.
+        editing_instructions_title (str): Instructions for cleaning PR titles.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
+                pr.title = pr.data_json['title']
+                pr.clean_title(editing_instructions_title)
+                print("\n")
+
+def set_labels(github_urls):
+    """
+    Processes a list of GitHub URLs and extracts pull request labels, printing them.
+
+    Args:
+        github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                pr.labels = [label['name'] for label in pr.data_json['labels']]
+                print(f"PR #{pr.pr_number} from {pr.repo_name}: {pr.labels}\n")
+
+def assign_details(github_urls):
+    """
+    Processes a list of GitHub URLs and extracts details for PRs with data in `data_json`.
+
+    Args:
+        github_urls (list): A list of objects representing GitHub URLs, each containing PRs.
+
+    Returns:
+        None
+    """
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                pr.pr_details = {
+                    'pr_number': pr.pr_number,
+                    'title': pr.cleaned_title,
+                    'full_title': pr.data_json['title'],
+                    'url': pr.data_json['url'],
+                    'labels': ", ".join(pr.labels),
+                    'notes': pr.edited_text
+                }
+                print(f"PR #{pr.pr_number} from {pr.repo_name} added.\n")
+
+def assemble_release(github_urls, label_hierarchy):
+    """
+    Assigns PRs from a list of GitHub release URLs to release components based on their labels.
+
+    Parameters:
+        github_urls (list): A list of GitHub URL objects, each containing PRs.
+        label_hierarchy (list): A prioritized list of labels to determine component assignment.
+
+    Returns:
+        dict: A dictionary where keys are labels from the hierarchy (or 'other') and values are lists of PR details.
+    """
+    # Initialize release_components as a defaultdict with lists
+    release_components = defaultdict(list)
+
+    # Process PRs and assign them to components based on label hierarchy
+    unassigned_prs = []  # Track PRs that do not match any label in the hierarchy
+
+    for url in github_urls:
+        for pr in url.prs:
+            if pr.data_json:
+                print(f"Adding PR #{pr.pr_number} from {pr.repo_name}...\n")
+                assigned = False
+                for priority_label in label_hierarchy:
+                    if priority_label in pr.labels:
+                        release_components[priority_label].append(pr.pr_details)
+                        assigned = True
+                        break
+                if not assigned:
+                    unassigned_prs.append(pr.pr_details)
+
+    # Add unassigned PRs to the 'other' category
+    release_components['other'].extend(unassigned_prs)
+
+    # Convert defaultdict to a regular dict and ensure 'other' is at the end
+    result = {label: release_components[label] for label in label_hierarchy if label in release_components}
+    if 'other' in release_components:
+        result['other'] = release_components['other']
+
+    return result
+
+def release_output(output_file, release_components, label_to_category):
+    """
+    Appends release notes to the specified file.
+
+    Args:
+        output_file (str): Path to the file to append.
+        release_components (dict): Release notes categorized by labels.
+        label_to_category (dict): Mapping of labels to formatted categories.
+
+    Returns:
+        None
+    """
+    try:
+        with open(output_file, "a") as file:
+            write_file(file, release_components, label_to_category)
+            print(f"Release notes added to {file.name}.")
+    except Exception as e:
+        print(f"Failed to write to {output_file}: {e}")
+
+def upgrade_info(output_file):
+    """
+    Appends the upgrade information single-source to the end of the new release notes.
+
+    Args:
+        output_file (str): Path to the file to append.
+
+    Returns:
+        None
+    """
+    include_directive = "\n\n{{< include /releases/_how-to-upgrade.qmd >}}\n"
+
+    try:
+        with open(output_file, "a") as file:
+            file.write(include_directive)
+            print(f"Include _how-to-upgrade.qmd added to {file.name}.")
+    except Exception as e:
+        print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
 def update_quarto_yaml(release_date):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
@@ -355,8 +655,8 @@ def update_quarto_yaml(release_date):
     Modifies:
         _quarto.yml file
     """
-    yaml_filename = "_quarto.yml"
-    temp_yaml_filename = "_quarto_temp.yml"
+    yaml_filename = "../site/_quarto.yml"
+    temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -386,7 +686,106 @@ def update_quarto_yaml(release_date):
     
     print(f"Added release notes to _quarto.yml, line {insert_index + 2}")
 
-def write_prs_to_file(file, release_components, label_to_category):
+def update_index_qmd(release_date):
+    """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
+
+    Params:
+        release_date - release notes use the release date as the file name.
+    
+    Modifies:
+        index.qmd file
+    """
+
+    index_filename = "../site/index.qmd"
+    temp_index_filename = "../site/index_temp.qmd"
+
+    # Copy the original QMD file to a temporary file
+    shutil.copyfile(index_filename, temp_index_filename)
+
+    with open(temp_index_filename, 'r') as file:
+        lines = file.readlines()
+
+    # Format the release date for insertion into the QMD file
+    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+
+    with open(index_filename, 'w') as file:
+        add_release_content = False
+        insert_index = -1
+
+        for i, line in enumerate(lines):
+            file.write(line)
+            if line.strip() == "# MAKE-RELEASE-NOTES-LATEST-MARKER":
+                add_release_content = True
+                insert_index = i
+
+            if add_release_content and i == insert_index:
+                file.write(f'      - /releases/{formatted_release_date}/release-notes.qmd\n')
+                add_release_content = False
+
+    # Remove the temporary file
+    os.remove(temp_index_filename)
+    
+    print(f"Added new release notes to index.qmd, line {insert_index + 2}")
+
+    removed_line = None  # To store the line that gets removed
+
+    with open(index_filename, 'r') as file:
+        updated_lines = file.readlines()
+
+    with open(index_filename, 'w') as file:
+        for i, line in enumerate(updated_lines):
+            # Identify the marker line
+            if line.strip() == "# MAKE-RELEASE-NOTES-OLDEST-MARKER":
+                # Check if the line above exists and starts with a list indicator "-"
+                if i > 0 and updated_lines[i - 1].strip().startswith("-"):
+                    # Store the line being removed
+                    removed_line = updated_lines[i - 1].strip()
+                    # Write all lines up to the one before the line to remove
+                    file.writelines(updated_lines[:i - 1])
+                    # Write the marker and subsequent lines
+                    file.writelines(updated_lines[i:])
+                    break
+        else:
+            # If no marker is found, rewrite the file as is
+            file.writelines(updated_lines)
+
+    print(f"Removed the oldest release note entry: '{removed_line}'")
+
+def show_files():
+    """Print files to commit by running 'git status --short'."""
+    try:
+        # Get the absolute path of the current directory
+        current_dir = os.getcwd()
+
+        # Run 'git status --short'
+        result = subprocess.run(
+            ["git", "status", "--short"], check=True, text=True, capture_output=True
+        )
+        
+        # Process and display the output
+        lines = result.stdout.strip().split('\n')
+
+        if not lines:
+            print("No changes detected.")
+            return
+
+        print("\nFiles to commit (excluding 'release-scripts'):")
+        for line in lines:
+            # Get the full path of the file
+            parts = line.split()
+            if len(parts) > 1:
+                file_path = os.path.abspath(parts[-1])
+            else:
+                continue
+
+            # Exclude files in the 'release-scripts' folder
+            if 'release-scripts' not in file_path and line.startswith((' M', '??', 'A ')):
+                print(line)
+
+    except subprocess.CalledProcessError as e:
+        print("Failed to run 'git status':", e)
+
+def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
     Args:
         file - desired file path
@@ -425,28 +824,19 @@ def write_prs_to_file(file, release_components, label_to_category):
             file.writelines(output_lines)
 
 def main():
-    # Set up the OpenAI API key from the .env file
-    setup_openai_api()
+    """
+    Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
+    """
 
-    label_to_category = {
-        "highlight": "## Release highlights",
-        "enhancement": "## Enhancements",
-        "deprecation": "## Deprecations",
-        "bug": "## Bug fixes",
-        "documentation": "## Documentation"
-    }
+    env_location = get_env_location()
+    setup_openai_api(env_location)
 
-    categories = { 
-        "highlight": [],
-        "enhancement": [],
-        "deprecation": [],
-        "bug": [],
-        "documentation": []
-    }
+    label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
+    display_list(label_hierarchy)
 
-    label_hierarchy = ["highlight", "deprecation", "bug", "enhancement", "documentation"]
+    release_components = {} 
 
-    github_urls = collect_github_urls() # the only big global variable
+    github_urls = collect_github_urls() 
     
     release_datetime = get_release_date()
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
@@ -456,22 +846,13 @@ def main():
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
 
-    print("Generating & editing release notes ...")
+    output_file = create_release_folder(formatted_release_date)
+    create_release_qmd(output_file, original_release_date)
+    update_release_components(release_components, categories)
 
-    with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
-
-    release_components = dict()
-    release_components.update(categories)
-
-    for url in github_urls:
-        url.set_repo_and_tag_name() 
-
-    for url in github_urls:
-        url.extract_prs() # initializes PR objects into a list for each URL
-
-    for url in github_urls:
-        url.populate_pr_data() # loads json file into the object data
+    set_names(github_urls)
+    extract_urls(github_urls)
+    populate_data(github_urls)
 
     editing_instructions_body = """
         Please edit the provided technical content according to the following guidelines:
@@ -494,10 +875,17 @@ def main():
         - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
         """
     
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: 
-                if pr.extract_external_release_notes(): pr.edit_text_with_openai(False, editing_instructions_body)
+    edit_release_notes(github_urls, editing_instructions_body)
+
+    summary_instructions = """ 
+        Please turn this PR Summary into a summary for release notes, according to the following guidelines:
+        - Use simple and neutral language in the active voice.
+        - Change from numbered list format to paragraph-style text.
+        - Address users directly in the second person with "you".
+        - Use present tense by avoiding the use of "will".
+        """
+
+    auto_summary(github_urls, summary_instructions)
 
     editing_instructions_title = """
         Please edit the provided technical content according to the following guidelines:
@@ -520,55 +908,15 @@ def main():
         - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
         """
     
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: 
-                pr.title = pr.data_json['title']
-                pr.clean_title(editing_instructions_title)
+    edit_titles(github_urls, editing_instructions_title)
+    set_labels(github_urls)
+    assign_details(github_urls)
+    release_components = assemble_release(github_urls, label_hierarchy)
 
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: pr.labels = [label['name'] for label in pr.data_json['labels']]
-
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json: pr.pr_details = {
-                'pr_number': pr.pr_number,
-                'title': pr.cleaned_title,
-                'full_title': pr.data_json['title'],
-                'url': pr.data_json['url'],
-                'labels': ", ".join(pr.labels),
-                'notes': pr.edited_text
-            }
-
-    for url in github_urls:
-        for pr in url.prs:
-            if pr.data_json:
-                assigned = False 
-                for priority_label in label_hierarchy:
-                    if priority_label in pr.labels:
-                        release_components[priority_label].append(pr.pr_details)
-                        assigned = True
-                        break
-                if not assigned:
-                    release_components.setdefault('other', []).append(pr.pr_details)
-
-    # Write categorized PRs to the file
-    with open(output_file, "a") as file:
-        write_prs_to_file(file, release_components, label_to_category)
-
+    release_output(output_file, release_components, label_to_category)
+    upgrade_info(output_file)
     update_quarto_yaml(release_datetime)
-
-    # After completing all tasks, print git status to show output files
-    try:
-        result = subprocess.run(["git", "status", "--short"], check=True, text=True, capture_output=True)
-        lines = result.stdout.split('\n')
-        print("Files to commit:")
-        for line in lines:
-            if line.startswith((' M', '??', 'A ')):
-                print(line)
-    except subprocess.CalledProcessError as e:
-        print("Failed to run git status:", e)
+    update_index_qmd(release_datetime)
 
 if __name__ == "__main__":
     main()
