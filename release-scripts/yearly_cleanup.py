@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import re
 import shutil
+import subprocess
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -461,6 +462,33 @@ def search_links(yearly_path):
                 print("\n".join(matches))
 
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
+
+def git_status():
+    try:
+        # Run `git status` and capture the output
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+        # Filter lines related to changes in the `../site` folder
+        changed_files = [
+            line.strip()
+            for line in result.stdout.splitlines()
+            if line.startswith(" M ../site") or line.startswith("?? ../site")
+        ]
+
+        # Print the results
+        if changed_files:
+            print("Changed files in ../site:")
+            for file in changed_files:
+                print(file)
+        else:
+            print("No changes detected in ../site.")
+    except subprocess.CalledProcessError as e:
+        print("Error running git status:", e.stderr)
 
 def main():
     year = get_year()
