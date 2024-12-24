@@ -199,6 +199,36 @@ def update_template(destination_file, year):
         print(f"Failed to update '{destination_file}': {e}")
         return False
     
+release_listings = []
+    
+def get_release_listings(year):
+    """
+    Returns moved releases to add to the yearly release listing.
+
+    Args:
+        year (str): The year folder to search within.
+
+    Returns:
+        list: A list of matching subdirectory names, sorted by date created in descending order.
+    """
+    global release_listings 
+    listing_dir = "../site/releases/{year}/"
+
+    if not os.path.exists(listing_dir):
+        print(f"'{listing_dir}' does not exist.")
+        release_listings = []  
+        return release_listings
+
+    subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
+
+    if subdirs:
+        print(f"Found {len(subdirs)} release folders for year {year}:")
+    else:
+        print(f"No release folders found for year {year}.")
+
+    release_listings = subdirs
+    return release_listings
+    
 def main():
     year = get_year()
 
@@ -207,6 +237,12 @@ def main():
     
     yearly_path = create_year_folder(year)
     move_yearly_releases(yearly_path, release_folders)
+
+    yearly_release = copy_template(yearly_path, year)
+
+    if yearly_release:
+        update_template(yearly_release, year)
+
 
 if __name__ == "__main__":
     main()
