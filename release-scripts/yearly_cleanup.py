@@ -212,7 +212,7 @@ def get_release_listings(year):
         list: A list of matching subdirectory names, sorted by date created in descending order.
     """
     global release_listings 
-    listing_dir = "../site/releases/{year}/"
+    listing_dir = "../site/releases/{year}"
 
     if not os.path.exists(listing_dir):
         print(f"'{listing_dir}' does not exist.")
