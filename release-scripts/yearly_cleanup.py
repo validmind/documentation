@@ -327,7 +327,7 @@ def update_quarto_yaml(year):
 
             if between_markers:
                 modified_lines.append(i + 1)
-                file.write("   " + line)  # Add additional indent to lines between markers
+                file.write("  " + line)  # Add additional indent to lines between markers
             else:
                 file.write(line)
 
