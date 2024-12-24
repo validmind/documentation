@@ -442,6 +442,7 @@ def search_links(yearly_path):
         for file in files:
             file_path = os.path.join(root, file)
             file_has_match = False
+            matches = []  # To store matching lines for this file
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     for line_number, line in enumerate(f, start=1):
@@ -450,10 +451,14 @@ def search_links(yearly_path):
                             if not file_has_match:
                                 file_has_match = True
                                 matching_files += 1
-                            print(f"File: {file_path}, Line {line_number}: {line.strip()}")
+                            matches.append(f" - Line {line_number} found")
             except (UnicodeDecodeError, FileNotFoundError):
                 # Skip files that cannot be opened or read
                 continue
+
+            if matches:
+                print(f"{file_path}:")
+                print("\n".join(matches))
 
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
