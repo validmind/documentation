@@ -10,6 +10,7 @@ from collections import defaultdict
 from datetime import datetime
 import os
 import re
+import shutil
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -84,6 +85,34 @@ def get_yearly_releases(year):
 
     release_folders = sorted(matching_subdirs)
     return release_folders
+
+def move_yearly_releases(yearly_path, release_folders):
+    """
+    Moves all subdirectories and files within them from the release_folders list 
+    into the yearly_path directory.
+
+    Args:
+        yearly_path (str): The destination directory.
+        release_folders (list): A list of subdirectories to move.
+
+    Returns:
+        None
+    """
+    if not release_folders:
+        print("No release folders to move.")
+        return
+
+    for folder in release_folders:
+        destination = os.path.join(yearly_path, os.path.basename(folder))
+
+        try:
+            if os.path.exists(destination):
+                print(f"Skipping: '{destination}' already exists.")
+            else:
+                shutil.move(folder, destination)
+                print(f"Moved: '{folder}' to '{destination}'")
+        except Exception as e:
+            print(f"Failed to move '{folder}' to '{destination}': {e}")
 
 def main():
     year = get_year()
