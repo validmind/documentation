@@ -1,13 +1,4 @@
-import subprocess
-import json
-import shutil
-import numpy as np
 import datetime
-import openai
-from dotenv import dotenv_values
-from collections import defaultdict
-
-from datetime import datetime
 import os
 import re
 import shutil
@@ -295,6 +286,56 @@ def update_listing(destination_file, release_listings):
     except Exception as e:
         print(f"Failed to update '{destination_file}': {e}")
         return False
+    
+def update_quarto_yaml(year):
+    """Updates the _quarto.yml file to include the new yearly release folder.
+
+    Params:
+        year - the year to be used for the folder.
+    
+    Modifies:
+        _quarto.yml file
+    """
+    yaml_filename = "../site/_quarto.yml"
+    temp_yaml_filename = "../site/_quarto_temp.yml"
+
+    # Copy the original YAML file to a temporary file
+    shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+    with open(temp_yaml_filename, 'r') as file:
+        lines = file.readlines()
+
+    # Use the year from the parameter
+    release_file = f"releases/{year}/{year}-releases.qmd"
+
+    with open(yaml_filename, 'w') as file:
+        between_markers = False
+        modified_lines = []
+
+        for i, line in enumerate(lines):
+            if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+                file.write(line)
+                file.write(f"        - file: {release_file}\n")
+                file.write("          contents:\n")
+                between_markers = True
+                continue
+
+            if line.strip() == "# CURRENT-YEAR-END-MARKER":
+                between_markers = False
+
+            if between_markers:
+                modified_lines.append(i + 1)
+                file.write("    " + line)  # Add additional indent to lines between markers
+            else:
+                file.write(line)
+
+        print(f"Modified lines: {modified_lines}")
+
+    # Remove the temporary file
+    os.remove(temp_yaml_filename)
+
+    print("Added {year} folder to the sidebar in _quarto.yml")
+
     
 def main():
     year = get_year()
