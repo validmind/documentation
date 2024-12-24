@@ -478,21 +478,21 @@ def main():
     yearly_path = create_year_folder(year)
     move_yearly_releases(yearly_path, release_folders)
 
-    yearly_release = copy_template(yearly_path, year)
+    # yearly_release = copy_template(yearly_path, year)
 
-    if yearly_release:
-        update_template(yearly_release, year)
+    # if yearly_release:
+    #     update_template(yearly_release, year)
 
-    release_listings = []
-    release_listings = get_release_listings(yearly_path)
-    if release_listings:
-        update_listing(yearly_release, release_listings)
+    # release_listings = []
+    # release_listings = get_release_listings(yearly_path)
+    # if release_listings:
+    #     update_listing(yearly_release, release_listings)
     
-    update_quarto_yaml(year)
-    move_year_marker()
-    update_paths(year)
+    # update_quarto_yaml(year)
+    # move_year_marker()
+    # update_paths(year)
 
-    show_files()
+    # show_files()
 
 if __name__ == "__main__":
     main()
