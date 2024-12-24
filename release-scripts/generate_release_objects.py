@@ -770,25 +770,27 @@ def show_files():
         for line in lines:
             print(f"DEBUG: Processing line: {line}")  # Debugging statement
             
-            # Check for renamed files (R)
-            if line.startswith('R'):
+            # Handle moved/renamed files
+            if " -> " in line:
                 try:
-                    # Split into old and new file names
-                    old_new_split = line[2:].split(' -> ')
-                    if len(old_new_split) == 2:
-                        old_file = old_new_split[0].strip()
-                        new_file = old_new_split[1].strip()
-                        if 'release-scripts' not in new_file:
-                            print(f"Renamed: {old_file} -> {new_file}")
+                    # Extract old and new file paths
+                    status, paths = line.split(maxsplit=1)
+                    old_file, new_file = paths.split(' -> ')
+                    if 'release-scripts' not in new_file:
+                        print(f"Moved: {old_file.strip()} -> {new_file.strip()}")
                         continue
                 except Exception as e:
-                    print(f"DEBUG: Failed to process renamed file: {line}. Error: {e}")
-            
-            # Process other statuses
+                    print(f"DEBUG: Error processing moved file: {line}. Error: {e}")
+                    continue
+
+            # Process other file statuses
             parts = line.split(maxsplit=1)
             if len(parts) > 1:
                 status, file_path = parts
-                if 'release-scripts' not in file_path and status in ('M', '??', 'A'):
+                if (
+                    'release-scripts' not in file_path
+                    and status in ('M', '??', 'A', 'D')
+                ):
                     print(line)
 
     except subprocess.CalledProcessError as e:
