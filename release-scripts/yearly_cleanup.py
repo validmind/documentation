@@ -225,7 +225,9 @@ def get_release_listings(yearly_path):
 
         # Append '/release-notes.qmd' to each folder name
         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
-        print(f"Found {len(subdirs)} release notes in {yearly_path}: {subdirs}")
+        print(f"Found {len(subdirs)} release notes in {yearly_path}:")
+        for note in subdirs:
+            print(note)
     else:
         print(f"No folders found in {yearly_path}.")
 
