@@ -199,17 +199,15 @@ def update_template(destination_file, year):
         print(f"Failed to update '{destination_file}': {e}")
         return False
     
-release_listings = []
-    
 def get_release_listings(yearly_path):
     """
     Returns moved releases to add to the yearly release listing.
 
     Args:
-        year (str): The year folder to search within.
+        yearly_path (str): The path to the year folder to search within.
 
     Returns:
-        list: A list of matching subdirectory names, sorted by date created in descending order.
+        list: A list of matching subdirectory names, sorted by the date in the folder names in descending order.
     """
     global release_listings 
     listing_dir = f"{yearly_path}"
@@ -223,6 +221,15 @@ def get_release_listings(yearly_path):
 
     if subdirs:
         print(f"Found {len(subdirs)} folders in {yearly_path}:")
+        try:
+            # Sort subdirs by parsing the date in the folder names
+            subdirs = sorted(
+                subdirs,
+                key=lambda d: datetime.strptime(d, "%Y-%b-%d"),
+                reverse=True
+            )
+        except ValueError:
+            print("Some folder names do not match the expected date format (YYYY-MMM-DD). Skipping sorting.")
     else:
         print(f"No folders found in {yearly_path}.")
 
