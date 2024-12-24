@@ -128,6 +128,8 @@ deploy-staging:
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py
+	git status
+	quarto preview
 
 # Execute a Jupyter Notebook  
 # Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
