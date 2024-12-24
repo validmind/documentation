@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 import re
 import shutil
-import subprocess
+from generate_release_objects import show_files
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -458,7 +458,7 @@ def search_links(yearly_path):
                 continue
 
             if matches:
-                print(f"{file_path}:")
+                print(f"File: {file_path}")
                 print("\n".join(matches))
                 print()  # Add an extra empty line between files
 
@@ -478,6 +478,16 @@ def main():
     if yearly_release:
         update_template(yearly_release, year)
 
+    release_listings = []
+    release_listings = get_release_listings(yearly_path)
+    if release_listings:
+        update_listing(yearly_release, release_listings)
+    
+    update_quarto_yaml(year)
+    move_year_marker()
+    update_paths(year)
+
+    show_files()
 
 if __name__ == "__main__":
     main()

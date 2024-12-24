@@ -26,6 +26,7 @@ help:
 	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
+	@echo "  yearly-releases      Collate and move a specified year of releases into their own subdir and update _quarto.yml"
 	@echo "  execute              Execute a Jupyter Notebook (must have valid .env credentials set up in root)"
 	@echo "  docker-build         Builds a Docker image of the docs site"
 	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
@@ -128,6 +129,12 @@ deploy-staging:
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py
+	git status
+	quarto preview
+
+# Collate yearly releases
+yearly-releases:
+	@python ../release-scripts/yearly-cleanup.py
 	git status
 	quarto preview
 
