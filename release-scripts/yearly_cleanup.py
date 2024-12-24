@@ -451,13 +451,13 @@ def search_links(yearly_path):
                             if not file_has_match:
                                 file_has_match = True
                                 matching_files += 1
-                            matches.append(f" - Line {line_number} found")
+                            matches.append(f"- Line {line_number}: {line.strip()}")
             except (UnicodeDecodeError, FileNotFoundError):
                 # Skip files that cannot be opened or read
                 continue
 
             if matches:
-                print(f"{file_path}:")
+                print(f"File: {file_path}")
                 print("\n".join(matches))
 
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
