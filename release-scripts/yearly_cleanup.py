@@ -201,7 +201,7 @@ def update_template(destination_file, year):
     
 release_listings = []
     
-def get_release_listings(year):
+def get_release_listings(yearly_path):
     """
     Returns moved releases to add to the yearly release listing.
 
@@ -212,7 +212,7 @@ def get_release_listings(year):
         list: A list of matching subdirectory names, sorted by date created in descending order.
     """
     global release_listings 
-    listing_dir = "../site/releases/{year}"
+    listing_dir = {yearly_path}
 
     if not os.path.exists(listing_dir):
         print(f"'{listing_dir}' does not exist.")
@@ -222,9 +222,9 @@ def get_release_listings(year):
     subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
 
     if subdirs:
-        print(f"Found {len(subdirs)} release folders for year {year}:")
+        print(f"Found {len(subdirs)} folders in {yearly_path}:")
     else:
-        print(f"No release folders found for year {year}.")
+        print(f"No folders found in {yearly_path}.")
 
     release_listings = subdirs
     return release_listings
