@@ -50,7 +50,7 @@ def create_year_folder(year):
         print(f"The directory '{yearly_path}' already exists.")
     else:
         os.makedirs(yearly_path)
-        print(f"Created folder: {yearly_path}")
+        print(f"Created folder:")
     
     return yearly_path
 
@@ -79,8 +79,6 @@ def get_yearly_releases(year):
 
     if matching_subdirs:
         print(f"Found release folders for year {year}:")
-        for folder in matching_subdirs:
-            print(f"- {folder}")
     else:
         print(f"No release folders found for year {year}.")
 
