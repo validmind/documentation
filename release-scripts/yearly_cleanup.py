@@ -380,10 +380,8 @@ def move_year_marker():
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print("Relocated CURRENT-YEAR-END-MARKER in _quarto.yml.")
-    print(f"Deleted line: {modified_lines['deleted_line']}, Inserted line: {modified_lines['inserted_line']}")
+    print("Relocated CURRENT-YEAR-END-MARKER in _quarto.yml from {modified_lines['deleted_line']} to{modified_lines['inserted_line']}.")
 
-    return modified_lines
 
 def update_paths(year):
     """
