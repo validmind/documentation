@@ -428,24 +428,34 @@ def search_links(yearly_path):
     """
     Searches for files in a specified directory and looks for a specific text in them.
     Prints the file path, line number, and the line containing the text.
+    Also provides a summary of the number of matching files and lines found.
 
     Parameters:
     - yearly_path (str): The base directory to search in.
     """
     search_dir = f"{yearly_path}"
     search_text = "../"
-    
+    matching_files = 0
+    total_lines_found = 0
+
     for root, _, files in os.walk(search_dir):
         for file in files:
             file_path = os.path.join(root, file)
+            file_has_match = False
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     for line_number, line in enumerate(f, start=1):
                         if search_text in line:
+                            total_lines_found += 1
+                            if not file_has_match:
+                                file_has_match = True
+                                matching_files += 1
                             print(f"File: {file_path}, Line {line_number}: {line.strip()}")
             except (UnicodeDecodeError, FileNotFoundError):
                 # Skip files that cannot be opened or read
                 continue
+
+    print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found.")
 
 def main():
     year = get_year()
