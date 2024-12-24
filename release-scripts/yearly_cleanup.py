@@ -213,7 +213,6 @@ def get_release_listings(yearly_path):
     subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
 
     if subdirs:
-        print(f"Found {len(subdirs)} release notes in {yearly_path}:")
         try:
             # Sort subdirs by parsing the date in the folder names
             subdirs = sorted(
@@ -226,6 +225,7 @@ def get_release_listings(yearly_path):
 
         # Append '/release-notes.qmd' to each folder name
         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
+        print(f"Found {len(subdirs)} release notes in {yearly_path}: {subdirs}")
     else:
         print(f"No folders found in {yearly_path}.")
 
