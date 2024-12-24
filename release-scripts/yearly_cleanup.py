@@ -410,7 +410,7 @@ def update_paths(year):
                     updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
                     updated_content.append(updated_line)
                     if line != updated_line:
-                        updated_lines.append((line_num, updated_line.strip()))
+                        updated_lines.append((line_num, line.strip(), updated_line.strip()))
 
                 # Write back to the file only if changes were made
                 if updated_lines:
@@ -421,8 +421,8 @@ def update_paths(year):
     # Print modified files and lines line by line
     for file_path, updates in modified_files:
         print(f"Updated: {file_path}")
-        for line_num, updated_line in updates:
-            print(f"  Line {line_num}: {updated_line}")
+        for line_num, before, after in updates:
+            print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
 
     
 def main():
