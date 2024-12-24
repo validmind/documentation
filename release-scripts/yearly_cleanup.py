@@ -372,6 +372,41 @@ def move_year_marker():
 
     print("Relocated CURRENT-YEAR-END-MARKER in _quarto.yml.")
 
+def update_paths(year):
+    """
+    Replaces occurrences of `releases/{year}-` with `releases/{year}/{year}-` in .qmd and .yml files.
+
+    Args:
+        year (str): Year to replace in the text.
+    """
+    site_dir = f"../site/"
+    original_text = f"releases/{year}-"
+    new_text = f"releases/{year}/{year}-"
+
+    # List to track modified files
+    modified_files = []
+
+    # Walk through the directory and subdirectories
+    for root, _, files in os.walk(site_dir):
+        for file in files:
+            if file.endswith(".qmd") or file.endswith(".yml"):
+                file_path = os.path.join(root, file)
+                with open(file_path, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                # Replace the text
+                updated_content = re.sub(original_text.format(year=year), new_text.format(year=year), content)
+
+                # Write back to the file only if changes were made
+                if content != updated_content:
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(updated_content)
+                    modified_files.append(file_path)
+
+    # Print modified files line by line
+    for modified_file in modified_files:
+        print(f"Updated: {modified_file}")
+
     
 def main():
     year = get_year()
