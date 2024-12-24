@@ -399,20 +399,30 @@ def update_paths(year):
             if file.endswith(".qmd") or file.endswith(".yml"):
                 file_path = os.path.join(root, file)
                 with open(file_path, "r", encoding="utf-8") as f:
-                    content = f.read()
+                    content = f.readlines()
+
+                # Track lines updated
+                updated_lines = []
 
                 # Replace the text
-                updated_content = re.sub(original_text.format(year=year), new_text.format(year=year), content)
+                updated_content = []
+                for line_num, line in enumerate(content, start=1):
+                    updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
+                    updated_content.append(updated_line)
+                    if line != updated_line:
+                        updated_lines.append((line_num, updated_line.strip()))
 
                 # Write back to the file only if changes were made
-                if content != updated_content:
+                if updated_lines:
                     with open(file_path, "w", encoding="utf-8") as f:
-                        f.write(updated_content)
-                    modified_files.append(file_path)
+                        f.writelines(updated_content)
+                    modified_files.append((file_path, updated_lines))
 
-    # Print modified files line by line
-    for modified_file in modified_files:
-        print(f"Updated: {modified_file}")
+    # Print modified files and lines line by line
+    for file_path, updates in modified_files:
+        print(f"Updated: {file_path}")
+        for line_num, updated_line in updates:
+            print(f"  Line {line_num}: {updated_line}")
 
     
 def main():
