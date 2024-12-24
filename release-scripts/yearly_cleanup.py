@@ -144,6 +144,54 @@ def copy_template(yearly_path, year):
     except Exception as e:
         print(f"Failed to copy the template: {e}")
         return None
+    
+def update_template(destination_file, year):
+    """
+    Updates specific lines in the destination file to replace '0000' with the given year.
+
+    Args:
+        destination_file (str): The path to the file to be updated.
+        year (str): The year to replace '0000' with in the lines.
+
+    Returns:
+        bool: True if the file was updated successfully, False otherwise.
+    """
+    if not os.path.exists(destination_file):
+        print(f"File '{destination_file}' does not exist.")
+        return False
+
+    try:
+        # Read the file content
+        with open(destination_file, 'r') as file:
+            content = file.readlines()
+
+        # Update the lines
+        updated_content = []
+        for i, line in enumerate(content):
+            if line.strip() == "# TITLE-MARKER":
+                if i + 1 < len(content):
+                    content[i + 1] = content[i + 1].replace("0000", year)
+
+            if line.strip() == "# LISTING-MARKER":
+                if i + 1 < len(content):
+                    content[i + 1] = content[i + 1].replace("0000", year)
+
+            if line.strip() == "<!-- EMBED-MARKER -->":
+                if i + 1 < len(content):
+                    content[i + 1] = content[i + 1].replace("0000", year)
+
+            updated_content.append(content[i])
+
+        # Write the updated content back to the file
+        with open(destination_file, 'w') as file:
+            file.writelines(updated_content)
+
+        print(f"Updated lines in '{destination_file}' with the year {year}.")
+        return True
+
+    except Exception as e:
+        print(f"Failed to update '{destination_file}': {e}")
+        return False
 
 def main():
     year = get_year()
