@@ -469,7 +469,7 @@ def search_links(yearly_path):
                 print("\n".join(matches))
                 print()  # Add an extra empty line between files
 
-    print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
+    print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
 def main():
 
