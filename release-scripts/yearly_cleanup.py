@@ -430,6 +430,7 @@ def update_paths(year):
         print(f"Updated: {file_path}")
         for line_num, before, after in updates:
             print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
+        print()
 
 def search_links(yearly_path):
     """
