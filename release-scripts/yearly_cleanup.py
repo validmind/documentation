@@ -4,9 +4,6 @@ import re
 import shutil
 from IPython import get_ipython
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-os.chdir(script_dir)
-
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 def get_year():
@@ -473,6 +470,9 @@ def search_links(yearly_path):
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
 def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
+
     year = get_year()
 
     release_folders = []
