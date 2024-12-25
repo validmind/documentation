@@ -2,8 +2,6 @@ from datetime import datetime
 import os
 import re
 import shutil
-from generate_release_objects import show_files
-from IPython import get_ipython
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
