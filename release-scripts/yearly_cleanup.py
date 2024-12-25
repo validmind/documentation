@@ -486,7 +486,6 @@ def main():
     if yearly_release:
         update_template(yearly_release, year)
 
-    release_listings = []
     release_listings = get_release_listings(yearly_path)
     if release_listings:
         update_listing(yearly_release, release_listings)
@@ -494,6 +493,8 @@ def main():
     update_quarto_yaml(year)
     move_year_marker()
     update_paths(year)
+
+    search_links(yearly_path)
 
 if __name__ == "__main__":
     main()
