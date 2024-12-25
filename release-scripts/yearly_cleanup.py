@@ -3,6 +3,8 @@ import os
 import re
 import shutil
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
 def get_year():
