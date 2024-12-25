@@ -471,17 +471,12 @@ def search_links(yearly_path):
 
 def main():
 
-    print("Before setting working directory:", os.getcwd())  # Prints the current working directory
-
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
 
-    print("After setting working directory:", os.getcwd())  # Prints the new working directory
-
     year = get_year()
 
-    release_folders = []
-    get_yearly_releases(year)
+    release_folders = get_yearly_releases(year)
     
     yearly_path = create_year_folder(year)
     move_yearly_releases(yearly_path, release_folders)
