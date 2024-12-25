@@ -470,8 +470,13 @@ def search_links(yearly_path):
     print(f"\nSearch completed: {matching_files} files matched, {total_lines_found} matching lines found")
 
 def main():
+
+    print("Before setting working directory:", os.getcwd())  # Prints the current working directory
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
+
+    print("After setting working directory:", os.getcwd())  # Prints the new working directory
 
     year = get_year()
 
