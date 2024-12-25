@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import re
 import shutil
+from IPython import get_ipython
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
