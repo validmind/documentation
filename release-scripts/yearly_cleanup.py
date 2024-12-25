@@ -4,7 +4,8 @@ import re
 import shutil
 from IPython import get_ipython
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
