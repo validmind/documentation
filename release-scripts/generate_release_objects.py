@@ -540,6 +540,7 @@ def edit_titles(github_urls, editing_instructions_title):
                 print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.title = pr.data_json['title']
                 pr.clean_title(editing_instructions_title)
+                print()
         print()
 
 def set_labels(github_urls):
