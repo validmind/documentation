@@ -268,7 +268,7 @@ class ReleaseURL:
             for pr_number in pr_numbers: # initialize PR objects using pr_numbers and add to list of PRs
                 curr_PR = PR(self.repo_name, pr_number)
                 self.prs.append(curr_PR)
-                print(f"PR #{pr_number} added.\n")
+                print(f"PR #{pr_number} retrieved.\n")
 
         else:
             print(f"ERROR: No body found in release data for URL '{self.url}'")
