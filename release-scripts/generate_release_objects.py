@@ -345,7 +345,7 @@ def display_list(array):
     """
     Lists an array in a numbered list. Used to check the `label_hierarchy`.
     """
-
+    print("Set label hierarchy:\n")
     for i, item in enumerate(array, start=1):
         print(f"{i}. {item}")
 
@@ -700,7 +700,7 @@ def update_quarto_yaml(release_date):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
-    print(f"Added release notes to _quarto.yml, line {insert_index + 2}")
+    print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
 
 def update_index_qmd(release_date):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
@@ -765,7 +765,7 @@ def update_index_qmd(release_date):
             # If no marker is found, rewrite the file as is
             file.writelines(updated_lines)
 
-    print(f"Removed the oldest release note entry: '{removed_line}'")
+    print(f"Removed the oldest release notes entry: '{removed_line}'")
 
 def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
