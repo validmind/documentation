@@ -104,7 +104,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print("No PR Summary found for #{self.pr_number} from {self.repo_name}\n")
+                print(f"No PR Summary found for #{self.pr_number} from {self.repo_name}\n")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -540,7 +540,7 @@ def edit_titles(github_urls, editing_instructions_title):
                 print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.title = pr.data_json['title']
                 pr.clean_title(editing_instructions_title)
-                print()
+        print()
 
 def set_labels(github_urls):
     """
@@ -549,7 +549,7 @@ def set_labels(github_urls):
     Args:
         github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
     """
-    print(f"Attaching labels to PRs ...\n")
+    print(f"Attaching labels to PRs ...\n\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -567,7 +567,7 @@ def assign_details(github_urls):
     Returns:
         None
     """
-    print(f"Compiling PR data ...\n")
+    print(f"Compiling PR data ...\n\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
