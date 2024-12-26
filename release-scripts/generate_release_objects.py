@@ -104,7 +104,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print("No PR Summary found\n")
+                print("No PR Summary found for #{self.pr_number} from {self.repo_name}\n")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -425,7 +425,7 @@ def create_release_qmd(output_file, original_release_date):
         original_release_date (str): The title to include in the metadata.
     """
 
-    print("Generating & editing release notes ...")
+    print(f"{original_release_date} added to {output_file} as title")
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
 
