@@ -545,7 +545,7 @@ def set_labels(github_urls):
     Args:
         github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
     """
-    print(f"Attaching labels to PRs ...
+    print(f"Attaching labels to PRs ...")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
