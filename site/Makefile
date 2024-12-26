@@ -129,13 +129,13 @@ deploy-staging:
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py
-	git status
+	git status | grep -v 'release-scripts/'
 	quarto preview
 
 # Collate yearly releases
 yearly-releases:
 	@python ../release-scripts/yearly_cleanup.py
-	git status
+	git status | grep -v 'release-scripts/'
 	quarto preview
 
 # Execute a Jupyter Notebook  
