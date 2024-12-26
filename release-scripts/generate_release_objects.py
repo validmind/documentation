@@ -37,7 +37,7 @@ class PR:
         Modifies:
             self.data_json
         """
-        print(f"Extracting data from PR #{self.pr_number} in {self.repo_name}...\n")
+        print(f"Extracting data from PR #{self.pr_number} in {self.repo_name} ...\n")
         cmd = ['gh', 'pr', 'view', self.pr_number, '--json', 'title,body,url,labels', '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
@@ -118,7 +118,7 @@ class PR:
 
             client = openai.OpenAI() 
 
-            print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name}...\n")
+            print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name} ...\n")
 
             try:
                 response = client.chat.completions.create(
@@ -240,7 +240,7 @@ class ReleaseURL:
             print(f"ERROR: Invalid URL format '{self.url}'")
       
         self.repo_name, self.tag_name = match.groups()
-        print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tage name: {self.tag_name}\n")
+        print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tag name: {self.tag_name}\n")
 
     def extract_prs(self):
         """Extracts PRs from the release URL.
@@ -457,6 +457,7 @@ def set_names(github_urls):
     Returns:
         None
     """
+    print(f"Assigning repo and tag names ...\n")
     for url in github_urls:
         url.set_repo_and_tag_name()
 
@@ -498,7 +499,7 @@ def edit_release_notes(github_urls, editing_instructions_body):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n") 
+                print(f"Editing PR #{pr.pr_number} from {pr.repo_name} for release notes...\n") 
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
 
@@ -544,6 +545,7 @@ def set_labels(github_urls):
     Args:
         github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
     """
+    print(f"Attaching labels to PRs ...
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -560,6 +562,7 @@ def assign_details(github_urls):
     Returns:
         None
     """
+    print(f"Compiling PR data ...
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -593,7 +596,7 @@ def assemble_release(github_urls, label_hierarchy):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Adding PR #{pr.pr_number} from {pr.repo_name}...\n")
+                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n")
                 assigned = False
                 for priority_label in label_hierarchy:
                     if priority_label in pr.labels:
@@ -628,7 +631,7 @@ def release_output(output_file, release_components, label_to_category):
     try:
         with open(output_file, "a") as file:
             write_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}\n\n")
+            print(f"Release notes added to {file.name}\n")
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
@@ -730,7 +733,7 @@ def update_index_qmd(release_date):
     # Remove the temporary file
     os.remove(temp_index_filename)
     
-    print(f"Added new release notes to index.qmd, line {insert_index + 2}\n\n")
+    print(f"Added new release notes to index.qmd, line {insert_index + 2}\n")
 
     removed_line = None  # To store the line that gets removed
 
