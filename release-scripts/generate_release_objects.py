@@ -562,7 +562,7 @@ def assign_details(github_urls):
     Returns:
         None
     """
-    print(f"Compiling PR data ...
+    print(f"Compiling PR data ...")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
