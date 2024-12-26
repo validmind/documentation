@@ -336,7 +336,7 @@ def update_quarto_yaml(year):
             else:
                 file.write(line)
 
-        print(f"Modified lines: {modified_lines}\n\n")
+        print(f"Modified lines: {modified_lines}\n")
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
