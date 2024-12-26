@@ -131,7 +131,6 @@ release-notes:
 	@python ../release-scripts/generate_release_objects.py
 	cd ../
 	git status | grep -v 'release-scripts/'
-	cd site
 	quarto preview
 
 # Collate yearly releases
@@ -139,7 +138,6 @@ yearly-releases:
 	@python ../release-scripts/yearly_cleanup.py
 	cd ../
 	git status | grep -v 'release-scripts/'
-	cd site
 	quarto preview
 
 # Execute a Jupyter Notebook  
