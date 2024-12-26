@@ -104,7 +104,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print("No PR Summary found")
+                print("No PR Summary found\n")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -118,7 +118,7 @@ class PR:
 
             client = openai.OpenAI() 
 
-            print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name} ...\n")
+            print(f"Processing PR Summary #{self.pr_number} from {self.repo_name} ...\n")
 
             try:
                 response = client.chat.completions.create(
@@ -474,6 +474,7 @@ def extract_urls(github_urls):
     """
     for url in github_urls:
         url.extract_prs()
+        print()
 
 def populate_data(urls):
     """
@@ -484,6 +485,7 @@ def populate_data(urls):
     """
     for url in urls:
         url.populate_pr_data()
+        print()
 
 def edit_release_notes(github_urls, editing_instructions_body):
     """
@@ -502,6 +504,7 @@ def edit_release_notes(github_urls, editing_instructions_body):
                 print(f"Editing content of PR #{pr.pr_number} from {pr.repo_name} for release notes...\n") 
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
+        print()
 
 def auto_summary(github_urls, summary_instructions):
     """
@@ -518,6 +521,7 @@ def auto_summary(github_urls, summary_instructions):
                 print(f"Fetching github comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.extract_pr_summary_comment()
                 pr.convert_summary_to_release_notes(summary_instructions)
+        print()
 
 def edit_titles(github_urls, editing_instructions_title):
     """
@@ -536,7 +540,7 @@ def edit_titles(github_urls, editing_instructions_title):
                 print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.title = pr.data_json['title']
                 pr.clean_title(editing_instructions_title)
-                print("\n")
+                print()
 
 def set_labels(github_urls):
     """
@@ -551,6 +555,7 @@ def set_labels(github_urls):
             if pr.data_json:
                 pr.labels = [label['name'] for label in pr.data_json['labels']]
                 print(f"PR #{pr.pr_number} from {pr.repo_name}: {pr.labels}\n")
+        print()
 
 def assign_details(github_urls):
     """
@@ -575,6 +580,7 @@ def assign_details(github_urls):
                     'notes': pr.edited_text
                 }
                 print(f"PR #{pr.pr_number} from {pr.repo_name} compiled.\n")
+        print()
 
 def assemble_release(github_urls, label_hierarchy):
     """
@@ -605,6 +611,7 @@ def assemble_release(github_urls, label_hierarchy):
                         break
                 if not assigned:
                     unassigned_prs.append(pr.pr_details)
+        print()
 
     # Add unassigned PRs to the 'other' category
     release_components['other'].extend(unassigned_prs)
