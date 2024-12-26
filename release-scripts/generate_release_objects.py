@@ -628,7 +628,7 @@ def release_output(output_file, release_components, label_to_category):
     try:
         with open(output_file, "a") as file:
             write_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}")
+            print(f"Release notes added to {file.name}\n\n")
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
@@ -730,7 +730,7 @@ def update_index_qmd(release_date):
     # Remove the temporary file
     os.remove(temp_index_filename)
     
-    print(f"Added new release notes to index.qmd, line {insert_index + 2}")
+    print(f"Added new release notes to index.qmd, line {insert_index + 2}\n\n")
 
     removed_line = None  # To store the line that gets removed
 
@@ -755,80 +755,6 @@ def update_index_qmd(release_date):
             file.writelines(updated_lines)
 
     print(f"Removed the oldest release note entry: '{removed_line}'")
-
-def show_files():
-    """Print files to commit by running 'git status --short', grouped by status"""
-    try:
-        # Run 'git status --short'
-        result = subprocess.run(
-            ["git", "status", "--short"], check=True, text=True, capture_output=True
-        )
-        
-        # Process the output
-        lines = result.stdout.strip().split('\n')
-
-        if not lines:
-            print("No changes detected")
-            return
-
-        # Grouped file categories
-        added = []
-        modified = []
-        untracked = []
-        renamed = []
-        deleted = []
-
-        for line in lines:
-            # Handle renamed files
-            if line.startswith('R'):
-                try:
-                    _, paths = line.split(maxsplit=1)
-                    old_file, new_file = paths.split(' -> ')
-                    renamed.append(f"{old_file.strip()} -> {new_file.strip()}")
-                    continue
-                except Exception as e:
-                    print(f"ERROR: {e}: Error processing renamed file: {line}")
-                    continue
-
-            # Process other file statuses
-            parts = line.split(maxsplit=1)
-            if len(parts) > 1:
-                status, file_path = parts
-                file_path = file_path.strip()
-                if status == 'A':
-                    added.append(file_path)
-                elif status == 'M':
-                    modified.append(file_path)
-                elif status == '??':
-                    untracked.append(file_path)
-                elif status == 'D':
-                    deleted.append(file_path)
-
-        # Print grouped files
-        if added:
-            print("Added:")
-            for file in added:
-                print(f" - {file}")
-        if modified:
-            print("\nModified:")
-            for file in modified:
-                print(f" - {file}")
-        if untracked:
-            print("\nUntracked:")
-            for file in untracked:
-                print(f" - {file}")
-        if renamed:
-            print("\nRenamed:")
-            for file in renamed:
-                print(f" - {file}")
-        if deleted:
-            print("\nDeleted:")
-            for file in deleted:
-                print(f" - {file}")
-
-    except subprocess.CalledProcessError as e:
-        print("Failed to run 'git status':", e)
-
 
 def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
