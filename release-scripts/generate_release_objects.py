@@ -8,6 +8,7 @@ import openai
 from dotenv import dotenv_values
 import os
 from collections import defaultdict
+from IPython import get_ipython
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -440,6 +441,10 @@ def update_release_components(release_components, categories):
         dict: The updated release components dictionary.
     """
     release_components.update(categories)
+    if get_ipython():  # Check if running in Jupyter Notebook
+        print(f"Set up {len(release_components)} components:")
+    else:
+        print(f"Set up {len(release_components)} components:\n" + "\n".join(release_components))
     return release_components
 
 def set_names(github_urls):
