@@ -784,9 +784,8 @@ def show_files():
                 try:
                     _, paths = line.split(maxsplit=1)
                     old_file, new_file = paths.split(' -> ')
-                    if 'release-scripts' not in new_file:
-                        renamed.append(f"{old_file.strip()} -> {new_file.strip()}")
-                        continue
+                    renamed.append(f"{old_file.strip()} -> {new_file.strip()}")
+                    continue
                 except Exception as e:
                     print(f"ERROR: {e}: Error processing renamed file: {line}")
                     continue
@@ -795,9 +794,6 @@ def show_files():
             parts = line.split(maxsplit=1)
             if len(parts) > 1:
                 status, file_path = parts
-                if 'release-scripts' in file_path:
-                    continue
-                
                 file_path = file_path.strip()
                 if status == 'A':
                     added.append(file_path)
@@ -832,6 +828,7 @@ def show_files():
 
     except subprocess.CalledProcessError as e:
         print("Failed to run 'git status':", e)
+
 
 def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
