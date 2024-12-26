@@ -37,7 +37,7 @@ class PR:
         Modifies:
             self.data_json
         """
-        print(f"Storing data from PR #{self.pr_number} in {self.repo_name} ...\n")
+        print(f"Storing data from PR #{self.pr_number} of {self.repo_name} ...\n")
         cmd = ['gh', 'pr', 'view', self.pr_number, '--json', 'title,body,url,labels', '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
@@ -518,7 +518,7 @@ def auto_summary(github_urls, summary_instructions):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Fetching GitHub comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
+                print(f"Fetching GitHub comment from PR #{pr.pr_number} of {pr.repo_name}...\n")
                 pr.extract_pr_summary_comment()
                 pr.convert_summary_to_release_notes(summary_instructions)
         print()
