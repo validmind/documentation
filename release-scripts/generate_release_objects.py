@@ -499,7 +499,7 @@ def edit_release_notes(github_urls, editing_instructions_body):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Editing PR #{pr.pr_number} from {pr.repo_name} for release notes...\n") 
+                print(f"Editing content of PR #{pr.pr_number} from {pr.repo_name} for release notes...\n") 
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
 
