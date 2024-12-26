@@ -47,7 +47,7 @@ class PR:
         try:
             self.data_json = json.loads(output_clean)
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}.")
+            print(f"ERROR: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}")
             return None
         
         if any(label['name'] == 'internal' for label in self.data_json['labels']):
@@ -104,7 +104,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print("No PR Summary found.")
+                print("No PR Summary found")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -237,7 +237,7 @@ class ReleaseURL:
         """
         match = re.search(r"github\.com/(.+)/releases/tag/(.+)$", self.url)
         if not match:
-            print(f"Error: Invalid URL format '{self.url}'.")
+            print(f"ERROR: Invalid URL format '{self.url}'")
       
         self.repo_name, self.tag_name = match.groups()
         print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tage name: {self.tag_name}\n")
@@ -259,7 +259,7 @@ class ReleaseURL:
         try:
             self.data_json = json.loads(output_release_clean)
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse release data for URL '{self.url}'.")      
+            print(f"ERROR: Unable to parse release data for URL '{self.url}'")      
         
         if 'body' in self.data_json:
             body = self.data_json['body']
@@ -271,7 +271,7 @@ class ReleaseURL:
                 print(f"PR #{pr_number} added.\n")
 
         else:
-            print(f"Error: No body found in release data for URL '{self.url}'.")
+            print(f"ERROR: No body found in release data for URL '{self.url}'")
 
     def populate_pr_data(self):
         """Helper method. Calls JSON loader on each PR in a URL.
@@ -317,12 +317,12 @@ def setup_openai_api(env_location):
     api_key = config.get('OPENAI_API_KEY')
     if not api_key:
         raise KeyError(
-            f"OPENAI_API_KEY is not set in the .env file at {env_location}. "
-            "Please ensure the .env file contains this key."
+            f"OPENAI_API_KEY is not set in the .env file at {env_location}"
+            "Please ensure the .env file contains this key"
         )
 
     # Set the API key for the OpenAI library
-    print(f"Detected OpenAI API Key in {env_location}.")  # Optional debug message
+    print(f"Detected OpenAI API Key in {env_location}")  # Optional debug message
     openai.api_key = api_key
 
 label_to_category = {
@@ -365,7 +365,7 @@ def collect_github_urls():
         url = input("Enter a full GitHub release URL (leave empty to finish): ")
         if not url:
             if not urls:  # Check if no URLs have been added yet
-                print("Error: You must specify at least one full GitHub release URL.")
+                print("ERROR: You must specify at least one full GitHub release URL")
                 exit(1)  # Exit the script with an error code
             break
         urls.append(ReleaseURL(url))
@@ -396,7 +396,7 @@ def get_release_date():
         print(f"Release date: {validated_date}\n")
         return validated_date
     except ValueError:
-        print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
+        print("Invalid date format, please try again using the format Month Day, Year (e.g., January 1, 2020)")
         return get_release_date()
     
 def create_release_folder(formatted_release_date):
@@ -413,7 +413,7 @@ def create_release_folder(formatted_release_date):
     directory_path = f"../site/releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
-    print(f"{output_file} created.")
+    print(f"{output_file} created")
     return output_file
 
 def create_release_qmd(output_file, original_release_date):
@@ -628,7 +628,7 @@ def release_output(output_file, release_components, label_to_category):
     try:
         with open(output_file, "a") as file:
             write_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}.")
+            print(f"Release notes added to {file.name}")
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
@@ -647,7 +647,7 @@ def upgrade_info(output_file):
     try:
         with open(output_file, "a") as file:
             file.write(include_directive)
-            print(f"Include _how-to-upgrade.qmd added to {file.name}.")
+            print(f"Include _how-to-upgrade.qmd added to {file.name}")
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
@@ -757,7 +757,7 @@ def update_index_qmd(release_date):
     print(f"Removed the oldest release note entry: '{removed_line}'")
 
 def show_files():
-    """Print files to commit by running 'git status --short', grouped by status."""
+    """Print files to commit by running 'git status --short', grouped by status"""
     try:
         # Run 'git status --short'
         result = subprocess.run(
@@ -768,7 +768,7 @@ def show_files():
         lines = result.stdout.strip().split('\n')
 
         if not lines:
-            print("No changes detected.")
+            print("No changes detected")
             return
 
         # Grouped file categories
@@ -788,7 +788,7 @@ def show_files():
                         renamed.append(f"{old_file.strip()} -> {new_file.strip()}")
                         continue
                 except Exception as e:
-                    print(f"Error processing renamed file: {line}. Error: {e}")
+                    print(f"ERROR: {e}: Error processing renamed file: {line}")
                     continue
 
             # Process other file statuses
