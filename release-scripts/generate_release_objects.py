@@ -596,7 +596,7 @@ def assemble_release(github_urls, label_hierarchy):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n")
+                print(f"Assembling PR #{pr.pr_number} from {pr.repo_name} for release notes...\n")
                 assigned = False
                 for priority_label in label_hierarchy:
                     if priority_label in pr.labels:
@@ -631,7 +631,7 @@ def release_output(output_file, release_components, label_to_category):
     try:
         with open(output_file, "a") as file:
             write_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}\n")
+            print(f"Assembled release notes added to {file.name}\n")
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
