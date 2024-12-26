@@ -382,7 +382,7 @@ def move_year_marker():
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Relocated CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+    print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
 
 def update_paths(year):
     """
@@ -469,7 +469,9 @@ def search_links(yearly_path):
                 print("\n".join(matches))
                 print()  # Add an extra empty line between files
 
-    print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found")
+    print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
+    print(f"NOTE: REVIEW THE LOCATED FILES FOR NECESSARY EDITS")
+
 
 def main():
 
