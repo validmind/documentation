@@ -470,8 +470,6 @@ def search_links(yearly_path):
                 print()  # Add an extra empty line between files
 
     print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
-    print(f"NOTE: REVIEW THE LOCATED FILES FOR NECESSARY EDITS")
-
 
 def main():
 
