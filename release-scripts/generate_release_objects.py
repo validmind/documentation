@@ -345,7 +345,7 @@ def display_list(array):
     """
     Lists an array in a numbered list. Used to check the `label_hierarchy`.
     """
-    print("Set label hierarchy:\n")
+    print("Set category hierarchy:\n")
     for i, item in enumerate(array, start=1):
         print(f"{i}. {item}")
 
