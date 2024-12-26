@@ -477,26 +477,42 @@ def main():
     os.chdir(script_dir)
 
     year = get_year()
+    print()
 
     release_folders = get_yearly_releases(year)
+    print()
     
     yearly_path = create_year_folder(year)
+    print()
+
     move_yearly_releases(yearly_path, release_folders)
+    print()
 
     yearly_release = copy_template(yearly_path, year)
+    print()
 
     if yearly_release:
         update_template(yearly_release, year)
+        print()
 
     release_listings = get_release_listings(yearly_path)
+    print()
+    
     if release_listings:
         update_listing(yearly_release, release_listings)
+        print()
     
     update_quarto_yaml(year)
+    print()
+
     move_year_marker()
+    print()
+
     update_paths(year)
+    print()
 
     search_links(yearly_path)
+    print()
 
 if __name__ == "__main__":
     main()
