@@ -37,7 +37,7 @@ class PR:
         Modifies:
             self.data_json
         """
-        print(f"Extracting data from PR #{self.pr_number} in {self.repo_name} ...\n")
+        print(f"Storing data from PR #{self.pr_number} in {self.repo_name} ...\n")
         cmd = ['gh', 'pr', 'view', self.pr_number, '--json', 'title,body,url,labels', '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
@@ -196,7 +196,7 @@ class PR:
         """
         # Remove text in square brackets, process '/' character, and trim the title
         title = re.sub(r"\[.*?\]", "", self.title)
-        print(f"After some trimming: {title}\n") #@@@@@@
+        print(f"After trimming: {title}\n") #@@@@@@
         parts = title.split('/')
         if len(parts) > 1:
             title = parts[-1].strip()  # Get the part after the last '/'
@@ -204,7 +204,7 @@ class PR:
                 title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
 
         title = title.strip()
-        print(f"After stripping more: {title}\n") #@@@@@
+        print(f"After stripping: {title}\n") #@@@@@
 
         # Edit the pull request title with ChatGPT
         # print(f"ORIGINAL TITLE: {title}")
@@ -249,7 +249,7 @@ class ReleaseURL:
             self.prs
             self.data_json
         """
-        print(f"Extracting PRs from {self.url}...\n")
+        print(f"Extracting PRs from {self.url} ...\n")
         cmd_release = ['gh', 'api', f'repos/{self.repo_name}/releases/tags/{self.tag_name}']
         result_release = subprocess.run(cmd_release, capture_output=True, text=True)
         output_release = result_release.stdout.strip()
@@ -369,7 +369,7 @@ def collect_github_urls():
                 exit(1)  # Exit the script with an error code
             break
         urls.append(ReleaseURL(url))
-        print(f"{url} added.\n")
+        print(f"{url} added\n")
     return urls 
 
 
@@ -545,7 +545,7 @@ def set_labels(github_urls):
     Args:
         github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
     """
-    print(f"Attaching labels to PRs ...")
+    print(f"Attaching labels to PRs ...\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -562,7 +562,7 @@ def assign_details(github_urls):
     Returns:
         None
     """
-    print(f"Compiling PR data ...")
+    print(f"Compiling PR data ...\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -574,7 +574,7 @@ def assign_details(github_urls):
                     'labels': ", ".join(pr.labels),
                     'notes': pr.edited_text
                 }
-                print(f"PR #{pr.pr_number} from {pr.repo_name} added.\n")
+                print(f"PR #{pr.pr_number} from {pr.repo_name} compiled.\n")
 
 def assemble_release(github_urls, label_hierarchy):
     """
