@@ -188,7 +188,7 @@ def update_template(destination_file, year):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with the year {year}\nEdited lines: {edited_lines}")
+        print(f"Updated '{destination_file}' with the year {year}\n\nEdited lines: {edited_lines}")
         return True
 
     except Exception as e:
@@ -230,7 +230,7 @@ def get_release_listings(yearly_path):
 
         # Append '/release-notes.qmd' to each folder name
         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
-        print(f"Found {len(subdirs)} release notes in {yearly_path}:")
+        print(f"Found {len(subdirs)} release notes in {yearly_path}:\n")
         for note in subdirs:
             print(note)
     else:
@@ -287,7 +287,7 @@ def update_listing(destination_file, release_listings):
         with open(destination_file, 'w') as file:
             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with release listings\nAdded lines: {edited_lines}")
+        print(f"Updated '{destination_file}' with release listings\n\nAdded lines: {edited_lines}")
         return True
 
     except Exception as e:
@@ -336,7 +336,7 @@ def update_quarto_yaml(year):
             else:
                 file.write(line)
 
-        print(f"Modified lines: {modified_lines}")
+        print(f"Modified lines: {modified_lines}\n\n")
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
