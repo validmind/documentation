@@ -518,7 +518,7 @@ def auto_summary(github_urls, summary_instructions):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Fetching github comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
+                print(f"Fetching GitHub comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.extract_pr_summary_comment()
                 pr.convert_summary_to_release_notes(summary_instructions)
         print()
@@ -811,29 +811,42 @@ def main():
 
     env_location = get_env_location()
     setup_openai_api(env_location)
+    print()
 
     label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
     display_list(label_hierarchy)
+    print()
 
     release_components = {} 
 
     github_urls = collect_github_urls() 
+    print()
     
     release_datetime = get_release_date()
     formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
     original_release_date = release_datetime.strftime("%B %-d, %Y")
+    print()
 
     directory_path = f"releases/{formatted_release_date}/"
     os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
-
     output_file = create_release_folder(formatted_release_date)
+    print()
+
     create_release_qmd(output_file, original_release_date)
+    print()
+
     update_release_components(release_components, categories)
+    print()
 
     set_names(github_urls)
+    print()
+
     extract_urls(github_urls)
+    print()
+
     populate_data(github_urls)
+    print()
 
     editing_instructions_body = """
         Please edit the provided technical content according to the following guidelines:
@@ -857,6 +870,7 @@ def main():
         """
     
     edit_release_notes(github_urls, editing_instructions_body)
+    print()
 
     summary_instructions = """ 
         Please turn this PR Summary into a summary for release notes, according to the following guidelines:
@@ -867,6 +881,7 @@ def main():
         """
 
     auto_summary(github_urls, summary_instructions)
+    print()
 
     editing_instructions_title = """
         Please edit the provided technical content according to the following guidelines:
@@ -890,14 +905,26 @@ def main():
         """
     
     edit_titles(github_urls, editing_instructions_title)
+    print()
+
     set_labels(github_urls)
+    print()
+
     assign_details(github_urls)
+    print()
+
     release_components = assemble_release(github_urls, label_hierarchy)
+    print()
 
     release_output(output_file, release_components, label_to_category)
     upgrade_info(output_file)
+    print()
+
     update_quarto_yaml(release_datetime)
+    print()
+
     update_index_qmd(release_datetime)
+    print()
 
 if __name__ == "__main__":
     main()
