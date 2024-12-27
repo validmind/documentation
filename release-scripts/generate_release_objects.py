@@ -105,7 +105,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print(f"No PR Summary found for #{self.pr_number} from {self.repo_name}\n")
+                print(f"No PR summary found for #{self.pr_number} from {self.repo_name}\n")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -119,7 +119,7 @@ class PR:
 
             client = openai.OpenAI() 
 
-            print(f"Processing PR Summary #{self.pr_number} from {self.repo_name} ...\n")
+            print(f"Processing PR summary #{self.pr_number} from {self.repo_name} ...\n")
 
             try:
                 response = client.chat.completions.create(
@@ -395,7 +395,7 @@ def count_repos(urls):
     Prints:
         Repository counts in the format 'repo_name: count'
     """
-    print("Release tags added by repo:\n")
+    print("RELEASE TAGS ADDED BY REPO:\n")
     repo_names = [url.extract_repo_name() for url in urls if url.extract_repo_name()]
     
     counts = Counter(repo_names)
@@ -550,7 +550,7 @@ def edit_release_notes(github_urls, editing_instructions_body):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Editing content of PR #{pr.pr_number} from {pr.repo_name} for release notes...\n") 
+                print(f"Editing content of PR #{pr.pr_number} from {pr.repo_name} ...\n") 
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
         print()
