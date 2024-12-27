@@ -133,7 +133,7 @@ def copy_template(yearly_path, year):
 
         # Check if the destination file already exists
         if os.path.exists(destination_file):
-            print(f"File '{destination_file}' already exists. Skipping copy.")
+            print(f"File '{destination_file}' already exists, skipping copy")
             return destination_file
 
         # Copy the template to the destination
