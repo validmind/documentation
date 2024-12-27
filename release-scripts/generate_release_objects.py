@@ -870,6 +870,7 @@ def main():
     release_components = {} 
 
     github_urls = collect_github_urls() 
+    count_repos(github_urls)
     print()
     
     release_datetime = get_release_date()
