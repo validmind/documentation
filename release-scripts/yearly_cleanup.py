@@ -337,13 +337,13 @@ def update_quarto_yaml(year):
                     file.write(f"        - file: {release_file}\n")
                     file.write("          contents:\n")
                     for content in year_contents:
-                        file.write(f"          - {content.strip()}\n")
+                        file.write(f"          {content.strip()}\n")
                     year_injected = True
                 between_markers = False
 
             if between_markers:
                 # Collect lines for the specified year
-                if f"releases/{year}" in line:
+                if f"releases/{year}-" in line:
                     year_contents.append(line)
                 else:
                     # Write out lines not belonging to the target year
