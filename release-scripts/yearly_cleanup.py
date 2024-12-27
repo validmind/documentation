@@ -319,16 +319,14 @@ def update_quarto_yaml(year):
 
     # Use the year from the parameter
     release_file = f"releases/{year}/{year}-releases.qmd"
+    year_injected = False
 
     with open(yaml_filename, 'w') as file:
         between_markers = False
-        modified_lines = []
 
-        for i, line in enumerate(lines):
+        for line in lines:
             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
                 file.write(line)
-                file.write(f"        - file: {release_file}\n")
-                file.write("          contents:\n")
                 between_markers = True
                 continue
 
@@ -336,16 +334,13 @@ def update_quarto_yaml(year):
                 between_markers = False
 
             if between_markers:
-                # Check if the line includes the year
-                if f"releases/{year}-" in line:
-                    modified_lines.append(i + 1)
-                    file.write("  " + line)  # Add additional indent to lines between markers
-                else:
-                    file.write(line)  # Leave the line as is if it does not match the year
-            else:
-                file.write(line)
+                # Inject the new file entry before the first occurrence of the target year
+                if not year_injected and f"releases/{year}" in line:
+                    file.write(f"        - file: {release_file}\n")
+                    file.write("          contents:\n")
+                    year_injected = True
 
-        print(f"Modified lines: {modified_lines}\n")
+            file.write(line)  # Write the current line as is
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
