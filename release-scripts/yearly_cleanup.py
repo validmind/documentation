@@ -551,7 +551,7 @@ def main():
     update_quarto_yaml(year)
     print()
 
-    move_year_marker()
+    move_year_marker(year)
     print()
 
     update_paths(year)
