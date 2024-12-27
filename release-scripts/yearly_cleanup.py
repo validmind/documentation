@@ -247,7 +247,7 @@ def get_release_listings(yearly_path):
 def update_listing(destination_file, release_listings):
     """
     Updates the destination file by appending the contents of release_listings under the
-    '# RELEASE-FILES-MARKER' line.
+    '# RELEASE-FILES-MARKER' line if the line directly below it matches '---'.
 
     Args:
         destination_file (str): The path to the file to be updated.
@@ -275,17 +275,18 @@ def update_listing(destination_file, release_listings):
             updated_content.append(line)
 
             if line.strip() == "# RELEASE-FILES-MARKER":
-                release_marker_found = True
-                insertion_index = len(updated_content)
+                if i + 1 < len(content) and content[i + 1].strip() == "---":
+                    release_marker_found = True
+                    insertion_index = len(updated_content)
 
-                for listing in release_listings:
-                    new_line = f"        - {listing}\n"
-                    updated_content.append(new_line)
-                    edited_lines.append(insertion_index)
-                    insertion_index += 1
+                    for listing in release_listings:
+                        new_line = f"        - {listing}\n"
+                        updated_content.append(new_line)
+                        edited_lines.append(insertion_index)
+                        insertion_index += 1
 
         if not release_marker_found:
-            print("# RELEASE-FILES-MARKER not found in the file")
+            print("# RELEASE-FILES-MARKER not found or the line below it is not '---'")
             return False
 
         # Write the updated content back to the file
