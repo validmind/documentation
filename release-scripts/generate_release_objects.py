@@ -446,7 +446,7 @@ def create_release_folder(formatted_release_date):
     if os.path.exists(directory_path) and os.path.exists(output_file):
         response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
         if response != "yes":
-            print("Operation canceled by the user. No changes were made.")
+            print("Operation canceled by the user, no changes were made")
             return None
 
     # Create directory and output file
