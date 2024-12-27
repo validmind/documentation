@@ -394,7 +394,7 @@ def move_year_marker(year):
 
     with open(yaml_filename, 'w') as file:
         marker_found = False
-        marker_moved = False
+        marker_inserted = False
 
         for line_number, line in enumerate(lines, start=1):
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
@@ -403,17 +403,26 @@ def move_year_marker(year):
                 continue  # Skip writing this line to effectively delete it
 
             # Check for the target pattern and insert the marker above it
-            if not marker_moved and line.strip() == marker_pattern:
+            if not marker_inserted and line.strip() == marker_pattern:
                 file.write(current_year_marker)
                 modified_lines["inserted_line"] = line_number
-                marker_moved = True
+                marker_inserted = True
 
             file.write(line)
 
-        # If marker wasn't moved and it was found, append it at the end of the file
-        if marker_found and not marker_moved:
-            file.write(current_year_marker)
-            print("Warning: Marker not found in target position; appended to end of file.")
+        # If marker wasn't moved and it was found, ensure it is reinserted in the default location
+        if marker_found and not marker_inserted:
+            # Locate the line with "# MAKE-RELEASE-NOTES-EMBED-MARKER" as a fallback
+            for i, line in enumerate(lines):
+                if "# MAKE-RELEASE-NOTES-EMBED-MARKER" in line:
+                    lines.insert(i + 1, current_year_marker)
+                    modified_lines["inserted_line"] = i + 2  # Adjusting for 0-based index
+                    break
+
+            # Write updated lines back to the file
+            file.seek(0)
+            file.truncate()
+            file.writelines(lines)
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
@@ -421,10 +430,9 @@ def move_year_marker(year):
     if modified_lines['deleted_line'] is not None and modified_lines['inserted_line'] is not None:
         print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif modified_lines['deleted_line'] is not None:
-        print(f"# CURRENT-YEAR-END-MARKER was removed from line {modified_lines['deleted_line']} and appended to the end of the file.")
+        print(f"# CURRENT-YEAR-END-MARKER was removed from line {modified_lines['deleted_line']} and reinserted in the default location.")
     else:
         print("# CURRENT-YEAR-END-MARKER was not found in the file.")
-
 
 def update_paths(year):
     """
