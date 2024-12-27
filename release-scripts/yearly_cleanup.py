@@ -286,7 +286,7 @@ def update_listing(destination_file, release_listings):
                         insertion_index += 1
 
         if not release_marker_found:
-            print("# RELEASE-FILES-MARKER not found or the line below it is not '---'")
+            print(f"'{destination_file}' already has release listings, please review for accuracy")
             return False
 
         # Write the updated content back to the file
@@ -419,7 +419,7 @@ def move_year_marker(year):
     os.remove(temp_yaml_filename)
 
     if marker_removed and marker_inserted:
-        return f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}"
+        print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif not marker_removed:
         return "Marker was not found in the file."
     else:
