@@ -379,7 +379,7 @@ def collect_github_urls():
                 exit(1)  # Exit the script with an error code
             break
         if url in seen_urls:
-            print(f"ERROR: Duplicate URL '{url}' not added.\n")
+            print(f"ERROR: Duplicate URL '{url}' not added\n")
         else:
             urls.append(ReleaseURL(url))
             seen_urls.add(url)
@@ -395,6 +395,7 @@ def count_repos(urls):
     Prints:
         Repository counts in the format 'repo_name: count'
     """
+    print("Release tags added by repo:\n")
     repo_names = [url.extract_repo_name() for url in urls if url.extract_repo_name()]
     
     counts = Counter(repo_names)
