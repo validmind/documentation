@@ -392,12 +392,10 @@ def move_year_marker(year):
     marker_pattern = f"        - file: releases/{year}/{year}-releases.qmd"
 
     with open(yaml_filename, 'w') as file:
-        marker_deleted = False
         marker_moved = False
 
         for line_number, line in enumerate(lines, start=1):
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
-                marker_deleted = True
                 modified_lines["deleted_line"] = line_number
                 continue  # Skip writing this line to effectively delete it
 
