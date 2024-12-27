@@ -384,7 +384,7 @@ def move_year_marker(year):
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
 
-    marker_pattern = f"        - file: releases/{year}/{year}-releases.qmd"
+    marker_pattern = f"- file: releases/{year}/{year}-releases.qmd"  # Remove leading spaces for comparison
     current_year_marker = "        # CURRENT-YEAR-END-MARKER\n"
 
     with open(yaml_filename, 'w') as file:
@@ -392,13 +392,17 @@ def move_year_marker(year):
         marker_inserted = False
 
         for i, line in enumerate(lines):
+            # Debugging output to verify content of lines
+            print(f"Processing line {i + 1}: {line.strip()}")
+
             # Remove the marker if found
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
                 marker_removed = True
                 continue
 
             # Insert marker above the target pattern
-            if not marker_inserted and line.strip() == marker_pattern:
+            if not marker_inserted and marker_pattern in line.strip():
+                print(f"Matched target line {i + 1}: {line.strip()}")
                 file.write(current_year_marker)
                 marker_inserted = True
 
