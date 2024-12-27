@@ -370,6 +370,7 @@ def collect_github_urls():
         If the user presses enter and no URLs were entered
     """
     urls = []
+    seen_urls = set()  # Track unique URLs
     while True:
         url = input("Enter a full GitHub release URL (leave empty to finish): ")
         if not url:
@@ -377,9 +378,13 @@ def collect_github_urls():
                 print("ERROR: You must specify at least one full GitHub release URL")
                 exit(1)  # Exit the script with an error code
             break
-        urls.append(ReleaseURL(url))
-        print(f"{url} added\n")
-    return urls 
+        if url in seen_urls:
+            print(f"ERROR: Duplicate URL '{url}' not added.\n")
+        else:
+            urls.append(ReleaseURL(url))
+            seen_urls.add(url)
+            print(f"{url} added\n")
+    return urls
 
 def count_repos(urls):
     """Counts occurrences of each repository in the given URLs.
