@@ -333,11 +333,11 @@ def update_quarto_yaml(year):
 
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
                 if year_contents and not year_injected:
-                    # Inject the new file entry with nested contents before ending the section
+                    # Inject the new file entry with correctly indented contents
                     file.write(f"        - file: {release_file}\n")
                     file.write("          contents:\n")
                     for content in year_contents:
-                        file.write(f"          {content}")
+                        file.write(f"          - {content.strip()}\n")
                     year_injected = True
                 between_markers = False
 
@@ -356,7 +356,7 @@ def update_quarto_yaml(year):
             file.write(f"        - file: {release_file}\n")
             file.write("          contents:\n")
             for content in year_contents:
-                file.write(f"          {content}")
+                file.write(f"          - {content.strip()}\n")
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
