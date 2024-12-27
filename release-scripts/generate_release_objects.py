@@ -10,6 +10,7 @@ import os
 from collections import defaultdict
 from IPython import get_ipython
 from collections import Counter
+import sys
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -437,7 +438,7 @@ def create_release_folder(formatted_release_date):
         formatted_release_date (str): The formatted release date string.
 
     Returns:
-        str: The path to the release notes file, or None if the user chooses not to overwrite.
+        str: The path to the release notes file, or exits the script if the user chooses not to overwrite.
     """
     directory_path = f"../site/releases/{formatted_release_date}/"
     output_file = f"{directory_path}release-notes.qmd"
@@ -446,8 +447,8 @@ def create_release_folder(formatted_release_date):
     if os.path.exists(directory_path) and os.path.exists(output_file):
         response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
         if response != "yes":
-            print("Operation canceled, no changes were made")
-            return None
+            print("Release generation canceled, exiting")
+            sys.exit(0)  # Exit the script early
 
     # Create directory and output file
     os.makedirs(directory_path, exist_ok=True)
