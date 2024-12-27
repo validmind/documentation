@@ -464,6 +464,11 @@ def update_paths(year):
                         f.writelines(updated_content)
                     modified_files.append((file_path, updated_lines))
 
+    # Check if any files were modified
+    if not modified_files:
+        print("No absolute filepaths replaced")
+        return
+
     # Print modified files and lines line by line
     for file_path, updates in modified_files:
         print(f"Updated: {file_path}")
