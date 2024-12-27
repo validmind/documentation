@@ -384,44 +384,41 @@ def move_year_marker(year):
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
 
-    modified_lines = {
-        "deleted_line": None,
-        "inserted_line": None
-    }
-
     marker_pattern = f"        - file: releases/{year}/{year}-releases.qmd"
     current_year_marker = "        # CURRENT-YEAR-END-MARKER\n"
 
     with open(yaml_filename, 'w') as file:
-        marker_found = False
+        marker_removed = False
         marker_inserted = False
 
-        for line_number, line in enumerate(lines, start=1):
-            # Skip the CURRENT-YEAR-END-MARKER line and mark it as found
+        for i, line in enumerate(lines):
+            # Remove the marker if found
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
-                modified_lines["deleted_line"] = line_number
-                marker_found = True
+                marker_removed = True
                 continue
 
-            # Insert the CURRENT-YEAR-END-MARKER above the target line
+            # Insert marker above the target pattern
             if not marker_inserted and line.strip() == marker_pattern:
                 file.write(current_year_marker)
-                modified_lines["inserted_line"] = line_number
                 marker_inserted = True
 
             file.write(line)
 
-        # Error if the marker was found but not inserted
-        if marker_found and not marker_inserted:
-            print("Error: Marker was removed but not reinserted above the target line.")
+        # If marker was removed but not reinserted, raise an error
+        if marker_removed and not marker_inserted:
+            raise ValueError(
+                "The marker was removed but could not be reinserted above the target line. Ensure the target line exists."
+            )
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    if modified_lines['deleted_line'] is not None and modified_lines['inserted_line'] is not None:
-        print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+    if marker_removed and marker_inserted:
+        print("Marker successfully relocated.")
+    elif not marker_removed:
+        print("Marker was not found in the file.")
     else:
-        print("# CURRENT-YEAR-END-MARKER was not found or moved.")
+        print("Marker could not be relocated.")
 
 def update_paths(year):
     """
