@@ -387,24 +387,24 @@ def move_year_marker(year):
     marker_pattern = f"- file: releases/{year}/{year}-releases.qmd"  # Remove leading spaces for comparison
     current_year_marker = "        # CURRENT-YEAR-END-MARKER\n"
 
+    modified_lines = {"deleted_line": None, "inserted_line": None}
+
     with open(yaml_filename, 'w') as file:
         marker_removed = False
         marker_inserted = False
 
         for i, line in enumerate(lines):
-            # Debugging output to verify content of lines
-            print(f"Processing line {i + 1}: {line.strip()}")
-
             # Remove the marker if found
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
                 marker_removed = True
+                modified_lines['deleted_line'] = i + 1
                 continue
 
             # Insert marker above the target pattern
             if not marker_inserted and marker_pattern in line.strip():
-                print(f"Matched target line {i + 1}: {line.strip()}")
                 file.write(current_year_marker)
                 marker_inserted = True
+                modified_lines['inserted_line'] = i + 1
 
             file.write(line)
 
@@ -418,11 +418,11 @@ def move_year_marker(year):
     os.remove(temp_yaml_filename)
 
     if marker_removed and marker_inserted:
-        print("Marker successfully relocated.")
+        return f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}"
     elif not marker_removed:
-        print("Marker was not found in the file.")
+        return "Marker was not found in the file."
     else:
-        print("Marker could not be relocated.")
+        return "Marker could not be relocated."
 
 def update_paths(year):
     """
