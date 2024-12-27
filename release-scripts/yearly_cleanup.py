@@ -405,34 +405,20 @@ def move_year_marker(year):
             # Check for the target pattern and insert the marker above it
             if not marker_inserted and line.strip() == marker_pattern:
                 file.write(current_year_marker)
+                file.write(line)
                 modified_lines["inserted_line"] = line_number
                 marker_inserted = True
+                continue
 
             file.write(line)
-
-        # If marker wasn't moved and it was found, ensure it is reinserted in the default location
-        if marker_found and not marker_inserted:
-            # Locate the line with "# MAKE-RELEASE-NOTES-EMBED-MARKER" as a fallback
-            for i, line in enumerate(lines):
-                if "# MAKE-RELEASE-NOTES-EMBED-MARKER" in line:
-                    lines.insert(i + 1, current_year_marker)
-                    modified_lines["inserted_line"] = i + 2  # Adjusting for 0-based index
-                    break
-
-            # Write updated lines back to the file
-            file.seek(0)
-            file.truncate()
-            file.writelines(lines)
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
     if modified_lines['deleted_line'] is not None and modified_lines['inserted_line'] is not None:
         print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
-    elif modified_lines['deleted_line'] is not None:
-        print(f"# CURRENT-YEAR-END-MARKER was removed from line {modified_lines['deleted_line']} and reinserted in the default location.")
     else:
-        print("# CURRENT-YEAR-END-MARKER was not found in the file.")
+        print("# CURRENT-YEAR-END-MARKER was not found or moved.")
 
 def update_paths(year):
     """
