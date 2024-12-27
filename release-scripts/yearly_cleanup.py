@@ -363,12 +363,18 @@ def update_quarto_yaml(year):
 
     print(f"Added {year} releases folder to the sidebar in _quarto.yml")
 
-def move_year_marker():
+def move_year_marker(year):
     """Updates the _quarto.yml file to relocate the CURRENT-YEAR-END-MARKER.
+
+    Args:
+        year (int): The year to search for in the line pattern.
 
     Modifies:
         _quarto.yml file
     """
+    import shutil
+    import os
+
     yaml_filename = "../site/_quarto.yml"
     temp_yaml_filename = "../site/_quarto_temp.yml"
 
@@ -383,8 +389,11 @@ def move_year_marker():
         "inserted_line": None
     }
 
+    marker_pattern = f"        - file: releases/{year}/{year}-releases.qmd"
+
     with open(yaml_filename, 'w') as file:
         marker_deleted = False
+        marker_moved = False
 
         for line_number, line in enumerate(lines, start=1):
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
@@ -392,17 +401,21 @@ def move_year_marker():
                 modified_lines["deleted_line"] = line_number
                 continue  # Skip writing this line to effectively delete it
 
-            file.write(line)
-
-            if not marker_deleted and line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
-                # Insert marker immediately after the specific line
+            # Check for the target pattern and insert the marker above it
+            if not marker_moved and line.strip() == marker_pattern:
                 file.write("        # CURRENT-YEAR-END-MARKER\n")
-                modified_lines["inserted_line"] = line_number + 1
+                modified_lines["inserted_line"] = line_number
+                marker_moved = True
+
+            file.write(line)
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+    if modified_lines['deleted_line'] is not None and modified_lines['inserted_line'] is not None:
+        print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+    else:
+        print("# CURRENT-YEAR-END-MARKER was not relocated.")
 
 def update_paths(year):
     """
