@@ -397,21 +397,23 @@ def move_year_marker(year):
         marker_inserted = False
 
         for line_number, line in enumerate(lines, start=1):
+            # Skip the CURRENT-YEAR-END-MARKER line and mark it as found
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
                 modified_lines["deleted_line"] = line_number
                 marker_found = True
-                continue  # Skip writing this line to effectively delete it
-
-            # Check for the target pattern and insert the marker above it
-            if not marker_inserted and line.strip() == marker_pattern:
-                file.write("        - releases/2025-dec-24/release-notes.qmd\n")  # Ensure 2025 reference stays.
-                file.write(current_year_marker)
-                file.write(line)
-                modified_lines["inserted_line"] = line_number
-                marker_inserted = True
                 continue
 
+            # Insert the CURRENT-YEAR-END-MARKER above the target line
+            if not marker_inserted and line.strip() == marker_pattern:
+                file.write(current_year_marker)
+                modified_lines["inserted_line"] = line_number
+                marker_inserted = True
+
             file.write(line)
+
+        # Error if the marker was found but not inserted
+        if marker_found and not marker_inserted:
+            print("Error: Marker was removed but not reinserted above the target line.")
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
