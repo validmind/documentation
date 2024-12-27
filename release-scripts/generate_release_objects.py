@@ -437,12 +437,21 @@ def create_release_folder(formatted_release_date):
         formatted_release_date (str): The formatted release date string.
 
     Returns:
-        str: The path to the release notes file.
+        str: The path to the release notes file, or None if the user chooses not to overwrite.
     """
     directory_path = f"../site/releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
-    print(f"{output_file} created")
+
+    # Check if the directory and file already exist
+    if os.path.exists(directory_path) and os.path.exists(output_file):
+        response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
+        if response != "yes":
+            print("Operation canceled by the user. No changes were made.")
+            return None
+
+    # Create directory and output file
+    os.makedirs(directory_path, exist_ok=True)
+    print(f"{output_file} will be created or overwritten.")
     return output_file
 
 def create_release_qmd(output_file, original_release_date):
