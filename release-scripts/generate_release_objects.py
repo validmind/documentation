@@ -731,6 +731,17 @@ def update_quarto_yaml(release_date):
         _quarto.yml file
     """
     yaml_filename = "../site/_quarto.yml"
+
+    # Format the release date for insertion into the YAML file
+    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+    target_line = f'        - releases/{formatted_release_date}/release-notes.qmd\n'
+
+    # Check if the target line already exists in the YAML file
+    with open(yaml_filename, 'r') as file:
+        if target_line in file.readlines():
+            print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}. Skipping update.")
+            return
+
     temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
@@ -738,9 +749,6 @@ def update_quarto_yaml(release_date):
 
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
-
-    # Format the release date for insertion into the YAML file
-    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
 
     with open(yaml_filename, 'w') as file:
         add_release_content = False
@@ -753,13 +761,14 @@ def update_quarto_yaml(release_date):
                 insert_index = i
 
             if add_release_content and i == insert_index:
-                file.write(f'        - releases/{formatted_release_date}/release-notes.qmd\n')
+                file.write(target_line)
                 add_release_content = False
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
     print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
+
 
 def update_index_qmd(release_date):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
