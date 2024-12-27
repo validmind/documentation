@@ -9,6 +9,7 @@ from dotenv import dotenv_values
 import os
 from collections import defaultdict
 from IPython import get_ipython
+from collections import Counter
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -228,6 +229,14 @@ class ReleaseURL:
         self.data_json = None
         self.prs = []
 
+    def extract_repo_name(self):
+        """Extracts and returns the repository name from the URL."""
+        match = re.search(r"github\.com/(.+)/releases/tag/", self.url)
+        if not match:
+            print(f"ERROR: Invalid URL format '{self.url}'")
+            return None
+        return match.group(1)
+
     def set_repo_and_tag_name(self):
         """Sets the repo name (documentation/backend/...) and the release tag from the GitHub URL.
 
@@ -372,6 +381,20 @@ def collect_github_urls():
         print(f"{url} added\n")
     return urls 
 
+def count_repos(urls):
+    """Counts occurrences of each repository in the given URLs.
+
+    Args:
+        urls (List[ReleaseURL]): A list of ReleaseURL objects
+
+    Prints:
+        Repository counts in the format 'repo_name: count'
+    """
+    repo_names = [url.extract_repo_name() for url in urls if url.extract_repo_name()]
+    
+    counts = Counter(repo_names)
+    for repo, count in counts.items():
+        print(f"{repo}: {count}")
 
 def get_release_date():
     """Sets a release date
