@@ -404,6 +404,7 @@ def move_year_marker(year):
 
             # Check for the target pattern and insert the marker above it
             if not marker_inserted and line.strip() == marker_pattern:
+                file.write("        - releases/2025-dec-24/release-notes.qmd\n")  # Ensure 2025 reference stays.
                 file.write(current_year_marker)
                 file.write(line)
                 modified_lines["inserted_line"] = line_number
