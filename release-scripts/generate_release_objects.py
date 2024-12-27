@@ -247,9 +247,9 @@ class ReleaseURL:
         match = re.search(r"github\.com/(.+)/releases/tag/(.+)$", self.url)
         if not match:
             print(f"ERROR: Invalid URL format '{self.url}'")
-      
+            return
+
         self.repo_name, self.tag_name = match.groups()
-        print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tag name: {self.tag_name}\n")
 
     def extract_prs(self):
         """Extracts PRs from the release URL.
@@ -486,9 +486,29 @@ def set_names(github_urls):
     Returns:
         None
     """
-    print(f"Assigning repo and tag names ...\n")
-    for url in github_urls:
-        url.set_repo_and_tag_name()
+    # Mapping of repo names to headers
+    repo_to_header = {
+        "validmind/frontend": "FRONTEND",
+        "validmind/documentation": "DOCUMENTATION",
+        "validmind/validmind-library": "VALIDMIND LIBRARY",
+    }
+
+    print("Assigning repo and tag names ...\n")
+
+    # Group URLs by repo name for better formatting
+    grouped_urls = {}
+    for url_obj in github_urls:
+        url_obj.set_repo_and_tag_name()
+        if url_obj.repo_name not in grouped_urls:
+            grouped_urls[url_obj.repo_name] = []
+        grouped_urls[url_obj.repo_name].append(url_obj)
+
+    # Print output in the desired format
+    for repo_name, urls in grouped_urls.items():
+        header = repo_to_header.get(repo_name, repo_name.upper())
+        print(f"{header}:\n")
+        for url_obj in urls:
+            print(f"URL: {url_obj.url}\n Repo name: {url_obj.repo_name}\n Tag name: {url_obj.tag_name}\n")
 
 def extract_urls(github_urls):
     """
