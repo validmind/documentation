@@ -446,7 +446,7 @@ def create_release_folder(formatted_release_date):
     if os.path.exists(directory_path) and os.path.exists(output_file):
         response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
         if response != "yes":
-            print("Operation canceled by the user, no changes were made")
+            print("Operation canceled, no changes were made")
             return None
 
     # Create directory and output file
@@ -462,6 +462,10 @@ def create_release_qmd(output_file, original_release_date):
         output_file (str): The path to the file to write.
         original_release_date (str): The title to include in the metadata.
     """
+    if output_file is None:
+        # Exit early if the user canceled the operation
+        print("Release file already exists, leaving as is")
+        return
 
     print(f"{original_release_date} added to {output_file} as title")
     with open(output_file, "w") as file:
