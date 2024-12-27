@@ -128,10 +128,15 @@ deploy-staging:
 
 # Generate release notes
 release-notes:
-	@python ../release-scripts/generate_release_objects.py
-	cd ../
-	git status | grep -v 'release-scripts/'
-	quarto preview
+	@python ../release-scripts/generate_release_objects.py; \
+	if [ $$? -eq 0 ]; then \
+		cd ../; \
+		git status | grep -v 'release-scripts/'; \
+		cd site/; \
+		quarto preview; \
+	else \
+		echo "Python script failed. Skipping additional commands."; \
+	fi
 
 # Collate yearly releases
 yearly-releases:

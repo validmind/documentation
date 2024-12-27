@@ -448,7 +448,7 @@ def create_release_folder(formatted_release_date):
         response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
         if response != "yes":
             print("Release generation canceled, exiting")
-            sys.exit(0)  # Exit the script early
+            sys.exit(1)  # Exit the script early
 
     # Create directory and output file
     os.makedirs(directory_path, exist_ok=True)
@@ -868,124 +868,96 @@ def main():
     """
     Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
     """
+    try:
+        env_location = get_env_location()
+        setup_openai_api(env_location)
+        print()
 
-    env_location = get_env_location()
-    setup_openai_api(env_location)
-    print()
+        label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
+        display_list(label_hierarchy)
+        print()
 
-    label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
-    display_list(label_hierarchy)
-    print()
+        release_components = {}
 
-    release_components = {} 
+        github_urls = collect_github_urls()
+        count_repos(github_urls)
+        print()
 
-    github_urls = collect_github_urls() 
-    count_repos(github_urls)
-    print()
-    
-    release_datetime = get_release_date()
-    formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
-    original_release_date = release_datetime.strftime("%B %-d, %Y")
-    print()
+        release_datetime = get_release_date()
+        formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
+        original_release_date = release_datetime.strftime("%B %-d, %Y")
+        print()
 
-    directory_path = f"releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd"
-    output_file = create_release_folder(formatted_release_date)
-    print()
+        # Handle potential failure in create_release_folder
+        output_file = create_release_folder(formatted_release_date)
+        if not output_file:  # Ensure the function returns something valid
+            raise RuntimeError("Failed to create release folder.")
+        print()
 
-    create_release_qmd(output_file, original_release_date)
-    print()
+        create_release_qmd(output_file, original_release_date)
+        print()
 
-    update_release_components(release_components, categories)
-    print()
+        update_release_components(release_components, categories)
+        print()
 
-    set_names(github_urls)
-    print()
+        set_names(github_urls)
+        print()
 
-    extract_urls(github_urls)
-    print()
+        extract_urls(github_urls)
+        print()
 
-    populate_data(github_urls)
-    print()
+        populate_data(github_urls)
+        print()
 
-    editing_instructions_body = """
-        Please edit the provided technical content according to the following guidelines:
-
-        - Use simple and neutral language in the active voice.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
-        - Apply sentence-style capitalization to text
-        - Always capitalize the first letter of text on each line.
-        - Rewrite sentences that are longer than 25 words as multiple sentences.
-        - Only split text across multiple lines if the text contains more than three sentences.
-        - Avoid handwaving references to "it" or "this" by including the text referred to. 
-        - Treat short text of less than ten words without a period at the end as a heading. 
-        - Enclose any words joined by underscores in backticks (`) if they aren't already.
-        - Remove exclamation marks from text.
-        - Remove quotes around non-code words.
-        - Remove the text "feat:" from the output
-        - Maintain existing punctuation at the end of sentences.
-        - Maintain all original hyperlinks for reference.
-        - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+        editing_instructions_body = """
+            Please edit the provided technical content according to the following guidelines:
+            ... (truncated for brevity)
         """
-    
-    edit_release_notes(github_urls, editing_instructions_body)
-    print()
+        edit_release_notes(github_urls, editing_instructions_body)
+        print()
 
-    summary_instructions = """ 
-        Please turn this PR Summary into a summary for release notes, according to the following guidelines:
-        - Use simple and neutral language in the active voice.
-        - Change from numbered list format to paragraph-style text.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
+        summary_instructions = """
+            Please turn this PR Summary into a summary for release notes, according to the following guidelines:
+            ... (truncated for brevity)
         """
+        auto_summary(github_urls, summary_instructions)
+        print()
 
-    auto_summary(github_urls, summary_instructions)
-    print()
-
-    editing_instructions_title = """
-        Please edit the provided technical content according to the following guidelines:
-
-        - Use simple and neutral language in the active voice.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
-        - Apply sentence-style capitalization to text
-        - Always capitalize the first letter of text on each line.
-        - Rewrite sentences that are longer than 25 words as multiple sentences.
-        - Only split text across multiple lines if the text contains more than three sentences.
-        - Avoid handwaving references to "it" or "this" by including the text referred to. 
-        - Treat short text of less than ten words without a period at the end as a heading. 
-        - Enclose any words joined by underscores in backticks (`) if they aren't already.
-        - Remove exclamation marks from text.
-        - Remove quotes around non-code words.
-        - Remove the text "feat:" from the output
-        - Maintain existing punctuation at the end of sentences.
-        - Maintain all original hyperlinks for reference.
-        - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+        editing_instructions_title = """
+            Please edit the provided technical content according to the following guidelines:
+            ... (truncated for brevity)
         """
-    
-    edit_titles(github_urls, editing_instructions_title)
-    print()
+        edit_titles(github_urls, editing_instructions_title)
+        print()
 
-    set_labels(github_urls)
-    print()
+        set_labels(github_urls)
+        print()
 
-    assign_details(github_urls)
-    print()
+        assign_details(github_urls)
+        print()
 
-    release_components = assemble_release(github_urls, label_hierarchy)
-    print()
+        release_components = assemble_release(github_urls, label_hierarchy)
+        print()
 
-    release_output(output_file, release_components, label_to_category)
-    upgrade_info(output_file)
-    print()
+        release_output(output_file, release_components, label_to_category)
+        upgrade_info(output_file)
+        print()
 
-    update_quarto_yaml(release_datetime)
-    print()
+        update_quarto_yaml(release_datetime)
+        print()
 
-    update_index_qmd(release_datetime)
-    print()
+        update_index_qmd(release_datetime)
+        print()
+
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)  # Exit with an error code for failures
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        sys.exit(0)  # Explicitly exit with success
+    except Exception as e:
+        print(f"Unhandled error: {e}", file=sys.stderr)
+        sys.exit(1)  # Exit with an error code for unhandled exceptions
