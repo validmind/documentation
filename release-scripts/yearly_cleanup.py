@@ -323,6 +323,7 @@ def update_quarto_yaml(year):
 
     with open(yaml_filename, 'w') as file:
         between_markers = False
+        year_contents = []
 
         for line in lines:
             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
@@ -331,16 +332,31 @@ def update_quarto_yaml(year):
                 continue
 
             if line.strip() == "# CURRENT-YEAR-END-MARKER":
+                if year_contents and not year_injected:
+                    # Inject the new file entry with nested contents before ending the section
+                    file.write(f"        - file: {release_file}\n")
+                    file.write("          contents:\n")
+                    for content in year_contents:
+                        file.write(f"          {content}")
+                    year_injected = True
                 between_markers = False
 
             if between_markers:
-                # Inject the new file entry before the first occurrence of the target year
-                if not year_injected and f"releases/{year}" in line:
-                    file.write(f"        - file: {release_file}\n")
-                    file.write("          contents:\n")
-                    year_injected = True
+                # Collect lines for the specified year
+                if f"releases/{year}" in line:
+                    year_contents.append(line)
+                else:
+                    # Write out lines not belonging to the target year
+                    file.write(line)
+            else:
+                file.write(line)
 
-            file.write(line)  # Write the current line as is
+        if not year_injected and year_contents:
+            # Ensure the file and contents are added if the section didn't end naturally
+            file.write(f"        - file: {release_file}\n")
+            file.write("          contents:\n")
+            for content in year_contents:
+                file.write(f"          {content}")
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
