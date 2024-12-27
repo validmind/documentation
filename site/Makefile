@@ -135,7 +135,7 @@ release-notes:
 		cd site/; \
 		quarto preview; \
 	else \
-		echo "Python script failed. Skipping additional commands."; \
+		echo "Release note generation failed, git status and quarto preview"; \
 	fi
 
 # Collate yearly releases
