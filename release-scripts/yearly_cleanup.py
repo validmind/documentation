@@ -131,9 +131,14 @@ def copy_template(yearly_path, year):
             print(f"Template file '{template_path}' does not exist")
             return None
 
+        # Check if the destination file already exists
+        if os.path.exists(destination_file):
+            print(f"File '{destination_file}' already exists. Skipping copy.")
+            return destination_file
+
         # Copy the template to the destination
         shutil.copy(template_path, destination_file)
-        print(f"Copied ../internal/templates/yearly-releases.qmd template to: '{destination_file}'")
+        print(f"Copied '../internal/templates/yearly-releases.qmd' template to: '{destination_file}'")
 
         return destination_file
 
