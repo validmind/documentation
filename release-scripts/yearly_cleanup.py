@@ -336,8 +336,12 @@ def update_quarto_yaml(year):
                 between_markers = False
 
             if between_markers:
-                modified_lines.append(i + 1)
-                file.write("  " + line)  # Add additional indent to lines between markers
+                # Check if the line includes the year
+                if f"releases/{year}-" in line:
+                    modified_lines.append(i + 1)
+                    file.write("  " + line)  # Add additional indent to lines between markers
+                else:
+                    file.write(line)  # Leave the line as is if it does not match the year
             else:
                 file.write(line)
 
