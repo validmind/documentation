@@ -1,0 +1,107 @@
+---
+title: "December 25, 2026"
+---
+
+ADDITIONAL YEAR RELEASE TO SHOWCASE THE CAPABILITY OF `update_quarto_yaml()`.
+
+## Enhancements
+
+<!---
+PR #1079: Added the ability to Managed Saved Views
+URL: https://github.com/validmind/frontend/pull/1079
+Labels: enhancement
+--->
+### Added the ability to manage saved views
+
+New feature allows you to save filters, sorting, and columns as predefined views for model inventory and findings.
+ 
+Generated PR summary: 
+ 
+This update introduces a new feature that enables you to manage saved views within the application. It includes enhancements to APIs, with functions such as `GetSavedViews`, `CreateSavedView`, `UpdateSavedView`, and `DeleteSavedView` to manage your saved views effectively. 
+
+A new user interface component, the `ManageViewsButton`, allows you to handle your saved views. This component lets you add or edit views via a modal dialog, delete them with confirmation, and display or select from a list of saved views.
+
+The `ManageViewsButton` is now integrated into both the `ModelFindings` and `ModelInventory` pages, providing you with the ability to save and manage views specific to findings and models.
+
+Additionally, the introduction of a feature flag named `modelInventorySavedViews` lets you toggle this functionality as needed. Lastly, a model called `TSavedView` defines the structure for your saved views with properties like identifier (`cuid`), name, description, type, and content.
+
+<!---
+PR #1100: Mnt analytics improvements
+URL: https://github.com/validmind/frontend/pull/1100
+Labels: enhancement
+--->
+### M n t analytics improvements
+
+Changes to analytics:
+
+- Added sorting capability for bar charts.
+
+- Added a new action for metrics, Count%. This feature allows you to count the percentage of a given metric.
+ 
+Generated PR summary: 
+ 
+This release enhances the `AddOrEditVisualizationModal` component in the web application with several improvements. A new sorting feature is introduced through the `SortingComponent`, enabling you to sort visualizations based on selected metrics or groupings. This feature utilizes the `useMemo` hook for generating sorting options dynamically according to your current dataset, metrics, and groupings. Additionally, the `MetricSelector` now supports 'Count %' across various metric types such as string, number, date, and boolean, allowing you to view metrics as percentages. Minor adjustments have been made to the user interface, including changing the `ModalBody` overflow property to `hidden` and adding `overflowY: 'auto'` to the `VStack`, improving your overall experience. These updates aim to provide more flexible data visualization capabilities within the application.
+
+<!---
+PR #1076: [7333] - chore: add UI changes for revision history
+URL: https://github.com/validmind/frontend/pull/1076
+Labels: enhancement
+--->
+### Add UI changes for revision history
+
+Implemented UI enhancements for the revision history feature.
+ 
+Generated PR summary: 
+ 
+This update introduces the `RevisionHistoryButtonPlugin` for the CKEditor component within the `CKEditorWrapper`. The plugin enhances your editing experience by adding a button to the editor's user interface, enabling you to navigate revision history more effectively. It integrates seamlessly into existing UI elements, such as the toolbar and sticky panel, when you initialize the editor.
+
+The update also includes significant CSS modifications to improve dark mode styling for CKEditor and its components. These enhancements ensure that UI elements like toolbars, buttons, and revision history sidebars remain visually consistent and accessible in dark mode. Adjustments have been made to background colors, text colors, borders, and other styling properties to align with the dark theme.
+
+<!---
+PR #1092: [SC-7471] adding custom field permission check
+URL: https://github.com/validmind/frontend/pull/1092
+Labels: enhancement
+--->
+### Adding custom field permission check
+
+Administrators can now assign write permissions to individual fields in the model inventory.
+ 
+Generated PR summary: 
+ 
+This update enhances the management of custom field permissions within the application, focusing on improving flexibility and usability. Permission types have been refactored, replacing the `TPermissionAction` type with a generic `string[]` for simplified permission handling. 
+
+In the Custom Field Modal, new states and logic allow you to manage role changes by adding or removing roles with specific permissions. The introduction of a new `useCustomFieldPermissions` hook facilitates fetching and managing roles with permissions for custom fields. Additionally, the `onSaveClicked` function is updated to handle role permission updates asynchronously, providing feedback through toast notifications.
+
+The user interface benefits from using `chakra-react-select` for a better multi-select experience when managing roles in the Custom Field Modal. The `CustomFields` page now handles modal state more effectively by using a single instance of the modal for editing and adding new fields.
+
+Context and hook updates include using the new permission type in `InventoryModelContext` and `UsersContext`, as well as adding a utility function, `isReadOnlyField`, in `InventoryModelOverview` to assess field editability based on permissions. These enhancements aim to streamline your experience with role-based permissions management for custom fields.
+
+## Bug fixes
+
+<!---
+PR #1106: Deleting a finding should remove it from a validation report
+URL: https://github.com/validmind/frontend/pull/1106
+Labels: bug
+--->
+### Deleting a finding
+
+Removing a finding should remove the finding from a validation report
+
+Fixed an issue where users could delete findings even if they were assigned to a validation report.
+ 
+Generated PR summary: 
+ 
+This release introduces several enhancements to the web application. A new function, `GetFindingLinkedAssessmentFindings`, is added to the API module. This function helps you retrieve linked assessment findings for a given finding, enabling the application to display related assessments when viewing or deleting a finding. The `AssessmentFinding` and `Assessment` types in the `guideline.ts` model are updated with optional fields for `assessment` and `inventory_model`. These updates allow for more detailed information to be associated with each finding and assessment. On the user interface front, the `ViewFinding` component now includes a warning alert when you attempt to delete a finding linked to one or more assessments. This alert lists the affected assessments, clarifying how your action will impact linked assessments. Additionally, the `ConfirmationAlert` component's `dialogBody` prop now accepts `ReactNode`, providing more complex and informative dialog content. Together, these changes enhance your experience by offering more context and clear warnings when removing findings.
+
+## Other
+
+<!---
+PR #1095: Bump cross-spawn
+URL: https://github.com/validmind/frontend/pull/1095
+Labels: dependencies
+--->
+### Bump `cross-spawn`
+
+
+
+{{< include /releases/_how-to-upgrade.qmd >}}
