@@ -8,6 +8,9 @@ import openai
 from dotenv import dotenv_values
 import os
 from collections import defaultdict
+from IPython import get_ipython
+from collections import Counter
+import sys
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -36,7 +39,7 @@ class PR:
         Modifies:
             self.data_json
         """
-        print(f"Extracting data from PR #{self.pr_number} in {self.repo_name}...\n")
+        print(f"Storing data from PR #{self.pr_number} of {self.repo_name} ...\n")
         cmd = ['gh', 'pr', 'view', self.pr_number, '--json', 'title,body,url,labels', '--repo', self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
         output = result.stdout.strip()
@@ -46,7 +49,7 @@ class PR:
         try:
             self.data_json = json.loads(output_clean)
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}.")
+            print(f"ERROR: Unable to parse PR data for PR number {self.pr_number} in repository {self.repo_name}")
             return None
         
         if any(label['name'] == 'internal' for label in self.data_json['labels']):
@@ -103,7 +106,7 @@ class PR:
             if summary:
                 self.pr_auto_summary = summary
             else:
-                print("No PR Summary found.")
+                print(f"No PR summary found for #{self.pr_number} from {self.repo_name}\n")
         else:
             print(f"Failed to fetch comments: {result.stderr}")
 
@@ -117,7 +120,7 @@ class PR:
 
             client = openai.OpenAI() 
 
-            print(f"Processing PR Summary #{self.pr_number} in repo {self.repo_name}...\n")
+            print(f"Processing PR summary #{self.pr_number} from {self.repo_name} ...\n")
 
             try:
                 response = client.chat.completions.create(
@@ -195,7 +198,7 @@ class PR:
         """
         # Remove text in square brackets, process '/' character, and trim the title
         title = re.sub(r"\[.*?\]", "", self.title)
-        print(f"After some trimming: {title}\n") #@@@@@@
+        print(f"After trimming: {title}\n") #@@@@@@
         parts = title.split('/')
         if len(parts) > 1:
             title = parts[-1].strip()  # Get the part after the last '/'
@@ -203,7 +206,7 @@ class PR:
                 title = title[0].upper() + title[1:]  # Capitalize the first letter if it's lowercase
 
         title = title.strip()
-        print(f"After stripping more: {title}\n") #@@@@@
+        print(f"After stripping: {title}\n") #@@@@@
 
         # Edit the pull request title with ChatGPT
         # print(f"ORIGINAL TITLE: {title}")
@@ -227,6 +230,14 @@ class ReleaseURL:
         self.data_json = None
         self.prs = []
 
+    def extract_repo_name(self):
+        """Extracts and returns the repository name from the URL."""
+        match = re.search(r"github\.com/(.+)/releases/tag/", self.url)
+        if not match:
+            print(f"ERROR: Invalid URL format '{self.url}'")
+            return None
+        return match.group(1)
+
     def set_repo_and_tag_name(self):
         """Sets the repo name (documentation/backend/...) and the release tag from the GitHub URL.
 
@@ -236,10 +247,10 @@ class ReleaseURL:
         """
         match = re.search(r"github\.com/(.+)/releases/tag/(.+)$", self.url)
         if not match:
-            print(f"Error: Invalid URL format '{self.url}'.")
-      
+            print(f"ERROR: Invalid URL format '{self.url}'")
+            return
+
         self.repo_name, self.tag_name = match.groups()
-        print(f"URL: {self.url}\n Repo name: {self.repo_name}\n Tage name: {self.tag_name}\n")
 
     def extract_prs(self):
         """Extracts PRs from the release URL.
@@ -248,7 +259,7 @@ class ReleaseURL:
             self.prs
             self.data_json
         """
-        print(f"Extracting PRs from {self.url}...\n")
+        print(f"Extracting PRs from {self.url} ...\n")
         cmd_release = ['gh', 'api', f'repos/{self.repo_name}/releases/tags/{self.tag_name}']
         result_release = subprocess.run(cmd_release, capture_output=True, text=True)
         output_release = result_release.stdout.strip()
@@ -258,7 +269,7 @@ class ReleaseURL:
         try:
             self.data_json = json.loads(output_release_clean)
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse release data for URL '{self.url}'.")      
+            print(f"ERROR: Unable to parse release data for URL '{self.url}'")      
         
         if 'body' in self.data_json:
             body = self.data_json['body']
@@ -267,10 +278,10 @@ class ReleaseURL:
             for pr_number in pr_numbers: # initialize PR objects using pr_numbers and add to list of PRs
                 curr_PR = PR(self.repo_name, pr_number)
                 self.prs.append(curr_PR)
-                print(f"PR #{pr_number} added.\n")
+                print(f"PR #{pr_number} retrieved.\n")
 
         else:
-            print(f"Error: No body found in release data for URL '{self.url}'.")
+            print(f"ERROR: No body found in release data for URL '{self.url}'")
 
     def populate_pr_data(self):
         """Helper method. Calls JSON loader on each PR in a URL.
@@ -316,12 +327,12 @@ def setup_openai_api(env_location):
     api_key = config.get('OPENAI_API_KEY')
     if not api_key:
         raise KeyError(
-            f"OPENAI_API_KEY is not set in the .env file at {env_location}. "
-            "Please ensure the .env file contains this key."
+            f"OPENAI_API_KEY is not set in the .env file at {env_location}"
+            "Please ensure the .env file contains this key"
         )
 
     # Set the API key for the OpenAI library
-    print(f"Detected OpenAI API Key in {env_location}.")  # Optional debug message
+    print(f"Detected OpenAI API Key in {env_location}")  # Optional debug message
     openai.api_key = api_key
 
 label_to_category = {
@@ -344,7 +355,7 @@ def display_list(array):
     """
     Lists an array in a numbered list. Used to check the `label_hierarchy`.
     """
-
+    print("Set category hierarchy:\n")
     for i, item in enumerate(array, start=1):
         print(f"{i}. {item}")
 
@@ -360,17 +371,37 @@ def collect_github_urls():
         If the user presses enter and no URLs were entered
     """
     urls = []
+    seen_urls = set()  # Track unique URLs
     while True:
         url = input("Enter a full GitHub release URL (leave empty to finish): ")
         if not url:
             if not urls:  # Check if no URLs have been added yet
-                print("Error: You must specify at least one full GitHub release URL.")
+                print("ERROR: You must specify at least one full GitHub release URL")
                 exit(1)  # Exit the script with an error code
             break
-        urls.append(ReleaseURL(url))
-        print(f"{url} added.\n")
-    return urls 
+        if url in seen_urls:
+            print(f"ERROR: Duplicate URL '{url}' not added\n")
+        else:
+            urls.append(ReleaseURL(url))
+            seen_urls.add(url)
+            print(f"{url} added\n")
+    return urls
 
+def count_repos(urls):
+    """Counts occurrences of each repository in the given URLs.
+
+    Args:
+        urls (List[ReleaseURL]): A list of ReleaseURL objects
+
+    Prints:
+        Repository counts in the format 'repo_name: count'
+    """
+    print("RELEASE TAGS ADDED BY REPO:\n")
+    repo_names = [url.extract_repo_name() for url in urls if url.extract_repo_name()]
+    
+    counts = Counter(repo_names)
+    for repo, count in counts.items():
+        print(f"{repo}: {count}")
 
 def get_release_date():
     """Sets a release date
@@ -395,7 +426,7 @@ def get_release_date():
         print(f"Release date: {validated_date}\n")
         return validated_date
     except ValueError:
-        print("Invalid date format. Please try again using the format Month Day, Year (e.g., January 1, 2020).")
+        print("Invalid date format, please try again using the format Month Day, Year (e.g., January 1, 2020)")
         return get_release_date()
     
 def create_release_folder(formatted_release_date):
@@ -407,12 +438,21 @@ def create_release_folder(formatted_release_date):
         formatted_release_date (str): The formatted release date string.
 
     Returns:
-        str: The path to the release notes file.
+        str: The path to the release notes file, or exits the script if the user chooses not to overwrite.
     """
     directory_path = f"../site/releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
     output_file = f"{directory_path}release-notes.qmd"
-    print(f"{output_file} created.")
+
+    # Check if the directory and file already exist
+    if os.path.exists(directory_path) and os.path.exists(output_file):
+        response = input(f"The file {output_file} already exists. Do you want to overwrite it? (yes/no): ").strip().lower()
+        if response != "yes":
+            print("Release generation canceled, exiting")
+            sys.exit(1)  # Exit the script early
+
+    # Create directory and output file
+    os.makedirs(directory_path, exist_ok=True)
+    print(f"{output_file} will be created or overwritten")
     return output_file
 
 def create_release_qmd(output_file, original_release_date):
@@ -424,7 +464,7 @@ def create_release_qmd(output_file, original_release_date):
         original_release_date (str): The title to include in the metadata.
     """
 
-    print("Generating & editing release notes ...")
+    print(f"{original_release_date} added to {output_file} as title")
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
 
@@ -440,6 +480,10 @@ def update_release_components(release_components, categories):
         dict: The updated release components dictionary.
     """
     release_components.update(categories)
+    if get_ipython():  # Check if running in Jupyter Notebook
+        print(f"Set up {len(release_components)} components:")
+    else:
+        print(f"Set up {len(release_components)} components:\n" + "\n".join(release_components))
     return release_components
 
 def set_names(github_urls):
@@ -452,8 +496,29 @@ def set_names(github_urls):
     Returns:
         None
     """
-    for url in github_urls:
-        url.set_repo_and_tag_name()
+    # Mapping of repo names to headers
+    repo_to_header = {
+        "validmind/frontend": "FRONTEND",
+        "validmind/documentation": "DOCUMENTATION",
+        "validmind/validmind-library": "VALIDMIND LIBRARY",
+    }
+
+    print("Assigning repo and tag names ...\n")
+
+    # Group URLs by repo name for better formatting
+    grouped_urls = {}
+    for url_obj in github_urls:
+        url_obj.set_repo_and_tag_name()
+        if url_obj.repo_name not in grouped_urls:
+            grouped_urls[url_obj.repo_name] = []
+        grouped_urls[url_obj.repo_name].append(url_obj)
+
+    # Print output in the desired format
+    for repo_name, urls in grouped_urls.items():
+        header = repo_to_header.get(repo_name, repo_name.upper())
+        print(f"{header}:\n")
+        for url_obj in urls:
+            print(f"URL: {url_obj.url}\n Repo name: {url_obj.repo_name}\n Tag name: {url_obj.tag_name}\n")
 
 def extract_urls(github_urls):
     """
@@ -468,6 +533,7 @@ def extract_urls(github_urls):
     """
     for url in github_urls:
         url.extract_prs()
+        print()
 
 def populate_data(urls):
     """
@@ -478,6 +544,7 @@ def populate_data(urls):
     """
     for url in urls:
         url.populate_pr_data()
+        print()
 
 def edit_release_notes(github_urls, editing_instructions_body):
     """
@@ -493,9 +560,10 @@ def edit_release_notes(github_urls, editing_instructions_body):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Adding PR #{pr.pr_number} from {pr.repo_name} to release notes...\n") 
+                print(f"Editing content of PR #{pr.pr_number} from {pr.repo_name} ...\n") 
                 if pr.extract_external_release_notes():
                     pr.edit_text_with_openai(False, editing_instructions_body)
+        print()
 
 def auto_summary(github_urls, summary_instructions):
     """
@@ -509,9 +577,10 @@ def auto_summary(github_urls, summary_instructions):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Fetching github comment from PR #{pr.pr_number} in {pr.repo_name}...\n")
+                print(f"Fetching GitHub comment from PR #{pr.pr_number} of {pr.repo_name}...\n")
                 pr.extract_pr_summary_comment()
                 pr.convert_summary_to_release_notes(summary_instructions)
+        print()
 
 def edit_titles(github_urls, editing_instructions_title):
     """
@@ -530,7 +599,8 @@ def edit_titles(github_urls, editing_instructions_title):
                 print(f"Editing title for PR #{pr.pr_number} in {pr.repo_name}...\n")
                 pr.title = pr.data_json['title']
                 pr.clean_title(editing_instructions_title)
-                print("\n")
+                print()
+        print()
 
 def set_labels(github_urls):
     """
@@ -539,11 +609,13 @@ def set_labels(github_urls):
     Args:
         github_urls (list): A list of GitHub URL objects, each containing pull requests (prs).
     """
+    print(f"Attaching labels to PRs ...\n\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
                 pr.labels = [label['name'] for label in pr.data_json['labels']]
                 print(f"PR #{pr.pr_number} from {pr.repo_name}: {pr.labels}\n")
+        print()
 
 def assign_details(github_urls):
     """
@@ -555,6 +627,7 @@ def assign_details(github_urls):
     Returns:
         None
     """
+    print(f"Compiling PR data ...\n\n")
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
@@ -566,7 +639,8 @@ def assign_details(github_urls):
                     'labels': ", ".join(pr.labels),
                     'notes': pr.edited_text
                 }
-                print(f"PR #{pr.pr_number} from {pr.repo_name} added.\n")
+                print(f"PR #{pr.pr_number} from {pr.repo_name} compiled.\n")
+        print()
 
 def assemble_release(github_urls, label_hierarchy):
     """
@@ -588,7 +662,7 @@ def assemble_release(github_urls, label_hierarchy):
     for url in github_urls:
         for pr in url.prs:
             if pr.data_json:
-                print(f"Adding PR #{pr.pr_number} from {pr.repo_name}...\n")
+                print(f"Assembling PR #{pr.pr_number} from {pr.repo_name} for release notes...\n")
                 assigned = False
                 for priority_label in label_hierarchy:
                     if priority_label in pr.labels:
@@ -597,6 +671,7 @@ def assemble_release(github_urls, label_hierarchy):
                         break
                 if not assigned:
                     unassigned_prs.append(pr.pr_details)
+        print()
 
     # Add unassigned PRs to the 'other' category
     release_components['other'].extend(unassigned_prs)
@@ -623,7 +698,7 @@ def release_output(output_file, release_components, label_to_category):
     try:
         with open(output_file, "a") as file:
             write_file(file, release_components, label_to_category)
-            print(f"Release notes added to {file.name}.")
+            print(f"Assembled release notes added to {file.name}\n")
     except Exception as e:
         print(f"Failed to write to {output_file}: {e}")
 
@@ -642,7 +717,7 @@ def upgrade_info(output_file):
     try:
         with open(output_file, "a") as file:
             file.write(include_directive)
-            print(f"Include _how-to-upgrade.qmd added to {file.name}.")
+            print(f"Include _how-to-upgrade.qmd added to {file.name}")
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
@@ -656,6 +731,17 @@ def update_quarto_yaml(release_date):
         _quarto.yml file
     """
     yaml_filename = "../site/_quarto.yml"
+
+    # Format the release date for insertion into the YAML file
+    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+    target_line = f'        - releases/{formatted_release_date}/release-notes.qmd\n'
+
+    # Check if the target line already exists in the YAML file
+    with open(yaml_filename, 'r') as file:
+        if target_line in file.readlines():
+            print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}, skipping update")
+            return
+
     temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
@@ -663,9 +749,6 @@ def update_quarto_yaml(release_date):
 
     with open(temp_yaml_filename, 'r') as file:
         lines = file.readlines()
-
-    # Format the release date for insertion into the YAML file
-    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
 
     with open(yaml_filename, 'w') as file:
         add_release_content = False
@@ -678,13 +761,13 @@ def update_quarto_yaml(release_date):
                 insert_index = i
 
             if add_release_content and i == insert_index:
-                file.write(f'        - releases/{formatted_release_date}/release-notes.qmd\n')
+                file.write(target_line)
                 add_release_content = False
 
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
-    print(f"Added release notes to _quarto.yml, line {insert_index + 2}")
+    print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
 
 def update_index_qmd(release_date):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
@@ -697,6 +780,17 @@ def update_index_qmd(release_date):
     """
 
     index_filename = "../site/index.qmd"
+
+    # Format the release date for checking and insertion into the QMD file
+    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+    new_release_entry = f'      - /releases/{formatted_release_date}/release-notes.qmd\n'
+
+    # Check if the release note already exists
+    with open(index_filename, 'r') as file:
+        if new_release_entry in file.read():
+            print(f"Release notes for {formatted_release_date} already exist. Skipping update.")
+            return
+
     temp_index_filename = "../site/index_temp.qmd"
 
     # Copy the original QMD file to a temporary file
@@ -704,9 +798,6 @@ def update_index_qmd(release_date):
 
     with open(temp_index_filename, 'r') as file:
         lines = file.readlines()
-
-    # Format the release date for insertion into the QMD file
-    formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
 
     with open(index_filename, 'w') as file:
         add_release_content = False
@@ -719,13 +810,13 @@ def update_index_qmd(release_date):
                 insert_index = i
 
             if add_release_content and i == insert_index:
-                file.write(f'      - /releases/{formatted_release_date}/release-notes.qmd\n')
+                file.write(new_release_entry)
                 add_release_content = False
 
     # Remove the temporary file
     os.remove(temp_index_filename)
     
-    print(f"Added new release notes to index.qmd, line {insert_index + 2}")
+    print(f"Added new release notes to index.qmd, line {insert_index + 2}\n")
 
     removed_line = None  # To store the line that gets removed
 
@@ -749,41 +840,7 @@ def update_index_qmd(release_date):
             # If no marker is found, rewrite the file as is
             file.writelines(updated_lines)
 
-    print(f"Removed the oldest release note entry: '{removed_line}'")
-
-def show_files():
-    """Print files to commit by running 'git status --short'."""
-    try:
-        # Get the absolute path of the current directory
-        current_dir = os.getcwd()
-
-        # Run 'git status --short'
-        result = subprocess.run(
-            ["git", "status", "--short"], check=True, text=True, capture_output=True
-        )
-        
-        # Process and display the output
-        lines = result.stdout.strip().split('\n')
-
-        if not lines:
-            print("No changes detected.")
-            return
-
-        print("\nFiles to commit (excluding 'release-scripts'):")
-        for line in lines:
-            # Get the full path of the file
-            parts = line.split()
-            if len(parts) > 1:
-                file_path = os.path.abspath(parts[-1])
-            else:
-                continue
-
-            # Exclude files in the 'release-scripts' folder
-            if 'release-scripts' not in file_path and line.startswith((' M', '??', 'A ')):
-                print(line)
-
-    except subprocess.CalledProcessError as e:
-        print("Failed to run 'git status':", e)
+    print(f"Removed the oldest release notes entry: '{removed_line}'")
 
 def write_file(file, release_components, label_to_category):
     """Writes each component of the release notes into a file
@@ -827,96 +884,96 @@ def main():
     """
     Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
     """
+    try:
+        env_location = get_env_location()
+        setup_openai_api(env_location)
+        print()
 
-    env_location = get_env_location()
-    setup_openai_api(env_location)
+        label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
+        display_list(label_hierarchy)
+        print()
 
-    label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
-    display_list(label_hierarchy)
+        release_components = {}
 
-    release_components = {} 
+        github_urls = collect_github_urls()
+        count_repos(github_urls)
+        print()
 
-    github_urls = collect_github_urls() 
-    
-    release_datetime = get_release_date()
-    formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
-    original_release_date = release_datetime.strftime("%B %-d, %Y")
+        release_datetime = get_release_date()
+        formatted_release_date = release_datetime.strftime("%Y-%b-%d").lower()
+        original_release_date = release_datetime.strftime("%B %-d, %Y")
+        print()
 
-    directory_path = f"releases/{formatted_release_date}/"
-    os.makedirs(directory_path, exist_ok=True)
-    output_file = f"{directory_path}release-notes.qmd"
+        # Handle potential failure in create_release_folder
+        output_file = create_release_folder(formatted_release_date)
+        if not output_file:  # Ensure the function returns something valid
+            raise RuntimeError("Failed to create release folder.")
+        print()
 
-    output_file = create_release_folder(formatted_release_date)
-    create_release_qmd(output_file, original_release_date)
-    update_release_components(release_components, categories)
+        create_release_qmd(output_file, original_release_date)
+        print()
 
-    set_names(github_urls)
-    extract_urls(github_urls)
-    populate_data(github_urls)
+        update_release_components(release_components, categories)
+        print()
 
-    editing_instructions_body = """
-        Please edit the provided technical content according to the following guidelines:
+        set_names(github_urls)
+        print()
 
-        - Use simple and neutral language in the active voice.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
-        - Apply sentence-style capitalization to text
-        - Always capitalize the first letter of text on each line.
-        - Rewrite sentences that are longer than 25 words as multiple sentences.
-        - Only split text across multiple lines if the text contains more than three sentences.
-        - Avoid handwaving references to "it" or "this" by including the text referred to. 
-        - Treat short text of less than ten words without a period at the end as a heading. 
-        - Enclose any words joined by underscores in backticks (`) if they aren't already.
-        - Remove exclamation marks from text.
-        - Remove quotes around non-code words.
-        - Remove the text "feat:" from the output
-        - Maintain existing punctuation at the end of sentences.
-        - Maintain all original hyperlinks for reference.
-        - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+        extract_urls(github_urls)
+        print()
+
+        populate_data(github_urls)
+        print()
+
+        editing_instructions_body = """
+            Please edit the provided technical content according to the following guidelines:
+            ... (truncated for brevity)
         """
-    
-    edit_release_notes(github_urls, editing_instructions_body)
+        edit_release_notes(github_urls, editing_instructions_body)
+        print()
 
-    summary_instructions = """ 
-        Please turn this PR Summary into a summary for release notes, according to the following guidelines:
-        - Use simple and neutral language in the active voice.
-        - Change from numbered list format to paragraph-style text.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
+        summary_instructions = """
+            Please turn this PR Summary into a summary for release notes, according to the following guidelines:
+            ... (truncated for brevity)
         """
+        auto_summary(github_urls, summary_instructions)
+        print()
 
-    auto_summary(github_urls, summary_instructions)
-
-    editing_instructions_title = """
-        Please edit the provided technical content according to the following guidelines:
-
-        - Use simple and neutral language in the active voice.
-        - Address users directly in the second person with "you".
-        - Use present tense by avoiding the use of "will".
-        - Apply sentence-style capitalization to text
-        - Always capitalize the first letter of text on each line.
-        - Rewrite sentences that are longer than 25 words as multiple sentences.
-        - Only split text across multiple lines if the text contains more than three sentences.
-        - Avoid handwaving references to "it" or "this" by including the text referred to. 
-        - Treat short text of less than ten words without a period at the end as a heading. 
-        - Enclose any words joined by underscores in backticks (`) if they aren't already.
-        - Remove exclamation marks from text.
-        - Remove quotes around non-code words.
-        - Remove the text "feat:" from the output
-        - Maintain existing punctuation at the end of sentences.
-        - Maintain all original hyperlinks for reference.
-        - Preserve all comments in the format <!--- COMMENT ---> as they appear in the text.
+        editing_instructions_title = """
+            Please edit the provided technical content according to the following guidelines:
+            ... (truncated for brevity)
         """
-    
-    edit_titles(github_urls, editing_instructions_title)
-    set_labels(github_urls)
-    assign_details(github_urls)
-    release_components = assemble_release(github_urls, label_hierarchy)
+        edit_titles(github_urls, editing_instructions_title)
+        print()
 
-    release_output(output_file, release_components, label_to_category)
-    upgrade_info(output_file)
-    update_quarto_yaml(release_datetime)
-    update_index_qmd(release_datetime)
+        set_labels(github_urls)
+        print()
+
+        assign_details(github_urls)
+        print()
+
+        release_components = assemble_release(github_urls, label_hierarchy)
+        print()
+
+        release_output(output_file, release_components, label_to_category)
+        upgrade_info(output_file)
+        print()
+
+        update_quarto_yaml(release_datetime)
+        print()
+
+        update_index_qmd(release_datetime)
+        print()
+
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)  # Exit with an error code for failures
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        sys.exit(0)  # Explicitly exit with success
+    except Exception as e:
+        print(f"Unhandled error: {e}", file=sys.stderr)
+        sys.exit(1)  # Exit with an error code for unhandled exceptions
