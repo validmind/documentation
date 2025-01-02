@@ -123,6 +123,7 @@ If there are additional files that Quarto does not copy over automatically, plac
 
 ### Jupyter Notebooks
 
+
 Notebooks (`.ipynb` files) are NOT edited via this `documentation` repo, as any changes will be overridden. 
 
 Changes need to be made in the [root repository `validmind-library`](https://github.com/validmind/validmind-library) and pulled into this one with:
@@ -132,6 +133,8 @@ make get-source
 ```
 
 After you pull in the changes, commit them to this repo as part of the release notes process.
+
+**Want to author new code samples?** Refer to our [Jupyter Notebook template Quickstart](https://github.com/validmind/validmind-library/tree/main/notebooks/templates)!
 
 <!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
