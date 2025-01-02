@@ -152,6 +152,7 @@ execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
 docker-build: docs-site
+	@$(MAKE) execute PROFILE=exe-prod
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
