@@ -133,9 +133,9 @@ make get-source
 
 After you pull in the changes, commit them to this repo as part of the release notes process.
 
-<!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
+**Want to author new code samples?** Refer to our [Jupyter Notebook template Quickstart](https://github.com/validmind/validmind-library/tree/main/notebooks/templates)!
 
-<!-- Testing conditional changes on site/notebooks/  -->
+<!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
 ## Build and serve the site with Docker
 
