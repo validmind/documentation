@@ -454,11 +454,6 @@ def create_release_folder(formatted_release_date):
     os.makedirs(directory_path, exist_ok=True)
     print(f"{output_file} will be created or overwritten")
 
-    try:
-        subprocess.run(["code", output_file], check=True)
-    except Exception as e:
-        print(f"Error creating or opening notebook: {e}")
-
     return output_file
 
 def create_release_qmd(output_file, original_release_date):
@@ -473,6 +468,11 @@ def create_release_qmd(output_file, original_release_date):
     print(f"{original_release_date} added to {output_file} as title")
     with open(output_file, "w") as file:
         file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+
+    try:
+        subprocess.run(["code", output_file], check=True)
+    except Exception as e:
+        print(f"Error opening the file in VS Code: {e}")
 
 def update_release_components(release_components, categories):
     """
