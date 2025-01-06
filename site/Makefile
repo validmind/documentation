@@ -87,6 +87,7 @@ get-source: clean clone notebooks python-docs test-descriptions
 docs-site: get-source
 	@echo "\nRendering the static HTML site ..."
 	quarto render --profile production
+	@$(MAKE) execute PROFILE=exe-prod
 
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
@@ -136,7 +137,6 @@ execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
 docker-build: docs-site
-	@$(MAKE) execute PROFILE=exe-prod
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
