@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 from IPython import get_ipython
+import subprocess
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -139,6 +140,11 @@ def copy_template(yearly_path, year):
         # Copy the template to the destination
         shutil.copy(template_path, destination_file)
         print(f"Copied '../internal/templates/yearly-releases.qmd' template to: '{destination_file}'")
+
+        try:
+            subprocess.run(["code", destination_file], check=True)
+        except Exception as e:
+            print(f"Error opening the file in VS Code: {e}")
 
         return destination_file
 
