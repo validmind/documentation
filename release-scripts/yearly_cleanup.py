@@ -490,7 +490,7 @@ def search_links(yearly_path):
     matching_files = 0
     total_lines_found = 0
 
-    print("Searching for relative links in moved release notes that may need adjusting...\n")
+    print("Searching for relative links in moved release notes that may need adjusting ...\n")
 
     for root, _, files in os.walk(search_dir):
         for file in files:
