@@ -13,25 +13,25 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "jupyter-toc" is now active!');
+    console.log('Congratulations, your extension "vm-jupyter-toc" is now active!');
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
-    let command1 = vscode.commands.registerCommand('jupyter-toc.jupyterToc', () => {
+    let command1 = vscode.commands.registerCommand('vm-jupyter-toc.jupyterToc', () => {
         if (vscode.window.activeNotebookEditor?.notebook !== undefined) {
             console.log("Start building TOC...")
             new TocGenerator().process();
         }
-        console.log("Command 'jupyter-toc.jupyterToc' executed");
+        console.log("Command 'vm-jupyter-toc.jupyterToc' executed");
     });
 
-    let command2 = vscode.commands.registerCommand('jupyter-toc.jupyterUnToc', () => {
+    let command2 = vscode.commands.registerCommand('vm-jupyter-toc.jupyterUnToc', () => {
         if (vscode.window.activeNotebookEditor?.notebook !== undefined) {
             console.log("Start removing TOC...")
             new TocGenerator().process(true);
         }
-        console.log("Command 'jupyter-toc.jupyterUnToc' executed");
+        console.log("Command 'vm-jupyter-toc.jupyterUnToc' executed");
     });
     
     context.subscriptions.push(command1);
@@ -464,8 +464,8 @@ class TocConfiguration {
     public MaxLevel: number;
     public AutoSave: boolean;
     public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
-    public StartLine: string = "<!-- vscode-jupyter-toc-config";
-    public EndLine: string = "/vscode-jupyter-toc-config -->";
+    public StartLine: string = "<!-- vscode-vm-jupyter-toc-config";
+    public EndLine: string = "/vscode-vm-jupyter-toc-config -->";
 
     public TocCellNum?: number;             // ? because we cant set it in constructor
   
