@@ -45,7 +45,7 @@ export function deactivate() {};
 export class TocGenerator {
     private _config: TocConfiguration = new TocConfiguration();
     private _tocDisclimer: string = "<!-- THIS CELL WILL BE REPLACED ON TOC UPDATE. DO NOT WRITE YOUR TEXT IN THIS CELL -->";
-    // private _tocHeaderAnchor: string = "<a id='toc0_'></a>";
+    private _tocHeaderAnchor: string = "<a id='toc0_'></a>";
     private _endAnchor: string = "</a>";
     
     process(remove: boolean = false){
@@ -208,7 +208,7 @@ export class TocGenerator {
                         tocConfiguration.TocCellNum = cellIndex;
                         
                         let tocHeader = docArray[0].trim();  /* preserve modified header of Toc */
-                        // tocConfiguration.TocHeader = tocHeader.replace(this._tocHeaderAnchor, "");
+                        tocConfiguration.TocHeader = tocHeader.replace(this._tocHeaderAnchor, "");
                         continue;
                     }
 
@@ -322,8 +322,8 @@ export class TocGenerator {
 
     // build string representation of table of contents
     buildSummary(headers : List<Header>) : string {
-        // let tocHeaderAnchor =  (this._config.Anchor) ? this._tocHeaderAnchor : "";
-        let tocSummary : string = this._config.TocHeader + "    \n";
+        let tocHeaderAnchor =  (this._config.Anchor) ? this._tocHeaderAnchor : "";
+        let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
         
         headers.ForEach((header, idx) => {
             if (header != undefined) {
