@@ -323,7 +323,7 @@ export class TocGenerator {
     // build string representation of table of contents
     buildSummary(headers : List<Header>) : string {
         // let tocHeaderAnchor =  (this._config.Anchor) ? this._tocHeaderAnchor : "";
-        let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
+        let tocSummary : string = this._config.TocHeader + "    \n";
         
         headers.ForEach((header, idx) => {
             if (header != undefined) {
