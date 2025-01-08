@@ -476,15 +476,15 @@ class TocConfiguration {
     private _maxLevelKey: string 	= "maxLevel=";
   
     constructor() {
-        this.TocHeader = vscode.workspace.getConfiguration('jupyter.toc').get('tableOfContentsHeader', "**Table of contents**");
-        this.Numbering = vscode.workspace.getConfiguration('jupyter.toc').get('numbering', false);
-        this.Flat = vscode.workspace.getConfiguration('jupyter.toc').get('flat', false);
-        this.Anchor = vscode.workspace.getConfiguration('jupyter.toc').get('anchors', true);
-        this.AnchorStyle = vscode.workspace.getConfiguration('jupyter.toc').get('reverseAnchorsStyle', "arrow1");
-        this.CustomAnchor = vscode.workspace.getConfiguration('jupyter.toc').get('customReverseAnchor', "&#9757;");
-        this.MinLevel = vscode.workspace.getConfiguration('jupyter.toc').get('minHeaderLevel', 1);
-        this.MaxLevel = vscode.workspace.getConfiguration('jupyter.toc').get('maxHeaderLevel', 6);
-        this.AutoSave = vscode.workspace.getConfiguration('jupyter.toc').get('autoSave', false);
+        this.TocHeader = vscode.workspace.getConfiguration('vmjupyter.toc').get('tableOfContentsHeader', "## Contents");
+        this.Numbering = vscode.workspace.getConfiguration('vmjupyter.toc').get('numbering', false);
+        this.Flat = vscode.workspace.getConfiguration('vmjupyter.toc').get('flat', false);
+        this.Anchor = vscode.workspace.getConfiguration('vmjupyter.toc').get('anchors', true);
+        this.AnchorStyle = vscode.workspace.getConfiguration('vmjupyter.toc').get('reverseAnchorsStyle', "arrow1");
+        this.CustomAnchor = vscode.workspace.getConfiguration('vmjupyter.toc').get('customReverseAnchor', "&#9757;");
+        this.MinLevel = vscode.workspace.getConfiguration('vmjupyter.toc').get('minHeaderLevel', 2);
+        this.MaxLevel = vscode.workspace.getConfiguration('vmjupyter.toc').get('maxHeaderLevel', 4);
+        this.AutoSave = vscode.workspace.getConfiguration('vmjupyter.toc').get('autoSave', false);
         this.AnchorStrings = ["&#8593;", "&#9650;", this.CustomAnchor];
     }
   
