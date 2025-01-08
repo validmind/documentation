@@ -82,15 +82,15 @@ Removing table of contents:
 
 Key|Expected Values|Default|Description
 :---|:---:|:---:|:---
-`vm.jupyter.toc.tableOfContentsHeader`|`string`|**Table of contents**|Defines the name for the table of contents.
-`vm.jupyter.toc.autoSave`|`boolean`|`false`|Automatically save the notebook after creating, updating, or deleting the table of contents.
-`vm.jupyter.toc.numbering`|`boolean`|`false`|Enumerate headers of the jupyther notebook.
-`vm.jupyter.toc.flat`|`boolean`|`false`|Flat table of contents without intendentions and list markers. It will better looks when use it with `vm.jupyter.toc.numbering` is enabled.
-`vm.jupyter.toc.anchors`|`boolean`|`true`|Add links from the table of contents elements to the headers in the document.
-`vm.jupyter.toc.minHeaderLevel`|`1-6`|`1`|Defines the minimum level of the header to be collected in the table of contents.
-`vm.jupyter.toc.maxHeaderLevel`|`1-6`|`6`|Defines the maximum level of the header to be collected in the table of contents.
-`vm.jupyter.toc.reverseAnchorsStyle`|`["title", "arrow1", "arrow2", "arrow3", "arrow4", "custom"]`|`title`|Styles of links from titles to the table of contents.
-`vm.jupyter.toc.customReverseAnchor`|`string`|`&#9757;`|Defines anchor symbol or string to use as link from headers to the TOC. By default its (&#9757;).
+`vmjupyter.toc.tableOfContentsHeader`|`string`|**Table of contents**|Defines the name for the table of contents.
+`vmjupyter.toc.autoSave`|`boolean`|`false`|Automatically save the notebook after creating, updating, or deleting the table of contents.
+`vmjupyter.toc.numbering`|`boolean`|`false`|Enumerate headers of the jupyther notebook.
+`vmjupyter.toc.flat`|`boolean`|`false`|Flat table of contents without intendentions and list markers. It will better looks when use it with `vmjupyter.toc.numbering` is enabled.
+`vmjupyter.toc.anchors`|`boolean`|`true`|Add links from the table of contents elements to the headers in the document.
+`vmjupyter.toc.minHeaderLevel`|`1-6`|`1`|Defines the minimum level of the header to be collected in the table of contents.
+`vmjupyter.toc.maxHeaderLevel`|`1-6`|`6`|Defines the maximum level of the header to be collected in the table of contents.
+`vmjupyter.toc.reverseAnchorsStyle`|`["title", "arrow1", "arrow2", "arrow3", "arrow4", "custom"]`|`title`|Styles of links from titles to the table of contents.
+`vmjupyter.toc.customReverseAnchor`|`string`|`&#9757;`|Defines anchor symbol or string to use as link from headers to the TOC. By default its (&#9757;).
 
 You can choose styles of links from titles to the table of contents which looks like:
 #### [title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)

@@ -1,5 +1,5 @@
 {
-  "name": "vm-jupyter-toc",
+  "name": "vmjupyter-toc",
   "displayName": "ValidMind Jupyter TOC",
   "version": "0.2.1",
   "description": "Generate table of contents for Jupyter notebooks.",
@@ -38,19 +38,19 @@
     "markdown"
   ],
   "activationEvents": [
-    "onCommand:vm-jupyter-toc.jupyterToc",
-    "onCommand:vm-jupyter-toc.jupyterUnToc"
+    "onCommand:vmjupyter-toc.jupyterToc",
+    "onCommand:vmjupyter-toc.jupyterUnToc"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vm-jupyter-toc.jupyterToc",
+        "command": "vmjupyter-toc.jupyterToc",
         "title": "Generate ValidMind table of contents",
         "category": "Jupyter"
       },
       {
-        "command": "vm-jupyter-toc.jupyterUnToc",
+        "command": "vmjupyter-toc.jupyterUnToc",
         "title": "Remove ValidMind table of contents",
         "category": "Jupyter"
       }
@@ -58,23 +58,23 @@
     "menus": {
       "editor/title": [
         {
-          "command": "vm-jupyter-toc.jupyterToc",
+          "command": "vmjupyter-toc.jupyterToc",
           "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
           "group": "1_run@0"
         },
         {
-          "command": "vm-jupyter-toc.jupyterUnToc",
+          "command": "vmjupyter-toc.jupyterUnToc",
           "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
           "group": "1_run@1"
         }
       ],
       "commandPalette": [
         {
-          "command": "vm-jupyter-toc.jupyterToc",
+          "command": "vmjupyter-toc.jupyterToc",
           "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
         },
         {
-          "command": "vm-jupyter-toc.jupyterUnToc",
+          "command": "vmjupyter-toc.jupyterUnToc",
           "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
         }
       ]
@@ -83,37 +83,37 @@
       "title": "ValidMind Jupyter TOC",
       "displayName": "ValidMind Jupyter TOC",
       "properties": {
-        "vm.jupyter.toc.tableOfContentsHeader": {
+        "vmjupyter.toc.tableOfContentsHeader": {
           "type": "string",
           "default": "**Table of contents**",
           "markdownDescription": "**Defines the name for the table of contents**",
           "scope": "resource"
         },
-        "vm.jupyter.toc.autoSave": {
+        "vmjupyter.toc.autoSave": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Automatically save the notebook after creating, updating, or deleting the table of contents\t\n\nDisabled by default to let VS Code complitly control documents saving",
           "scope": "resource"
         },
-        "vm.jupyter.toc.numbering": {
+        "vmjupyter.toc.numbering": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enumerate headers of the jupyther notebook\t\n\nOption is overridable by TOC cell options\t\n\nIf you allready have enumerated titles such numbering will be replaced",
           "scope": "resource"
         },
-        "vm.jupyter.toc.flat": {
+        "vmjupyter.toc.flat": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Flat table of contents without intendentions and list markers\t\n\nIt will better looks when use it with `#vm.jupyter.toc.numbering#` is enabled\t\n\nOption is overridable by TOC cell options",
+          "markdownDescription": "Flat table of contents without intendentions and list markers\t\n\nIt will better looks when use it with `#vmjupyter.toc.numbering#` is enabled\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
-        "vm.jupyter.toc.anchors": {
+        "vmjupyter.toc.anchors": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "Add links from the table of contents elements to the headers in the document\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
-        "vm.jupyter.toc.reverseAnchorsStyle": {
+        "vmjupyter.toc.reverseAnchorsStyle": {
           "type": "string",
           "default": "title",
           "enum": [
@@ -132,16 +132,16 @@
             "### [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
             "### Title [&#9757;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding custom symbol for reverse link"
           ],
-          "markdownDescription": "Style of reverse links from notebook headers to the table of contents.\t\n\nThis option works when `#vm.jupyter.toc.anchors#` is enabled",
+          "markdownDescription": "Style of reverse links from notebook headers to the table of contents.\t\n\nThis option works when `#vmjupyter.toc.anchors#` is enabled",
           "scope": "resource"
         },
-        "vm.jupyter.toc.customReverseAnchor": {
+        "vmjupyter.toc.customReverseAnchor": {
           "type": "string",
           "default": "&#9757;",
-          "markdownDescription": "Defines anchor symbol or string to use as link from headers to the table of contents.\t\n\nFor example by default it is &#9757; (finger up)\t\n\nThis option works when `#vm.jupyter.toc.anchors#` is enabled and `#vm.jupyter.toc.reverseAnchorsStyle#` set to `custom`",
+          "markdownDescription": "Defines anchor symbol or string to use as link from headers to the table of contents.\t\n\nFor example by default it is &#9757; (finger up)\t\n\nThis option works when `#vmjupyter.toc.anchors#` is enabled and `#vmjupyter.toc.reverseAnchorsStyle#` set to `custom`",
           "scope": "resource"
         },
-        "vm.jupyter.toc.minHeaderLevel": {
+        "vmjupyter.toc.minHeaderLevel": {
           "type": "number",
           "default": 1,
           "enum": [
@@ -155,7 +155,7 @@
           "markdownDescription": "Defines the **minimum** level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
-        "vm.jupyter.toc.maxHeaderLevel": {
+        "vmjupyter.toc.maxHeaderLevel": {
           "type": "number",
           "default": 6,
           "enum": [
