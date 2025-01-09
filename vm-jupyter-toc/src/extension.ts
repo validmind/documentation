@@ -135,7 +135,7 @@ export class TocGenerator {
         if (this._config.Anchor) {
             let anchor = `<a id='${header.anchor}'></a>`;
 
-            // Add anchor link above the header
+            // Add anchor link above the header and ensure the Markdown header is preserved
             title = `${anchor}\n\n${title}`;
         }
 
