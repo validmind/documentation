@@ -115,7 +115,7 @@ export class TocGenerator {
                     cells.forEach((cell, cellIndex) => { // Iterate through cells with proper indexing
                         if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                             let docText = cell.document.getText();
-                            let docArray = docText.split(/\r?\n/);
+                            let docArray: string[] = docText.split(/\r?\n/); // Explicitly type as string[]
                             let isCellUpdate = false;
                 
                             // Restore headers and remove anchors
@@ -129,14 +129,17 @@ export class TocGenerator {
                             });
                 
                             // Remove lines with anchor links (e.g., <a id='tocX_'></a>) and clean up empty lines
-                            docArray = docArray.filter((line, index, array) => {
+                            docArray = docArray.reduce<string[]>((acc, line) => {
                                 const isAnchor = line.trim().match(/^<a id='toc\d+_'><\/a>$/);
                                 const isEmpty = line.trim() === '';
-                                const previousLineEmpty = index > 0 && array[index - 1].trim() === '';
                 
-                                // Keep non-anchor lines, and avoid consecutive empty lines
-                                return !isAnchor && !(isEmpty && previousLineEmpty);
-                            });
+                                if (!isAnchor) {
+                                    if (!(isEmpty && acc[acc.length - 1]?.trim() === '')) {
+                                        acc.push(line); // Avoid consecutive empty lines
+                                    }
+                                }
+                                return acc;
+                            }, []);
                 
                             // Reassemble the cell content
                             docText = docArray.join("\n");
@@ -163,7 +166,7 @@ export class TocGenerator {
                         this.updateCell(uri, tocSummary, tocCellNum);
                         infoMessage = `Table of contents updated at Cell #${tocCellNum}`;
                     }
-                }
+                }                
 
                 // save notebook
                 if(this._config.AutoSave) {
