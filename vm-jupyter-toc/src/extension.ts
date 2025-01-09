@@ -111,19 +111,50 @@ export class TocGenerator {
                     }
                 });
 
-                if (remove) { // remove TOC cell
+                if (remove) { // Remove TOC cell and anchors
+                    cells.forEach((cell, cellIndex) => { // Iterate through cells with proper indexing
+                        if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
+                            let docText = cell.document.getText();
+                            let docArray = docText.split(/\r?\n/);
+                            let isCellUpdate = false;
+                
+                            // Restore headers and remove anchors
+                            lineHeaders.ForEach(header => {
+                                if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {
+                                    let ht = "#".repeat(header.origLevel);
+                                    let lineText = `${ht} ${header.title}`;
+                                    docArray[header.lineNumber] = lineText; // Restore original header text
+                                    isCellUpdate = true;
+                                }
+                            });
+                
+                            // Remove lines with anchor links (e.g., <a id='tocX_'></a>)
+                            docArray = docArray.filter(line => !line.trim().match(/^<a id='toc\d+_'><\/a>$/));
+                
+                            // Reassemble the cell content
+                            docText = docArray.join("\n");
+                
+                            if (isCellUpdate && editor != undefined) {
+                                this.updateCell(uri, docText, cellIndex);
+                            }
+                        }
+                    });
+                
+                    // Remove the TOC cell
                     if (this._config.TocCellNum != undefined) {
-                        this.deleteCell(uri, this._config.TocCellNum);	
+                        this.deleteCell(uri, this._config.TocCellNum);
+                        infoMessage = `Table of contents removed from Cell #${this._config.TocCellNum}`;
                     }
-                } else { // insert or update TOC cell
-                    if (this._config.TocCellNum == undefined) { // if there is no TOC in notebook
-                        let selected = (editor.selection != undefined) ? editor.selection.start : 0; // ? rarely it could be no selection
-                        this.insertCell(uri, tocSummary, selected); // insert before selected cells
-                        infoMessage = `Table of contents inserted as Cell #${selected}`;	
-                    } else { // else update existing TOC (first if many) by replace
+                } else { // Original TOC updating/inserting logic
+                    // Update or insert the TOC cell as before
+                    if (this._config.TocCellNum == undefined) {
+                        let selected = (editor.selection != undefined) ? editor.selection.start : 0;
+                        this.insertCell(uri, tocSummary, selected);
+                        infoMessage = `Table of contents inserted as Cell #${selected}`;
+                    } else {
                         let tocCellNum = this._config.TocCellNum;
                         this.updateCell(uri, tocSummary, tocCellNum);
-                        infoMessage = `Table of contents updated at Cell #${tocCellNum}`;	
+                        infoMessage = `Table of contents updated at Cell #${tocCellNum}`;
                     }
                 }
 
@@ -138,19 +169,6 @@ export class TocGenerator {
             return Promise.resolve();
         }
     }
-
-    // private anchorHeader(header: Header): string {
-    //     let title = header.title;
-
-    //     if (this._config.Anchor) {
-    //         let anchor = `<a id='${header.anchor}'></a>`;
-
-    //         title = `${anchor}${title}`;
-
-    //     }
-
-    //     return title;
-    // }
 
     private async deleteCell(uri: vscode.Uri, cellNum: number) {
         const edit = new vscode.WorkspaceEdit();
