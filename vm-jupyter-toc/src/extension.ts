@@ -135,29 +135,8 @@ export class TocGenerator {
         if (this._config.Anchor) {
             let anchor = `<a id='${header.anchor}'></a>`;
 
-            switch ( this._config.AnchorStyle ) {
-                case "arrow1":
-                    title = `${anchor}${title} [&#8593;](#toc0_)`;
-                    break;
-                case "arrow2":
-                    title = ` [&#8593;](#toc0_) ${anchor}${title}`;
-                    break;
-                case "arrow3":
-                    title = `${anchor}${title} [&#9650;](#toc0_)`;
-                    break;
-                case "arrow4":
-                    title = ` [&#9650;](#toc0_) ${anchor}${title}`;
-                    break;
-                case "title":
-                    title = (header.isContainLinks) ? `${anchor}${title} [&#8593;](#toc0_)` : `${anchor}[${title}](#toc0_)`;
-                    break;
-                case "custom":
-                    title = `${anchor}${title} [${this._config.CustomAnchor}](#toc0_)`;
-                    break;   
-                default: 
-                    title = `${anchor}${title} [&#8593;](#toc0_)`;
-                    break;
-            }
+            // Add anchor link above the header
+            title = `${anchor}\n\n${title}`;
         }
 
         return title;
