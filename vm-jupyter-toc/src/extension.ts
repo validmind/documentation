@@ -128,8 +128,15 @@ export class TocGenerator {
                                 }
                             });
                 
-                            // Remove lines with anchor links (e.g., <a id='tocX_'></a>)
-                            docArray = docArray.filter(line => !line.trim().match(/^<a id='toc\d+_'><\/a>$/));
+                            // Remove lines with anchor links (e.g., <a id='tocX_'></a>) and clean up empty lines
+                            docArray = docArray.filter((line, index, array) => {
+                                const isAnchor = line.trim().match(/^<a id='toc\d+_'><\/a>$/);
+                                const isEmpty = line.trim() === '';
+                                const previousLineEmpty = index > 0 && array[index - 1].trim() === '';
+                
+                                // Keep non-anchor lines, and avoid consecutive empty lines
+                                return !isAnchor && !(isEmpty && previousLineEmpty);
+                            });
                 
                             // Reassemble the cell content
                             docText = docArray.join("\n");
