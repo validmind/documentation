@@ -133,6 +133,7 @@ export class TocGenerator {
                                 const isAnchor = line.trim().match(/^<a id='toc\d+_'><\/a>$/);
                                 const isEmpty = line.trim() === '';
                 
+                                // If the line is not an anchor, process further
                                 if (!isAnchor) {
                                     if (!(isEmpty && acc[acc.length - 1]?.trim() === '')) {
                                         acc.push(line); // Avoid consecutive empty lines
@@ -140,6 +141,11 @@ export class TocGenerator {
                                 }
                                 return acc;
                             }, []);
+                
+                            // Remove leading empty lines
+                            while (docArray.length > 0 && docArray[0].trim() === '') {
+                                docArray.shift();
+                            }
                 
                             // Reassemble the cell content
                             docText = docArray.join("\n");
