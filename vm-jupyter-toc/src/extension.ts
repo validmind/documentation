@@ -86,7 +86,11 @@ export class TocGenerator {
                                 if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {                                
                                     let ht = "#".repeat(header.origLevel);
                                     let title = this.anchorHeader(header); // anchor header
-                                    title = (this._config.Numbering) ? `${ht} ${header.numberingString} ${title}` : `${ht} ${title}`; // number header
+                                    let anchor = this._config.Anchor ? `<a id='${header.anchor}'></a>\n\n` : ""; // Include blank lines after anchor
+                                    let headerLine = (this._config.Numbering)
+                                        ? `${ht} ${header.numberingString} ${header.title}`
+                                        : `${ht} ${header.title}`;
+                                    docArray[header.lineNumber] = `${anchor}${headerLine}`; // Combine anchor and header                                    
                                     docArray[header.lineNumber] = title;                
                                     isCellUpdate = true;
                                 }
