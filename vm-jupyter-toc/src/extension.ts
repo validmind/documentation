@@ -84,16 +84,19 @@ export class TocGenerator {
                         if (!remove) { // format filtered levels of headers
                             headers.ForEach(header => {	/* edit cell content for each header in current cell */
                                 if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {                                
-                                    let ht = "#".repeat(header.origLevel);
-                                    let title = this.anchorHeader(header); // anchor header
+                                    let ht = "#".repeat(header.origLevel); // Generate Markdown header level
+
+                                    // Use anchorHeader to generate only the anchor, not the full title
+                                    let anchor = this._config.Anchor ? `<a id='${header.anchor}'></a>` : ""; // Anchor separately
+                                    let title = header.title; // Keep the title clean without additional anchors
                                     
-                                    // Combine the title and Markdown header, separated by blank lines
+                                    // Construct the header line with optional numbering
                                     let headerLine = (this._config.Numbering)
                                         ? `${ht} ${header.numberingString} ${title}`
                                         : `${ht} ${title}`;
-
-                                    // Ensure the header line is updated with blank lines before the Markdown
-                                    docArray[header.lineNumber] = `${title}\n\n${headerLine}`;     
+                                    
+                                    // Combine the anchor and header line, ensuring correct formatting
+                                    docArray[header.lineNumber] = `${anchor}\n\n${headerLine}`;  
 
                                     isCellUpdate = true;
                                 }
@@ -136,18 +139,18 @@ export class TocGenerator {
         }
     }
 
-    private anchorHeader(header: Header): string {
-        let title = header.title;
+    // private anchorHeader(header: Header): string {
+    //     let title = header.title;
 
-        if (this._config.Anchor) {
-            let anchor = `<a id='${header.anchor}'></a>`;
+    //     if (this._config.Anchor) {
+    //         let anchor = `<a id='${header.anchor}'></a>`;
 
-            title = `${anchor}${title}`;
+    //         title = `${anchor}${title}`;
 
-        }
+    //     }
 
-        return title;
-    }
+    //     return title;
+    // }
 
     private async deleteCell(uri: vscode.Uri, cellNum: number) {
         const edit = new vscode.WorkspaceEdit();
