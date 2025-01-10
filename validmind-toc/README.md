@@ -56,15 +56,15 @@ Compile the code:
 npm run compile
 ```
 
-Install [`@vscode/vsce`](https://github.com/microsoft/vscode-vsce) locally in your project directory:
+Install [`@vscode/vsce`](https://github.com/microsoft/vscode-vsce) locally in your project directory in preparation for packaging:
 
 ```bash
 npm install @vscode/vsce
 ```
 
-Package the extension and move the exported file into the `installation` directory:
+Since this extension is for internal use and we don't want to publish it to the VS Code marketplace, we'll package the extension and move the exported file into the `installation` directory:
 
 ```bash
-px vsce package && mv *.vsix installation
+npx vsce package && mv *.vsix installation
 ```
 

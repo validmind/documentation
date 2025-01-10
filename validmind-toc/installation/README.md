@@ -2,7 +2,7 @@
 
 > `validmind-toc-1.0.0.vsix` is the latest version as of January 10th, 2024.
 
-Once the extension is enabled, to generate a table of contents for the first time:
+Once the extension is installed and enabled, to generate a table of contents for the first time:
 
 1. Select the cell that will live **below** the table of contents cell.
 2. From the horizontal ellipsis menu in the top-right hand corner of the notebook, select `+ ValidMind table of contents`.
