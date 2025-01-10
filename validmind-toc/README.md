@@ -40,6 +40,12 @@ You'll need to install the dependencies required for you to work on the extensio
 npm install
 ```
 
+Then install [`@vscode/vsce`](https://github.com/microsoft/vscode-vsce) locally in your project directory in preparation for packaging:
+
+```bash
+npm install @vscode/vsce
+```
+
 ### Update the version
 
 Before you re-package the extension, make sure to bump the version so we can keep track of changes:
@@ -54,12 +60,6 @@ Compile the code:
 
 ```bash
 npm run compile
-```
-
-Install [`@vscode/vsce`](https://github.com/microsoft/vscode-vsce) locally in your project directory in preparation for packaging:
-
-```bash
-npm install @vscode/vsce
 ```
 
 Since this extension is for internal use and we don't want to publish it to the VS Code marketplace, we'll package the extension and move the exported file into the `installation` directory:
