@@ -499,15 +499,15 @@ class TocConfiguration {
     private _maxLevelKey: string 	= "maxLevel=";
   
     constructor() {
-        this.TocHeader = vscode.workspace.getConfiguration('validmind.toc').get('tableOfContentsHeader', "## Contents");
-        this.Numbering = vscode.workspace.getConfiguration('validmind.toc').get('numbering', false);
-        this.Flat = vscode.workspace.getConfiguration('validmind.toc').get('flat', false);
-        this.Anchor = vscode.workspace.getConfiguration('validmind.toc').get('anchors', true);
-        this.AnchorStyle = vscode.workspace.getConfiguration('validmind.toc').get('reverseAnchorsStyle', "arrow1");
-        this.CustomAnchor = vscode.workspace.getConfiguration('validmind.toc').get('customReverseAnchor', "&#9757;");
-        this.MinLevel = vscode.workspace.getConfiguration('validmind.toc').get('minHeaderLevel', 2);
-        this.MaxLevel = vscode.workspace.getConfiguration('validmind.toc').get('maxHeaderLevel', 4);
-        this.AutoSave = vscode.workspace.getConfiguration('validmind.toc').get('autoSave', false);
+        this.TocHeader = vscode.workspace.getConfiguration('validMind.toC').get('tableOfContentsHeader', "## Contents");
+        this.Numbering = vscode.workspace.getConfiguration('validMind.toC').get('numbering', false);
+        this.Flat = vscode.workspace.getConfiguration('validMind.toC').get('flat', false);
+        this.Anchor = vscode.workspace.getConfiguration('validMind.toC').get('anchors', true);
+        this.AnchorStyle = vscode.workspace.getConfiguration('validMind.toC').get('reverseAnchorsStyle', "arrow1");
+        this.CustomAnchor = vscode.workspace.getConfiguration('validMind.toC').get('customReverseAnchor', "&#9757;");
+        this.MinLevel = vscode.workspace.getConfiguration('validMind.toC').get('minHeaderLevel', 2);
+        this.MaxLevel = vscode.workspace.getConfiguration('validMind.toC').get('maxHeaderLevel', 4);
+        this.AutoSave = vscode.workspace.getConfiguration('validMind.toC').get('autoSave', false);
         this.AnchorStrings = ["&#8593;", "&#9650;", this.CustomAnchor];
     }
   
