@@ -5,7 +5,7 @@ This VS Code extension based off of [xelad0m/vscode-jupyter-toc](https://github.
 The extension functions more or less the same with the following differences:
 
 <details>
-  <summary><b>Version comparision</b></summary>
+  <summary><b>Version comparison</b></summary>
   
 | Original ver. | ValidMind ver. | Notes |
 |---|---|---|
