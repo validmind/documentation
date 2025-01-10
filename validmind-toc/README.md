@@ -1,10 +1,21 @@
 # ValidMind Jupyter Notebooks — Table of Contents
 
+This VS Code extension based off of [xelad0m/vscode-jupyter-toc](https://github.com/xelad0m/vscode-jupyter-toc) is customized for ValidMind's Jupyter Notebook conventions. It functions more or less the same with the following differences:
+
+| Original ver. | ValidMind ver. | Notes
+|---|---|---|
+| | | Page anchors set above header instead of inset; original version was not parsed correctly by Quarto and broke the native ToC |
+| | | No reverse anchors to top in page anchors |
+| | | Top anchor in table of contents cell removed |
+| | | Reduced global settings, defaults set to ValidMind conventions |
 
 ## Installation
 
+Refer to the [Installation guide](installation/README.md).
 
 ## User guide
+
+
 
 ### Settings
 
@@ -28,7 +39,7 @@ Key|Expected Values|Default|Description
 `minLevel`|`1-6`|`1`|Defines the minimum level of notebook headers to be collected in the table of contents.
 `maxLevel`|`1-6`|`6`|Defines the maximum level of notebook headers to be collected in the table of contents.
 
-## Making changes to the extension
+## Updating the extension
 
 ### Key files
 
