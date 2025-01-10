@@ -487,8 +487,8 @@ class TocConfiguration {
     public MaxLevel: number;
     public AutoSave: boolean;
     public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
-    public StartLine: string = "<!-- vscode-validmind-toc-config";
-    public EndLine: string = "/vscode-validmind-toc-config -->";
+    public StartLine: string = "<!-- vm-toc-notebook-level-config";
+    public EndLine: string = "/vm-toc-notebook-level-config -->";
 
     public TocCellNum?: number;             // ? because we cant set it in constructor
   
