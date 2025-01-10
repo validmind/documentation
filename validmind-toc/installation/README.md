@@ -26,7 +26,8 @@ cd validmind-toc
 code --install-extension installation/validmind-toc-1.0.0.vsix
 ```
 
-### Uninstalling the extension
+<details>
+  <summary><b>Uninstalling the extension</b><br><br></summary>
 
 In your VS Code terminal:
 
@@ -34,9 +35,7 @@ In your VS Code terminal:
 code --uninstall-extension validbeck.validmind-toc
 ```
 
-#### Clear cached extension settings (optional)
-
-Via the terminal:
+Optionally, you can clear cached extension settings via the terminal:
 
 1. Navigate to your VS Code extension directory:
 
@@ -55,10 +54,11 @@ ls -d */
 ```bash
 rm -rf validbeck.validmind-toc-1.0.0/
 ```
+</details>
 
 ## Settings
 
-#### Global settings
+### Global settings
 
 These are the expected ValidMind defaults; you should not need to adjust these.
 
@@ -68,7 +68,7 @@ Key|Expected Values|Default|Description
 `validmind.tableOfContents.minHeaderLevel`|`1-6`|`2`|Defines the minimum level of notebook headers to be collected in the table of contents. `2` will leave the title of the notebook out as it is an `h1` header.
 `validmind.tableOfContents.maxHeaderLevel`|`1-6`|`4`|Defines the maximum level of notebook headers to be collected in the table of contents.
 
-#### Notebook level settings
+### Notebook level settings
 
 Override the global settings for a specific notebook in the table of contents cell that gets generated within `vm-toc-notebook-config`. Defaults are set to ValidMind conventions.
 
