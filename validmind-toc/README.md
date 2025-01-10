@@ -30,6 +30,11 @@ Key|Expected Values|Default|Description
 
 ## Making changes to the extension
 
+### Key files
+
+- **[`src/extension.ts`](src/extension.ts)** — This TypeScript file controls the core functionality of the extension.
+- **[`package.json`](package.json)** — This JSON file includes the versioning and the setup for the VS Code global settings display under [`contributes.configuration`](https://code.visualstudio.com/api/references/contribution-points#contributes.configuration). 
+
 ### Before you begin
 
 Make sure you're in the `documentation` repo in the `validmind-toc` directory:
@@ -46,6 +51,29 @@ npm install
 
 ### Updating the version
 
-### Packaging the extension
+Before you re-package the extension, make sure to bump the version so we can keep track of changes:
 
+```bash
+npm version patch
+```
+
+### Exporting the extension
+
+Compile the code:
+
+```bash
+npm run compile
+```
+
+Install `@vscode/vsce` locally in your project directory:
+
+```bash
+npm install @vscode/vsce
+```
+
+Package the extension and move the completed file into the `installation` directory:
+
+```bash
+px vsce package && mv *.vsix installation
+```
 
