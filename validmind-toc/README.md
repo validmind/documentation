@@ -40,7 +40,7 @@ You'll need to install the dependencies required for you to work on the extensio
 npm install
 ```
 
-### Updating the version
+### Update the version
 
 Before you re-package the extension, make sure to bump the version so we can keep track of changes:
 
@@ -48,7 +48,7 @@ Before you re-package the extension, make sure to bump the version so we can kee
 npm version patch
 ```
 
-### Exporting the extension
+### Export the extension
 
 Compile the code:
 
