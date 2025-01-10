@@ -2,22 +2,22 @@
 
 This VS Code extension based off of [xelad0m/vscode-jupyter-toc](https://github.com/xelad0m/vscode-jupyter-toc) is customized for ValidMind's Jupyter Notebook conventions. 
 
-The extension functions more or less the same with the following differences:
+The extension functions more or less the same with the following differences (**tl;dr** our version allows us to add, udpate, and remove ToCs with ease without needing to hack-replace anchor links and manually adjust tables and anchors if the notebooks were ever edited):
 
 <details>
   <summary><b>Version comparison</b></summary>
   
-| Original ver. | ValidMind ver. | Notes |
-|---|---|---|
-| ![](screenshots/old-anchors.png) ![](screenshots/old-top-anchor.png) | ![](screenshots/new-anchors.png) | Page anchors set above header instead of inset; original version was not parsed correctly by Quarto and broke the native ToC, no reverse anchors to top in page anchors |
-| ![](screenshots/old-toc-top.png) |![](screenshots/new-toc.png)| Top anchor in table of contents cell removed, default heading changed |
-| ![](screenshots/old-settings.png) | ![](screenshots/new-settings.png) | Reduced global settings, defaults set to ValidMind conventions |
+| Original ver. | ValidMind ver. | Notes | Reason for fix |
+|---|---|---|---|
+| ![](screenshots/old-anchors.png) ![](screenshots/old-top-anchor.png) | ![](screenshots/new-anchors.png) | Page anchors set above header instead of inset after markdown heading, no reverse anchors to top in page anchors | Original version was not parsed correctly by Quarto and broke the native ToC, required us to manually find-replace anchor link formatting in each notebook after ToC generation, if notebooks were modified the ToC/anchors would need to be edited manually |
+| ![](screenshots/old-toc-top.png) |![](screenshots/new-toc.png)| Top/reverse anchor in table of contents cell removed, default heading changed | Required us to hack the default settings to remove the icon-anchor back up to the table of contents |
+| ![](screenshots/old-settings.png) | ![](screenshots/new-settings.png) | Reduced global settings, defaults set to ValidMind conventions | Required us to adjust the default settings to accommodate for the default structuring of ValidMind Juptyer Notebooks  |
 </details>
 
 
 ## User guide
 
-Refer to the [User guide](installation/README.md) for installation and user instructions.
+Refer to the [User guide](installation/README.md) for installation and usage instructions.
 
 ## Updating the extension
 
