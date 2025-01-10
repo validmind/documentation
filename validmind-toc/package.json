@@ -1,0 +1,200 @@
+{
+  "name": "validmind-toc",
+  "displayName": "ValidMind Jupyter TOC",
+  "version": "0.0.1",
+  "description": "Generate table of contents for Jupyter notebooks.",
+  "publisher": "validbeck",
+  "author": {
+    "name": "validbeck"
+  },
+  "engines": {
+    "vscode": "^1.72.0"
+  },
+  "categories": [
+    "Notebooks",
+    "Formatters",
+    "Other"
+  ],
+  "license": "SEE LICENSE.txt",
+  "homepage": "https://github.com/xelad0m/vscode-jupyter-toc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xelad0m/vscode-jupyter-toc"
+  },
+  "bugs": {
+    "url": "https://github.com/xelad0m/vscode-jupyter-toc/issues"
+  },
+  "qna": "https://github.com/xelad0m/vscode-jupyter-toc/discussions",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#ffffff",
+    "theme": "light"
+  },
+  "keywords": [
+    "jupyter",
+    "notebook",
+    "toc",
+    "ipynb",
+    "markdown"
+  ],
+  "activationEvents": [
+    "onCommand:validmind-toc.jupyterToc",
+    "onCommand:validmind-toc.jupyterUnToc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "validmind-toc.jupyterToc",
+        "title": "Generate ValidMind table of contents",
+        "category": "Jupyter"
+      },
+      {
+        "command": "validmind-toc.jupyterUnToc",
+        "title": "Remove ValidMind table of contents",
+        "category": "Jupyter"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "validmind-toc.jupyterToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@0"
+        },
+        {
+          "command": "validmind-toc.jupyterUnToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "validmind-toc.jupyterToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
+        },
+        {
+          "command": "validmind-toc.jupyterUnToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ValidMind Jupyter TOC",
+      "displayName": "ValidMind Jupyter TOC",
+      "properties": {
+        "validmind.toc.tableOfContentsHeader": {
+          "type": "string",
+          "default": "## Contents",
+          "markdownDescription": "**Defines the name for the table of contents**",
+          "scope": "resource"
+        },
+        "validmind.toc.autoSave": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Automatically save the notebook after creating, updating, or deleting the table of contents\t\n\nDisabled by default to let VS Code complitly control documents saving",
+          "scope": "resource"
+        },
+        "validmind.toc.numbering": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enumerate headers of the jupyther notebook\t\n\nOption is overridable by TOC cell options\t\n\nIf you allready have enumerated titles such numbering will be replaced",
+          "scope": "resource"
+        },
+        "validmind.toc.flat": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Flat table of contents without intendentions and list markers\t\n\nIt will better looks when use it with `#validmind.toc.numbering#` is enabled\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        },
+        "validmind.toc.anchors": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Add links from the table of contents elements to the headers in the document\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        },
+        "validmind.toc.reverseAnchorsStyle": {
+          "type": "string",
+          "default": "title",
+          "enum": [
+            "title",
+            "arrow1",
+            "arrow2",
+            "arrow3",
+            "arrow4",
+            "custom"
+          ],
+          "markdownEnumDescriptions": [
+            "### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nUsing whole title as reverse link\n\nIf some of titles allready have links such titles will be displayed with `arrow1` style, like\n### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nor\n### Title [with](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) links [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)",
+            "### Title [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",
+            "### [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
+            "### Title [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",
+            "### [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
+            "### Title [&#9757;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding custom symbol for reverse link"
+          ],
+          "markdownDescription": "Style of reverse links from notebook headers to the table of contents.\t\n\nThis option works when `#validmind.toc.anchors#` is enabled",
+          "scope": "resource"
+        },
+        "validmind.toc.customReverseAnchor": {
+          "type": "string",
+          "default": "&#9757;",
+          "markdownDescription": "Defines anchor symbol or string to use as link from headers to the table of contents.\t\n\nFor example by default it is &#9757; (finger up)\t\n\nThis option works when `#validmind.toc.anchors#` is enabled and `#validmind.toc.reverseAnchorsStyle#` set to `custom`",
+          "scope": "resource"
+        },
+        "validmind.toc.minHeaderLevel": {
+          "type": "number",
+          "default": 2,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "markdownDescription": "Defines the **minimum** level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        },
+        "validmind.toc.maxHeaderLevel": {
+          "type": "number",
+          "default": 4,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "markdownDescription": "Defines the **maximum** level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.72.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.24.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^3.2.1",
+    "linqts": "^1.14.4"
+  }
+}
