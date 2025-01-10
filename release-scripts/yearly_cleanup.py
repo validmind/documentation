@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 from IPython import get_ipython
+import subprocess
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -139,6 +140,11 @@ def copy_template(yearly_path, year):
         # Copy the template to the destination
         shutil.copy(template_path, destination_file)
         print(f"Copied '../internal/templates/yearly-releases.qmd' template to: '{destination_file}'")
+
+        try:
+            subprocess.run(["code", destination_file], check=True)
+        except Exception as e:
+            print(f"Error opening the file in VS Code: {e}")
 
         return destination_file
 
@@ -490,7 +496,7 @@ def search_links(yearly_path):
     matching_files = 0
     total_lines_found = 0
 
-    print("Searching for relative links in moved release notes that may need adjusting...\n")
+    print("Searching for relative links in moved release notes that may need adjusting ...\n")
 
     for root, _, files in os.walk(search_dir):
         for file in files:
