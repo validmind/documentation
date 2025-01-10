@@ -17,7 +17,7 @@ The extension functions more or less the same with the following differences (**
 
 ## User guide
 
-Refer to the [User guide](installation/README.md) for installation and usage instructions.
+Refer to the [User guide](/validmind-toc/installation/README.md) for installation and usage instructions.
 
 ## Updating the extension
 
