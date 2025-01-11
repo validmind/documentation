@@ -1,6 +1,6 @@
 # User guide
 
-> `validmind-toc-1.0.0.vsix` is the latest version as of January 10th, 2024.
+> `validmind-toc-1.0.0.vsix` is the latest version as of January 10th, 2025.
 
 Once the extension is installed and enabled, to generate a table of contents for the first time:
 
