@@ -82,10 +82,12 @@ These directories may have sub-directories depending on their size and grouped s
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 
-### Auxiliary `internal` directories
+### Auxiliary directories
 
-- `templates` — You can find generic structural templates in this folder here to help you build your guides.
-- `testing` — When tests are complete, they get moved here from `site/internal`.
+- `internal/templates` — You can find generic structural templates in this folder here to help you build your guides.
+- `internal/testing` — When tests are complete, they get moved here from `site/internal`.
+- `release-scripts` — Our custom scripts and Jupyter Notebooks for producing and cleaning up release notes live here.
+- `validmind-toc` — Our custom extension for adding table of contents to Jupyter Notebooks lives here. 
 
 ## Working with files
 
