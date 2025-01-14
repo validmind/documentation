@@ -374,7 +374,7 @@ def update_quarto_yaml(year):
 
             if between_markers:
                 # Collect lines for the specified year
-                if f"releases/{year}-" in line:
+                if f"releases/{year}/{year}-" in line:
                     year_contents.append(line)
                 else:
                     # Write out lines not belonging to the target year
