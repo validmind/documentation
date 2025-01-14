@@ -458,7 +458,7 @@ def create_release_folder(formatted_release_date):
     os.makedirs(directory_path, exist_ok=True)
     print(f"{output_file} will be created or overwritten")
 
-    return output_file
+    return output_file, year
 
 def create_release_qmd(output_file, original_release_date):
     """
@@ -731,7 +731,7 @@ def upgrade_info(output_file):
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
-def update_quarto_yaml(release_date):
+def update_quarto_yaml(release_date, year):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
     Params:
@@ -744,7 +744,7 @@ def update_quarto_yaml(release_date):
 
     # Format the release date for insertion into the YAML file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
-    target_line = f'        - releases/{formatted_release_date}/release-notes.qmd\n'
+    target_line = f'        - releases/{year}/{formatted_release_date}/release-notes.qmd\n'
 
     # Check if the target line already exists in the YAML file
     with open(yaml_filename, 'r') as file:
