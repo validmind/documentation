@@ -69,7 +69,7 @@ def get_yearly_releases(year):
         return release_folders
 
     subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
-    matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}-")]
+    matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}/{year}-")]
 
     release_folders = sorted(matching_subdirs)
 
