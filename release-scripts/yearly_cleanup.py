@@ -455,97 +455,97 @@ def move_year_marker(year):
     else:
         return "Marker could not be relocated."
 
-def update_paths(year):
-    """
-    Replaces occurrences of `releases/{year}-` with `releases/{year}/{year}-` in .qmd and .yml files.
+# def update_paths(year):
+#     """
+#     Replaces occurrences of `releases/{year}-` with `releases/{year}/{year}-` in .qmd and .yml files.
 
-    Args:
-        year (str): Year to replace in the text.
-    """
-    site_dir = f"../site/"
-    original_text = f"releases/{year}-"
-    new_text = f"releases/{year}/{year}-"
+#     Args:
+#         year (str): Year to replace in the text.
+#     """
+#     site_dir = f"../site/"
+#     original_text = f"releases/{year}-"
+#     new_text = f"releases/{year}/{year}-"
 
-    # List to track modified files
-    modified_files = []
+#     # List to track modified files
+#     modified_files = []
 
-    # Walk through the directory and subdirectories
-    for root, _, files in os.walk(site_dir):
-        for file in files:
-            if file.endswith(".qmd") or file.endswith(".yml"):
-                file_path = os.path.join(root, file)
-                with open(file_path, "r", encoding="utf-8") as f:
-                    content = f.readlines()
+#     # Walk through the directory and subdirectories
+#     for root, _, files in os.walk(site_dir):
+#         for file in files:
+#             if file.endswith(".qmd") or file.endswith(".yml"):
+#                 file_path = os.path.join(root, file)
+#                 with open(file_path, "r", encoding="utf-8") as f:
+#                     content = f.readlines()
 
-                # Track lines updated
-                updated_lines = []
+#                 # Track lines updated
+#                 updated_lines = []
 
-                # Replace the text
-                updated_content = []
-                for line_num, line in enumerate(content, start=1):
-                    updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
-                    updated_content.append(updated_line)
-                    if line != updated_line:
-                        updated_lines.append((line_num, line.strip(), updated_line.strip()))
+#                 # Replace the text
+#                 updated_content = []
+#                 for line_num, line in enumerate(content, start=1):
+#                     updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
+#                     updated_content.append(updated_line)
+#                     if line != updated_line:
+#                         updated_lines.append((line_num, line.strip(), updated_line.strip()))
 
-                # Write back to the file only if changes were made
-                if updated_lines:
-                    with open(file_path, "w", encoding="utf-8") as f:
-                        f.writelines(updated_content)
-                    modified_files.append((file_path, updated_lines))
+#                 # Write back to the file only if changes were made
+#                 if updated_lines:
+#                     with open(file_path, "w", encoding="utf-8") as f:
+#                         f.writelines(updated_content)
+#                     modified_files.append((file_path, updated_lines))
 
-    # Check if any files were modified
-    if not modified_files:
-        print("No absolute filepaths replaced")
-        return
+#     # Check if any files were modified
+#     if not modified_files:
+#         print("No absolute filepaths replaced")
+#         return
 
-    # Print modified files and lines line by line
-    for file_path, updates in modified_files:
-        print(f"Updated: {file_path}")
-        for line_num, before, after in updates:
-            print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
-        print()
+#     # Print modified files and lines line by line
+#     for file_path, updates in modified_files:
+#         print(f"Updated: {file_path}")
+#         for line_num, before, after in updates:
+#             print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
+#         print()
 
-def search_links(yearly_path):
-    """
-    Searches for files in a specified directory and looks for a specific text in them.
-    Prints the file path, line number, and the line containing the text.
-    Also provides a summary of the number of matching files and lines found.
+# def search_links(yearly_path):
+#     """
+#     Searches for files in a specified directory and looks for a specific text in them.
+#     Prints the file path, line number, and the line containing the text.
+#     Also provides a summary of the number of matching files and lines found.
 
-    Parameters:
-    - yearly_path (str): The base directory to search in.
-    """
-    search_dir = f"{yearly_path}"
-    search_text = "../"
-    matching_files = 0
-    total_lines_found = 0
+#     Parameters:
+#     - yearly_path (str): The base directory to search in.
+#     """
+#     search_dir = f"{yearly_path}"
+#     search_text = "../"
+#     matching_files = 0
+#     total_lines_found = 0
 
-    print("Searching for relative links in moved release notes that may need adjusting ...\n")
+#     print("Searching for relative links in moved release notes that may need adjusting ...\n")
 
-    for root, _, files in os.walk(search_dir):
-        for file in files:
-            file_path = os.path.join(root, file)
-            file_has_match = False
-            matches = []  # To store matching lines for this file
-            try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    for line_number, line in enumerate(f, start=1):
-                        if search_text in line:
-                            total_lines_found += 1
-                            if not file_has_match:
-                                file_has_match = True
-                                matching_files += 1
-                            matches.append(f"- Line {line_number}: {line.strip()}")
-            except (UnicodeDecodeError, FileNotFoundError):
-                # Skip files that cannot be opened or read
-                continue
+#     for root, _, files in os.walk(search_dir):
+#         for file in files:
+#             file_path = os.path.join(root, file)
+#             file_has_match = False
+#             matches = []  # To store matching lines for this file
+#             try:
+#                 with open(file_path, 'r', encoding='utf-8') as f:
+#                     for line_number, line in enumerate(f, start=1):
+#                         if search_text in line:
+#                             total_lines_found += 1
+#                             if not file_has_match:
+#                                 file_has_match = True
+#                                 matching_files += 1
+#                             matches.append(f"- Line {line_number}: {line.strip()}")
+#             except (UnicodeDecodeError, FileNotFoundError):
+#                 # Skip files that cannot be opened or read
+#                 continue
 
-            if matches:
-                print(f"File: {file_path}")
-                print("\n".join(matches))
-                print()  # Add an extra empty line between files
+#             if matches:
+#                 print(f"File: {file_path}")
+#                 print("\n".join(matches))
+#                 print()  # Add an extra empty line between files
 
-    print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
+#     print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
 
 def main():
 
@@ -555,14 +555,11 @@ def main():
     year = get_year()
     print()
 
-    release_folders = get_yearly_releases(year)
+    get_yearly_releases(year)
     print()
     
     yearly_path = retrieve_year_folder(year)
     print()
-
-    # move_yearly_releases(yearly_path, release_folders)
-    # print()
 
     yearly_release = copy_template(yearly_path, year)
     print()
@@ -582,12 +579,6 @@ def main():
     print()
 
     move_year_marker(year)
-    print()
-
-    update_paths(year)
-    print()
-
-    search_links(yearly_path)
     print()
 
 if __name__ == "__main__":
