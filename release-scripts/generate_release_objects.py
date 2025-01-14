@@ -443,7 +443,7 @@ def create_release_folder(formatted_release_date):
     # Parse the input date
     parsed_date = datetime.datetime.strptime(formatted_release_date, "%Y-%b-%d")
     year = parsed_date.year
-    formatted_date = parsed_date.strftime("%Y-%b-%d")  # e.g., "2025-jan-17"
+    formatted_date = parsed_date.strftime("%Y-%b-%d").lower()  # e.g., "2025-jan-17"
     directory_path = f"../site/releases/{year}/{formatted_date}/"
     output_file = f"{directory_path}release-notes.qmd"
 
