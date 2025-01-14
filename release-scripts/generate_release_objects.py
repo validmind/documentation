@@ -779,7 +779,7 @@ def update_quarto_yaml(release_date, year):
     
     print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
 
-def update_index_qmd(release_date):
+def update_index_qmd(release_date, year):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
 
     Params:
@@ -793,7 +793,7 @@ def update_index_qmd(release_date):
 
     # Format the release date for checking and insertion into the QMD file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
-    new_release_entry = f'      - /releases/{formatted_release_date}/release-notes.qmd\n'
+    new_release_entry = f'      - /releases/{year}/{formatted_release_date}/release-notes.qmd\n'
 
     # Check if the release note already exists
     with open(index_filename, 'r') as file:
