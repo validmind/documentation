@@ -1,0 +1,236 @@
+---
+title: "March 7, 2026"
+---
+
+## Documentation
+
+<!---
+PR #552: Updated workflows/actions to dynamically generate an `.env` file
+URL: https://github.com/validmind/documentation/pull/552
+Labels: documentation
+--->
+### Here are the steps you can follow to dynamically generate an `.env` file:
+
+1. **Identify Environment Variables**: Determine which environment variables need to be included in your `.env` file.
+
+2. **Create a Template**: Draft a template for the `.env` file that outlines the required structure.
+
+    ```plaintext
+    # Example of .env template
+    DATABASE_HOST=
+    DATABASE_PORT=
+    API_KEY=
+    ```
+
+3. **Write a Script**: Develop a script in your preferred programming language (e.g., Python, Node.js) that will populate these values. For instance, using Python:
+
+    ```python
+    import os
+
+    def create_env_file():
+        with open('.env', 'w') as env_file:
+            env_file.write(f"DATABASE_HOST={os.getenv('DATABASE_HOST', 'localhost')}\n")
+            env_file.write(f"DATABASE_PORT={os.getenv('DATABASE_PORT', '5432')}\n")
+            env_file.write(f"API_KEY={os.getenv('API_KEY', 'your_api_key_here')}\n")
+
+    if __name__ == "__main__":
+        create_env_file()
+    ```
+
+4. **Integrate with CI/CD (Optional)**: Optionally, integrate this script within your Continuous Integration/Continuous Deployment (CI/CD) pipeline to ensure `.env` files are generated automatically during the build process.
+
+5. **Secure Sensitive Data**: Make sure sensitive information is sourced securely and consider storing them outside version control systems or use vaults/secrets management services.
+
+6. **Test Script Output**: Run your script and verify the generated `.env` file contains all necessary values correctly populated.
+
+By following these steps, you can dynamically generate an `.env` file tailored to different environments such as development, testing, or production
+
+### ValidMind Academy
+
+---
+
+#### Course Update
+
+- The **ValidMind Academy Developer Fundamentals** course has been enhanced with a new version of the "ValidMind Introduction for Model Developers" Jupyter Notebook. 
+- This notebook is now executed live during training sessions, allowing interactive engagement with output cells previously omitted, such as when previewing the documentation template.
+- It serves as a reference guide to illustrate what users can expect when they first run the cells.
+
+---
+
+### Jupyter Notebooks Updates
+
+- We've added comprehensive instructions on how to initialize ValidMind with credentials stored in an `.env` file within our Jupyter Notebook samples.
+- Our documentation guides have also been updated to reflect this new user experience.
+ 
+Generated PR summary: 
+ 
+### Release Notes
+
+#### Enhancements to Environment Configuration and Jupyter Notebook Execution
+
+- **Environment Configuration Updates**:
+  - Introduced new environment variables (`VM_API_HOST`, `VM_API_KEY`, `VM_API_SECRET`, `VM_API_MODEL`) in the `.env.example` template.
+  - Modified GitHub Actions workflows (`demo-notebook`, `prod-notebook`, `staging-notebook`) to require an `env_file` input, ensuring availability of the `.env` file before notebook execution.
+  - Enhanced workflow files (`deploy-docs-prod.yaml`, `deploy-docs-staging.yaml`, `validate-docs-site.yaml`) to dynamically create a `.env` file using secrets, improving security and flexibility.
+
+- **Notebook Execution Improvements**:
+  - Added a new `execute` target in the `Makefile` to streamline Jupyter Notebook execution with specified profiles and paths.
+  - Revised the `Makefile` strategy to duplicate notebooks for execution instead of relying on checkouts from the main branch.
+
+- **Documentation Enhancements**:
+  - Updated guidance in `store-credentials-in-env-file.qmd` for storing model credentials in `.env` files and utilizing them within notebooks.
+  - Provided examples in `enable-monitoring.qmd` on integrating monitoring features when deploying notebooks with environment files.
+
+These updates enhance operational efficiency by optimizing environment management, improving execution processes, and reinforcing documentation.
+
+<!---
+PR #543: Add developer fundamentals videos & training fixes
+URL: https://github.com/validmind/documentation/pull/543
+Labels: documentation
+--->
+### Add developer fundamentals videos & training resources
+
+We have created a series of 10 short videos designed to assist developers in understanding the model documentation process. These videos cover various topics, including how to generate model documentation with tests, add your own tests, edit content online, and submit your documentation for approval by a validator.
+
+**Watch the Series: Developer Fundamentals**
+
+[![Developer Fundamentals](https://img.youtube.com/vi/aP7yLOGO60h/0.jpg)](https://www.youtube.com/embed/videoseries?si=aP7yLOGO60h4vi8C&amp;list=PL7I7ZrCoVCCP876aLRCjitZqYif96Whlz)
+
+Click on the link above to view the complete video series on YouTube.
+ 
+Generated PR summary: 
+ 
+## Release Notes
+
+### ValidMind Project Updates
+
+#### Enhancements and Modifications:
+
+- **Template Updates**: 
+  - Training module titles in `internal/templates/videos/index.qmd` have been refined. "Documenting Models 101" is now "Developer Fundamentals," and "Validating Models 101" has been renamed to "Train a model."
+
+- **New Visual Assets**: 
+  - Introduced three new SVG files (`inputoutput-deepgreen.svg`, `inputoutput-lightgreen.svg`, `inputoutput-pink.svg`) located in the `site/assets/img/` directory. These assets feature distinct polygon fill colors.
+
+- **Guide Content Enrichment**:
+  - The guide at `site/guide/guides.qmd` now includes a new video series titled 'Developer Fundamentals,' encompassing ten videos. An additional card title has also been added to complement the 'Validating Models 101' series.
+
+- **Updates on Notebooks**:
+  - Revisions in the `site/notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` file include replacing mentions of the "ValidMind Developer Framework" with "ValidMind Library". This update spans various elements such as initialization sequences, test descriptions, and documentation processes.
+
+- **Training Module Adjustments**:
+  - The training document (`site/training/developer-fundamentals/developer-fundamentals.qmd`) has been updated for improved section referencing and enhanced interaction within documentation tasks.
+
+#### Testing:
+
+- A new JSON file (`test-results/.last-run.json`) has been added to log the results of recent tests, confirming that all tests have successfully passed. 
+
+These updates reflect our ongoing commitment to improving user experience and providing comprehensive support for model development activities.
+
+<!---
+PR #544: Add login button to docs site
+URL: https://github.com/validmind/documentation/pull/544
+Labels: documentation
+--->
+### ## Adding a Login Button to Your Documentation Site
+
+To enhance the functionality of your documentation site, you may want to add a login button. This can help manage user access, personalize content, or integrate with other systems. Here's a step-by-step guide to adding a login button.
+
+### Step 1: Choose an Authentication Method
+
+Before adding a login button, decide on an authentication method that suits your needs. Common options include:
+
+- **OAuth2**: Uses third-party services like Google, GitHub, or Facebook.
+- **JWT (JSON Web Tokens)**: Useful for backend authentication without sessions.
+- **Basic Authentication**: Uses usernames and passwords stored in your system.
+
+### Step 2: Implement the Backend Authentication System
+
+1. **Select a Library or Framework**
+    - For Node.js: Passport.js
+    - For Python Flask/Django: Flask-Security/Django-Allauth
+    - For Java: Spring Security
+    
+2. **Set Up User Management**
+    - Create models for users and roles.
+    - Implement registration and password recovery.
+
+3. **Secure Endpoints**
+    - Ensure sensitive routes are protected using middleware or decorators that check authentication status.
+
+### Step 3: Design and Add the Login Button
+
+1. **HTML & CSS**
+
+```html
+<button id="login-btn" class="login-button">Login</button>
+
+<style>
+.login-button {
+   background-color: #4CAF50;
+   color: white;
+   padding: 10px 20px;
+   border: none;
+   cursor: pointer;
+}
+</style>
+```
+
+2. **JavaScript Functionality**
+
+```javascript
+document.getElementById('login-btn').addEventListener('click', function() {
+    window.location.href = '/login'; // Redirect to your login page
+});
+```
+
+### Step 4: Create the Login Page
+
+Design a simple login form:
+
+```html
+<form action="/authenticate" method="POST">
+   <label for="username">Username:</label>
+   <input type="text" id="username" name="username"><br><br>
+   
+   <label for="password">Password:</label>
+   <input type="password" id="password" name="password"><br><br>
+
+   <input type="submit" value="Login">
+</form>
+```
+
+Remember to enhance security by implementing HTTPS, input validation, and possibly CAPTCHA.
+
+### Step 5: Test Your Implementation
+
+Ensure that both UI components and backend functionality work as expected:
+
+- Verify redirection from the documentation site’s main pages to the login page upon clicking the button.
+- Test user authentication workflows like logging in with valid/invalid credentials.
+- Check if authenticated sessions persist between different pages of your documentation site.
+
+#### Additional Tips:
+
+- Customize error handling messages to be clear and helpful without exposing system details.
+- Consider implementing two-factor authentication (2FA) for additional security layers if necessary.
+
+By following these steps, you can ensure that only authorized users have access to specific parts of your documentation site while maintaining ease of use through an intuitive login interface
+
+We have introduced a new feature that allows you to log in to the ValidMind Platform directly from our documentation site. This enhancement ensures that finding the correct login is now seamless and efficient. To experience this update, simply click **Login**.
+ 
+Generated PR summary: 
+ 
+### Release Notes
+
+- **Enhanced Navigation Menu**: We have improved the user experience by introducing a new 'Login' section in the website's navigation bar.
+  - **Login Options**: Users can now easily access multiple login portals (`US1` and `CA1`) for the ValidMind platform.
+  - **User Guidance**: A helpful link titled 'Which login should I use?' is available to guide users on selecting the appropriate login.
+- **Search Box Removal**: To streamline the interface, the search box has been removed from the sidebar.
+- **Styling Enhancements**: Updated visual elements in `styles.css` to enhance appearance and usability. Changes include new background colors, borders, text coloring, padding adjustments, and hover effects for a more intuitive user interaction.
+
+These improvements are designed to provide a smoother and more efficient navigation experience for all users.
+
+
+
+{{< include /releases/_how-to-upgrade.qmd >}}
