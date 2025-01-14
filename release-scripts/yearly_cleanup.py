@@ -52,7 +52,7 @@ release_folders = []
 
 def get_yearly_releases(year):
     """
-    Finds subdirectories in ../site/releases/ that begin with the specified year.
+    Finds subdirectories in ../site/releases/ that match the structure {year}/{year}-.
 
     Args:
         year (str): The year prefix to search for in subdirectory names.
@@ -60,22 +60,26 @@ def get_yearly_releases(year):
     Returns:
         list: A list of matching subdirectory names, sorted alphabetically.
     """
-    global release_folders 
+    global release_folders
     releases_dir = "../site/releases/"
+    year_dir = os.path.join(releases_dir, year)  
 
-    if not os.path.exists(releases_dir):
-        print(f"'{releases_dir}' does not exist")
-        release_folders = []  
+    if not os.path.exists(year_dir):  
+        print(f"'{year_dir}' does not exist")
+        release_folders = []
         return release_folders
 
-    subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
-    matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}/{year}-")]
+    # Gather all subdirectories in the {year} directory
+    subdirs = [os.path.join(year_dir, d) for d in os.listdir(year_dir) if os.path.isdir(os.path.join(year_dir, d))]  
+
+    # Filter subdirectories based on the year pattern
+    matching_subdirs = [d for d in subdirs if os.path.basename(d).startswith(f"{year}-")] 
 
     release_folders = sorted(matching_subdirs)
 
-    if matching_subdirs:
+    if release_folders:
         if get_ipython():  # Check if running in Jupyter Notebook
-            print(f"Found {len(matching_subdirs)} release folders for year {year}:")
+            print(f"Found {len(release_folders)} release folders for year {year}:")
         else:
             print(f"Found {len(release_folders)} release folders for year {year}:\n" + "\n".join(release_folders))
     else:
