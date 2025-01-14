@@ -25,6 +25,27 @@ def get_year():
     print(f"Rounding up releases for: {year}\n")
     return year
 
+
+def retrieve_year_folder(year):
+    """
+    Checks if a directory exists in ../site/releases/ with the given year as the name.
+
+    Args:
+        year (str): The name of the directory to check.
+
+    Returns:
+        str: The path to the yearly directory if it exists, or a message indicating it does not exist.
+    """
+
+    yearly_path = f"../site/releases/{year}/"
+
+    if os.path.exists(yearly_path):
+        print(f"The directory '{yearly_path}' exists")
+        return yearly_path
+    else:
+        print(f"The directory '{yearly_path}' does not exist and needs to be created")
+        return None
+
 def create_year_folder(year):
     """
     Creates a new directory in ../site/releases/ with the given year as the name.
