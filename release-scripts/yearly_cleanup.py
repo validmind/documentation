@@ -25,7 +25,6 @@ def get_year():
     print(f"Rounding up releases for: {year}\n")
     return year
 
-
 def retrieve_year_folder(year):
     """
     Checks if a directory exists in ../site/releases/ with the given year as the name.
@@ -46,28 +45,28 @@ def retrieve_year_folder(year):
         print(f"The directory '{yearly_path}' does not exist and needs to be created")
         return None
 
-def create_year_folder(year):
-    """
-    Creates a new directory in ../site/releases/ with the given year as the name.
+# def create_year_folder(year):
+#     """
+#     Creates a new directory in ../site/releases/ with the given year as the name.
 
-    Args:
-        year (str): The name of the directory to create.
+#     Args:
+#         year (str): The name of the directory to create.
 
-    Returns:
-        str: The path to the new yearly directory.
-    """
-    releases_dir = f"../site/releases/"
-    yearly_path = f"../site/releases/{year}/"
+#     Returns:
+#         str: The path to the new yearly directory.
+#     """
+#     releases_dir = f"../site/releases/"
+#     yearly_path = f"../site/releases/{year}/"
 
-    os.makedirs(releases_dir, exist_ok=True)
+#     os.makedirs(releases_dir, exist_ok=True)
 
-    if os.path.exists(yearly_path):
-        print(f"The directory '{yearly_path}' already exists")
-    else:
-        os.makedirs(yearly_path)
-        print(f"Created folder: {yearly_path}\n")
+#     if os.path.exists(yearly_path):
+#         print(f"The directory '{yearly_path}' already exists")
+#     else:
+#         os.makedirs(yearly_path)
+#         print(f"Created folder: {yearly_path}\n")
     
-    return yearly_path
+#     return yearly_path
 
 release_folders = []
 
@@ -108,33 +107,33 @@ def get_yearly_releases(year):
 
     return release_folders
 
-def move_yearly_releases(yearly_path, release_folders):
-    """
-    Moves all subdirectories and files within them from the release_folders list 
-    into the yearly_path directory.
+# def move_yearly_releases(yearly_path, release_folders):
+#     """
+#     Moves all subdirectories and files within them from the release_folders list 
+#     into the yearly_path directory.
 
-    Args:
-        yearly_path (str): The destination directory.
-        release_folders (list): A list of subdirectories to move.
+#     Args:
+#         yearly_path (str): The destination directory.
+#         release_folders (list): A list of subdirectories to move.
 
-    Returns:
-        None
-    """
-    if not release_folders:
-        print("No release folders to move")
-        return
+#     Returns:
+#         None
+#     """
+#     if not release_folders:
+#         print("No release folders to move")
+#         return
 
-    for folder in release_folders:
-        destination = os.path.join(yearly_path, os.path.basename(folder))
+#     for folder in release_folders:
+#         destination = os.path.join(yearly_path, os.path.basename(folder))
 
-        try:
-            if os.path.exists(destination):
-                print(f"Skipping: '{destination}' already exists")
-            else:
-                shutil.move(folder, destination)
-                print(f"Moved: '{folder}' to '{destination}'")
-        except Exception as e:
-            print(f"Failed to move '{folder}' to '{destination}': {e}")
+#         try:
+#             if os.path.exists(destination):
+#                 print(f"Skipping: '{destination}' already exists")
+#             else:
+#                 shutil.move(folder, destination)
+#                 print(f"Moved: '{folder}' to '{destination}'")
+#         except Exception as e:
+#             print(f"Failed to move '{folder}' to '{destination}': {e}")
 
 def copy_template(yearly_path, year):
     """
@@ -559,11 +558,11 @@ def main():
     release_folders = get_yearly_releases(year)
     print()
     
-    yearly_path = create_year_folder(year)
+    yearly_path = retrieve_year_folder(year)
     print()
 
-    move_yearly_releases(yearly_path, release_folders)
-    print()
+    # move_yearly_releases(yearly_path, release_folders)
+    # print()
 
     yearly_release = copy_template(yearly_path, year)
     print()
