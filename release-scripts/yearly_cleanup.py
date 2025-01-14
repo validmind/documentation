@@ -442,7 +442,7 @@ def move_year_marker(year):
         # If marker was removed but not reinserted, raise an error
         if marker_removed and not marker_inserted:
             raise ValueError(
-                "The marker was removed but could not be reinserted above the target line. Ensure the target line exists."
+                "The marker was removed but could not be reinserted above the target line, ensure the target line exists"
             )
 
     # Remove the temporary file
@@ -451,9 +451,9 @@ def move_year_marker(year):
     if marker_removed and marker_inserted:
         print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif not marker_removed:
-        return "Marker was not found in the file."
+        return "Marker was not found in the file"
     else:
-        return "Marker could not be relocated."
+        return "Marker could not be relocated"
 
 # def update_paths(year):
 #     """
