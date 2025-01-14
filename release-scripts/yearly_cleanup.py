@@ -98,10 +98,7 @@ def get_yearly_releases(year):
     release_folders = sorted(matching_subdirs)
 
     if release_folders:
-        if get_ipython():  # Check if running in Jupyter Notebook
-            print(f"Found {len(release_folders)} release folders for year {year}:\n")   
-        else:
-            print(f"Found {len(release_folders)} release folders for year {year}:\n" + "\n".join(release_folders))
+        print(f"Found {len(release_folders)} release folders for year {year}:\n\n" + "\n".join(release_folders))
     else:
         print(f"No release folders found for year {year}")
 
