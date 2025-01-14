@@ -440,7 +440,8 @@ def create_release_folder(formatted_release_date):
     Returns:
         str: The path to the release notes file, or exits the script if the user chooses not to overwrite.
     """
-    directory_path = f"../site/releases/{formatted_release_date}/"
+    year = datetime.datetime.strptime(formatted_release_date, "%B %d, %Y").year
+    directory_path = f"../site/releases/{formatted_release_date}/{year}/"
     output_file = f"{directory_path}release-notes.qmd"
 
     # Check if the directory and file already exist
