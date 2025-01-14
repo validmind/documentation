@@ -915,7 +915,7 @@ def main():
         print()
 
         # Handle potential failure in create_release_folder
-        output_file = create_release_folder(formatted_release_date)
+        output_file, year = create_release_folder(formatted_release_date)
         if not output_file:  # Ensure the function returns something valid
             raise RuntimeError("Failed to create release folder.")
         print()
@@ -969,10 +969,10 @@ def main():
         upgrade_info(output_file)
         print()
 
-        update_quarto_yaml(release_datetime)
+        update_quarto_yaml(release_datetime, year)
         print()
 
-        update_index_qmd(release_datetime)
+        update_index_qmd(release_datetime, year)
         print()
 
     except Exception as e:
