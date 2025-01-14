@@ -440,17 +440,11 @@ def create_release_folder(formatted_release_date):
     Returns:
         str: The path to the release notes file, or exits the script if the user chooses not to overwrite.
     """
-    # Try parsing the input date in multiple formats
-    try:
-        # Adjust the format based on your input
-        parsed_date = datetime.datetime.strptime(formatted_release_date, "%Y-%b-%d")
-    except ValueError:
-        raise ValueError("formatted_release_date must be in the format 'YYYY-MMM-DD' (e.g., '2025-jan-17').")
-
-    # Extract year and format the directory path
+    # Parse the input date
+    parsed_date = datetime.datetime.strptime(formatted_release_date, "%Y-%b-%d")
     year = parsed_date.year
-    formatted_date = parsed_date.strftime("%B %d, %Y")  # e.g., "January 17, 2025"
-    directory_path = f"../site/releases/{formatted_date}/{year}/"
+    formatted_date = parsed_date.strftime("%Y-%b-%d")  # e.g., "2025-jan-17"
+    directory_path = f"../site/releases/{year}/{formatted_date}/"
     output_file = f"{directory_path}release-notes.qmd"
 
     # Check if the directory and file already exist
