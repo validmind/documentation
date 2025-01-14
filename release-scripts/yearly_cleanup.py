@@ -79,7 +79,7 @@ def get_yearly_releases(year):
 
     if release_folders:
         if get_ipython():  # Check if running in Jupyter Notebook
-            print(f"Found {len(release_folders)} release folders for year {year}:")
+            print(f"Found {len(release_folders)} release folders for year {year}:\n")   
         else:
             print(f"Found {len(release_folders)} release folders for year {year}:\n" + "\n".join(release_folders))
     else:
