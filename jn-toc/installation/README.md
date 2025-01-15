@@ -7,7 +7,7 @@ Once the extension is installed and enabled, to generate a table of contents for
 
 | Command | Functionality | 
 |---|---|
-| `+ Table of contents` | Adds or updates a table of contents. Once generated, you can override global settings with [`vm-toc-notebook-config`](#notebook-level-settings). | 
+| `+ Table of contents` | Adds or updates a table of contents. Once generated, you can override global settings with [`jn-toc-notebook-config`](#notebook-level-settings). | 
 | `- Table of contents` | Removes the table of contents and associated page anchors. |
 
 ## Installation
@@ -67,7 +67,7 @@ Key|Expected Values|Default|Description
 
 ### Notebook level settings
 
-Override the global settings for a specific notebook in the table of contents cell that gets generated within `vm-toc-notebook-config`. Defaults are set to ValidMind conventions.
+Override the global settings for a specific notebook in the table of contents cell that gets generated within `jn-toc-notebook-config`. Defaults are set to ValidMind conventions.
 
 Key|Expected Values|Default|Description
 :---|:---:|:---:|:---

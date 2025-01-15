@@ -488,8 +488,8 @@ class TocConfiguration {
     public MaxLevel: number;
     public AutoSave: boolean;
     public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
-    public StartLine: string = "<!-- vm-toc-notebook-config";
-    public EndLine: string = "/vm-toc-notebook-config -->";
+    public StartLine: string = "<!-- jn-toc-notebook-config";
+    public EndLine: string = "/jn-toc-notebook-config -->";
     public showHtml: boolean;
 
     public TocCellNum?: number;             // ? because we cant set it in constructor
