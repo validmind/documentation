@@ -501,17 +501,17 @@ class TocConfiguration {
     private _maxLevelKey: string 	= "maxLevel=";
   
     constructor() {
-        this.TocHeader = vscode.workspace.getConfiguration('jn.tableOfContents').get('tableOfContentsHeader', "## Contents");
-        this.Numbering = vscode.workspace.getConfiguration('jn.tableOfContents').get('numbering', false);
-        this.Flat = vscode.workspace.getConfiguration('jn.tableOfContents').get('flat', false);
-        this.Anchor = vscode.workspace.getConfiguration('jn.tableOfContents').get('anchors', true);
-        this.AnchorStyle = vscode.workspace.getConfiguration('jn.tableOfContents').get('reverseAnchorsStyle', "arrow1");
-        this.CustomAnchor = vscode.workspace.getConfiguration('jn.tableOfContents').get('customReverseAnchor', "&#9757;");
-        this.MinLevel = vscode.workspace.getConfiguration('jn.tableOfContents').get('minHeaderLevel', 2);
-        this.MaxLevel = vscode.workspace.getConfiguration('jn.tableOfContents').get('maxHeaderLevel', 4);
-        this.AutoSave = vscode.workspace.getConfiguration('jn.tableOfContents').get('autoSave', false);
+        this.TocHeader = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('tableOfContentsHeader', "## Contents");
+        this.Numbering = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('numbering', false);
+        this.Flat = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('flat', false);
+        this.Anchor = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('anchors', true);
+        this.AnchorStyle = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('reverseAnchorsStyle', "arrow1");
+        this.CustomAnchor = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('customReverseAnchor', "&#9757;");
+        this.MinLevel = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('minHeaderLevel', 2);
+        this.MaxLevel = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('maxHeaderLevel', 4);
+        this.AutoSave = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('autoSave', false);
         this.AnchorStrings = ["&#8593;", "&#9650;", this.CustomAnchor];
-        this.showHtml = vscode.workspace.getConfiguration('jn.tableOfContents').get('showOnHtml', false);
+        this.showHtml = vscode.workspace.getConfiguration('jupyterNotebook.tableOfContents').get('showOnHtml', false);
     }
   
     public Read(lineText: string) {
