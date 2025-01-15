@@ -1,0 +1,147 @@
+{
+  "name": "jn-toc",
+  "displayName": "Jupyter Notebook ToC",
+  "version": "1.0.0",
+  "description": "Generate simplified table of contents for Jupyter Notebooks based on @xelad0m's extension.",
+  "publisher": "validbeck",
+  "author": {
+    "name": "validbeck"
+  },
+  "engines": {
+    "vscode": "^1.72.0"
+  },
+  "categories": [
+    "Notebooks",
+    "Formatters",
+    "Other"
+  ],
+  "license": "SEE LICENSE.txt",
+  "homepage": "https://github.com/validbeck/jn-toc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/validbeck/jn-toc"
+  },
+  "icon": "jn-logo.png",
+  "galleryBanner": {
+    "color": "#ffffff",
+    "theme": "light"
+  },
+  "keywords": [
+    "jupyter",
+    "notebook",
+    "toc",
+    "ipynb",
+    "markdown"
+  ],
+  "activationEvents": [
+    "onCommand:jn-toc.jupyterToc",
+    "onCommand:jn-toc.jupyterUnToc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jn-toc.jupyterToc",
+        "title": "+ Table of contents",
+        "category": "Jupyter"
+      },
+      {
+        "command": "jn-toc.jupyterUnToc",
+        "title": "- Table of contents",
+        "category": "Jupyter"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "jn-toc.jupyterToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@0"
+        },
+        {
+          "command": "jn-toc.jupyterUnToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jn-toc.jupyterToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
+        },
+        {
+          "command": "jn-toc.jupyterUnToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Jupyter Notebook ToC",
+      "displayName": "Jupyter Notebook ToC",
+      "properties": {
+        "jn.tableOfContents.tableHeader": {
+          "type": "string",
+          "default": "## Contents",
+          "markdownDescription": "Defines the heading for the table of contents",
+          "scope": "resource",
+          "order": 0
+        },
+        "jn.tableOfContents.minHeaderLevel": {
+          "type": "number",
+          "default": 2,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "markdownDescription": "Defines the **minimum** level of the notebook headers to be collected in the table of contents, defaults to 2 as the title is `h1`\t\n\nOption is overridable by ToC cell config on a per notebook basis",
+          "scope": "resource",
+          "order": 1
+        },
+        "jn.tableOfContents.maxHeaderLevel": {
+          "type": "number",
+          "default": 4,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "markdownDescription": "Defines the **maximum** level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by ToC cell config on a per notebook basis",
+          "scope": "resource",
+          "order": 3
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.72.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.24.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^3.2.1",
+    "linqts": "^1.14.4"
+  }
+}
