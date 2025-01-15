@@ -344,20 +344,18 @@ export class TocGenerator {
     }
 
     // build string representation of table of contents
-    buildSummary(headers : List<Header>) : string {
-        // let tocHeaderAnchor =  (this._config.Anchor) ? this._tocHeaderAnchor : "";
-        let tocSummary : string = this._config.TocHeader + "    \n";
+    buildSummary(headers: List<Header>): string {
+        let tocSummary: string = this._config.TocHeader + "    \n";
+    
+        if (!this._config.showHtml) {
+            tocSummary = "::: {.content-hidden when-format=\"html\"}\n" + tocSummary;
+        }
         
         headers.ForEach((header, idx) => {
             if (header != undefined) {
-                let title = header.cleanTitle;  // we want to push to anchored TOC the header without links
+                let title = header.cleanTitle; 
                 let tocLine = "";
-                let indent = "";
-
-                if (!this._config.Flat) {
-                    indent = (idx == 0) ? "" : "  ".repeat(header.level - 1);    // first header never indents or it will be ugly rendered in md list
-                    indent = indent.concat("- ");
-                }
+                let indent = this._config.Flat ? "" : "  ".repeat(header.level - 1).concat("- ");
                 
                 if (this._config.Numbering && this._config.Anchor) {
                     tocLine = `${indent}${header.numberingString} [${title}](#${header.anchor})`;
@@ -369,18 +367,21 @@ export class TocGenerator {
                     tocLine = `${indent}${title}`;
                 }
                 
-                // finalize line
-                if(tocLine != null && tocLine != ""){
-                    tocSummary = tocSummary.concat(tocLine + "    \n");	// tab or 4 spaces (needed by deep levels)
+                if (tocLine) {
+                    tocSummary = tocSummary.concat(tocLine + "    \n");
                 }
             }
         });
-  
+    
+        if (!this._config.showHtml) {
+            tocSummary += "\n:::";
+        }
+        
         tocSummary = tocSummary.concat("\n" + this._config.Build());
         tocSummary = tocSummary.concat("\n" + this._tocDisclimer);
-    
+        
         return tocSummary;
-    }
+    }    
 
     /**
      * 
@@ -489,6 +490,7 @@ class TocConfiguration {
     public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
     public StartLine: string = "<!-- vm-toc-notebook-config";
     public EndLine: string = "/vm-toc-notebook-config -->";
+    public showHtml: boolean;
 
     public TocCellNum?: number;             // ? because we cant set it in constructor
   
@@ -509,6 +511,7 @@ class TocConfiguration {
         this.MaxLevel = vscode.workspace.getConfiguration('jn.tableOfContents').get('maxHeaderLevel', 4);
         this.AutoSave = vscode.workspace.getConfiguration('jn.tableOfContents').get('autoSave', false);
         this.AnchorStrings = ["&#8593;", "&#9650;", this.CustomAnchor];
+        this.showHtml = vscode.workspace.getConfiguration('jn.tableOfContents').get('showOnHtml', false);
     }
   
     public Read(lineText: string) {
