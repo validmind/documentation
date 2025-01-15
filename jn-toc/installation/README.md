@@ -1,7 +1,5 @@
 # User guide
 
-
-
 Once the extension is installed and enabled, to generate a table of contents for the first time:
 
 1. Select the cell that will live **below** the table of contents cell.
@@ -14,9 +12,9 @@ Once the extension is installed and enabled, to generate a table of contents for
 
 ## Installation
 
-1. Download the extension version you'd like to use.
+> Refer to the releases for the available/latest versions: https://github.com/validbeck/jn-toc/releases
 
-> `jn-toc-1.0.0.vsix` is the latest version as of January 15th, 2025.
+1. Download the extension version you'd like to use.
 
 2. Follow the [VS Code instructions on how to install from a `.vsix` file](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-from-a-vsix), e.g.: 
 
