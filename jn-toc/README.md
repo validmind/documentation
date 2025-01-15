@@ -11,7 +11,7 @@ The extension functions more or less the same with the following differences (**
 |---|---|---|---|
 | ![](screenshots/old-anchors.png) ![](screenshots/old-top-anchor.png) | ![](screenshots/new-anchors.png) | Page anchors set above header instead of inset after markdown heading, no reverse anchors to top in page anchors | Original version was not parsed correctly by Quarto and broke the native ToC, required us to manually find-replace anchor link formatting in each notebook after ToC generation, if notebooks were modified the ToC/anchors would need to be edited manually |
 | ![](screenshots/old-toc-top.png) |![](screenshots/new-toc.png)| Top/reverse anchor in table of contents cell removed, default heading changed | Required us to hack the default settings to remove the icon-anchor back up to the table of contents |
-| ![](screenshots/old-settings.png) | ![](screenshots/new-settings.png) | Reduced global settings, defaults set to ValidMind conventions | Required us to adjust the default settings to accommodate for the default structuring of ValidMind Juptyer Notebooks  |
+| ![](screenshots/old-settings.png) | ![](screenshots/new-settings.png) ![](screenshots/content-hidden-html.png) ![](screenshots/content-hidden-html-cell.png)| Reduced global settings, defaults set to ValidMind conventions; added a setting for hiding the embedded table of contents cell using [Quarto conditional content](https://quarto.org/docs/authoring/conditional.html) | Required us to adjust the default settings to accommodate for the default structuring of ValidMind Juptyer Notebooks; embedded table of contents cell always rendered by Quarto  |
 </details>
 
 

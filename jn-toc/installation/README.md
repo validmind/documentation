@@ -63,6 +63,7 @@ Key|Expected Values|Default|Description
 `jupyterNotebook.tableOfContents.tableHeader`|`string`|`## Contents`|Defines the heading for the table of contents cell.
 `jupyterNotebook.tableOfContents.minHeaderLevel`|`1-6`|`2`|Defines the minimum level of notebook headers to be collected in the table of contents. `2` will leave the title of the notebook out as it is an `h1` header.
 `jupyterNotebook.tableOfContents.maxHeaderLevel`|`1-6`|`4`|Defines the maximum level of notebook headers to be collected in the table of contents.
+`jupyterNotebook.tableOfContents.showOnHtml`|`boolean`|`false`|Show the embedded table of contents when rendered as HTML with Quarto, defaults to `false` as Quarto has built-in ToC.
 
 ### Notebook level settings
 
