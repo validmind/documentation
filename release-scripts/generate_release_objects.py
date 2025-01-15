@@ -440,7 +440,11 @@ def create_release_folder(formatted_release_date):
     Returns:
         str: The path to the release notes file, or exits the script if the user chooses not to overwrite.
     """
-    directory_path = f"../site/releases/{formatted_release_date}/"
+    # Parse the input date
+    parsed_date = datetime.datetime.strptime(formatted_release_date, "%Y-%b-%d")
+    year = parsed_date.year
+    formatted_date = parsed_date.strftime("%Y-%b-%d").lower()  # e.g., "2025-jan-17"
+    directory_path = f"../site/releases/{year}/{formatted_date}/"
     output_file = f"{directory_path}release-notes.qmd"
 
     # Check if the directory and file already exist
@@ -454,7 +458,7 @@ def create_release_folder(formatted_release_date):
     os.makedirs(directory_path, exist_ok=True)
     print(f"{output_file} will be created or overwritten")
 
-    return output_file
+    return output_file, year
 
 def create_release_qmd(output_file, original_release_date):
     """
@@ -727,7 +731,7 @@ def upgrade_info(output_file):
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
-def update_quarto_yaml(release_date):
+def update_quarto_yaml(release_date, year):
     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
 
     Params:
@@ -740,7 +744,7 @@ def update_quarto_yaml(release_date):
 
     # Format the release date for insertion into the YAML file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
-    target_line = f'        - releases/{formatted_release_date}/release-notes.qmd\n'
+    target_line = f'        - releases/{year}/{formatted_release_date}/release-notes.qmd\n'
 
     # Check if the target line already exists in the YAML file
     with open(yaml_filename, 'r') as file:
@@ -775,7 +779,7 @@ def update_quarto_yaml(release_date):
     
     print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
 
-def update_index_qmd(release_date):
+def update_index_qmd(release_date, year):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
 
     Params:
@@ -789,7 +793,7 @@ def update_index_qmd(release_date):
 
     # Format the release date for checking and insertion into the QMD file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
-    new_release_entry = f'      - /releases/{formatted_release_date}/release-notes.qmd\n'
+    new_release_entry = f'      - /releases/{year}/{formatted_release_date}/release-notes.qmd\n'
 
     # Check if the release note already exists
     with open(index_filename, 'r') as file:
@@ -911,7 +915,7 @@ def main():
         print()
 
         # Handle potential failure in create_release_folder
-        output_file = create_release_folder(formatted_release_date)
+        output_file, year = create_release_folder(formatted_release_date)
         if not output_file:  # Ensure the function returns something valid
             raise RuntimeError("Failed to create release folder.")
         print()
@@ -965,10 +969,10 @@ def main():
         upgrade_info(output_file)
         print()
 
-        update_quarto_yaml(release_datetime)
+        update_quarto_yaml(release_datetime, year)
         print()
 
-        update_index_qmd(release_datetime)
+        update_index_qmd(release_datetime, year)
         print()
 
     except Exception as e:
