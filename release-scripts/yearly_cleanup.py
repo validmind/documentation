@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 from IPython import get_ipython
+import subprocess
 
 ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
 
@@ -24,34 +25,54 @@ def get_year():
     print(f"Rounding up releases for: {year}\n")
     return year
 
-def create_year_folder(year):
+def retrieve_year_folder(year):
     """
-    Creates a new directory in ../site/releases/ with the given year as the name.
+    Checks if a directory exists in ../site/releases/ with the given year as the name.
 
     Args:
-        year (str): The name of the directory to create.
+        year (str): The name of the directory to check.
 
     Returns:
-        str: The path to the new yearly directory.
+        str: The path to the yearly directory if it exists, or a message indicating it does not exist.
     """
-    releases_dir = f"../site/releases/"
+
     yearly_path = f"../site/releases/{year}/"
 
-    os.makedirs(releases_dir, exist_ok=True)
-
     if os.path.exists(yearly_path):
-        print(f"The directory '{yearly_path}' already exists")
+        print(f"The directory '{yearly_path}' exists")
+        return yearly_path
     else:
-        os.makedirs(yearly_path)
-        print(f"Created folder: {yearly_path}\n")
+        print(f"The directory '{yearly_path}' does not exist and needs to be created")
+        return None
+
+# def create_year_folder(year):
+#     """
+#     Creates a new directory in ../site/releases/ with the given year as the name.
+
+#     Args:
+#         year (str): The name of the directory to create.
+
+#     Returns:
+#         str: The path to the new yearly directory.
+#     """
+#     releases_dir = f"../site/releases/"
+#     yearly_path = f"../site/releases/{year}/"
+
+#     os.makedirs(releases_dir, exist_ok=True)
+
+#     if os.path.exists(yearly_path):
+#         print(f"The directory '{yearly_path}' already exists")
+#     else:
+#         os.makedirs(yearly_path)
+#         print(f"Created folder: {yearly_path}\n")
     
-    return yearly_path
+#     return yearly_path
 
 release_folders = []
 
 def get_yearly_releases(year):
     """
-    Finds subdirectories in ../site/releases/ that begin with the specified year.
+    Finds subdirectories in ../site/releases/ that match the structure {year}/{year}-.
 
     Args:
         year (str): The year prefix to search for in subdirectory names.
@@ -59,56 +80,57 @@ def get_yearly_releases(year):
     Returns:
         list: A list of matching subdirectory names, sorted alphabetically.
     """
-    global release_folders 
+    global release_folders
     releases_dir = "../site/releases/"
+    year_dir = os.path.join(releases_dir, year)  
 
-    if not os.path.exists(releases_dir):
-        print(f"'{releases_dir}' does not exist")
-        release_folders = []  
+    if not os.path.exists(year_dir):  
+        print(f"'{year_dir}' does not exist")
+        release_folders = []
         return release_folders
 
-    subdirs = [d for d in os.listdir(releases_dir) if os.path.isdir(os.path.join(releases_dir, d))]
-    matching_subdirs = [os.path.join(releases_dir, d) for d in subdirs if d.startswith(f"{year}-")]
+    # Gather all subdirectories in the {year} directory
+    subdirs = [os.path.join(year_dir, d) for d in os.listdir(year_dir) if os.path.isdir(os.path.join(year_dir, d))]  
+
+    # Filter subdirectories based on the year pattern
+    matching_subdirs = [d for d in subdirs if os.path.basename(d).startswith(f"{year}-")] 
 
     release_folders = sorted(matching_subdirs)
 
-    if matching_subdirs:
-        if get_ipython():  # Check if running in Jupyter Notebook
-            print(f"Found {len(matching_subdirs)} release folders for year {year}:")
-        else:
-            print(f"Found {len(release_folders)} release folders for year {year}:\n" + "\n".join(release_folders))
+    if release_folders:
+        print(f"Found {len(release_folders)} release folders for year {year}:\n\n" + "\n".join(release_folders))
     else:
         print(f"No release folders found for year {year}")
 
     return release_folders
 
-def move_yearly_releases(yearly_path, release_folders):
-    """
-    Moves all subdirectories and files within them from the release_folders list 
-    into the yearly_path directory.
+# def move_yearly_releases(yearly_path, release_folders):
+#     """
+#     Moves all subdirectories and files within them from the release_folders list 
+#     into the yearly_path directory.
 
-    Args:
-        yearly_path (str): The destination directory.
-        release_folders (list): A list of subdirectories to move.
+#     Args:
+#         yearly_path (str): The destination directory.
+#         release_folders (list): A list of subdirectories to move.
 
-    Returns:
-        None
-    """
-    if not release_folders:
-        print("No release folders to move")
-        return
+#     Returns:
+#         None
+#     """
+#     if not release_folders:
+#         print("No release folders to move")
+#         return
 
-    for folder in release_folders:
-        destination = os.path.join(yearly_path, os.path.basename(folder))
+#     for folder in release_folders:
+#         destination = os.path.join(yearly_path, os.path.basename(folder))
 
-        try:
-            if os.path.exists(destination):
-                print(f"Skipping: '{destination}' already exists")
-            else:
-                shutil.move(folder, destination)
-                print(f"Moved: '{folder}' to '{destination}'")
-        except Exception as e:
-            print(f"Failed to move '{folder}' to '{destination}': {e}")
+#         try:
+#             if os.path.exists(destination):
+#                 print(f"Skipping: '{destination}' already exists")
+#             else:
+#                 shutil.move(folder, destination)
+#                 print(f"Moved: '{folder}' to '{destination}'")
+#         except Exception as e:
+#             print(f"Failed to move '{folder}' to '{destination}': {e}")
 
 def copy_template(yearly_path, year):
     """
@@ -139,6 +161,11 @@ def copy_template(yearly_path, year):
         # Copy the template to the destination
         shutil.copy(template_path, destination_file)
         print(f"Copied '../internal/templates/yearly-releases.qmd' template to: '{destination_file}'")
+
+        try:
+            subprocess.run(["code", destination_file], check=True)
+        except Exception as e:
+            print(f"Error opening the file in VS Code: {e}")
 
         return destination_file
 
@@ -344,7 +371,7 @@ def update_quarto_yaml(year):
 
             if between_markers:
                 # Collect lines for the specified year
-                if f"releases/{year}-" in line:
+                if f"releases/{year}/{year}-" in line:
                     year_contents.append(line)
                 else:
                     # Write out lines not belonging to the target year
@@ -412,7 +439,7 @@ def move_year_marker(year):
         # If marker was removed but not reinserted, raise an error
         if marker_removed and not marker_inserted:
             raise ValueError(
-                "The marker was removed but could not be reinserted above the target line. Ensure the target line exists."
+                "The marker was removed but could not be reinserted above the target line, ensure the target line exists"
             )
 
     # Remove the temporary file
@@ -421,101 +448,101 @@ def move_year_marker(year):
     if marker_removed and marker_inserted:
         print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif not marker_removed:
-        return "Marker was not found in the file."
+        return "Marker was not found in the file"
     else:
-        return "Marker could not be relocated."
+        return "Marker could not be relocated"
 
-def update_paths(year):
-    """
-    Replaces occurrences of `releases/{year}-` with `releases/{year}/{year}-` in .qmd and .yml files.
+# def update_paths(year):
+#     """
+#     Replaces occurrences of `releases/{year}-` with `releases/{year}/{year}-` in .qmd and .yml files.
 
-    Args:
-        year (str): Year to replace in the text.
-    """
-    site_dir = f"../site/"
-    original_text = f"releases/{year}-"
-    new_text = f"releases/{year}/{year}-"
+#     Args:
+#         year (str): Year to replace in the text.
+#     """
+#     site_dir = f"../site/"
+#     original_text = f"releases/{year}-"
+#     new_text = f"releases/{year}/{year}-"
 
-    # List to track modified files
-    modified_files = []
+#     # List to track modified files
+#     modified_files = []
 
-    # Walk through the directory and subdirectories
-    for root, _, files in os.walk(site_dir):
-        for file in files:
-            if file.endswith(".qmd") or file.endswith(".yml"):
-                file_path = os.path.join(root, file)
-                with open(file_path, "r", encoding="utf-8") as f:
-                    content = f.readlines()
+#     # Walk through the directory and subdirectories
+#     for root, _, files in os.walk(site_dir):
+#         for file in files:
+#             if file.endswith(".qmd") or file.endswith(".yml"):
+#                 file_path = os.path.join(root, file)
+#                 with open(file_path, "r", encoding="utf-8") as f:
+#                     content = f.readlines()
 
-                # Track lines updated
-                updated_lines = []
+#                 # Track lines updated
+#                 updated_lines = []
 
-                # Replace the text
-                updated_content = []
-                for line_num, line in enumerate(content, start=1):
-                    updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
-                    updated_content.append(updated_line)
-                    if line != updated_line:
-                        updated_lines.append((line_num, line.strip(), updated_line.strip()))
+#                 # Replace the text
+#                 updated_content = []
+#                 for line_num, line in enumerate(content, start=1):
+#                     updated_line = re.sub(original_text.format(year=year), new_text.format(year=year), line)
+#                     updated_content.append(updated_line)
+#                     if line != updated_line:
+#                         updated_lines.append((line_num, line.strip(), updated_line.strip()))
 
-                # Write back to the file only if changes were made
-                if updated_lines:
-                    with open(file_path, "w", encoding="utf-8") as f:
-                        f.writelines(updated_content)
-                    modified_files.append((file_path, updated_lines))
+#                 # Write back to the file only if changes were made
+#                 if updated_lines:
+#                     with open(file_path, "w", encoding="utf-8") as f:
+#                         f.writelines(updated_content)
+#                     modified_files.append((file_path, updated_lines))
 
-    # Check if any files were modified
-    if not modified_files:
-        print("No absolute filepaths replaced")
-        return
+#     # Check if any files were modified
+#     if not modified_files:
+#         print("No absolute filepaths replaced")
+#         return
 
-    # Print modified files and lines line by line
-    for file_path, updates in modified_files:
-        print(f"Updated: {file_path}")
-        for line_num, before, after in updates:
-            print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
-        print()
+#     # Print modified files and lines line by line
+#     for file_path, updates in modified_files:
+#         print(f"Updated: {file_path}")
+#         for line_num, before, after in updates:
+#             print(f"  Line {line_num}:\n    Before: {before}\n    After: {after}")
+#         print()
 
-def search_links(yearly_path):
-    """
-    Searches for files in a specified directory and looks for a specific text in them.
-    Prints the file path, line number, and the line containing the text.
-    Also provides a summary of the number of matching files and lines found.
+# def search_links(yearly_path):
+#     """
+#     Searches for files in a specified directory and looks for a specific text in them.
+#     Prints the file path, line number, and the line containing the text.
+#     Also provides a summary of the number of matching files and lines found.
 
-    Parameters:
-    - yearly_path (str): The base directory to search in.
-    """
-    search_dir = f"{yearly_path}"
-    search_text = "../"
-    matching_files = 0
-    total_lines_found = 0
+#     Parameters:
+#     - yearly_path (str): The base directory to search in.
+#     """
+#     search_dir = f"{yearly_path}"
+#     search_text = "../"
+#     matching_files = 0
+#     total_lines_found = 0
 
-    print("Searching for relative links in moved release notes that may need adjusting...\n")
+#     print("Searching for relative links in moved release notes that may need adjusting ...\n")
 
-    for root, _, files in os.walk(search_dir):
-        for file in files:
-            file_path = os.path.join(root, file)
-            file_has_match = False
-            matches = []  # To store matching lines for this file
-            try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    for line_number, line in enumerate(f, start=1):
-                        if search_text in line:
-                            total_lines_found += 1
-                            if not file_has_match:
-                                file_has_match = True
-                                matching_files += 1
-                            matches.append(f"- Line {line_number}: {line.strip()}")
-            except (UnicodeDecodeError, FileNotFoundError):
-                # Skip files that cannot be opened or read
-                continue
+#     for root, _, files in os.walk(search_dir):
+#         for file in files:
+#             file_path = os.path.join(root, file)
+#             file_has_match = False
+#             matches = []  # To store matching lines for this file
+#             try:
+#                 with open(file_path, 'r', encoding='utf-8') as f:
+#                     for line_number, line in enumerate(f, start=1):
+#                         if search_text in line:
+#                             total_lines_found += 1
+#                             if not file_has_match:
+#                                 file_has_match = True
+#                                 matching_files += 1
+#                             matches.append(f"- Line {line_number}: {line.strip()}")
+#             except (UnicodeDecodeError, FileNotFoundError):
+#                 # Skip files that cannot be opened or read
+#                 continue
 
-            if matches:
-                print(f"File: {file_path}")
-                print("\n".join(matches))
-                print()  # Add an extra empty line between files
+#             if matches:
+#                 print(f"File: {file_path}")
+#                 print("\n".join(matches))
+#                 print()  # Add an extra empty line between files
 
-    print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
+#     print(f"Search completed: {matching_files} files matched, {total_lines_found} matching lines found\n")
 
 def main():
 
@@ -525,13 +552,10 @@ def main():
     year = get_year()
     print()
 
-    release_folders = get_yearly_releases(year)
+    get_yearly_releases(year)
     print()
     
-    yearly_path = create_year_folder(year)
-    print()
-
-    move_yearly_releases(yearly_path, release_folders)
+    yearly_path = retrieve_year_folder(year)
     print()
 
     yearly_release = copy_template(yearly_path, year)
@@ -552,12 +576,6 @@ def main():
     print()
 
     move_year_marker(year)
-    print()
-
-    update_paths(year)
-    print()
-
-    search_links(yearly_path)
     print()
 
 if __name__ == "__main__":
