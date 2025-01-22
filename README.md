@@ -26,7 +26,8 @@ You need:
 
 ## How to contribute
 
-First, read through and familiarize yourself with our [ValidMind style guide](https://docs.validmind.ai/about/contributing/style-guide/style-guide.html).
+> [!IMPORTANT]
+> First, read through and familiarize yourself with our [ValidMind style guide](https://docs.validmind.ai/about/contributing/style-guide/style-guide.html).
 
 - Our core user guides are sourced in Quarto Markdown under [`site/guide`](https://github.com/validmind/documentation/tree/main/site/guide). 
 - If you create new documentation, make sure to add it to the [`_quarto.yml`](https://github.com/validmind/documentation/blob/main/site/_quarto.yml) file.
@@ -133,7 +134,8 @@ make get-source
 
 After you pull in the changes, commit them to this repo as part of the release notes process.
 
-**Want to author new code samples?** Refer to our [Jupyter Notebook template Quickstart](https://github.com/validmind/validmind-library/tree/main/notebooks/templates)!
+> [!TIP]
+> **Want to author new code samples?** Refer to our [Jupyter Notebook template Quickstart](https://github.com/validmind/validmind-library/tree/main/notebooks/templates)!
 
 <!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
