@@ -2,7 +2,7 @@
 # SRC_DIR := _source/validmind-library
 SRC_DIR := ../../validmind-library
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := validmind
+DEST_DIR_PYTHON := reference
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PROFILE := exe-demo
@@ -62,6 +62,8 @@ python-docs:
 		rm -rf $(DEST_DIR_PYTHON); \
 		mkdir -p $(DEST_DIR_PYTHON); \
 		cp -r $(SRC_DIR)/docs/validmind/. $(DEST_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/validmind.qmd $(DEST_DIR_PYTHON); \
+		cp $(SRC_DIR)/docs/_sidebar.yml $(DEST_DIR_PYTHON); \
 	fi
 
 test-descriptions:
