@@ -118,8 +118,8 @@ Runs the test suite, renders the summary and sends the results to ValidMind
 
 **Parameters**
 
-- **optional)**: Whether to send the results to ValidMind. Defaults to True. fail_fast (bool,
-- **optional)**: Whether to stop running tests after the first failure. Defaults to False.
+- **send** bool: Whether to send the results to ValidMind. Defaults to True.
+- **fail_fast** bool: Whether to stop running tests after the first failure. Defaults to False.
 
 ### [summarize[()]{.muted}](#summarize)
 
@@ -139,18 +139,18 @@ This way we can support multiple dataset types but under the hood we only need t
 
 **Parameters**
 
-- **raw_dataset** (np.ndarray): The raw dataset as a NumPy array.
-- **input_id** (str): Identifier for the dataset.
-- **index** (np.ndarray): The raw dataset index as a NumPy array.
-- **columns** (Set[str]): The column names of the dataset.
-- **target_column** (str): The target column name of the dataset.
-- **feature_columns** (List[str]): The feature column names of the dataset.
-- **feature_columns_numeric** (List[str]): The numeric feature column names of the dataset.
-- **feature_columns_categorical** (List[str]): The categorical feature column names of the dataset.
-- **text_column** (str): The text column name of the dataset for NLP tasks.
-- **target_class_labels** (Dict): The class labels for the target columns.
-- **df** (pd.DataFrame): The dataset as a pandas DataFrame.
-- **extra_columns** (Dict): Extra columns to include in the dataset.
+- **raw_dataset** np.ndarray: The raw dataset as a NumPy array.
+- **input_id** str: Identifier for the dataset.
+- **index** np.ndarray: The raw dataset index as a NumPy array.
+- **columns** Set\[str\]: The column names of the dataset.
+- **target_column** str: The target column name of the dataset.
+- **feature_columns** List\[str\]: The feature column names of the dataset.
+- **feature_columns_numeric** List\[str\]: The numeric feature column names of the dataset.
+- **feature_columns_categorical** List\[str\]: The categorical feature column names of the dataset.
+- **text_column** str: The text column name of the dataset for NLP tasks.
+- **target_class_labels** Dict: The class labels for the target columns.
+- **df** pd.DataFrame: The dataset as a pandas DataFrame.
+- **extra_columns** Dict: Extra columns to include in the dataset.
 
 **Inherited members**
 
@@ -164,8 +164,8 @@ Adds an extra column to the dataset without modifying the dataset `features` and
 
 **Parameters**
 
-- **(str)**: The name of the extra column. column_values (np.ndarray,
-- **optional)**: The values of the extra column.
+- **column_name** str: The name of the extra column.
+- **column_values** np.ndarray: The values of the extra column.
 
 ### [assign_predictions[()]{.muted}](#assign_predictions)
 
@@ -177,12 +177,12 @@ Assign predictions and probabilities to the dataset.
 
 **Parameters**
 
-- **(VMModel)**: The model used to generate the predictions. prediction_column (str,
-- **optional)**: The name of the column containing the predictions. Defaults to None. prediction_values (list,
-- **optional)**: The values of the predictions. Defaults to None. probability_column (str,
-- **optional)**: The name of the column containing the probabilities. Defaults to None. probability_values (list,
-- **optional)**: The values of the probabilities. Defaults to None. prediction_probabilities (list,
-- **DEPRECATED**: The values of the probabilities. Defaults to None.
+- **model** VMModel: The model used to generate the predictions.
+- **prediction_column** str: The name of the column containing the predictions. Defaults to None.
+- **prediction_values** list: The values of the predictions. Defaults to None.
+- **probability_column** str: The name of the column containing the probabilities. Defaults to None.
+- **probability_values** list: The values of the probabilities. Defaults to None.
+- **prediction_probabilities** list: DEPRECATED: The values of the probabilities. Defaults to None.
 - **kwargs**: Additional keyword arguments that will get passed through to the model's `predict` method.
 
 ### [prediction_column[()]{.muted}](#prediction_column)
@@ -219,8 +219,8 @@ Support options provided when passing an input to run_test or run_test_suite
 
 **Parameters**
 
-- **Options**: -
-- **columns**: Filter columns in the dataset
+- \*\***kwargs**: Options:
+- columns: Filter columns in the dataset
 
 **Returns**
 
@@ -252,7 +252,7 @@ Returns the predictions for a given model. Attempts to stack complex prediction 
 
 **Parameters**
 
-- **(VMModel)**: The model whose predictions are sought.
+- **model** VMModel: The model whose predictions are sought.
 
 **Returns**
 
@@ -276,7 +276,7 @@ Returns the probabilities for a given model.
 
 **Parameters**
 
-- **(str)**: The ID of the model whose predictions are sought.
+- **model** str: The ID of the model whose predictions are sought.
 
 **Returns**
 
@@ -306,7 +306,9 @@ Base class for ValidMind Input types
 with_options(self, kwargs)
 ```
 
-Allows for setting options on the input object that are passed by the user when using the input to run a test or set of tests To allow options, just override this method in the subclass (see VMDataset) and ensure that it returns a new instance of the input with the specified options set.
+Allows for setting options on the input object that are passed by the user when using the input to run a test or set of tests
+
+To allow options, just override this method in the subclass (see VMDataset) and ensure that it returns a new instance of the input with the specified options set.
 
 **Parameters**
 
@@ -326,10 +328,10 @@ An base class that wraps a trained model instance and its associated data.
 
 **Parameters**
 
-- **model** (object): The trained model instance. Defaults to None.
-- **input_id** (str): The input ID for the model. Defaults to None.
-- **attributes** (ModelAttributes): The attributes of the model. Defaults to None.
-- **name** (str): The name of the model. Defaults to the class name.
+- **model** object: The trained model instance. Defaults to None.
+- **input_id** str: The input ID for the model. Defaults to None.
+- **attributes** ModelAttributes: The attributes of the model. Defaults to None.
+- **name** str: The name of the model. Defaults to the class name.
 
 **Inherited members**
 
