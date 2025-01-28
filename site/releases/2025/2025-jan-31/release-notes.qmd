@@ -1,0 +1,571 @@
+---
+title: "January 31, 2025"
+---
+
+## Release highlights
+
+<!---
+PR #263: Add Initial Support for Post-Processing Functions
+URL: https://github.com/validmind/validmind-library/pull/263
+Labels: enhancement, highlight
+--->
+### Add initial support for post-processing functions
+
+Adding support for post-processing functions
+ 
+Generated PR summary: 
+ 
+This update enhances the ValidMind project by focusing on post-processing capabilities and raw data handling. You can now use a `post_process_fn` parameter with the `run_test` function to define custom post-processing functions that modify the `TestResult` object, enabling you to tailor test outputs by modifying tables or creating figures. A new `RawData` class is introduced for encapsulating and managing raw data from test executions, offering a structured approach for additional data inspection and serialization.
+
+To assist with these new features, a Jupyter notebook named `post_processing_functions.ipynb` provides practical examples of using post-processing functions within ValidMind tests. Additionally, ValidMind now uses Python 3.11 in its GitHub Actions workflow for better compatibility with recent Python enhancements.
+
+The update also enhances the `ROCCurve` test by returning both a `RawData` object and a Plotly figure, facilitating flexible visualization and processing of ROC curve data. Lastly, several code improvements have been made, such as introducing a `HumanReadableEncoder` for improved JSON serialization of numpy arrays and refactoring figure handling logic to accommodate various figure types. These changes aim to improve the flexibility and usability of the ValidMind library, allowing you to manage your test results more effectively.
+
+<!---
+PR #615: Pulling in latest changes from validmind-library PR#282
+URL: https://github.com/validmind/documentation/pull/615
+Labels: documentation, highlight
+--->
+### Pulling in latest changes from `validmind-library` PR #282
+
+We've now made it easier
+
+For contributors to submit custom code samples. Showcase the capabilities of the ValidMind Library with our Jupyter Notebook template QuickStart.
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind project introduces several enhancements and bug fixes focused on improving documentation, code samples, and testing capabilities. Detailed markdown files are now available for tests such as `MutualInformation`, `ScoreBandDefaultRates`, and others. These documents provide insights into each test's purpose and operation. New Jupyter notebooks, `application_scorecard_full_suite.ipynb` and `application_scorecard_with_ml.ipynb`, help you build application scorecard models using the ValidMind Library. The existing notebook `hugging_face_summarization_demo.ipynb` is updated with the `validmind[huggingface]` installation.
+
+New templates include a QuickStart guide and mini-templates for creating ValidMind code samples, along with an end-to-end template generation script (`e2e_template.py`). Testing is enhanced in the notebooks `quickstart_option_pricing_models.ipynb` and `quickstart_option_pricing_models_quantlib.ipynb`, adding data quality checks and model evaluations.
+
+Additionally, deprecated notebooks are removed, README files updated, and new documentation resources added in the form of `site/python-docs.zip`.
+
+## Enhancements
+
+<!---
+PR #1179: [SC-8104] Support configurable default models in Admin UI
+URL: https://github.com/validmind/frontend/pull/1179
+Labels: enhancement
+--->
+### Support configurable default models in admin UI
+
+<img width="827" alt="Screenshot 2025-01-17 at 12 22 55 PM" src="https://github.com/user-attachments/assets/5d2f2ce8-aa75-40cb-8685-878eb2d013b9" />  
+
+Allow admin user to create organization with no models
+
+Disable `Populate_Demo_Models` switch if no models selected
+ 
+Generated PR summary: 
+ 
+This release introduces enhancements and bug fixes to the admin pages and API. The organization model is refactored by updating the `DemoModel` type in `src/api/AdminAPI.ts`, replacing the `area` field with `business_area`. UI changes in `src/admin/pages/OrganizationDefaults.tsx` ensure that the correct field is displayed in the `Badge` component. In form validation improvements, you can now submit forms without selecting models, as the requirement for `selectedModels` to have a length greater than zero has been removed in `src/admin/pages/Organizations.tsx`. Additionally, a new condition in the `Switch` component prevents interaction when no models are selected by disabling the switch, enhancing user experience.
+
+<!---
+PR #1161: Added basic support to prevent concurrent changes for analytics/dashb…
+URL: https://github.com/validmind/frontend/pull/1161
+Labels: enhancement
+--->
+### Dashboard
+
+Analytics dashboards now have edit/view mode
+
+While in `edit` mode, if a change is made outside of your session, you receive a prompt to reload the page. This prevents concurrent users from overwriting changes from one another.
+
+<img width="1235" alt="Screenshot 2025-01-08 at 11 54 04 AM" src="https://github.com/user-attachments/assets/838f933f-f15a-4503-bbe7-a6514f736773">
+
+<img width="1236" alt="Screenshot 2025-01-08 at 11 54 10 AM" src="https://github.com/user-attachments/assets/80a68ccb-2d56-417b-82d2-2d6a85766f30">
+
+<img width="738" alt="Screenshot 2025-01-08 at 11 54 36 AM" src="https://github.com/user-attachments/assets/389e3c3a-8bea-40c1-9f11-197de24346a4">
+ 
+Generated PR summary: 
+ 
+The `DashboardPage` component has been enhanced with several new features:
+
+You can now toggle between viewing and editing the dashboard with a new edit mode option, activated by a button that switches between 'Edit' and 'Done Editing'. The component detects stale dashboards while in edit mode and alerts you if there is a newer version available, prompting you to reload for the latest changes. The `updated_at` timestamp now updates after modifications to ensure all changes are reflected accurately.
+
+Conditional rendering improves functionality by managing modals and buttons based on whether the dashboard is stale or in edit mode, preventing edits on outdated data. UI improvements include changing the `FloatingActionButton` from 'primary' to 'ghost', and the `GridViewItem` respects the `isDraggable` prop to disable dragging outside of edit mode. Additionally, CSS adjustments have been made to hide resize handles when they are not needed.
+
+<!---
+PR #1173: [SC-7551] add allow_duplicates flag to CreateInventoryModel
+URL: https://github.com/validmind/frontend/pull/1173
+Labels: enhancement
+--->
+### Add `allow_duplicates` flag to create inventory model
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+
+Defaults to `true`
+Adds flag to throw error if set to `false` and duplicate model name found in model creation
+
+<img width="1475" alt=Screenshot 2025-01-13 at 10 26 25 AM src=https://github.com/user-attachments/assets/79e6bae5-efe0-4be0-a772-3047f483f031 />
+
+ 
+Generated PR summary: 
+ 
+This update introduces the `allow_duplicates` parameter to the `CreateInventoryModel` function in the API. The functionality now lets you specify whether duplicate inventory models should be permitted when creating a new model by including this boolean parameter in the request payload to the `/inventory-models` endpoint. In addition, the `ModelInventoryAdd` component has been modified to default to disallowing duplicates by passing `false` for the `allow_duplicates` parameter during new model additions.
+
+<!---
+PR #1132: Added Model Inventory Page layout customization
+URL: https://github.com/validmind/frontend/pull/1132
+Labels: enhancement
+--->
+### Added model inventory page layout customization
+
+Added the ability to customize the layout of the model inventory
+ 
+Generated PR summary: 
+ 
+This update introduces a feature for managing and customizing the layout of model pages within the application. You can now use new API functions to perform CRUD operations on model page layouts, including getting, creating, updating, and deleting them. New TypeScript types have been defined to support this feature. A new React component, `EditModelLayoutModal`, provides an interface for customizing layouts by dragging, dropping, and toggling field visibility. Additionally, a custom hook `useModelPageLayout` is included to manage the state and logic related to layout data. The `InventoryModelOverview` component integrates these features by using the hook to fetch and display customized layouts and providing a button to open the edit modal for further customization. These enhancements allow you to personalize your model page layouts for better user experience and flexibility.
+
+<!---
+PR #1172: [SC-8043] Show optional prompt for Risk Assessment
+URL: https://github.com/validmind/frontend/pull/1172
+Labels: enhancement
+--->
+### Show optional prompt for risk assessment
+
+Add optional prompt for risk assessment text generation
+
+<img width="809" alt=Screenshot 2025-01-13 at 9 33 31 AM src="https://github.com/user-attachments/assets/492758fc-2669-46c6-9c81-198e990b9efe"/>
+ 
+Generated PR summary: 
+ 
+This update enhances the `RiskAssessmentNotes` component in the `ModelDocumentation` module by adding an `options` object to the `streamEvent` configuration. You now have the capability to enable a `enableUserPrompt` option, which allows the system to prompt you during the risk assessment process. This improvement aims to enhance user interaction and improve data collection. The change is made in the `RiskAssessmentNotes.tsx` file, where the `streamEvent` object is updated to include this new functionality.
+
+<!---
+PR #1176: [SC-8072] Support threshold lines in unit metric plots
+URL: https://github.com/validmind/frontend/pull/1176
+Labels: enhancement
+--->
+### Support threshold lines in unit metric plots
+
+**Description**
+
+When logging metrics using `log_metric()`, you can now include a `thresholds` dictionary. For example, `thresholds={"target": 0.8, "minimum": 0.6}` allows you to define multiple reference levels. The thresholds appear as horizontal reference lines when adding a *Metric Over Time* block to the documentation. 
+
+The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table. This enhancement provides immediate visual context for metric values and helps track metric performance against multiple defined thresholds over time.
+
+**Example**
+
+```
+log_metric(
+    key="AUC Score",
+    value=auc,
+    recorded_at=datetime(2024, 1, 1),
+    thresholds={
+        "high_risk": 0.6,
+        "medium_risk": 0.7,
+        "low_risk": 0.8,
+    }
+)
+```
+
+<img width="949" alt="log_metric_auc_4" src="https://github.com/user-attachments/assets/81371dda-3e2c-4b53-abbe-a0caa7c0501a"/>
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This update enhances the `UnitMetricContent` component by adding several new features. You can now see thresholds for unit metrics, which are sorted by their creation date to ensure the most recent configurations appear. A new function helps extract these updated thresholds, and the component's type definition includes a mapping of threshold names to their values.
+
+For better visualization, the component uses color coding for thresholds with the `d3-scale-chromatic` library. It assigns colors based on index positions and includes a custom legend displaying threshold names alongside their colors. Reference lines have been added to charts to represent these thresholds visually, providing labels with each line indicating its name and value.
+
+The Y-axis of charts has been adjusted to display all threshold values clearly. Additionally, there is an enhancement in the data table feature, which now includes a column that shows each threshold's name and corresponding value. These improvements aim to enhance your ability to visualize and interpret unit metric data effectively by highlighting key threshold levels.
+
+<!---
+PR #1176: [SC-8072] Support threshold lines in unit metric plots
+URL: https://github.com/validmind/frontend/pull/1176
+Labels: enhancement
+--->
+### Support threshold lines in unit metric plots
+
+**Description**
+
+When logging metrics using `log_metric()`, you can now include a `thresholds` dictionary. For example, use `thresholds={"target": 0.8, "minimum": 0.6}` to define multiple reference levels.
+
+These thresholds automatically appear as horizontal reference lines when you add a *Metric Over Time* block to the documentation. The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table.
+
+This enhancement provides immediate visual context for metric values. It helps track metric performance against multiple defined thresholds over time.
+
+
+**Example**
+
+```
+log_metric(
+    key="AUC Score",
+    value=auc,
+    recorded_at=datetime(2024, 1, 1),
+    thresholds={
+        "high_risk": 0.6,
+        "medium_risk": 0.7,
+        "low_risk": 0.8,
+    }
+)
+```
+
+<img width="949" alt="log_metric_auc_4" src="https://github.com/user-attachments/assets/81371dda-3e2c-4b53-abbe-a0caa7c0501a" />
+
+<!--- REPLACE THIS COMMENT WITH YOUR DESCRIPTION --->
+ 
+Generated PR summary: 
+ 
+This update enhances the `UnitMetricContent` component to improve how you can visualize and understand unit metrics. It introduces thresholds handling by allowing the display of thresholds in descending order of their creation date, ensuring you see the most recent configurations. A new function, `findThresholds`, helps extract these thresholds from your data, and the `TUnitMetric` type now includes a field for mapping threshold names to values.
+
+For visual distinction, the component applies color coding to thresholds using the `d3-scale-chromatic` library's `schemePaired`. A custom legend is also added to match threshold names with their respective colors, thanks to the `getLegendContent` function. Reference lines are included on charts to represent these thresholds accurately, employing labels that show both their names and values.
+
+To accommodate all threshold values visually within charts, adjustments are made to the Y-axis domain. In addition, tables displaying metric data now have an extra column dedicated to showing each threshold's name and value. These improvements collectively enhance your ability to analyze unit metrics effectively through clear representation of critical threshold levels.
+
+<!---
+PR #1125: [SC-7628] updates to admin landing page
+URL: https://github.com/validmind/frontend/pull/1125
+Labels: enhancement
+--->
+### Updates to admin landing page
+
+Only in case we are starting to document the admin app
+
+The landing page/admin checks whether you are authenticated and authorized. You can find the rules in the ticket description above.
+ 
+Generated PR summary: 
+ 
+This update brings significant improvements to the application's routing and layout, focusing on better authentication handling and user experience. You can now configure role-based access control using a new environment variable, `REACT_APP_AUTH0_NAMESPACE`, added to the `.env` file and configuration settings. The `MainApp.tsx` file sees a simplified route definition with the removal of the `AppSidebarLayout` and `SettingsSidebar` components, and introduces conditional rendering for unauthenticated users during loading states.
+
+In `AdminApp.tsx`, the sidebar and logout functionalities are refactored into an `AdminLayout` component. User roles are now checked to grant admin access, redirecting unauthorized users to a newly introduced consistent 404 error page available in both `src/admin/pages/NotFound.tsx` and `src/pages/NotFound.tsx`. The API error handling in `AdminAPI.ts` is updated to trigger an unauthorized event for 400 and 403 status codes, enhancing how unauthorized access is managed.
+
+The new `AdminLayout` component improves code modularity by encapsulating the layout for admin pages, including sidebars. Enhancements to the `PrivateRoute` component include specific layouts through `DashboardLayout` and `AdminDashboardLayout`, ensuring a consistent interface according to user roles. These changes streamline application structure, bolster security through role-based access, and enhance navigation and error handling for a better overall user experience.
+
+<!---
+PR #1124: ReportCounters are now clickable
+URL: https://github.com/validmind/frontend/pull/1124
+Labels: enhancement
+--->
+### Report counters are now clickable
+
+Counter visualizations are now clickable
+ 
+Generated PR summary: 
+ 
+This update enhances the click handling logic in the `RenderVisualization` and `ReportCounter` components of the web application, improving interactivity and usability.
+
+In the `RenderVisualization` component, click handling is refactored to support both 'series' and 'counter' types. The introduction of a new variable, `record`, helps manage data retrieval based on component type. For 'series', the existing logic locates records using `name` and `seriesName`. For 'counter' components, `record` directly references the data array. This unified approach streamlines navigation using search parameters constructed from `record`.
+
+The `ReportCounter` component now supports a `chartClick` prop to handle click events. This update triggers the provided function when clicking on counter visualizations, passing relevant component type and data information. This enhancement allows for interactive navigation based on associated counter data.
+
+These improvements enhance user experience by making visualization components more interactive, particularly when interacting with counter visualizations.
+
+<!---
+PR #1117: User Dashboards
+URL: https://github.com/validmind/frontend/pull/1117
+Labels: enhancement
+--->
+### User dashboards
+
+New user dashboards
+
+The new user dashboards feature allows you to create multiple dashboards and add or remove the following items:
+
+1. Visualizations from analytics.
+
+2. Saved views.
+
+3. Premade widgets (i.e: Recent Activity/Model Findings).
+ 
+Generated PR summary: 
+ 
+This update brings notable changes to dashboard and visualization management. Unused components and files related to analytics and reports have been removed, reducing the codebase size for better maintainability. The dashboard management system is now more modular, introducing new components such as `AddOrEditDashboardModal`, `AddVisualizationFromAnalytics`, and `AddWidgetToDashboardModal` to enhance dashboard creation and management. You can now add, edit, and delete widgets and visualizations on dashboards, including adding specific widgets like `ActivityFeedWidget` and `FindingsWidget`. UI components have been improved for a better user experience, with enhanced layouts and interactions in elements such as the `EventList` and `DataTable`. The code has been reorganized for improved readability and maintainability, removing redundancies. Additionally, there are enhancements in security and performance through optimized API calls and proper handling of user inputs.
+
+<!---
+PR #1096: Simplifies workflow nodes and introduces zoom-based detail
+URL: https://github.com/validmind/frontend/pull/1096
+Labels: enhancement
+--->
+### Simplifies workflow nodes
+
+And introduces zoom-based detail
+
+Workflows are now simpler to read in a zoomed-out view.  
+
+See workflow modal window is now larger, providing more space.
+
+![image](https://github.com/user-attachments/assets/2f924368-eb05-4ca8-bb3d-71c14d2367ee)
+
+If you zoom in further, you get to see more details.
+
+<img width="1552" alt="image" src="https://github.com/user-attachments/assets/995714ee-be70-4ea5-b0f6-46e1ec3294ed">
+
+Hovering on nodes animates all of the `in` and `out` connections. This makes it clearer where they go.
+
+<img width="1552" alt="image" src="https://github.com/user-attachments/assets/b560f745-c9e9-45d9-91e8-1bae6887130b">
+ 
+Generated PR summary: 
+ 
+This release introduces enhancements and bug fixes to the workflow components within the application. You will notice updated hover background colors in the `ModelInventoryAdd` and `NodesBar` components for better visual consistency. Modal and box dimensions in the `WorkflowExecutionsViewer` are adjusted to improve layout responsiveness, while new CSS animations and styles for edges and nodes enhance visual feedback during interactions.
+
+The update also includes component refactoring, removing unused imports and context references in `WorkflowExecutionsViewer` and `useWorkflow`, cleaning up the codebase. A new `CustomHandle` component standardizes handle styling across various node components. Nodes such as `ApprovalNode`, `BranchRouteNode`, `BranchRouterNode`, `StartNode`, `StatusFormNode`, and `StatusSetNode` are refactored to use this new component, improving layout and styling.
+
+Additionally, zoom level-based content visibility is implemented in node components to optimize your user experience based on zoom level. Minimum and maximum zoom levels are established for workflow canvases to ensure usability. New CSS animations for edge transitions provide a more dynamic user interface, while new styles for node containers enhance visual hierarchy and readability.
+
+These updates aim to improve your overall experience by enhancing the visual aspects of workflow components and ensuring a cleaner, more maintainable codebase.
+
+<!---
+PR #1128: [SC-7684] admin manage users
+URL: https://github.com/validmind/frontend/pull/1128
+Labels: enhancement
+--->
+### Admin manage users
+
+Adding users management to admin app - list users, create user
+
+---
+
+Adding admin tools with option for `RBAC` refresh
+ 
+Generated PR summary: 
+ 
+This update enhances the admin panel with new functionality for managing users and tools. In the `AdminApp.tsx`, new routes for `/users` and `/tools` have been added, along with importing the respective components. The `Organizations.tsx` file now uses updated type imports, aligning with recent changes in mutation functions.
+
+The newly introduced `Tools.tsx` component offers administrative options such as refreshing RBAC and rebuilding permissions while incorporating authentication through `useAuth0` and user feedback via `useToast`. Similarly, the `Users.tsx` component allows you to manage user accounts comprehensively—featuring options for creating, editing, listing users, and facilitating pagination and sorting. It integrates `useAuth0` for authentication support and uses `react-query` for efficient data handling.
+
+In the API files, there's an `AuthHeaders` function in `API.ts` that ensures consistent authorization management. Additionally, `AdminAPI.ts` now includes new API methods like `GetUsers`, `PostUser`, `PatchUser`, and `PatchRBAC`, complemented by updated type definitions for organizational roles and user requests.
+
+Also included in this update is a refresh of sidebar items in the admin layout (`AdminLayout/index.tsx`) to incorporate links to these new pages. Lastly, a new hook called `useUsers` has been added in the hooks directory (`hooks/admin/index.tsx`) for streamlined data fetching regarding users. This complements updates made to existing hooks using new type definitions across the application.
+
+<!---
+PR #274: [SC-7759] Exposing static descriptions in test results
+URL: https://github.com/validmind/validmind-library/pull/274
+Labels: enhancement
+--->
+### ## Exposing static descriptions in test results
+
+To enhance the clarity and understanding of your test outcomes, it's crucial to form 
+static descriptions. Implementing this practice allows you to easily interpret each test case's objective and status. 
+
+Follow these guidelines:
+
+1. Ensure that every test contains a concise and clear description outlining its purpose.
+2. Document expectations for each test, focusing on what it confirms or denies within the code.
+3. Include any preconditions necessary before executing tests.
+
+Static descriptions assist in maintaining clarity across the development team, enabling faster identification of issues without requiring extensive explanations
+
+Added `doc` property to `TestResult` class
+
+This addition separates the static test documentation from LLM-generated descriptions. The change helps you distinguish between the original test documentation, accessed via `result.doc`, and the dynamic descriptions generated by the LLM, accessed via `result.description`. The `doc` property contains the test's docstring. This provides users with direct access to the test's purpose and behavior.
+ 
+Generated PR summary: 
+ 
+This release introduces enhancements and bug fixes to the ValidMind project. You can now store documentation related to test results with the added `doc` attribute in the `TestResult` class. Functions such as `build_test_result`, `_run_composite_test`, `_run_comparison_test`, and `run_test` are updated to include and pass the `doc` parameter, ensuring that test documentation is properly captured.
+
+For ROC curve tests, the `test_roc_curve_structure` and `test_perfect_separation` tests in `test_ROCCurve.py` are modified to accommodate changes in the return type of the `ROCCurve` function. This function now returns a tuple consisting of `RawData` and a `Figure`. Assertions have been added to verify that the `RawData` object contains expected fields like false positive rate (fpr), true positive rate (tpr), and area under the curve (auc).
+
+Additionally, test execution is improved by updating `tests/test_unit_tests.py` to exit with a failure status if any tests fail, enhancing overall robustness. These updates aim to improve documentation handling, structure validation in ROC curve testing, and ensure more reliable test execution.
+
+<!---
+PR #256: [SC-7588] Explore dynamic llm context injection in test descriptions
+URL: https://github.com/validmind/validmind-library/pull/256
+Labels: enhancement
+--->
+### Explore dynamic `llm` context injection in test descriptions
+
+Added capability
+
+You now have the capability to include contextual information in `LLM`-based descriptions. The changes primarily focus on improving the generation of descriptions for test results.
+
+Incorporate additional context that you can specify through environment variables.
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind library enhances the generation of LLM-based descriptions by allowing you to include contextual information. You can now specify additional context through environment variables, improving the relevance and alignment of test result descriptions with specific business needs.
+
+The release includes a new Jupyter notebook, `llm_descriptions_context.ipynb`, which demonstrates how to add context to these descriptions. The notebook guides you through setting up the environment, initializing datasets and models, and running tests with or without added context.
+
+A new function, `_get_llm_global_context()`, is added to retrieve this context from your environment variables, ensuring it is included only when enabled and not empty. The `generate_description` function has been updated to incorporate this context into the input data for description generation.
+
+Additionally, the `user.jinja` template has been updated to conditionally include context in generated descriptions when available. These enhancements enable you to provide more detailed information about tests or use cases, aligning LLM-generated insights more closely with specific business requirements or policies.
+
+<!---
+PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
+URL: https://github.com/validmind/validmind-library/pull/280
+Labels: enhancement
+--->
+### Create credit risk scorecard notebook using `XGBoost`
+
+Add new application scorecard notebooks using ML with additional testing
+
+- `application_scorecard_with_ml.ipynb`: Running individual tests.
+
+- `application_scorecard_full_suite`: Using `run_documentation_tests()`.
+ 
+Generated PR summary: 
+ 
+This release of the ValidMind Library introduces enhancements and bug fixes, with a focus on credit risk scorecard modeling. You will find two new Jupyter notebooks that guide you through using the application scorecard model with the ValidMind Library. They offer step-by-step instructions for loading a demo dataset, preprocessing data, training models, and documenting your model.
+
+The `validmind/tests` directory now includes several new tests to evaluate model features and performance. Tests added include Mutual Information for feature relevance, Score Band Default Rates for default rate analysis across score bands, Calibration Curve for probability estimate assessment, Classifier Threshold Optimization for threshold method analysis in binary classification models, Model Parameters for parameter transparency, and Score Probability Alignment to evaluate correlations between credit scores and predicted probabilities.
+
+Enhancements have been made to existing tests to improve their functionality; notably, the `TooManyZeroValues` test now incorporates a row count and percentage threshold for zero values. Additionally, the `split` function in `lending_club.py` has been improved to accommodate an optional validation set during dataset splitting.
+
+A utility function called `get_demo_test_config` has been introduced for generating a default test configuration in demos. The library's version has been updated from 2.7.3 to 2.7.4 as part of these changes.
+
+Various bugs have also been fixed to correct test logic errors and improve test coverage throughout the library.
+
+<!---
+PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
+URL: https://github.com/validmind/validmind-library/pull/290
+Labels: enhancement
+--->
+### Ongoing monitoring notebook for application scorecard model
+
+Add two new notebooks for the scorecard model:
+
+- `application_scorecard_ongoing_monitoring.ipynb`: This notebook includes new metrics for data and model drift. You can use it to populate the ongoing monitoring document for the scorecard model.
+
+- `application_scorecard_executive.ipynb`: This is a high-level notebook that documents the scorecard model with just one command: `lending_club.document_model()`.
+ 
+Generated PR summary: 
+ 
+This release of the ValidMind Library includes a range of enhancements and bug fixes, with a focus on credit risk scorecard models and ongoing monitoring capabilities. You now have access to new Jupyter notebooks that provide step-by-step guides for using the library with credit risk datasets. These include comprehensive examples for building application scorecard models, integrating machine learning, and ongoing monitoring.
+
+Custom tests for scorecard models are introduced, allowing you to define and execute your own evaluations using the ValidMind Library. The update also comes with new tests aimed at enhancing ongoing monitoring, like measuring drift in probability calibration through `CalibrationCurveDrift.py`, evaluating class imbalance with `ClassImbalanceDrift.py`, and comparing ROC curves via `ROCCurveDrift.py`, among others.
+
+Improved dataset loading, preprocessing, and feature engineering functions now offer verbosity control to ensure cleaner outputs. Integration tests have also been updated to accommodate specific conditions required by certain ongoing monitoring tests.
+
+The library's version is updated from 2.7.5 to 2.7.6, signifying these various improvements designed to give you greater flexibility and insights into your model’s performance when managing credit risk models.
+
+<!---
+PR #285: John6797/sc 7792/add raw data to validmind library tests
+URL: https://github.com/validmind/validmind-library/pull/285
+Labels: enhancement
+--->
+### Add raw data to `validmind` library tests
+
+Adding raw data storage
+
+You are adding raw data storage across all of our test library. Every `ValidMind` test now returns a `RawData` object. You can use this in post-processing functions to recreate any test output. This feature continues the trend towards more flexibility and customizability.
+ 
+Generated PR summary: 
+ 
+This update introduces significant enhancements to the AI test scripts and unit tests within the project, focusing on a new `RawData` mechanism for storing and retrieving intermediate data used in test functions. This aims to improve post-processing capabilities and provide detailed insights into test results.
+
+The `add_test_description.py` script is removed, indicating a change in how test descriptions are managed. A new script, `bulk_ai_test_updates.py`, is added to facilitate bulk updates on test files using AI, including adding descriptions and raw data. Many test scripts now incorporate the `RawData` class to capture intermediate data alongside traditional outputs like figures and tables.
+
+Unit tests have been updated to include checks for `RawData`, ensuring proper integration and functionality. New unit tests verify this integration's correct performance. The codebase has undergone refactoring for better readability and maintainability, with improvements such as reorganized imports and adherence to coding standards.
+
+Additionally, updates ensure all necessary dependencies are correctly imported, reducing runtime errors and enhancing the codebase's security posture.
+
+<!---
+PR #293: [SC-8072] Support threshold lines in unit metric plots
+URL: https://github.com/validmind/validmind-library/pull/293
+Labels: enhancement
+--->
+### Support threshold lines in unit metric plots
+
+Description  
+
+Enhances the `log_metric()` function to accept multiple named thresholds as a dictionary input. This enhancement allows you to define and track multiple threshold levels for each unit metric. For example, provide thresholds such as "high_risk": 0.6, "medium_risk": 0.7, and "low_risk": 0.8.
+
+Changes
+
+- Added threshold support in `log_metric()`.  
+- Added notebook `how_to\log_metrics_over_time.ipynb`.
+
+Testing
+
+- Tested with various threshold configurations.  
+- Verified threshold line rendering in the UI.
+- Validated that threshold updates reflect immediately in visualization.
+
+Example
+
+```  
+log_metric(  
+    key="AUC Score",  
+    value=auc,  
+    recorded_at=datetime(2024, 1, 1),  
+    thresholds={  
+        "high_risk": 0.6,  
+        "medium_risk": 0.7,  
+        "low_risk": 0.8,  
+    } 
+) 
+```  
+
+<img width="949" alt="log_metric_auc_4" src="https://github.com/user-attachments/assets/9df62ede-b51f-46e3-b5bc-e9caa5ca685f" />
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind library enhances the functionality of the `log_metric` and `alog_metric` functions in the `api_client.py` file by introducing support for logging thresholds alongside metrics. You can now include an optional `thresholds` parameter when using these functions to specify threshold values for your metrics. This addition helps in visualizing metrics over time, allowing you to identify potential issues by setting reference lines in your metric visualizations. Additionally, the notebook `log_metrics_over_time.ipynb` has been updated with examples showing how to log multiple metrics using custom thresholds.
+
+<!---
+PR #295: feat: add print_env function
+URL: https://github.com/validmind/validmind-library/pull/295
+Labels: enhancement
+--->
+### Add `print_env` function
+
+Add `validmind.print_env()` function
+
+Add a new top-level function for printing the running environment. This helps when debugging or asking others for help to debug.
+
+```python
+import validmind
+
+validmind.print_env()
+```
+ 
+Generated PR summary: 
+ 
+This update adds a new function, `print_env`, to the `validmind/tests/run.py` module. The `print_env` function uses the `pprint` module to neatly display the run metadata collected from the `_get_run_metadata` function. It is also added to the `__all__` list in the `validmind/__init__.py` file, ensuring it is available as part of the module's public API. You can now use this function to easily view run metadata in a readable format.
+
+## Bug fixes
+
+<!---
+PR #1153: fix admin auth check
+URL: https://github.com/validmind/frontend/pull/1153
+Labels: bug
+--->
+### Fix admin auth check
+
+N/A
+ 
+Generated PR summary: 
+ 
+This update enhances admin user management and authorization within the application. A new hook, `useCurrentAdminUser`, is introduced to retrieve current admin user details via the `GetCurrentUser` API method. The `AdminApp` component now uses this hook to verify admin roles for access rights, ensuring authentication and data loading are complete before setting authorization states. Additionally, type names are adjusted for clarity; `AdminUser` is renamed to `OrgAdminUser` for organizational context, while a new `AdminUser` type is defined to represent server-retrieved admin user data. These improvements enhance the application's functionality and maintainability in managing admin users and their permissions.
+
+<!---
+PR #1155: admin route not working on dev, fix env check
+URL: https://github.com/validmind/frontend/pull/1155
+Labels: bug
+--->
+### Admin route not working  
+
+Check the development environment to fix the issue with the admin route
+
+n/a
+ 
+Generated PR summary: 
+ 
+This update simplifies the route configuration in the `App` component of your application. Previously, routing logic depended on the environment (either `development` or `production`) and the `REACT_APP_BUILD_TARGET` environment variable. The updated code removes these conditions, ensuring that both `AdminApp` and `MainApp` routes are always included. This change streamlines the routing setup and reduces complexity within the `App` component for a more consistent configuration across different environments.
+
+## Other
+
+<!---
+PR #1143: Fixes ckeditor console errors
+URL: https://github.com/validmind/frontend/pull/1143
+Labels: 
+--->
+### Fixes ckeditor console errors
+
+<!--- Replace this comment with your description --->
+ 
+Generated PR summary: 
+ 
+The `RevisionHistoryButtonPlugin` has been enhanced to improve error handling and conditional checks within the `init` method. These updates ensure that the plugin gracefully manages situations where certain UI elements may be missing, thus preventing possible runtime errors. The improvements include:
+
+- Adding conditional checks to verify the existence of `editor.ui.view.stickyPanel` before interacting with its `contentPanelElement`.
+- Refining the nested conditional logic to confirm that elements such as `buttonContainer`, `backToEditingButton`, and `restoreButton` are present before attempting any manipulation.
+- Introducing error logging to provide informative messages when expected elements are not found, which aids in debugging and maintenance.
+
+These updates enhance the robustness of the plugin, reducing its susceptibility to errors in environments where the UI structure might vary or be incomplete.
+
+
+
+{{< include /releases/_how-to-upgrade.qmd >}}
