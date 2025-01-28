@@ -4,95 +4,103 @@ toc-depth: 3
 toc-expand: 3
 ---
 
+## get_logger[()]{.muted}
 
+```python
+def get_logger(
+    name = 'validmind',    log_level = None):
+```
 
+Get a logger for the given module name
 
+## DatasetDescription[()]{.muted}
 
-
-  
-#### DatasetDescription
+```python
+def DatasetDescription(
+    dataset: VMDataset):
+```
 
 Provides comprehensive analysis and statistical summaries of each column in a machine learning model's dataset.
 
-###### Purpose
+### Purpose
 
-The test depicted in the script is meant to run a comprehensive analysis on a Machine Learning model's datasets.
-The test or metric is implemented to obtain a complete summary of the columns in the dataset, including vital
-statistics of each column such as count, distinct values, missing values, histograms for numerical, categorical,
-boolean, and text columns. This summary gives a comprehensive overview of the dataset to better understand the
-characteristics of the data that the model is trained on or evaluates.
+The test depicted in the script is meant to run a comprehensive analysis on a Machine Learning model's datasets. The test or metric is implemented to obtain a complete summary of the columns in the dataset, including vital statistics of each column such as count, distinct values, missing values, histograms for numerical, categorical, boolean, and text columns. This summary gives a comprehensive overview of the dataset to better understand the characteristics of the data that the model is trained on or evaluates.
 
-###### Test Mechanism
+### Test Mechanism
 
-The DatasetDescription class accomplishes the purpose as follows**: firstly, the test method "run" infers the data
-type of each column in the dataset and stores the details (id, column type). For each column, the
-"describe_column" method is invoked to collect statistical information about the column, including count,
-missing value count and its proportion to the total, unique value count, and its proportion to the total. Depending
-on the data type of a column, histograms are generated that reflect the distribution of data within the column.
-Numerical columns use the "get_numerical_histograms" method to calculate histogram distribution, whereas for
-categorical, boolean and text columns, a histogram is computed with frequencies of each unique value in the
-datasets. For unsupported types, an error is raised. Lastly, a summary table is built to aggregate all the
-statistical insights and histograms of the columns in a dataset.
+The DatasetDescription class accomplishes the purpose as follows: firstly, the test method "run" infers the data type of each column in the dataset and stores the details (id, column type). For each column, the "describe_column" method is invoked to collect statistical information about the column, including count, missing value count and its proportion to the total, unique value count, and its proportion to the total. Depending on the data type of a column, histograms are generated that reflect the distribution of data within the column. Numerical columns use the "get_numerical_histograms" method to calculate histogram distribution, whereas for categorical, boolean and text columns, a histogram is computed with frequencies of each unique value in the datasets. For unsupported types, an error is raised. Lastly, a summary table is built to aggregate all the statistical insights and histograms of the columns in a dataset.
 
-###### Signs of High Risk
+### Signs of High Risk
 
-- High ratio of missing values to total values in one or more columns which may impact the quality of the
-predictions.
+- High ratio of missing values to total values in one or more columns which may impact the quality of the predictions.
 - Unsupported data types in dataset columns.
-- Large number of unique values in the dataset's columns which might make it harder for the model to establish
-patterns.
+- Large number of unique values in the dataset's columns which might make it harder for the model to establish patterns.
 - Extreme skewness or irregular distribution of data as reflected in the histograms.
 
-###### Strengths
+### Strengths
 
 - Provides a detailed analysis of the dataset with versatile summaries like count, unique values, histograms, etc.
 - Flexibility in handling different types of data: numerical, categorical, boolean, and text.
-- Useful in detecting problems in the dataset like missing values, unsupported data types, irregular data
-distribution, etc.
-- The summary gives a comprehensive understanding of dataset features allowing developers to make informed
-decisions.
+- Useful in detecting problems in the dataset like missing values, unsupported data types, irregular data distribution, etc.
+- The summary gives a comprehensive understanding of dataset features allowing developers to make informed decisions.
 
-###### Limitations
+### Limitations
 
 - The computation can be expensive from a resource standpoint, particularly for large datasets with numerous columns.
-- The histograms use an arbitrary number of bins which may not be the optimal number of bins for specific data
-distribution.
+- The histograms use an arbitrary number of bins which may not be the optimal number of bins for specific data distribution.
 - Unsupported data types for columns will raise an error which may limit evaluating the dataset.
 - Columns with all null or missing values are not included in histogram computation.
 - This test only validates the quality of the dataset but doesn't address the model's performance directly.
 
+## describe_column[()]{.muted}
 
-
-
- 
-#### describe_column
+```python
+def describe_column(
+    df,
+    column):
+```
 
 Gets descriptive statistics for a single column in a Pandas DataFrame.
 
+## get_column_histograms[()]{.muted}
 
+```python
+def get_column_histograms(
+    df,
+    column,
+    type_):
+```
 
+Returns a collection of histograms for a numerical or categorical column. We store different combinations of bin sizes to allow analyzing the data better
 
- 
-#### get_column_histograms
+Will be used in favor of \_get_histogram in the future
 
-Returns a collection of histograms for a numerical or categorical column.
-We store different combinations of bin sizes to allow analyzing the data better
+## get_numerical_histograms[()]{.muted}
 
-Will be used in favor of _get_histogram in the future
+```python
+def get_numerical_histograms(
+    df,
+    column):
+```
 
+Returns a collection of histograms for a numerical column, each one with a different bin size
 
+## infer_datatypes[()]{.muted}
 
+```python
+def infer_datatypes(
+    df):
+```
 
- 
-#### get_numerical_histograms
+## [class]{.muted} UnsupportedColumnTypeError
 
-Returns a collection of histograms for a numerical column, each one
-with a different bin size
+```python
+class UnsupportedColumnTypeError(BaseError):
+```
 
+When an unsupported column type is found on a dataset.
 
+**Inherited members**
 
-
- 
-#### infer_datatypes
-
- 
+- **From BaseError**: [class BaseError[()]{.muted}](#class-baseerror), [__init__[()]{.muted}](#__init__), [__str__[()]{.muted}](#__str__), [description[()]{.muted}](#description)
+- **From builtins.BaseException**: with_traceback, add_note
