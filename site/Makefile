@@ -61,7 +61,7 @@ python-docs:
 		echo "\nUpdating Python source ..."; \
 		rm -rf $(DEST_DIR_PYTHON); \
 		mkdir -p $(DEST_DIR_PYTHON); \
-		cp -r $(SRC_DIR)/docs/validmind/. $(DEST_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/validmind/. $(DEST_DIR_PYTHON)/validmind; \
 		cp -r $(SRC_DIR)/docs/validmind.qmd $(DEST_DIR_PYTHON); \
 		cp $(SRC_DIR)/docs/_sidebar.yml $(DEST_DIR_PYTHON); \
 	fi
