@@ -5,13 +5,16 @@ title: "January 31, 2025"
 ## Release highlights — `25.01`
 
 ::: {.callout}
-Documentation releases now follow the new **unified versioning scheme** for our software releases rather than following the ValidMind Library version, starting with this `25.01` release. 
+Our documentation now follows the new **unified versioning scheme** for our software, starting with this `25.01` release. Included in this release:
 
-## Why change the versioning scheme?
+- **{{< var validmind.developer >}} — `v2.7.7`**
+- **{{< var validmind.platform >}} — `v1.29.10`**
 
-We maintain multiple repositories, each with its own version tags. With the new versioning scheme, we can now provide a single unified release version, such as `25.01`, that represents a collection of releases from these individual repositories. This ensures consistency and makes it easier to track and reference all changes associated with a specific release. Each unified version corresponds to updates across several repositories, simplifying version management for you.
+## Why a unified versioning scheme?
 
-This change does not affect how frequently new releases occur (release cadence) or the process you follow to upgrade. Only the versioning scheme for documentation has been updated. Everything else stays the same.
+We manage multiple repositories, each with its own version tags. The new versioning scheme replaces the {{< var validmind.developer >}} version in the documentation to clarify that each release includes code from multiple repositories rather than a single source.
+
+This change simplifies tracking changes for each {{< var vm.product >}} release and streamlines version management for you. Release frequency and the upgrade process remain unchanged.
 :::
 
 <!---
@@ -21,28 +24,25 @@ Labels: enhancement
 --->
 ### Custom reports and dashboards
 
-Create personalized views to surface the insights you want right when you log in to the ValidMind platform — the ability to customize reports in ValidMind's MRM platform provides essential flexibility to meet diverse stakeholder needs. With customizable reporting, your teams can tailor the format, metrics, and level of detail to each audience while maintaining consistency in the underlying data. 
+You can now create personalized views to surface the insights you want right when you log in to the ValidMind platform. With customizable reporting, your teams can tailor the format, metrics, and level of detail to each audience while maintaining consistency in the underlying data. 
 
-![Custom dashboards allow you to create personalized views](custom-dashboards.png)
+For instance, a chief risk officer might set up a custom _high-risk dashboard_ that combines widgets for:
+
+- High-risk (Tier 1) models, their owners, and their status
+- High-risk findings for different models and their status
+
+![Custom dashboards allow you to create personalized views](custom-dashboards.png){width="809" fig-alt="A screenshot showing two custom dashboards with table views for high-risk models and findings" .screenshot}
 
 You can add as many dashboards as you need to suit different use cases, whether it's managing model documentation and testing as a developer, tracking findings in validation reports as a developer, or monitoring analytics. 
 
-This ability means technical teams can drill into detailed model performance metrics, business leaders can get strategic portfolio views, and risk and compliance teams can receive standardized documentation that aligns with their specific requirements. 
-
-To populate your dashboards, you add widgets to display the information that matters to you. Choose from widgets for:
-
-- Model inventory views
-- Saved model findings
-- Detailed analytics visualizations
-- A list of recent activity
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-For a detailed technical overview of this feature, check out our blog post. The post explores the architecture decisions, implementation details, and best practices we followed while building this feature.
+::: {.w-70-ns .pr4}
+For a detailed introduction to how this feature can benefit your organization, check out our companion blog post.
 :::
 
-::: {.w-30-ns .tc}
+::: {.w-30-ns .tr .pr4}
 [Tech deep dive: Custom reports and dashboards](https://validmind.com/blog/tech-deep-dive-custom-reports-dashboards/){.button}
 :::
 
@@ -51,11 +51,11 @@ For a detailed technical overview of this feature, check out our blog post. The 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-Or read our docs to get started.
+Or, to get started with customizing your dashboards and reports, read our docs.
 :::
 
-::: {.w-30-ns .tc}
-[Customize your dashboard](https://docs.validmind.ai/guide/configuration/customize-your-dashboard.html){.button}
+::: {.w-30-ns .tr}
+[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
 :::
 
 ::::
@@ -65,22 +65,22 @@ PR #1161: Added basic support to prevent concurrent changes for analytics/dashb�
 URL: https://github.com/validmind/frontend/pull/1161
 Labels: enhancement
 --->
-### Analytics dashboards now support edit and view modes
+### Edit your dashboards
 
-We've made it easier to collaborate on dashboards by adding dedicated view and edit modes. 
-When you want to make changes, simply click the **Edit** button to enter edit mode. Once you're done, click 'Done Editing' to save your changes and return to view mode.
+We’ve streamlined dashboard configuration with dedicated view and edit modes. Click **Edit Mode** to make changes, then click **Done Editing** to save and return to view mode: 
 
-![Screenshot showing edit mode](401290459-838f933f-f15a-4503-bbe7-a6514f736773.png)
+![Edit mode for your dashboard](401290459-838f933f-f15a-4503-bbe7-a6514f736773.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
 
-![Screenshot showing view mode](401290475-80a68ccb-2d56-417b-82d2-2d6a85766f30.png)
+<!-- ![View mode for your dashboard](401290475-80a68ccb-2d56-417b-82d2-2d6a85766f30.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
 
 To prevent any confusion when multiple people are working on the same dashboard, we've added some helpful safeguards:
 
 - If someone else makes changes while you're editing, you'll get a friendly notification to reload the page
 - The system automatically detects if you're looking at an older version of the dashboard and prompts you to get the latest updates
 
-These improvements help ensure that everyone stays in sync while customizing their dashboards.
+<!-- NR TO DO Are we missing docs for Edit Mode? -->
 
+[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
 URL: https://github.com/validmind/validmind-library/pull/263
@@ -90,12 +90,140 @@ Labels: enhancement, highlight
 
 Adding support for post-processing functions -->
 
+### More code samples
+
+<!---
+PR #256: [SC-7588] Explore dynamic llm context injection in test descriptions
+URL: https://github.com/validmind/validmind-library/pull/256
+Labels: enhancement
+--->
+#### Add context to LLM-based descriptions
+
+You can now include contextual information in LLM-based descriptions. This enhancement improves test result descriptions by incorporating additional context that can be specified through environment variables.
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns .pr4}
+A new Jupyter notebook demonstrates how to add context to LLM-based descriptions. The notebook provides examples of:
+
+- Setting up the environment
+- Initializing datasets and models
+- Running tests with and without context
+:::
+
+::: {.w-30-ns .tr}
+[Adding Context to LLM-based Descriptions](https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/llm_descriptions_context.ipynb){.button}
+:::
+
+::::
+
+<!-- To support this feature, a new `_get_llm_global_context()` function in the `test_descriptions.py` script retrieves context from environment variables. This function validates that context is enabled and not empty before use. Additionally, the `generate_description` function has been updated to include this contextual information in the LLM description generation process. -->
+
+<!---
+PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
+URL: https://github.com/validmind/validmind-library/pull/280
+Labels: enhancement
+--->
+#### Document credit risk scorecard models using XGBoost
+
+We've introduced enhancements to the {{< var validmind.developer >}} that focus on documenting credit risk scorecard models:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr4}
+- **New notebooks**: Two Jupyter Notebooks demonstrate how to document application scorecard models using the {{< var vm.developer >}}. 
+:::
+
+::: {.w-50-ns .tr}
+[Document an application scorecard model (ind. tests)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button}
+
+[Document an application scorecard model (full suite)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button}
+:::
+
+::::
+
+These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
+
+- **New tests**:
+
+  - [`MutualInformation`](/tests/data_validation/MutualInformation.md): Evaluates feature relevance by calculating mutual information scores between features and the target variable.  
+  - [`ScoreBandDefaultRates`](/tests/data_validation/ScoreBandDefaultRates.md): Analyzes default rates and population distribution across credit score bands.  
+  - [`CalibrationCurve`](/tests/model_validation/sklearn/CalibrationCurve.md): Assesses calibration by comparing predicted probabilities against observed frequencies.  
+  - [`ClassifierThresholdOptimization`](/tests/model_validation/sklearn/ClassifierThresholdOptimization.md): Visualizes threshold optimization methods for binary classification models.  
+  - [`ModelParameters`](/tests/model_validation/sklearn/ModelParameters.md): Extracts and displays model parameters for transparency and reproducibility.  
+  - [`ScoreProbabilityAlignment`](/tests/model_validation/sklearn/ScoreProbabilityAlignment.md): Evaluates alignment between credit scores and predicted probabilities.
+
+Modifications have also been made to existing tests to improve functionality and accuracy. The [`TooManyZeroValues`](/tests/data_validation/TooManyZeroValues.md) test now includes a row count and applies a percentage threshold for zero values.
+
+The [`split`](https://docs.validmind.ai/validmind/validmind/datasets/regression/lending_club.html#preprocess) function in `lending_club.py` has been enhanced to support an optional validation set, allowing for more flexible dataset splitting.
+
+A new utility function, [`get_demo_test_config`](https://docs.validmind.ai/validmind/validmind/datasets/credit_risk/lending_club.html#get_demo_test_config), has been added to generate a default test configuration for demo purposes.
+
+<!---
+PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
+URL: https://github.com/validmind/validmind-library/pull/290
+Labels: enhancement
+--->
+#### Ongoing monitoring notebook for application scorecard model
+
+Several enhancements and bug fixes to the {{< var validmind.developer >}} focus on documenting and testing credit risk scorecard models and ongoing monitoring capabilities:
+
+- **New notebooks**: Two new notebooks for application scorecard models and ongoing monitoring provide step-by-step guides for using the {{< var validmind.developer >}} with credit risk datasets:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr4}
+- Use our new metrics for data and model drift, and populate the ongoing monitoring documentation for a scorecard model.
+:::
+
+::: {.w-50-ns .tr}
+[Ongoing monitoring for application scorecard](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/ongoing_monitoring/application_scorecard_ongoing_monitoring.ipynb){.button}
+:::
+
+::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr4}
+- Document a scorecard model with just the `lending_club.document_model()` function.
+:::
+
+::: {.w-50-ns .tr}
+[Document an application scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb){.button}
+:::
+
+::::
+
+- **Custom tests**: Introduced custom tests for scorecard models, allowing users to define and run their own tests using the ValidMind Library:
+
+   - `ScoreBandDiscriminationMetrics.py`: Evaluates discrimination metrics across different score bands.  
+
+- **Ongoing monitoring enhancements**: Added new tests for ongoing monitoring of models, including:  
+
+   - [`CalibrationCurveDrift`](/tests/data_validation/CalibrationCurveDrift.md): Evaluates changes in probability calibration.  
+   - [`ClassDiscriminationDrift`](/tests/data_validation/ClassDiscriminationDrift.md): Compares classification discrimination metrics.  
+   - [`ClassImbalanceDrift`](/tests/data_validation/ClassImbalanceDrift.md): Evaluates drift in class distribution.  
+   - [`ClassificationAccuracyDrift`](/tests/data_validation/ClassificationAccuracyDrift.md): Compares classification accuracy metrics.  
+   - [`ConfusionMatrixDrift`](/tests/data_validation/ConfusionMatrixDrift.md): Compares confusion matrix metrics.  
+   - [`CumulativePredictionProbabilitiesDrift`](/tests/data_validation/CumulativePredictionProbabilitiesDrift.md): Compares cumulative prediction probability distributions.  
+   - [`FeatureDrift`](/tests/data_validation/FeatureDrift.md): Evaluates changes in feature distribution.  
+   - [`PredictionAcrossEachFeature`](/tests/data_validation/PredictionAcrossEachFeature.md): Assesses prediction distributions across features.  
+   - [`PredictionCorrelation`](/tests/data_validation/PredictionCorrelation.md): Assesses correlation changes between predictions and features.  
+   - [`PredictionProbabilitiesHistogramDrift`](/tests/data_validation/PredictionProbabilitiesHistogramDrift.md): Compares prediction probability distributions.  
+   - [`PredictionQuantilesAcrossFeatures`](/tests/data_validation/PredictionQuantilesAcrossFeatures.md): Assesses prediction distributions across features using quantiles.  
+   - [`ROCCurveDrift`](/tests/data_validation/ROCCurveDrift.md): Compares ROC curves.  
+   - [`ScoreBandsDrift`](/tests/data_validation/ScoreBandsDrift.md): Analyzes drift in score bands.  
+   - [`ScorecardHistogramDrift`](/tests/data_validation/ScorecardHistogramDrift.md): Compares score distributions.  
+   - [`TargetPredictionDistributionPlot`](/tests/data_validation/TargetPredictionDistributionPlot.md): Assesses differences in prediction distributions.  
+
+- **Dataset and model enhancements**: Improved dataset loading, preprocessing, and feature engineering functions with verbosity control for cleaner output.  
+
 <!---
 PR #615: Pulling in latest changes from validmind-library PR#282
 URL: https://github.com/validmind/documentation/pull/615
 Labels: documentation, highlight
 --->
-### Jupyter Notebook template
+### Jupyter Notebook templates
 
 Want to create some code samples for ValidMind? We've now made it easier for contributors to submit custom code samples.
 
@@ -117,115 +245,6 @@ The template generation notebook draws from a number of mini-templates, should y
 - [`upgrade-validmind.ipynb`](upgrade-validmind.ipynb): Instructions for comparing & upgrading versions of the ValidMind Library.
 
 [README.md](https://github.com/validmind/validmind-library/edit/main/notebooks/templates/README.md){.button}
-
-### New notebook code samples
-
-<!---
-PR #256: [SC-7588] Explore dynamic llm context injection in test descriptions
-URL: https://github.com/validmind/validmind-library/pull/256
-Labels: enhancement
---->
-#### Add context to LLM-based descriptions
-
-Added the capability to include contextual information in LLM-based descriptions. This enhancement improves test result descriptions by incorporating additional context that can be specified through environment variables.
-
-A new Jupyter notebook demonstrates how to add context to LLM-based descriptions. The notebook provides examples of:
-
-- Setting up the environment
-- Initializing datasets and models
-- Running tests with and without context
-
-To support this feature, a new `_get_llm_global_context()` function in the `test_descriptions.py` script retrieves context from environment variables. This function validates that context is enabled and not empty before use. Additionally, the `generate_description` function has been updated to include this contextual information in the LLM description generation process.
-
-[Adding Context to LLM-based Descriptions](https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/llm_descriptions_context.ipynb){.button}
-
-<!---
-PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
-URL: https://github.com/validmind/validmind-library/pull/280
-Labels: enhancement
---->
-#### Credit risk scorecards using XGBoost
-
-We've introduced enhancements and bug fixes to the {{< var validmind.developer >}}, focusing on credit risk scorecard modeling. Key changes include:
-
-- **New Jupyter notebooks**: Two notebooks demonstrate the application scorecard model using the {{< var vm.developer >}}. They provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
-
-- **New tests in `validmind/tests`**:
-
-  - [`MutualInformation`](/tests/data_validation/MutualInformation.md): Evaluates feature relevance by calculating mutual information scores between features and the target variable.  
-  - [`ScoreBandDefaultRates`](/tests/data_validation/ScoreBandDefaultRates.md): Analyzes default rates and population distribution across credit score bands.  
-  - [`CalibrationCurve`](/tests/data_validation/CalibrationCurve.md): Assesses calibration by comparing predicted probabilities against observed frequencies.  
-  - [`ClassifierThresholdOptimization`](/tests/data_validation/ClassifierThresholdOptimization.md): Visualizes threshold optimization methods for binary classification models.  
-  - [`ModelParameters`](/tests/data_validation/ModelParameters.md): Extracts and displays model parameters for transparency and reproducibility.  
-  - [`ScoreProbabilityAlignment`](/tests/data_validation/ScoreProbabilityAlignment.md): Evaluates alignment between credit scores and predicted probabilities.  
-
-Modifications have also been made to existing tests to improve functionality and accuracy. The `TooManyZeroValues` test now includes a row count and applies a percentage threshold for zero values.
-
-The `split` function in `lending_club.py` has been enhanced to support an optional validation set, allowing for more flexible dataset splitting.
-
-A new utility function, `get_demo_test_config`, has been added to generate a default test configuration for demo purposes.
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .tc}
-[Document an application scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button}
-:::
-
-::: {.w-50-ns .tc}
-[Document an application scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button}
-:::
-
-::::
-
-<!---
-PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
-URL: https://github.com/validmind/validmind-library/pull/290
-Labels: enhancement
---->
-#### Ongoing monitoring notebook for application scorecard model
-
-We've introduced several enhancements and bug fixes to the {{ <var validmind.developer > }}, particularly focusing on credit risk scorecard models and ongoing monitoring capabilities. Key changes include:
-
-**New notebooks**: Two new notebooks for application scorecard models and ongoing monitoring provide step-by-step guides for using the {{< var validmind.developer >}} with credit risk datasets:
-
-   - `application_scorecard_ongoing_monitoring.ipynb`: Includes new metrics for data and model drift, and populates the ongoing monitoring document for the scorecard model.
-   - `application_scorecard_executive.ipynb`: documents the scorecard model with just one function, namely `lending_club.document_model()`.
-
-**Custom tests**: Introduced custom tests for scorecard models, allowing users to define and run their own tests using the ValidMind Library:
-
-   - `ScoreBandDiscriminationMetrics.py`: Evaluates discrimination metrics across different score bands.  
-
-**Ongoing monitoring enhancements**: Added new tests for ongoing monitoring of models, including:  
-
-   - [`CalibrationCurveDrift`](/tests/data_validation/CalibrationCurveDrift.md): Evaluates changes in probability calibration.  
-   - [`ClassDiscriminationDrift`](/tests/data_validation/ClassDiscriminationDrift.md): Compares classification discrimination metrics.  
-   - [`ClassImbalanceDrift`](/tests/data_validation/ClassImbalanceDrift.md): Evaluates drift in class distribution.  
-   - [`ClassificationAccuracyDrift`](/tests/data_validation/ClassificationAccuracyDrift.md): Compares classification accuracy metrics.  
-   - [`ConfusionMatrixDrift`](/tests/data_validation/ConfusionMatrixDrift.md): Compares confusion matrix metrics.  
-   - [`CumulativePredictionProbabilitiesDrift`](/tests/data_validation/CumulativePredictionProbabilitiesDrift.md): Compares cumulative prediction probability distributions.  
-   - [`FeatureDrift`](/tests/data_validation/FeatureDrift.md): Evaluates changes in feature distribution.  
-   - [`PredictionAcrossEachFeature`](/tests/data_validation/PredictionAcrossEachFeature.md): Assesses prediction distributions across features.  
-   - [`PredictionCorrelation`](/tests/data_validation/PredictionCorrelation.md): Assesses correlation changes between predictions and features.  
-   - [`PredictionProbabilitiesHistogramDrift`](/tests/data_validation/PredictionProbabilitiesHistogramDrift.md): Compares prediction probability distributions.  
-   - [`PredictionQuantilesAcrossFeatures`](/tests/data_validation/PredictionQuantilesAcrossFeatures.md): Assesses prediction distributions across features using quantiles.  
-   - [`ROCCurveDrift`](/tests/data_validation/ROCCurveDrift.md): Compares ROC curves.  
-   - [`ScoreBandsDrift`](/tests/data_validation/ScoreBandsDrift.md): Analyzes drift in score bands.  
-   - [`ScorecardHistogramDrift`](/tests/data_validation/ScorecardHistogramDrift.md): Compares score distributions.  
-   - [`TargetPredictionDistributionPlot`](/tests/data_validation/TargetPredictionDistributionPlot.md): Assesses differences in prediction distributions.  
-
-**Dataset and model enhancements**: Improved dataset loading, preprocessing, and feature engineering functions with verbosity control for cleaner output.  
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .tc}
-[Ongoing monitoring for application scorecard](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/ongoing_monitoring/application_scorecard_ongoing_monitoring.ipynb){.button}
-:::
-
-::: {.w-50-ns .tc}
-[Document an application scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb){.button}
-:::
-
-::::
 
 ## Enhancements
 
