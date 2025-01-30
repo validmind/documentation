@@ -5,62 +5,81 @@ aliases:
   - ../guide/faq-privacy.html
   - faq-data-handling.html
   - ../guide/faq-data-handling.html
+listing:
+  - id: faq-privacy
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../about/deployment/deployment-options.qmd
+    - ../about/fine-print/data-privacy-policy.qmd
+    - ../guide/model-inventory/view-model-activity.qmd
 ---
 
-## How are users added to {{< var vm.product >}}?
+{{< include _faq-editions.qmd >}}
 
-{{< var vm.product >}} provides a built-in user management interface that allows new users to be registered on the {{< var validmind.platform >}} and assigned user roles. User roles and access permissions are configured during initial onboarding. In addition, {{< var vm.product >}} also provides support for Single Sign-On (SSO) integration as part of our Enterprise and our {{< var validmind.vpv >}} (VPV) edition.
+## What model artifacts are automatically imported into {{< var vm.product >}}?
 
-## How does {{< var vm.product >}} handle end-user computing and spreadsheet models?
-
-Customers can register spreadsheet models in the model inventory and centralize tracking of the associated documentation files with the inventory metadata (roadmap item – Q3’2023). However, {{< var vm.product >}} cannot automate documentation generation for spreadsheet models.
-
-## What model artifacts are automatically imported into documentation and how are they retained?
-
-{{< var vm.product >}} stores the following artifacts in the documentation via our {{< var validmind.api >}}:
+{{< var vm.product >}} stores the following artifacts in the documentation via our {{< var validmind.api >}}:[^1]
 
 - Dataset and model metadata which allow generating documentation snippets programmatically (example: stored definition for "common logistic regression limitations" when a logistic regression model has been passed to the {{< var vm.product >}} test suite execution)
 - Quality and performance metrics collected from the dataset and model
 - Outputs from executed test suites
 - Images, plots, and visuals generated as part of extracting metrics and running tests
 
-{{< var vm.product >}} is a multi-tenant or single-tenant solution hosted on cloud providers.[^1] With multi-tenant deployments, infrastructure is shared but with strict data isolation protocols that ensure that no tenant can access another's sensitive information. For organizations requiring the highest degree of data security, {{< var vm.product >}} offers a {{< var validmind.vpv >}} (VPV) option to host the solution in a dedicated single-tenant cloud instance on the {{< var vm.product >}} cloud account. Furthermore, {{< var vm.product >}}'s data retention policy complies with the SOC 2 security standard.
+## How is data retained within {{< var vm.product >}}?
 
-## How does {{< var vm.product >}} handle large datasets? What about the confidentiality of data sent to {{< var vm.product >}}?
-
-{{< var vm.product >}} does not send datasets outside the client's environment. The {{< var vm.developer >}} executes test suites and functions locally in your environment and is not limited by dataset size.
+- {{< var vm.product >}} is a multi-tenant or single-tenant solution hosted on cloud providers.
+- With multi-tenant deployments, infrastructure is shared but with strict data isolation protocols that ensure that no tenant can access another's sensitive information. 
 
 ::: {.callout}
-For more information, refer to our [data privacy policy](/about/fine-print/data-privacy-policy.qmd).
+## For organizations requiring the highest degree of data security, {{< var vm.product >}} offers a {{< var validmind.vpv >}} (VPV) option to host the solution in a dedicated single-tenant cloud instance on the {{< var vm.product >}} cloud account. 
+
+Furthermore, {{< var vm.product >}}'s data retention policy complies with the SOC 2 security standard.
 :::
 
-## What solutions do you offer and how do you handle privacy?
+## What about the confidentiality or size of data sent to {{< var vm.product >}}?
 
-{{< var vm.product >}} is a {{< var vm.developer >}} and cloud {{< var vm.platform >}} available in multiple editions catering to different organizational needs:
+- {{< var vm.product >}} does not send datasets outside the client's environment. 
+- The {{< var validmind.developer >}} executes test suites and functions locally in your environment and is not limited by dataset size.
 
-- **Standard Edition**: Our introductory offering, providing essential features and services.
-- **Enterprise Edition**: Builds upon the Standard Edition by adding features tailored for large-scale organizations.
-- **{{< var validmind.vpv >}} (VPV)**: Our most secure offering for organizations requiring a higher level of privacy, such as financial services handling sensitive data. Includes all Enterprise Edition features but in a separate, isolated {{< var vm.product >}} environment. VPV accounts do not share resources with accounts outside the VPV.
+{{< include _faq-activity.qmd >}}
 
-Access to any edition is facilitated through AWS PrivateLink, which provides private connectivity between {{< var vm.product >}} and your on-premises networks without exposing your traffic to the public internet. To learn more, check [Configure AWS PrivateLink](/guide/configuration/configure-aws-privatelink.qmd). {{< var vm.product >}} does not send any personally identifiable information (PII) through our {{< var vm.api >}}.
+{{< include _faq-model-updates.qmd >}}
 
-## Can the tool automatically document other non-standard ETL steps or performance metrics from notebooks?
+<!-- BELOW REMOVED AFTER ANDRES CONFIRMED WE DON'T SUPPORT SPARK DATAFRAMES IN A WAY OUR USERS WOULD EXPECT - BC (Nov 27, 2024) -->
 
-Support for more complex data processing pipelines is on our roadmap, currently scheduled for Q4'2023. We are implementing connector interfaces that will allow us to extract relationships between raw data sources and final post-processed datasets for Spark and Snowflake.
+<!-- ## Can you accommodate Spark DataFrames?
 
-## How does the tool manage model changes?
+- Yes, the {{< var validmind.developer >}} can extract dataset quality metrics on Pandas DataFrame, NumPy arrays, or Spark DataFrame instances using standard metrics provided by popular open-source frameworks such as scikit-learn, statsmodels, and more.
+- Each test defines a mapping to the different supported dataset and/or model interfaces — when passing a Spark DataFrame, the {{< var vm.developer >}} will directly call native evaluation metrics provided by the SparkML API or custom ones built by the developer, such as via UDFs. -->
 
-{{< var vm.product >}} allows model developers to re-run documentation functions with the {{< var vm.developer >}} to capture changes in the model, such as changes in the number of features or hyperparameters.
+<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
 
-After a model developer has made a change in their development environment, such as to a Jupyter Notebook, they can execute the relevant {{< var vm.product >}} documentation function to update the corresponding documentation section. {{< var vm.product >}} will then automatically recreate the relevant figures and tables and update them in the online documentation.
+<!-- ## How does {{< var vm.product >}} handle end-user computing and spreadsheet models?
 
-{{< var vm.product >}} is currently working on a version history function, which will allow users to see the history of changes made to the documentation.
+Customers can register spreadsheet models in the model inventory and centralize tracking of the associated documentation files with the inventory metadata (roadmap item – Q3’2023). However, {{< var vm.product >}} cannot automate documentation generation for spreadsheet models. -->
 
-## Can you accommodate Spark DataFrames?
+<!-- ## Can the tool automatically document other non-standard ETL steps or performance metrics from notebooks?
 
-Our {{< var validmind.developer >}} can extract dataset quality metrics on Pandas DataFrame, NumPy arrays, or Spark DataFrame instances using standard metrics provided by popular open-source frameworks such as scikit-learn, statsmodels, and more.
+Support for more complex data processing pipelines is on our roadmap, currently scheduled for Q4'2023. We are implementing connector interfaces that will allow us to extract relationships between raw data sources and final post-processed datasets for Spark and Snowflake. -->
 
-Each test defines a mapping to the different supported dataset and/or model interfaces: when passing a Spark DataFrame, our {{< var vm.developer >}} will directly call native evaluation metrics provided by the SparkML API or custom ones built by the developer (such as via UDFs).
+<!-- ## Can we customize illustrations?
+
+{{< var vm.product >}} utilizes open-source libraries (such as Seaborn and Matplotlib) to generate plots and illustrations. We are working on implementing the ability for model developers to customize styling parameters for these libraries directly within the {{< var vm.developer >}}.
+
+This feature is currently scheduled for Q4 2023.
+
+Additionally, {{< var vm.product >}} is developing a feature that enables developers to create custom visualization widgets by writing JavaScript-based rendering code. -->
+
+## Learn more
+
+:::{#faq-privacy}
+:::
+
 
 <!-- FOOTNOTES -->
-[^1]: [Deployment options](/about/deployment/deployment-options.qmd)
+
+[^1]: [{{< var validmind.developer >}}](/validmind/validmind.html)

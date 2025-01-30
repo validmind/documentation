@@ -6,9 +6,9 @@ inputs:
     description: "Load the created .env file"
     required: true
 
-runs: 
+runs:
   using: "composite"
-  steps: 
+  steps:
     - name: Install python3 for Jupyter Notebooks
       shell: bash
       run: |
@@ -18,16 +18,11 @@ runs:
     - name: Install validmind for notebook execution
       shell: bash
       run: |
-        pip install validmind 
-        pip install validmind[llm] 
-        pip install fairlearn aequitas 
+        pip install validmind
+        pip install validmind[llm]
+        pip install fairlearn aequitas
         pip install shap==0.44.1
-
-    - name: Check dependencies
-      shell: bash
-      run: |
-        pip install pycairo
-        pip check
+        pip install anywidget
 
     - name: Ensure .env file is available
       shell: bash
@@ -42,9 +37,9 @@ runs:
       shell: bash
       if: ${{ steps.find_env.outcome == 'success' }}
       run: |
-          cd site 
+          cd site
           source ../${{ inputs.env_file }}
-          quarto render --profile exe-prod notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || { 
+          quarto render --profile exe-prod notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || {
           echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
           cat render_errors.log;
           exit 1;

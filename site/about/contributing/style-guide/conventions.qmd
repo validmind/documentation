@@ -1,10 +1,6 @@
 ---
 title: "Conventions"
 date: last-modified
-lightbox: true
-filters:
-  - tachyons
-  - preview
 ---
 
 A message can only make an impact when it is received, so presentation is (almost) everything.
@@ -46,7 +42,7 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 | Correct | Incorrect | 
 |------|-----|
 |   Get started with {{< var vm.product >}}  |  Get Started with {{< var vm.product >}}  |
-|  In the left sidebar, click **{{< fa cubes >}} Model Inventory**.  |  In the left sidebar, click **{{< fa cubes >}} model inventory**.  |
+|  In the left sidebar, click **{{< fa cubes >}} Inventory**.  |  In the left sidebar, click **{{< fa cubes >}} inventory**.  |
 |   [Honor the Human with {{< var vm.product >}}](https://validmind.com/honor-the-human-with-validmind/)  |  [Honor the human with {{< var vm.product >}}](https://validmind.com/honor-the-human-with-validmind/)  |
 |   `On the landing page of your model, locate the [model status]{.smallcaps} section:`   |  `On the landing page of your model, locate the MODEL STATUS section:`   |
 : **Sentence case** examples {.hover}
@@ -64,13 +60,6 @@ In general, follow sentence-style capitalization[^3] to minimize the confusion o
 ### Responsive columns
 
 To make sure our docs site works well on mobile, we use Tachyons CSS[^4] with flexbox. Quarto's default support for CSS Grid is not responsive and should not be used.
-
-Enable Tachyons CSS in the front matter with:
-
-```yaml
-filters:
-    - tachyons
-```
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -199,7 +188,7 @@ Using a markdown button also enables you to link to to the `.qmd` path instead o
 
   <!-- EMBEDDED FOOTNOTES FOR STANDARD USER GUIDES -->
   :::: {.content-visible unless-format="revealjs"}
-  1. In the left sidebar, click **{{< fa cubes >}} Model Inventory**.
+  1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
   1. Select a model by clicking on it or find your model by applying a filter or searching for it.^[[Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)]
 
@@ -209,7 +198,7 @@ Using a markdown button also enables you to link to to the `.qmd` path instead o
 
   <!-- INLINE LINKS FOR REVEALJS TRAINING -->
   :::: {.content-hidden unless-format="revealjs"}
-  1. In the left sidebar, click **{{< fa cubes >}} Model Inventory**.
+  1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
   1. Select a model by clicking on it or [find your model by applying a filter or searching for it](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models).
 
@@ -218,14 +207,14 @@ Using a markdown button also enables you to link to to the `.qmd` path instead o
   ```
   | Inline links in training | Footnotes in user guides | 
   |------|-----|
-  | ![](training_inline-links.png){fig-alt="A screenshot showing an example of inline links in training materials" .screenshot} | ![](user-guide_footenotes.png){fig-alt="A screenshot showing an example of margin footnotes in a user guide" .screenshot} |
+  | ![Example of inline links in training materials](training_inline-links.png){fig-alt="A screenshot showing an example of inline links in training materials" .screenshot group="links"} | ![Example of margin footnotes in a user guide](user-guide_footenotes.png){fig-alt="A screenshot showing an example of margin footnotes in a user guide" .screenshot group="links"} |
   : **Inline vs footnotes links** examples {.hover}
 
 Footnotes will automatically appear in the correct location in the margin, regardless of their origin or format.
 
 | Correct | Incorrect | 
 |------|-----|
-| ![](margin-footnotes_correct.png){fig-alt="A screenshot showing a correct example of footnote links automatically placed in the margin" .screenshot} | ![](inline-links_incorrect.png){fig-alt="A screenshot showing an incorrect example of supplementary links in inline instructional text" .screenshot} |
+| ![Correct example of footnote links automatically placed in the margin](margin-footnotes_correct.png){fig-alt="A screenshot showing a correct example of footnote links automatically placed in the margin" .screenshot group="footnotes"} | ![Incorrect example of supplementary links in inline instructional text](inline-links_incorrect.png){fig-alt="A screenshot showing an incorrect example of supplementary links in inline instructional text" .screenshot group="footnotes"} |
 : **Margin footnotes** examples {.hover}
 
 ### Emphasis
@@ -238,7 +227,7 @@ Use emphatic styling sparingly, in order not to overwhelm the reader with visual
 | Correct | Incorrect | 
 |------|-----|
 |   At {{< var vm.product >}}, we value **transparency and accessibility** — we aim to speak simply and effectively. (e.g. Highlighting the important concept within a sentence.)  |  **At {{< var vm.product >}}, we value transparency and accessibility — we aim to speak simply and effectively.** (e.g. Highlighting the entire sentence.)   |
-|   In the {{< var validmind.platform >}}, click **{{< fa cubes >}} Model Inventory** on the left sidebar.  | In the {{< var validmind.platform >}}, click "{{< fa cubes >}} Model Inventory" on the left sidebar. |
+|   In the {{< var validmind.platform >}}, click **{{< fa cubes >}} Inventory** on the left sidebar.  | In the {{< var validmind.platform >}}, click "{{< fa cubes >}} Inventory" on the left sidebar. |
 |   *Uncertainty* can be summed up as the difference between reality and the outputs from the model selected to approximate reality.   |  “Uncertainty” can be summed up as the difference between reality and the outputs from the model selected to approximate reality.   |
 |   “{{< var vm.product >}} is the only platform today that is purpose-built for model risk management professionals in the banking industry,” Jacobi says. | At {{< var vm.product >}}, we value "transparency and accessibility" — we aim to speak simply and effectively. |
 : **Emphasis** examples {.hover}
@@ -306,21 +295,17 @@ aliases:
 
 - Screen captures of the UI or other elements to assist users with their tasks should have the `.screenshot` class applied to them, which will add a border distinguishing the image from the rest of the text.
 - When necessary, interactive elements within a larger complex screenshot should be highlighted for ease of comprehension.
-- For screenshots with lots of detail, append the `.lightbox` class to them to allow users to enlarge them. You can also enable `.lightbox` at the page level for all images by adding the following to the YAML header:
-
-```yaml
-lightbox: true
-```
+- By default, lightbox style images to allow users to enlarge for details is set globally.[^11] 
 
 | Correct | Incorrect | 
 |------|-----|
-|   ![Verification email sent by {{< var vm.product >}}](/guide/configuration/verify-email.png){width=70% fig-alt="Screenshot of the verification email sent by ValidMind" .screenshot .lightbox}  |  ![](screenshot-incorrect.png){width=90%} | 
-|  `![Verification email sent by {{< var vm.product >}}](/guide/configuration/verify-email.png){width=70% fig-alt="Screenshot of the verification email sent by ValidMind" .screenshot .lightbox}` |  `![](/guide/configuration/verify-email.png){width=80%}`  |
+|   ![Verification email sent by {{< var vm.product >}}](/guide/configuration/verify-email.png){width=70% fig-alt="Screenshot of the verification email sent by ValidMind" .screenshot}  |  ![](screenshot-incorrect.png){width=90%} | 
+|  `![Verification email sent by {{< var vm.product >}}](/guide/configuration/verify-email.png){width=70% fig-alt="Screenshot of the verification email sent by ValidMind" .screenshot}` |  `![](/guide/configuration/verify-email.png){width=80%}`  |
 : **Screenshot** examples {.hover}
 
 #### Videos
 
-- For internally hosted videos, YouTube hosted videos and playlists, and other videos that can be hotlinked, use Quarto's built-in video embed functionality.[^11]
+- For internally hosted videos, YouTube hosted videos and playlists, and other videos that can be hotlinked, use Quarto's built-in video embed functionality.[^12]
 - For videos services that cannot be hotlinked (for example, Loom), use their provided embed code with our custom styling appended to the `iframe`. 
 
 ##### Hotlinked
@@ -336,10 +321,10 @@ lightbox: true
 ```
 
 #### Code
-- Format code in its own code block.[^12]
+- Format code in its own code block.[^13]
 - Declare the code language within the pre-formatted block to properly trigger syntax highlighting.
 
-Within a Jupyter Notebook, simply use a **code cell**[^13] rather than a markdown cell.
+Within a Jupyter Notebook, simply use a **code cell**[^14] rather than a markdown cell.
 
 > **Correct**:
 >```python
@@ -360,8 +345,8 @@ Use backticks to enclose keyboard commands, parameters, field values, and file n
 : **Backtick** examples {.hover}
 
 #### Mathematics
-- Mathematical formulas should be rendered using LaTeX formatting.[^14] 
-- On our WordPress blog posts, this is taken care of by the WP Quick LaTeX plugin.[^15]
+- Mathematical formulas should be rendered using LaTeX formatting.[^15] 
+- On our WordPress blog posts, this is taken care of by the WP Quick LaTeX plugin.[^16]
 
 | Correct | Incorrect | 
 |------|-----|
@@ -382,18 +367,18 @@ In the context of model risk management, proper nouns include specific models, l
 : **Proper noun** examples {.hover}
 
 ## Product names
-Within our documentation (`https://docs.validmind.ai/`), you are able to reference constants such as the {{< var validmind.developer >}} and {{< var validmind.platform >}} via variables.[^16]
+Within our documentation (`https://docs.validmind.ai/`), you are able to reference constants such as the {{< var validmind.developer >}} and {{< var validmind.platform >}} via variables.[^17]
 
-- Use the variables shown on the table below instead of writing out the phrases to enable consistency between guides everywhere except for image alt text or Mermaid charts.[^17]
-- If product names need to be updated, simply amend the `_variables.yml` file[^18] to see changes reflected throughout all guides. 
-- Please note that variables will not work within any of the Jupyter Notebook code samples[^19] as these are technically standalone files.
+- Use the variables shown on the table below instead of writing out the phrases to enable consistency between guides everywhere except for image alt text or Mermaid charts.[^18]
+- If product names need to be updated, simply amend the `_variables.yml` file[^19] to see changes reflected throughout all guides. 
+- Please note that variables will not work within any of the Jupyter Notebook code samples[^20] as these are technically standalone files.
 
 | Product Name | Variable Key | Description |
 |---:|---|---|
 | {{< var validmind.product >}} | `{{{< var validmind.product >}}}` | Comphrensive suite of tools with a {{< var vm.developer >}} for documenting and testing models, alongside a {{< var vm.platform >}} hosting cloud-based tools, APIs, databases, and validation engines. |
 | {{< var validmind.developer >}} |  `{{{< var validmind.developer >}}}` | Open-source library that connects to the  {{< var validmind.platform >}}. |
 | {{< var validmind.platform >}} |  `{{{< var validmind.platform >}}}` | Hosted multi-tenant architecture that includes a cloud-based web interface. |
-| {{< var validmind.api >}} | `{{{< var validmind.api >}}}` | Used to make calls to the {{< var validmind.developer >}}.[^19] |
+| {{< var validmind.api >}} | `{{{< var validmind.api >}}}` | Used to make calls to the {{< var validmind.developer >}}.[^21] |
 | {{< var vm.product >}} | `{{{< var vm.product >}}}` | Short form of {{< var validmind.product >}}. |
 | {{< var vm.developer >}} |  `{{{< var vm.developer >}}}` | Short form of {{< var validmind.developer >}}. |
 | {{< var vm.platform >}} |  `{{{< var vm.platform >}}}` | Short form of {{< var validmind.platform >}}. |
@@ -408,17 +393,17 @@ Refer also to [the glossary](/about/glossary/glossary.qmd) for extended informat
 
 ## Training materials
 
-The {{< var validmind.training >}}[^20] is delivered in Revealjs presentation format,[^21] with a slightly different set of conventions:
+The {{< var validmind.training >}}[^22] is delivered in Revealjs presentation format,[^23] with a slightly different set of conventions:
 
 - Training courses consist of:
 
-  a. A course registration page.[^22]  
-  b. The course slides themselves.[^23]
+  a. A course registration page.[^24]  
+  b. The course slides themselves.[^25]
 
-- Training materials use several supplementary style sheets to apply an alternate site theme: 
+- Training materials use several supplementary style sheets to apply an alternate site theme, applied by a directory metadata file:[^26] 
 
-  a. **{{< var validmind.training >}} pages:** `training.css`[^24]
-  b. **Course slides:** `slides.scss`[^25]
+  a. **{{< var validmind.training >}} pages:** `training.css`[^27]
+  b. **Course slides:** `slides.scss`[^28]
 
 - Each course lives in its own subdirectory within our training, where the name of the directory reflects the name of the course. 
 
@@ -430,14 +415,7 @@ The {{< var validmind.training >}}[^20] is delivered in Revealjs presentation fo
 #### Course registration
 
 - Course registration pages outline what the course covers and how to sign up for the course.
-- Registration pages make use of our custom `.preview` extension[^26] to display the tile card for the course. These previews act like links but they provide a live preview of the page linked to. 
-
-  First enable course previews in the front matter:
-
-  ```yaml
-  filters:
-    - preview
-  ```
+- Registration pages make use of our custom `.preview` extension[^29] to display the tile card for the course. These previews act like links but they provide a live preview of the page linked to. 
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -475,14 +453,7 @@ Optional
 
 #### Course slides
 
-- Training slides make use of Tachyons CSS[^27] styled with our custom `.overlay` class to provide demonstration overlays.
-
-  Enable Tachyons CSS in the front matter with:
-
-    ```yaml
-    filters:
-        - tachyons
-    ```
+- Training slides make use of Tachyons CSS[^30] styled with our custom `.overlay` class to provide demonstration overlays.
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -514,11 +485,12 @@ Try it **live** on the next page. {{< fa hand-point-right >}}
 
 ::::
 
-- Training slides use inline links only instead of footnotes,[^28] as footnotes are not visible in presentation mode.
+- Training slides use inline links only instead of footnotes,[^30] as footnotes are not visible in presentation mode.
+- To use lightbox style images within training slides,[^31] add the following to the YAML header:
 
-## What's next
-- [Voice and tone](voice-and-tone.qmd)
-
+```yaml
+lightbox: true
+```
 
 <!-- FOOTNOTES -->
 
@@ -542,38 +514,44 @@ Try it **live** on the next page. {{< fa hand-point-right >}}
 
 [^10]:  **Quarto:** [Redirects](https://quarto.org/docs/websites/website-navigation.html#redirects)
 
-[^11]:  **Quarto:** [Videos](https://quarto.org/docs/authoring/videos.html)
+[^11]:  **Quarto:** [Lightbox Figures](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
 
-[^12]:  **Quarto:** [Source Code](https://quarto.org/docs/authoring/markdown-basics.html#source-code)
+[^12]:  **Quarto:** [Videos](https://quarto.org/docs/authoring/videos.html)
 
-[^13]: **Jupyter Notebooks:** [Code Cells](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#code-cells)
+[^13]:  **Quarto:** [Source Code](https://quarto.org/docs/authoring/markdown-basics.html#source-code)
 
-[^14]: **Quarto:** [LaTeX Equations](https://quarto.org/docs/output-formats/html-basics.html#latex-equations)
+[^14]: **Jupyter Notebooks:** [Code Cells](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#code-cells)
 
-[^15]: **WordPress:** [WP QuickLaTeX](https://en-gb.wordpress.org/plugins/wp-quicklatex/)
+[^15]: **Quarto:** [LaTeX Equations](https://quarto.org/docs/output-formats/html-basics.html#latex-equations)
 
-[^16]: **Quarto:** [Variables](https://quarto.org/docs/authoring/variables.html#var)
+[^16]: **WordPress:** [WP QuickLaTeX](https://en-gb.wordpress.org/plugins/wp-quicklatex/)
 
-[^17]: [Mermaid charts](https://mermaid.js.org/)
+[^17]: **Quarto:** [Variables](https://quarto.org/docs/authoring/variables.html#var)
 
-[^18]: **{{< var vm.product >}} GitHub:** [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml)
+[^18]: [Mermaid charts](https://mermaid.js.org/)
 
-[^19]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
+[^19]: **{{< var vm.product >}} GitHub:** [`_variables.yml`](https://github.com/validmind/documentation/blob/main/site/_variables.yml)
 
-[^20]: [{{< var validmind.training >}}](/training/training.qmd)
+[^20]: [Code samples](/developer/samples-jupyter-notebooks.qmd)
 
-[^21]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
+[^21]: [{{< var validmind.training >}}](/training/training.qmd)
 
-[^22]: [Course registration](#course-registration)
+[^22]: **Quarto:** [Revealjs](https://quarto.org/docs/presentations/revealjs/)
 
-[^23]: [Course slides](#course-slides)
+[^23]: [Course registration](#course-registration)
 
-[^24]: **{{< var vm.product >}} GitHub:** [training.css](https://github.com/validmind/documentation/blob/main/site/training/assets/training.css)
+[^24]: [Course slides](#course-slides)
 
-[^25]: **{{< var vm.product >}} GitHub:** [slides.scss](https://github.com/validmind/documentation/blob/main/site/training/assets/slides.scss)
+[^25]: **Quarto:** [Directory Metadata](https://quarto.org/docs/projects/quarto-projects.html#directory-metadata)
 
-[^26]: **{{< var vm.product >}} GitHub:** [preview](https://github.com/validmind/documentation/tree/main/site/_extensions/nrichers/preview) extension
+[^26]: **{{< var vm.product >}} GitHub:** [training.css](https://github.com/validmind/documentation/blob/main/site/training/assets/training.css)
 
-[^27]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+[^27]: **{{< var vm.product >}} GitHub:** [slides.scss](https://github.com/validmind/documentation/blob/main/site/training/assets/slides.scss)
 
-[^28]: [Inline links](#inline-links)
+[^28]: **{{< var vm.product >}} GitHub:** [preview](https://github.com/validmind/documentation/tree/main/site/_extensions/nrichers/preview) extension
+
+[^29]: **GitHub:** [Tachyons Extension For Quarto](https://github.com/nareal/tachyons)
+
+[^30]: [Inline links](#inline-links)
+
+[^31]: [Screenshots](#screenshots)
