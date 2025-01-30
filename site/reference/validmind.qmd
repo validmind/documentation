@@ -32,10 +32,10 @@ After you have pasted the code snippet into your development source code and exe
 
 ## Python API
 
-### __version__
+### \_\_version\_\_
 
 ```python
-2.8.0
+2.8.4
 ```
 
 ### get_test_suite[()]{.muted}
@@ -66,7 +66,8 @@ def init(
     api_secret: Optional = None,
     api_host: Optional = None,
     model: Optional = None,
-    monitoring: bool = False):
+    monitoring: bool = False,
+    generate_descriptions: Optional = None):
 ```
 
 Initializes the API client instances and calls the /ping endpoint to ensure the provided credentials are valid and we can connect to the ValidMind API.
@@ -81,6 +82,7 @@ If the API key and secret are not provided, the client will attempt to retrieve 
 - **api_secret** str: The API secret. Defaults to None.
 - **api_host** str: The API host. Defaults to None.
 - **monitoring** bool: The ongoing monitoring flag. Defaults to False.
+- **generate_descriptions** bool: Whether to use GenAI to generate test result descriptions. Defaults to True.
 
 **Raises**
 
@@ -213,6 +215,15 @@ Preview the documentation template for the current project This function will di
 
 - **ValueError**: If the project has not been initialized
 
+### print_env[()]{.muted}
+
+```python
+def print_env(
+):
+```
+
+Prints a log of the running environment for debugging. Output includes: ValidMind Library version, operating system details, installed dependencies, and the ISO 8601 timestamp at log creation.
+
 ### reload[()]{.muted}
 
 ```python
@@ -341,3 +352,41 @@ The function may also include a docstring. This docstring will be used and logge
 **Returns**
 
 - The decorated function.
+
+### [class]{.muted} RawData
+
+```python
+class RawData():
+```
+
+Holds raw data for a test result
+
+#### RawData[()]{.muted}
+
+```python
+def __init__(    self,
+    log: bool = False,
+    kwargs = {}):
+```
+
+Create a new RawData object
+
+**Parameters**
+
+- **log** bool: If True, log the raw data to ValidMind
+- \*\***kwargs**: Keyword arguments to set as attributes e.g. `RawData(log=True, dataset_duplicates=df_duplicates)`
+
+#### inspect[()]{.muted}
+
+```python
+def inspect(    self,
+    show: bool = True):
+```
+
+Inspect the raw data
+
+#### serialize[()]{.muted}
+
+```python
+def serialize(    self):
+```
