@@ -28,8 +28,8 @@ jobs:
   
       - name: Render staging docs site
         run: |
-            cd site 
-            quarto render --profile staging &> render_errors.log || { 
+            cd site
+            quarto render --profile staging &> render_errors.log || {
             echo "Quarto render failed immediately";
             cat render_errors.log;
             exit 1;
@@ -39,11 +39,11 @@ jobs:
         id: create_env
         run: |
           touch .env
-          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env 
-          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env 
-          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env 
-          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env 
-          cat .env   
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env
+          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env
+          cat .env
 
       # Only execute the staging notebook if .env file is created
       - name: Execute staging Intro for Model Developers notebook
