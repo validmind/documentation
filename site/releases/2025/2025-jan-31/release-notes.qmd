@@ -43,7 +43,62 @@ To prevent any confusion when multiple people are working on the same dashboard,
 [Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
 :::
 
+<!---
+PR #1172: [SC-8043] Show optional prompt for Risk Assessment
+URL: https://github.com/validmind/frontend/pull/1172
+Labels: enhancement
+--->
+### Optional prompt for risk assessments
+
+Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
+
+![Optional prompt for risk assessments](risk-assessment-prompt.png){.screenshot}
+
 ### {{< var validmind.developer >}} (v2.7.7)
+
+<!---
+PR #1176: [SC-8072] Support threshold lines in unit metric plots
+URL: https://github.com/validmind/frontend/pull/1176
+Labels: enhancement
+--->
+<!---
+PR #293: [SC-8072] Support threshold lines in unit metric plots
+URL: https://github.com/validmind/validmind-library/pull/293
+Labels: enhancement
+--->
+#### Threshold lines in unit metric plots
+
+When logging metrics using `log_metric()`, you can now include a `thresholds` dictionary. For example, use `thresholds={"target": 0.8, "minimum": 0.6}` to define multiple reference levels.
+
+![Threshold lines in unit metric plots](metric-threshold-lines.png){width="949" fig-alt="A screenshot showing threshold lines in unit metric plots" .screenshot}
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns .pr4}
+These thresholds automatically appear as horizontal reference lines when you add a *Metric Over Time* block to the documentation. The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table.
+:::
+
+::: {.w-30-ns .tr}
+[Add metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd){.button}
+:::
+
+::::
+This enhancement provides immediate visual context for metric values. It helps track metric performance against multiple defined thresholds over time.
+
+Usage example:
+
+```
+log_metric(
+    key="AUC Score",
+    value=auc,
+    recorded_at=datetime(2024, 1, 1),
+    thresholds={
+        "high_risk": 0.6,
+        "medium_risk": 0.7,
+        "low_risk": 0.8,
+    }
+)
+```
 
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
@@ -74,7 +129,7 @@ A new notebook demonstrates adding context to LLM-based descriptions with exampl
 :::
 
 ::: {.w-50-ns .tr}
-[Adding Context to LLM-based Descriptions](https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/llm_descriptions_context.ipynb){.button}
+[Adding Context to LLM-based Descriptions](https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/add_context_to_llm_descriptions.ipynb){.button}
 :::
 
 ::::
@@ -253,61 +308,6 @@ Labels: enhancement
 <!-- ### Added model inventory page layout customization
 
 Added the ability to customize the layout of the model inventory -->
-
-<!---
-PR #1172: [SC-8043] Show optional prompt for Risk Assessment
-URL: https://github.com/validmind/frontend/pull/1172
-Labels: enhancement
---->
-### Optional prompt for risk assessments
-
-Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
-
-![Optional prompt for risk assessments](risk-assessment-prompt.png){.screenshot}
-
-<!---
-PR #1176: [SC-8072] Support threshold lines in unit metric plots
-URL: https://github.com/validmind/frontend/pull/1176
-Labels: enhancement
---->
-<!---
-PR #293: [SC-8072] Support threshold lines in unit metric plots
-URL: https://github.com/validmind/validmind-library/pull/293
-Labels: enhancement
---->
-### Threshold lines in unit metric plots
-
-When logging metrics using `log_metric()`, you can now include a `thresholds` dictionary. For example, use `thresholds={"target": 0.8, "minimum": 0.6}` to define multiple reference levels.
-
-![Threshold lines in unit metric plots](metric-threshold-lines.png){width="949" fig-alt="A screenshot showing threshold lines in unit metric plots" .screenshot}
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-70-ns .pr4}
-These thresholds automatically appear as horizontal reference lines when you add a *Metric Over Time* block to the documentation. The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table.
-:::
-
-::: {.w-30-ns .tr}
-[Add metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd){.button}
-:::
-
-::::
-This enhancement provides immediate visual context for metric values. It helps track metric performance against multiple defined thresholds over time.
-
-Usage example:
-
-```
-log_metric(
-    key="AUC Score",
-    value=auc,
-    recorded_at=datetime(2024, 1, 1),
-    thresholds={
-        "high_risk": 0.6,
-        "medium_risk": 0.7,
-        "low_risk": 0.8,
-    }
-)
-```
 
 <!---
 PR #1125: [SC-7628] updates to admin landing page
