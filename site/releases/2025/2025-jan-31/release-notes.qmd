@@ -17,43 +17,6 @@ We manage multiple repositories, each with its own version tags. The new version
 This change simplifies tracking changes for each {{< var vm.product >}} release and streamlines version management for you. Release frequency and the upgrade process remain unchanged.
 :::
 
-### {{< var validmind.platform >}} (v1.29.10)
-
-<!---
-PR #1161: Added basic support to prevent concurrent changes for analytics/dashb…
-URL: https://github.com/validmind/frontend/pull/1161
-Labels: enhancement
---->
-#### Edit your dashboards
-
-We’ve streamlined dashboard configuration with dedicated view and edit modes. Click **Edit Mode** to make changes, then click **Done Editing** to save and return to view mode: 
-
-![Edit mode for your dashboard](dashboard-edit-mode.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
-
-<!-- ![View mode for your dashboard](dashboard-view-mode.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
-
-To prevent any confusion when multiple people are working on the same dashboard, we've added some helpful safeguards:
-
-- If someone else makes changes while you're editing, you'll get a friendly notification to reload the page
-- The system automatically detects if you're looking at an older version of the dashboard and prompts you to get the latest updates
-
-<!-- NR TO DO Are we missing docs for Edit Mode? -->
-
-::: {.tr}
-[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
-:::
-
-<!---
-PR #1172: [SC-8043] Show optional prompt for Risk Assessment
-URL: https://github.com/validmind/frontend/pull/1172
-Labels: enhancement
---->
-#### Optional prompt for risk assessments
-
-Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
-
-![Optional prompt for risk assessments](risk-assessment-prompt.gif){.screenshot}
-
 ### {{< var validmind.developer >}} (v2.7.7)
 
 <!---
@@ -263,9 +226,143 @@ The template generation notebook draws from a number of mini-templates, should y
 
 ::::
 
+### {{< var validmind.platform >}} (v1.29.10)
+
+<!---
+PR #1161: Added basic support to prevent concurrent changes for analytics/dashb…
+URL: https://github.com/validmind/frontend/pull/1161
+Labels: enhancement
+--->
+#### Edit your dashboards
+
+We’ve streamlined dashboard configuration with dedicated view and edit modes. Click **Edit Mode** to make changes, then click **Done Editing** to save and return to view mode: 
+
+![Edit mode for your dashboard](dashboard-edit-mode.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
+
+<!-- ![View mode for your dashboard](dashboard-view-mode.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
+
+To prevent any confusion when multiple people are working on the same dashboard, we've added some helpful safeguards:
+
+- If someone else makes changes while you're editing, you'll get a friendly notification to reload the page
+- The system automatically detects if you're looking at an older version of the dashboard and prompts you to get the latest updates
+
+<!-- NR TO DO Are we missing docs for Edit Mode? -->
+
+::: {.tr}
+[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
+:::
+
+<!---
+PR #1172: [SC-8043] Show optional prompt for Risk Assessment
+URL: https://github.com/validmind/frontend/pull/1172
+Labels: enhancement
+--->
+#### Optional prompt for risk assessments
+
+Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
+
+![Optional prompt for risk assessments](risk-assessment-prompt.gif){.screenshot}
+
 ## Enhancements
 
 ### {{< var validmind.developer >}} (v2.7.7)
+
+<!---
+PR #274: [SC-7759] Exposing static descriptions in test results
+URL: https://github.com/validmind/validmind-library/pull/274
+Labels: enhancement
+--->
+#### Static descriptions in test results
+
+The `TestResult` class now exposes pre-populated test descriptions through the `doc` property, separating them from dynamically generated GenAI descriptions:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+- `result.doc` — contains the original docstring of the test.
+- `result.description` — contains the dynamically generated description.
+:::
+
+::: {.w-30-ns .tc}
+[`TestResult`](/validmind/validmind/vm_models.html#TestResult){.button target="_blank"}
+:::
+
+::::
+
+This enhancement makes it easier to distinguish between ValidMind's standard test documentation and the dynamic, context-aware descriptions generated for your specific test results. You can browse the full catalog of official test descriptions in our [test documentation](/developer/model-testing/test-descriptions.html).
+
+<!---
+PR #285: John6797/sc 7792/add raw data to validmind library tests
+URL: https://github.com/validmind/validmind-library/pull/285
+Labels: enhancement
+--->
+#### Raw data storage for tests
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+We added raw data storage across all {{< var validmind.developer >}} tests. Every test now returns a `RawData` object, allowing post-processing functions to recreate any test output. This feature enhances flexibility and customizability.
+:::
+
+::: {.w-30-ns .tc}
+[`RawData`](/validmind/validmind.html#RawData){.button target="_blank"}
+:::
+
+::::
+
+<!---
+PR #295: feat: add print_env function
+URL: https://github.com/validmind/validmind-library/pull/295
+Labels: enhancement
+--->
+#### New `print_env` function
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+We've added a new diagnostic `print_env()` utility function that displays comprehensive information about your running environment. This function is particularly useful when:
+:::
+
+::: {.w-30-ns .tc}
+[print_env()](/validmind/validmind/vm_utils.html#print_env){.button target="_blank"}
+:::
+
+::::
+- Troubleshooting issues in your code
+- Seeking support from the ValidMind team
+- Verifying your environment configuration
+
+Usage example:
+
+```python
+import validmind
+
+validmind.print_env()
+```
+
+This function outputs key details, such as Python version, installed package versions, and relevant environment variables, making it easier to diagnose issues and share your setup with others.
+
+
+### {{< var validmind.platform >}} (v1.29.10)
+
+<!---
+PR #1096: Simplifies workflow nodes and introduces zoom-based detail
+URL: https://github.com/validmind/frontend/pull/1096
+Labels: enhancement
+--->
+#### Simplified workflow nodes
+
+Workflows are now easier to read when zoomed out, helped by a larger modal window and simplified nodes:
+
+![Workflow visualization showing simplified nodes](workflow-simplified-nodes.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}  
+
+Zooming in reveals more details:
+
+![Workflow visualization in zoomed-out view](workflow-zoomed-view.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}  
+
+Hovering over a node highlights all `in` and `out` connections, making relationships clearer:
+
+![Workflow connection highlighting on hover](workflow-connection-hover.png){width="1552" fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}  
 
 <!---
 PR #1179: [SC-8104] Support configurable default models in Admin UI
@@ -333,24 +430,7 @@ Labels: enhancement
 
 Counter visualizations are now clickable -->
 
-<!---
-PR #1096: Simplifies workflow nodes and introduces zoom-based detail
-URL: https://github.com/validmind/frontend/pull/1096
-Labels: enhancement
---->
-### Simplified workflow nodes
 
-Workflows are now easier to read when zoomed out, helped by a larger modal window and simplified nodes:
-
-![Workflow visualization showing simplified nodes](workflow-simplified-nodes.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}  
-
-Zooming in reveals more details:
-
-![Workflow visualization in zoomed-out view](workflow-zoomed-view.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}  
-
-Hovering over a node highlights all `in` and `out` connections, making relationships clearer:
-
-![Workflow connection highlighting on hover](workflow-connection-hover.png){width="1552" fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}  
 
 <!---
 PR #1128: [SC-7684] admin manage users
@@ -366,79 +446,9 @@ Adding users management to admin app - list users, create user
 
 Adding admin tools with option for `RBAC` refresh -->
 
-<!---
-PR #274: [SC-7759] Exposing static descriptions in test results
-URL: https://github.com/validmind/validmind-library/pull/274
-Labels: enhancement
---->
-### Static descriptions in test results
 
-The `TestResult` class now exposes pre-populated test descriptions through the `doc` property, separating them from dynamically generated GenAI descriptions:
 
-:::: {.flex .flex-wrap .justify-around}
 
-::: {.w-70-ns}
-- `result.doc` — contains the original docstring of the test.
-- `result.description` — contains the dynamically generated description.
-:::
-
-::: {.w-30-ns .tc}
-[`TestResult`](/validmind/validmind/vm_models.html#TestResult){.button target="_blank"}
-:::
-
-::::
-
-This enhancement makes it easier to distinguish between ValidMind's standard test documentation and the dynamic, context-aware descriptions generated for your specific test results. You can browse the full catalog of official test descriptions in our [test documentation](/developer/model-testing/test-descriptions.html).
-
-<!---
-PR #285: John6797/sc 7792/add raw data to validmind library tests
-URL: https://github.com/validmind/validmind-library/pull/285
-Labels: enhancement
---->
-### Raw data storage for tests
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-70-ns}
-We added raw data storage across all {{< var validmind.developer >}} tests. Every test now returns a `RawData` object, allowing post-processing functions to recreate any test output. This feature enhances flexibility and customizability.
-:::
-
-::: {.w-30-ns .tc}
-[`RawData`](/validmind/validmind.html#RawData){.button target="_blank"}
-:::
-
-::::
-<!---
-PR #295: feat: add print_env function
-URL: https://github.com/validmind/validmind-library/pull/295
-Labels: enhancement
---->
-### New `print_env` function
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-70-ns}
-We've added a new diagnostic `print_env()` utility function that displays comprehensive information about your running environment. This function is particularly useful when:
-:::
-
-::: {.w-30-ns .tc}
-[print_env()](/validmind/validmind/vm_utils.html#print_env){.button target="_blank"}
-:::
-
-::::
-- Troubleshooting issues in your code
-- Seeking support from the ValidMind team
-- Verifying your environment configuration
-
-Usage example:
-
-```python
-import validmind
-
-validmind.print_env()
-```
-
-This function outputs key details, such as Python version, installed package versions, and relevant environment variables, making it easier to diagnose issues and share your setup with others.
 
 <!-- ## Bug fixes -->
 
