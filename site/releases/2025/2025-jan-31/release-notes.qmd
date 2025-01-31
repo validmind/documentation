@@ -18,48 +18,6 @@ This change simplifies tracking changes for each {{< var vm.product >}} release 
 :::
 
 <!---
-PR #1117: User Dashboards
-URL: https://github.com/validmind/frontend/pull/1117
-Labels: enhancement
---->
-### Custom reports and dashboards
-
-You can now create personalized views to surface the insights you want right when you log in to the ValidMind platform. With customizable reporting, your teams can tailor the format, metrics, and level of detail to each audience while maintaining consistency in the underlying data. 
-
-For instance, a chief risk officer might set up a custom _high-risk dashboard_ that combines widgets for:
-
-- High-risk (Tier 1) models, their owners, and their status
-- High-risk findings for different models and their status
-
-![Custom dashboards allow you to create personalized views](custom-dashboards.png){width="809" fig-alt="A screenshot showing two custom dashboards with table views for high-risk models and findings" .screenshot}
-
-You can add as many dashboards as you need to suit different use cases, whether it's managing model documentation and testing as a developer, tracking findings in validation reports as a developer, or monitoring analytics. 
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr4}
-For an introduction to how this feature can benefit your organization, check out our companion blog post.
-:::
-
-::: {.w-50-ns .tr}
-[Tech deep dive: Custom reports and dashboards](https://validmind.com/blog/tech-deep-dive-custom-reports-dashboards/){.button}
-:::
-
-::::
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns}
-Or, get started with customizing your dashboards and reports in our user guide.
-:::
-
-::: {.w-50-ns .tr}
-[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
-:::
-
-::::
-
-<!---
 PR #1161: Added basic support to prevent concurrent changes for analytics/dashb…
 URL: https://github.com/validmind/frontend/pull/1161
 Labels: enhancement
@@ -68,9 +26,9 @@ Labels: enhancement
 
 We’ve streamlined dashboard configuration with dedicated view and edit modes. Click **Edit Mode** to make changes, then click **Done Editing** to save and return to view mode: 
 
-![Edit mode for your dashboard](401290459-838f933f-f15a-4503-bbe7-a6514f736773.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
+![Edit mode for your dashboard](dashboard-edit-mode.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
 
-<!-- ![View mode for your dashboard](401290475-80a68ccb-2d56-417b-82d2-2d6a85766f30.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
+<!-- ![View mode for your dashboard](dashboard-view-mode.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
 
 To prevent any confusion when multiple people are working on the same dashboard, we've added some helpful safeguards:
 
@@ -133,15 +91,18 @@ We've introduced enhancements to the {{< var validmind.developer >}} that focus 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns .pr4}
-- **New notebooks**: Two Jupyter Notebooks demonstrate how to document application scorecard models using the {{< var vm.developer >}}. 
+- **New notebooks**: Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model. 
+    
+    You can choose from three different approaches: **running individual tests**, **running a full test suite**, or **using a single function** to document a model.
 
-    These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
 :::
 
 ::: {.w-50-ns .tr}
-[Document an application scorecard model (ind. tests)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button}
+[Document an application scorecard model<br>(individual tests)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button}
 
-[Document an application scorecard model (full suite)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button}
+[Document an application scorecard model<br>(full test suite)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button}
+
+[Document an application scorecard model<br>(single function)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb){.button}
 :::
 
 ::::
@@ -168,14 +129,14 @@ Labels: enhancement
 --->
 #### Ongoing monitoring notebook for application scorecard model
 
-Several enhancements to the {{< var validmind.developer >}} focus on documenting and testing credit risk scorecard models and ongoing monitoring capabilities:
+Several enhancements to the {{< var validmind.developer >}} focus on ongoing monitoring capabilities:
 
-- **New notebooks**: Two new notebooks for application scorecard models and ongoing monitoring provide step-by-step guides for using the {{< var validmind.developer >}} with credit risk datasets:
+- **New notebook**: Learn how to use ongoing monitoring with credit risk datasets in this step-by-step guide for the {{< var validmind.developer >}}.
 
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns .pl4 .pr4}
-- Use our new metrics for data and model drift, and populate the ongoing monitoring documentation for a scorecard model.
+- Use our new metrics for data and model drift, and populate the ongoing monitoring documentation [for a scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb).
 :::
 
 ::: {.w-50-ns .tr}
@@ -184,23 +145,11 @@ Several enhancements to the {{< var validmind.developer >}} focus on documenting
 
 ::::
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pl4 .pr4}
-- Document a scorecard model with just the `lending_club.document_model()` function.
-:::
-
-::: {.w-50-ns .tr}
-[Document an application scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb){.button}
-:::
-
-::::
-
 - **Custom tests**: Define and run your own tests using the {{< var vm.developer >}}:
 
    - [`ScoreBandDiscriminationMetrics.py`](https://github.com/validmind/validmind-library/blob/main/notebooks/code_samples/credit_risk/custom_tests/ScoreBandDiscriminationMetrics.py): Evaluates discrimination metrics across different score bands.  
 
-- **New tests** for ongoing monitoring of models:
+- **New tests**:
    
    - [`CalibrationCurveDrift`](/tests/ongoing_monitoring/CalibrationCurveDrift.md): Evaluates changes in probability calibration.  
    - [`ClassDiscriminationDrift`](/tests/ongoing_monitoring/ClassDiscriminationDrift.md): Compares classification discrimination metrics.  
@@ -264,8 +213,8 @@ PR #1179: [SC-8104] Support configurable default models in Admin UI
 URL: https://github.com/validmind/frontend/pull/1179
 Labels: enhancement
 --->
-<!-- NR should this be commented out? -->
-### Configurable default models
+<!-- NR Commented out as not available unless you are on self-hosted ValidMind -->
+<!-- ### Configurable default models
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -279,7 +228,7 @@ The **Populate demo models** switch is now disabled when no models are selected,
 ![Configurable default models](404439892-5d2f2ce8-aa75-40cb-8685-878eb2d013b9.png){width="827" fig-alt="A screenshot showing configurable default models for administrators" .screenshot}
 :::
 
-::::
+:::: -->
 
 <!---
 PR #1173: [SC-7551] add allow_duplicates flag to CreateInventoryModel
@@ -312,7 +261,7 @@ Labels: enhancement
 
 Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
 
-![Optional prompt for risk assessments](402640824-492758fc-2669-46c6-9c81-198e990b9efe.png){.screenshot}
+![Optional prompt for risk assessments](risk-assessment-prompt.png){.screenshot}
 
 <!---
 PR #1176: [SC-8072] Support threshold lines in unit metric plots
@@ -328,7 +277,7 @@ Labels: enhancement
 
 When logging metrics using `log_metric()`, you can now include a `thresholds` dictionary. For example, use `thresholds={"target": 0.8, "minimum": 0.6}` to define multiple reference levels.
 
-![Threshold lines in unit metric plots](403022728-81371dda-3e2c-4b53-abbe-a0caa7c0501a.png){width="949" fig-alt="A screenshot showing threshold lines in unit metric plots" .screenshot}
+![Threshold lines in unit metric plots](metric-threshold-lines.png){width="949" fig-alt="A screenshot showing threshold lines in unit metric plots" .screenshot}
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -389,15 +338,15 @@ Labels: enhancement
 
 Workflows are now easier to read when zoomed out, helped by a larger modal window and simplified nodes:
 
-![Workflow visualization showing simplified nodes](388211099-678f2ad6-8d3e-4dd1-a846-c03aeee77e3f.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}  
+![Workflow visualization showing simplified nodes](workflow-simplified-nodes.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}  
 
 Zooming in reveals more details:
 
-![Workflow visualization in zoomed-out view](388211631-995714ee-be70-4ea5-b0f6-46e1ec3294ed.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}  
+![Workflow visualization in zoomed-out view](workflow-zoomed-view.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}  
 
 Hovering over a node highlights all `in` and `out` connections, making relationships clearer:
 
-![Workflow connection highlighting on hover](388212015-b560f745-c9e9-45d9-91e8-1bae6887130b.png){width="1552" fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}  
+![Workflow connection highlighting on hover](workflow-connection-hover.png){width="1552" fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}  
 
 <!---
 PR #1128: [SC-7684] admin manage users
@@ -420,10 +369,13 @@ Labels: enhancement
 --->
 ### Static descriptions in test results
 
+The `TestResult` class now exposes pre-populated test descriptions through the `doc` property, separating them from dynamically generated GenAI descriptions:
+
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns}
-The `TestResult` class now has a `doc` property to separate static test documentation from LLM-generated descriptions:
+- `result.doc` — contains the original docstring of the test.
+- `result.description` — contains the dynamically generated description.
 :::
 
 ::: {.w-30-ns .tc}
@@ -431,10 +383,8 @@ The `TestResult` class now has a `doc` property to separate static test document
 :::
 
 ::::
-- `result.doc` contains the test’s original docstring.  
-- `result.description` provides the dynamically generated description.  
 
-This enhancement makes it easier to distinguish between the test’s purpose and its AI-generated summary.  
+This enhancement makes it easier to distinguish between ValidMind's standard test documentation and the dynamic, context-aware descriptions generated for your specific test results. You can browse the full catalog of official test descriptions in our [test documentation](/developer/model-testing/test-descriptions.html).
 
 <!---
 PR #285: John6797/sc 7792/add raw data to validmind library tests
