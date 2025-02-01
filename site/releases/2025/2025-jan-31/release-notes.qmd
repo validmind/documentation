@@ -1,11 +1,62 @@
 ---
 title: "January 31, 2025"
+listing:
+  - id: test-desc
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    # image-height: 100%
+    contents:
+      - path: https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/add_context_to_llm_descriptions.ipynb
+        title: "Add context to LLM-generated test descriptions"
+        description: "Open notebook on GitHub {{< fa chevron-right >}}"
+  - id: credit-risk
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    # image-height: 100%
+    contents:
+      - path: https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb
+        title: "Document an application scorecard model"
+        categories: ["Individual Tests"]
+        description: "Open notebook in JupyterHub {{< fa chevron-right >}}"
+      - path: https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb
+        title: "Document an application scorecard model"
+        categories: ["Full Test Suite"]
+        description: "Open notebook in JupyterHub {{< fa chevron-right >}}"
+      - path: https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb
+        title: "Document an application scorecard model"
+        categories: ["Single Function"]
+        description: "Open notebook in JupyterHub {{< fa chevron-right >}}"
+  - id: ongoing-monitoring
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    # image-height: 100%
+    contents:
+      - path: https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/ongoing_monitoring/application_scorecard_ongoing_monitoring.ipynb)
+        title: "Ongoing monitoring for application scorecard"
+        description: "Open notebook in JupyterHub {{< fa chevron-right >}}"
+  - id: e2e-template
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    # image-height: 100%
+    contents:
+      - path: https://github.com/validmind/validmind-library/blob/main/notebooks/templates/e2e-notebook.ipynb
+        title: "End-to-end notebook template generation"
+        description: "Open notebook on GitHub {{< fa chevron-right >}}"
+    fields: [title, categories, description]
 ---
+
+This release includes our new unified versioning scheme for our software, support for thresholds in unit metrics and custom context for test descriptions within the {{< var validmind.developer >}}, and many more enhancements.
+
+::: {.highlights}
 
 ## Release highlights — `25.01`
 
 ::: {.callout}
-Our documentation now follows the new **unified versioning scheme** for our software, starting with this `25.01` release. Included in this release:
+Our documentation now follows the new **unified versioning scheme** for our software, starting with this `25.01` release. Included in this release is:
 
 - **{{< var validmind.developer >}} — `v2.7.7`**
 - **{{< var validmind.platform >}} — `v1.29.10`**
@@ -35,22 +86,27 @@ When logging metrics using `log_metric()`, you can now include a `thresholds` di
 
 ![Threshold lines in unit metric plots](metric-threshold-lines.png){width="949" fig-alt="A screenshot showing threshold lines in unit metric plots" .screenshot}
 
+
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-70-ns .pr4}
-These thresholds automatically appear as horizontal reference lines when you add a *Metric Over Time* block to the documentation. The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table.
+- These thresholds automatically appear as horizontal reference lines when you add a *Metric Over Time* block to the documentation. 
+- The visualization uses a distinct color palette to differentiate between thresholds. It displays only the most recent threshold configuration and includes threshold information in both the chart legend and data table.
 :::
 
-::: {.w-30-ns .tr}
-[Add metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd){.button}
+::: {.w-30-ns .tc}
+[log_metric()](/validmind/validmind.html#log_metric){.button .button-green}
+
+[Add metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd){.button .button-green}
+
 :::
 
 ::::
-This enhancement provides immediate visual context for metric values. It helps track metric performance against multiple defined thresholds over time.
 
-Usage example:
+::: {.column-margin}
+**Usage example:**
 
-```
+```python
 log_metric(
     key="AUC Score",
     value=auc,
@@ -62,6 +118,10 @@ log_metric(
     }
 )
 ```
+
+:::
+
+This enhancement provides immediate visual context for metric values. It helps track metric performance against multiple defined thresholds over time.
 
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
@@ -81,21 +141,18 @@ Labels: enhancement
 
 You can now include contextual information to enhance LLM-based generation of test results descriptions and interpretations. This enhancement improves test result descriptions by incorporating additional context that can be specified through environment variables.
 
-:::: {.flex .flex-wrap .justify-around}
+::: {.column-margin}
+:::{#test-desc}
+:::
 
-::: {.w-50-ns .pr4}
+:::
+
 A new notebook demonstrates adding context to LLM-based descriptions with examples of:
 
 - Setting up the environment
 - Initializing datasets and models
 - Running tests with and without context
-:::
 
-::: {.w-50-ns .tr}
-[Adding Context to LLM-based Descriptions](https://github.com/validmind/validmind-library/blob/main/notebooks/code_sharing/llm/add_context_to_llm_descriptions.ipynb){.button}
-:::
-
-::::
 
 <!-- To support this feature, a new `_get_llm_global_context()` function in the `test_descriptions.py` script retrieves context from environment variables. This function validates that context is enabled and not empty before use. Additionally, the `generate_description` function has been updated to include this contextual information in the LLM description generation process. -->
 
@@ -105,27 +162,18 @@ URL: https://github.com/validmind/validmind-library/pull/280
 Labels: enhancement
 --->
 #### Document credit risk scorecard models using XGBoost
-
+<span id="credit-risk"></span>
 We've introduced enhancements to the {{< var validmind.developer >}} that focus on documenting credit risk scorecard models:
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr4}
-- **New notebooks**: Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model. 
+- **New notebooks**: Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
     
     You can choose from three different approaches: **running individual tests**, **running a full test suite**, or **using a single function** to document a model.
 
+::: {.column-margin}
+:::{#credit-risk}
 :::
 
-::: {.w-50-ns .tr}
-[Document an application scorecard model<br>(individual tests)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button}
-
-[Document an application scorecard model<br>(full test suite)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button}
-
-[Document an application scorecard model<br>(single function)](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb){.button}
 :::
-
-::::
 
 - **New tests**:
 
@@ -153,17 +201,13 @@ Several enhancements to the {{< var validmind.developer >}} focus on ongoing mon
 
 - **New notebook**: Learn how to use ongoing monitoring with credit risk datasets in this step-by-step guide for the {{< var validmind.developer >}}.
 
-:::: {.flex .flex-wrap .justify-around}
+    - Use our new metrics for data and model drift, and populate the ongoing monitoring documentation for a scorecard model.[^1]
 
-::: {.w-50-ns .pl4 .pr4}
-- Use our new metrics for data and model drift, and populate the ongoing monitoring documentation [for a scorecard model](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/credit_risk/application_scorecard_executive.ipynb).
+::: {.column-margin}
+:::{#ongoing-monitoring}
 :::
 
-::: {.w-50-ns .tr}
-[Ongoing monitoring for application scorecard](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/code_samples/ongoing_monitoring/application_scorecard_ongoing_monitoring.ipynb){.button}
 :::
-
-::::
 
 - **Custom tests**: Define and run your own tests using the {{< var vm.developer >}}:
 
@@ -208,13 +252,15 @@ The same functionality is also accessible from our [Makefile](https://github.com
 ```bash
 make notebook
 ```
-::: {.tc .pt5}
-[End-to-end notebook template generation](https://github.com/validmind/validmind-library/blob/main/notebooks/templates/e2e-notebook.ipynb){.button}
+
+:::{#e2e-template}
 :::
+
+
 :::
 
 ::: {.w-50-ns .pl4 .nt4}
-#### Mini-templates
+##### Mini-templates
 
 The template generation notebook draws from a number of mini-templates, should you need to revise them or grab the information from them manually:
 
@@ -237,6 +283,11 @@ Labels: enhancement
 
 We’ve streamlined dashboard configuration with dedicated view and edit modes. Click **Edit Mode** to make changes, then click **Done Editing** to save and return to view mode: 
 
+::: {.column-margin}
+[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button .button-green}
+
+:::
+
 ![Edit mode for your dashboard](dashboard-edit-mode.png){width="809" fig-alt="A screenshot showing edit mode" .screenshot}
 
 <!-- ![View mode for your dashboard](dashboard-view-mode.png){width="809" fig-alt="A screenshot showing view mode" .screenshot} -->
@@ -248,9 +299,7 @@ To prevent any confusion when multiple people are working on the same dashboard,
 
 <!-- NR TO DO Are we missing docs for Edit Mode? -->
 
-::: {.tr}
-[Customize your dashboard](/guide/configuration/customize-your-dashboard.qmd){.button}
-:::
+
 
 <!---
 PR #1172: [SC-8043] Show optional prompt for Risk Assessment
@@ -262,6 +311,8 @@ Labels: enhancement
 Risk assessment generation has been enhanced to allow you to provide an optional prompt before starting text generation. This feature lets you guide the output, ensuring that the generated text aligns more closely with your specific requirements.
 
 ![Optional prompt for risk assessments](risk-assessment-prompt.gif){.screenshot}
+
+:::
 
 ## Enhancements
 
@@ -289,7 +340,19 @@ The `TestResult` class now exposes pre-populated test descriptions through the `
 
 ::::
 
-This enhancement makes it easier to distinguish between ValidMind's standard test documentation and the dynamic, context-aware descriptions generated for your specific test results. You can browse the full catalog of official test descriptions in our [test documentation](/developer/model-testing/test-descriptions.html).
+This enhancement makes it easier to distinguish between ValidMind's standard test documentation and the dynamic, context-aware descriptions generated for your specific test results.
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns}
+ You can browse the full catalog of official test descriptions in our test documentation:
+:::
+
+::: {.w-30-ns .tc}
+[Test descriptions](/developer/model-testing/test-descriptions.qmd){.button target="_blank"}
+:::
+
+::::
 
 <!---
 PR #285: John6797/sc 7792/add raw data to validmind library tests
@@ -332,15 +395,19 @@ We've added a new diagnostic `print_env()` utility function that displays compre
 - Seeking support from the ValidMind team
 - Verifying your environment configuration
 
-Usage example:
+::: {.column-margin}
+
+**Usage example:**
 
 ```python
 import validmind
 
 validmind.print_env()
 ```
+:::
 
 This function outputs key details, such as Python version, installed package versions, and relevant environment variables, making it easier to diagnose issues and share your setup with others.
+
 
 
 ### {{< var validmind.platform >}} (v1.29.10)
@@ -354,15 +421,15 @@ Labels: enhancement
 
 Workflows are now easier to read when zoomed out, helped by a larger modal window and simplified nodes:
 
-![Workflow visualization showing simplified nodes](workflow-simplified-nodes.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}  
+![Workflow visualization showing simplified nodes](workflow-simplified-nodes.png){width=90% fig-alt="A screenshot showing the simplified workflow visualization with nodes" .screenshot}
 
 Zooming in reveals more details:
 
-![Workflow visualization in zoomed-out view](workflow-zoomed-view.png){width="1552" fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}  
+![Workflow visualization in zoomed-out view](workflow-zoomed-view.png){width=90% fig-alt="A screenshot showing the simplified workflow visualization" .screenshot}
 
 Hovering over a node highlights all `in` and `out` connections, making relationships clearer:
 
-![Workflow connection highlighting on hover](workflow-connection-hover.png){width="1552" fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}  
+![Workflow connection highlighting on hover](workflow-connection-hover.png){width=90% fig-alt="A screenshot showing the workflow connection highlighting" .screenshot}
 
 <!---
 PR #1179: [SC-8104] Support configurable default models in Admin UI
@@ -504,3 +571,8 @@ Labels:
 <!--- Replace this comment with your description --->
 
 {{< include /releases/_how-to-upgrade.qmd >}}
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Document credit risk scorecard models using XGBoost](#credit-risk)
