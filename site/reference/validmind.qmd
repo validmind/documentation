@@ -61,7 +61,7 @@ After you have pasted the code snippet into your development source code and exe
 
 Gets a TestSuite object for the current project or a specific test suite This function provides an interface to retrieve the TestSuite instance for the current project or a specific TestSuite instance identified by test_suite_id. The project Test Suite will contain sections for every section in the project's documentation template and these Test Suite Sections will contain all the tests associated with that template section.
 
-**Parameters**
+**Arguments**
 
 - **test_suite_id** (str): The test suite name. If not passed, then the project's test suite will be returned. Defaults to None.
 - **section** (str): The section of the documentation template from which to retrieve the test suite. This only applies if test_suite_id is None. Defaults to None.
@@ -84,7 +84,7 @@ Initializes the API client instances and calls the /ping endpoint to ensure the 
 
 If the API key and secret are not provided, the client will attempt to retrieve them from the environment variables `VM_API_KEY` and `VM_API_SECRET`.
 
-**Parameters**
+**Arguments**
 
 - **project** (str, optional): The project CUID. Alias for model. Defaults to None. [DEPRECATED]
 - **model** (str, optional): The model CUID. Defaults to None.
@@ -119,11 +119,25 @@ The following dataset types are supported:
 - Numpy ndarray
 - Torch TensorDataset
 
-Args: dataset : dataset from various python libraries model (VMModel): ValidMind model object targets (vm.vm.DatasetTargets): A list of target variables target_column (str): The name of the target column in the dataset feature_columns (list): A list of names of feature columns in the dataset extra_columns (dictionary): A dictionary containing the names of the prediction_column and group_by_columns in the dataset class_labels (dict): A list of class labels for classification problems type (str): The type of dataset (one of DATASET_TYPES) input_id (str): The input ID for the dataset (e.g. "my_dataset"). By default, this will be set to `dataset` but if you are passing this dataset as a test input using some other key than `dataset`, then you should set this to the same key.
+**Arguments**
 
-Raises: ValueError: If the dataset type is not supported
+- \*\*dataset \*\*: dataset from various python libraries
+- **model** (VMModel): ValidMind model object
+- **targets** (vm.vm.DatasetTargets): A list of target variables
+- **target_column** (str): The name of the target column in the dataset
+- **feature_columns** (list): A list of names of feature columns in the dataset
+- **extra_columns** (dictionary): A dictionary containing the names of the prediction_column and group_by_columns in the dataset
+- **class_labels** (dict): A list of class labels for classification problems
+- **type** (str): The type of dataset (one of DATASET_TYPES)
+- **input_id** (str): The input ID for the dataset (e.g. "my_dataset"). By default, this will be set to `dataset` but if you are passing this dataset as a test input using some other key than `dataset`, then you should set this to the same key.
 
-Returns: vm.vm.Dataset: A VM Dataset instance
+**Returns**
+
+- A VM Dataset instance
+
+**Raises**
+
+- **ValueError**: If the dataset type is not supported
 
 ## init_model<span class='muted'>()</span>
 
@@ -139,7 +153,7 @@ Returns: vm.vm.Dataset: A VM Dataset instance
 
 Initializes a VM Model, which can then be passed to other functions that can perform additional analysis and tests on the data. This function also ensures we are creating a model supported libraries.
 
-**Parameters**
+**Arguments**
 
 - **model**: A trained model or VMModel instance
 - **input_id** (str): The input ID for the model (e.g. "my_model"). By default, this will be set to `model` but if you are passing this model as a test input using some other key than `model`, then you should set this to the same key.
@@ -176,7 +190,7 @@ Initializes a VM Model for an R model R models must be saved to disk and the fil
 
 LogisticRegression and LinearRegression models are converted to sklearn models by extracting the coefficients and intercept from the R model. XGB models are loaded using the xgboost since xgb models saved in .json or .bin format can be loaded directly with either Python or R
 
-**Parameters**
+**Arguments**
 
 - **model_path** (str): The path to the R model saved as an RDS or XGB file
 - **model_type** (str): The type of the model (one of R_MODEL_TYPES)
@@ -199,7 +213,7 @@ LogisticRegression and LinearRegression models are converted to sklearn models b
 
 Logs a unit metric Unit metrics are key-value pairs where the key is the metric name and the value is a scalar (int or float). These key-value pairs are associated with the currently selected model (inventory model in the ValidMind Platform) and keys can be logged to over time to create a history of the metric. On the ValidMind Platform, these metrics will be used to create plots/visualizations for documentation and dashboards etc.
 
-**Parameters**
+**Arguments**
 
 - **key** (str): The metric key
 - **value** (float): The metric value
@@ -268,7 +282,7 @@ Reconnect to the ValidMind API and reload the project configuration
 
 Collect and run all the tests associated with a template This function will analyze the current project's documentation template and collect all the tests associated with it into a test suite. It will then run the test suite, log the results to the ValidMind API, and display them to the user.
 
-**Parameters**
+**Arguments**
 
 - **section** (str or list, optional): The section(s) to preview. Defaults to None.
 - **send** (bool): Whether to send the results to the ValidMind API. Defaults to True.
@@ -299,7 +313,7 @@ Collect and run all the tests associated with a template This function will anal
 
 High Level function for running a test suite This function provides a high level interface for running a test suite. A test suite is a collection of tests. This function will automatically find the correct test suite class based on the test_suite_id, initialize each of the tests, and run them.
 
-**Parameters**
+**Arguments**
 
 - **test_suite_id** (str): The test suite name (e.g. 'classifier_full_suite')
 - **config** (dict): A dictionary of parameters to pass to the tests in the test suite. Defaults to None.
@@ -330,7 +344,7 @@ High Level function for running a test suite This function provides a high level
 
 Decorator for specifying tags for a test.
 
-**Parameters**
+**Arguments**
 
 - \***tags**: The tags to apply to the test.
 
@@ -348,7 +362,7 @@ Decorator for specifying tags for a test.
 
 Decorator for specifying the task types that a test is designed for.
 
-**Parameters**
+**Arguments**
 
 - \***tasks**: The task types that the test is designed for.
 
@@ -380,7 +394,7 @@ The function should return one of the following types:
 
 The function may also include a docstring. This docstring will be used and logged as the metric's description.
 
-**Parameters**
+**Arguments**
 
 - **func**: The function to decorate
 - **test_id**: The identifier for the metric. If not provided, the function name is used.
@@ -419,7 +433,7 @@ Holds raw data for a test result
 
 Create a new RawData object
 
-**Parameters**
+**Arguments**
 
 - **log** (bool): If True, log the raw data to ValidMind
 - \*\***kwargs**: Keyword arguments to set as attributes e.g. `RawData(log=True, dataset_duplicates=df_duplicates)`
