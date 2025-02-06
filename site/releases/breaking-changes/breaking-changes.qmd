@@ -6,76 +6,8 @@ execute:
 ---
 
 ```{r, message=FALSE, warning=FALSE}
-# Load necessary libraries
-suppressPackageStartupMessages(library(DT))
-suppressPackageStartupMessages(library(readr))
-suppressPackageStartupMessages(library(stringr))
-suppressPackageStartupMessages(library(lubridate))  # Suppress messages from lubridate
-
-# Function to read CSV while preserving column names and treating all text as characters
-read_csv_data <- function(year) {
-  file_name <- paste0(year, ".csv")
-  data <- read.csv(file_name, check.names = FALSE, stringsAsFactors = FALSE)
-  return(data)
-}
-
-# Function to convert Markdown-style links to proper HTML
-convert_markdown_links <- function(data) {
-  data[] <- lapply(data, function(column) {
-    column <- str_replace_all(column, "\\[(.*?)\\]\\((.*?)\\)", "<a href='\\2'>\\1</a>")
-    return(column)
-  })
-  return(data)
-}
-
-# Function to format dates properly
-format_date <- function(date_column) {
-  parsed_dates <- ymd(date_column)
-  formatted_dates <- format(parsed_dates, "%b. %d, %Y")
-  return(formatted_dates)
-}
-
-# Function to apply date formatting if columns exist
-format_dates_in_data <- function(data) {
-  if ("Date announced" %in% names(data)) {
-    data[["Date announced"]] <- format_date(data[["Date announced"]])
-  }
-  if ("Date of removal" %in% names(data)) {
-    data[["Date of removal"]] <- paste0(
-      "<span style='color: #92130cff;'>", format_date(data[["Date of removal"]]), "</span>"
-    )
-  }
-  return(data)
-}
-
-# Function to render an interactive, filterable table
-render_table <- function(data) {
-  datatable(
-    data, 
-    options = list(
-      pageLength = 10,
-      autoWidth = TRUE,
-      dom = 'ftip',
-      dom = 'ltip',
-      initComplete = JS(
-        "function(settings, json) {
-          var column = this.api().column(1);
-          var select = $('<select><option value=\"\">All product areas</option></select>')
-            .appendTo($(column.header()).empty())
-            .on('change', function() {
-              var val = $.fn.dataTable.util.escapeRegex($(this).val());
-              column.search(val ? '^' + val + '$' : '', true, false).draw();
-            });
-          column.data().unique().sort().each(function(d, j) {
-            select.append('<option value=\"'+d+'\">'+d+'</option>')
-          });
-        }"
-      )
-    ), 
-    escape = FALSE, 
-    rownames = FALSE
-  )
-}
+# Source external helper functions
+source("breaking_changes.R")
 ```
 
 ## 2025
