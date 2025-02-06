@@ -43,21 +43,19 @@ format_dates_in_data <- function(data) {
 # Render an interactive searchable and filterable table
 render_table <- function(data) {
   datatable(
-    data, 
+    data,
     options = list(
-      pageLength = 10,
-      autoWidth = TRUE,
-      columnDefs = list(
-        list(targets = 0, width = "20%"),  # Change column widths as needed
+      pageLength = 10, # Define default length of entries
+      columnDefs = list( # Define column widths
+        list(targets = 0, width = "20%"),
         list(targets = 1, width = "20%"),
         list(targets = 2, width = "15%"),
         list(targets = 3, width = "15%"),
         list(targets = 4, width = "15%"),
         list(targets = 4, width = "15%")
       ),
-      dom = 'ftip',
-      dom = 'ltip',
-      initComplete = JS(
+      dom = 'fltpi', # Table display options: Search/filter, length menu, the table istself, pagination, table info
+      initComplete = JS( # Product area drop-down filter using JavaScript
         "function(settings, json) {
           var column = this.api().column(1);
           var select = $('<select><option value=\"\">All product areas</option></select>')
@@ -71,8 +69,8 @@ render_table <- function(data) {
           });
         }"
       )
-    ), 
-    escape = FALSE, 
-    rownames = FALSE
+    ),
+    escape = FALSE, # Allow HTML rendering
+    rownames = FALSE # Disable row numbering
   )
 }
