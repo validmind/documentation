@@ -3,25 +3,75 @@ title: "Breaking changes"
 date: last-modified
 execute:
   echo: false
-tbl-cap-location: bottom
 ---
 
-```{r}
-# Load the DT package
-library(DT)
+## 2024
 
-# Create a sample data table
+```{r, message=FALSE, warning=FALSE}
+# Load necessary libraries
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(lubridate))  # Suppress messages from lubridate
+
+# Read CSV while preserving column names and treating all text as characters
+my_data <- read.csv("2024.csv", check.names = FALSE, stringsAsFactors = FALSE)
+
+# Convert Markdown-style links to proper HTML
+my_data[] <- lapply(my_data, function(column) {
+  column <- str_replace_all(column, "\\[(.*?)\\]\\((.*?)\\)", "<a href='\\2'>\\1</a>") # Convert links
+  return(column)
+})
+
+# Function to format dates properly (parsing from "YYYY-MM-DD")
+format_date <- function(date_column) {
+  parsed_dates <- ymd(date_column)  # Convert ISO 8601 format to Date object
+  formatted_dates <- format(parsed_dates, "%b. %d, %Y") # Format as "Jan. 26, 2024"
+  return(formatted_dates)
+}
+
+# Apply date formatting if columns exist
+if ("Date announced" %in% names(my_data)) {
+  my_data[["Date announced"]] <- format_date(my_data[["Date announced"]])
+}
+if ("Date of removal" %in% names(my_data)) {
+  my_data[["Date of removal"]] <- paste0(
+    "<span style='color: #92130cff;'>", format_date(my_data[["Date of removal"]]), "</span>"
+  )
+}
+
+# Render the interactive, filterable table
 datatable(
-  mtcars,
-  options = list(pageLength = 5, autoWidth = TRUE),
-  filter = "top"
+  my_data, 
+  options = list(
+    pageLength = 10, 
+    autoWidth = TRUE,
+    columnDefs = list(
+      list(targets = 0, width = "30%"),  # Change column widths as needed
+      list(targets = 1, width = "20%"),
+      list(targets = 2, width = "15%"),
+      list(targets = 3, width = "10%"),
+      list(targets = 4, width = "10%"),
+      list(targets = 4, width = "15%")
+    ),
+    dom = 'ltip',  # Show search box and filtering only
+    initComplete = JS(
+      "function(settings, json) {
+        var column = this.api().column(1);  // Corrected index for 'Product area' (2nd column, so index 1)
+        var select = $('<select><option value=\"\">Product area</option></select>')
+          .appendTo($(column.header()).empty())
+          .on('change', function() {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            column.search(val ? '^' + val + '$' : '', true, false).draw();
+          });
+        column.data().unique().sort().each(function(d, j) {
+          select.append('<option value=\"'+d+'\">'+d+'</option>')
+        });
+      }"
+    )
+  ), 
+  escape = FALSE,  # Allow HTML rendering
+  rownames = FALSE  # This removes the numbering column!
+
 )
 ```
-
-### 2024
-
-| Change | Product area | Date announced | Blog post | Date of removal |
-|---|---|---|---|---|---|
-| Standard inputs are deprecated | {{< var validmind.developer >}} | [Jan 26, 2024](/releases/2024/2024-jan-26/highlights.qmd#standard-inputs-are-deprecated) | n/a | [Jan 26, 2024]{.red} |
-| Removed deprecated Python Library API methods | {{< var validmind.developer >}} | [Jan 26, 2024](/releases/2024/2024-jan-26/highlights.qmd#removed-deprecated-methods)  | n/a | [Jan 26, 2024]{.red} |
-: **2024** breaking changes {.hover tbl-colwidths="[25,20,15,25,15]"}
