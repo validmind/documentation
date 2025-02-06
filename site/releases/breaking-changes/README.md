@@ -1,4 +1,4 @@
-# Breaking changes
+# Breaking changes and deprecations
 
 ## Before you begin
 
@@ -6,15 +6,15 @@
 
 ### Install R dependencies
 
-## Add a year of breaking changes
+## Add a year 
 
 ### Create the yearly CSV
 
 ### Insert CSV as table
 
-## Add a breaking change
+## Add an entry
 
-### Create breaking change collateral
+### Create collateral
 
-### Enter a breaking change entry
+### Enter an entry
 

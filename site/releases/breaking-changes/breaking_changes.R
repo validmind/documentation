@@ -46,14 +46,6 @@ render_table <- function(data) {
     data,
     options = list(
       pageLength = 10, # Define default length of entries
-      columnDefs = list( # Define column widths
-        list(targets = 0, width = "20%"),
-        list(targets = 1, width = "20%"),
-        list(targets = 2, width = "15%"),
-        list(targets = 3, width = "15%"),
-        list(targets = 4, width = "15%"),
-        list(targets = 4, width = "15%")
-      ),
       dom = 'fltpi', # Table display options: Search/filter, length menu, the table istself, pagination, table info
       initComplete = JS( # Product area drop-down filter using JavaScript
         "function(settings, json) {
