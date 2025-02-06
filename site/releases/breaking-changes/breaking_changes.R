@@ -1,17 +1,17 @@
-# Load necessary libraries
+# Load necessary libraries with output messages supressed
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(stringr))
-suppressPackageStartupMessages(library(lubridate))  # Suppress messages from lubridate
+suppressPackageStartupMessages(library(lubridate))
 
-# Function to read CSV while preserving column names and treating all text as characters
+# Read CSV while preserving column names and treating all text as characters
 read_csv_data <- function(year) {
   file_name <- paste0(year, ".csv")
   data <- read.csv(file_name, check.names = FALSE, stringsAsFactors = FALSE)
   return(data)
 }
 
-# Function to convert Markdown-style links to proper HTML
+# Cnvert Markdown-style links to proper HTML
 convert_markdown_links <- function(data) {
   data[] <- lapply(data, function(column) {
     column <- str_replace_all(column, "\\[(.*?)\\]\\((.*?)\\)", "<a href='\\2'>\\1</a>")
@@ -20,14 +20,14 @@ convert_markdown_links <- function(data) {
   return(data)
 }
 
-# Function to format dates properly
+# Reformat ISO dates to Mon DD, YYYY
 format_date <- function(date_column) {
   parsed_dates <- ymd(date_column)
-  formatted_dates <- format(parsed_dates, "%b. %d, %Y")
+  formatted_dates <- format(parsed_dates, "%b %d, %Y")
   return(formatted_dates)
 }
 
-# Function to apply date formatting if columns exist
+# Apply date formatting to `Date announced` and `Date of removal` columns
 format_dates_in_data <- function(data) {
   if ("Date announced" %in% names(data)) {
     data[["Date announced"]] <- format_date(data[["Date announced"]])
@@ -40,13 +40,21 @@ format_dates_in_data <- function(data) {
   return(data)
 }
 
-# Function to render an interactive, filterable table
+# Render an interactive searchable and filterable table
 render_table <- function(data) {
   datatable(
     data, 
     options = list(
       pageLength = 10,
       autoWidth = TRUE,
+      columnDefs = list(
+        list(targets = 0, width = "20%"),  # Change column widths as needed
+        list(targets = 1, width = "20%"),
+        list(targets = 2, width = "15%"),
+        list(targets = 3, width = "15%"),
+        list(targets = 4, width = "15%"),
+        list(targets = 4, width = "15%")
+      ),
       dom = 'ftip',
       dom = 'ltip',
       initComplete = JS(
