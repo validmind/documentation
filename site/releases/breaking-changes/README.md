@@ -26,7 +26,8 @@ These are the packages used to generate cool interactive tables from the yearly 
 
 - **[DataTables](https://rstudio.github.io/DT/)** — Displays a R data object as an HTML table.
 - **[readr](https://readr.tidyverse.org/)** — Parses the yearly `.csv` files for the table.
-- **[lubridate](https://lubridate.tidyverse.org/)** — Parses and reformats the ISO 8601 date in the CSV into the Mon DD, YYYY format in the output.
+- **[stringr](https://readr.tidyverse.org/)** — Parses markdown links in the `.csv` and turns them into HTML for the output table so they can be displayed properly.
+- **[lubridate](https://lubridate.tidyverse.org/)** — Parses and reformats the ISO 8601 date in the CSV into the Mon DD, YYYY format in the output table.
 
 ## Creating entries
 
