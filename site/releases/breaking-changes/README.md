@@ -72,22 +72,17 @@ You'll need the links for the release notes and any blog posts associated with t
 
 Open up the `.csv` for the year you want to update and create a new entry under the header row with the following information:
 
-| Change | Product area | Version | Type | Date announced | Release notes | Blog post | Date of removal |
-|---|---|---|---|---|---|---|---|
-| Name of the feature being broken or deprecated | Variable for the ValidMind Library or ValidMind Platform | The associated library or platform version attached to the announcement prefaced by a `v` (Linked to release tags) | Whether it's a breaking change or deprecation | ISO 8601 date of announcement | Markdown format **HTML** link to the associated release notes enclosed by `""` | Markdown format link to the associated blog post enclosed by `""` | ISO 8601 date of removal |
-
 | Column name | Content | Example |
 |---|---|---|
-| | |
-| | |
-| | |
-| | |
-| | |
-| | |
-| | |
-| | |
+| Change | Name of the feature being broken or deprecated | `Standard inputs are deprecated` |
+| Product area | Applicable variable for the ValidMind Library or ValidMind Platform | `{{< var validmind.developer >}} `|
+| Version | Associated library or platform version attached to the announcement prefaced by a `v` (Linked to release tags) | `v1.25.3` |
+| Type | Whether it's a breaking change or deprecation | `Deprecation` |
+| Date announced | ISO 8601 date of announcement | `2024-01-26` |
+| Release notes | Markdown format **HTML** link to the associated release notes enclosed by `""` | `"[Read](/releases/2024/2024-jan-26/highlights.html#standard-inputs-are-deprecated)"` |
+| Blog post | Markdown format link to the associated blog post enclosed by `""` | `"[Read](https://validmind.com/blog/)"` |
+| Date of removal | ISO 8601 date of removal | `2024-01-26` |
 
-ValidMind Library deprecation,{{< var validmind.developer >}},v00.0,Deprecation,YYYY-MM-DD,"[Read](ur.html)",n/a,YYYY-MM-DD
 
 > You can refer to the [example `.csv`](example.csv) for formatting guidance.
 
