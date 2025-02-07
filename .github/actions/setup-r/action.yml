@@ -6,12 +6,20 @@ runs:
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
-        r-version: '4.3' # Use the required R version
+        r-version: '4.3'
+
+    - name: Cache R packages
+      uses: actions/cache@v3
+      with:
+        path: ${{ runner.os == 'Linux' && '/home/runner/work/_temp/Library' || runner.os == 'macOS' && '~/Library/R/4.3/library' }}
+        key: r-packages-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION', '**/renv.lock') }}
+        restore-keys: |
+          r-packages-${{ runner.os }}-
 
     - name: Install R packages
       shell: bash
       run: |
-        Rscript -e 'install.packages(c("DT", "readr", "stringr", "lubridate"), repos="https://cran.rstudio.com/")'
+        Rscript -e 'install.packages(c("DT", "readr", "lubridate"), repos="https://cran.rstudio.com/")'
 
     - name: Verify R installation
       shell: bash

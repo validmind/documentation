@@ -41,6 +41,9 @@ Make a copy of `~/releases/breaking-changes/year.csv` in the `~/releases/breakin
 
 > `~/releases/breaking-changes/year.csv` > `~/releases/breaking-changes/history/2025.csv`
 
+> [!CAUTION]
+> Due to the way DataTables processes the input, there needs to be an empty row/line break at the end of the sheet.
+
 #### Insert CSV as table
 
 1. In `~/releases/breaking-changes/breaking-changes.qmd` under `<!-- CURRENT YEAR START -->`, insert the new year `h3` header. For example:
@@ -84,6 +87,8 @@ Open up the `.csv` for the year you want to update and create a new entry under 
 | Blog post | Markdown format link to the associated blog post enclosed by `""` | `"[Read](https://validmind.com/blog/)"` |
 | Date of removal | ISO 8601 date of removal | `2024-01-26` |
 
-
-> You can refer to the [example `.csv`](example.csv) for formatting guidance.
+> [!NOTE]
+> You can refer to the **[example `.csv`](example.csv)** for formatting guidance.
+>
+> If you're using VS Code, [Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer) is a great extension to make editing `.csv` files more accessible.
 
