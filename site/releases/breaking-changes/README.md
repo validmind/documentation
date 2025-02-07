@@ -66,5 +66,28 @@ Make a copy of `~/releases/breaking-changes/year.csv` in the `~/releases/breakin
 
 #### Create collateral
 
+You'll need the links for the release notes and any blog posts associated with the breaking change or deprecation to include in the table, so make sure those are published that first unless you want to fill them in at a later date.
+
 #### Enter an entry
+
+Open up the `.csv` for the year you want to update and create a new entry under the header row with the following information:
+
+| Change | Product area | Version | Type | Date announced | Release notes | Blog post | Date of removal |
+|---|---|---|---|---|---|---|---|
+| Name of the feature being broken or deprecated | Variable for the ValidMind Library or ValidMind Platform | The associated library or platform version attached to the announcement prefaced by a `v` (Linked to release tags) | Whether it's a breaking change or deprecation | ISO 8601 date of announcement | Markdown format **HTML** link to the associated release notes enclosed by `""` | Markdown format link to the associated blog post enclosed by `""` | ISO 8601 date of removal |
+
+| Column name | Content | Example |
+|---|---|---|
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
+
+ValidMind Library deprecation,{{< var validmind.developer >}},v00.0,Deprecation,YYYY-MM-DD,"[Read](ur.html)",n/a,YYYY-MM-DD
+
+> You can refer to the [example `.csv`](example.csv) for formatting guidance.
 
