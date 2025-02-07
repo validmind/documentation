@@ -1,6 +1,6 @@
 # Breaking changes and deprecations
 
-This guide walks you through how to add a breaking change or deprecation to our `releases/breaking-changes/breaking-changes.qmd` history.
+This guide walks you through how to add a breaking change or deprecation to our `~/releases/breaking-changes/breaking-changes.qmd` history.
 
 ## Before you begin
 
@@ -32,9 +32,35 @@ These are the packages used to generate cool interactive tables from the yearly 
 
 ### Add a year
 
+If you're adding the first entry for that year, you'll need to add that year to the history section first:
+
 #### Create the yearly CSV
 
+Make a copy of `~/releases/breaking-changes/year.csv` in the `~/releases/breaking-changes/history/` directory. For example:
+
+> `~/releases/breaking-changes/year.csv` > `~/releases/breaking-changes/history/2025.csv`
+
 #### Insert CSV as table
+
+1. In `~/releases/breaking-changes/breaking-changes.qmd` under `<!-- CURRENT YEAR START -->`, insert the new year `h3` header. For example:
+
+    ```markdown
+    ### 2025
+    ```
+
+2. Then under that header, call the functions to display the interactive table for that year under a fenced `{r}` code block. For example:
+
+    ```R
+        ```{r}
+        ## Render 2025.csv
+        my_data_2025 <- read_csv_data(2025)
+        my_data_2025 <- convert_markdown_links(my_data_2025)
+        my_data_2025 <- format_dates_in_data(my_data_2025)
+        render_table(my_data_2025)
+        ```
+    ```
+
+    Replace the year with the actual year you're intending to display.
 
 ### Add an entry
 
