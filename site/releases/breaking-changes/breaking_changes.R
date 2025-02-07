@@ -27,14 +27,14 @@ format_date <- function(date_column) {
   return(formatted_dates)
 }
 
-# Apply date formatting to `Date announced` and `Date of removal` columns
+# Apply date formatting to `Date announced` and `Date effective` columns
 format_dates_in_data <- function(data) {
   if ("Date announced" %in% names(data)) {
     data[["Date announced"]] <- format_date(data[["Date announced"]])
   }
-  if ("Date of removal" %in% names(data)) {
-    data[["Date of removal"]] <- paste0(
-      "<span style='color: #92130cff;'>", format_date(data[["Date of removal"]]), "</span>"
+  if ("Date effective" %in% names(data)) {
+    data[["Date effective"]] <- paste0(
+      "<span style='color: #92130cff;'>", format_date(data[["Date effective"]]), "</span>"
     )
   }
   return(data)

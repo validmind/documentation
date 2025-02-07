@@ -86,7 +86,7 @@ Open up the `.csv` for the year you want to update and create a new entry under 
 | Date announced | ISO 8601 date of announcement | `2024-01-26` |
 | Release notes | Markdown format **HTML** link to the associated release notes enclosed by `""` | `"[Read](/releases/2024/2024-jan-26/highlights.html#standard-inputs-are-deprecated)"` |
 | Blog post | Markdown format link to the associated blog post enclosed by `""` | `"[Read](https://validmind.com/blog/)"` |
-| Date of removal | ISO 8601 date of removal | `2024-01-26` |
+| Date effective | ISO 8601 date of feature removal/deprecation | `2024-01-26` |
 
 > [!NOTE]
 > You can refer to the **[example `.csv`](example.csv)** for formatting guidance.
