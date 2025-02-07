@@ -49,16 +49,19 @@ render_table <- function(data) {
       dom = 'fltpi', # Table display options: Search/filter, length menu, the table istself, pagination, table info
       initComplete = JS( # Product area drop-down filter using JavaScript
         "function(settings, json) {
-          var column = this.api().column(1);
-          var select = $('<select><option value=\"\">All product areas</option></select>')
-            .appendTo($(column.header()).empty())
-            .on('change', function() {
-              var val = $.fn.dataTable.util.escapeRegex($(this).val());
-              column.search(val ? '^' + val + '$' : '', true, false).draw();
+          [1, 2, 3].forEach(function(index) {
+            var column = this.api().column(index);
+            var header = $(column.header()); // Keep original header text
+            var select = $('<br><select><option value=\"\">All</option></select>')
+              .appendTo(header) // Append instead of replacing
+              .on('change', function() {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                column.search(val ? '^' + val + '$' : '', true, false).draw();
+              });
+            column.data().unique().sort().each(function(d, j) {
+              select.append('<option value=\"'+d+'\">'+d+'</option>')
             });
-          column.data().unique().sort().each(function(d, j) {
-            select.append('<option value=\"'+d+'\">'+d+'</option>')
-          });
+          }.bind(this));
         }"
       )
     ),
