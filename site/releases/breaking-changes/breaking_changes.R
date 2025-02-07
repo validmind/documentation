@@ -6,7 +6,7 @@ suppressPackageStartupMessages(library(lubridate))
 
 # Read CSV while preserving column names and treating all text as characters
 read_csv_data <- function(year) {
-  file_name <- paste0(year, ".csv")
+  file_name <- paste0("history/", year, ".csv")
   data <- read.csv(file_name, check.names = FALSE, stringsAsFactors = FALSE)
   return(data)
 }
