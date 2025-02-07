@@ -1,6 +1,6 @@
 # Breaking changes and deprecations
 
-This guide walks you through how to add a breaking change or deprecation to our `~/releases/breaking-changes/breaking-changes.qmd` history.
+This guide walks you through how to add a breaking change or deprecation to our [~/releases/breaking-changes/breaking-changes.qmd](breaking-changes.qmd) history.
 
 ## Before you begin
 
@@ -8,9 +8,9 @@ In order to get Quarto display the neat interactive table in our HTML output, yo
 
 ### Install R
 
-- **Download and install R** from the Comprehensive R Archive Network: [CRAN](https://cran.r-project.org/index.html)
+1. **Download and install R** from the Comprehensive R Archive Network: [CRAN](https://cran.r-project.org/index.html)
     - If you're using VS Code, you may also want to install the following extensions: [R](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r), [R Extension Pack](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r-pack)
-- **Open up an R terminal.** In VS Code you can press `CTRL/CMD + SHIFT + P` to open up the command palette, then type in and select `R: Create R Terminal`.
+2. **Open up an R terminal.** In VS Code you can press `CTRL/CMD + SHIFT + P` to open up the command palette, then type in and select `R: Create R Terminal`.
 
 ### Install R dependencies
 
@@ -19,6 +19,7 @@ In the R terminal, run:
 ```bash
 install.packages("DT")
 install.packages("readr")
+install.packages("stringr")
 install.packages("lubridate")
 ```
 
