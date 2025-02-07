@@ -53,10 +53,10 @@ Make a copy of `~/releases/breaking-changes/year.csv` in the `~/releases/breakin
     ### 2025
     ```
 
-2. Then under that header, call the functions to display the interactive table for that year under a fenced `{r}` code block. For example:
+2. Then under that header, call the functions to display the interactive table for that year under a named and fenced `{r}` code block. For example:
 
     ```R
-        ```{r}
+        ```{r 2025}
         ## Render 2025.csv
         my_data_2025 <- read_csv_data(2025)
         my_data_2025 <- convert_markdown_links(my_data_2025)
