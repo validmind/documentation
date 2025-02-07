@@ -47,7 +47,7 @@ render_table <- function(data) {
     options = list(
       pageLength = 10, # Define default length of entries
       dom = 'fltpi', # Table display options: Search/filter, length menu, the table istself, pagination, table info
-      initComplete = JS( # Product area drop-down filter using JavaScript
+      initComplete = JS( # Filter `Product area`, `Version`, & `Type` using JavaScript
         "function(settings, json) {
           [1, 2, 3].forEach(function(index) {
             var column = this.api().column(index);
