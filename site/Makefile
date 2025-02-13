@@ -1,7 +1,8 @@
 # Define source and destination directories
-SRC_DIR := _source/validmind-library
+# SRC_DIR := _source/validmind-library
+SRC_DIR := ../../validmind-library
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := _site/validmind
+DEST_DIR_PYTHON := reference
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PROFILE := exe-demo
@@ -61,15 +62,14 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
-		echo "\nUpdating Python documentation ..."; \
-		rm -f python-docs.zip; \
-		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip ./* > /dev/null ); \
-	fi; \
-	echo "Copying Python documentation into docs site ..."; \
-	rm -rf $(DEST_DIR_PYTHON); \
-	mkdir -p $(DEST_DIR_PYTHON); \
-	unzip python-docs.zip -d $(DEST_DIR_PYTHON) > /dev/null;
+	@if [ -d "$(SRC_DIR)/docs/validmind" ]; then \
+		echo "\nUpdating Python source ..."; \
+		rm -rf $(DEST_DIR_PYTHON); \
+		mkdir -p $(DEST_DIR_PYTHON); \
+		cp -r $(SRC_DIR)/docs/validmind/. $(DEST_DIR_PYTHON)/validmind; \
+		cp -r $(SRC_DIR)/docs/validmind.qmd $(DEST_DIR_PYTHON); \
+		cp $(SRC_DIR)/docs/_sidebar.yml $(DEST_DIR_PYTHON); \
+	fi
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
