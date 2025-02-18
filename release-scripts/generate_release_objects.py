@@ -338,6 +338,7 @@ def setup_openai_api(env_location):
 label_to_category = {
     "highlight": "## Release highlights",
     "enhancement": "## Enhancements",
+    "breaking-change": "## Breaking changes",
     "deprecation": "## Deprecations",
     "bug": "## Bug fixes",
     "documentation": "## Documentation"
@@ -900,7 +901,7 @@ def main():
         setup_openai_api(env_location)
         print()
 
-        label_hierarchy = ["highlight", "enhancement", "deprecation", "bug", "documentation"]
+        label_hierarchy = ["highlight", "enhancement", "breaking-change", "deprecation", "bug", "documentation"]
         display_list(label_hierarchy)
         print()
 
