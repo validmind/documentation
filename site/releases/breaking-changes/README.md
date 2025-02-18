@@ -71,7 +71,7 @@ Make a copy of `~/releases/breaking-changes/year.csv` in the `~/releases/breakin
 
 #### Create collateral
 
-You'll need the links for the release notes and any blog posts associated with the breaking change or deprecation to include in the table, so make sure those are published that first unless you want to fill them in at a later date.
+You'll need the links for the release notes associated with the breaking change or deprecation to include in the table, so make sure those are published that first unless you want to fill them in at a later date.
 
 #### Enter an entry
 
@@ -85,7 +85,6 @@ Open up the `.csv` for the year you want to update and create a new entry under 
 | Type | Whether it's a breaking change or deprecation | `Deprecation` |
 | Date announced | ISO 8601 date of announcement | `2024-01-26` |
 | Release notes | Markdown format **HTML** link to the associated release notes enclosed by `""` | `"[Read](/releases/2024/2024-jan-26/highlights.html#standard-inputs-are-deprecated)"` |
-| Blog post | Markdown format link to the associated blog post enclosed by `""` | `"[Read](https://validmind.com/blog/)"` |
 | Date effective | ISO 8601 date of feature removal/deprecation | `2024-01-26` |
 
 > [!NOTE]
