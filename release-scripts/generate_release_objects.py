@@ -346,6 +346,7 @@ label_to_category = {
 categories = { 
     "highlight": [],
     "enhancement": [],
+    "breaking-change": [],
     "deprecation": [],
     "bug": [],
     "documentation": []
