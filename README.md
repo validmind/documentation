@@ -24,6 +24,12 @@ You need:
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
+### Additional dependencies
+
+Some interactive tables, such as our breaking changes and dependency history rely you have R and some R packages installed in order for you to be able to preview or render certain pages of the docs site locally.
+
+**Refer to the [Breaking changes and deprecations](site/releases/breaking-changes/README.md) guide** for more information on how to install R and set up these tables.
+
 ## How to contribute
 
 > [!IMPORTANT]

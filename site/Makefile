@@ -89,6 +89,11 @@ docs-site: get-source
 	quarto render --profile production
 	@$(MAKE) execute PROFILE=exe-prod
 
+# Get all source files
+docs-site-lite: get-source
+	@echo "\nRendering the static HTML site ..."
+	quarto render --profile production
+
 # Deployment to https://docs-demo.vm.validmind.ai/
 deploy-demo:
 	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
@@ -151,7 +156,7 @@ yearly-releases:
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
-docker-build: docs-site
+docker-build: docs-site-lite
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
