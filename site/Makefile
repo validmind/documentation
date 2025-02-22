@@ -2,7 +2,7 @@
 BRANCH ?= main
 SRC_DIR := _source/validmind-library
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := reference
+DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PROFILE := exe-demo
