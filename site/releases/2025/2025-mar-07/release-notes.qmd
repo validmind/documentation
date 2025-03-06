@@ -1,0 +1,164 @@
+---
+title: "March 7, 2025"
+listing:
+  - id: academy
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    # image-height: 100%
+    contents:
+      - path: ../../../training/training.qmd
+        title: "{{< var validmind.training >}} {{< fa chevron-right >}}"
+        description: "Our training modules are interactive. They combine instructional content with our live product and are easy to use."
+    fields: [title, description]
+---
+
+This release focuses on quality of life improvements for our users: {{< var validmind.training >}} training journeys, transparent history for breaking changes and deprecations, and additional validation report configuration options in the {{< var validmind.platform >}}.
+
+::: {.highlights}
+
+## Release highlights — `25.02`
+
+::: {.callout}
+Our documentation now follows the new **unified versioning scheme** for our software as of our [`25.01` release on January 31, 2025](/releases/2025/2025-jan-31/release-notes.qmd).
+:::
+
+### Documentation
+
+<!---
+PR #649: Define next iteration of training content
+URL: https://github.com/validmind/documentation/pull/649
+Labels: documentation
+--->
+#### A guided {{< var validmind.training >}} experience
+
+Wondering you can get started with {{< var vm.product >}}? Check out our free training material, now with an upgraded experience!
+
+- We've added a training overview, learning paths, and a sample training plan to help you navigate your training journey.
+- We've also introduced an frequently asked questions section mapping common questions to relevant learning paths.
+
+::: {.column-margin}
+:::{#academy}
+:::
+
+:::
+
+<!---
+PR #650: Part 1 — +"Breaking changes and deprecation" page under releases to support the new processes
+URL: https://github.com/validmind/documentation/pull/650
+Labels: documentation
+--->
+#### Breaking changes and deprecation history
+
+We've introduced an interactive historical record of breaking changes and deprecations to the {{< var validmind.product >}} to better inform users about important updates to our product. You can review this history under our Releases section.
+
+- In addition to announcement and planned obsolescence dates, this history provides easy access to any relevant messaging associated with the change, such as version release notes and blog posts.
+- These histories grouped by calendar year are searchable and can be filtered by product area ({{< var validmind.developer >}}, {{< var validmind.platform >}}), associated versioning, and the type of change.
+
+::: {.column-margin}
+[Breaking changes & deprecations](/releases/breaking-changes/breaking-changes.qmd){.button .button-green target="_blank"}
+
+:::
+
+:::
+
+## Enhancements
+
+### {{< var validmind.platform >}} (v1.29.20)
+
+<!---
+PR #1199: Support additional export options for validation report
+URL: https://github.com/validmind/frontend/pull/1199
+Labels: enhancement
+--->
+#### Additional validation report export options
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-70-ns .pr4}
+We now support additional configuration when exporting validation reports, allowing you to choose what gets included in your generated document.
+
+::: {.tc}
+
+:::
+
+:::
+
+::: {.w-30-ns}
+[Export documentation](/guide/model-documentation/export-documentation.qmd#export-validation-report){.button}
+:::
+
+::::
+
+![New Export Validation Report options menu](export-validation-report.png){width=80% fig-alt="A screenshot showing the new Export Validation Report options menu" .screenshot}
+
+<!-- AS PER ANDRES THE ADMIN UI IS EXPOSED TO SELF-HOSTED CUSTOMERS ONLY, SO THE FOLLOWING FRONTEND ENHANCEMENTS HAVE BEEN HIDDEN FROM THIS RELEASE: https://validmind.slack.com/archives/C06JS5D1DNV/p1741129166799279 -->
+
+<!---
+PR #1187: [SC-8194] Update Admin UI to set default templates
+URL: https://github.com/validmind/frontend/pull/1187
+Labels: enhancement
+--->
+<!-- ### Update admin UI to set default templates
+
+Corresponding backend PR: [https://github.com/validmind/backend/pull/1156](https://github.com/validmind/backend/pull/1156)
+
+- Separates options to select default templates by template type.
+- Defaults to prefill all options based on provided org template.
+
+<img width="805" alt="Screenshot of work progress dated 2025-01-24 at 12:43:51 PM" src="https://github.com/user-attachments/assets/9c372189-4a3f-4402-b172-f3dea3ca1f20"/>
+ 
+Generated PR summary: 
+ 
+This update introduces a new `FormSelect` component, enhancing your ability to select multiple items with 'Select All' support. This component is now part of the `Organizations` page, allowing you to manage demo models and templates more efficiently. The `FormSelect` component uses `chakra-react-select` for multi-select functionality and replaces parts of the existing code in the `Organizations` component for improved performance.
+
+Additionally, the data structure for initial templates has been updated. The `CreateOrganizationRequest` type now includes a structured `DefaultTemplateConfig`, which covers categories like `model_documentation`, `validation_report`, and `monitoring`. Similarly, the `OrganizationDefaults` type reflects these changes, ensuring a consistent display of template information. These enhancements improve code modularity and maintainability by implementing a reusable component and streamlining template handling. -->
+
+<!---
+PR #1192: [SC-8220] Adding bootstrap logic to App init
+URL: https://github.com/validmind/frontend/pull/1192
+Labels: enhancement
+--->
+<!-- ### Adding bootstrap logic to `AppInit`
+
+When app is started for first time
+
+When you start the app on an empty database for the first time, the app prompts you to create a new organization and admin user.
+
+New user access to `/admin` route
+
+The new user can access the `/admin` route for the admin app. This allows further creation of organizations and users.
+ 
+Generated PR summary: 
+ 
+This update introduces a new feature for managing the initial setup of the application through a bootstrap check and form. A new component, `BootstrapCheck`, determines if the application is bootstrapped by making an API call, then renders either the `MainApp` or a `BootstrapForm` accordingly. The `BootstrapForm` component assists with creating the first organization and admin user, incorporating form validation, error handling, and password generation features. The `AdminAPI` module is enhanced with methods to support this bootstrap process. Password fields in several components are adjusted to comply with a new feature flag that governs user creation capabilities. Additionally, the `useFlags` hook now includes an `authConfig` flag to control whether user creation with passwords is enabled. These improvements aim to streamline your setup process and enhance flexibility in user management based on configuration flags. -->
+
+<!---
+PR #1202: [SC-8245] Upload Organization Templates in Admin UI
+URL: https://github.com/validmind/frontend/pull/1202
+Labels: enhancement
+--->
+<!-- ### Upload organization templates in admin UI
+
+<img width="1287" alt="Screenshot 2025-02-03 at 12 59 44 PM" src="https://github.com/user-attachments/assets/60e943b9-da92-4882-a41d-74dd83e26474" />
+
+Allow users to upload default organization templates
+
+Allow users to download most recently uploaded default organization template
+ 
+Generated PR summary: 
+ 
+This update introduces key enhancements to the organization defaults management in the admin panel. You can now upload new organization templates using a newly added `UploadFileButton` component, which allows you to select and upload JSON files. The file upload process includes validation to ensure only JSON files are accepted and is managed with a mutation hook from `react-query`. Additionally, there is now functionality for downloading the current default organization template asynchronously, presented as a blob.
+
+The introduction of the `OrganizationTemplateModal` component provides a detailed view of organization templates using the Monaco Editor. This modal supports both viewing individual templates and comparing different versions. It is integrated with state management for easier template selection and version comparison.
+
+API interactions have been enhanced with two new methods in `AdminAPI`: `UploadDefaultOrganizationTemplate` and `GetDefaultOrganizationTemplate`, facilitating server-side operations for template uploads and downloads.
+
+Lastly, user interface improvements include updates to the `OrganizationDefaults` page that incorporate these new functionalities, offering an enriched experience when managing organization templates. Additional headers and descriptions have been added to template cards to enhance information display. -->
+
+
+{{< include /releases/_how-to-upgrade.qmd >}}
+
+
+<!-- FOOTNOTES -->
+
