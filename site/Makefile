@@ -47,6 +47,9 @@ notebooks:
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
+	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
+	@mkdir -p notebooks/EXECUTED/model_development/
+	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
 	@echo "Duplicating notebooks/tutorials/intro_for_model_developers.ipynb for execution"
 	@cp notebooks/tutorials/intro_for_model_developers.ipynb notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
 	@echo "Copying LICENSE into notebooks ..."
