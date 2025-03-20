@@ -38,10 +38,11 @@ clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 
-# Clone the source repository we need
+# Prompt for a release tag and clone the repository at that tag
 clone:
-	@echo "\nCloning source repos ..."
-	git clone -b $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR)
+	@read -p "Enter release tag (example: v2.8.10): " TAG; \
+	echo "\nCloning source repo at tag $$TAG ..."; \
+	git clone --depth 1 --branch $$TAG git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
