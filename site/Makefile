@@ -1,7 +1,8 @@
 # Define source and destination directories
+BRANCH ?= main
 SRC_DIR := _source/validmind-library
 DEST_DIR_NB := notebooks
-DEST_DIR_PYTHON := _site/validmind
+DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PROFILE := exe-demo
@@ -15,6 +16,7 @@ help:
 	@echo "Available targets:"
 	@echo "  clean                Remove the _source/ directory"
 	@echo "  clone                Clone the validmind-library repository into _source/"
+	@echo "                       Optional, for PR testing: BRANCH=<branch-name>"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into _site/validmind"
 	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
@@ -39,7 +41,7 @@ clean:
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
-	git clone -b main git@github.com:validmind/validmind-library.git $(SRC_DIR)
+	git clone -b $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -61,15 +63,12 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
-		echo "\nUpdating Python documentation ..."; \
-		rm -f python-docs.zip; \
-		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip ./* > /dev/null ); \
-	fi; \
-	echo "Copying Python documentation into docs site ..."; \
-	rm -rf $(DEST_DIR_PYTHON); \
-	mkdir -p $(DEST_DIR_PYTHON); \
-	unzip python-docs.zip -d $(DEST_DIR_PYTHON) > /dev/null;
+	@if [ -d "$(SRC_DIR)/docs" ]; then \
+		echo "\nUpdating Python source ..."; \
+		rm -rf $(DEST_DIR_PYTHON); \
+		mkdir -p $(DEST_DIR_PYTHON); \
+		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
+	fi
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
