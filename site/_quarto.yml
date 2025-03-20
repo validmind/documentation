@@ -1,9 +1,9 @@
 project:
   type: website
-  post-render: make python-docs
 
 metadata-files:
   - training/_sidebar.yaml
+  - validmind/_sidebar.yml
 
 website:
   announcement: 
@@ -39,12 +39,12 @@ website:
         file: guide/guides.qmd
       - text: "{{< fa cube >}} Developers"
         menu:
-        - text: "{{< fa rocket >}} Get Started"
-          file: developer/get-started-validmind-library.qmd
+        - text: "{{< fa laptop-code >}} {{< var validmind.developer >}}"
+          file: developer/validmind-library.qmd
         - text: "{{< fa cubes >}} Supported Models"
-          file: developer/model-documentation/supported-models.qmd
-        - text: "{{< fa book-medical >}} Documenting Models"
-          file: developer/model-documentation/documenting-models.qmd
+          file: developer/supported-models.qmd
+        - text: "{{< fa rocket >}} QuickStart Notebook"
+          file: notebooks/quickstart_customer_churn_full_suite.ipynb
         - text: "---"
         - text:  "{{< fa vial >}} TESTING"
         - text: "{{< fa flask-vial >}} Run Tests & Test Suites"
@@ -63,11 +63,8 @@ website:
           file: https://jupyterhub.validmind.ai/
         - text: "---"
         - text: "{{< fa book >}} REFERENCE"
-        - text: "{{< fa external-link >}} {{< var validmind.developer >}}"
-          file: validmind/validmind.html
-          target: _blank
-      - text: "FAQ"
-        file: faq/faq.qmd
+        - text: "{{< var validmind.developer >}} API"
+          file: validmind/validmind.qmd
       - text: "Support"
         file: support/support.qmd
       - text: "Training"
@@ -88,14 +85,12 @@ website:
           file: get-started/get-started.qmd
         - text: "{{< fa book >}} Guides"
           file: guide/guides.qmd
-        - text: "{{< fa circle-question >}} FAQ"
-          file: faq/faq.qmd
         - text: "{{< fa envelope-open-text >}} Support"
           file: support/support.qmd
         - text: "---"
         - text:  "{{< fa cube >}} Developers"
         - text: "{{< fa code >}} {{< var validmind.developer >}}"
-          file: developer/get-started-validmind-library.qmd
+          file: developer/validmind-library.qmd
         - text: "---"
         - text:  "{{< fa graduation-cap >}} {{< var validmind.training >}}"
         - text: "{{< fa building-columns >}} Training Courses"
@@ -283,13 +278,13 @@ website:
         - file: guide/model-documentation/working-with-documentation-templates.qmd
           contents:
           - guide/model-documentation/view-documentation-templates.qmd
-#          - guide/import-documentation-templates.qmd
           - guide/model-documentation/customize-documentation-templates.qmd
           - guide/model-documentation/swap-documentation-templates.qmd
         - file: guide/model-documentation/working-with-model-documentation.qmd
           contents:
           - guide/model-documentation/view-documentation-guidelines.qmd
           - guide/model-documentation/work-with-content-blocks.qmd
+          - guide/model-documentation/work-with-test-results.qmd
           - text: "Assign section statuses"
             file: guide/model-documentation/assign-documentation-section-statuses.qmd
           - guide/model-documentation/collaborate-with-others.qmd
@@ -297,7 +292,6 @@ website:
         - guide/model-documentation/export-documentation.qmd
         - text: "---"
         - text: "Model Validation"
-#        - guide/customize-validation-report-templates.qmd
         - guide/model-validation/manage-validation-guidelines.qmd
         - file: guide/model-validation/preparing-validation-reports.qmd
           contents:
@@ -333,21 +327,25 @@ website:
       contents:
       # USING THE VARIABLE IN THE LINK TEXT MESSES UP THE MOBILE VIEW
         - text: "ValidMind Library"
-          file: developer/get-started-validmind-library.qmd
+          file: developer/validmind-library.qmd
+        - developer/supported-models.qmd
         - text: "---"
-        - text: "Model Documentation"
+        - text: "QuickStart"
         - notebooks/quickstart_customer_churn_full_suite.ipynb
-        - text: "Introduction for model developers"
-          file: notebooks/tutorials/intro_for_model_developers.ipynb
-        - developer/model-documentation/supported-models.qmd
-        - file: developer/model-documentation/documenting-models.qmd
-          contents:
-            - developer/model-documentation/document-models.qmd 
-            # USING THE VARIABLE IN THE LINK TEXT MESSES UP THE MOBILE VIEW & BREADCRUMB
-            - text: "Install and initialize ValidMind Library"
-              file: developer/model-documentation/install-and-initialize-validmind-library.qmd 
-            - developer/model-documentation/work-with-test-results.qmd
-            - developer/model-documentation/store-credentials-in-env-file.qmd
+        - text: "Install and initialize ValidMind Library"
+          file: developer/model-documentation/install-and-initialize-validmind-library.qmd 
+        - developer/model-documentation/store-credentials-in-env-file.qmd
+        - text: "---"
+        - text: "Model Development"
+        # USING THE VARIABLE IN THE LINK TEXT MESSES UP THE MOBILE VIEW & BREADCRUMB
+        - text: "<sup>101</sup> Set up ValidMind Library"
+          file: notebooks/tutorials/model_development/101-set_up_validmind.ipynb
+        - text: "<sup>102</sup> Start model development process"
+          file: notebooks/tutorials/model_development/102-start_development_process.ipynb
+        - text: "<sup>103</sup> Integrate custom tests"
+          file: notebooks/tutorials/model_development/103-integrate_custom_tests.ipynb
+        - text: "<sup>104</sup> Finalize testing & documentation"
+          file: notebooks/tutorials/model_development/104-finalize_testing_documentation.ipynb
         - text: "---"
         - text: "Model Testing"
         - text: "Run tests & test suites"
@@ -364,36 +362,32 @@ website:
           contents: "notebooks/code_samples/**"
         - text: "---"
         - text: "Reference"
-        - text: "{{< var validmind.developer >}} {{< fa external-link >}}"
-          file: validmind/validmind.html
-          target: _blank
-
-    - title: "FAQ"
-      contents:
-        - faq/faq.qmd
-        - text: "---"
-        - text: "Access & permissions"
-          file: faq/faq-organizations.qmd
-        - faq/faq-workflows.qmd
-        - text: "Inventory & activity"
-          file: faq/faq-inventory.qmd
-        - text: "Documentation & templates"
-          file: faq/faq-documentation.qmd
-        - text: "Validation & findings"
-          file: faq/faq-validation.qmd
-        - faq/faq-collaboration.qmd
-        - text: "Monitoring & reporting"
-          file: faq/faq-reporting.qmd
-        - faq/faq-testing.qmd
-        - faq/faq-integrations.qmd
-        - text: "Data & privacy"
-          file: faq/faq-privacy.qmd
+        - text: "ValidMind Library API"
+          file: validmind/validmind.qmd
 
     - title: "Support"
       contents:
         - support/support.qmd
-        - text: "---"
         - support/troubleshooting.qmd
+        - text: "---"
+        - file: faq/faq.qmd
+          contents:
+            - text: "Access & permissions"
+              file: faq/faq-organizations.qmd
+            - faq/faq-workflows.qmd
+            - text: "Inventory & activity"
+              file: faq/faq-inventory.qmd
+            - text: "Documentation & templates"
+              file: faq/faq-documentation.qmd
+            - text: "Validation & findings"
+              file: faq/faq-validation.qmd
+            - faq/faq-collaboration.qmd
+            - text: "Monitoring & reporting"
+              file: faq/faq-reporting.qmd
+            - faq/faq-testing.qmd
+            - faq/faq-integrations.qmd
+            - text: "Data & privacy"
+              file: faq/faq-privacy.qmd
 
 # COMMENT THIS OUT WHEN DONE TESTING
     # - title: "Testing"
