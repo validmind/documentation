@@ -38,11 +38,16 @@ clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 
-# Prompt for a release tag and clone the repository at that tag
+# Prompt for a branch or release tag and clone the repository
 clone:
-	@read -p "Enter release tag (example: v2.8.10): " TAG; \
-	echo "\nCloning source repo at tag $$TAG ..."; \
-	git clone --depth 1 --branch $$TAG git@github.com:validmind/validmind-library.git $(SRC_DIR)
+	@if [ -n "$(BRANCH)" ] && [ "$(BRANCH)" != "main" ]; then \
+		echo "\nWARNING: Cloning non-release files from $(BRANCH) — DO NOT COMMIT"; \
+		git clone --depth 1 --branch $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR); \
+	else \
+		read -p "Enter release tag (example: v2.8.10): " TAG; \
+		echo "\nCloning source repo at tag $$TAG ..."; \
+		git clone --depth 1 --branch $$TAG git@github.com:validmind/validmind-library.git $(SRC_DIR); \
+	fi
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
