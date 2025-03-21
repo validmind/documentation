@@ -9,7 +9,7 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-build docker-serve
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-build docker-serve
 
 # Help section
 help:
@@ -21,7 +21,6 @@ help:
 	@echo "  python-docs          Copy the Python library docs into _site/validmind"
 	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
 	@echo "  docs-site            Get all source files and render the docs site with Quarto"
-	@echo "  deploy-demo          Deploy docs demo site to s3://docs-ci-cd-demo/site/"
 	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
@@ -93,15 +92,6 @@ docs-site: get-source
 docs-site-lite: get-source
 	@echo "\nRendering the static HTML site ..."
 	quarto render --profile production
-
-# Deployment to https://docs-demo.vm.validmind.ai/
-deploy-demo:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "docs-demo" ]; then \
-		echo "You're not on the docs-demo branch, no action taken."; \
-	else \
-		echo "\nDeploying docs-demo site ..."; \
-		quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/ && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; \
-	fi
 
 # Deploy PR branch to https://docs-demo.vm.validmind.ai/
 deploy-demo-branch:
