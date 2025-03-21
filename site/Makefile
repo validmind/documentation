@@ -9,7 +9,7 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-build docker-serve
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-site docker-site-lite docker-build docker-serve 
 
 # Help section
 help:
@@ -25,12 +25,13 @@ help:
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
 	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
+	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
+	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
+	@echo "  docker-build         Builds a Docker image of the docs site"
+	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 	@echo "  yearly-releases      Collate and move a specified year of releases into their own subdir and update _quarto.yml"
-	@echo "  execute              Execute a Jupyter Notebook (must have valid .env credentials set up in root)"
-	@echo "  docker-build         Builds a Docker image of the docs site"
-	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
 
 # Clean up source directory
 clean:
@@ -88,11 +89,6 @@ docs-site: get-source
 	quarto render --profile production
 	@$(MAKE) execute PROFILE=exe-prod
 
-# Get all source files
-docs-site-lite: get-source
-	@echo "\nRendering the static HTML site ..."
-	quarto render --profile production
-
 # Deploy PR branch to https://docs-demo.vm.validmind.ai/
 deploy-demo-branch:
 	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
@@ -146,7 +142,16 @@ yearly-releases:
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
-docker-build: docs-site-lite
+docker-site: get-source
+	@echo "\nRendering the configurable static HTML site for Docker ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+	@$(MAKE) execute PROFILE=exe-prod
+
+docker-site-lite: get-source
+	@echo "\nRendering the configurable static HTML site for Docker (skip notebook execution) ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+
+docker-build: docker-site-lite
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 

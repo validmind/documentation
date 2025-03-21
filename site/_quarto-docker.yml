@@ -1,0 +1,19 @@
+# Quarto docker profile configuration
+# This profile uses placeholders for dynamic URL configuration
+
+profile:
+  default: docker
+
+# Project settings with pre-render and post-render steps for Docker
+project:
+  type: website
+  pre-render: scripts/modify_urls.sh
+  post-render: bash -c "git restore _variables.yml >/dev/null 2>&1 && echo 'Restored _variables.yml'"
+
+# HTML format configuration
+format:
+  html:
+    # Include scripts and other resources in the header
+    include-in-header: 
+      - environments/heap-production.html
+      - zendesk-chat.html
