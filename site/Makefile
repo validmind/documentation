@@ -1,6 +1,7 @@
 # Define source and destination directories
 BRANCH ?= main
-SRC_DIR := _source/validmind-library
+SRC_ROOT := _source
+SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
@@ -37,11 +38,16 @@ help:
 clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
+	rm -rf $(SRC_ROOT)
 
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
 	git clone -b $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR)
+	git clone -b $(BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
+
+copy-installation:
+	cp -r $(SRC_ROOT)/installation/site/installation installation
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -81,7 +87,7 @@ test-descriptions:
 	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
 
 # Get all source files
-get-source: clean clone notebooks python-docs test-descriptions
+get-source: clean clone copy-installation notebooks python-docs test-descriptions
 
 # Get all source files
 docs-site: get-source
@@ -105,6 +111,7 @@ deploy-prod:
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
 		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
@@ -114,6 +121,7 @@ deploy-staging:
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
 		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
