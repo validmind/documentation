@@ -53,15 +53,15 @@ jobs:
       uses: dorny/paths-filter@v2
       id: filter
       with:
-        # base: ${{ github.event.pull_request.base_ref }}
-        # ref: ${{ github.head_ref }}
+        base: ${{ github.event.pull_request.base_ref }}
+        ref: ${{ github.head_ref }}
         filters: |
           notebooks:
             - 'site/notebooks/**'
 
     # If yes then create the .env file for use in execution step
     - name: Create .env file
-      # if: steps.filter.outputs.notebooks == 'true'
+      if: steps.filter.outputs.notebooks == 'true'
       id: create_env
       run: |
         touch .env
@@ -73,7 +73,7 @@ jobs:
 
     # Only execute the demo notebook if .env file is created
     - name: Execute demo Intro for Model Developers notebook
-      # if: ${{ env.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_env.outcome == 'success' }}
+      if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_env.outcome == 'success' }}
       uses: ./.github/actions/demo-notebook
       id: execute-demo-notebook
       with:
