@@ -174,3 +174,56 @@ make docker-serve
 ```
 
 Access the site locally: http://localhost:4444  
+
+### URL configuration for Docker
+
+If you need to change where our docs site links to ValidMind or JupyterHub, this section explains how.
+
+Two parameters can be configured:
+
+- `VALIDMIND_URL` — where to access the platform, defaults to our public ValidMind app
+- `JUPYTERHUB_URL` — where to access JupyterHub, defaults to our public instance
+
+#### How to configure
+
+Pass environment variables through a Kubernetes manifest, use a config file, or use public defaults if none are specified.
+
+Configure in a [Kubernetes manifest](validmind-docs.yaml):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validmind-docs
+  labels:
+    app: validmind-docs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: validmind-docs
+  template:
+    metadata:
+      labels:
+        app: validmind-docs
+    spec:
+      containers:
+      - name: validmind-docs
+        image: validmind/docs:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: VALIDMIND_URL
+          value: "https://your-custom-app.validmind.ai"
+        - name: JUPYTERHUB_URL
+          value: "https://your-custom-jupyter.validmind.ai"
+```
+
+Configure in `config.json`, generated with the Docker image:
+
+```json
+{
+   "VALIDMIND_URL": "https://your-custom-app.validmind.ai",
+   "JUPYTERHUB_URL": "https://your-custom-jupyter.validmind.ai"
+ }
+```
