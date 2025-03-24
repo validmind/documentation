@@ -1,6 +1,7 @@
 # Define source and destination directories
 BRANCH ?= main
-SRC_DIR := _source/validmind-library
+SRC_ROOT := _source
+SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
@@ -9,7 +10,7 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-build docker-serve
+.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-site docker-site-lite docker-build docker-serve 
 
 # Help section
 help:
@@ -25,22 +26,28 @@ help:
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
 	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
+	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
+	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
+	@echo "  docker-build         Builds a Docker image of the docs site"
+	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
 	@echo "  help                 Display this help message (default target)"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
 	@echo "  yearly-releases      Collate and move a specified year of releases into their own subdir and update _quarto.yml"
-	@echo "  execute              Execute a Jupyter Notebook (must have valid .env credentials set up in root)"
-	@echo "  docker-build         Builds a Docker image of the docs site"
-	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
 
 # Clean up source directory
 clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
+	rm -rf $(SRC_ROOT)
 
 # Clone the source repository we need
 clone:
 	@echo "\nCloning source repos ..."
 	git clone -b $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR)
+	git clone -b $(BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
+
+copy-installation:
+	cp -r $(SRC_ROOT)/installation/site/installation installation
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -80,18 +87,13 @@ test-descriptions:
 	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
 
 # Get all source files
-get-source: clean clone notebooks python-docs test-descriptions
+get-source: clean clone copy-installation notebooks python-docs test-descriptions
 
 # Get all source files
 docs-site: get-source
 	@echo "\nRendering the static HTML site ..."
 	quarto render --profile production
 	@$(MAKE) execute PROFILE=exe-prod
-
-# Get all source files
-docs-site-lite: get-source
-	@echo "\nRendering the static HTML site ..."
-	quarto render --profile production
 
 # Deploy PR branch to https://docs-demo.vm.validmind.ai/
 deploy-demo-branch:
@@ -109,6 +111,7 @@ deploy-prod:
 		echo "You're not on the prod branch, no action taken."; \
 	else \
 		echo "\nDeploying prod site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
 		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
@@ -118,6 +121,7 @@ deploy-staging:
 		echo "You're not on the staging branch, no action taken."; \
 	else \
 		echo "\nDeploying staging site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
 		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
@@ -146,7 +150,16 @@ yearly-releases:
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
-docker-build: docs-site-lite
+docker-site: get-source
+	@echo "\nRendering the configurable static HTML site for Docker ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+	@$(MAKE) execute PROFILE=exe-prod
+
+docker-site-lite: get-source
+	@echo "\nRendering the configurable static HTML site for Docker (skip notebook execution) ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+
+docker-build: docker-site-lite
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
