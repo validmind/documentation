@@ -42,12 +42,18 @@ clean:
 clone:
 	@if [ -n "$(BRANCH)" ] && [ "$(BRANCH)" != "main" ]; then \
 		echo "\nWARNING: Cloning non-release files from $(BRANCH) — DO NOT COMMIT"; \
-		git clone --depth 1 --branch $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR); \
+		CHECKOUT="$(BRANCH)"; \
 	else \
-		read -p "Enter release tag (example: v2.8.10): " TAG; \
-		echo "\nCloning source repo at tag $$TAG ..."; \
-		git clone --depth 1 --branch $$TAG git@github.com:validmind/validmind-library.git $(SRC_DIR); \
-	fi
+		read -p "Enter release tag (example: v2.8.10, or HEAD for latest): " TAG; \
+		if [ "$$TAG" = "HEAD" ]; then \
+			echo "\nWARNING: Cloning latest non-release files — DO NOT COMMIT"; \
+			CHECKOUT="$(BRANCH)"; \
+		else \
+			echo "\nCloning source repo at tag $$TAG ..."; \
+			CHECKOUT="$$TAG"; \
+		fi \
+	fi; \
+	git clone --depth 1 --branch $$CHECKOUT git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
