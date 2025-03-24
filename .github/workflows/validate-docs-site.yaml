@@ -17,6 +17,13 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
+    - name: "Checkout documentation repository"
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/installation
+        path: site/_source/installation
+        token: ${{ secrets.INSTALLATION_RO_PAT }}
+
     - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
@@ -28,15 +35,18 @@ jobs:
     - name: Setup R environment
       uses: ./.github/actions/setup-r
 
+    - name: Populate installation
+      run: cp -r site/_source/installation/site/installation site/installation
+
     - name: Render demo docs site
       run: |
           cd site
-          quarto render --profile development &> render_errors.log || {
+          quarto render --profile development 2>&1 | tee render_errors.log || {
           echo "Quarto render failed immediately";
           cat render_errors.log;
           exit 1;
           }
-    
+
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
