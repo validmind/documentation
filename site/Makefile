@@ -7,7 +7,7 @@ DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PROFILE := exe-demo
-FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
+FILE_PATH := notebooks/EXECUTED/model_development
 
 # Define .PHONY target for help section
 .PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-site docker-site-lite docker-build docker-serve 
@@ -58,8 +58,6 @@ notebooks:
 	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
 	@mkdir -p notebooks/EXECUTED/model_development/
 	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
-	@echo "Duplicating notebooks/tutorials/intro_for_model_developers.ipynb for execution"
-	@cp notebooks/tutorials/intro_for_model_developers.ipynb notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
@@ -148,8 +146,8 @@ yearly-releases:
 	quarto preview
 
 # Execute a Jupyter Notebook  
-# Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
-# To override: make execute PROFILE=select-profile FILE_PATH=notebooks/notebook-path-here.ipynb
+# Will default to `exe-demo` profile & the `notebooks/EXECUTED/model_development` if no input provided
+# To override: make execute PROFILE=select-profile FILE_PATH=notebooks/example_directory/notebook-path-here.ipynb
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
