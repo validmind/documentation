@@ -69,12 +69,15 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@if [ -d "$(SRC_DIR)/docs" ]; then \
-		echo "\nUpdating Python source ..."; \
-		rm -rf $(DEST_DIR_PYTHON); \
-		mkdir -p $(DEST_DIR_PYTHON); \
-		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
-	fi
+	@if [ -d "$(SRC_DIR)/docs/_build/" ]; then \
+		echo "\nUpdating Python documentation ..."; \
+		rm -f python-docs.zip; \
+		( cd $(SRC_DIR)/docs/_build/ && zip -r ../../../../python-docs.zip ./* > /dev/null ); \
+	fi; \
+	echo "Copying Python documentation into docs site ..."; \
+	rm -rf $(DEST_DIR_PYTHON); \
+	mkdir -p $(DEST_DIR_PYTHON); \
+	unzip python-docs.zip -d $(DEST_DIR_PYTHON) > /dev/null;
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
