@@ -1,4 +1,4 @@
-name: Execute staging notebook
+name: Execute staging notebooks
 description: Installs python3, validmind, checks dependencies then executes ONLY the Intro for Model Developers notebook with staging heap tracking
 
 inputs:
@@ -24,6 +24,11 @@ runs:
         pip install shap==0.44.1
         pip install anywidget
 
+    - name: Register validmind kernel
+      shell: bash
+      run: |
+        python -m ipykernel install --user --name validmind --display-name "ValidMind Library"
+
     - name: Ensure .env file is available
       shell: bash
       id: find_env
@@ -33,14 +38,14 @@ runs:
           exit 1
         fi
 
-    - name: Execute ONLY the Intro for Model Developers notebook with heap staging
+    - name: Execute ONLY the ValidMind for model development series with heap staging
       shell: bash
       if: ${{ steps.find_env.outcome == 'success' }}
       run: |
           cd site
           source ../${{ inputs.env_file }}
-          quarto render --profile exe-staging notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb &> render_errors.log || {
-          echo "Execute for intro_for_model_developers_EXECUTED.ipynb failed";
+          quarto render --profile exe-staging notebooks/EXECUTED/model_development &> render_errors.log || {
+          echo "Execute for iValidMind for model development series failed";
           cat render_errors.log;
           exit 1;
           }
