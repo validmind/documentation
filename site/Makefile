@@ -1,5 +1,6 @@
 # Define source and destination directories
-BRANCH ?= main
+LIBRARY_BRANCH ?= $(or $(BRANCH),main)
+INSTALLATION_BRANCH := main
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
@@ -40,11 +41,27 @@ clean:
 	rm -rf $(SRC_DIR)
 	rm -rf $(SRC_ROOT)
 
-# Clone the source repository we need
+# Prompt for a branch or release tag and clone the repository
 clone:
-	@echo "\nCloning source repos ..."
-	git clone -b $(BRANCH) git@github.com:validmind/validmind-library.git $(SRC_DIR)
-	git clone -b $(BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
+	@if [ -n "$(LIBRARY_BRANCH)" ] && [ "$(LIBRARY_BRANCH)" != "main" ]; then \
+		echo "\nWARNING: Cloning non-release files from $(LIBRARY_BRANCH) — DO NOT COMMIT"; \
+		echo "\nCloning validmind-library repo from $(LIBRARY_BRANCH) ..."; \
+		CHECKOUT="$(LIBRARY_BRANCH)"; \
+	else \
+		read -p "Enter release tag (example: v2.8.10, or HEAD for latest): " TAG; \
+		if [ "$$TAG" = "HEAD" ]; then \
+			echo "\nWARNING: Cloning latest non-release files — DO NOT COMMIT"; \
+			echo "\nCloning validmind-library repo at HEAD ..."; \
+			CHECKOUT="$(LIBRARY_BRANCH)"; \
+		else \
+			echo "\nCloning validmind-library repo at $$TAG ..."; \
+			CHECKOUT="$$TAG"; \
+		fi \
+	fi; \
+	git clone --depth 1 -b $$CHECKOUT git@github.com:validmind/validmind-library.git $(SRC_DIR)
+
+	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
+	git clone  --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
 copy-installation:
 	cp -r $(SRC_ROOT)/installation/site/installation installation
