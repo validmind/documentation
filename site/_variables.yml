@@ -6,7 +6,8 @@
 # - Try to avoid abbreviations (e.g. `customer.address` NOT `cust.addr`) — Exceptions can be made for product/branding or standard conceptual phrases (e.g. `vm` for ValidMind, `aws` for Amazon Web Services)
 # - Include enough contextual information (e.g. `invoice.total` NOT `total`)
 
-
+# Variables for static site configuration URLs — DO NOT REMOVE 
+# These URLs are used when starting the Docker container or when rendering the docs site for deployment to AWS S3
 
 # PRODUCT NAMES
 # Names of ValidMind products or core features
@@ -27,7 +28,7 @@ validmind:
 vm:
   platform: "platform"
   developer: "library"
-  product: "ValidMind"
+  product: "&#8203;ValidMind" # DO NOT REMOVE &#8203; — WORKAROUND FOR QUARTO VARIABLE RESOLUTION ISSUE
   api: "Python API"
 
 # PRODUCT URLS
@@ -45,8 +46,9 @@ link:
 # Rendered format: `{{< var url.us1 >}}`
 
 url:
-  us1: "https://app.prod.validmind.ai"
+  us1: "https://app.prod.validmind.ai"          # Docker: VALIDMIND_URL
   ca1: "https://app.ca1.validmind.ai"
+  jupyterhub: "https://jupyterhub.validmind.ai" # Docker: JUPYTERHUB_URL
 
 # Amazon Web Services Privatelink specific URLs
 # Rendered format: `{{< var aws.privatelink >}}`
