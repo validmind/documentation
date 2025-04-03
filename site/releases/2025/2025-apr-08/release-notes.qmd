@@ -32,6 +32,103 @@ We've revamped our Introduction for model developers notebook into a series of f
 These new notebooks break down using ValidMind for your end-to-end model documentation process based on common model development scenarios. Learn the basics of the ValidMind Library with these interactive notebooks designed to introduce you to basic ValidMind concepts and get you familiar with tasks such as how to work with documentation templates, running and logging tests with ValidMind, and more. After you've completed your learning journey with these notebooks, you'll have a fully documented sample model ready for review.
 
 <!---
+PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
+URL: https://github.com/validmind/validmind-library/pull/280
+Labels: enhancement
+--->
+#### Create credit risk scorecard notebook using `XGBoost`
+
+Add new application scorecard notebooks using ML with additional testing
+
+- `application_scorecard_with_ml.ipynb`: running individual tests
+- `application_scorecard_full_suite`: using `run_documentation_tests()`
+ 
+Generated PR summary: 
+ 
+This release of the ValidMind Library, version 2.7.4, introduces enhancements and bug fixes with a focus on credit risk scorecard modeling. You can now explore two new Jupyter notebooks that demonstrate using the application scorecard model with ValidMind. These notebooks guide you through loading demo datasets, preprocessing data, training models, and documenting them.
+
+New tests have been added to evaluate different aspects such as feature relevance through mutual information scores, default rates across credit score bands, probability estimates calibration via calibration curves, and threshold optimization for binary classification models. You'll also find tests that illustrate model parameters for transparency and assess the alignment between credit scores and predicted probabilities.
+
+Enhancements to existing tests improve their functionality and accuracy. Notably, the `TooManyZeroValues` test now considers a row count and percentage threshold for zero values.
+
+The dataset splitting functionality in `lending_club.py` is more flexible with support for an optional validation set. A utility function `get_demo_test_config` has been introduced to generate default test configurations for demonstration purposes.
+
+The update also addresses several bugs by correcting test logic and enhancing test coverage.
+
+<!---
+PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
+URL: https://github.com/validmind/validmind-library/pull/290
+Labels: enhancement
+--->
+#### Ongoing monitoring notebook for application scorecard model
+
+Add two new notebooks for the scorecard model:
+
+- `application_scorecard_ongoing_monitoring.ipynb`: Includes new metrics for data and model drift. It also populates the ongoing monitoring document for the scorecard model.
+
+- `application_scorecard_executive.ipynb`: This high-level notebook documents the scorecard model with just one command `lending_club.document_model()`.
+ 
+Generated PR summary: 
+ 
+This update to the ValidMind Library introduces enhancements and bug fixes related to credit risk scorecard models and ongoing monitoring capabilities. You can now access new Jupyter notebooks that guide you through using the ValidMind Library with credit risk datasets. These include demonstrations on building and documenting application scorecard models, integrating machine learning models into scorecards, and focusing on ongoing monitoring.
+
+Custom tests have been introduced for scorecard models, allowing you to define and run your own tests using the ValidMind Library. This includes evaluating discrimination metrics across different score bands.
+
+Ongoing monitoring has been enhanced with new tests designed to evaluate various aspects such as probability calibration changes, classification discrimination metrics comparison, class distribution drift, classification accuracy metrics comparison, confusion matrix metrics comparison, cumulative prediction probability distributions comparison, feature distribution changes, prediction distributions across features assessment, correlation changes between predictions and features evaluation, prediction probability distributions comparison using histograms and quantiles, ROC curves comparison, score bands drift analysis, score distributions comparisons through histograms, and differences in prediction distributions assessment.
+
+The library also sees improvements in dataset loading, preprocessing, and feature engineering functions with verbosity control for cleaner outputs. Additionally, the library version is updated from 2.7.5 to 2.7.6. Integration tests have been modified to skip certain ongoing monitoring tests that require specific conditions.
+
+These updates enhance your ability to manage and monitor credit risk models effectively while providing increased flexibility and valuable insights into model performance.
+
+
+<!---
+PR #295: feat: add print_env function
+URL: https://github.com/validmind/validmind-library/pull/295
+Labels: enhancement
+--->
+#### Add `print_env` function
+
+Add `validmind.print_env()` function to dump running environment
+
+Add a new top-level function for printing the running environment. 
+
+This is helpful when debugging or asking others for help to debug.
+
+```python
+import validmind
+
+validmind.print_env()
+```
+ 
+Generated PR summary: 
+ 
+This release introduces a new `print_env` function in the `validmind/tests/run.py` module. The function uses the `pprint` module to pretty-print the run metadata obtained from the `_get_run_metadata` function. Additionally, the `print_env` function is now included in the `__all__` list in the `validmind/__init__.py` file, making it accessible as part of the module's public API. You can now utilize this function to easily format and view metadata information.
+
+
+<!---
+PR #285: John6797/sc 7792/add raw data to validmind library tests
+URL: https://github.com/validmind/validmind-library/pull/285
+Labels: enhancement
+--->
+#### Add raw data to `validmind` library tests
+
+Adding raw data storage
+
+Raw data storage is added across all of our test library. Every ValidMind test now returns a `RawData` object. You can use the `RawData` object in post-processing functions to recreate any test output. The feature continues the trend towards more flexibility and customizability.
+ 
+Generated PR summary: 
+ 
+This release introduces significant updates to the AI test scripts and unit tests by integrating a new `RawData` mechanism. This allows you to store and retrieve intermediate data used in test functions, enhancing post-processing capabilities and providing more detailed insights into test results.
+
+The script `add_test_description.py` has been removed, suggesting a change in how test descriptions are managed or generated. In its place, a new script called `bulk_ai_test_updates.py` is added to facilitate bulk updates on test files using AI, supporting actions like adding descriptions and raw data.
+
+Many test scripts now utilize the `RawData` class to capture intermediate data useful for regenerating test results during post-processing. Test scripts have been updated to return this raw data alongside traditional outputs like figures and tables.
+
+Unit tests are also updated to accommodate these changes, particularly by checking for the presence of `RawData` in test results and verifying its contents. New unit tests ensure the correct functionality of the `RawData` integration.
+
+Codebase refactoring improves readability and maintainability through reorganization of imports, removal of redundant code, and adherence to coding standards. Security and dependency management are enhanced by ensuring all necessary dependencies are correctly imported and utilized, reducing runtime errors and improving overall security.
+
+<!---
 PR #263: Add Initial Support for Post-Processing Functions
 URL: https://github.com/validmind/validmind-library/pull/263
 Labels: enhancement, highlight
@@ -53,6 +150,26 @@ The Python version has been updated in the GitHub Actions workflow from 3.8 to 3
 Lastly, various code refinements include improvements for JSON serialization of numpy arrays using a `HumanReadableEncoder`, along with refactored logic for handling multiple figure types. These changes are designed to improve customization and detail in handling test results within the ValidMind library.
 
 ### {{< var validmind.platform >}} (v1.31.10)
+
+
+<!---
+PR #1269: [SC-8611] As an admin I am able to manage model stakeholders
+URL: https://github.com/validmind/frontend/pull/1269
+Labels: enhancement
+--->
+#### As an admin you are able to manage model stakeholders
+
+Customer admins can now create new stakeholder roles and edit permissions under the new settings option.
+
+The new stakeholder roles are available in the inventory model overview page for user assignment.
+ 
+Generated PR summary: 
+ 
+This release introduces several functional enhancements and bug fixes focused on managing stakeholder roles within the application. You now have access to a new Stakeholders page with dedicated routes, such as `/settings/stakeholders` and `/settings/stakeholders/:roleCUID`, allowing you to manage model stakeholder types separately from standard roles. The RoleDetails component adapts based on whether you are viewing stakeholders, updating breadcrumb labels, and limiting editing permissions for locked stakeholder roles. 
+
+Additionally, the Model Inventory's UI logic has been improved to support toggling visibility for additional roles and managing stakeholder roles dynamically. A new popover component lets you control which roles are visible. Consistent field identifiers have been introduced and are utilized across various components to ensure uniform handling of user and stakeholder roles.
+
+Bug fixes include console warnings for missing event fields in the ActivityFeedWidget, improved formatting logic in PermissionsList to handle custom field prefixes correctly, and minor tweaks in toast notifications and UI elements like buttons and grids. These updates enhance your experience by refining the management of stakeholder types, incorporating UI improvements, and ensuring consistent data handling.
 
 ### Documentation
 
@@ -113,77 +230,6 @@ A new function, `_get_llm_global_context()`, is introduced in `test_descriptions
 
 Additionally, the `user.jinja` template has been updated to conditionally add the context in generated descriptions if available. This allows you to align LLM-generated insights more closely with specific business requirements or policies by providing extra information about tests or use cases.
 
-<!---
-PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
-URL: https://github.com/validmind/validmind-library/pull/280
-Labels: enhancement
---->
-#### Create credit risk scorecard notebook using `XGBoost`
-
-Add new application scorecard notebooks using ML with additional testing
-
-- `application_scorecard_with_ml.ipynb`: running individual tests
-- `application_scorecard_full_suite`: using `run_documentation_tests()`
- 
-Generated PR summary: 
- 
-This release of the ValidMind Library, version 2.7.4, introduces enhancements and bug fixes with a focus on credit risk scorecard modeling. You can now explore two new Jupyter notebooks that demonstrate using the application scorecard model with ValidMind. These notebooks guide you through loading demo datasets, preprocessing data, training models, and documenting them.
-
-New tests have been added to evaluate different aspects such as feature relevance through mutual information scores, default rates across credit score bands, probability estimates calibration via calibration curves, and threshold optimization for binary classification models. You'll also find tests that illustrate model parameters for transparency and assess the alignment between credit scores and predicted probabilities.
-
-Enhancements to existing tests improve their functionality and accuracy. Notably, the `TooManyZeroValues` test now considers a row count and percentage threshold for zero values.
-
-The dataset splitting functionality in `lending_club.py` is more flexible with support for an optional validation set. A utility function `get_demo_test_config` has been introduced to generate default test configurations for demonstration purposes.
-
-The update also addresses several bugs by correcting test logic and enhancing test coverage.
-
-<!---
-PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
-URL: https://github.com/validmind/validmind-library/pull/290
-Labels: enhancement
---->
-#### Ongoing monitoring notebook for application scorecard model
-
-Add two new notebooks for the scorecard model:
-
-- `application_scorecard_ongoing_monitoring.ipynb`: Includes new metrics for data and model drift. It also populates the ongoing monitoring document for the scorecard model.
-
-- `application_scorecard_executive.ipynb`: This high-level notebook documents the scorecard model with just one command `lending_club.document_model()`.
- 
-Generated PR summary: 
- 
-This update to the ValidMind Library introduces enhancements and bug fixes related to credit risk scorecard models and ongoing monitoring capabilities. You can now access new Jupyter notebooks that guide you through using the ValidMind Library with credit risk datasets. These include demonstrations on building and documenting application scorecard models, integrating machine learning models into scorecards, and focusing on ongoing monitoring.
-
-Custom tests have been introduced for scorecard models, allowing you to define and run your own tests using the ValidMind Library. This includes evaluating discrimination metrics across different score bands.
-
-Ongoing monitoring has been enhanced with new tests designed to evaluate various aspects such as probability calibration changes, classification discrimination metrics comparison, class distribution drift, classification accuracy metrics comparison, confusion matrix metrics comparison, cumulative prediction probability distributions comparison, feature distribution changes, prediction distributions across features assessment, correlation changes between predictions and features evaluation, prediction probability distributions comparison using histograms and quantiles, ROC curves comparison, score bands drift analysis, score distributions comparisons through histograms, and differences in prediction distributions assessment.
-
-The library also sees improvements in dataset loading, preprocessing, and feature engineering functions with verbosity control for cleaner outputs. Additionally, the library version is updated from 2.7.5 to 2.7.6. Integration tests have been modified to skip certain ongoing monitoring tests that require specific conditions.
-
-These updates enhance your ability to manage and monitor credit risk models effectively while providing increased flexibility and valuable insights into model performance.
-
-<!---
-PR #285: John6797/sc 7792/add raw data to validmind library tests
-URL: https://github.com/validmind/validmind-library/pull/285
-Labels: enhancement
---->
-#### Add raw data to `validmind` library tests
-
-Adding raw data storage
-
-Raw data storage is added across all of our test library. Every ValidMind test now returns a `RawData` object. You can use the `RawData` object in post-processing functions to recreate any test output. The feature continues the trend towards more flexibility and customizability.
- 
-Generated PR summary: 
- 
-This release introduces significant updates to the AI test scripts and unit tests by integrating a new `RawData` mechanism. This allows you to store and retrieve intermediate data used in test functions, enhancing post-processing capabilities and providing more detailed insights into test results.
-
-The script `add_test_description.py` has been removed, suggesting a change in how test descriptions are managed or generated. In its place, a new script called `bulk_ai_test_updates.py` is added to facilitate bulk updates on test files using AI, supporting actions like adding descriptions and raw data.
-
-Many test scripts now utilize the `RawData` class to capture intermediate data useful for regenerating test results during post-processing. Test scripts have been updated to return this raw data alongside traditional outputs like figures and tables.
-
-Unit tests are also updated to accommodate these changes, particularly by checking for the presence of `RawData` in test results and verifying its contents. New unit tests ensure the correct functionality of the `RawData` integration.
-
-Codebase refactoring improves readability and maintainability through reorganization of imports, removal of redundant code, and adherence to coding standards. Security and dependency management are enhanced by ensuring all necessary dependencies are correctly imported and utilized, reducing runtime errors and improving overall security.
 
 <!---
 PR #293: [SC-8072] Support threshold lines in unit metric plots
@@ -231,29 +277,6 @@ Generated PR summary:
 This update enhances the ValidMind library by adding support for logging thresholds alongside metrics. The `log_metric` and `alog_metric` functions in the `api_client.py` file now include an optional `thresholds` parameter, allowing you to specify threshold values for metrics. This feature helps you visualize metrics over time and identify potential issues by setting reference lines in metric visualizations. Additionally, the notebook `log_metrics_over_time.ipynb` has been updated with examples of logging multiple metrics with custom thresholds, demonstrating how to use this new functionality.
 
 <!---
-PR #295: feat: add print_env function
-URL: https://github.com/validmind/validmind-library/pull/295
-Labels: enhancement
---->
-#### Add `print_env` function
-
-Add `validmind.print_env()` function to dump running environment
-
-Add a new top-level function for printing the running environment. 
-
-This is helpful when debugging or asking others for help to debug.
-
-```python
-import validmind
-
-validmind.print_env()
-```
- 
-Generated PR summary: 
- 
-This release introduces a new `print_env` function in the `validmind/tests/run.py` module. The function uses the `pprint` module to pretty-print the run metadata obtained from the `_get_run_metadata` function. Additionally, the `print_env` function is now included in the `__all__` list in the `validmind/__init__.py` file, making it accessible as part of the module's public API. You can now utilize this function to easily format and view metadata information.
-
-<!---
 PR #337: [SC 8805] support config option for logging test results
 URL: https://github.com/validmind/validmind-library/pull/337
 Labels: documentation, enhancement
@@ -298,24 +321,7 @@ Test updates accompany these changes as well, specifically altering the `test_lo
 
 ### {{< var validmind.platform >}} (v1.31.10)
 
-<!---
-PR #1269: [SC-8611] As an admin I am able to manage model stakeholders
-URL: https://github.com/validmind/frontend/pull/1269
-Labels: enhancement
---->
-#### As an admin you are able to manage model stakeholders
-
-Customer admins can now create new stakeholder roles and edit permissions under the new settings option.
-
-The new stakeholder roles are available in the inventory model overview page for user assignment.
- 
-Generated PR summary: 
- 
-This release introduces several functional enhancements and bug fixes focused on managing stakeholder roles within the application. You now have access to a new Stakeholders page with dedicated routes, such as `/settings/stakeholders` and `/settings/stakeholders/:roleCUID`, allowing you to manage model stakeholder types separately from standard roles. The RoleDetails component adapts based on whether you are viewing stakeholders, updating breadcrumb labels, and limiting editing permissions for locked stakeholder roles. 
-
-Additionally, the Model Inventory's UI logic has been improved to support toggling visibility for additional roles and managing stakeholder roles dynamically. A new popover component lets you control which roles are visible. Consistent field identifiers have been introduced and are utilized across various components to ensure uniform handling of user and stakeholder roles.
-
-Bug fixes include console warnings for missing event fields in the ActivityFeedWidget, improved formatting logic in PermissionsList to handle custom field prefixes correctly, and minor tweaks in toast notifications and UI elements like buttons and grids. These updates enhance your experience by refining the management of stakeholder types, incorporating UI improvements, and ensuring consistent data handling.
+MIGHT NOT NEED THE BELOW
 
 <!---
 PR #1278: Update stakeholder role mapping in workflows builder and filtering logic
