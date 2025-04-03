@@ -9,25 +9,30 @@ DON'T FORGET THE SUMMARY
 
 ## Release highlights — `23.03.05`
 
-
-
-:::
-
-## Release highlights
+### {{< var validmind.developer >}} (v2.8.13)
 
 <!---
-PR #640: Switch Python API reference to Quarto
-URL: https://github.com/validmind/documentation/pull/640
+PR #326: Restructured old "Introduction for model developers" notebook
+URL: https://github.com/validmind/validmind-library/pull/326
 Labels: documentation, highlight
 --->
-### Switch Python API reference to Quarto
+#### Restructured old introduction for model developers notebook
+
+We've revamped our Introduction for model developers notebook into a series of four introductory notebooks — ValidMind for model development:
+
+- 101 Set up the ValidMind Library
+- 102 Start the model development process
+- 103 Integrate custom tests
+- 104 Finalize testing and documentation
+
+These new notebooks break down using ValidMind for your end-to-end model documentation process based on common model development scenarios. Learn the basics of the ValidMind Library with these interactive notebooks designed to introduce you to basic ValidMind concepts and get you familiar with tasks such as how to work with documentation templates, running and logging tests with ValidMind, and more. After you've completed your learning journey with these notebooks, you'll have a fully documented sample model ready for review.
 
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
 URL: https://github.com/validmind/validmind-library/pull/263
 Labels: enhancement, highlight
 --->
-### Add initial support for post-processing functions
+#### Add initial support for post-processing functions
 
 Adding support for post-processing functions
 
@@ -43,14 +48,29 @@ The Python version has been updated in the GitHub Actions workflow from 3.8 to 3
 
 Lastly, various code refinements include improvements for JSON serialization of numpy arrays using a `HumanReadableEncoder`, along with refactored logic for handling multiple figure types. These changes are designed to improve customization and detail in handling test results within the ValidMind library.
 
+### {{< var validmind.platform >}} (v1.31.10)
+
+### Documentation
+
 <!---
-PR #326: Restructured old "Introduction for model developers" notebook
-URL: https://github.com/validmind/validmind-library/pull/326
+PR #640: Switch Python API reference to Quarto
+URL: https://github.com/validmind/documentation/pull/640
 Labels: documentation, highlight
 --->
-### Restructured old introduction for model developers notebook
+#### Switch Python API reference to Quarto
+
+This release introduces a completely redesigned Python API reference using Quarto instead of the previous HTML-generated docs. The new ValidMind Library documentation features improved navigation with a familiar sidebar, enhanced code signature styling, and integration with our main docs site search.
+
+The documentation structure mirrors the Python package layout, ensuring backward compatibility with our old Python API reference while providing a more maintainable and reader-friendly experience.
+
+
+:::
+
+
 
 ## Enhancements
+
+### {{< var validmind.developer >}} (v2.8.13)
 
 <!---
 PR #274: [SC-7759] Exposing static descriptions in test results
@@ -271,6 +291,9 @@ The error handling is improved with the introduction of the new `InvalidParamete
 
 Test updates accompany these changes as well, specifically altering the `test_log_test_result` case to incorporate the new configuration parameter and ensure thorough testing of logging functionality with these improvements. These enhancements offer greater flexibility in how test results are logged and displayed while strengthening error management and overall code clarity.
 
+
+### {{< var validmind.platform >}} (v1.31.10)
+
 <!---
 PR #1269: [SC-8611] As an admin I am able to manage model stakeholders
 URL: https://github.com/validmind/frontend/pull/1269
@@ -292,6 +315,10 @@ Bug fixes include console warnings for missing event fields in the ActivityFeedW
 
 
 ## Bug fixes
+
+### {{< var validmind.developer >}} (v2.8.13)
+
+### {{< var validmind.platform >}} (v1.31.10)
 
 <!---
 PR #1245: Fix scrolling in documentation table of contents
@@ -323,14 +350,34 @@ Generated PR summary:
  
 The DataTable component's pagination functionality now includes a dynamic system that enhances usability and scalability, particularly when managing a large number of pages. The pagination always displays the first and last pages, with dynamically calculated visible page buttons based on your current page and a set maximum visible limit. To maintain a clean interface when there are many pages, the component uses ellipsis menus to represent skipped page numbers, utilizing Chakra UI's Menu components. This improved navigation ensures you have a clear pathway to access any page directly through visible buttons or via dropdown menus listing hidden pages.
 
-## Other
+<!---
+PR #1278: Update stakeholder role mapping in workflows builder and filtering logic
+URL: https://github.com/validmind/frontend/pull/1278
+Labels: 
+--->
+### Update stakeholder role mapping in workflows builder and filtering logic
+
+Replace this comment with your description
+ 
+Generated PR summary: 
+ 
+This update centralizes and standardizes field identifier handling by introducing a shared constant (FIELD_IDENTIFIERS) throughout the application. In the JsonLogicHumanizer component, role mappings are refined to filter roles based on their scope; roles not of 'Model' scope are mapped to the USER_ROLES identifier, while 'Model' scoped roles are treated as model stakeholder roles using USER_MODEL_STAKEHOLDERS. Merged field mappers now combine custom, general role, and stakeholder mappers for consistent processing of JSON logic queries.
+
+The ApprovalPanel component's query builder is enhanced to use FIELD_IDENTIFIERS instead of hardcoded strings for improved consistency and maintainability. It also introduces new configurations for model stakeholder roles, allowing these roles to be properly selectable and mapped in the UI.
+
+The ApprovalNode component updates conditions to check against FIELD_IDENTIFIERS, which clarifies references to user roles, stakeholder roles, and custom fields. The humanizeJsonLogic utility's outputs now consistently align with updated constants based on role assignments.
+
+Finally, in the useQueryBuilder hook, FIELD_IDENTIFIERS are exported for consistent usage across components, with query fields adjusted to reflect new role identifier mappings. These changes enhance code maintainability by reducing hardcoded values and ensuring consistency in role-based operations across the system.
 
 <!---
 PR #674: Add URL configuration to Docker images
 URL: https://github.com/validmind/documentation/pull/674
 Labels: infrastructure
+
+NOTE: CUSTOMER-MANAGED VALIDMIND RELEASE ONLY, HIDDEN FOR GENERAL RELEASE
 --->
-### Add URL configuration to Docker images
+
+<!-- ### Add URL configuration to Docker images
 
 You can now configure the Docker image for our static docs site. You can do so via a Kubernetes manifest or a config file.
 
@@ -355,27 +402,7 @@ The Makefile sees enhancements with new targets `docker-site` and `docker-site-l
 
 A sample Kubernetes manifest, `validmind-docs.yaml`, is included to facilitate deploying the documentation site with URLs configurable through environment variables or a ConfigMap. Additionally, two scripts manage URL handling: `modify_urls.sh` replaces actual URLs with placeholders during build, while `docker_entrypoint.sh` substitutes these placeholders with real URLs at runtime, using either environment variables or values from `config.json`.
 
-These changes offer enhanced flexibility in deploying the documentation site across different environments by enabling dynamic configuration of URLs based on deployment settings.
-
-<!---
-PR #1278: Update stakeholder role mapping in workflows builder and filtering logic
-URL: https://github.com/validmind/frontend/pull/1278
-Labels: 
---->
-### Update stakeholder role mapping in workflows builder and filtering logic
-
-Replace this comment with your description
- 
-Generated PR summary: 
- 
-This update centralizes and standardizes field identifier handling by introducing a shared constant (FIELD_IDENTIFIERS) throughout the application. In the JsonLogicHumanizer component, role mappings are refined to filter roles based on their scope; roles not of 'Model' scope are mapped to the USER_ROLES identifier, while 'Model' scoped roles are treated as model stakeholder roles using USER_MODEL_STAKEHOLDERS. Merged field mappers now combine custom, general role, and stakeholder mappers for consistent processing of JSON logic queries.
-
-The ApprovalPanel component's query builder is enhanced to use FIELD_IDENTIFIERS instead of hardcoded strings for improved consistency and maintainability. It also introduces new configurations for model stakeholder roles, allowing these roles to be properly selectable and mapped in the UI.
-
-The ApprovalNode component updates conditions to check against FIELD_IDENTIFIERS, which clarifies references to user roles, stakeholder roles, and custom fields. The humanizeJsonLogic utility's outputs now consistently align with updated constants based on role assignments.
-
-Finally, in the useQueryBuilder hook, FIELD_IDENTIFIERS are exported for consistent usage across components, with query fields adjusted to reflect new role identifier mappings. These changes enhance code maintainability by reducing hardcoded values and ensuring consistency in role-based operations across the system.
-
+These changes offer enhanced flexibility in deploying the documentation site across different environments by enabling dynamic configuration of URLs based on deployment settings. -->
 
 
 {{< include /releases/_how-to-upgrade.qmd >}}
