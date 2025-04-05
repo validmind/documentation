@@ -15,7 +15,9 @@ listing:
 
 Attestation in {{< var vm.product >}} enables you to formally document and certify model attributes at specific points in time, supporting compliance and governance processes. The attestation feature takes snapshots of models and their findings, ensuring that changes made after attestation creation do not affect the historical record.
 
-<!-- TO DO What's the importance of open findings for models under attestation? -->
+::: {.callout}
+The dotted line from **Reviewed** back to **In Progress** indicates that a validator can request changes, sending the attestation back to the model owner for revision.
+:::
 
 ::: {.attn}
 
@@ -33,7 +35,7 @@ Attestation in {{< var vm.product >}} enables you to formally document and certi
 
 ## How do I create meaningful attestation questionnaires?
 
-Attestation questionnaires are typically used in model risk management to confirm that key controls, governance processes and documentation requirements have been followed throughout a model’s lifecycle. They are part of the broader effort to ensure accountability and regulatory compliance. 
+Attestation questionnaires are typically used in model risk management to confirm that key controls, governance processes and documentation requirements have been followed throughout a model's lifecycle. They are part of a broader effort to ensure accountability and regulatory compliance. 
 
 Areas typically covered in the questionnaire:
 
@@ -51,35 +53,27 @@ Areas typically covered in the questionnaire:
 
 ### Attestation workflow
 
+```{mermaid}
+graph LR
+    A["**Not Started**"] --> B["**In Progress**"]
+    B --> C["**Ready for Review**"]
+    C --> D["**Reviewed**"]
+    D --> E["**Signed Off**"]
+    D -.-> B
+    style A fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style B fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style C fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style D fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style E fill:#f9f9f9,stroke:#333,stroke-width:2px
+```
+
 The attestation process follows these states:
 
 1. **Not Started** — Initial state when attestation is assigned to model owners
 2. **In Progress** — After model owner starts the attestation
 3. **Ready for Review** — When model owner submits the completed attestation
-4. **Accepted/Rejected** — Validator's decision on the attestation
-5. **Signed Off** — Final state after validation
-
-### Attestation features
-
-- **Scheduled periods** — Create attestations for specific time periods (e.g., "Q1 attestation")
-- **Model snapshots** — Capture model state and findings at the time of attestation creation
-- **Custom fields** — Add specific model information to attestations
-- **Questionnaire** — Create structured questions for model owners to complete
-- **Persistent sidebar** — Access attestation information across findings and inventory views
-
-### Attestation templates
-
-{{< var vm.product >}} provides customizable attestation templates that help standardize the attestation process across your organization. These templates can include:
-
-- Required approvers and their roles
-- Approval workflows
-- Compliance requirements
-- Document sections and guidelines
-- Custom fields and questionnaires
-
-::: {.callout}
-Attestations are designed to support compliance and governance processes by providing a formal mechanism to document and verify model attributes at specific points in time.
-:::
+4. **Reviewed** — When a validator has reviewed the attestation
+5. **Signed Off** — Final state after a validator has signed off on the attestation
 
 ## What's next
 
