@@ -462,18 +462,24 @@ def create_release_folder(formatted_release_date):
 
     return output_file, year
 
-def create_release_qmd(output_file, original_release_date):
+def create_release_qmd(output_file, original_release_date, release_date_iso):
     """
-    Writes metadata to a file with a title set to the original release date.
+    Writes metadata to a file with a title set to the original release date,
+    and includes the release date in ISO format as the date field.
 
     Args:
         output_file (str): The path to the file to write.
         original_release_date (str): The title to include in the metadata.
+        release_date_iso (str): The date in YYYY-MM-DD format for metadata.
     """
 
-    print(f"{original_release_date} added to {output_file} as title")
+    print(f"- {original_release_date} added to {output_file} as title")
+    print(f"  {release_date_iso} added to {output_file} as date")
     with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+        file.write(f"---\n")
+        file.write(f"title: \"{original_release_date}\"\n")
+        file.write(f"date: {release_date_iso}\n")
+        file.write(f"---\n\n")
 
     try:
         subprocess.run(["code", output_file], check=True)
