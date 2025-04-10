@@ -481,7 +481,7 @@ def create_release_folder(formatted_release_date):
 
     return output_file, year
 
-def create_release_qmd(output_file, original_release_date, release_date_iso):
+def create_release_qmd(output_file, original_release_date, release_date_iso, unified_version):
     """
     Writes metadata to a file with a title set to the original release date,
     and includes the release date in ISO format as the date field.
@@ -492,12 +492,16 @@ def create_release_qmd(output_file, original_release_date, release_date_iso):
         release_date_iso (str): The date in YYYY-MM-DD format for metadata.
     """
 
+    unified_version = f"Unified version `{input_version()}`"
+
     print(f"- {original_release_date} added to {output_file} as title")
     print(f"  {release_date_iso} added to {output_file} as date")
+    print(f"  {unified_version} added to {output_file} as subtitle")
     with open(output_file, "w") as file:
         file.write(f"---\n")
         file.write(f"title: \"{original_release_date}\"\n")
         file.write(f"date: {release_date_iso}\n")
+        file.write(f"subtitle: {unified_version}\n")
         file.write(f"---\n\n")
 
     try:
