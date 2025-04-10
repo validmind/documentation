@@ -457,19 +457,19 @@ def update_release_sidebar(year):
     print(f"Added {year} releases folder to the releases _sidebar.yaml")
 
 def move_year_marker(year):
-    """Updates the _quarto.yml file to relocate the CURRENT-YEAR-END-MARKER.
+    """Updates the releases _sidebar.yaml file to relocate the CURRENT-YEAR-END-MARKER.
 
     Args:
         year (int): The year to search for in the line pattern.
 
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml
     """
     import shutil
     import os
 
-    yaml_filename = "../site/_quarto.yml"
-    temp_yaml_filename = "../site/_quarto_temp.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -511,7 +511,7 @@ def move_year_marker(year):
     os.remove(temp_yaml_filename)
 
     if marker_removed and marker_inserted:
-        print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+        print(f"Relocated # CURRENT-YEAR-END-MARKER in releases _sidebar.yaml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif not marker_removed:
         return "Marker was not found in the file"
     else:
