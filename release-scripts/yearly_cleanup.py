@@ -327,7 +327,72 @@ def update_template(destination_file, year):
 #         print(f"Failed to update '{destination_file}': {e}")
 #         return False
     
-def update_quarto_yaml(year):
+# def update_quarto_yaml(year):
+#     """Updates the _quarto.yml file to include the new yearly release folder.
+
+#     Params:
+#         year - the year to be used for the folder.
+    
+#     Modifies:
+#         _quarto.yml file
+#     """
+#     yaml_filename = "../site/_quarto.yml"
+#     temp_yaml_filename = "../site/_quarto_temp.yml"
+
+#     # Copy the original YAML file to a temporary file
+#     shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+#     with open(temp_yaml_filename, 'r') as file:
+#         lines = file.readlines()
+
+#     # Use the year from the parameter
+#     release_file = f"releases/{year}/{year}-releases.qmd"
+#     year_injected = False
+
+#     with open(yaml_filename, 'w') as file:
+#         between_markers = False
+#         year_contents = []
+
+#         for line in lines:
+#             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+#                 file.write(line)
+#                 between_markers = True
+#                 continue
+
+#             if line.strip() == "# CURRENT-YEAR-END-MARKER":
+#                 if year_contents and not year_injected:
+#                     # Inject the new file entry with correctly indented contents
+#                     file.write(f"        - file: {release_file}\n")
+#                     file.write("          contents:\n")
+#                     for content in year_contents:
+#                         file.write(f"          {content.strip()}\n")
+#                     year_injected = True
+#                 between_markers = False
+
+#             if between_markers:
+#                 # Collect lines for the specified year
+#                 if f"releases/{year}/{year}-" in line:
+#                     year_contents.append(line)
+#                 else:
+#                     # Write out lines not belonging to the target year
+#                     file.write(line)
+#             else:
+#                 file.write(line)
+
+#         if not year_injected and year_contents:
+#             # Ensure the file and contents are added if the section didn't end naturally
+#             file.write(f"        - file: {release_file}\n")
+#             file.write("          contents:\n")
+#             for content in year_contents:
+#                 file.write(f"          - {content.strip()}\n")
+
+#     # Remove the temporary file
+#     os.remove(temp_yaml_filename)
+
+#     print(f"Added {year} releases folder to the sidebar in _quarto.yml")
+
+
+def update_release_sidebar(year):
     """Updates the _quarto.yml file to include the new yearly release folder.
 
     Params:
@@ -336,8 +401,8 @@ def update_quarto_yaml(year):
     Modifies:
         _quarto.yml file
     """
-    yaml_filename = "../site/_quarto.yml"
-    temp_yaml_filename = "../site/_quarto_temp.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -389,7 +454,7 @@ def update_quarto_yaml(year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Added {year} releases folder to the sidebar in _quarto.yml")
+    print(f"Added {year} releases folder to the releases _sidebar.yaml")
 
 def move_year_marker(year):
     """Updates the _quarto.yml file to relocate the CURRENT-YEAR-END-MARKER.
@@ -572,7 +637,10 @@ def main():
     #     update_listing(yearly_release, release_listings)
     #     print()
     
-    update_quarto_yaml(year)
+    # update_quarto_yaml(year)
+    # print()
+
+    update_release_sidebar(year)
     print()
 
     move_year_marker(year)
