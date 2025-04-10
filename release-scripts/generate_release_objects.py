@@ -449,10 +449,6 @@ def input_version():
             return version_input
         else:
             print("Invalid version format. Please use one of the following: 00.00.00, 00.00.0, or 00.00")
-
-# Capture the version into unified_version
-unified_version = input_version()
-
     
 def create_release_folder(formatted_release_date):
     """
