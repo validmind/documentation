@@ -431,6 +431,29 @@ def get_release_date():
         print("Invalid date format, please try again using the format Month Day, Year (e.g., January 1, 2020)")
         return get_release_date()
     
+
+def input_version():
+    """Prompts the user to enter a version number in one of the formats:
+    00.00.00, 00.00.0, or 00.00
+
+    Returns:
+        str: The validated version string.
+    """
+    import re
+    version_pattern = re.compile(r"^\d{2}\.\d{2}(\.\d{1,2})?$")
+
+    while True:
+        version_input = input("Enter the version number (format: 00.00.00, 00.00.0, or 00.00): ")
+        if version_pattern.match(version_input):
+            print(f"Version accepted: {version_input}\n")
+            return version_input
+        else:
+            print("Invalid version format. Please use one of the following: 00.00.00, 00.00.0, or 00.00")
+
+# Capture the version into unified_version
+unified_version = input_version()
+
+    
 def create_release_folder(formatted_release_date):
     """
     Creates a directory for the release notes based on the provided release date
