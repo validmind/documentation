@@ -973,8 +973,11 @@ def main():
     Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
     """
     try:
+        from dotenv import load_dotenv
+
         env_location = get_env_location()
         setup_openai_api(env_location)
+        load_dotenv(dotenv_path=env_location)
         print()
 
         label_hierarchy = ["highlight", "enhancement", "breaking-change", "deprecation", "bug", "documentation"]
