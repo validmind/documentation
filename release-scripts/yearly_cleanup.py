@@ -227,105 +227,105 @@ def update_template(destination_file, year):
         print(f"Failed to update '{destination_file}': {e}")
         return False
     
-release_listings = []
+# release_listings = []
     
-def get_release_listings(yearly_path):
-    """
-    Returns moved releases to add to the yearly release listing.
+# def get_release_listings(yearly_path):
+#     """
+#     Returns moved releases to add to the yearly release listing.
 
-    Args:
-        yearly_path (str): The path to the year folder to search within.
+#     Args:
+#         yearly_path (str): The path to the year folder to search within.
 
-    Returns:
-        list: A list of matching subdirectory names, with '/release-notes.qmd' appended to each, sorted by the date in the folder names in descending order.
-    """
-    global release_listings 
-    listing_dir = f"{yearly_path}"
+#     Returns:
+#         list: A list of matching subdirectory names, with '/release-notes.qmd' appended to each, sorted by the date in the folder names in descending order.
+#     """
+#     global release_listings 
+#     listing_dir = f"{yearly_path}"
 
-    if not os.path.exists(listing_dir):
-        print(f"'{listing_dir}' does not exist")
-        release_listings = []  
-        return release_listings
+#     if not os.path.exists(listing_dir):
+#         print(f"'{listing_dir}' does not exist")
+#         release_listings = []  
+#         return release_listings
 
-    subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
+#     subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
 
-    if subdirs:
-        try:
-            # Sort subdirs by parsing the date in the folder names
-            subdirs = sorted(
-                subdirs,
-                key=lambda d: datetime.strptime(d, "%Y-%b-%d"),
-                reverse=True
-            )
-        except ValueError:
-            print("Some folder names do not match the expected date format (YYYY-MMM-DD), skipping sorting")
+#     if subdirs:
+#         try:
+#             # Sort subdirs by parsing the date in the folder names
+#             subdirs = sorted(
+#                 subdirs,
+#                 key=lambda d: datetime.strptime(d, "%Y-%b-%d"),
+#                 reverse=True
+#             )
+#         except ValueError:
+#             print("Some folder names do not match the expected date format (YYYY-MMM-DD), skipping sorting")
 
-        # Append '/release-notes.qmd' to each folder name
-        subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
-        print(f"Found {len(subdirs)} release notes in {yearly_path}:\n")
-        for note in subdirs:
-            print(note)
-    else:
-        print(f"No folders found in {yearly_path}")
+#         # Append '/release-notes.qmd' to each folder name
+#         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
+#         print(f"Found {len(subdirs)} release notes in {yearly_path}:\n")
+#         for note in subdirs:
+#             print(note)
+#     else:
+#         print(f"No folders found in {yearly_path}")
 
-    release_listings = subdirs
-    return release_listings
+#     release_listings = subdirs
+#     return release_listings
 
-def update_listing(destination_file, release_listings):
-    """
-    Updates the destination file by appending the contents of release_listings under the
-    '# RELEASE-FILES-MARKER' line if the line directly below it matches '---'.
+# def update_listing(destination_file, release_listings):
+#     """
+#     Updates the destination file by appending the contents of release_listings under the
+#     '# RELEASE-FILES-MARKER' line if the line directly below it matches '---'.
 
-    Args:
-        destination_file (str): The path to the file to be updated.
-        release_listings (list of str): List of release listing file paths to append.
+#     Args:
+#         destination_file (str): The path to the file to be updated.
+#         release_listings (list of str): List of release listing file paths to append.
 
-    Returns:
-        bool: True if the file was updated successfully, False otherwise.
-    """
-    if not os.path.exists(destination_file):
-        print(f"File '{destination_file}' does not exist")
-        return False
+#     Returns:
+#         bool: True if the file was updated successfully, False otherwise.
+#     """
+#     if not os.path.exists(destination_file):
+#         print(f"File '{destination_file}' does not exist")
+#         return False
 
-    try:
-        # Read the file content
-        with open(destination_file, 'r') as file:
-            content = file.readlines()
+#     try:
+#         # Read the file content
+#         with open(destination_file, 'r') as file:
+#             content = file.readlines()
 
-        # Track updated lines
-        edited_lines = []
+#         # Track updated lines
+#         edited_lines = []
 
-        # Update the lines
-        updated_content = []
-        release_marker_found = False
-        for i, line in enumerate(content):
-            updated_content.append(line)
+#         # Update the lines
+#         updated_content = []
+#         release_marker_found = False
+#         for i, line in enumerate(content):
+#             updated_content.append(line)
 
-            if line.strip() == "# RELEASE-FILES-MARKER":
-                if i + 1 < len(content) and content[i + 1].strip() == "---":
-                    release_marker_found = True
-                    insertion_index = len(updated_content)
+#             if line.strip() == "# RELEASE-FILES-MARKER":
+#                 if i + 1 < len(content) and content[i + 1].strip() == "---":
+#                     release_marker_found = True
+#                     insertion_index = len(updated_content)
 
-                    for listing in release_listings:
-                        new_line = f"        - {listing}\n"
-                        updated_content.append(new_line)
-                        edited_lines.append(insertion_index)
-                        insertion_index += 1
+#                     for listing in release_listings:
+#                         new_line = f"        - {listing}\n"
+#                         updated_content.append(new_line)
+#                         edited_lines.append(insertion_index)
+#                         insertion_index += 1
 
-        if not release_marker_found:
-            print(f"'{destination_file}' already has release listings, please review for accuracy")
-            return False
+#         if not release_marker_found:
+#             print(f"'{destination_file}' already has release listings, please review for accuracy")
+#             return False
 
-        # Write the updated content back to the file
-        with open(destination_file, 'w') as file:
-            file.writelines(updated_content)
+#         # Write the updated content back to the file
+#         with open(destination_file, 'w') as file:
+#             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with release listings\n\nAdded lines: {edited_lines}")
-        return True
+#         print(f"Updated '{destination_file}' with release listings\n\nAdded lines: {edited_lines}")
+#         return True
 
-    except Exception as e:
-        print(f"Failed to update '{destination_file}': {e}")
-        return False
+#     except Exception as e:
+#         print(f"Failed to update '{destination_file}': {e}")
+#         return False
     
 def update_quarto_yaml(year):
     """Updates the _quarto.yml file to include the new yearly release folder.
@@ -565,12 +565,12 @@ def main():
         update_template(yearly_release, year)
         print()
 
-    release_listings = get_release_listings(yearly_path)
-    print()
+    # release_listings = get_release_listings(yearly_path)
+    # print()
     
-    if release_listings:
-        update_listing(yearly_release, release_listings)
-        print()
+    # if release_listings:
+    #     update_listing(yearly_release, release_listings)
+    #     print()
     
     update_quarto_yaml(year)
     print()
