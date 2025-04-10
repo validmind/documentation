@@ -733,16 +733,65 @@ def upgrade_info(output_file):
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
-def update_quarto_yaml(release_date, year):
-    """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
+# def update_quarto_yaml(release_date, year):
+#     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
+
+#     Params:
+#         release_date - release notes use the release date as the file name.
+    
+#     Modifies:
+#         _quarto.yml file
+#     """
+#     yaml_filename = "../site/_quarto.yml"
+
+#     # Format the release date for insertion into the YAML file
+#     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+#     target_line = f'        - releases/{year}/{formatted_release_date}/release-notes.qmd\n'
+
+#     # Check if the target line already exists in the YAML file
+#     with open(yaml_filename, 'r') as file:
+#         if target_line in file.readlines():
+#             print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}, skipping update")
+#             return
+
+#     temp_yaml_filename = "../site/_quarto_temp.yml"
+
+#     # Copy the original YAML file to a temporary file
+#     shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+#     with open(temp_yaml_filename, 'r') as file:
+#         lines = file.readlines()
+
+#     with open(yaml_filename, 'w') as file:
+#         add_release_content = False
+#         insert_index = -1
+
+#         for i, line in enumerate(lines):
+#             file.write(line)
+#             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+#                 add_release_content = True
+#                 insert_index = i
+
+#             if add_release_content and i == insert_index:
+#                 file.write(target_line)
+#                 add_release_content = False
+
+#     # Remove the temporary file
+#     os.remove(temp_yaml_filename)
+    
+#     print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
+
+def update_release_sidebar(release_date, year):
+    """Updates the releases _sidebar.yaml file to include the new yearly release folder.
 
     Params:
-        release_date - release notes use the release date as the file name.
+        year - the year to be used for the folder.
     
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml file
     """
-    yaml_filename = "../site/_quarto.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Format the release date for insertion into the YAML file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
@@ -753,8 +802,6 @@ def update_quarto_yaml(release_date, year):
         if target_line in file.readlines():
             print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}, skipping update")
             return
-
-    temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -779,7 +826,7 @@ def update_quarto_yaml(release_date, year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
-    print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
+    print(f"Added new release notes to releases _sidebar.yaml, line {insert_index + 2}")
 
 def update_index_qmd(release_date, year):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
@@ -971,7 +1018,10 @@ def main():
         upgrade_info(output_file)
         print()
 
-        update_quarto_yaml(release_datetime, year)
+        # update_quarto_yaml(release_datetime, year)
+        # print()
+
+        update_release_sidebar(release_datetime, year)
         print()
 
         update_index_qmd(release_datetime, year)

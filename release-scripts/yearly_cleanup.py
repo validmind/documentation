@@ -393,13 +393,13 @@ def update_template(destination_file, year):
 
 
 def update_release_sidebar(year):
-    """Updates the _quarto.yml file to include the new yearly release folder.
+    """Updates the releases _sidebar.yaml file to include the new yearly release folder.
 
     Params:
         year - the year to be used for the folder.
     
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml file
     """
     yaml_filename = "../site/releases/_sidebar.yaml"
     temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
