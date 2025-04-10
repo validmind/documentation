@@ -449,6 +449,9 @@ def input_version():
             return version_input
         else:
             print("Invalid version format. Please use one of the following: 00.00.00, 00.00.0, or 00.00")
+
+# Declare and initialize unified_version so it's available globally
+unified_version = f"Unified version `{input_version()}`"
     
 def create_release_folder(formatted_release_date):
     """
@@ -492,8 +495,6 @@ def create_release_qmd(output_file, original_release_date, release_date_iso, uni
         release_date_iso (str): The date in YYYY-MM-DD format for metadata.
     """
 
-    unified_version = f"Unified version `{input_version()}`"
-
     print(f"- {original_release_date} added to {output_file} as title")
     print(f"  {release_date_iso} added to {output_file} as date")
     print(f"  {unified_version} added to {output_file} as subtitle")
@@ -501,7 +502,7 @@ def create_release_qmd(output_file, original_release_date, release_date_iso, uni
         file.write(f"---\n")
         file.write(f"title: \"{original_release_date}\"\n")
         file.write(f"date: {release_date_iso}\n")
-        file.write(f"subtitle: {unified_version}\n")
+        file.write(f"subtitle: \"{unified_version}\"\n")
         file.write(f"---\n\n")
 
     try:
