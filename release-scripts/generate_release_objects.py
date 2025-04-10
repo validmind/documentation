@@ -975,7 +975,7 @@ def main():
             raise RuntimeError("Failed to create release folder.")
         print()
 
-        create_release_qmd(output_file, original_release_date)
+        create_release_qmd(output_file, original_release_date, release_datetime.strftime("%Y-%m-%d"))
         print()
 
         update_release_components(release_components, categories)
