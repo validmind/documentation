@@ -432,6 +432,8 @@ def get_release_date():
         return get_release_date()
     
 
+unified_version = ""
+
 def input_version():
     """Prompts the user to enter a version number in one of the formats:
     00.00.00, 00.00.0, or 00.00
@@ -450,9 +452,6 @@ def input_version():
         else:
             print("Invalid version format. Please use one of the following: 00.00.00, 00.00.0, or 00.00")
 
-# Declare and initialize unified_version so it's available globally
-unified_version = f"Unified version `{input_version()}`"
-    
 def create_release_folder(formatted_release_date):
     """
     Creates a directory for the release notes based on the provided release date
@@ -993,13 +992,17 @@ def main():
         original_release_date = release_datetime.strftime("%B %-d, %Y")
         print()
 
+        unified_version = ""
+        # Declare and initialize unified_version so it's available globally
+        unified_version = f"Unified version `{input_version()}`"
+
         # Handle potential failure in create_release_folder
         output_file, year = create_release_folder(formatted_release_date)
         if not output_file:  # Ensure the function returns something valid
             raise RuntimeError("Failed to create release folder.")
         print()
 
-        create_release_qmd(output_file, original_release_date, release_datetime.strftime("%Y-%m-%d"))
+        create_release_qmd(output_file, original_release_date, release_datetime.strftime("%Y-%m-%d"), unified_version)
         print()
 
         update_release_components(release_components, categories)
