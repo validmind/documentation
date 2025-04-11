@@ -1,0 +1,107 @@
+---
+title: "Working with attestations"
+date: last-modified
+listing:
+  - id: attestation-listing
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - set-up-attestations.qmd
+      - complete-attestation-questionnaires.qmd
+      - review-attestation-questionnaires.qmd
+---
+
+Attestation enables model owners and validators to formally certify, review, and sign off on model attributes at specific points in time, supporting compliance and governance processes. 
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Models registered in the inventory require attestation.[^1]
+- [x] If applicable, model findings have been documented.[^2]
+- [x] You are assigned a role with sufficient permissions to perform attestation tasks:[^3]
+   - [{{< fa hand >}} Customer Admin]{.bubble} — Sets up attestations
+   - [Model owner]{.bubble} — Completes attestation questionnaires
+   - [{{< fa circle-check >}} Validator]{.bubble}  — Reviews and signs off on attestation questionnaires
+
+:::
+
+## Key concepts
+
+{{< include /about/glossary/_attestation.qmd >}}
+
+### How does the attestation process work?
+
+Attestation on the {{< var validmind.platform >}} begins at the start of the attestation period after the process has been set up initially. The platform captures a snapshot of each model and its findings, preserving the state at that point in time. Changes made after the process starts do not affect the historical record.
+
+Model owners and validators each see a banner on their dashboard when an attestation requires action. The banner links directly to their active respective attestation tasks, also known as _attestation instances_:
+
+![Dashboard prompt for attestations](attestation-banner.png){width="80%" fig-alt="Attestation prompt with a link to the attestation labelled 'Open Attestations'" .screenshot}
+
+Responsibilities for the attestation process are shared:
+
+::: {.tc}
+```{mermaid}
+graph LR
+    subgraph Model Owner
+        A["**Not Started**"] --> B["**In Progress**"]
+        B --> C["**Ready for Review**"]
+    end
+    
+    subgraph Validator
+        C --> D["**Reviewed**"]
+        D --> E["**Signed Off**"]
+        D -.-> B
+    end
+```
+
+[The attestation process — Model owner and validator responsibilities]{.silver .small}
+:::
+
+::: {.column-margin .callout title="Attestation is collaborative"}
+A validator can request changes from the model owner by rejecting the attestation questionnaire. 
+
+___
+
+The platform maintains a history of all status changes and notes.
+:::
+
+The model owner is responsible for completing the questionnaire and addressing change requests from their reviewer. In turn, the validator is responsible for reviewing the questionnaire, requesting any necessary changes, and signing off.
+
+Plan your attestation periods ahead of time to ensure they can be completed on time. The start date must be today or a future date, and you cannot set a date in the past to trigger attestation retroactively.
+
+## How do I create meaningful attestation questionnaires?
+
+Attestation questionnaires are typically used in model risk management to confirm that key controls, governance processes and documentation requirements have been followed throughout a model's lifecycle. These questionnaires are part of a broader effort to ensure accountability and regulatory compliance. 
+
+Areas typically covered in the questionnaire:
+
+- **Verification of responsibilities** — Attests that model owners, developers and validators have performed their roles in accordance with internal policies and procedures.
+
+- **Documentation of compliance** — Confirms that required documentation — such as model documentation, validation reports and change logs — has been completed and properly archived.
+
+- **Evidence of control operation** — Serves as formal evidence that key controls (for example: backtesting, performance monitoring, version control) are in place and functioning as intended.
+
+- **Governance checkpoints** — Used as checkpoints at critical stages, such as model approval, annual reviews or retirement, to ensure all required steps have been completed before proceeding.
+
+- **Regulatory reporting** — In regulated environments, provides a documented trail that can be reviewed during internal audits or by external regulators.
+
+- **Risk ownership and accountability** — By signing off on questionnaires, individuals acknowledge their responsibilities and support a strong control culture.
+
+Work with your model risk management team to create a template that accurately reflects your organization's attestation requirements.
+
+## What's next
+
+::: {#attestation-listing}
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^2]: [Working with model findings](/guide/model-validation/working-with-model-findings.qmd)
+
+[^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd) 
