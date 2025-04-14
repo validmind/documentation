@@ -11,15 +11,23 @@ listing:
     - path: ../../../developer/validmind-library.qmd#for-model-development
       title: "{{< var vm.product >}} for model development {{< fa chevron-right >}}"
       description: "Learn how to use {{< var vm.product >}} for your end-to-end model documentation process based on common model development scenarios with our series of four introductory notebooks."
-  - id: python-api
+  - id: raw-data
     type: grid
     grid-columns: 1
     max-description-length: 250
     contents:
-    - path: ../../../validmind/validmind.qmd
-      title: "{{< var validmind.api >}}"
-      description: "Open reference {{< fa chevron-right >}}"
-    fields: [title, description]
+    - path: ../../../notebooks/how_to/understand_utilize_rawdata.ipynb
+      title: "Understand and utilize `RawData` in {{< var vm.product >}} tests {{< fa chevron-right >}}"
+      description: "Learn how to access, inspect, and utilize `RawData` from {{< var vm.product >}} tests."
+  - id: credit-risk
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    contents:
+    - path: ../../../notebooks/code_samples/credit_risk/application_scorecard_with_ml.ipynb
+      title: "Document an application scorecard model {{< fa chevron-right >}}"
+      categories: ["Machine Learning"]
+      description: "tagline UPDATE"
 ---
 
 DON'T FORGET THE SUMMARY
@@ -34,27 +42,35 @@ Our documentation now follows the new **unified versioning scheme** for our soft
 
 ### {{< var validmind.developer >}} (v2.8.13)
 
-#### Jupyter Notebooks
-
 <!---
 PR #326: Restructured old "Introduction for model developers" notebook
 URL: https://github.com/validmind/validmind-library/pull/326
 Labels: documentation, highlight
 --->
-##### New introduction for model development notebook series
+#### New introduction for model development notebook series
 
 We've revamped our old *Introduction for model developers* notebook into a series of four introductory notebooks — **ValidMind for model development:**
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
 1. Set up the ValidMind Library
 2. Start the model development process
 3. Integrate custom tests
 4. Finalize testing and documentation
 
+:::
+
+::: {.w-40-ns .tc}
+[{{< fa brands github >}} Access Notebooks on GitHub](https://github.com/validmind/validmind-library/tree/main/notebooks/tutorials/model_development){.button .button-green target="_blank"}
+
+:::
+
+::::
+
 ::: {.column-margin}
 :::{#development-series}
 :::
-
-[{{< fa brands github >}} Access Notebooks on GitHub](https://github.com/validmind/validmind-library/tree/main/notebooks/tutorials/model_development){.button .button-green target="_blank"}
 
 :::
 
@@ -64,121 +80,129 @@ These new notebooks break down using ValidMind for your end-to-end model documen
 - After you've completed your learning journey with these notebooks, you'll have a fully documented sample model ready for review.
 
 <!---
-PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
-URL: https://github.com/validmind/validmind-library/pull/280
+PR #285: John6797/sc 7792/add raw data to validmind library tests
+URL: https://github.com/validmind/validmind-library/pull/285
 Labels: enhancement
 --->
-##### Document credit risk scorecard models using XGBoost*
+#### Surfaced `RawData` in ValidMind tests
 
-We've added two new variations to our **Document an application scorecard** notebooks family:
+Test functions in the {{< var validmind.developer >}} can now return a special object called *`RawData`*, which holds intermediate or unprocessed data produced somewhere in the test logic but not returned as part of the test's visible output, such as in tables or figures:
 
-::: {.column-margin}
-
-[{{< fa brands github >}} Access Notebooks on GitHub](https://github.com/validmind/validmind-library/blob/main/notebooks/code_samples/credit_risk/){.button .button-green target="_blank"}
-
-:::
+- The `RawData` feature allows you to customize the output of tests, making it a powerful tool for creating custom tests and post-processing functions.
+- `RawData` is useful when running post-processing functions with tests to recompute tabular outputs, redraw figures, or even create new outputs entirely.
 
 :::: {.flex .flex-wrap .justify-around}
 
-::: {.w-50-ns .tc}
-
-[full suite placeholder](/notebooks/code_samples/credit_risk/application_scorecard_full_suite.ipynb){.button .button-green target="_blank"}
+::: {.w-60-ns}
+To complement this new feature, we've also released an accompanying notebook showing you how to access, inspect, and utilize `RawData` from {{< var vm.product >}} tests:
 
 :::
 
-::: {.w-50-ns .tc}
-
-[ML placeholder](/notebooks/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button .button-green target="_blank"}
+::: {.w-40-ns .tc}
+[{{< fa brands github >}} Access Notebook on GitHub](https://github.com/validmind/validmind-library/tree/main/notebooks/how_to/understand_utilize_rawdata.ipynb){.button .button-green target="_blank"}
 
 :::
 
 ::::
 
-- Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
-- You can choose from two new approaches: **running individual tests** or **using a single function** to document a model.
+::: {.column-margin}
+:::{#raw-data}
+:::
 
+:::
 
 <!---
 PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
 URL: https://github.com/validmind/validmind-library/pull/290
 Labels: enhancement
 --->
-##### New ongoing monitoring notebooks for application scorecard models
+#### New ongoing monitoring notebook for application scorecard models
 
 Add two new notebooks for the scorecard model:
 
 - `application_scorecard_ongoing_monitoring.ipynb`: Includes new metrics for data and model drift. It also populates the ongoing monitoring document for the scorecard model.
 
-- `application_scorecard_executive.ipynb`: This high-level notebook documents the scorecard model with just one command `lending_club.document_model()`.
- 
-Generated PR summary: 
- 
-This update to the ValidMind Library introduces enhancements and bug fixes related to credit risk scorecard models and ongoing monitoring capabilities. You can now access new Jupyter notebooks that guide you through using the ValidMind Library with credit risk datasets. These include demonstrations on building and documenting application scorecard models, integrating machine learning models into scorecards, and focusing on ongoing monitoring.
 
-Custom tests have been introduced for scorecard models, allowing you to define and run your own tests using the ValidMind Library. This includes evaluating discrimination metrics across different score bands.
+<!---
+PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
+URL: https://github.com/validmind/validmind-library/pull/280
+Labels: enhancement
+--->
+#### New document credit risk scorecard model notebook
 
-Ongoing monitoring has been enhanced with new tests designed to evaluate various aspects such as probability calibration changes, classification discrimination metrics comparison, class distribution drift, classification accuracy metrics comparison, confusion matrix metrics comparison, cumulative prediction probability distributions comparison, feature distribution changes, prediction distributions across features assessment, correlation changes between predictions and features evaluation, prediction probability distributions comparison using histograms and quantiles, ROC curves comparison, score bands drift analysis, score distributions comparisons through histograms, and differences in prediction distributions assessment.
+:::: {.flex .flex-wrap .justify-around}
 
-The library also sees improvements in dataset loading, preprocessing, and feature engineering functions with verbosity control for cleaner outputs. Additionally, the library version is updated from 2.7.5 to 2.7.6. Integration tests have been modified to skip certain ongoing monitoring tests that require specific conditions.
+::: {.w-60-ns}
+We've added a new variations to our **Document an application scorecard** notebooks family:
 
-These updates enhance your ability to manage and monitor credit risk models effectively while providing increased flexibility and valuable insights into model performance.
+:::
 
-#### Python Library API
+::: {.w-40-ns .tc}
+[{{< fa brands github >}} Access Notebook on GitHub](/notebooks/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button .button-green target="_blank"}
 
+:::
+
+::::
+
+::: {.column-margin}
+:::{#credit-risk}
+:::
+
+:::
+
+- Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
+- EDIT ME
 
 <!---
 PR #295: feat: add print_env function
 URL: https://github.com/validmind/validmind-library/pull/295
 Labels: enhancement
 --->
-##### Add `print_env` function
+#### Ability to capture {{< var validmind.developer >}} environment
 
-Add `validmind.print_env()` function to dump running environment
+You can now retrieve information about your local environment running {{< var vm.product >}} using `print_env()`, allowing you to use this information to debug potential issues, as well as share this information with our team to assist you in troubleshooting.
 
-Add a new top-level function for printing the running environment. 
+:::: {.flex .flex-wrap .justify-around}
 
-This is helpful when debugging or asking others for help to debug.
+::: {.w-80-ns}
+The output of this call includes:
 
-```python
-import validmind
+- Your installed {{< var validmind.developer >}} version
+- Your Python version and related details, such as installed dependencies and their versions
+- Your operating system
+- Timestamp of the return
 
-validmind.print_env()
+:::
+
+::: {.w-20-ns .tc}
+[print_env()](/validmind/validmind.qmd#print_env){.button .button-green target="_blank"}
+
+:::
+
+::::
+
+::: {.column-margin}
+**Example `print_env()` output:**
+
+```bash
+{'validmind': {'version': '2.8.13'},
+ 'python': {'version': '3.10.13',
+            'implementation': 'CPython',
+            'compiler': 'Clang 15.0.0 (clang-1500.3.9.4)'},
+ 'platform': 'macOS-15.4-arm64-arm-64bit',
+ 'pip': {'aequitas': '1.0.0',
+         ...
+         },
+ 'timestamp': '2025-04-14T14:30:54.633089'}
 ```
- 
-Generated PR summary: 
- 
-This release introduces a new `print_env` function in the `validmind/tests/run.py` module. The function uses the `pprint` module to pretty-print the run metadata obtained from the `_get_run_metadata` function. Additionally, the `print_env` function is now included in the `__all__` list in the `validmind/__init__.py` file, making it accessible as part of the module's public API. You can now utilize this function to easily format and view metadata information.
-
-
-<!---
-PR #285: John6797/sc 7792/add raw data to validmind library tests
-URL: https://github.com/validmind/validmind-library/pull/285
-Labels: enhancement
---->
-##### Add raw data to `validmind` library tests
-
-Adding raw data storage
-
-Raw data storage is added across all of our test library. Every ValidMind test now returns a `RawData` object. You can use the `RawData` object in post-processing functions to recreate any test output. The feature continues the trend towards more flexibility and customizability.
- 
-Generated PR summary: 
- 
-This release introduces significant updates to the AI test scripts and unit tests by integrating a new `RawData` mechanism. This allows you to store and retrieve intermediate data used in test functions, enhancing post-processing capabilities and providing more detailed insights into test results.
-
-The script `add_test_description.py` has been removed, suggesting a change in how test descriptions are managed or generated. In its place, a new script called `bulk_ai_test_updates.py` is added to facilitate bulk updates on test files using AI, supporting actions like adding descriptions and raw data.
-
-Many test scripts now utilize the `RawData` class to capture intermediate data useful for regenerating test results during post-processing. Test scripts have been updated to return this raw data alongside traditional outputs like figures and tables.
-
-Unit tests are also updated to accommodate these changes, particularly by checking for the presence of `RawData` in test results and verifying its contents. New unit tests ensure the correct functionality of the `RawData` integration.
-
-Codebase refactoring improves readability and maintainability through reorganization of imports, removal of redundant code, and adherence to coding standards. Security and dependency management are enhanced by ensuring all necessary dependencies are correctly imported and utilized, reducing runtime errors and improving overall security.
+:::
 
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
 URL: https://github.com/validmind/validmind-library/pull/263
 Labels: enhancement, highlight
 --->
-##### Add initial support for post-processing functions
+#### Add initial support for post-processing functions*
 
 Adding support for post-processing functions
 
@@ -196,25 +220,29 @@ Lastly, various code refinements include improvements for JSON serialization of 
 
 ### {{< var validmind.platform >}} (v1.31.10)
 
-
 <!---
 PR #1269: [SC-8611] As an admin I am able to manage model stakeholders
 URL: https://github.com/validmind/frontend/pull/1269
 Labels: enhancement
 --->
-#### As an admin you are able to manage model stakeholders
+#### Ability to manage model stakeholder types
 
-Customer admins can now create new stakeholder roles and edit permissions under the new settings option.
+:::: {.flex .flex-wrap .justify-around}
 
-The new stakeholder roles are available in the inventory model overview page for user assignment.
- 
-Generated PR summary: 
- 
-This release introduces several functional enhancements and bug fixes focused on managing stakeholder roles within the application. You now have access to a new Stakeholders page with dedicated routes, such as `/settings/stakeholders` and `/settings/stakeholders/:roleCUID`, allowing you to manage model stakeholder types separately from standard roles. The RoleDetails component adapts based on whether you are viewing stakeholders, updating breadcrumb labels, and limiting editing permissions for locked stakeholder roles. 
+::: {.w-60-ns}
+We've introduced the ability to define custom model stakeholder types, allowing you to control granular permissions on each model in your inventory:
 
-Additionally, the Model Inventory's UI logic has been improved to support toggling visibility for additional roles and managing stakeholder roles dynamically. A new popover component lets you control which roles are visible. Consistent field identifiers have been introduced and are utilized across various components to ensure uniform handling of user and stakeholder roles.
+:::
 
-Bug fixes include console warnings for missing event fields in the ActivityFeedWidget, improved formatting logic in PermissionsList to handle custom field prefixes correctly, and minor tweaks in toast notifications and UI elements like buttons and grids. These updates enhance your experience by refining the management of stakeholder types, incorporating UI improvements, and ensuring consistent data handling.
+::: {.w-40-ns .tc}
+[Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd){.button .button-green target="_blank"}
+
+:::
+
+::::
+
+- Model stakeholders determine specific responsibilities and access levels for model review and approval processes for each model in your model inventory, such as read or edit access to model inventory fields.
+- Each model stakeholder also belongs to user groups* which determine which models they can see, and have user roles* with attached role permissions* which define the level of access they have to overarching {{< var validmind.platform >}} features.
 
 ### Documentation
 
@@ -225,7 +253,19 @@ Labels: documentation, highlight
 --->
 #### Improved {{< var vm.api >}} reference
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
 We've completely redesigned our {{< var validmind.api >}} reference using the same tools we use to produce the rest of our product documentation, allowing us to more easily keep this information up to date and ensure its accuracy.
+
+:::
+
+::: {.w-40-ns .tc}
+[{{< var validmind.api >}} reference](/validmind/validmind.qmd){.button .button-green target="_blank"}
+
+:::
+
+::::
 
 - Now featuring more intuitive navigation wrapped in a familiar sidebar, enhanced code signature styling, and integration with our main docs site search, these improvements aim to empower users to maximize the potential of the {{< var validmind.developer >}}.
 - The updated reference structure mirrors the Python package layout, ensuring backward compatibility with our old Python API reference while providing a more reader-friendly experience.
