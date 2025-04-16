@@ -69,6 +69,66 @@ clone:
 copy-installation:
 	cp -r $(SRC_ROOT)/installation/site/installation installation
 
+# Delete PR branch on https://docs-demo.vm.validmind.ai/
+delete-demo-branch:
+	@aws s3 rm s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
+	@echo "\nDeleted https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/"
+
+# Deploy PR branch to https://docs-demo.vm.validmind.ai/
+deploy-demo-branch:
+	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
+	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
+
+# Deployment to https://docs.validmind.ai/
+deploy-prod:
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
+		echo "You're not on the prod branch, no action taken."; \
+	else \
+		echo "\nDeploying prod site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+	fi
+
+# Deployment to https://docs-staging.validmind.ai/
+deploy-staging:
+	@if [ "`git rev-parse --abbrev-ref HEAD`" != "staging" ]; then \
+		echo "You're not on the staging branch, no action taken."; \
+	else \
+		echo "\nDeploying staging site ..."; \
+		cp -r $(SRC_ROOT)/installation/site/installation installation
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+	fi
+
+docker-build: docker-site-lite
+	@echo "\nBuilding the Docker image ..."
+	@docker build -f ../Dockerfile -t validmind-docs ..
+
+docker-serve:
+	@echo "\nStarting the Docker container on http://localhost:4444/ ..."
+	@docker run -p 4444:80 validmind-docs
+
+docker-site: get-source
+	@echo "\nRendering the configurable static HTML site for Docker ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+	@$(MAKE) execute PROFILE=exe-prod
+
+docker-site-lite: get-source
+	@echo "\nRendering the configurable static HTML site for Docker (skip notebook execution) ..."
+	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
+
+# Get all source files
+docs-site: get-source
+	@echo "\nRendering the static HTML site ..."
+	quarto render --profile production
+	@$(MAKE) execute PROFILE=exe-prod
+
+# Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
+execute:
+	quarto render --profile $(PROFILE) $(FILE_PATH)
+
+# Get all source files
+get-source: clean clone copy-installation notebooks python-docs test-descriptions
+
 # Copy over Jupyter notebooks and supporting files
 notebooks:
 	@echo "\nUpdating notebook source ..."
@@ -96,55 +156,6 @@ python-docs:
 		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
 	fi
 
-test-descriptions:
-	@echo "\nUpdating test descriptions source ..."
-	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
-	@cd ../../
-	@rm -rf $(DEST_DIR_TESTS)
-	@mkdir -p $(DEST_DIR_TESTS)
-	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
-	@echo "Copying _metadata.yml into tests/ ..."
-	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
-
-# Get all source files
-get-source: clean clone copy-installation notebooks python-docs test-descriptions
-
-# Get all source files
-docs-site: get-source
-	@echo "\nRendering the static HTML site ..."
-	quarto render --profile production
-	@$(MAKE) execute PROFILE=exe-prod
-
-# Deploy PR branch to https://docs-demo.vm.validmind.ai/
-deploy-demo-branch:
-	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
-
-# Delete PR branch on https://docs-demo.vm.validmind.ai/
-delete-demo-branch:
-	@aws s3 rm s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeleted https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/"
-
-# Deployment to https://docs.validmind.ai/
-deploy-prod:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "prod" ]; then \
-		echo "You're not on the prod branch, no action taken."; \
-	else \
-		echo "\nDeploying prod site ..."; \
-		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
-	fi
-
-# Deployment to https://docs-staging.validmind.ai/
-deploy-staging:
-	@if [ "`git rev-parse --abbrev-ref HEAD`" != "staging" ]; then \
-		echo "You're not on the staging branch, no action taken."; \
-	else \
-		echo "\nDeploying staging site ..."; \
-		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
-	fi
-
 # Generate release notes
 release-notes:
 	@python ../release-scripts/generate_release_objects.py; \
@@ -157,6 +168,16 @@ release-notes:
 		echo "Release note generation failed, git status and quarto preview"; \
 	fi
 
+test-descriptions:
+	@echo "\nUpdating test descriptions source ..."
+	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd ../../
+	@rm -rf $(DEST_DIR_TESTS)
+	@mkdir -p $(DEST_DIR_TESTS)
+	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
+	@echo "Copying _metadata.yml into tests/ ..."
+	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
+
 # Collate yearly releases
 yearly-releases:
 	@python ../release-scripts/yearly_cleanup.py
@@ -164,23 +185,10 @@ yearly-releases:
 	git status | grep -v 'release-scripts/'
 	quarto preview
 
-# Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
-execute:
-	quarto render --profile $(PROFILE) $(FILE_PATH)
 
-docker-site: get-source
-	@echo "\nRendering the configurable static HTML site for Docker ..."
-	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
-	@$(MAKE) execute PROFILE=exe-prod
 
-docker-site-lite: get-source
-	@echo "\nRendering the configurable static HTML site for Docker (skip notebook execution) ..."
-	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
 
-docker-build: docker-site-lite
-	@echo "\nBuilding the Docker image ..."
-	@docker build -f ../Dockerfile -t validmind-docs ..
 
-docker-serve:
-	@echo "\nStarting the Docker container on http://localhost:4444/ ..."
-	@docker run -p 4444:80 validmind-docs
+
+
+
