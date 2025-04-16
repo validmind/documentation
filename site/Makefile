@@ -1,14 +1,14 @@
 # Define source and destination directories
-LIBRARY_BRANCH ?= $(or $(BRANCH),main)
-INSTALLATION_BRANCH := main
-SRC_ROOT := _source
-SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+INSTALLATION_BRANCH := main
+LIBRARY_BRANCH ?= $(or $(BRANCH),main)
+PROFILE := exe-demo
+SRC_ROOT := _source
+SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
 .PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source notebooks python-docs release-notes test-descriptions yearly-releases
