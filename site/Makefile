@@ -11,29 +11,32 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone notebooks python-docs docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes execute docker-site docker-site-lite docker-build docker-serve 
+.PHONY: help clean clone copy-installation notebooks python-docs test-descriptions get-source docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes yearly-releases execute docker-site docker-site-lite docker-build docker-serve
 
 # Help section
 help:
 	@echo "Available targets:"
+	@echo "  help                 Display this help message (default target)"
 	@echo "  clean                Remove the _source/ directory"
 	@echo "  clone                Clone the validmind-library repository into _source/"
 	@echo "                       Optional, for PR testing: BRANCH=<branch-name>"
-	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
-	@echo "  python-docs          Copy the Python library docs into _site/validmind"
-	@echo "  get-source           Get all source files (clean, clone, notebooks, python-docs)"
-	@echo "  docs-site            Get all source files and render the docs site with Quarto"
-	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  copy-installation    Copy customer-managed installation docs into installation/"
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
 	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
-	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
-	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
 	@echo "  docker-build         Builds a Docker image of the docs site"
 	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
-	@echo "  help                 Display this help message (default target)"
-	@echo "  release-notes        Generate release notes from pull requests since latest tag and update _quarto.yml"
-	@echo "  yearly-releases      Collate and move a specified year of releases into their own subdir and update _quarto.yml"
+	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
+	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
+	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
+	@echo "  execute              Execute a Jupyter Notebook, optional overrides: PROFILE= FILE_PATH"
+	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
+	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
+	@echo "  python-docs          Copy the Python library docs into validmind/"
+	@echo "  release-notes        Generate release notes from pull requests since latest tag and update releases sidebar"
+	@echo "  test-descriptions    Copy the ValidMind tests docs into tests/"
+	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
 
 # Clean up source directory
 clean:
@@ -161,9 +164,7 @@ yearly-releases:
 	git status | grep -v 'release-scripts/'
 	quarto preview
 
-# Execute a Jupyter Notebook  
 # Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
-# To override: make execute PROFILE=select-profile FILE_PATH=notebooks/notebook-path-here.ipynb
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
