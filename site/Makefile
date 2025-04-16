@@ -11,7 +11,7 @@ PROFILE := exe-demo
 FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation notebooks python-docs test-descriptions get-source docs-site deploy-demo-branch delete-demo-branch deploy-prod deploy-staging release-notes yearly-releases execute docker-site docker-site-lite docker-build docker-serve
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
