@@ -11,23 +11,6 @@ listing:
     - path: ../../../developer/validmind-library.qmd#for-model-development
       title: "{{< var vm.product >}} for model development {{< fa chevron-right >}}"
       description: "Learn how to use {{< var vm.product >}} for your end-to-end model documentation process based on common model development scenarios with our series of four introductory notebooks."
-  - id: raw-data
-    type: grid
-    grid-columns: 1
-    max-description-length: 250
-    contents:
-    - path: ../../../notebooks/how_to/understand_utilize_rawdata.ipynb
-      title: "Understand and utilize `RawData` in {{< var vm.product >}} tests {{< fa chevron-right >}}"
-      description: "Learn how to access, inspect, and utilize `RawData` from {{< var vm.product >}} tests."
-  - id: credit-risk
-    type: grid
-    grid-columns: 1
-    max-description-length: 250
-    contents:
-    - path: ../../../notebooks/code_samples/credit_risk/application_scorecard_with_ml.ipynb
-      title: "Document an application scorecard model {{< fa chevron-right >}}"
-      categories: ["Machine Learning"]
-      description: "tagline UPDATE"
 ---
 
 DON'T FORGET THE SUMMARY!
@@ -78,124 +61,6 @@ These new notebooks break down using ValidMind for your end-to-end model documen
 
 - Learn the basics of the ValidMind Library with these interactive notebooks designed to introduce you to basic ValidMind concepts and get you familiar with tasks such as how to work with documentation templates, running and logging tests with ValidMind, and more.
 - After you've completed your learning journey with these notebooks, you'll have a fully documented sample model ready for review.
-
-<!---
-PR #285: John6797/sc 7792/add raw data to validmind library tests
-URL: https://github.com/validmind/validmind-library/pull/285
-Labels: enhancement
---->
-#### Surfaced `RawData` in ValidMind tests
-
-Test functions in the {{< var validmind.developer >}} can now return a special object called *`RawData`*, which holds intermediate or unprocessed data produced somewhere in the test logic but not returned as part of the test's visible output, such as in tables or figures:
-
-- The `RawData` feature allows you to customize the output of tests, making it a powerful tool for creating custom tests and post-processing functions.
-- `RawData` is useful when running post-processing functions with tests to recompute tabular outputs, redraw figures, or even create new outputs entirely.
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-60-ns}
-To complement this new feature, we've also released an accompanying notebook showing you how to access, inspect, and utilize `RawData` from {{< var vm.product >}} tests:
-
-:::
-
-::: {.w-40-ns .tc}
-[{{< fa brands github >}} Access Notebook on GitHub](https://github.com/validmind/validmind-library/tree/main/notebooks/how_to/understand_utilize_rawdata.ipynb){.button .button-green target="_blank"}
-
-:::
-
-::::
-
-::: {.column-margin}
-:::{#raw-data}
-:::
-
-:::
-
-<!---
-PR #290: [SC-8008] Ongoing monitoring notebook for application scorecard model
-URL: https://github.com/validmind/validmind-library/pull/290
-Labels: enhancement
---->
-#### New ongoing monitoring notebook for application scorecard models
-
-Add two new notebooks for the scorecard model:
-
-- `application_scorecard_ongoing_monitoring.ipynb`: Includes new metrics for data and model drift. It also populates the ongoing monitoring document for the scorecard model.
-
-
-<!---
-PR #280: [SC-7864] Create credit risk scorecard notebook using XGBoost
-URL: https://github.com/validmind/validmind-library/pull/280
-Labels: enhancement
---->
-#### New document credit risk scorecard model notebook
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-60-ns}
-We've added a new variations to our **Document an application scorecard** notebooks family:
-
-:::
-
-::: {.w-40-ns .tc}
-[{{< fa brands github >}} Access Notebook on GitHub](/notebooks/code_samples/credit_risk/application_scorecard_with_ml.ipynb){.button .button-green target="_blank"}
-
-:::
-
-::::
-
-::: {.column-margin}
-:::{#credit-risk}
-:::
-
-:::
-
-- Learn how to document application scorecard models using the {{< var vm.developer >}}. These notebooks provide a step-by-step guide for loading a demo dataset, preprocessing data, training models, and documenting the model.
-- EDIT ME
-
-<!---
-PR #295: feat: add print_env function
-URL: https://github.com/validmind/validmind-library/pull/295
-Labels: enhancement
---->
-#### Ability to capture {{< var validmind.developer >}} environment
-
-You can now retrieve information about your local environment running {{< var vm.product >}} using `print_env()`, allowing you to use this information to debug potential issues, as well as share this information with our team to assist you in troubleshooting.
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-80-ns}
-The output of this call includes:
-
-- Your installed {{< var validmind.developer >}} version
-- Your Python version and related details, such as installed dependencies and their versions
-- Your operating system
-- Timestamp of the return
-
-:::
-
-::: {.w-20-ns .tc}
-[print_env()](/validmind/validmind.qmd#print_env){.button .button-green target="_blank"}
-
-:::
-
-::::
-
-::: {.column-margin}
-**Example `print_env()` output:**
-
-```bash
-{'validmind': {'version': '2.8.13'},
- 'python': {'version': '3.10.13',
-            'implementation': 'CPython',
-            'compiler': 'Clang 15.0.0 (clang-1500.3.9.4)'},
- 'platform': 'macOS-15.4-arm64-arm-64bit',
- 'pip': {'aequitas': '1.0.0',
-         ...
-         },
- 'timestamp': '2025-04-14T14:30:54.633089'}
-```
-:::
 
 <!---
 PR #263: Add Initial Support for Post-Processing Functions
@@ -291,94 +156,11 @@ We've completely redesigned our {{< var validmind.api >}} reference using the sa
 ### {{< var validmind.developer >}} (v2.8.13)
 
 <!---
-PR #274: [SC-7759] Exposing static descriptions in test results
-URL: https://github.com/validmind/validmind-library/pull/274
-Labels: enhancement
---->
-#### Exposing static descriptions in test results
-
-Added `doc` property to `TestResult` class
-
-The `doc` property clearly separates the static test documentation from the LLM-generated descriptions. This change helps distinguish between the original test documentation (accessed via `result.doc`) and the dynamic descriptions generated by the LLM. You can access these via `result.description`.
-
-The `doc` property contains the test's docstring. It provides direct access to users which clarifies the test's purpose and behavior.
- 
-Generated PR summary: 
- 
-This update to the ValidMind project includes various enhancements and bug fixes. You can now document test results more comprehensively with the addition of a `doc` attribute to the `TestResult` class, which stores related documentation. Functions such as `build_test_result`, `_run_composite_test`, `_run_comparison_test`, and `run_test` are updated to incorporate this documentation into the test result pipeline. The ROC curve tests in `test_ROCCurve.py`, including `test_roc_curve_structure` and `test_perfect_separation`, are enhanced to accommodate changes in the `ROCCurve` function's return values, which now include a tuple of `RawData` and `Figure`. The improvements add assertions to verify that the `RawData` object has expected fields like `fpr`, `tpr`, and `auc`. Additionally, modifications to the test execution process ensure that if any unit tests fail in `tests/test_unit_tests.py`, it exits with a failure status, enhancing overall testing robustness.
-
-<!---
-PR #256: [SC-7588] Explore dynamic llm context injection in test descriptions
-URL: https://github.com/validmind/validmind-library/pull/256
-Labels: enhancement
---->
-#### Explore dynamic llm context injection in test descriptions
-
-Added the capability to include contextual information in LLM-based descriptions  
-The changes mainly focus on improving the generation of descriptions for test results. You can do this by incorporating additional context that you specify through environment variables.
- 
-Generated PR summary: 
- 
-This update enhances the ValidMind library by enabling you to include contextual information in LLM-based descriptions. The improvements focus on generating more informative test result descriptions through additional context specified via environment variables.
-
-Notable changes include the addition of a Jupyter notebook, `llm_descriptions_context.ipynb`, which demonstrates how to incorporate context into LLM-based descriptions. You can see examples of setting up environments, initializing datasets and models, and comparing test results with and without added context.
-
-A new function, `_get_llm_global_context()`, is introduced in `test_descriptions.py` for retrieving context from environment variables, ensuring that context is utilized only if enabled and non-empty. The `generate_description` function now incorporates this context when creating description input data.
-
-Additionally, the `user.jinja` template has been updated to conditionally add the context in generated descriptions if available. This allows you to align LLM-generated insights more closely with specific business requirements or policies by providing extra information about tests or use cases.
-
-
-<!---
-PR #293: [SC-8072] Support threshold lines in unit metric plots
-URL: https://github.com/validmind/validmind-library/pull/293
-Labels: enhancement
---->
-#### Support threshold lines in unit metric plots
-
-**Description**
-
-Enhances the `log_metric()` function  
-
-Enhances the `log_metric()` function to accept multiple named thresholds as a dictionary input. This enhancement allows you to define and track multiple threshold levels for each unit metric. For instance, you can specify thresholds like "high_risk": 0.6, "medium_risk": 0.7, and "low_risk": 0.8.
-
-**Changes**
-
-- Added threshold support in `log_metric()`.
-- Added notebook `how_to\log_metrics_over_time.ipynb`.
-
-**Testing**
-
-- Tested with various threshold configurations.
-- Verified threshold line rendering in the UI.
-- Validated that threshold updates reflect immediately in visualization.
-
-**Example**
-
-```
-log_metric(
-    key="AUC Score",
-    value=auc,
-    recorded_at=datetime(2024, 1, 1),
-    thresholds={
-        "high_risk": 0.6,
-        "medium_risk": 0.7,
-        "low_risk": 0.8,
-    }
-)
-```
-
-<img width="949" alt="log_metric_auc_4" src="https://github.com/user-attachments/assets/9df62ede-b51f-46e3-b5bc-e9caa5ca685f"/>
- 
-Generated PR summary: 
- 
-This update enhances the ValidMind library by adding support for logging thresholds alongside metrics. The `log_metric` and `alog_metric` functions in the `api_client.py` file now include an optional `thresholds` parameter, allowing you to specify threshold values for metrics. This feature helps you visualize metrics over time and identify potential issues by setting reference lines in metric visualizations. Additionally, the notebook `log_metrics_over_time.ipynb` has been updated with examples of logging multiple metrics with custom thresholds, demonstrating how to use this new functionality.
-
-<!---
 PR #337: [SC 8805] support config option for logging test results
 URL: https://github.com/validmind/validmind-library/pull/337
 Labels: documentation, enhancement
 --->
-#### Support config option for logging test results
+#### Support config option for logging test results*
 
 We now have configuration options 
 
@@ -465,7 +247,7 @@ Previously, when test results logged to the {{< var validmind.platform >}} conta
 Now, test results logged and inserted as test-driven blocks* into the documentation display pagination navigation buttons correctly regardless of the size of the data table.
 
 
-<!-- Customer-managed ValidMind -->
+<!-- Customer-managed ValidMind ONLY -->
 
 <!---
 PR #674: Add URL configuration to Docker images
