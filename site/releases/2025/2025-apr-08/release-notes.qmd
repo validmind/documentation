@@ -139,19 +139,31 @@ PR #337: [SC 8805] support config option for logging test results
 URL: https://github.com/validmind/validmind-library/pull/337
 Labels: documentation, enhancement
 --->
-#### Support config option for logging test results*
+#### Support for display configuration of test-driven blocks
 
-We now have configuration options 
+:::: {.flex .flex-wrap .justify-around}
 
-You can pass configuration options through `result.log()` to display and customize the test results block in UI documents.
+::: {.w-80-ns}
+You can now customize the display of test results when inserted as test-driven blocks in the {{< var validmind.platform >}} when logging results via the {{< var validmind.developer >}} with `result.log()`.
 
-Available config options:
+:::
 
-- hideTitle
-- hideText
-- hideParams
-- hideTables
-- hideFigures
+::: {.w-20-ns .tc}
+[result.log()](/validmind/validmind/vm_models.qmd#log){.button target="_blank"}
+
+:::
+
+::::
+
+You can now toggle the display of the following attributes:
+
+- `hideTitle`
+- `hideText`
+- `hideParams`
+- `hideTables`
+- `hideFigures`
+
+For example, to show figures but hide tables:
 
 ```python
 test = vm.tests.run_test(
@@ -160,22 +172,8 @@ test = vm.tests.run_test(
         "dataset": [vm_raw_dataset],
     },
 )
-test.log(
-    config={
-        "hideFigures": False,
-        "hideTables": True
-    }
-)
+test.log(config={"hideFigures": False, "hideTables": True})
 ```
- 
-Generated PR summary: 
- 
-This release includes several enhancements and bug fixes to the `validmind` API client and result logging functionalities. You can now specify configuration options when displaying test results through a `config` parameter added to the `alog_test_result` and `log_async` methods. These options allow you to hide titles, text, parameters, tables, and figures in the document view as desired. A new method, `validate_log_config`, verifies that provided configuration options are valid by checking for invalid keys and ensuring all values are boolean. If any issues are found, an `InvalidParameterError` is raised.
-
-The error handling is improved with the introduction of the new `InvalidParameterError` class to manage cases involving invalid parameters. Code refactoring efforts include updating the `log_metric` function to return results consistently from `run_async`, aiding in potential error handling. Additionally, docstrings across the codebase received updates for improved clarity.
-
-Test updates accompany these changes as well, specifically altering the `test_log_test_result` case to incorporate the new configuration parameter and ensure thorough testing of logging functionality with these improvements. These enhancements offer greater flexibility in how test results are logged and displayed while strengthening error management and overall code clarity.
-
 
 <!-- COVERED BY MODEL STAKEHOLDER RELEASE ABOVE  -->
 
