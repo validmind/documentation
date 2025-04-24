@@ -65,7 +65,8 @@ clone:
 	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
 copy-installation:
-	cp -r $(SRC_ROOT)/installation/site/installation installation
+	@echo "\nCopying installation source files ..."
+	@cp -r $(SRC_ROOT)/installation/site/installation installation
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
