@@ -1,0 +1,286 @@
+---
+title: "April 24, 2025"
+date: 2025-04-24
+subtitle: "Unified version `25.03.05`"
+listing:
+  - id: development-series
+    type: grid
+    grid-columns: 1
+    max-description-length: 250
+    contents:
+    - path: ../../../developer/validmind-library.qmd#for-model-development
+      title: "{{< var vm.product >}} for model development {{< fa chevron-right >}}"
+      description: "Learn how to use {{< var vm.product >}} for your end-to-end model documentation process based on common model development scenarios with our series of four introductory notebooks."
+---
+
+We've released the ability to manage model stakeholder types within the {{< var validmind.platform >}}, support for custom configuration of test-driven blocks via the {{< var validmind.developer >}}, an updated {{< var vm.api >}} reference within our documentation, and more.
+
+::: {.highlights}
+
+## Release highlights — `25.03.05`
+
+::: {.callout}
+Our documentation now follows the new **unified versioning scheme** for our software as of our [`25.01` release on January 31, 2025](/releases/2025/2025-jan-31/release-notes.qmd).
+:::
+
+### {{< var validmind.developer >}} (v2.8.13)
+
+<!---
+PR #326: Restructured old "Introduction for model developers" notebook
+URL: https://github.com/validmind/validmind-library/pull/326
+Labels: documentation, highlight
+--->
+#### New introduction for model development notebook series
+
+We've revamped our old *Introduction for model developers* notebook into a series of four introductory notebooks — **ValidMind for model development:**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+1. Set up the ValidMind Library
+2. Start the model development process
+3. Integrate custom tests
+4. Finalize testing and documentation
+
+:::
+
+::: {.w-40-ns .tc}
+[{{< fa brands github >}} Access Notebooks on GitHub](https://github.com/validmind/validmind-library/tree/main/notebooks/tutorials/model_development){.button .button-green target="_blank"}
+
+:::
+
+::::
+
+::: {.column-margin}
+:::{#development-series}
+:::
+
+:::
+
+These new notebooks break down using ValidMind for your end-to-end model documentation process based on common model development scenarios:
+
+- Learn the basics of the ValidMind Library with these interactive notebooks designed to introduce you to basic ValidMind concepts and get you familiar with tasks such as how to work with documentation templates, running and logging tests with ValidMind, and more.
+- After you've completed your learning journey with these notebooks, you'll have a fully documented sample model ready for review.
+
+### {{< var validmind.platform >}} (v1.31.10)
+
+<!---
+PR #1269: [SC-8611] As an admin I am able to manage model stakeholders
+URL: https://github.com/validmind/frontend/pull/1269
+Labels: enhancement
+--->
+#### Ability to manage model stakeholder types
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+We've introduced the ability to define custom model stakeholder types, allowing you to control granular permissions on each model in your inventory:
+
+:::
+
+::: {.w-40-ns .tc}
+[Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd){.button .button-green target="_blank"}
+
+:::
+
+::::
+
+- Model stakeholders determine specific responsibilities and access levels for model review and approval processes for each model in your model inventory, such as read or edit access to model inventory fields.
+- Each model stakeholder also belongs to user groups[^1] which determine which models they can see, and have user roles[^2] with attached role permissions[^3] which define the level of access they have to overarching {{< var validmind.platform >}} features.
+
+::: {.callout}
+Model stakeholders are now also available as a field defined in conditional arguments within model workflow steps.[^4]
+
+:::
+
+### Documentation
+
+<!---
+PR #640: Switch Python API reference to Quarto
+URL: https://github.com/validmind/documentation/pull/640
+Labels: documentation, highlight
+--->
+#### Improved {{< var vm.api >}} reference
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-60-ns}
+We've completely redesigned our {{< var validmind.api >}} reference using the same tools we use to produce the rest of our product documentation, allowing us to more easily keep this information up to date and ensure its accuracy.
+
+:::
+
+::: {.w-40-ns .tc}
+[{{< var validmind.api >}} reference](/validmind/validmind.qmd){.button .button-green target="_blank"}
+
+:::
+
+::::
+
+- Now featuring more intuitive navigation wrapped in a familiar sidebar, enhanced code signature styling, and integration with our main docs site search, these improvements aim to empower users to maximize the potential of the {{< var validmind.developer >}}.
+- The updated reference structure mirrors the Python package layout, ensuring backward compatibility with our old Python API reference while providing a more reader-friendly experience.
+
+::: {.column-margin}
+:::{#python-api}
+:::
+
+:::
+
+:::
+
+## Enhancements
+
+### {{< var validmind.developer >}} (v2.8.13)
+
+<!---
+PR #337: [SC 8805] support config option for logging test results
+URL: https://github.com/validmind/validmind-library/pull/337
+Labels: documentation, enhancement
+--->
+#### Support for display configuration of test-driven blocks[^5]
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-80-ns}
+You can now customize the display of test results when inserted as test-driven blocks in the {{< var validmind.platform >}} when logging results via the {{< var validmind.developer >}} with `result.log()`.
+
+:::
+
+::: {.w-20-ns .tc}
+[result.log()](/validmind/validmind/vm_models.qmd#log){.button target="_blank"}
+
+:::
+
+::::
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns .pr1}
+You can now toggle the display of the following attributes:
+
+- `hideTitle`: Title
+- `hideText`: Description
+- `hideParams`: Parameters
+- `hideTables`: Tables
+- `hideFigures`: Figures
+
+:::
+
+::: {.w-70-ns .pl1}
+For example, to show figures but hide tables:
+
+```python
+test = vm.tests.run_test(
+    "validmind.data_validation.TabularDescriptionTables:raw_dataset",
+    input_grid={
+        "dataset": [vm_raw_dataset],
+    },
+)
+test.log(config={"hideFigures": False, "hideTables": True})
+```
+
+:::
+
+::::
+
+<!-- COVERED BY MODEL STAKEHOLDER RELEASE ABOVE  -->
+
+<!---
+PR #1278: Update stakeholder role mapping in workflows builder and filtering logic
+URL: https://github.com/validmind/frontend/pull/1278
+Labels: 
+--->
+<!-- #### Update stakeholder role mapping in workflows builder and filtering logic
+
+Replace this comment with your description
+ 
+Generated PR summary: 
+ 
+This update centralizes and standardizes field identifier handling by introducing a shared constant (FIELD_IDENTIFIERS) throughout the application. In the JsonLogicHumanizer component, role mappings are refined to filter roles based on their scope; roles not of 'Model' scope are mapped to the USER_ROLES identifier, while 'Model' scoped roles are treated as model stakeholder roles using USER_MODEL_STAKEHOLDERS. Merged field mappers now combine custom, general role, and stakeholder mappers for consistent processing of JSON logic queries.
+
+The ApprovalPanel component's query builder is enhanced to use FIELD_IDENTIFIERS instead of hardcoded strings for improved consistency and maintainability. It also introduces new configurations for model stakeholder roles, allowing these roles to be properly selectable and mapped in the UI.
+
+The ApprovalNode component updates conditions to check against FIELD_IDENTIFIERS, which clarifies references to user roles, stakeholder roles, and custom fields. The humanizeJsonLogic utility's outputs now consistently align with updated constants based on role assignments.
+
+Finally, in the useQueryBuilder hook, FIELD_IDENTIFIERS are exported for consistent usage across components, with query fields adjusted to reflect new role identifier mappings. These changes enhance code maintainability by reducing hardcoded values and ensuring consistency in role-based operations across the system. -->
+
+## Bug fixes
+
+### {{< var validmind.platform >}} (v1.31.10)
+
+<!---
+PR #1245: Fix scrolling in documentation table of contents
+URL: https://github.com/validmind/frontend/pull/1245
+Labels: bug
+--->
+#### Improved table of contents navigation for model documentation
+
+Previously, users experienced non-optimal behavior with the table of contents sidebar for their model's **{{< fa book-open >}} Documentation** pages,[^6] such as being unable to scroll to reveal additional headings when the sections of the Document Outline exceeded the length of the visible page, and navigation that auto-collapsed counterintuitively.
+
+Now, users can scroll to reveal previously hidden table of contents headings via a fixed navigation sidebar.
+
+<!---
+PR #1250: Not able to see long output on the UI
+URL: https://github.com/validmind/frontend/pull/1250
+Labels: bug
+--->
+#### Fixed data table navigation in large test-driven blocks
+
+Previously, when test results logged to the {{< var validmind.platform >}} contained more than 20 pages of data in a table, the previous and next buttons did not render correctly for pagination when added as test-driven blocks[^7] into documentation.
+
+Now, test results logged and inserted as test-driven blocks into the documentation display pagination navigation buttons correctly regardless of the size of the data table.
+
+<!-- Customer-managed ValidMind ONLY -->
+
+<!---
+PR #674: Add URL configuration to Docker images
+URL: https://github.com/validmind/documentation/pull/674
+Labels: infrastructure
+
+NOTE: CUSTOMER-MANAGED VALIDMIND RELEASE ONLY, HIDDEN FOR GENERAL RELEASE
+--->
+
+<!-- ### Add URL configuration to Docker images
+
+You can now configure the Docker image for our static docs site. You can do so via a Kubernetes manifest or a config file.
+
+Configuration parameters
+
+- `VALIDMIND_URL` — Where you access the ValidMind Platform.
+- `JUPYTERHUB_URL` — Where you access JupyterHub.
+
+Configuration feature
+
+This feature lets you configure the site's Docker image to match your specific requirements. This process simplifies deployment in your own infrastructure.
+
+Supported methods
+
+You can set these URLs using one of the following supported methods: [URL configuration for Docker](https://github.com/validmind/documentation/blob/main/README.md#url-configuration-for-docker).
+ 
+Generated PR summary: 
+ 
+This update enhances the Docker configuration for the ValidMind documentation site by introducing several key improvements. The Dockerfile now includes the installation of `jq` for handling JSON data, and a new entrypoint script `docker_entrypoint.sh` is added to replace URL placeholders with actual values during runtime. Additionally, the script is set to be executable. A new `config.json` file stores default URL values, allowing dynamic URL configurations. Various documentation files have been updated to use placeholders for URLs, which are replaced at runtime by the entrypoint script.
+
+The Makefile sees enhancements with new targets `docker-site` and `docker-site-lite`, designed for building the site with Docker-specific settings. The `docker-build` target has been updated to utilize the new `docker-site-lite` process.
+
+A sample Kubernetes manifest, `validmind-docs.yaml`, is included to facilitate deploying the documentation site with URLs configurable through environment variables or a ConfigMap. Additionally, two scripts manage URL handling: `modify_urls.sh` replaces actual URLs with placeholders during build, while `docker_entrypoint.sh` substitutes these placeholders with real URLs at runtime, using either environment variables or values from `config.json`.
+
+These changes offer enhanced flexibility in deploying the documentation site across different environments by enabling dynamic configuration of URLs based on deployment settings. -->
+
+{{< include /releases/_how-to-upgrade.qmd >}}
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage groups](/guide/configuration/manage-groups.qmd)
+
+[^2]: [Manage roles](/guide/configuration/manage-roles.qmd)
+
+[^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^4]: [Set up model workflows](/guide/model-workflows/set-up-model-workflows.qmd)
+
+[^5]: [Work with test results](/guide/model-documentation/work-with-test-results.qmd)
+
+[^6]: [Working with model documentation](/guide/model-documentation/working-with-model-documentation.qmd)
+
+[^7]: [Work with test results](/guide/model-documentation/work-with-test-results.qmd)
