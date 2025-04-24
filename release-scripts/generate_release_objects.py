@@ -431,6 +431,27 @@ def get_release_date():
         print("Invalid date format, please try again using the format Month Day, Year (e.g., January 1, 2020)")
         return get_release_date()
     
+
+unified_version = ""
+
+def input_version():
+    """Prompts the user to enter a version number in one of the formats:
+    00.00.00, 00.00.0, or 00.00
+
+    Returns:
+        str: The validated version string.
+    """
+    import re
+    version_pattern = re.compile(r"^\d{2}\.\d{2}(\.\d{1,2})?$")
+
+    while True:
+        version_input = input("Enter the version number (format: 00.00.00, 00.00.0, or 00.00): ")
+        if version_pattern.match(version_input):
+            print(f"Unified version: {version_input}\n")
+            return version_input
+        else:
+            print("Invalid version format. Please use one of the following: 00.00.00, 00.00.0, or 00.00")
+
 def create_release_folder(formatted_release_date):
     """
     Creates a directory for the release notes based on the provided release date
@@ -462,18 +483,26 @@ def create_release_folder(formatted_release_date):
 
     return output_file, year
 
-def create_release_qmd(output_file, original_release_date):
+def create_release_qmd(output_file, original_release_date, release_date_iso, unified_version):
     """
-    Writes metadata to a file with a title set to the original release date.
+    Writes metadata to a file with a title set to the original release date,
+    and includes the release date in ISO format as the date field.
 
     Args:
         output_file (str): The path to the file to write.
         original_release_date (str): The title to include in the metadata.
+        release_date_iso (str): The date in YYYY-MM-DD format for metadata.
     """
 
-    print(f"{original_release_date} added to {output_file} as title")
+    print(f"- {original_release_date} added to {output_file} as title")
+    print(f"  {release_date_iso} added to {output_file} as date")
+    print(f"  {unified_version} added to {output_file} as subtitle")
     with open(output_file, "w") as file:
-        file.write(f"---\ntitle: \"{original_release_date}\"\n---\n\n")
+        file.write(f"---\n")
+        file.write(f"title: \"{original_release_date}\"\n")
+        file.write(f"date: {release_date_iso}\n")
+        file.write(f"subtitle: \"{unified_version}\"\n")
+        file.write(f"---\n\n")
 
     try:
         subprocess.run(["code", output_file], check=True)
@@ -733,16 +762,65 @@ def upgrade_info(output_file):
     except Exception as e:
         print(f"Failed to include _how-to-upgrade.qmd to {output_file}: {e}")
 
-def update_quarto_yaml(release_date, year):
-    """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
+# def update_quarto_yaml(release_date, year):
+#     """Updates the _quarto.yml file to include the release notes file so it can be accessed on the website.
+
+#     Params:
+#         release_date - release notes use the release date as the file name.
+    
+#     Modifies:
+#         _quarto.yml file
+#     """
+#     yaml_filename = "../site/_quarto.yml"
+
+#     # Format the release date for insertion into the YAML file
+#     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
+#     target_line = f'        - releases/{year}/{formatted_release_date}/release-notes.qmd\n'
+
+#     # Check if the target line already exists in the YAML file
+#     with open(yaml_filename, 'r') as file:
+#         if target_line in file.readlines():
+#             print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}, skipping update")
+#             return
+
+#     temp_yaml_filename = "../site/_quarto_temp.yml"
+
+#     # Copy the original YAML file to a temporary file
+#     shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+#     with open(temp_yaml_filename, 'r') as file:
+#         lines = file.readlines()
+
+#     with open(yaml_filename, 'w') as file:
+#         add_release_content = False
+#         insert_index = -1
+
+#         for i, line in enumerate(lines):
+#             file.write(line)
+#             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+#                 add_release_content = True
+#                 insert_index = i
+
+#             if add_release_content and i == insert_index:
+#                 file.write(target_line)
+#                 add_release_content = False
+
+#     # Remove the temporary file
+#     os.remove(temp_yaml_filename)
+    
+#     print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
+
+def update_release_sidebar(release_date, year):
+    """Updates the releases _sidebar.yaml file to include the new yearly release folder.
 
     Params:
-        release_date - release notes use the release date as the file name.
+        year - the year to be used for the folder.
     
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml file
     """
-    yaml_filename = "../site/_quarto.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Format the release date for insertion into the YAML file
     formatted_release_date = release_date.strftime("%Y-%b-%d").lower()
@@ -753,8 +831,6 @@ def update_quarto_yaml(release_date, year):
         if target_line in file.readlines():
             print(f"Release notes for {formatted_release_date} already exist in {yaml_filename}, skipping update")
             return
-
-    temp_yaml_filename = "../site/_quarto_temp.yml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -779,7 +855,7 @@ def update_quarto_yaml(release_date, year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
     
-    print(f"Added new release notes to _quarto.yml, line {insert_index + 2}")
+    print(f"Added new release notes to releases _sidebar.yaml, line {insert_index + 2}")
 
 def update_index_qmd(release_date, year):
     """Updates the index.qmd file to include the new releases in `Latest Releases` and removes the oldest release from the list.
@@ -897,8 +973,11 @@ def main():
     Calls all the same functions as the generate-release-notes.ipynb when you run make release-notes.
     """
     try:
+        from dotenv import load_dotenv
+
         env_location = get_env_location()
         setup_openai_api(env_location)
+        load_dotenv(dotenv_path=env_location)
         print()
 
         label_hierarchy = ["highlight", "enhancement", "breaking-change", "deprecation", "bug", "documentation"]
@@ -916,13 +995,17 @@ def main():
         original_release_date = release_datetime.strftime("%B %-d, %Y")
         print()
 
+        unified_version = ""
+        # Declare and initialize unified_version so it's available globally
+        unified_version = f"Unified version `{input_version()}`"
+
         # Handle potential failure in create_release_folder
         output_file, year = create_release_folder(formatted_release_date)
         if not output_file:  # Ensure the function returns something valid
             raise RuntimeError("Failed to create release folder.")
         print()
 
-        create_release_qmd(output_file, original_release_date)
+        create_release_qmd(output_file, original_release_date, release_datetime.strftime("%Y-%m-%d"), unified_version)
         print()
 
         update_release_components(release_components, categories)
@@ -971,7 +1054,10 @@ def main():
         upgrade_info(output_file)
         print()
 
-        update_quarto_yaml(release_datetime, year)
+        # update_quarto_yaml(release_datetime, year)
+        # print()
+
+        update_release_sidebar(release_datetime, year)
         print()
 
         update_index_qmd(release_datetime, year)
