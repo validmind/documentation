@@ -43,6 +43,7 @@ clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 	rm -rf $(SRC_ROOT)
+	rm -rf notebooks/EXECUTED/model_development/
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -136,7 +137,6 @@ notebooks:
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
 	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
-	@rm -rf notebooks/EXECUTED/model_development/
 	@mkdir -p notebooks/EXECUTED/model_development/
 	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
 	@echo "Copying LICENSE into notebooks ..."
