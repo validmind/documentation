@@ -227,117 +227,182 @@ def update_template(destination_file, year):
         print(f"Failed to update '{destination_file}': {e}")
         return False
     
-release_listings = []
+# release_listings = []
     
-def get_release_listings(yearly_path):
-    """
-    Returns moved releases to add to the yearly release listing.
+# def get_release_listings(yearly_path):
+#     """
+#     Returns moved releases to add to the yearly release listing.
 
-    Args:
-        yearly_path (str): The path to the year folder to search within.
+#     Args:
+#         yearly_path (str): The path to the year folder to search within.
 
-    Returns:
-        list: A list of matching subdirectory names, with '/release-notes.qmd' appended to each, sorted by the date in the folder names in descending order.
-    """
-    global release_listings 
-    listing_dir = f"{yearly_path}"
+#     Returns:
+#         list: A list of matching subdirectory names, with '/release-notes.qmd' appended to each, sorted by the date in the folder names in descending order.
+#     """
+#     global release_listings 
+#     listing_dir = f"{yearly_path}"
 
-    if not os.path.exists(listing_dir):
-        print(f"'{listing_dir}' does not exist")
-        release_listings = []  
-        return release_listings
+#     if not os.path.exists(listing_dir):
+#         print(f"'{listing_dir}' does not exist")
+#         release_listings = []  
+#         return release_listings
 
-    subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
+#     subdirs = [d for d in os.listdir(listing_dir) if os.path.isdir(os.path.join(listing_dir, d))]
 
-    if subdirs:
-        try:
-            # Sort subdirs by parsing the date in the folder names
-            subdirs = sorted(
-                subdirs,
-                key=lambda d: datetime.strptime(d, "%Y-%b-%d"),
-                reverse=True
-            )
-        except ValueError:
-            print("Some folder names do not match the expected date format (YYYY-MMM-DD), skipping sorting")
+#     if subdirs:
+#         try:
+#             # Sort subdirs by parsing the date in the folder names
+#             subdirs = sorted(
+#                 subdirs,
+#                 key=lambda d: datetime.strptime(d, "%Y-%b-%d"),
+#                 reverse=True
+#             )
+#         except ValueError:
+#             print("Some folder names do not match the expected date format (YYYY-MMM-DD), skipping sorting")
 
-        # Append '/release-notes.qmd' to each folder name
-        subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
-        print(f"Found {len(subdirs)} release notes in {yearly_path}:\n")
-        for note in subdirs:
-            print(note)
-    else:
-        print(f"No folders found in {yearly_path}")
+#         # Append '/release-notes.qmd' to each folder name
+#         subdirs = [os.path.join(d, 'release-notes.qmd') for d in subdirs]
+#         print(f"Found {len(subdirs)} release notes in {yearly_path}:\n")
+#         for note in subdirs:
+#             print(note)
+#     else:
+#         print(f"No folders found in {yearly_path}")
 
-    release_listings = subdirs
-    return release_listings
+#     release_listings = subdirs
+#     return release_listings
 
-def update_listing(destination_file, release_listings):
-    """
-    Updates the destination file by appending the contents of release_listings under the
-    '# RELEASE-FILES-MARKER' line if the line directly below it matches '---'.
+# def update_listing(destination_file, release_listings):
+#     """
+#     Updates the destination file by appending the contents of release_listings under the
+#     '# RELEASE-FILES-MARKER' line if the line directly below it matches '---'.
 
-    Args:
-        destination_file (str): The path to the file to be updated.
-        release_listings (list of str): List of release listing file paths to append.
+#     Args:
+#         destination_file (str): The path to the file to be updated.
+#         release_listings (list of str): List of release listing file paths to append.
 
-    Returns:
-        bool: True if the file was updated successfully, False otherwise.
-    """
-    if not os.path.exists(destination_file):
-        print(f"File '{destination_file}' does not exist")
-        return False
+#     Returns:
+#         bool: True if the file was updated successfully, False otherwise.
+#     """
+#     if not os.path.exists(destination_file):
+#         print(f"File '{destination_file}' does not exist")
+#         return False
 
-    try:
-        # Read the file content
-        with open(destination_file, 'r') as file:
-            content = file.readlines()
+#     try:
+#         # Read the file content
+#         with open(destination_file, 'r') as file:
+#             content = file.readlines()
 
-        # Track updated lines
-        edited_lines = []
+#         # Track updated lines
+#         edited_lines = []
 
-        # Update the lines
-        updated_content = []
-        release_marker_found = False
-        for i, line in enumerate(content):
-            updated_content.append(line)
+#         # Update the lines
+#         updated_content = []
+#         release_marker_found = False
+#         for i, line in enumerate(content):
+#             updated_content.append(line)
 
-            if line.strip() == "# RELEASE-FILES-MARKER":
-                if i + 1 < len(content) and content[i + 1].strip() == "---":
-                    release_marker_found = True
-                    insertion_index = len(updated_content)
+#             if line.strip() == "# RELEASE-FILES-MARKER":
+#                 if i + 1 < len(content) and content[i + 1].strip() == "---":
+#                     release_marker_found = True
+#                     insertion_index = len(updated_content)
 
-                    for listing in release_listings:
-                        new_line = f"        - {listing}\n"
-                        updated_content.append(new_line)
-                        edited_lines.append(insertion_index)
-                        insertion_index += 1
+#                     for listing in release_listings:
+#                         new_line = f"        - {listing}\n"
+#                         updated_content.append(new_line)
+#                         edited_lines.append(insertion_index)
+#                         insertion_index += 1
 
-        if not release_marker_found:
-            print(f"'{destination_file}' already has release listings, please review for accuracy")
-            return False
+#         if not release_marker_found:
+#             print(f"'{destination_file}' already has release listings, please review for accuracy")
+#             return False
 
-        # Write the updated content back to the file
-        with open(destination_file, 'w') as file:
-            file.writelines(updated_content)
+#         # Write the updated content back to the file
+#         with open(destination_file, 'w') as file:
+#             file.writelines(updated_content)
 
-        print(f"Updated '{destination_file}' with release listings\n\nAdded lines: {edited_lines}")
-        return True
+#         print(f"Updated '{destination_file}' with release listings\n\nAdded lines: {edited_lines}")
+#         return True
 
-    except Exception as e:
-        print(f"Failed to update '{destination_file}': {e}")
-        return False
+#     except Exception as e:
+#         print(f"Failed to update '{destination_file}': {e}")
+#         return False
     
-def update_quarto_yaml(year):
-    """Updates the _quarto.yml file to include the new yearly release folder.
+# def update_quarto_yaml(year):
+#     """Updates the _quarto.yml file to include the new yearly release folder.
+
+#     Params:
+#         year - the year to be used for the folder.
+    
+#     Modifies:
+#         _quarto.yml file
+#     """
+#     yaml_filename = "../site/_quarto.yml"
+#     temp_yaml_filename = "../site/_quarto_temp.yml"
+
+#     # Copy the original YAML file to a temporary file
+#     shutil.copyfile(yaml_filename, temp_yaml_filename)
+
+#     with open(temp_yaml_filename, 'r') as file:
+#         lines = file.readlines()
+
+#     # Use the year from the parameter
+#     release_file = f"releases/{year}/{year}-releases.qmd"
+#     year_injected = False
+
+#     with open(yaml_filename, 'w') as file:
+#         between_markers = False
+#         year_contents = []
+
+#         for line in lines:
+#             if line.strip() == "# MAKE-RELEASE-NOTES-EMBED-MARKER":
+#                 file.write(line)
+#                 between_markers = True
+#                 continue
+
+#             if line.strip() == "# CURRENT-YEAR-END-MARKER":
+#                 if year_contents and not year_injected:
+#                     # Inject the new file entry with correctly indented contents
+#                     file.write(f"        - file: {release_file}\n")
+#                     file.write("          contents:\n")
+#                     for content in year_contents:
+#                         file.write(f"          {content.strip()}\n")
+#                     year_injected = True
+#                 between_markers = False
+
+#             if between_markers:
+#                 # Collect lines for the specified year
+#                 if f"releases/{year}/{year}-" in line:
+#                     year_contents.append(line)
+#                 else:
+#                     # Write out lines not belonging to the target year
+#                     file.write(line)
+#             else:
+#                 file.write(line)
+
+#         if not year_injected and year_contents:
+#             # Ensure the file and contents are added if the section didn't end naturally
+#             file.write(f"        - file: {release_file}\n")
+#             file.write("          contents:\n")
+#             for content in year_contents:
+#                 file.write(f"          - {content.strip()}\n")
+
+#     # Remove the temporary file
+#     os.remove(temp_yaml_filename)
+
+#     print(f"Added {year} releases folder to the sidebar in _quarto.yml")
+
+
+def update_release_sidebar(year):
+    """Updates the releases _sidebar.yaml file to include the new yearly release folder.
 
     Params:
         year - the year to be used for the folder.
     
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml file
     """
-    yaml_filename = "../site/_quarto.yml"
-    temp_yaml_filename = "../site/_quarto_temp.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -389,22 +454,22 @@ def update_quarto_yaml(year):
     # Remove the temporary file
     os.remove(temp_yaml_filename)
 
-    print(f"Added {year} releases folder to the sidebar in _quarto.yml")
+    print(f"Added {year} releases folder to the releases _sidebar.yaml")
 
 def move_year_marker(year):
-    """Updates the _quarto.yml file to relocate the CURRENT-YEAR-END-MARKER.
+    """Updates the releases _sidebar.yaml file to relocate the CURRENT-YEAR-END-MARKER.
 
     Args:
         year (int): The year to search for in the line pattern.
 
     Modifies:
-        _quarto.yml file
+        ~/site/releases/_sidebar.yaml
     """
     import shutil
     import os
 
-    yaml_filename = "../site/_quarto.yml"
-    temp_yaml_filename = "../site/_quarto_temp.yml"
+    yaml_filename = "../site/releases/_sidebar.yaml"
+    temp_yaml_filename = "../site/releases/_sidebar_temp.yaml"
 
     # Copy the original YAML file to a temporary file
     shutil.copyfile(yaml_filename, temp_yaml_filename)
@@ -446,7 +511,7 @@ def move_year_marker(year):
     os.remove(temp_yaml_filename)
 
     if marker_removed and marker_inserted:
-        print(f"Relocated # CURRENT-YEAR-END-MARKER in _quarto.yml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
+        print(f"Relocated # CURRENT-YEAR-END-MARKER in releases _sidebar.yaml from line {modified_lines['deleted_line']} to line {modified_lines['inserted_line']}")
     elif not marker_removed:
         return "Marker was not found in the file"
     else:
@@ -565,14 +630,17 @@ def main():
         update_template(yearly_release, year)
         print()
 
-    release_listings = get_release_listings(yearly_path)
-    print()
+    # release_listings = get_release_listings(yearly_path)
+    # print()
     
-    if release_listings:
-        update_listing(yearly_release, release_listings)
-        print()
+    # if release_listings:
+    #     update_listing(yearly_release, release_listings)
+    #     print()
     
-    update_quarto_yaml(year)
+    # update_quarto_yaml(year)
+    # print()
+
+    update_release_sidebar(year)
     print()
 
     move_year_marker(year)
