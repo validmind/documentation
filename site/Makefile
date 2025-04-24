@@ -137,6 +137,7 @@ notebooks:
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
 	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
 	@mkdir -p notebooks/EXECUTED/model_development/
+	@rm -rf notebooks/EXECUTED/model_development/
 	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
