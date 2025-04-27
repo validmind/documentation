@@ -66,7 +66,7 @@ clone:
 
 copy-installation:
 	@echo "\nCopying installation source files ..."
-	@cp -r $(SRC_ROOT)/installation/site/installation installation
+	@cp -r $(SRC_ROOT)/installation/site/installation .
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
