@@ -86,7 +86,7 @@ deploy-prod:
 	else \
 		echo "\nDeploying prod site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs-staging.validmind.ai/
@@ -96,7 +96,7 @@ deploy-staging:
 	else \
 		echo "\nDeploying staging site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 docker-build: docker-site-lite
@@ -184,11 +184,3 @@ yearly-releases:
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview
-
-
-
-
-
-
-
-
