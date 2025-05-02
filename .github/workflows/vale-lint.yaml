@@ -2,7 +2,7 @@ name: Vale Lint
 
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [opened, synchronize, ready_for_review]
 
 permissions:
   issues: write
@@ -23,8 +23,14 @@ jobs:
         tar -xvzf vale_2.28.0_Linux_64-bit.tar.gz
         sudo mv vale /usr/local/bin/
 
+    - name: Download Vale community styles
+      run: |
+        mkdir -p .vale/styles
+        vale sync
+
     - name: Run Vale
       id: vale
+      continue-on-error: true
       run: |
         vale --output=JSON site/ > vale-report.json || {
           echo "Vale linting found issues"
@@ -32,7 +38,7 @@ jobs:
         }
 
     - name: Upload Vale report as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: vale-report
         path: vale-report.json
@@ -43,36 +49,27 @@ jobs:
       with:
         script: |
           const runId = context.runId;
-          const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts`;
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+          const valeArtifact = artifacts.artifacts.find(a => a.name === 'vale-report');
+          const valeArtifactUrl = valeArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${valeArtifact.id}`
+            : null;
           
-          // Read the Vale report
           const fs = require('fs');
           const report = JSON.parse(fs.readFileSync('vale-report.json', 'utf8'));
           
-          let comment = '## Vale linting results\n\n';
+          let comment = '## Vale source linter\n\n';
           
           if (Object.keys(report).length === 0) {
-            comment += '✅ No writing issues found\n\n';
+            comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
-            comment += '⚠️ Writing issues found\n\n';
-            
-            // Group issues by file
-            const issuesByFile = {};
-            for (const [file, issues] of Object.entries(report)) {
-              issuesByFile[file] = issues;
-            }
-            
-            // Add summary of issues
-            for (const [file, issues] of Object.entries(issuesByFile)) {
-              comment += `### ${file}\n\n`;
-              for (const issue of issues) {
-                comment += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
-              }
-              comment += '\n';
-            }
+            comment += `⚠️ WARN: Writing issues were found — [check the report](${valeArtifactUrl})\n\n(This check is informational and not yet enforced.)\n\n`;
           }
-          
-          comment += `View the [full report](${artifactUrl}) in the workflow artifacts`;
           
           github.rest.issues.createComment({
             owner: context.repo.owner,

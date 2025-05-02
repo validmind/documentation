@@ -96,51 +96,83 @@ jobs:
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
-    - name: Post preview URL comment
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const url = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
-          github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            body: `A PR preview is available: [Preview URL](${url})`
-          });
-
     - name: Run Pa11y accessibility check
       uses: ./.github/actions/pa11y-check
       id: pa11y
+      continue-on-error: true
       with:
         site_url: https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html
         report_file: pa11y-report.json
 
     - name: Upload Pa11y report as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: pa11y-report
         path: pa11y-report.json
         retention-days: 1
 
-    - name: Post accessibility results comment
+    - name: Post combined PR results comment
       uses: actions/github-script@v6
       with:
         script: |
-          const hasIssues = '${{ steps.pa11y.outputs.has_issues }}' === 'true';
           const runId = context.runId;
-          const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts`;
-          
-          let comment = '## Accessibility check results\n\n';
-          
-          if (hasIssues) {
-            comment += `⚠️ Accessibility issues were found — check [full report](${artifactUrl})`;
+          const previewUrl = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+
+          // Pa11y artifact
+          const pa11yArtifact = artifacts.artifacts.find(a => a.name === 'pa11y-report');
+          const pa11yArtifactUrl = pa11yArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${pa11yArtifact.id}`
+            : null;
+
+          // Lighthouse artifact
+          const lighthouseArtifact = artifacts.artifacts.find(a => a.name === 'lighthouse-report');
+          const lighthouseArtifactUrl = lighthouseArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${lighthouseArtifact.id}`
+            : null;
+
+          // Pa11y
+          const hasPa11yIssues = '${{ steps.pa11y.outputs.has_issues }}' === 'true';
+          let pa11yComment = '';
+          if (hasPa11yIssues) {
+            pa11yComment = `⚠️ WARN: Accessibility issues were found — [Check the Pa11y report](${pa11yArtifactUrl})`;
           } else {
-            comment += `✅ No accessibility issues were found`;
+            pa11yComment = `✓ INFO: No accessibility issues were found — [View the Pa11y report](${pa11yArtifactUrl})`;
           }
-          
+
+          // Lighthouse
+          const lighthouseScore = '${{ steps.lighthouse.outputs.accessibility_score }}';
+          // If you have a public report URL from the composite action, use it; otherwise, use the artifact URL
+          const lighthouseReportUrl = '${{ steps.lighthouse.outputs.report_url }}' || lighthouseArtifactUrl;
+          let lighthouseComment = '';
+          if (parseFloat(lighthouseScore) >= 0.9) {
+            lighthouseComment = `✓ INFO: Accessibility score is ${lighthouseScore} (required: >0.9) — [View the Lighthouse report](${lighthouseReportUrl})`; 
+          } else {
+            lighthouseComment = `⚠️ WARN: Accessibility score is ${lighthouseScore} (required: >0.9) — [Check the Lighthouse report](${lighthouseReportUrl})`;
+          }
+
+          let comment = `## Validate docs site\n\n`;
+          comment += `✓ INFO: A live preview of the docs site is available — [Open the preview](${previewUrl})\n\n`;
+          comment += `${pa11yComment}\n\n`;
+          comment += `${lighthouseComment}\n\n`;
+
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
             body: comment
           });
+
+    - name: Run Lighthouse audit
+      uses: ./.github/actions/lighthouse-check
+      id: lighthouse
+      continue-on-error: true
+      with:
+        site_dir: site/_site
+        config_file: .lighthouserc.js

@@ -28,7 +28,7 @@ runs:
       shell: bash
       run: |
         # Run Pa11y and save results to file
-        pa11y-ci --json --url "${{ inputs.site_url }}" > "${{ inputs.report_file }}"
+        pa11y-ci --chrome-launcher-flags="--no-sandbox" --json "${{ inputs.site_url }}" > "${{ inputs.report_file }}"
         
         # Check if any issues were found
         if grep -q '"type": "error"' "${{ inputs.report_file }}"; then
