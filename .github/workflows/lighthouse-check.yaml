@@ -1,0 +1,373 @@
+name: Lighthouse check
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      depth:
+        description: 'Depth level to check (0=root pages only, 1=first level subdirectories, 2=second level)'
+        required: false
+        # Change the default depth level here
+        # 0: Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
+        # 1: All first-level subdirectories (e.g. /guide/*.html)
+        # 2: All second-level subdirectories (e.g. /guide/attestation/*.html)
+        # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
+        default: '0'
+        type: string
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set PR preview URL
+      id: set_url
+      run: |
+        echo "PREVIEW_URL=https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}" >> $GITHUB_ENV
+        echo "DEPTH=${{ github.event.inputs.depth || '0' }}" >> $GITHUB_ENV
+
+    - name: Check for PR preview URL
+      id: check_preview
+      run: |
+        if curl --head --silent --fail "$PREVIEW_URL/index.html" > /dev/null; then
+          echo "Preview URL exists."
+          echo "preview_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "Preview URL does not exist. Skipping Lighthouse checks."
+          echo "preview_exists=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Install Lighthouse CI
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      run: npm install -g @lhci/cli
+
+    - name: Install required Python packages
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+
+    - name: Create auth headers file
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      run: |
+        # Create base64 encoded auth string
+        AUTH_STRING=$(echo -n "${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}" | base64)
+        
+        # Create auth headers JSON file
+        cat > auth-headers.json << EOF
+        {
+          "Authorization": "Basic ${AUTH_STRING}"
+        }
+        EOF
+
+    - name: Generate URLs to check
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      id: generate_urls
+      run: |
+        BASE_URL="$PREVIEW_URL"
+        
+        # Create a Python script to crawl the site
+        cat > crawl.py << 'EOF'
+        import requests
+        from bs4 import BeautifulSoup
+        import sys
+        from urllib.parse import urljoin, urlparse
+        import json
+        import xml.etree.ElementTree as ET
+        import base64
+        import os
+
+        # Define root pages to check
+        ROOT_PAGES = [
+            "index.html",
+            "get-started/get-started.html",
+            "guide/guides.html",
+            "developer/validmind-library.html",
+            "support/support.html",
+            "releases/all-releases.html",
+            "training/training.html"
+        ]
+
+        def get_auth_headers():
+            # Read auth headers from file
+            with open('auth-headers.json', 'r') as f:
+                return json.load(f)
+
+        def get_url_depth(url):
+            # Count path segments, ignoring empty segments and .html
+            path = urlparse(url).path
+            # Remove .html extension for depth calculation
+            path = path.replace('.html', '')
+            return len([x for x in path.split('/') if x])
+
+        def get_urls_from_sitemap(sitemap_url, max_depth):
+            try:
+                print(f"Fetching sitemap from {sitemap_url}", file=sys.stderr)
+                headers = get_auth_headers()
+                response = requests.get(sitemap_url, headers=headers)
+                print(f"Sitemap response status: {response.status_code}", file=sys.stderr)
+                if response.status_code == 200:
+                    print(f"Sitemap content: {response.text[:500]}...", file=sys.stderr)
+                    root = ET.fromstring(response.content)
+                    # Get all URLs from sitemap
+                    all_urls = set()
+                    for url in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}url'):
+                        loc = url.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+                        if loc is not None:
+                            full_url = loc.text
+                            # Extract the path part after the base URL
+                            path = full_url.replace(sitemap_url.replace('/sitemap.xml', ''), '')
+                            # Remove leading slash if present
+                            path = path.lstrip('/')
+                            # Only include .html files
+                            if path.endswith('.html'):
+                                # Check depth
+                                if get_url_depth(path) <= max_depth:
+                                    all_urls.add(path)
+                    
+                    print(f"Found {len(all_urls)} URLs in sitemap:", file=sys.stderr)
+                    for url in sorted(all_urls):
+                        print(f"  {url}", file=sys.stderr)
+                    return sorted(list(all_urls))
+                else:
+                    print(f"Failed to fetch sitemap: {response.status_code}", file=sys.stderr)
+            except Exception as e:
+                print(f"Error processing sitemap {sitemap_url}: {str(e)}", file=sys.stderr)
+            return []
+
+        def get_links(url, max_depth, visited=None):
+            if visited is None:
+                visited = set()
+            
+            current_depth = get_url_depth(url)
+            if current_depth > max_depth or url in visited:
+                return set()
+            
+            visited.add(url)
+            links = set()
+            
+            try:
+                print(f"Fetching {url}", file=sys.stderr)
+                headers = get_auth_headers()
+                response = requests.get(url, headers=headers)
+                print(f"Response status: {response.status_code}", file=sys.stderr)
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    for a in soup.find_all('a', href=True):
+                        href = a['href']
+                        # Skip external links and anchors
+                        if href.startswith('#') or href.startswith('http'):
+                            continue
+                        # Convert relative URLs to absolute
+                        full_url = urljoin(url, href)
+                        # Only include URLs from the same base domain
+                        if urlparse(full_url).netloc == urlparse(url).netloc:
+                            # Extract just the path part
+                            path = urlparse(full_url).path
+                            # Remove leading slash if present
+                            path = path.lstrip('/')
+                            
+                            # Only include .html files
+                            if path.endswith('.html'):
+                                links.add(path)
+                                print(f"Found link: {path}", file=sys.stderr)
+                                # Only recursively get links if we haven't hit max depth
+                                if get_url_depth(path) < max_depth:
+                                    links.update(get_links(full_url, max_depth, visited))
+            except Exception as e:
+                print(f"Error processing {url}: {str(e)}", file=sys.stderr)
+            
+            return links
+
+        # Get command line arguments
+        base_url = sys.argv[1]
+        max_depth = int(sys.argv[2])
+        
+        print(f"Base URL: {base_url}", file=sys.stderr)
+        print(f"Max depth: {max_depth}", file=sys.stderr)
+
+        # Get all URLs
+        all_urls = set()
+        
+        # Add root pages
+        for root in ROOT_PAGES:
+            full_url = f"{base_url}/{root}"
+            all_urls.add(root)  # Add the root path
+            if max_depth > 0:
+                print(f"Crawling from {root} with depth {max_depth}", file=sys.stderr)
+                all_urls.update(get_links(full_url, max_depth))
+            else:
+                print(f"Skipping crawl for {root} (depth = 0)", file=sys.stderr)
+
+        # For depth > 0, also get URLs from sitemap
+        if max_depth > 0:
+            sitemap_urls = get_urls_from_sitemap(f"{base_url}/sitemap.xml", max_depth)
+            all_urls.update(sitemap_urls)
+
+        # Print URLs to stdout, ensuring proper URL construction
+        print(f"Total URLs found: {len(all_urls)}", file=sys.stderr)
+        for url in sorted(all_urls):
+            full_url = f"{base_url}/{url}"
+            print(full_url)
+            print(f"Added URL: {full_url}", file=sys.stderr)
+        EOF
+
+        # Run the crawler
+        python crawl.py "$BASE_URL" "$DEPTH" > lhci-urls.txt
+        
+        echo "Lighthouse will check the following URLs:"
+        cat lhci-urls.txt
+        echo -e "\nTotal number of URLs: $(wc -l < lhci-urls.txt)"
+        
+        # Verify we have URLs
+        if [ ! -s lhci-urls.txt ]; then
+          echo "Error: No URLs were generated. Check the debug output above."
+          exit 1
+        fi
+
+    - name: Create Lighthouse config
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      run: |
+        cat > .lighthouserc.js << 'EOF'
+        const fs = require('fs');
+        module.exports = {
+          ci: {
+            collect: {
+              url: fs.readFileSync('lhci-urls.txt', 'utf-8').split('\n').filter(Boolean),
+              extraHeaders: JSON.parse(fs.readFileSync('auth-headers.json', 'utf-8')),
+            },
+            assert: {
+              assertions: {
+                'categories:accessibility': ['error', { minScore: 0.9 }],
+              },
+            },
+            upload: {
+              target: 'temporary-public-storage',
+            },
+          },
+        };
+        EOF
+
+    - name: Run Lighthouse audit
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      uses: treosh/lighthouse-ci-action@v11
+      id: lighthouse
+      continue-on-error: true
+      with:
+        configPath: .lighthouserc.js
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
+    - name: Post Lighthouse results comment
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const runId = context.runId;
+          const baseUrl = process.env.PREVIEW_URL;
+
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+
+          // Lighthouse artifact
+          const lighthouseArtifact = artifacts.artifacts.find(a => a.name === 'lighthouse-report');
+          const lighthouseArtifactUrl = lighthouseArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${lighthouseArtifact.id}`
+            : null;
+
+          // Lighthouse
+          const manifest = '${{ steps.lighthouse.outputs.manifest }}';
+          let manifestJson;
+          try {
+            manifestJson = JSON.parse(manifest);
+            if (!Array.isArray(manifestJson) || manifestJson.length === 0) {
+              throw new Error('Invalid manifest format or empty results');
+            }
+          } catch (error) {
+            console.error('Error parsing Lighthouse manifest:', error);
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## Lighthouse check results\n\n⚠️ WARN: Failed to parse Lighthouse results. Please check the [workflow run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}) for details.`
+            });
+            return;
+          }
+          
+          // Delete old Lighthouse comments
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          // Delete any previous comments from this workflow
+          for (const comment of comments) {
+            if (comment.user.login === 'github-actions[bot]' && 
+                comment.body.includes('## Lighthouse check results')) {
+              try {
+                console.log(`Deleting Lighthouse comment ${comment.id}`);
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                });
+                console.log(`Successfully deleted Lighthouse comment ${comment.id}`);
+              } catch (error) {
+                console.error(`Failed to delete Lighthouse comment ${comment.id}:`, error);
+              }
+            }
+          }
+          
+          // Calculate average accessibility score
+          const scores = manifestJson.map(run => run.summary.accessibility);
+          const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+          const lighthouseScore = avgScore.toFixed(2);
+          
+          const lighthouseReportUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+          let lighthouseComment = '';
+          if (parseFloat(lighthouseScore) >= 0.9) {
+            lighthouseComment = `✓ INFO: Average accessibility score is **${lighthouseScore}** (required: >0.9) — [View the workflow run](${lighthouseReportUrl})`; 
+          } else {
+            lighthouseComment = `⚠️ WARN: Average accessibility score is **${lighthouseScore}** (required: >0.9) — [Check the workflow run](${lighthouseReportUrl})`;
+          }
+
+          // Generate scores table from manifest
+          const scoresTable = manifestJson
+            .map(run => {
+              const formatScore = (score) => score === null ? 'N/A' : score.toFixed(2);
+              return `| ${run.url.replace(baseUrl, '')} | ${formatScore(run.summary.accessibility)} | ${formatScore(run.summary.performance)} | ${formatScore(run.summary['best-practices'])} | ${formatScore(run.summary.seo)} |`;
+            })
+            .join('\n');
+
+          let comment = `## Lighthouse check results\n\n`;
+          comment += `${lighthouseComment}\n\n`;
+          comment += `<details>\n<summary>Lighthouse scores</summary>\n\n`;
+          comment += `Folder depth level checked: **${process.env.DEPTH}**\n\n`;
+          comment += `Modify the workflow to check a different depth:\n`;
+          comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
+          comment += `- 1: All first-level subdirectories — /guide/\*.html, /developer/\*.html, ...\n`;
+          comment += `- 2: All second-level subdirectories — /guide/attestation/\*.html, ...\n\n`;
+          comment += `| Page | Accessibility | Performance | Best Practices | SEO |\n`;
+          comment += `|------|---------------|-------------|----------------|-----|\n`;
+          comment += `${scoresTable}\n\n`;
+          comment += `</details>\n\n`;
+
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          }); 
