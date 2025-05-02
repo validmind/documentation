@@ -1,0 +1,82 @@
+name: Vale Lint
+
+on:
+  pull_request:
+    types: [ready_for_review]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Install Vale
+      run: |
+        wget https://github.com/errata-ai/vale/releases/download/v2.28.0/vale_2.28.0_Linux_64-bit.tar.gz
+        tar -xvzf vale_2.28.0_Linux_64-bit.tar.gz
+        sudo mv vale /usr/local/bin/
+
+    - name: Run Vale
+      id: vale
+      run: |
+        vale --output=JSON site/ > vale-report.json || {
+          echo "Vale linting found issues"
+          exit 1
+        }
+
+    - name: Upload Vale report as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: vale-report
+        path: vale-report.json
+        retention-days: 1
+
+    - name: Post Vale results comment
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const runId = context.runId;
+          const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts`;
+          
+          // Read the Vale report
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('vale-report.json', 'utf8'));
+          
+          let comment = '## Vale linting results\n\n';
+          
+          if (Object.keys(report).length === 0) {
+            comment += '✅ No writing issues found\n\n';
+          } else {
+            comment += '⚠️ Writing issues found\n\n';
+            
+            // Group issues by file
+            const issuesByFile = {};
+            for (const [file, issues] of Object.entries(report)) {
+              issuesByFile[file] = issues;
+            }
+            
+            // Add summary of issues
+            for (const [file, issues] of Object.entries(issuesByFile)) {
+              comment += `### ${file}\n\n`;
+              for (const issue of issues) {
+                comment += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+              }
+              comment += '\n';
+            }
+          }
+          
+          comment += `View the [full report](${artifactUrl}) in the workflow artifacts`;
+          
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          }); 
