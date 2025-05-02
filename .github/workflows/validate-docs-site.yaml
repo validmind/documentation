@@ -89,14 +89,14 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-      # Demo bucket is in us-east-1
+    # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
-    - name: Post comment with preview URL
+    - name: Post preview URL comment
       uses: actions/github-script@v6
       with:
         script: |
@@ -106,4 +106,41 @@ jobs:
             repo: context.repo.repo,
             issue_number: context.issue.number,
             body: `A PR preview is available: [Preview URL](${url})`
+          });
+
+    - name: Run Pa11y accessibility check
+      uses: ./.github/actions/pa11y-check
+      id: pa11y
+      with:
+        site_url: https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html
+        report_file: pa11y-report.json
+
+    - name: Upload Pa11y report as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: pa11y-report
+        path: pa11y-report.json
+        retention-days: 1
+
+    - name: Post accessibility results comment
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const hasIssues = '${{ steps.pa11y.outputs.has_issues }}' === 'true';
+          const runId = context.runId;
+          const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts`;
+          
+          let comment = '## Accessibility check results\n\n';
+          
+          if (hasIssues) {
+            comment += `⚠️ Accessibility issues were found — check [full report](${artifactUrl})`;
+          } else {
+            comment += `✅ No accessibility issues were found`;
+          }
+          
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
           });
