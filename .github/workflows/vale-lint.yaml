@@ -69,6 +69,9 @@ jobs:
             comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
             comment += `⚠️ WARN: Writing issues were found — [check the report](${valeArtifactUrl})\n\n(This check is informational and not yet enforced.)\n\n`;
+            comment += `<details>\n<summary>Show full Vale output</summary>\n\n`;
+            comment += '```\n' + JSON.stringify(report, null, 2) + '\n```\n';
+            comment += `</details>\n\n`;
           }
           
           github.rest.issues.createComment({
