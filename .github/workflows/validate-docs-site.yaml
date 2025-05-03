@@ -97,12 +97,11 @@ jobs:
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
     - name: Run Pa11y accessibility check
-      uses: ./.github/actions/pa11y-check
+      uses: pa11y/pa11y-ci-action@v1
       id: pa11y
       continue-on-error: true
       with:
-        site_url: https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html
-        report_file: pa11y-report.json
+        args: --json https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html > pa11y-report.json
 
     - name: Upload Pa11y report as artifact
       uses: actions/upload-artifact@v4

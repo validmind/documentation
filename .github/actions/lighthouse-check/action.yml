@@ -39,9 +39,11 @@ runs:
         status=$?
         # Extract accessibility score from the latest report
         score=$(jq '.categories.accessibility.score' .lighthouseci/*report.json | head -n1)
+        echo "DEBUG: Extracted score: $score"
         echo "accessibility_score=$score" >> $GITHUB_OUTPUT
         # Extract public report URL
         report_url=$(echo "$output" | grep -o 'https://storage.googleapis.com[^ ]*')
+        echo "DEBUG: Extracted report_url: $report_url"
         echo "report_url=$report_url" >> $GITHUB_OUTPUT
         if [ $status -ne 0 ]; then
           echo "Lighthouse audit failed"
