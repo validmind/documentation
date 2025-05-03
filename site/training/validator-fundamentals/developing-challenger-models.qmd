@@ -28,13 +28,13 @@ skip_preview: true
 
 # Learning objectives {.center}
 
-_"As a **developer** who has run and logged out-of-the-box tests with {{< var vm.product >}}, I want to update my documentation template to include manually inserted test results, implement, run, and log custom tests, and include those custom tests in my documentation template."_
+_"As a **validator** who has already run and logged data quality tests with {{< var vm.product >}}, I want to next run both out-of-the-box and custom model evaluation tests for the champion model and a potential challenger model, and use the results of my testing to log model findings."_
 
 ::: {.tc}
 <br>
 This third module is part of a four-part series:
 <br><br>
-[Validator Fundamentals](/training/developer-fundamentals/developer-fundamentals-register.qmd){.button target="_blank"}
+[Validator Fundamentals](/training/validator-fundamentals/validator-fundamentals-register.qmd){.button target="_blank"}
 :::
 
 
@@ -43,7 +43,7 @@ This third module is part of a four-part series:
 :::: {.columns .f3}
 ::: {.column width="50%" .mt4 .pr4}
 ### Introduction
-- [{{< var vm.product >}} for model development](#validmind-for-model-development)
+- [{{< var vm.product >}} for model validation](#validmind-for-model-validation)
 :::
 
 :::
@@ -53,16 +53,16 @@ This third module is part of a four-part series:
 ::: {.column width="50%" .mt4 .pr4}
 ### Section 1
 
-- [Implement custom inline tests](#implement-custom-tests)
-- [Use external test providers](#use-external-test-providers)
+- [Train potential challenger model](#train-a-challenger-model)
+- [Run model evaluation tests](#run-model-evaluation-tests)
 
 :::
 
 ::: {.column width="50%" .mt4}
 ### Section 2
 
-- [Include custom test results](#include-custom-test-results)
-- [Configure the model's documentation template](#configure-documentation-templates)
+- [Implement a custom test](#implement-custom-tests)
+- [Verify development test runs](#verify-test-runs)
 :::
 
 ::::
@@ -87,13 +87,13 @@ To continue, you need to have been [onboarded](developer-fundamentals-register.q
 :::: {.columns}
 ::: {.column width="60%"}
 ::: {.tc}
-[Using {{< var vm.product >}} for model development](using-validmind-for-model-development.html){.button target="_blank"}
+[Using {{< var vm.product >}} for Model Validation](using-validmind-for-model-validation.html){.button target="_blank"}
 :::
 
 :::
 ::: {.column width="40%"}
 ::: {.tc}
-[Learning to run tests](learning-to-run-tests.html){.button target="_blank"}
+[Running Data Quality Tests](running-data-quality-tests.html){.button target="_blank"}
 :::
 
 :::
@@ -138,7 +138,7 @@ Be sure to return to this page afterwards.
 
 <!-- USING THE VARIABLE IN THE HEADING MESSES UP THE PAGE ANCHOR -->
 
-# ValidMind for model development {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+# ValidMind for model validation {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
 ## {.scrollable .center}
 
@@ -181,13 +181,15 @@ Let's continue our journey with **Section 1** on the next page. {{< fa hand-poin
 
 # Section 1 {background-color="#083E44" background-image="/assets/img/about-us-esphere.svg"}
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html" background-interactive="yes" data-preload="yes"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html" background-interactive="yes" data-preload="yes"}
 
 :::: {.absolute bottom=15 left=0 right=50 .w-100 .f4 .tc .pl4 .pr4 .overlay}
-**3 — Integrate custom tests**
+**3 — Developing a potential challenger model**
 
 ::: {.f5}
-This is the third notebook in our introductory series, which will walk you through how to implement different types of custom tests with {{< var vm.product >}}.
+This is the third notebook in our introductory series, which will walk you through how to evaluate your champion model against a potential challenger with {{< var vm.product >}}.
 
 :::
 
@@ -220,7 +222,7 @@ This is the third notebook in our introductory series, which will walk you throu
 ::: {.column width="20%" .f4}
 
 ::: {.f5}
-{{< var vm.product >}} generates a unique *code snippet* for each registered model to connect with your developer environment:
+{{< var vm.product >}} generates a unique *code snippet* for each registered model to connect with your validation environment:
 
 1. From the **{{< fa cubes >}} Inventory**, select the name of your model to open up the model details page.
 2. On the left sidebar that appears for your model, click **Getting Started**.
@@ -241,7 +243,9 @@ Make sure you're logged in and have refreshed the page in a Chromium-based web b
 
 :::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#initialize-the-validmind-library" data-preload="yes"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#initialize-the-validmind-library" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
 **Connect to your model**
@@ -249,7 +253,7 @@ Make sure you're logged in and have refreshed the page in a Chromium-based web b
 ::: {.f5}
 With your code snippet copied to your clipboard:
 
-1. Open **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+1. Open **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
 2. Run all the cells under the **Setting up** section.
 
 :::
@@ -258,37 +262,75 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-# Implement custom tests {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#import-the-champion-model" data-preload="yes"}
+
+:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
+**Import the champion model**
+
+::: {.f5}
+Next, let's import the champion model submitted by the model development team in the format of a `.pkl` file for evaluation:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run the cell under the **Import the champion model** section.
+
+:::
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Train a challenger model {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
 ## {.scrollable .center}
 
 :::: {.columns}
-::: {.column width="30%" .pr4 .f2}
-Custom inline tests
-
-<br>Try it **live** on the next pages. {{< fa hand-point-right >}}
+::: {.column width="60%" .pr4 .f2}
+Champion vs. challenger models
 
 :::
 
-::: {.column width="70%" .bl .pl4 .f3}
-Let's implement a custom *inline test* that calculates the confusion matrix for a binary classification model.
-
-- An inline test refers to a test written and executed within the same environment as the code being tested — in the following example, right in our Jupyter Notebook —  without requiring a separate test file or framework.
-- You'll note that the custom test function is just a regular Python function that can include and require any Python library as you see fit.
+::: {.column width="40%" .bl .pl4 .f3}
+Try it **live** on the next pages. {{< fa hand-point-right >}}
 
 :::
+
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#create-a-confusion-matrix-plot" data-preload="yes"}
+::: {.f4}
+
+We're curious how an alternate model compares to our champion model, so let's train a challenger model as a basis for our testing:
+
+::: {.panel-tabset}
+
+### Champion logistic regression model
+
+- Our champion *logistic regression model* is a simpler, parametric model that assumes a linear relationship between the independent variables and the log-odds of the outcome.
+- While logistic regression may not capture complex patterns as effectively, it offers a high degree of interpretability and is easier to explain to stakeholders.
+- However, model risk is not calculated in isolation from a single factor, but rather in consideration with trade-offs in predictive performance, ease of interpretability, and overall alignment with business objectives.
+
+### Challenger random forest classification model
+
+- A *random forest classification model* is an ensemble machine learning algorithm that uses multiple decision trees to classify data. In ensemble learning, multiple models are combined to improve prediction accuracy and robustness.
+- Random forest classification models generally have higher accuracy because they capture complex, non-linear relationships, but as a result they lack transparency in their predictions.
+
+:::
+
+:::
+
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#training-a-potential-challenger-model" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Create a custom test**
+**Random forest classification model**
+
+Let's train our potential challenger model:
 
 ::: {.f5}
-The [`@vm.test` wrapper](/validmind/validmind.qmd#test){target="_blank"} allows you to create a reusable test:
-
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells in the following section under Implementing a custom inline test: **Create a confusion matrix plot**
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run the cell under the following Training a potential challenger model section: **Random forest classification model**
 
 :::
 
@@ -296,16 +338,18 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#add-parameters-to-custom-tests" data-preload="yes"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#initializing-the-model-objects" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Adjust your custom test**
+**Initialize the model objects**
 
 ::: {.f5}
-Custom tests can take parameters just like any other function:
+In addition to the initialized datasets, you'll also need to initialize a ValidMind model object (`vm_model`) that can be passed to other functions for analysis and tests on the data for each of our two models using [the `vm.init_model()` method](/validmind/validmind.qmd#init_model):
 
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells in the following sections under Implementing a custom inline test: <br>**Add parameters to custom tests** / **Pass parameters to custom tests**
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the section **Initializing the model objects**.
 
 :::
 
@@ -313,51 +357,12 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#log-the-confusion-matrix-results" data-preload="yes"}
-
-:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Log your custom test**
-
-::: {.f5}
-Use the [`.log()` method](/validmind/validmind/vm_models.qmd#log){target="_blank"} to send the results of your custom test to the {{< var validmind.platform >}}:
-
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run the cell in the following section under Implementing a custom inline test: **Log the confusion matrix results**
-
-:::
-
-When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
-
-::::
-
-
-# Use external test providers {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
-
-## {.scrollable .center}
-
-:::: {.columns}
-::: {.column width="30%" .pr4 .f2}
-Reusable custom tests
-
-<br>Try it **live** on the next pages. {{< fa hand-point-right >}}
-
-:::
-
-::: {.column width="70%" .bl .pl4 .f3}
-### External test providers
-
-Creating inline custom tests with a function is a great way to customize your model documentation.
-
-- However, sometimes you may want to reuse the same set of tests across multiple models and share them with others in your organization.
-- In this case, you can create an external custom test provider that will allow you to load custom tests from a local folder or a Git repository.
-
-:::
-::::
+# Run model evaluation tests* {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
 ## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#create-custom-tests-folder" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Create custom tests folder**
+**Run model performance tests**
 
 ::: {.f5}
 Create a new folder that will contain reusable custom tests from your existing inline tests:
@@ -371,45 +376,11 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#save-an-inline-test" data-preload="yes"}
-
-:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Save inline test**
-
-::: {.f5}
-The `@vm.test` decorator also includes a convenience method that allows you to save the test to a Python file at a specified path:
-
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells under the Using external test providers section: **Save an inline test**
-
-:::
-
-When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
-
-::::
-
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#register-a-local-test-provider" data-preload="yes"}
-
-:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Register local test provider**
-
-::: {.f5}
-Next, let's initialize a test provider that will tell the {{< var validmind.developer >}} where to find your saved custom tests:
-
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells under the Using external test providers section: **Register a local test provider**
-
-:::
-
-When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
-
-::::
-
 ## {.scrollable}
 
 :::: {.columns}
 ::: {.column width="30%" .pr4 .f2}
-Custom test results
+Log a model finding
 
 ::: {.f5 .nt2 .pl2 .mb4}
 (Scroll down for the full instructions.)
@@ -455,7 +426,7 @@ With the custom test results logged, let's head to the model we connected to at 
 ## {background-iframe="https://app.prod.validmind.ai/model-inventory/" background-interactive="true" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f5 .tc .pl4 .overlay}
-**Insert custom test-driven blocks**
+**Create a model finding**
 
 ::: {.f6}
 3.2 Model Evaluation — `my_custom_tests.ConfusionMatrix:test_dataset_normalized` / `my_test_provider.ConfusionMatrix`
@@ -466,14 +437,46 @@ When you're done, click [{{< fa chevron-right >}}]() to continue.
 
 ::::
 
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#save-an-inline-test" data-preload="yes"}
 
+:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
+**Run diagnostic tests**
+
+::: {.f5}
+The `@vm.test` decorator also includes a convenience method that allows you to save the test to a Python file at a specified path:
+
+1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+2. Run all the cells under the Using external test providers section: **Save an inline test**
+
+:::
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#register-a-local-test-provider" data-preload="yes"}
+
+:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
+**Run feature importance tests**
+
+::: {.f5}
+Next, let's initialize a test provider that will tell the {{< var validmind.developer >}} where to find your saved custom tests:
+
+1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+2. Run all the cells under the Using external test providers section: **Register a local test provider**
+
+:::
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
 
 # Section 2 {background-color="#083E44" background-image="/assets/img/about-us-esphere.svg"}
 
 ## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html" background-interactive="yes" data-preload="yes"}
 
 :::: {.absolute bottom=15 left=0 right=50 .w-100 .f4 .tc .pl4 .pr4 .overlay}
-**4 — Finalize testing and documentation**
+**4 — Finalize testing and reporting**
 
 ::: {.f5}
 This is the final notebook in our introductory series, which will walk you through wrapping custom test results into your documentation, as well as how to update the configuration for the entire model documentation template to suit your needs.
@@ -522,7 +525,7 @@ As usual, let's connect back up to your model in the {{< var validmind.platform 
 
 When you're done, click [{{< fa chevron-right >}}]() to continue.
 
-## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html#initialize-the-validmind-library" data-preload="yes"}
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#initialize-the-validmind-library" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
 **Connect to your model**
@@ -530,7 +533,7 @@ When you're done, click [{{< fa chevron-right >}}]() to continue.
 ::: {.f5}
 With your code snippet copied to your clipboard:
 
-1. Open **4 — Finalize testing and documentation**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/4-finalize_testing_documentation.ipynb){target="_blank"}
+1. Open **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
 2. Run all the cells under the **Setting up** section.
 
 :::
@@ -539,79 +542,37 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-# Include custom test results {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
-
-## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html#reconnect-to-validmind" data-preload="yes"}
-
-:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Reconnect to {{< var vm.product >}}**
-
-::: {.f5}
-After you insert test-driven blocks, changes should persist and become available every time you call the [`preview_template()` function](/validmind/validmind.qmd#preview_template){target="_blank"}:
-
-1. Continue with **4 — Finalize testing and documentation**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/4-finalize_testing_documentation.ipynb){target="_blank"}
-2. Run all the cells under the **Reconnect to {{< var vm.product >}}** section.
-
-:::
-
-When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
-
-::::
-
-## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html#include-custom-test-results" data-preload="yes"}
-
-:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Log custom test results**
-
-::: {.f5}
-Now that your custom test IDs are part of your template, you can now run tests for an entire section and all additional custom tests will be loaded:
-
-1. Continue with **4 — Finalize testing and documentation**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/4-finalize_testing_documentation.ipynb){target="_blank"}
-2. Run the cell under the **Include custom test results** section.
-
-:::
-
-When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
-
-::::
-
-
-# Configure documentation templates {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+# Implement custom tests {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
 ## {.scrollable .center}
 
 :::: {.columns}
 ::: {.column width="30%" .pr4 .f2}
-Documentation template configuration
-
-::: {.tc}
-[Learn more ...](/validmind/validmind/vm_models.qmd#get_default_config){.button target="_blank"}
-
-:::
+Custom tests
 
 <br>Try it **live** on the next pages. {{< fa hand-point-right >}}
+
 :::
 
 ::: {.column width="70%" .bl .pl4 .f3}
-### `get_default_config()`
+Let's implement a *custom test* that calculates the confusion matrix:
 
-The utility function `vm.get_test_suite().get_default_config()` will return the default configuration for the entire documentation template as a dictionary:
-
-- This configuration will contain all the test IDs and their default parameters.
-- You can then modify this configuration as needed and pass it to `run_documentation_tests()` to run all tests in the documentation template if needed.
-- You still have the option to continue running tests for one section at a time; `get_default_config()` simply provides a useful reference for providing default parameters to every test.
+- You'll note that the custom test function is just a regular Python function that can include and require any Python library as you see fit.
+- In a usual model validation situation, you would load a saved custom test provided by the model development team. In the following section, we'll have you implement the same custom test and make it available for reuse, to familiarize you with the processes.
 
 :::
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html#documentation-template-configuration" data-preload="yes"}
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#create-a-confusion-matrix-plot" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Retrieve default configuration**
+**Implement a custom inline test**
 
 ::: {.f5}
-1. Continue with **4 — Finalize testing and documentation**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/4-finalize_testing_documentation.ipynb){target="_blank"}
-2. Run the first cell under the **Documentation template configuration** section.
+An *inline test* refers to a test written and executed within the same environment as the code being tested — in the following example, right in our Jupyter Notebook —  without requiring a separate test file or framework:
+
+1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+2. Run all the cells in the following section under Implementing a custom inline test: **Create a confusion matrix plot**
 
 :::
 
@@ -619,16 +580,16 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/4-finalize_testing_documentation.html#update-the-config" data-preload="yes"}
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#add-parameters-to-custom-tests" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
-**Update template configuration**
+**Use external test providers**
 
 ::: {.f5}
-The default configuration does not assign any inputs to a test, but you can assign inputs to individual tests as needed:
+Sometimes you may want to reuse the same set of custom tests across multiple models and share them with others in your organization, like the model development team would have done with you in this example workflow featured in this series of notebooks. In this case, you can create an external custom test provider that will allow you to load custom tests from a local folder or a Git repository:
 
-1. Continue with **4 — Finalize testing and documentation**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/4-finalize_testing_documentation.ipynb){target="_blank"}
-2. Run the all the cells under the following Documentation template configuration section: **Update the config**
+1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+2. Run all the cells in the following sections under Implementing a custom inline test: <br>**Add parameters to custom tests** / **Pass parameters to custom tests**
 
 :::
 
@@ -636,6 +597,24 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
+# Verify test runs {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#add-parameters-to-custom-tests" data-preload="yes"}
+
+:::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
+**Verify model development testing**
+
+::: {.f5}
+Our final task is to verify that all the tests provided by the model development team were run and reported accurately. Note the appended `result_ids` to delineate which dataset we ran the test with for the relevant tests:
+
+1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
+2. Run all the cells in the following sections under Implementing a custom inline test: <br>**Add parameters to custom tests** / **Pass parameters to custom tests**
+
+:::
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
 
 # In summary {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
@@ -643,7 +622,7 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 :::: {.columns}
 ::: {.column width="30%" .pr4 .f2}
-Implementing custom tests
+Developing challenger models
 
 :::
 
@@ -663,5 +642,5 @@ In this third module, you learned how to:
 Continue your model development journey with:
 <br><br>
 <!-- IMPORTANT: USE THE .HTML PATH AND NOT THE .QMD PATH FOR THE REVEALJS OUTPUT -->
-[Finalizing model documentation](finalizing-model-documentation.html){.button target="_blank"}
+[Finalizing Validation Reports](finalizing-validation-reports.html){.button target="_blank"}
 :::
