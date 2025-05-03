@@ -86,4 +86,12 @@ jobs:
             // Optionally, add the full JSON in a collapsed section
             comment += `<details>\n<summary>Show full Vale output (JSON)</summary>\n\n`;
             comment += '```\n' + prettyReport + '\n```\n';
-            comment += `
+            comment += `</details>\n\n`;
+          }
+
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          });
