@@ -73,14 +73,17 @@ jobs:
             comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
             comment += `⚠️ WARN: Writing issues were found — [check the report](${valeArtifactUrl})\n\n(This check is informational and not yet enforced.)\n\n`;
-            comment += `<details>\n<summary>Show full Vale output</summary>\n\n`;
+
+            // Summarize issues by file and line
+            for (const [file, issues] of Object.entries(report)) {
+              comment += `### ${file}\n`;
+              for (const issue of issues) {
+                comment += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+              }
+              comment += '\n';
+            }
+
+            // Optionally, add the full JSON in a collapsed section
+            comment += `<details>\n<summary>Show full Vale output (JSON)</summary>\n\n`;
             comment += '```\n' + prettyReport + '\n```\n';
-            comment += `</details>\n\n`;
-          }
-          
-          github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            body: comment
-          }); 
+            comment += `
