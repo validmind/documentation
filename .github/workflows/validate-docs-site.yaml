@@ -96,12 +96,17 @@ jobs:
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
+    - uses: actions/checkout@v3
+
+    - name: Set up Chrome
+      uses: browser-actions/setup-chrome@latest
+
     - name: Run Pa11y accessibility check
-      uses: pa11y/pa11y-ci-action@v1
+      uses: Hesedi3l/pa11y-actions@v1
       id: pa11y
-      continue-on-error: true
       with:
         args: --json https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html > pa11y-report.json
+      continue-on-error: true
 
     - name: Upload Pa11y report as artifact
       uses: actions/upload-artifact@v4
@@ -169,9 +174,10 @@ jobs:
           });
 
     - name: Run Lighthouse audit
-      uses: ./.github/actions/lighthouse-check
+      uses: treosh/lighthouse-ci-action@v11
       id: lighthouse
       continue-on-error: true
       with:
-        site_dir: site/_site
-        config_file: .lighthouserc.js
+        configPath: .lighthouserc.js
+        uploadArtifacts: true
+        temporaryPublicStorage: true
