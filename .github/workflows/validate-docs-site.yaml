@@ -201,13 +201,13 @@ jobs:
     - name: Extract Lighthouse outputs
       id: lighthouse_outputs
       run: |
-        # Extract accessibility score from the latest report
-        SCORE=$(jq '.categories.accessibility.score' .lighthouseci/*report.json | head -n1)
+        # Get the links JSON from the previous step
+        LINKS_JSON='${{ steps.lighthouse.outputs.links }}'
+        # Extract the report URL for index.html
+        REPORT_URL=$(echo "$LINKS_JSON" | jq -r 'to_entries[] | select(.key | test("/index.html$")) | .value')
+        # Extract the accessibility score for index.html
+        SCORE=$(jq '.categories.accessibility.score' .lighthouseci/*index.report.json | head -n1)
         echo "accessibility_score=$SCORE" >> $GITHUB_OUTPUT
-        
-        # Extract report URL from the action output
-        REPORT_URL=$(grep -o 'https://storage.googleapis.com[^ ]*' <<< "${{ steps.lighthouse.outputs.logs }}")
         echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
-        
         echo "Extracted score: $SCORE"
         echo "Extracted report URL: $REPORT_URL"
