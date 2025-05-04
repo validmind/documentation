@@ -147,8 +147,8 @@ jobs:
           }
 
           // Lighthouse
-          const lighthouseScore = '${{ steps.lighthouse.outputs.accessibility_score }}';
-          const lighthouseReportUrl = '${{ steps.lighthouse.outputs.report_url }}' || lighthouseArtifactUrl;
+          const lighthouseScore = '${{ steps.lighthouse_outputs.outputs.accessibility_score }}';
+          const lighthouseReportUrl = '${{ steps.lighthouse_outputs.outputs.report_url }}' || lighthouseArtifactUrl;
           let lighthouseComment = '';
           if (parseFloat(lighthouseScore) >= 0.9) {
             lighthouseComment = `✓ INFO: Accessibility score is ${lighthouseScore} (required: >0.9) — [View the Lighthouse report](${lighthouseReportUrl})`; 
@@ -158,9 +158,9 @@ jobs:
 
           // DEBUG block for Lighthouse outputs
           let debugInfo = `<details>\n<summary>Show Lighthouse debug info</summary>\n\n`;
-          debugInfo += `Raw outputs from steps.lighthouse.outputs:\n`;
-          debugInfo += `- accessibility_score: \`${'${{ steps.lighthouse.outputs.accessibility_score }}'}\`\n`;
-          debugInfo += `- report_url: \`${'${{ steps.lighthouse.outputs.report_url }}'}\`\n`;
+          debugInfo += `Raw outputs from steps.lighthouse_outputs.outputs:\n`;
+          debugInfo += `- accessibility_score: \`${'${{ steps.lighthouse_outputs.outputs.accessibility_score }}'}\`\n`;
+          debugInfo += `- report_url: \`${'${{ steps.lighthouse_outputs.outputs.report_url }}'}\`\n`;
           debugInfo += `- artifact url: \`${lighthouseArtifactUrl}\`\n`;
           debugInfo += `- env.LHCI_BUILD_CONTEXT__CURRENT_HASH: \`${process.env.LHCI_BUILD_CONTEXT__CURRENT_HASH || 'undefined'}\`\n`;
           debugInfo += `- env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY: \`${process.env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY || 'undefined'}\`\n`;
@@ -187,3 +187,17 @@ jobs:
         configPath: .lighthouserc.js
         uploadArtifacts: true
         temporaryPublicStorage: true
+
+    - name: Extract Lighthouse outputs
+      id: lighthouse_outputs
+      run: |
+        # Extract accessibility score from the latest report
+        SCORE=$(jq '.categories.accessibility.score' .lighthouseci/*report.json | head -n1)
+        echo "accessibility_score=$SCORE" >> $GITHUB_OUTPUT
+        
+        # Extract report URL from the action output
+        REPORT_URL=$(grep -o 'https://storage.googleapis.com[^ ]*' <<< "${{ steps.lighthouse.outputs.logs }}")
+        echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
+        
+        echo "Extracted score: $SCORE"
+        echo "Extracted report URL: $REPORT_URL"
