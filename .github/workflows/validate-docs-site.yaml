@@ -96,6 +96,9 @@ jobs:
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
+    - name: Install Lighthouse CI
+      run: npm install -g @lhci/cli
+
     - name: Debug Lighthouse files
       run: |
         echo "Files in site/_site:"
