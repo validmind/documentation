@@ -148,7 +148,6 @@ jobs:
 
           // Lighthouse
           const lighthouseScore = '${{ steps.lighthouse.outputs.accessibility_score }}';
-          // If you have a public report URL from the composite action, use it; otherwise, use the artifact URL
           const lighthouseReportUrl = '${{ steps.lighthouse.outputs.report_url }}' || lighthouseArtifactUrl;
           let lighthouseComment = '';
           if (parseFloat(lighthouseScore) >= 0.9) {
@@ -157,10 +156,21 @@ jobs:
             lighthouseComment = `⚠️ WARN: Accessibility score is ${lighthouseScore} (required: >0.9) — [Check the Lighthouse report](${lighthouseReportUrl})`;
           }
 
+          // DEBUG block for Lighthouse outputs
+          let debugInfo = `<details>\n<summary>Show Lighthouse debug info</summary>\n\n`;
+          debugInfo += `Raw outputs from steps.lighthouse.outputs:\n`;
+          debugInfo += `- accessibility_score: \`${'${{ steps.lighthouse.outputs.accessibility_score }}'}\`\n`;
+          debugInfo += `- report_url: \`${'${{ steps.lighthouse.outputs.report_url }}'}\`\n`;
+          debugInfo += `- artifact url: \`${lighthouseArtifactUrl}\`\n`;
+          debugInfo += `- env.LHCI_BUILD_CONTEXT__CURRENT_HASH: \`${process.env.LHCI_BUILD_CONTEXT__CURRENT_HASH || 'undefined'}\`\n`;
+          debugInfo += `- env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY: \`${process.env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY || 'undefined'}\`\n`;
+          debugInfo += `</details>\n`;
+
           let comment = `## Validate docs site\n\n`;
           comment += `✓ INFO: A live preview of the docs site is available — [Open the preview](${previewUrl})\n\n`;
           comment += `${pa11yComment}\n\n`;
           comment += `${lighthouseComment}\n\n`;
+          comment += debugInfo;
 
           github.rest.issues.createComment({
             owner: context.repo.owner,
