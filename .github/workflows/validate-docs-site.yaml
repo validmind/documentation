@@ -96,6 +96,13 @@ jobs:
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
+    - name: Debug Lighthouse files
+      run: |
+        echo "Files in site/_site:"
+        find site/_site -type f -name "*.html" | sort
+        echo -e "\nLighthouse will check these files:"
+        lhci collect --config=.lighthouserc.js --dry-run
+
     - name: Run Pa11y accessibility check
       id: pa11y
       continue-on-error: true
