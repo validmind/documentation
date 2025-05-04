@@ -74,23 +74,22 @@ jobs:
           } else {
             comment += `⚠️ WARN: Writing issues were found — [check the report](${valeArtifactUrl})\n\n(This check is informational and not yet enforced.)\n\n`;
 
-            // Summarize issues by file and line
+            // Build the summary output
+            let summaryOutput = '';
             for (const [file, issues] of Object.entries(report)) {
-              comment += `### ${file}\n`;
+              summaryOutput += `### ${file}\n`;
               for (const issue of issues) {
-                comment += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+                summaryOutput += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
               }
-              comment += '\n';
+              summaryOutput += '\n';
             }
 
-            // Optionally, add the full JSON in a collapsed section
-            const MAX_CHARS = 6000;
-            let truncatedReport = prettyReport;
-            if (prettyReport.length > MAX_CHARS) {
-              truncatedReport = prettyReport.slice(0, MAX_CHARS) + '\n... (truncated, see artifact for full report) ...\n';
-            }
-            comment += `<details>\n<summary>Show full Vale output (JSON, truncated)</summary>\n\n`;
-            comment += '```\n' + truncatedReport + '\n```\n';
+            // Show summary in the main comment
+            comment += summaryOutput;
+
+            // Add the summary output in a collapsed section as well
+            comment += `<details>\n<summary>Show full Vale output</summary>\n\n`;
+            comment += '```\n' + summaryOutput + '\n```\n';
             comment += `</details>\n\n`;
           }
 
