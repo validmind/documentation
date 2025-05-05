@@ -189,23 +189,32 @@ jobs:
             body: comment
           });
 
-    - name: Generate Lighthouse URLs
+    - name: Generate Lighthouse URLs (up to 3 levels deep)
       id: lhci_urls
       run: |
         BASE_URL="http://localhost:8080"
+        ROOTS=(
+          "index.html"
+          "get-started/get-started.html"
+          "guide/guides.html"
+          "developer/validmind-library.html"
+          "support/support.html"
+          "releases/all-releases.html"
+          "training/training.html"
+        )
         URLS=()
-        for ROOT in index.html get-started/get-started.html guide/guides.html developer/validmind-library.html support/support.html releases/all-releases.html training/training.html; do
+        for ROOT in "${ROOTS[@]}"; do
           # Add the root page
           if [ -f "site/_site/$ROOT" ]; then
             URLS+=("$BASE_URL/${ROOT}")
           fi
-          # Add all child pages
+          # Add child pages up to 3 levels deep
           DIR=$(dirname "$ROOT")
           if [ -d "site/_site/$DIR" ]; then
             while IFS= read -r -d '' file; do
               relpath="${file#site/_site/}"
               URLS+=("$BASE_URL/$relpath")
-            done < <(find "site/_site/$DIR" -type f -name "*.html" -print0)
+            done < <(find "site/_site/$DIR" -mindepth 1 -maxdepth 3 -type f -name "*.html" -print0)
           fi
         done
         # Remove duplicates and write to file
