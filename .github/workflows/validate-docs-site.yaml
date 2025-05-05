@@ -201,12 +201,15 @@ jobs:
     - name: Extract Lighthouse outputs
       id: lighthouse_outputs
       run: |
-        # Get the links JSON from the previous step
+        # Get the links JSON and manifest from the previous step
         LINKS_JSON='${{ steps.lighthouse.outputs.links }}'
+        MANIFEST_JSON='${{ steps.lighthouse.outputs.manifest }}'
         # Extract the report URL for index.html
         REPORT_URL=$(echo "$LINKS_JSON" | jq -r 'to_entries[] | select(.key | test("/index.html$")) | .value')
+        # Extract the JSON path for index.html from the manifest
+        INDEX_JSON_PATH=$(echo "$MANIFEST_JSON" | jq -r '.[] | select(.url | test("/index.html$")) | .jsonPath')
         # Extract the accessibility score for index.html
-        SCORE=$(jq '.categories.accessibility.score' .lighthouseci/*index.report.json | head -n1)
+        SCORE=$(jq '.summary.accessibility' "$INDEX_JSON_PATH")
         echo "accessibility_score=$SCORE" >> $GITHUB_OUTPUT
         echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
         echo "Extracted score: $SCORE"
