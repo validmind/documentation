@@ -189,12 +189,36 @@ jobs:
             body: comment
           });
 
+    - name: Generate Lighthouse URLs
+      id: lhci_urls
+      run: |
+        BASE_URL="http://localhost:8080"
+        URLS=()
+        for ROOT in index.html get-started/get-started.html guide/guides.html developer/validmind-library.html support/support.html releases/all-releases.html training/training.html; do
+          # Add the root page
+          if [ -f "site/_site/$ROOT" ]; then
+            URLS+=("$BASE_URL/${ROOT}")
+          fi
+          # Add all child pages
+          DIR=$(dirname "$ROOT")
+          if [ -d "site/_site/$DIR" ]; then
+            while IFS= read -r -d '' file; do
+              relpath="${file#site/_site/}"
+              URLS+=("$BASE_URL/$relpath")
+            done < <(find "site/_site/$DIR" -type f -name "*.html" -print0)
+          fi
+        done
+        # Remove duplicates and write to file
+        printf "%s\n" "${URLS[@]}" | sort -u > lhci-urls.txt
+        echo "Lighthouse will check the following URLs:"
+        cat lhci-urls.txt
+
     - name: Run Lighthouse audit
       uses: treosh/lighthouse-ci-action@v11
       id: lighthouse
       continue-on-error: true
       with:
-        configPath: .lighthouserc.js
+        configPath: .github/actions/lighthouse-check/.lighthouserc.js
         uploadArtifacts: true
         temporaryPublicStorage: true
 
@@ -214,3 +238,10 @@ jobs:
         echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
         echo "Extracted score: $SCORE"
         echo "Extracted report URL: $REPORT_URL"
+
+    - name: Output Lighthouse scores for all pages
+      run: |
+        MANIFEST_JSON='${{ steps.lighthouse.outputs.manifest }}'
+        echo "| Page | Accessibility | Performance | Best Practices | SEO |"
+        echo "|------|---------------|-------------|----------------|-----|"
+        echo "$MANIFEST_JSON" | jq -r '.[] | "| \(.url | sub("http://localhost:8080/"; "/")) | \(.summary.accessibility) | \(.summary.performance) | \(.summary[\"best-practices\"]) | \(.summary.seo) |"' | sort
