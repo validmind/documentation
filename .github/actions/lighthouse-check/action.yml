@@ -1,0 +1,51 @@
+name: 'Lighthouse Audit'
+description: 'Runs Lighthouse CI against a local docs site and outputs a report'
+
+inputs:
+  site_dir:
+    description: 'The directory to serve as the static site'
+    required: true
+    default: 'site/_site'
+  config_file:
+    description: 'Path to the Lighthouse CI config file'
+    required: true
+    default: '.lighthouserc.js'
+
+outputs:
+  accessibility_score:
+    description: 'Accessibility score from Lighthouse'
+    value: ${{ steps.lhci.outputs.accessibility_score }}
+  report_url:
+    description: 'Public Lighthouse report URL'
+    value: ${{ steps.lhci.outputs.report_url }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Lighthouse CI
+      shell: bash
+      run: npm install -g @lhci/cli
+
+    - name: Run Lighthouse CI
+      id: lhci
+      shell: bash
+      run: |
+        output=$(lhci autorun --config="${{ inputs.config_file }}" 2>&1)
+        status=$?
+        # Extract accessibility score from the latest report
+        score=$(jq '.categories.accessibility.score' .lighthouseci/*report.json | head -n1)
+        echo "DEBUG: Extracted score: $score"
+        echo "accessibility_score=$score" >> $GITHUB_OUTPUT
+        # Extract public report URL
+        report_url=$(echo "$output" | grep -o 'https://storage.googleapis.com[^ ]*')
+        echo "DEBUG: Extracted report_url: $report_url"
+        echo "report_url=$report_url" >> $GITHUB_OUTPUT
+        if [ $status -ne 0 ]; then
+          echo "Lighthouse audit failed"
+          exit $status
+        fi 

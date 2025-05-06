@@ -89,21 +89,168 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-      # Demo bucket is in us-east-1
+    # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
       run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
-    - name: Post comment with preview URL
+    - name: Install Lighthouse CI
+      run: npm install -g @lhci/cli
+
+    - name: Debug Lighthouse files
+      run: |
+        echo "Files in site/_site:"
+        find site/_site -type f -name "*.html" | sort
+        echo -e "\nLighthouse will check these files:"
+        lhci collect --config=.lighthouserc.js --dry-run
+
+    - name: Run Pa11y accessibility check
+      id: pa11y
+      continue-on-error: true
+      env:
+        PUPPETEER_ARGS: --no-sandbox
+      run: |
+        npx pa11y-ci --json https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html > pa11y-report.json
+
+    - name: Upload Pa11y report as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pa11y-report
+        path: pa11y-report.json
+        retention-days: 1
+
+    - name: Post combined PR results comment
       uses: actions/github-script@v6
       with:
         script: |
-          const url = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+          const runId = context.runId;
+          const previewUrl = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+
+          // Pa11y artifact
+          const pa11yArtifact = artifacts.artifacts.find(a => a.name === 'pa11y-report');
+          const pa11yArtifactUrl = pa11yArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${pa11yArtifact.id}`
+            : null;
+
+          // Lighthouse artifact
+          const lighthouseArtifact = artifacts.artifacts.find(a => a.name === 'lighthouse-report');
+          const lighthouseArtifactUrl = lighthouseArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${lighthouseArtifact.id}`
+            : null;
+
+          // Pa11y
+          const hasPa11yIssues = '${{ steps.pa11y.outputs.has_issues }}' === 'true';
+          let pa11yComment = '';
+          if (hasPa11yIssues) {
+            pa11yComment = `⚠️ WARN: Accessibility issues were found — [Download the Pa11y report](${pa11yArtifactUrl})`;
+          } else {
+            pa11yComment = `✓ INFO: No accessibility issues were found — [Download the Pa11y report](${pa11yArtifactUrl})`;
+          }
+
+          // Lighthouse
+          const lighthouseScore = '${{ steps.lighthouse_outputs.outputs.accessibility_score }}';
+          const lighthouseReportUrl = '${{ steps.lighthouse_outputs.outputs.report_url }}' || lighthouseArtifactUrl;
+          let lighthouseComment = '';
+          if (parseFloat(lighthouseScore) >= 0.9) {
+            lighthouseComment = `✓ INFO: Accessibility score is ${lighthouseScore} (required: >0.9) — [View the Lighthouse report](${lighthouseReportUrl})`; 
+          } else {
+            lighthouseComment = `⚠️ WARN: Accessibility score is ${lighthouseScore} (required: >0.9) — [Check the Lighthouse report](${lighthouseReportUrl})`;
+          }
+
+          // DEBUG block for Lighthouse outputs
+          let debugInfo = `<details>\n<summary>Show Lighthouse debug info</summary>\n\n`;
+          debugInfo += `Raw outputs from steps.lighthouse_outputs.outputs:\n`;
+          debugInfo += `- accessibility_score: \`${'${{ steps.lighthouse_outputs.outputs.accessibility_score }}'}\`\n`;
+          debugInfo += `- report_url: \`${'${{ steps.lighthouse_outputs.outputs.report_url }}'}\`\n`;
+          debugInfo += `- artifact url: \`${lighthouseArtifactUrl}\`\n`;
+          debugInfo += `- env.LHCI_BUILD_CONTEXT__CURRENT_HASH: \`${process.env.LHCI_BUILD_CONTEXT__CURRENT_HASH || 'undefined'}\`\n`;
+          debugInfo += `- env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY: \`${process.env.LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY || 'undefined'}\`\n`;
+          debugInfo += `</details>\n`;
+
+          let comment = `## Validate docs site\n\n`;
+          comment += `✓ INFO: A live preview of the docs site is available — [Open the preview](${previewUrl})\n\n`;
+          comment += `${pa11yComment}\n\n`;
+          comment += `${lighthouseComment}\n\n`;
+          comment += debugInfo;
+
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
-            body: `A PR preview is available: [Preview URL](${url})`
+            body: comment
           });
+
+    - name: Generate Lighthouse URLs (up to 3 levels deep)
+      id: lhci_urls
+      run: |
+        BASE_URL="http://localhost:8080"
+        ROOTS=(
+          "index.html"
+          "get-started/get-started.html"
+          "guide/guides.html"
+          "developer/validmind-library.html"
+          "support/support.html"
+          "releases/all-releases.html"
+          "training/training.html"
+        )
+        URLS=()
+        for ROOT in "${ROOTS[@]}"; do
+          # Add the root page
+          if [ -f "site/_site/$ROOT" ]; then
+            URLS+=("$BASE_URL/${ROOT}")
+          fi
+          # Add child pages up to 3 levels deep
+          DIR=$(dirname "$ROOT")
+          if [ -d "site/_site/$DIR" ]; then
+            while IFS= read -r -d '' file; do
+              relpath="${file#site/_site/}"
+              URLS+=("$BASE_URL/$relpath")
+            done < <(find "site/_site/$DIR" -mindepth 1 -maxdepth 3 -type f -name "*.html" -print0)
+          fi
+        done
+        # Remove duplicates and write to file
+        printf "%s\n" "${URLS[@]}" | sort -u > lhci-urls.txt
+        echo "Lighthouse will check the following URLs:"
+        cat lhci-urls.txt
+
+    - name: Run Lighthouse audit
+      uses: treosh/lighthouse-ci-action@v11
+      id: lighthouse
+      continue-on-error: true
+      with:
+        configPath: .github/actions/lighthouse-check/.lighthouserc.js
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
+    - name: Extract Lighthouse outputs
+      id: lighthouse_outputs
+      run: |
+        # Get the links JSON and manifest from the previous step
+        LINKS_JSON='${{ steps.lighthouse.outputs.links }}'
+        MANIFEST_JSON='${{ steps.lighthouse.outputs.manifest }}'
+        # Extract the report URL for index.html
+        REPORT_URL=$(echo "$LINKS_JSON" | jq -r 'to_entries[] | select(.key | test("/index.html$")) | .value')
+        # Extract the JSON path for index.html from the manifest
+        INDEX_JSON_PATH=$(echo "$MANIFEST_JSON" | jq -r '.[] | select(.url | test("/index.html$")) | .jsonPath')
+        # Extract the accessibility score for index.html
+        SCORE=$(jq '.summary.accessibility' "$INDEX_JSON_PATH")
+        echo "accessibility_score=$SCORE" >> $GITHUB_OUTPUT
+        echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
+        echo "Extracted score: $SCORE"
+        echo "Extracted report URL: $REPORT_URL"
+
+    - name: Output Lighthouse scores for all pages
+      run: |
+        MANIFEST_JSON='${{ steps.lighthouse.outputs.manifest }}'
+        echo "| Page | Accessibility | Performance | Best Practices | SEO |"
+        echo "|------|---------------|-------------|----------------|-----|"
+        echo "$MANIFEST_JSON" | jq -r '.[] | "| \(.url | sub("http://localhost:8080/"; "/")) | \(.summary.accessibility) | \(.summary.performance) | \(.summary[\"best-practices\"]) | \(.summary.seo) |"' | sort
