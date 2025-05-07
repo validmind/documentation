@@ -79,7 +79,7 @@ First, let's make sure you can log in to {{< var vm.product >}}.
 
 ### Prerequisite course
 
-To continue, you need to have been [onboarded](developer-fundamentals-register.qmd#register){target="_blank"} onto {{< var validmind.training >}} with the [**{{< fa circle-check >}} Validator**]{.bubble} role and completed the first two modules of this course:
+To continue, you need to have been [onboarded](validator-fundamentals-register.qmd#register){target="_blank"} onto {{< var validmind.training >}} with the [**{{< fa circle-check >}} Validator**]{.bubble} role and completed the first two modules of this course:
 
 
 <!-- IMPORTANT: USE THE .HTML PATH AND NOT THE .QMD PATH FOR THE REVEALJS OUTPUT -->
@@ -357,18 +357,58 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-# Run model evaluation tests* {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+# Run model evaluation tests {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#create-custom-tests-folder" data-preload="yes"}
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="50%" .pr4 .f2}
+Model evaluation testing
+
+:::
+
+::: {.column width="50%" .bl .pl4 .f2}
+Try it **live** on the next pages. {{< fa hand-point-right >}}
+
+:::
+
+::::
+
+::: {.f4}
+
+With everything ready for us, let's run the rest of our validation tests. We'll focus on comprehensive testing around model performance of both the champion and challenger models going forward as we've already verified the data quality of the datasets used to train the champion model:
+
+::: {.panel-tabset}
+
+### 1. Model performance tests
+
+We'll start with some performance tests, beginning with independent testing of our champion logistic regression model, then moving on to our potential challenger model.
+
+
+### 2. Model diagnostic tests
+
+Next, we want to inspect the robustness and stability testing comparison between our champion and challenger model.
+
+### 3. Feature importance tests
+
+Finally, we want to verify the relative influence of different input features on our models' predictions, as well as inspect the differences between our champion and challenger model to see if a certain model offers more understandable or logical importance scores for features.
+
+:::
+
+:::
+
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#run-model-performance-tests" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
 **Run model performance tests**
 
 ::: {.f5}
-Create a new folder that will contain reusable custom tests from your existing inline tests:
+Use [`vm.tests.list_tests()`](/validmind/validmind/tests.qmd#list_tests) to identify all the model performance tests for classification:
 
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run the cell under the following Using external test providers section: **Create custom tests folder**
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run model performance tests**
 
 :::
 
@@ -387,7 +427,9 @@ Log a model finding
 :::
 
 ::: {.tc}
-[Learn more ...](/notebooks/EXECUTED/model_development/3-integrate_custom_tests.ipynb#add-test-results-to-documentation){.button target="_blank"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+[Learn more ...](/notebooks/tutorials/model_validation/3-developing_challenger_model.html#log-a-model-finding){.button target="_blank"}
 
 :::
 
@@ -396,28 +438,39 @@ Log a model finding
 :::
 
 ::: {.column width="70%" .bl .pl4 .f4}
-### Add test results to model documentation
+As we can observe from the output in our notebook, our champion model doesn't pass the `MinimumAccuracy` test based on the default thresholds of the out-of-the-box test, so let's log a model finding in the {{< var validmind.platform >}}:
 
-With the custom test results logged, let's head to the model we connected to at the beginning of this notebook and insert our test results into the documentation:
+### Create a finding via a validation report
 
-1. From the **{{< fa cubes >}} Inventory** in the {{< var validmind.platform >}}, go to the model you connected to earlier.
+1. From the **Inventory** in the ValidMind Platform, go to the model you connected to earlier.
 
-2. In the left sidebar that appears for your model, click **{{< fa book-open >}} Documentation**.
+2. In the left sidebar that appears for your model, click **{{< fa shield >}} Validation Report**.
 
-3. Locate the Data Preparation section and click on **3.2 Model Evaluation** to expand that section.
+3. Locate the Data Preparation section and click on **2.2.2. Model Performance** to expand that section.
 
-4. Hover under the Pearson Correlation Matrix content block until a horizontal dashed line with a **+** button appears, indicating that you can insert a new block.
+4. Under the Model Performance Metrics section, locate Findings then click **Link Finding to Report**:
 
-5. Click **+** and then select **Test-Driven Block**:
+    ![Validation report with the link finding option highlighted](/notebooks/tutorials/model_validation/link-finding.png){width=90% fig-alt="Screenshot showing the validation report with the link finding option highlighted" .screenshot}
 
-    - In the search bar, type in `ConfusionMatrix`.
-    - Select the custom `ConfusionMatrix` tests you logged above:
+5. Click **{{< fa plus >}} Create New Finding** to add a finding.
 
-    ![The ConfusionMatrix tests selected](/notebooks/EXECUTED/model_development/selecting-confusion-matrix-test.png){fig-alt="Screenshot showing the ConfusionMatrix tests selected" .screenshot}
+6. Enter in the details for your finding, for example:
 
-6. Finally, click **Insert 2 Test Results to Document** to add the test results to the documentation.
+    - **[title]{.smallcaps}** — Champion Logistic Regression Model Fails Minimum Accuracy Threshold
+    - **[risk area]{.smallcaps}** — Model Performance
+    - **[documentation section]{.smallcaps}** — 3.2. Model Evaluation
+    - **[description]{.smallcaps}** — The logistic regression champion model was subjected to a Minimum Accuracy test to determine whether its predictive accuracy meets the predefined performance threshold of 0.7. The model achieved an accuracy score of 0.6136, which falls below the required minimum. As a result, the test produced a Fail outcome.
 
-    Confirm that the two individual results for the confusion matrix tests have been correctly inserted into section **3.2 Model Evaluation** of the documentation.
+7. Click **Save**.
+
+8. Select the finding you just added to link to your validation report.
+
+9. Click **Update Linked Findings** to insert your finding.
+
+10. Confirm that finding you inserted has been correctly inserted into section **2.2.2. Model Performance**  of the report.
+
+11. Click on the finding to expand the finding, where you can adjust details such as severity, owner, due date, status, etc. as well as include proposed remediation plans or supporting documentation as attachments.
+
 
 :::
 ::::
@@ -429,7 +482,7 @@ With the custom test results logged, let's head to the model we connected to at 
 **Create a model finding**
 
 ::: {.f6}
-3.2 Model Evaluation — `my_custom_tests.ConfusionMatrix:test_dataset_normalized` / `my_test_provider.ConfusionMatrix`
+2.2.2. Model Performance — **Link Finding to Report** {{< fa chevron-right >}} **{{< fa plus >}} Create New Finding** > Enter your finding details {{< fa chevron-right >}} Select your finding: **Update Linked Findings**
 
 :::
 
@@ -437,16 +490,18 @@ When you're done, click [{{< fa chevron-right >}}]() to continue.
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#save-an-inline-test" data-preload="yes"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#run-diagnostic-tests" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
 **Run diagnostic tests**
 
 ::: {.f5}
-The `@vm.test` decorator also includes a convenience method that allows you to save the test to a Python file at a specified path:
+This time, `use list_tests()` to identify all the model diagnosis tests for classification:
 
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells under the Using external test providers section: **Save an inline test**
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run diagnostic tests**
 
 :::
 
@@ -454,16 +509,18 @@ When you're done, return to this page and click [{{< fa chevron-right >}}]() to 
 
 ::::
 
-## {background-iframe="/notebooks/EXECUTED/model_development/3-integrate_custom_tests.html#register-a-local-test-provider" data-preload="yes"}
+<!-- CHANGE THIS TO EXECUTED LATER -->
+
+## {background-iframe="/notebooks/tutorials/model_validation/3-developing_challenger_model.html#run-feature-importance-tests" data-preload="yes"}
 
 :::: {.absolute bottom=15 .w-100 .f4 .tc .pl4 .overlay}
 **Run feature importance tests**
 
 ::: {.f5}
-Next, let's initialize a test provider that will tell the {{< var validmind.developer >}} where to find your saved custom tests:
+Use `list_tests()` again to identify all the feature importance tests for classification:
 
-1. Continue with **3 — Integrate custom tests**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_development/3-integrate_custom_tests.ipynb){target="_blank"}
-2. Run all the cells under the Using external test providers section: **Register a local test provider**
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub](https://jupyterhub.validmind.ai/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run feature importance tests**
 
 :::
 
