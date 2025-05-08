@@ -123,39 +123,40 @@ docs-site: get-source
 
 # Execute Juptyer Notebooks with a profile & provided credentials
 execute:
-	@echo "Select PROFILE:"; \\
-	echo "1) exe-demo"; \\
-	echo "2) exe-staging"; \\
-	echo "3) exe-prod"; \\
-	read -p "Enter choice [1-3] (default: exe-demo): " PROFILE_CHOICE; \\
-	if [ "$$PROFILE_CHOICE" = "1" ] || [ -z "$$PROFILE_CHOICE" ]; then PROFILE="exe-demo"; \\
-	elif [ "$$PROFILE_CHOICE" = "2" ]; then PROFILE="exe-staging"; \\
-	elif [ "$$PROFILE_CHOICE" = "3" ]; then PROFILE="exe-prod"; \\
-	else echo "Invalid choice"; exit 1; fi; \\
-	echo "Select FILE_PATH:"; \\
-	echo "1) notebooks/EXECUTED/model_development"; \\
-	echo "2) notebooks/EXECUTED/model_validation"; \\
-	echo "3) Enter custom filepath"; \\
-	read -p "Enter choice [1-3]: " FILE_CHOICE; \\
-	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/model_development"; \\
-	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/model_validation"; \\
-	elif [ "$$FILE_CHOICE" = "3" ]; then read -p "Enter custom FILE_PATH: " CUSTOM_FILE_PATH; FILE_PATH="$$CUSTOM_FILE_PATH"; \\
-	else echo "Invalid choice"; exit 1; fi; \\
-	read -p "Enter VM_API_HOST (default: https://api.prod.validmind.ai/api/v1/tracking): " INPUT_VM_API_HOST; \\
-	VM_API_HOST=$${INPUT_VM_API_HOST:-https://api.prod.validmind.ai/api/v1/tracking}; \\
-	read -p "Enter VM_API_KEY: " VM_API_KEY; \\
-	read -p "Enter VM_API_SECRET: " VM_API_SECRET; \\
-	read -p "Enter VM_API_MODEL: " VM_API_MODEL; \\
-	env_file="temp.env"; \\
-	echo "VM_API_HOST=$$VM_API_HOST" > $$env_file; \\
-	echo "VM_API_KEY=$$VM_API_KEY" >> $$env_file; \\
-	echo "VM_API_SECRET=$$VM_API_SECRET" >> $$env_file; \\
-	echo "VM_API_MODEL=$$VM_API_MODEL" >> $$env_file; \\
-	set -a; \\
-	source $$env_file; \\
-	set +a; \\
-	quarto render --profile "$$PROFILE" "$$FILE_PATH"; \\
-	rm $$env_file
+	@bash -c ' \
+	echo "Select PROFILE:"; \
+	echo "1) exe-demo"; \
+	echo "2) exe-staging"; \
+	echo "3) exe-prod"; \
+	read -p "Enter choice [1-3] (default: 1): " PROFILE_CHOICE; \
+	if [ "$$PROFILE_CHOICE" = "1" ] || [ -z "$$PROFILE_CHOICE" ]; then PROFILE="exe-demo"; \
+	elif [ "$$PROFILE_CHOICE" = "2" ]; then PROFILE="exe-staging"; \
+	elif [ "$$PROFILE_CHOICE" = "3" ]; then PROFILE="exe-prod"; \
+	else echo "Invalid choice"; exit 1; fi; \
+	echo "Select FILE_PATH:"; \
+	echo "1) notebooks/EXECUTED/model_development"; \
+	echo "2) notebooks/EXECUTED/model_validation"; \
+	echo "3) Enter custom filepath"; \
+	read -p "Enter choice [1-3]: " FILE_CHOICE; \
+	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/model_development"; \
+	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/model_validation"; \
+	elif [ "$$FILE_CHOICE" = "3" ]; then read -p "Enter custom FILE_PATH: " CUSTOM_FILE_PATH; FILE_PATH="$$CUSTOM_FILE_PATH"; \
+	else echo "Invalid choice"; exit 1; fi; \
+	read -p "Enter VM_API_HOST (default: https://api.prod.validmind.ai/api/v1/tracking): " INPUT_VM_API_HOST; \
+	VM_API_HOST=$${INPUT_VM_API_HOST:-https://api.prod.validmind.ai/api/v1/tracking}; \
+	read -p "Enter VM_API_KEY: " VM_API_KEY; \
+	read -p "Enter VM_API_SECRET: " VM_API_SECRET; \
+	read -p "Enter VM_API_MODEL: " VM_API_MODEL; \
+	env_file="temp.env"; \
+	echo "VM_API_HOST=$$VM_API_HOST" > $$env_file; \
+	echo "VM_API_KEY=$$VM_API_KEY" >> $$env_file; \
+	echo "VM_API_SECRET=$$VM_API_SECRET" >> $$env_file; \
+	echo "VM_API_MODEL=$$VM_API_MODEL" >> $$env_file; \
+	set -a; \
+	source $$env_file; \
+	set +a; \
+	quarto render --profile "$$PROFILE" "$$FILE_PATH"; \
+	rm $$env_file '
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
