@@ -2,7 +2,7 @@
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-FILE_PATH := notebooks/EXECUTED/model_development
+FILE_PATH := notebooks/EXECUTED/
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
@@ -139,6 +139,9 @@ notebooks:
 	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
 	@mkdir -p notebooks/EXECUTED/model_development/
 	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
+	@echo "Duplicating all files from notebooks/tutorials/model_validation/ for execution"
+	@mkdir -p notebooks/EXECUTED/model_validation/
+	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
