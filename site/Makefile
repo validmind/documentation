@@ -2,7 +2,7 @@
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-FILE_PATH := notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb 
+FILE_PATH := notebooks/EXECUTED/model_development
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
@@ -43,6 +43,7 @@ clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 	rm -rf $(SRC_ROOT)
+	rm -rf notebooks/EXECUTED/model_development/
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -86,7 +87,7 @@ deploy-prod:
 	else \
 		echo "\nDeploying prod site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs-staging.validmind.ai/
@@ -96,7 +97,7 @@ deploy-staging:
 	else \
 		echo "\nDeploying staging site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 docker-build: docker-site-lite
@@ -122,7 +123,7 @@ docs-site: get-source
 	quarto render --profile production
 	@$(MAKE) execute PROFILE=exe-prod
 
-# Will default to `exe-demo` profile & the `notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb` if no input provided
+# Will default to `exe-demo` profile & the `notebooks/EXECUTED/model_development` if no input provided
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
 
@@ -135,8 +136,9 @@ notebooks:
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
-	@echo "Duplicating notebooks/tutorials/intro_for_model_developers.ipynb for execution"
-	@cp notebooks/tutorials/intro_for_model_developers.ipynb notebooks/tutorials/intro_for_model_developers_EXECUTED.ipynb
+	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
+	@mkdir -p notebooks/EXECUTED/model_development/
+	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
@@ -184,11 +186,3 @@ yearly-releases:
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview
-
-
-
-
-
-
-
-
