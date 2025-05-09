@@ -124,11 +124,6 @@ docs-site: get-source
 
 # Execute Juptyer Notebooks with a profile & provided credentials
 execute:
-	@$(MAKE) jupyter-widget
-	@echo "Duplicating jupyter-widget into model_development for notebook access"
-	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_development/embed-amd.js
-	@echo "DDuplicating jupyter-widget into model_validation for notebook access"
-	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_validation/embed-amd.js
 	@bash -c ' \
 	echo "Select PROFILE:"; \
 	echo "1) exe-demo"; \
@@ -184,6 +179,11 @@ notebooks:
 	@echo "Duplicating all files from notebooks/tutorials/model_validation/ for execution"
 	@mkdir -p notebooks/EXECUTED/model_validation/
 	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
+	@$(MAKE) jupyter-widget
+	@echo "Duplicating jupyter-widget into model_development for notebook access"
+	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_development/embed-amd.js
+	@echo "DDuplicating jupyter-widget into model_validation for notebook access"
+	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_validation/embed-amd.js
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
