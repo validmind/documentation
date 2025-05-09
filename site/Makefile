@@ -9,7 +9,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source jupyter-widget notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
@@ -30,6 +30,7 @@ help:
 	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
 	@echo "  execute              Execute a Jupyter Notebook or notebook directory"
 	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
+	@echo "  jupyter-widget       Retrieve the latest juptyer-widget for notebook output widget rendering"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into validmind/"
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update releases sidebar"
@@ -124,6 +125,10 @@ docs-site: get-source
 # Execute Juptyer Notebooks with a profile & provided credentials
 execute:
 	@$(MAKE) jupyter-widget
+	@echo "Duplicating jupyter-widget into model_development for notebook access"
+	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_development/embed-amd.js
+	@echo "DDuplicating jupyter-widget into model_validation for notebook access"
+	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_validation/embed-amd.js
 	@bash -c ' \
 	echo "Select PROFILE:"; \
 	echo "1) exe-demo"; \
