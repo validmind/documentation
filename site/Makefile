@@ -123,6 +123,7 @@ docs-site: get-source
 
 # Execute Juptyer Notebooks with a profile & provided credentials
 execute:
+	@$(MAKE) jupyter-widget
 	@bash -c ' \
 	echo "Select PROFILE:"; \
 	echo "1) exe-demo"; \
@@ -160,6 +161,11 @@ execute:
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
+
+# Retrieves the latest Jupyter Notebook widget package for output rendering
+jupyter-widget:
+	curl -L -o static/embed-amd.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js
+	@echo "Updated static/embed-amd.js to latest version from unpkg CDN"
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
