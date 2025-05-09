@@ -164,8 +164,8 @@ get-source: clean clone copy-installation notebooks python-docs test-description
 
 # Retrieves the latest Jupyter Notebook widget package for output rendering
 jupyter-widget:
-	curl -L -o static/embed-amd.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js
-	@echo "Updated static/embed-amd.js to latest version from unpkg CDN"
+	curl -L -o developer/embed-amd.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js
+	@echo "Updated developer/embed-amd.js to latest version from unpkg CDN"
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
