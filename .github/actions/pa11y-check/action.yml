@@ -1,0 +1,48 @@
+name: 'Pa11y Accessibility Check'
+description: 'Runs Pa11y accessibility checks against the docs site and outputs a report'
+
+inputs:
+  site_url:
+    description: 'The URL of the site to check'
+    required: true
+  report_file:
+    description: 'Path to save the report file'
+    required: true
+    default: 'pa11y-report.json'
+
+outputs:
+  has_issues:
+    description: 'Whether any accessibility issues were found'
+    value: ${{ steps.pa11y.outputs.has_issues }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Pa11y
+      shell: bash
+      run: |
+        npm install -g pa11y-ci
+
+    - name: Run Pa11y check
+      id: pa11y
+      shell: bash
+      run: |
+        # Create a temporary configuration file with the necessary settings
+        echo '{
+          "defaults": {
+            "chromeLaunchConfig": {
+              "args": ["--no-sandbox"]
+            }
+          },
+          "urls": ["${{ inputs.site_url }}"]
+        }' > pa11y-config.json
+
+    # Run Pa11y and save results to file
+    pa11y-ci --config pa11y-config.json --json > "${{ inputs.report_file }}"
+
+    # Check if any issues were found
+    if grep -q '"type": "error"' "${{ inputs.report_file }}"; then
+      echo "has_issues=true" >> $GITHUB_OUTPUT
+    else
+      echo "has_issues=false" >> $GITHUB_OUTPUT
+    fi

@@ -1,0 +1,98 @@
+name: Vale Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Install Vale
+      run: |
+        wget https://github.com/errata-ai/vale/releases/download/v2.28.0/vale_2.28.0_Linux_64-bit.tar.gz
+        tar -xvzf vale_2.28.0_Linux_64-bit.tar.gz
+        sudo mv vale /usr/local/bin/
+
+    - name: Download Vale community styles
+      run: |
+        mkdir -p .vale/styles
+        vale sync
+
+    - name: Run Vale
+      id: vale
+      continue-on-error: true
+      run: |
+        vale --output=JSON site/ > vale-report.json || {
+          echo "Vale linting found issues"
+          exit 1
+        }
+
+    - name: Format Vale report for PR comment
+      run: jq . vale-report.json > vale-report-pretty.json
+
+    - name: Upload Vale report as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: vale-report
+        path: vale-report.json
+        retention-days: 1
+
+    - name: Post Vale results comment
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const runId = context.runId;
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+          const valeArtifact = artifacts.artifacts.find(a => a.name === 'vale-report');
+          const valeArtifactUrl = valeArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${valeArtifact.id}`
+            : null;
+          
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('vale-report.json', 'utf8'));
+          const prettyReport = fs.readFileSync('vale-report-pretty.json', 'utf8');
+          
+          let comment = '## Vale source linter\n\n';
+          
+          if (Object.keys(report).length === 0) {
+            comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
+          } else {
+            comment += `⚠️ WARN: Source issues were found — Check the Vale output or [download the report](${valeArtifactUrl})\n\n`;
+
+            // Build the summary output
+            let summaryOutput = '';
+            for (const [file, issues] of Object.entries(report)) {
+              summaryOutput += `### ${file}\n`;
+              for (const issue of issues) {
+                summaryOutput += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+              }
+              summaryOutput += '\n';
+            }
+
+            // Add the summary output in a collapsed section
+            comment += `<details>\n<summary>Show Vale output</summary>\n\n`;
+            comment += '\n' + summaryOutput + '\n\n';
+            comment += `</details>\n\n`;
+          }
+
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          });
