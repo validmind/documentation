@@ -7,6 +7,7 @@ INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
+WID_DIR = developer/jupyter-widgets
 
 # Define .PHONY target for help section
 .PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source jupyter-widget notebooks python-docs release-notes test-descriptions yearly-releases
@@ -164,8 +165,17 @@ get-source: clean clone copy-installation notebooks python-docs test-description
 
 # Retrieves the latest Jupyter Notebook widget package for output rendering
 jupyter-widget:
-	curl -L -o developer/embed-amd.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js
-	@echo "Updated developer/embed-amd.js to latest version from unpkg CDN"
+	rm -rf $(WID_DIR)
+	mkdir -p $(WID_DIR)
+	# JS core logic
+	curl -L -o $(WID_DIR)/embed-amd.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js
+	curl -L -o $(WID_DIR)/index.js https://unpkg.com/@jupyter-widgets/html-manager@*/dist/index.js
+	curl -L -o $(WID_DIR)/style.css https://unpkg.com/@jupyter-widgets/html-manager@*/dist/style.css
+	# Fonts (fixes your original 404s)
+	curl -L -o $(WID_DIR)/1551f4f60c37af51121f.woff2 https://unpkg.com/@jupyter-widgets/html-manager@*/dist/1551f4f60c37af51121f.woff2
+	curl -L -o $(WID_DIR)/eeccf4f66002c6f2ba24.woff https://unpkg.com/@jupyter-widgets/html-manager@*/dist/eeccf4f66002c6f2ba24.woff
+	curl -L -o $(WID_DIR)/be9ee23c0c6390141475.ttf https://unpkg.com/@jupyter-widgets/html-manager@*/dist/be9ee23c0c6390141475.ttf
+	@echo "All @jupyter-widgets/html-manager assets pulled into $(WID_DIR)"
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -180,10 +190,10 @@ notebooks:
 	@mkdir -p notebooks/EXECUTED/model_validation/
 	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
 	@$(MAKE) jupyter-widget
-	@echo "Duplicating jupyter-widget into model_development for notebook access"
-	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_development/embed-amd.js
-	@echo "DDuplicating jupyter-widget into model_validation for notebook access"
-	@cp -r developer/embed-amd.js notebooks/EXECUTED/model_validation/embed-amd.js
+	# @echo "Duplicating jupyter-widget into model_development for notebook access"
+	# @cp -r developer/embed-amd.js notebooks/EXECUTED/model_development/embed-amd.js
+	# @echo "DDuplicating jupyter-widget into model_validation for notebook access"
+	# @cp -r developer/embed-amd.js notebooks/EXECUTED/model_validation/embed-amd.js
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
