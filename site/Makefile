@@ -41,7 +41,6 @@ clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
 	rm -rf $(SRC_DIR)
 	rm -rf $(SRC_ROOT)
-	rm -rf notebooks/EXECUTED/model_development/
 
 # Prompt for a branch or release tag and clone the repository
 clone:
