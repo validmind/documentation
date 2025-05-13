@@ -48,23 +48,38 @@ jobs:
             exit 1;
             }
 
-      - name: Create .env file
-        id: create_env
+      # If yes then create the dev.env file for use in execution step
+      - name: Create dev.env file
+        if: steps.filter.outputs.notebooks == 'true'
+        id: create_dev_env
         run: |
-          touch .env
-          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env
-          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env
-          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env
-          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env
-          cat .env
+          touch dev.env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
+          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
+          cat dev.env
 
-      # Only execute the prod notebook if .env file is created
-      - name: Execute prod ValidMind for model development series
-        if: ${{ steps.create_env.outcome == 'success' }}
+      # If yes then create the valid.env file for use in execution step
+      - name: Create valid.env file
+        if: steps.filter.outputs.notebooks == 'true'
+        id: create_valid_env
+        run: |
+          touch valid.env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
+          echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
+          cat valid.env
+
+      # Only execute the production notebooks for training if .env files are created
+      - name: Execute production ValidMind for model development and validation series
+        if: ${{ steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
         uses: ./.github/actions/prod-notebook
         id: execute-prod-notebook
         with:
-          env_file: .env
+          dev_env: dev.env
+          valid_env: valid.env
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials

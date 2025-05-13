@@ -1,14 +1,25 @@
 name: Execute staging notebooks
-description: Installs python3, validmind, checks dependencies then executes ONLY the Intro for Model Developers notebook with staging heap tracking
+description: Installs python3, validmind, checks dependencies then executes ONLY the training notebook series with staging heap tracking
 
 inputs:
-  env_file:
-    description: "Load the created .env file"
+  dev_env:
+    description: "Load the created dev.env file"
+    required: true
+  valid_env:
+    description: "Load the created valid.env file"
     required: true
 
 runs:
   using: "composite"
   steps:
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/staging-notebook/action.yml') }}
+        restore-keys: |
+          python-pip-${{ runner.os }}-
+
     - name: Install python3 for Jupyter Notebooks
       shell: bash
       run: |
@@ -29,23 +40,46 @@ runs:
       run: |
         python -m ipykernel install --user --name validmind --display-name "ValidMind Library"
 
-    - name: Ensure .env file is available
+    - name: Ensure dev.env file is available
       shell: bash
-      id: find_env
+      id: find_dev_env
       run: |
-        if [ ! -f "${{ inputs.env_file }}" ]; then
-          echo "Error: .env file not found at ${{ inputs.env_file }}"
+        if [ ! -f "${{ inputs.dev_env }}" ]; then
+          echo "Error: dev.env file not found at ${{ inputs.dev_env }}"
           exit 1
         fi
 
     - name: Execute ONLY the ValidMind for model development series with heap staging
       shell: bash
-      if: ${{ steps.find_env.outcome == 'success' }}
+      if: ${{ steps.find_dev_env.outcome == 'success' }}
       run: |
           cd site
-          source ../${{ inputs.env_file }}
+          cp ../${{ inputs.dev_env }} ../.env
+          source ../.env
           quarto render --profile exe-staging notebooks/EXECUTED/model_development &> render_errors.log || {
-          echo "Execute for iValidMind for model development series failed";
-          cat render_errors.log;
-          exit 1;
+            echo "Execute for ValidMind for model development series failed";
+            cat render_errors.log;
+            exit 1;
+          }
+
+    - name: Ensure valid.env file is available
+      shell: bash
+      id: find_valid_env
+      run: |
+        if [ ! -f "${{ inputs.valid_env }}" ]; then
+          echo "Error: valid.env file not found at ${{ inputs.valid_env }}"
+          exit 1
+        fi
+
+    - name: Execute ONLY the ValidMind for model validation series with heap staging
+      shell: bash
+      if: ${{ steps.find_valid_env.outcome == 'success' }}
+      run: |
+          cd site
+          cp ../${{ inputs.valid_env }} ../.env
+          source ../.env
+          quarto render --profile exe-staging notebooks/EXECUTED/model_validation &> render_errors.log || {
+            echo "Execute for ValidMind for model validation series failed";
+            cat render_errors.log;
+            exit 1;
           }
