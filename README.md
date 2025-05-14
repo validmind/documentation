@@ -227,3 +227,26 @@ Configure in `config.json`, generated with the Docker image:
    "JUPYTERHUB_URL": "https://your-custom-jupyter.validmind.ai"
  }
 ```
+
+## Configuring Lighthouse checks
+
+Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites to help enable a better, accessible documentation for everyone. 
+
+By default, Lighthouse checks only the top navigation pages (such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, etc.) in your documentation preview. This is controlled by the `depth` parameter in the GitHub Actions workflow.
+
+For more thorough checks — to provide more comprehensive information about accessibility compliance or SEO performance — you can configure which pages are checked by adjusting the depth level in `.github/workflows/lighthouse-check.yaml`:
+
+- **0**: Only top-level navigation pages are checked (default).
+- **1**: All first-level subdirectory pages are included (e.g., `/guide/*.html`, `/developer/*.html`).
+- **2**: All second-level subdirectory pages are included (e.g., `/guide/attestation/*.html`).
+
+> **Tip:** Running Lighthouse checks to a deeper folder depth is recommended only for a working branch and then only if you want to perform more thorough audit of your documentation. Avoid merging configuration changes to the `main` branch, as deeper checks significantly slow down your CI/CD pipeline.
+
+The workflow will:
+
+- Crawl the documentation preview at the specified depth.
+- Run Lighthouse accessibility, performance, best practices, and SEO checks on each discovered page.
+- Post a summary comment on the pull request, including average accessibility scores and a table of results.
+- Require an average accessibility score of at least 0.9 for a passing check.
+
+## Configuring Vale linter 
