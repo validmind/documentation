@@ -83,29 +83,57 @@ jobs:
           
           const fs = require('fs');
           const report = JSON.parse(fs.readFileSync('vale-report.json', 'utf8'));
-          const prettyReport = fs.readFileSync('vale-report-pretty.json', 'utf8');
           
           let comment = '## Vale source linter\n\n';
           
           if (Object.keys(report).length === 0) {
             comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
-            comment += `⚠️ WARN: Source issues were found — Check the Vale output or [download the report](${valeArtifactUrl})\n\n`;
+            comment += `⚠️ WARN: Source issues were found — Check the Vale output or [download the full report](${valeArtifactUrl})\n\n`;
 
             // Build the summary output
             let summaryOutput = '';
+            let totalIssues = 0;
+            let fileCount = 0;
+            
             for (const [file, issues] of Object.entries(report)) {
-              summaryOutput += `### ${file}\n`;
-              for (const issue of issues) {
-                summaryOutput += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+              totalIssues += issues.length;
+              fileCount++;
+              
+              // Only include first 5 files to keep comment size manageable
+              if (fileCount <= 5) {
+                summaryOutput += `### ${file}\n`;
+                // Only include first 10 issues per file
+                const issuesToShow = issues.slice(0, 10);
+                for (const issue of issuesToShow) {
+                  summaryOutput += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+                }
+                if (issues.length > 10) {
+                  summaryOutput += `- ... and ${issues.length - 10} more issues\n`;
+                }
+                summaryOutput += '\n';
               }
-              summaryOutput += '\n';
             }
 
+            // Add summary statistics
+            comment += `Found ${totalIssues} issues across ${fileCount} files\n\n`;
+            
             // Add the summary output in a collapsed section
-            comment += `<details>\n<summary>Show Vale output</summary>\n\n`;
-            comment += '\n' + summaryOutput + '\n\n';
-            comment += `</details>\n\n`;
+            comment += `<details>\n<summary>Show first 5 files with issues</summary>\n\n`;
+            comment += summaryOutput;
+            if (fileCount > 5) {
+              comment += `\n... and ${fileCount - 5} more files with issues\n`;
+            }
+            comment += `\n</details>\n\n`;
+            
+            comment += `> Note: The full report is available in the workflow artifacts.`;
+          }
+
+          // Ensure comment doesn't exceed GitHub's limit
+          const MAX_COMMENT_LENGTH = 60000; // Leave some buffer
+          if (comment.length > MAX_COMMENT_LENGTH) {
+            comment = comment.substring(0, MAX_COMMENT_LENGTH) + 
+              `\n\n... (comment truncated due to length) - See full report in artifacts`;
           }
 
           github.rest.issues.createComment({
