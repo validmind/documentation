@@ -46,37 +46,6 @@ jobs:
           cat render_errors.log;
           exit 1;
           }
-
-    - name: Generate sitemap
-      run: |
-          cd site
-          echo "Current directory: $(pwd)"
-          echo "Listing _site directory contents:"
-          ls -la _site
-          # Get all HTML files from _site directory
-          echo "Finding HTML files..."
-          find _site -name "*.html" | while read -r file; do
-            echo "Processing file: $file"
-            # Convert file path to URL path
-            url_path=$(echo "$file" | sed 's|^_site/||')
-            echo "URL path: $url_path"
-            # Get last modified time
-            lastmod=$(date -r "$file" -u +"%Y-%m-%dT%H:%M:%SZ")
-            echo "Last modified: $lastmod"
-            # Add to sitemap
-            printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$url_path" "$lastmod" >> sitemap.xml.tmp
-          done
-          echo "Creating final sitemap..."
-          # Create final sitemap with header and footer
-          printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
-          cat sitemap.xml.tmp >> _site/sitemap.xml
-          printf '</urlset>\n' >> _site/sitemap.xml
-          rm sitemap.xml.tmp
-          echo "Checking if sitemap was created:"
-          ls -la _site/sitemap.xml
-          # Debug output for sitemap URL
-          echo "Generated sitemap available at: https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/sitemap.xml"
-
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -124,7 +93,13 @@ jobs:
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
-      run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
+      run: |
+          echo "Listing files before S3 sync:"
+          ls -la site/_site
+          echo "Running S3 sync..."
+          aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete --debug
+          echo "Creating CloudFront invalidation..."
+          aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
     - name: Post preview URL comment
       uses: actions/github-script@v6

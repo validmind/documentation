@@ -11,7 +11,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
@@ -31,6 +31,7 @@ help:
 	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
 	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
 	@echo "  execute              Execute a Jupyter Notebook, optional overrides: PROFILE= FILE_PATH"
+	@echo "  generate-sitemap     Generate a sitemap for the static HTML site"
 	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into validmind/"
@@ -126,6 +127,20 @@ docs-site: get-source
 # Will default to `exe-demo` profile & the `notebooks/EXECUTED/model_development` if no input provided
 execute:
 	quarto render --profile $(PROFILE) $(FILE_PATH)
+
+# Generate sitemap for the site
+generate-sitemap:
+	@echo "Generating sitemap ..."
+	@find _site -name "*.html" | while read -r file; do \
+		url_path=$$(echo "$$file" | sed 's|^_site/||'); \
+		lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
+		printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
+	done
+	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
+	@cat sitemap.xml.tmp >> _site/sitemap.xml
+	@printf '</urlset>\n' >> _site/sitemap.xml
+	@rm sitemap.xml.tmp
+	@echo "Sitemap generated at _site/sitemap.xml"
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
