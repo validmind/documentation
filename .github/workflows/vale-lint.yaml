@@ -100,8 +100,8 @@ jobs:
               totalIssues += issues.length;
               fileCount++;
               
-              // Only include first 5 files to keep comment size manageable
-              if (fileCount <= 5) {
+              // Include first 30 files to keep comment size manageable
+              if (fileCount <= 30) {
                 summaryOutput += `### ${file}\n`;
                 // Only include first 10 issues per file
                 const issuesToShow = issues.slice(0, 10);
@@ -119,14 +119,15 @@ jobs:
             comment += `Found ${totalIssues} issues across ${fileCount} files\n\n`;
             
             // Add the summary output in a collapsed section
-            comment += `<details>\n<summary>Show first 5 files with issues</summary>\n\n`;
+            comment += `<details>\n<summary>Show first 30 files with issues</summary>\n\n`;
             comment += summaryOutput;
-            if (fileCount > 5) {
-              comment += `\n... and ${fileCount - 5} more files with issues\n`;
+            if (fileCount > 30) {
+              comment += `\n... and ${fileCount - 30} more files with issues\n`;
             }
             comment += `\n</details>\n\n`;
             
-            comment += `> Note: The full report is available in the workflow artifacts.`;
+            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            comment += `**Tip**: The full report is available in the [workflow run](${workflowRunUrl}).`;
           }
 
           // Ensure comment doesn't exceed GitHub's limit
