@@ -268,9 +268,18 @@ jobs:
 
         # For depth > 0, also get URLs from sitemap
         if max_depth > 0:
-            sitemap_urls = get_urls_from_sitemap(f"{base_url}/sitemap.xml", max_depth)
-            print(f"Found {len(sitemap_urls)} URLs in sitemap", file=sys.stderr)
-            all_urls.update(sitemap_urls)
+            # Get the PR preview branch from the base URL
+            pr_preview_path = urlparse(base_url).path
+            pr_preview_parts = pr_preview_path.strip('/').split('/')
+            if len(pr_preview_parts) >= 4:  # pr_previews/username/branch/name
+                pr_preview_branch = pr_preview_parts[2]  # Get the branch name
+                sitemap_url = f"{base_url}/sitemap.xml"
+                print(f"Using sitemap from PR preview branch: {pr_preview_branch}", file=sys.stderr)
+                sitemap_urls = get_urls_from_sitemap(sitemap_url, max_depth)
+                print(f"Found {len(sitemap_urls)} URLs in sitemap", file=sys.stderr)
+                all_urls.update(sitemap_urls)
+            else:
+                print("Warning: Could not determine PR preview branch from URL", file=sys.stderr)
 
         # Print URLs to stdout, ensuring proper URL construction
         print(f"Total URLs found: {len(all_urls)}", file=sys.stderr)
