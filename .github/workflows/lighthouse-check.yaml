@@ -179,7 +179,10 @@ jobs:
                 visited = set()
             
             current_depth = get_url_depth(url)
+            print(f"Checking URL {url} at depth {current_depth}", file=sys.stderr)
+            
             if current_depth > max_depth or url in visited:
+                print(f"Skipping {url} - depth {current_depth} > {max_depth} or already visited", file=sys.stderr)
                 return set()
             
             visited.add(url)
@@ -192,13 +195,21 @@ jobs:
                 print(f"Response status: {response.status_code}", file=sys.stderr)
                 if response.status_code == 200:
                     soup = BeautifulSoup(response.text, 'html.parser')
+                    print(f"Found {len(soup.find_all('a', href=True))} links on page", file=sys.stderr)
+                    
                     for a in soup.find_all('a', href=True):
                         href = a['href']
+                        print(f"Processing link: {href}", file=sys.stderr)
+                        
                         # Skip external links and anchors
                         if href.startswith('#') or href.startswith('http'):
+                            print(f"Skipping external/anchor link: {href}", file=sys.stderr)
                             continue
+                            
                         # Convert relative URLs to absolute
                         full_url = urljoin(url, href)
+                        print(f"Converted to full URL: {full_url}", file=sys.stderr)
+                        
                         # Only include URLs from the same base domain
                         if urlparse(full_url).netloc == urlparse(url).netloc:
                             # Extract just the path part
@@ -208,11 +219,16 @@ jobs:
                             
                             # Only include .html files
                             if path.endswith('.html'):
+                                print(f"Found HTML link: {path}", file=sys.stderr)
                                 links.add(path)
-                                print(f"Found link: {path}", file=sys.stderr)
                                 # Only recursively get links if we haven't hit max depth
                                 if get_url_depth(path) < max_depth:
+                                    print(f"Recursively checking {path} at depth {get_url_depth(path)}", file=sys.stderr)
                                     links.update(get_links(full_url, max_depth, visited))
+                                else:
+                                    print(f"Skipping recursive check for {path} - at max depth", file=sys.stderr)
+                        else:
+                            print(f"Skipping external domain link: {href}", file=sys.stderr)
             except Exception as e:
                 print(f"Error processing {url}: {str(e)}", file=sys.stderr)
             
@@ -234,13 +250,16 @@ jobs:
             all_urls.add(root)  # Add the root path
             if max_depth > 0:
                 print(f"Crawling from {root} with depth {max_depth}", file=sys.stderr)
-                all_urls.update(get_links(full_url, max_depth))
+                new_links = get_links(full_url, max_depth)
+                print(f"Found {len(new_links)} new links from {root}", file=sys.stderr)
+                all_urls.update(new_links)
             else:
                 print(f"Skipping crawl for {root} (depth = 0)", file=sys.stderr)
 
         # For depth > 0, also get URLs from sitemap
         if max_depth > 0:
             sitemap_urls = get_urls_from_sitemap(f"{base_url}/sitemap.xml", max_depth)
+            print(f"Found {len(sitemap_urls)} URLs in sitemap", file=sys.stderr)
             all_urls.update(sitemap_urls)
 
         # Print URLs to stdout, ensuring proper URL construction
