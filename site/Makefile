@@ -133,7 +133,11 @@ generate-sitemap:
 	@echo "Generating sitemap ..."
 	@find _site -name "*.html" | while read -r file; do \
 		url_path=$$(echo "$$file" | sed 's|^_site/||'); \
-		lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
+		if [ "$$(uname)" = "Darwin" ]; then \
+			lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
+		else \
+			lastmod=$$(stat -c "%y" "$$file" | sed 's/ /T/;s/$$/Z/'); \
+		fi; \
 		printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
 	done
 	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
