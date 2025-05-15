@@ -3,7 +3,10 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
 FILE_PATH := notebooks/EXECUTED/model_development
-GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH := $(or $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null),$(PR_BRANCH))
+ifndef GIT_BRANCH
+$(error Could not determine branch name. Please set PR_BRANCH environment variable.)
+endif
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
 PROFILE := exe-demo
