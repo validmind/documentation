@@ -31,16 +31,21 @@ jobs:
         echo "PREVIEW_URL=https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}" >> $GITHUB_ENV
         echo "DEPTH=${{ env.DEFAULT_DEPTH }}" >> $GITHUB_ENV
 
-    - name: Check for PR preview URL
+    - name: Check for PR preview URL and sitemap
       id: check_preview
       run: |
-        if curl --head --silent --fail "$PREVIEW_URL/index.html" > /dev/null; then
-          echo "Preview URL exists."
-          echo "preview_exists=true" >> $GITHUB_OUTPUT
-        else
-          echo "Preview URL does not exist. Skipping Lighthouse checks."
-          echo "preview_exists=false" >> $GITHUB_OUTPUT
+        if ! curl --head --silent --fail "$PREVIEW_URL/index.html" > /dev/null; then
+          echo "Error: Preview URL does not exist at $PREVIEW_URL/index.html"
+          exit 1
         fi
+        
+        if ! curl --head --silent --fail "$PREVIEW_URL/sitemap.xml" > /dev/null; then
+          echo "Error: Sitemap does not exist at $PREVIEW_URL/sitemap.xml"
+          exit 1
+        fi
+        
+        echo "Preview URL and sitemap exist."
+        echo "preview_exists=true" >> $GITHUB_OUTPUT
 
     - name: Install Lighthouse CI
       if: steps.check_preview.outputs.preview_exists == 'true'
@@ -351,7 +356,7 @@ jobs:
 
           let comment = `## Lighthouse check results\n\n`;
           comment += `${lighthouseComment}\n\n`;
-          comment += `<details>\n<summary>Lighthouse scores</summary>\n\n`;
+          comment += `<details>\n<summary>Show Lighthouse scores</summary>\n\n`;
           comment += `Folder depth level checked: **${process.env.DEPTH}**\n\n`;
           comment += `Modify the workflow to check a different depth:\n`;
           comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
