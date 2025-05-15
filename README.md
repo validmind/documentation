@@ -245,11 +245,11 @@ By default, Lighthouse checks only the top navigation pages (such as `/index.htm
         # 1 — All first-level subdirectories (e.g. /guide/*.html)
         # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
         # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-        default: '1'
+        default: '0'
         type: string
 ```
 
-**Tip:** Running Lighthouse checks to a deeper folder depth is recommended only for a working branch and then only if you want to perform more thorough audit of our docs site. Avoid merging configuration changes to the `main` branch, as deeper checks _significantly_ slow down our CI/CD pipeline. A full check of the docs site takes upward of 2-1/2 hours.
+**Important:** Running Lighthouse checks at a deeper folder depth greater than zero is recommended only for a working branch and then only if you want to perform more thorough audit of our docs site. Avoid merging depth configuration changes to the `main` branch, as deeper checks _significantly_ slow down our CI/CD pipeline. A full check of the docs site takes upward of 2-1/2 hours.
 
 ## Vale linter
 
@@ -259,11 +259,7 @@ The Vale linter is used to enforce consistent writing style and catch common lan
 
 1. `brew install vale`
 
-3. To lint our documentation, run:
-
-   ```sh
-   vale site/
-   ```
+3. `vale site/`
 
 You can also adjust the path to focus only on the content you are working on. 
 
@@ -282,7 +278,3 @@ You can also adjust the path to focus only on the content you are working on.
 
 - If you see errors about missing styles, ensure you have run the `vale install` commands above.
 - The linter will only work if `vale.ini` is present in your project root.
-
----
-
-Let me know if you want this added directly to your README or if you need further customization!
