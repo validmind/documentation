@@ -89,7 +89,8 @@ jobs:
           if (Object.keys(report).length === 0) {
             comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
-            comment += `⚠️ WARN: Source issues were found — Check the Vale output or [download the full report](${valeArtifactUrl})\n\n`;
+            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            comment += `⚠️ WARN: Source issues were found — [Check the workflow run](${workflowRunUrl}) or [download the full report](${valeArtifactUrl})\n\n`;
 
             // Build the summary output
             let summaryOutput = '';
@@ -125,9 +126,6 @@ jobs:
               comment += `\n... and ${fileCount - 30} more files with issues\n`;
             }
             comment += `\n</details>\n\n`;
-            
-            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-            comment += `**Tip**: The full report is available in the [workflow run](${workflowRunUrl}).`;
           }
 
           // Ensure comment doesn't exceed GitHub's limit
