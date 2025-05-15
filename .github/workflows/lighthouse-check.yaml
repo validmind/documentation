@@ -11,7 +11,7 @@ env:
   # 1 — All first-level subdirectories (e.g. /guide/*.html)
   # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
   # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-  DEFAULT_DEPTH: '2'
+  DEFAULT_DEPTH: '1'
 
 permissions:
   issues: write
@@ -123,14 +123,23 @@ jobs:
                 return json.load(f)
 
         def get_url_depth(url):
-            # Count path segments, ignoring empty segments and .html
+            # Parse the URL to get just the path
             path = urlparse(url).path
             # Remove .html extension for depth calculation
             path = path.replace('.html', '')
             # Remove any leading/trailing slashes
             path = path.strip('/')
-            # Count non-empty segments
-            return len([x for x in path.split('/') if x])
+            
+            # Split into segments and count non-empty ones
+            segments = [x for x in path.split('/') if x]
+            
+            # For PR preview URLs, we need to skip the first 5 segments:
+            # /pr_previews/username/branch/name/
+            if 'pr_previews' in path:
+                # Skip the first 5 segments (pr_previews/username/branch/name/)
+                segments = segments[5:]
+            
+            return len(segments)
 
         def get_urls_from_sitemap(sitemap_url, max_depth):
             try:
