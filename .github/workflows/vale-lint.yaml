@@ -23,23 +23,11 @@ jobs:
         tar -xvzf vale_2.28.0_Linux_64-bit.tar.gz
         sudo mv vale /usr/local/bin/
 
-    - name: Create styles directory
-      run: mkdir -p .vale/styles
-
-    - name: Install Vale styles
-      run: |
-        vale install github:errata-ai/Google
-        vale install github:errata-ai/Vale
-
     - name: Run Vale
       id: vale
       continue-on-error: true
       run: |
-        vale --output=JSON \
-          --glob='!site/_*' \
-          --glob='!site/**/_*/**' \
-          --glob='!site/plugin/**' \
-          site/ > vale-report.json || {
+        vale site/ || {
           echo "Vale linting found issues"
           exit 1
         }
