@@ -34,12 +34,31 @@ jobs:
     - name: Check for PR preview URL and sitemap
       id: check_preview
       run: |
-        if ! curl --head --silent --fail "$PREVIEW_URL/index.html" > /dev/null; then
-          echo "Error: Preview URL does not exist at $PREVIEW_URL/index.html"
-          exit 1
-        fi
+        # Function to check if URL exists
+        check_url() {
+          curl --head --silent --fail "$1" > /dev/null
+          return $?
+        }
+
+        # Wait for preview URL to be available (up to 60 minutes)
+        echo "Waiting for preview site to become available ..."
+        for i in {1..60}; do
+          if check_url "$PREVIEW_URL/index.html"; then
+            echo "Info: Preview site is now available"
+            break
+          fi
+          
+          if [ $i -eq 60 ]; then
+            echo "Error: Preview URL did not become available after 60 minutes at $PREVIEW_URL/index.html"
+            exit 1
+          fi
+          
+          echo "Attempt $i/60: Preview site not ready yet, waiting 1 minute..."
+          sleep 60
+        done
         
-        if ! curl --head --silent --fail "$PREVIEW_URL/sitemap.xml" > /dev/null; then
+        # Now check for sitemap
+        if ! check_url "$PREVIEW_URL/sitemap.xml"; then
           echo "Error: Sitemap does not exist at $PREVIEW_URL/sitemap.xml"
           exit 1
         fi
