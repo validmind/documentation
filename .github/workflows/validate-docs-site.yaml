@@ -50,20 +50,30 @@ jobs:
     - name: Generate sitemap
       run: |
           cd site
+          echo "Current directory: $(pwd)"
+          echo "Listing _site directory contents:"
+          ls -la _site
           # Get all HTML files from _site directory
+          echo "Finding HTML files..."
           find _site -name "*.html" | while read -r file; do
+            echo "Processing file: $file"
             # Convert file path to URL path
             url_path=$(echo "$file" | sed 's|^_site/||')
+            echo "URL path: $url_path"
             # Get last modified time
             lastmod=$(date -r "$file" -u +"%Y-%m-%dT%H:%M:%SZ")
+            echo "Last modified: $lastmod"
             # Add to sitemap
             printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$url_path" "$lastmod" >> sitemap.xml.tmp
           done
+          echo "Creating final sitemap..."
           # Create final sitemap with header and footer
           printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
           cat sitemap.xml.tmp >> _site/sitemap.xml
           printf '</urlset>\n' >> _site/sitemap.xml
           rm sitemap.xml.tmp
+          echo "Checking if sitemap was created:"
+          ls -la _site/sitemap.xml
           # Debug output for sitemap URL
           echo "Generated sitemap available at: https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/sitemap.xml"
 
