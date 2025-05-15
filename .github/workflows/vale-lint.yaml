@@ -89,9 +89,6 @@ jobs:
           if (Object.keys(report).length === 0) {
             comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
           } else {
-            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-            comment += `⚠️ WARN: Source issues were found — [Check the workflow run](${workflowRunUrl}) or [download the full report](${valeArtifactUrl})\n\n`;
-
             // Build the summary output
             let summaryOutput = '';
             let totalIssues = 0;
@@ -116,8 +113,8 @@ jobs:
               }
             }
 
-            // Add summary statistics
-            comment += `Found ${totalIssues} issues across ${fileCount} files\n\n`;
+            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            comment += `⚠️ WARN: Found **${totalIssues}** issues across **${fileCount}** files — [Check the workflow run](${workflowRunUrl}) or [download the full report](${valeArtifactUrl})\n\n`;
             
             // Add the summary output in a collapsed section
             comment += `<details>\n<summary>Show first 30 files with issues</summary>\n\n`;
