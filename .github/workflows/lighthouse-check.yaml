@@ -127,6 +127,9 @@ jobs:
             path = urlparse(url).path
             # Remove .html extension for depth calculation
             path = path.replace('.html', '')
+            # Remove any leading/trailing slashes
+            path = path.strip('/')
+            # Count non-empty segments
             return len([x for x in path.split('/') if x])
 
         def get_urls_from_sitemap(sitemap_url, max_depth):
@@ -145,7 +148,7 @@ jobs:
                         if loc is not None:
                             full_url = loc.text
                             # Extract the path part after the base URL
-                            path = full_url.replace(sitemap_url.replace('/sitemap.xml', ''), '')
+                            path = urlparse(full_url).path
                             # Remove leading slash if present
                             path = path.lstrip('/')
                             # Only include .html files
