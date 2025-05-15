@@ -4,17 +4,14 @@ on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
   workflow_dispatch:
-    inputs:
-      depth:
-        description: 'Depth level to check (0=root pages only, 1=first level subdirectories, 2=second level)'
-        required: false
-        # To change the default depth level:
-        # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
-        # 1 — All first-level subdirectories (e.g. /guide/*.html)
-        # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
-        # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-        default: '1'
-        type: string
+
+env:
+  # To change the default depth level:
+  # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
+  # 1 — All first-level subdirectories (e.g. /guide/*.html)
+  # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
+  # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
+  DEFAULT_DEPTH: '1'
 
 permissions:
   issues: write
@@ -32,7 +29,7 @@ jobs:
       id: set_url
       run: |
         echo "PREVIEW_URL=https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}" >> $GITHUB_ENV
-        echo "DEPTH=${{ github.event.inputs.depth || '0' }}" >> $GITHUB_ENV
+        echo "DEPTH=${{ env.DEFAULT_DEPTH }}" >> $GITHUB_ENV
 
     - name: Check for PR preview URL
       id: check_preview
@@ -357,9 +354,9 @@ jobs:
           comment += `<details>\n<summary>Lighthouse scores</summary>\n\n`;
           comment += `Folder depth level checked: **${process.env.DEPTH}**\n\n`;
           comment += `Modify the workflow to check a different depth:\n`;
-          comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
-          comment += `- 1: All first-level subdirectories — /guide/\*.html, /developer/\*.html, ...\n`;
-          comment += `- 2: All second-level subdirectories — /guide/attestation/\*.html, ...\n\n`;
+          comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
+          comment += `- 1: All first-level subdirectories — /guide/\*.html, /developer/\*.html, ...\n`;
+          comment += `- 2: All second-level subdirectories — /guide/attestation/\*.html, ...\n\n`;
           comment += `| Page | Accessibility | Performance | Best Practices | SEO |\n`;
           comment += `|------|---------------|-------------|----------------|-----|\n`;
           comment += `${scoresTable}\n\n`;
