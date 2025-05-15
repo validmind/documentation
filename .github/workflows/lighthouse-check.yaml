@@ -11,7 +11,7 @@ env:
   # 1 — All first-level subdirectories (e.g. /guide/*.html)
   # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
   # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-  DEFAULT_DEPTH: '1'
+  DEFAULT_DEPTH: '0'
 
 permissions:
   issues: write
@@ -257,20 +257,15 @@ jobs:
         # Get all URLs
         all_urls = set()
         
-        # Add root pages
-        for root in ROOT_PAGES:
-            full_url = f"{base_url}/{root}"
-            all_urls.add(root)  # Add the root path
-            if max_depth > 0:
-                print(f"Crawling from {root} with depth {max_depth}", file=sys.stderr)
-                new_links = get_links(full_url, max_depth)
-                print(f"Found {len(new_links)} new links from {root}", file=sys.stderr)
-                all_urls.update(new_links)
-            else:
-                print(f"Skipping crawl for {root} (depth = 0)", file=sys.stderr)
-
-        # For depth > 0, also get URLs from sitemap
-        if max_depth > 0:
+        if max_depth == 0:
+            # For depth 0, only check ROOT_PAGES
+            print("Depth is 0, only checking ROOT_PAGES", file=sys.stderr)
+            for root in ROOT_PAGES:
+                all_urls.add(root)
+                print(f"Added root page: {root}", file=sys.stderr)
+        else:
+            # For depth > 0, use sitemap
+            print(f"Depth is {max_depth}, using sitemap", file=sys.stderr)
             sitemap_url = f"{base_url}/sitemap.xml"
             sitemap_urls = get_urls_from_sitemap(sitemap_url, max_depth)
             print(f"Found {len(sitemap_urls)} URLs in sitemap", file=sys.stderr)
