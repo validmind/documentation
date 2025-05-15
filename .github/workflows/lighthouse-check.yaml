@@ -143,19 +143,26 @@ jobs:
                     root = ET.fromstring(response.content)
                     # Get all URLs from sitemap
                     all_urls = set()
+                    base_url_parsed = urlparse(sitemap_url)
+                    base_path = base_url_parsed.path.replace('/sitemap.xml', '')
+                    
                     for url in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}url'):
                         loc = url.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
                         if loc is not None:
                             full_url = loc.text
+                            parsed_url = urlparse(full_url)
+                            
                             # Extract the path part after the base URL
-                            path = urlparse(full_url).path
+                            path = parsed_url.path
                             # Remove leading slash if present
                             path = path.lstrip('/')
+                            
                             # Only include .html files
                             if path.endswith('.html'):
                                 # Check depth
                                 if get_url_depth(path) <= max_depth:
                                     all_urls.add(path)
+                                    print(f"Found URL in sitemap: {path}", file=sys.stderr)
                     
                     print(f"Found {len(all_urls)} URLs in sitemap:", file=sys.stderr)
                     for url in sorted(all_urls):

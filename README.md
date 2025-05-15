@@ -232,22 +232,19 @@ Configure in `config.json`, generated with the Docker image:
 
 Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites to enable a better, accessible documentation for everyone.
 
-By default, Lighthouse checks only the top navigation pages (such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, etc.) in your documentation preview. This behavior is controlled by the `depth` parameter in the GitHub Actions workflow:
+By default, Lighthouse checks only the top navigation pages (such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, etc.) in your documentation preview. You can configure this behavior in the workflow:
 
 ```sh
-  workflow_dispatch:
-    inputs:
-      depth:
-        description: 'Depth level to check (0=root pages only, 1=first level subdirectories, 2=second level)'
-        required: false
-        # To change the default depth level:
-        # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
-        # 1 — All first-level subdirectories (e.g. /guide/*.html)
-        # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
-        # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-        default: '0'
-        type: string
+env:
+  # To change the default depth level:
+  # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
+  # 1 — All first-level subdirectories (e.g. /guide/*.html)
+  # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
+  # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
+  DEFAULT_DEPTH: '0'
 ```
+
+On the first run, the workflow will wait until a preview site is available; in subsequent runs, the checks will run against the latest available site which might be behind HEAD by a commit. Keep this in mind when trying to debug issues — if in doubt, rerun the Lighthouse check. 
 
 **Important:** Running Lighthouse checks at a deeper folder depth greater than zero is recommended only for a working branch and then only if you want to perform more thorough audit of our docs site. Avoid merging depth configuration changes to the `main` branch, as deeper checks _significantly_ slow down our CI/CD pipeline. A full check of the docs site takes upward of 2-1/2 hours.
 
