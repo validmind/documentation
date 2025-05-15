@@ -11,7 +11,7 @@ env:
   # 1 — All first-level subdirectories (e.g. /guide/*.html)
   # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
   # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-  DEFAULT_DEPTH: '0'
+  DEFAULT_DEPTH: '1'
 
 permissions:
   issues: write
@@ -171,9 +171,6 @@ jobs:
                             if path.endswith('.html'):
                                 # Check depth
                                 if get_url_depth(path) <= max_depth:
-                                    # Remove any pr_previews prefix from the path
-                                    if path.startswith('pr_previews/'):
-                                        path = '/'.join(path.split('/')[5:])  # Skip pr_previews/username/branch/name/
                                     all_urls.add(path)
                                     print(f"Found URL in sitemap: {path}", file=sys.stderr)
                     
