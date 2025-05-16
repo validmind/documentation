@@ -1,6 +1,9 @@
 project:
   type: website
-  post-render: PR_BRANCH=${{ github.head_ref }} make generate-sitemap
+  post-render: |
+    #!/bin/bash
+    export PR_BRANCH="${{ github.head_ref }}"
+    make generate-sitemap
 
 metadata-files:
   - developer/_sidebar.yaml
