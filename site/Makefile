@@ -61,7 +61,7 @@ clone:
 	fi; \
 	git clone --depth 1 -b $$CHECKOUT git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
-	echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
+	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
 	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
 copy-installation:
