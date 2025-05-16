@@ -1,0 +1,140 @@
+name: Vale linter
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Install Vale
+      run: |
+        wget https://github.com/errata-ai/vale/releases/download/v2.28.0/vale_2.28.0_Linux_64-bit.tar.gz
+        tar -xvzf vale_2.28.0_Linux_64-bit.tar.gz
+        sudo mv vale /usr/local/bin/
+
+    - name: Run Vale
+      id: vale
+      continue-on-error: true
+      run: |
+        vale --output=JSON site/ > vale-report.json || {
+          echo "Vale linting found issues"
+          exit 1
+        }
+
+    - name: Format Vale report for PR comment
+      run: jq . vale-report.json > vale-report-pretty.json
+
+    - name: Upload Vale report as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: vale-report
+        path: vale-report.json
+        retention-days: 1
+
+    - name: Post Vale results comment
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const runId = context.runId;
+          // Get artifacts for this run
+          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: runId,
+          });
+          const valeArtifact = artifacts.artifacts.find(a => a.name === 'vale-report');
+          const valeArtifactUrl = valeArtifact
+            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${valeArtifact.id}`
+            : null;
+          
+          // Delete old Vale comments
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          for (const comment of comments) {
+            if (comment.user.login === 'github-actions[bot]' && comment.body.includes('## Vale source linter')) {
+              try {
+                console.log(`Deleting Vale comment ${comment.id}`);
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                });
+                console.log(`Successfully deleted Vale comment ${comment.id}`);
+              } catch (error) {
+                console.error(`Failed to delete Vale comment ${comment.id}:`, error);
+              }
+            }
+          }
+          
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('vale-report.json', 'utf8'));
+          
+          let comment = '## Vale source linter\n\n';
+          
+          if (Object.keys(report).length === 0) {
+            comment += `✓ INFO: No writing issues were found ([report](${valeArtifactUrl}))\n\n`;
+          } else {
+            // Build the summary output
+            let summaryOutput = '';
+            let totalIssues = 0;
+            let fileCount = 0;
+            
+            for (const [file, issues] of Object.entries(report)) {
+              totalIssues += issues.length;
+              fileCount++;
+              
+              // Include first 30 files to keep comment size manageable
+              if (fileCount <= 30) {
+                summaryOutput += `### ${file}\n`;
+                // Only include first 10 issues per file
+                const issuesToShow = issues.slice(0, 10);
+                for (const issue of issuesToShow) {
+                  summaryOutput += `- Line ${issue.Line}: ${issue.Message} (${issue.Severity})\n`;
+                }
+                if (issues.length > 10) {
+                  summaryOutput += `- ... and ${issues.length - 10} more issues\n`;
+                }
+                summaryOutput += '\n';
+              }
+            }
+
+            const workflowRunUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            comment += `⚠️ WARN: Found **${totalIssues}** issues across **${fileCount}** files — [Check the workflow run](${workflowRunUrl}) or [download the full report](${valeArtifactUrl})\n\n`;
+            
+            // Add the summary output in a collapsed section
+            comment += `<details>\n<summary>Show first 30 files with issues</summary>\n\n`;
+            comment += summaryOutput;
+            if (fileCount > 30) {
+              comment += `\n... and ${fileCount - 30} more files with issues\n`;
+            }
+            comment += `\n</details>\n\n`;
+          }
+
+          // Ensure comment doesn't exceed GitHub's limit
+          const MAX_COMMENT_LENGTH = 60000; // Leave some buffer
+          if (comment.length > MAX_COMMENT_LENGTH) {
+            comment = comment.substring(0, MAX_COMMENT_LENGTH) + 
+              `\n\n... (comment truncated due to length) - See full report in artifacts`;
+          }
+
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          });
