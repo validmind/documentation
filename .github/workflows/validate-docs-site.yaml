@@ -38,11 +38,6 @@ jobs:
     - name: Populate installation
       run: cp -r site/_source/installation/site/installation site/installation
 
-    - name: Save branch name
-      run: |
-        mkdir -p .github
-        echo "${{ github.head_ref }}" > .github/head_ref
-
     - name: Render demo docs site
       run: |
           cd site
@@ -101,7 +96,7 @@ jobs:
       run: |
         aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
-    - name: Post preview URL comment
+    - name: Post comment with preview URL
       uses: actions/github-script@v6
       with:
         script: |

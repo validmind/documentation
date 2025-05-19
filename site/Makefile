@@ -3,10 +3,7 @@ DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
 FILE_PATH := notebooks/EXECUTED/model_development
-GIT_BRANCH := $(or $(GITHUB_REF_NAME),$(shell git rev-parse --abbrev-ref HEAD 2>/dev/null),$(shell cat .github/head_ref 2>/dev/null),$(PR_BRANCH))
-ifndef GIT_BRANCH
-$(error Could not determine branch name. Please set GITHUB_REF_NAME or PR_BRANCH environment variable.)
-endif
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
 PROFILE := exe-demo
@@ -91,7 +88,7 @@ deploy-prod:
 	else \
 		echo "\nDeploying prod site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs-staging.validmind.ai/
@@ -101,7 +98,7 @@ deploy-staging:
 	else \
 		echo "\nDeploying staging site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		quarto render --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "site/installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 docker-build: docker-site-lite
