@@ -99,12 +99,7 @@ jobs:
 
     - name: Deploy PR preview
       run: |
-          echo "Listing files before S3 sync:"
-          ls -la site/_site
-          echo "Running S3 sync..."
-          aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete --debug
-          echo "Creating CloudFront invalidation..."
-          aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
+        aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
     - name: Post preview URL comment
       uses: actions/github-script@v6
