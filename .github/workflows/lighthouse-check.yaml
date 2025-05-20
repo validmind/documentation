@@ -48,8 +48,11 @@ jobs:
 
         # Function to check if URL exists with auth
         check_url_with_auth() {
-          AUTH_STRING=$(echo -n "${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}" | base64)
-          curl --head --silent --fail -H "Authorization: Basic ${AUTH_STRING}" "$1" > /dev/null
+          # Extract the path from the URL
+          path=$(echo "$1" | sed "s|$PREVIEW_URL||")
+          # Construct URL with embedded credentials
+          auth_url="https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@docs.validmind.ai$path"
+          curl --head --silent --fail "$auth_url" > /dev/null
           return $?
         }
 
@@ -82,7 +85,7 @@ jobs:
           exit 1
         fi
         
-        echo "Preview URL, sitemap, and passwword-protected installation page exist."
+        echo "Preview URL, sitemap, and password-protected installation page exist."
         echo "preview_exists=true" >> $GITHUB_OUTPUT
 
     - name: Install Lighthouse CI
@@ -353,6 +356,12 @@ jobs:
                   downloadThroughputKbps: 0,
                   uploadThroughputKbps: 0,
                 },
+                // Add authentication settings
+                authentication: {
+                  type: 'basic',
+                  username: process.env.INSTALLATION_USER,
+                  password: process.env.INSTALLATION_PW,
+                },
               },
             },
             assert: {
@@ -372,6 +381,9 @@ jobs:
       uses: treosh/lighthouse-ci-action@v11
       id: lighthouse
       continue-on-error: true
+      env:
+        INSTALLATION_USER: ${{ secrets.INSTALLATION_USER }}
+        INSTALLATION_PW: ${{ secrets.INSTALLATION_PW }}
       with:
         configPath: .lighthouserc.js
         uploadArtifacts: true
