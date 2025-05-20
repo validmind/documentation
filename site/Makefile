@@ -1,4 +1,8 @@
 # Define source and destination directories
+LIBRARY_BRANCH ?= $(or $(LIBRARY),main)
+INSTALLATION_BRANCH ?= $(or $(INSTALLATION),main)
+SRC_ROOT := _source
+SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
@@ -19,7 +23,7 @@ help:
 	@echo "  help                 Display this help message (default target)"
 	@echo "  clean                Remove the _source/ directory"
 	@echo "  clone                Clone the validmind-library repository into _source/"
-	@echo "                       Optional, for PR testing: BRANCH=<branch-name>"
+	@echo "                       Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
 	@echo "  copy-installation    Copy customer-managed installation docs into installation/"
 	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
@@ -41,9 +45,10 @@ help:
 # Clean up source directory
 clean:
 	@echo "\nDeleting copies of files sourced from other repos ..."
-	rm -rf $(SRC_DIR)
-	rm -rf $(SRC_ROOT)
-	rm -rf notebooks/EXECUTED/model_development/
+	@rm -rf $(SRC_DIR)
+	@rm -rf $(SRC_ROOT)
+	@rm -rf installation/*
+	@rm -rf notebooks/EXECUTED/model_development/
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -65,10 +70,12 @@ clone:
 	git clone --depth 1 -b $$CHECKOUT git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
 	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
-	git clone  --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
+	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
 copy-installation:
-	cp -r $(SRC_ROOT)/installation/site/installation installation
+	@echo "\nCopying installation source files ..."
+	@mkdir -p installation
+	@cp -r $(SRC_ROOT)/installation/site/installation/* installation/
 
 # Delete PR branch on https://docs-demo.vm.validmind.ai/
 delete-demo-branch:
