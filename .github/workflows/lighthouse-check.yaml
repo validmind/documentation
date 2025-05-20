@@ -171,6 +171,12 @@ jobs:
                             if path.endswith('.html'):
                                 # Check depth
                                 if get_url_depth(path) <= max_depth:
+                                    # Remove any duplicate path segments
+                                    segments = path.split('/')
+                                    # Remove any segments that match the PR preview path
+                                    segments = [s for s in segments if not s.startswith('pr_previews')]
+                                    # Reconstruct the path
+                                    path = '/'.join(segments)
                                     all_urls.add(path)
                                     print(f"Found URL in sitemap: {path}", file=sys.stderr)
                     
@@ -271,7 +277,10 @@ jobs:
         # Print URLs to stdout, ensuring proper URL construction
         print(f"Total URLs found: {len(all_urls)}", file=sys.stderr)
         for url in sorted(all_urls):
-            full_url = f"{base_url}/{url}"
+            # Remove any leading slashes from the URL to avoid double slashes
+            url = url.lstrip('/')
+            # Construct the full URL by joining base_url and url with a single slash
+            full_url = f"{base_url.rstrip('/')}/{url}"
             print(full_url)
             print(f"Added URL: {full_url}", file=sys.stderr)
         EOF
@@ -321,6 +330,27 @@ jobs:
         configPath: .lighthouserc.js
         uploadArtifacts: true
         temporaryPublicStorage: true
+
+    - name: Check Lighthouse audit result
+      if: steps.check_preview.outputs.preview_exists == 'true'
+      run: |
+        # Check if the manifest exists and is valid JSON
+        if [ -z "${{ steps.lighthouse.outputs.manifest }}" ]; then
+          echo "Error: Lighthouse audit failed - no manifest output"
+          exit 1
+        fi
+        
+        # Try to parse the manifest as JSON
+        if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq . > /dev/null 2>&1; then
+          echo "Error: Lighthouse audit failed - invalid manifest format"
+          exit 1
+        fi
+        
+        # Check if any URLs were successfully audited
+        if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq 'length > 0' > /dev/null 2>&1; then
+          echo "Error: Lighthouse audit failed - no URLs were successfully audited"
+          exit 1
+        fi
 
     - name: Post Lighthouse results comment
       if: steps.check_preview.outputs.preview_exists == 'true'
