@@ -171,11 +171,16 @@ jobs:
                             if path.endswith('.html'):
                                 # Check depth
                                 if get_url_depth(path) <= max_depth:
-                                    # Remove any duplicate path segments
-                                    segments = path.split('/')
                                     # Remove any segments that match the PR preview path
-                                    segments = [s for s in segments if not s.startswith('pr_previews')]
-                                    # Reconstruct the path
+                                    segments = path.split('/')
+                                    # Keep only the segments after the PR preview path
+                                    pr_preview_index = -1
+                                    for i, segment in enumerate(segments):
+                                        if segment == 'pr_previews':
+                                            pr_preview_index = i
+                                            break
+                                    if pr_preview_index >= 0:
+                                        segments = segments[pr_preview_index + 4:]  # Skip pr_previews/username/branch/name
                                     path = '/'.join(segments)
                                     all_urls.add(path)
                                     print(f"Found URL in sitemap: {path}", file=sys.stderr)
