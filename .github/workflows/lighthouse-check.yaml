@@ -53,9 +53,10 @@ jobs:
           echo "Debug: Original URL: $1"
           echo "Debug: Extracted path: $path"
           
-          # Construct URL with embedded credentials
-          auth_url="https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@docs.validmind.ai$path"
-          echo "Debug: Auth URL (credentials hidden): https://***:***@docs.validmind.ai$path"
+          # Construct URL with embedded credentials using the full preview URL
+          base_url=$(echo "$PREVIEW_URL" | sed -E 's|^https?://|https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@|')
+          auth_url="${base_url}${path}"
+          echo "Debug: Auth URL (credentials hidden): https://***:***@docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}$path"
           
           # Use -v for verbose output to see the full request/response
           echo "Debug: Running curl with verbose output..."
