@@ -93,8 +93,7 @@ jobs:
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
-      run: |
-        aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
+      run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
 
     - name: Post comment with preview URL
       uses: actions/github-script@v6
