@@ -50,9 +50,16 @@ jobs:
         check_url_with_auth() {
           # Extract the path from the URL
           path=$(echo "$1" | sed "s|$PREVIEW_URL||")
+          echo "Debug: Original URL: $1"
+          echo "Debug: Extracted path: $path"
+          
           # Construct URL with embedded credentials
           auth_url="https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@docs.validmind.ai$path"
-          curl --head --silent --fail "$auth_url" > /dev/null
+          echo "Debug: Auth URL (credentials hidden): https://***:***@docs.validmind.ai$path"
+          
+          # Use -v for verbose output to see the full request/response
+          echo "Debug: Running curl with verbose output..."
+          curl -v --head --silent --fail "$auth_url" 2>&1 | grep -E "^(<|>|HTTP/)"
           return $?
         }
 
