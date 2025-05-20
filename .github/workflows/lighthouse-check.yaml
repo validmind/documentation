@@ -46,16 +46,6 @@ jobs:
           return $?
         }
 
-        # Function to check if URL exists with auth
-        check_url_with_auth() {
-          # Add credentials to the URL
-          auth_url=$(echo "$1" | sed -E "s|https://|https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@|")
-          echo "Debug: Checking URL with auth (credentials hidden): https://***:***@$(echo "$1" | sed -E 's|^https?://||')"
-          echo "Debug: Running curl with verbose output..."
-          curl -v --head --silent --fail "$auth_url" 2>&1 | grep -E "^(<|>|HTTP/)"
-          return $?
-        }
-
         # Wait for preview URL to be available (up to 60 minutes)
         echo "Waiting for preview site to become available ..."
         for i in {1..60}; do
@@ -80,7 +70,10 @@ jobs:
         fi
 
         # Check if installation page is accessible with auth
-        if ! check_url_with_auth "$PREVIEW_URL/installation/index.html"; then
+        auth_url=$(echo "$PREVIEW_URL/installation/index.html" | sed -E "s|https://|https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@|")
+        echo "Debug: Checking URL with auth (credentials hidden): https://***:***@$(echo "$PREVIEW_URL/installation/index.html" | sed -E 's|^https?://||')"
+        echo "Debug: Running curl with verbose output..."
+        if ! curl -v --head --silent --fail "$auth_url" 2>&1 | grep -E "^(<|>|HTTP/)"; then
           echo "Error: Installation page is not accessible with authentication at $PREVIEW_URL/installation/index.html"
           exit 1
         fi
