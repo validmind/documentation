@@ -485,16 +485,14 @@ jobs:
 
           // Helper to get the public report URL from htmlPath
           const getReportUrl = (run) => {
-            if (run.report && Array.isArray(run.report) && run.report.length > 0) {
-              const htmlReport = run.report.find(r => r.endsWith('.report.html'));
+            if (run.report && Array.isArray(run.report)) {
+              // Find the public .report.html URL
+              const htmlReport = run.report.find(r => r.endsWith('.report.html') && r.startsWith('http'));
               if (htmlReport) return htmlReport;
-              return run.report[0];
+              // Fallback: first report if available
+              if (run.report.length > 0) return run.report[0];
             }
-            if (run.htmlPath) {
-              // Extract the filename from htmlPath
-              const filename = run.htmlPath.split('/').pop();
-              return `https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/${filename}`;
-            }
+            // Fallback: just show the workflow run if nothing else
             return lighthouseReportUrl;
           };
 
