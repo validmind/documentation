@@ -483,14 +483,26 @@ jobs:
             }
           };
 
-          // Use the artifact URL as the report link for each row
-          const reportUrl = lighthouseArtifactUrl || lighthouseReportUrl;
+          // Helper to get the public report URL from htmlPath
+          const getReportUrl = (run) => {
+            if (run.report && Array.isArray(run.report) && run.report.length > 0) {
+              const htmlReport = run.report.find(r => r.endsWith('.report.html'));
+              if (htmlReport) return htmlReport;
+              return run.report[0];
+            }
+            if (run.htmlPath) {
+              // Extract the filename from htmlPath
+              const filename = run.htmlPath.split('/').pop();
+              return `https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/${filename}`;
+            }
+            return lighthouseReportUrl;
+          };
 
           const scoresTable = manifestJson
             .map(run => {
               const formatScore = (score) => score === null ? 'N/A' : score.toFixed(2);
-              // Display the path only, without credentials, and link to the report
               const displayPath = stripAuth(run.url).replace(baseUrl, '');
+              const reportUrl = getReportUrl(run);
               return `| [${displayPath}](${reportUrl}) | ${formatScore(run.summary.accessibility)} | ${formatScore(run.summary.performance)} | ${formatScore(run.summary['best-practices'])} | ${formatScore(run.summary.seo)} |`;
             })
             .join('\n');
