@@ -119,9 +119,12 @@ jobs:
         ]
 
         def get_auth_headers():
-            # Create auth headers from environment variables
-            auth_string = base64.b64encode(f"{os.environ['INSTALLATION_USER']}:{os.environ['INSTALLATION_PW']}".encode()).decode()
-            return {"Authorization": f"Basic {auth_string}"}
+            # Only use auth for installation pages
+            if 'installation/' in url:
+                # Create auth headers from environment variables
+                auth_string = base64.b64encode(f"{os.environ['INSTALLATION_USER']}:{os.environ['INSTALLATION_PW']}".encode()).decode()
+                return {"Authorization": f"Basic {auth_string}"}
+            return {}
 
         def get_url_depth(url):
             # Parse the URL to get just the path
@@ -148,8 +151,8 @@ jobs:
         def get_urls_from_sitemap(sitemap_url, max_depth):
             try:
                 print(f"Fetching sitemap from {sitemap_url}", file=sys.stderr)
-                headers = get_auth_headers()
-                response = requests.get(sitemap_url, headers=headers)
+                # Don't use auth for sitemap
+                response = requests.get(sitemap_url)
                 print(f"Sitemap response status: {response.status_code}", file=sys.stderr)
                 if response.status_code == 200:
                     print(f"Sitemap content: {response.text[:500]}...", file=sys.stderr)
