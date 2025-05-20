@@ -314,10 +314,18 @@ jobs:
         const fs = require('fs');
         const urls = fs.readFileSync('lhci-urls.txt', 'utf-8').split('\n').filter(Boolean);
         
+        // Add auth to installation URLs using the same format as the URL check step
+        const urlsWithAuth = urls.map(url => {
+          if (url.includes('/installation/')) {
+            return `https://${process.env.INSTALLATION_USER}:${process.env.INSTALLATION_PW}@${new URL(url).host}${new URL(url).pathname}`;
+          }
+          return url;
+        });
+        
         module.exports = {
           ci: {
             collect: {
-              url: urls,
+              url: urlsWithAuth,
               numberOfRuns: 1,
               settings: {
                 formFactor: 'desktop',
@@ -335,12 +343,6 @@ jobs:
                   requestLatencyMs: 0,
                   downloadThroughputKbps: 0,
                   uploadThroughputKbps: 0,
-                },
-                // Add authentication settings
-                authentication: {
-                  type: 'basic',
-                  username: process.env.INSTALLATION_USER,
-                  password: process.env.INSTALLATION_PW,
                 },
               },
             },
@@ -368,8 +370,6 @@ jobs:
         configPath: .lighthouserc.js
         uploadArtifacts: true
         temporaryPublicStorage: true
-        basicAuthUsername: ${{ secrets.INSTALLATION_USER }}
-        basicAuthPassword: ${{ secrets.INSTALLATION_PW }}
 
     - name: Check Lighthouse audit result
       if: steps.check_preview.outputs.preview_exists == 'true'
