@@ -51,7 +51,8 @@ jobs:
           # Add credentials to the URL
           auth_url=$(echo "$1" | sed -E "s|https://|https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@|")
           echo "Debug: Checking URL with auth (credentials hidden): https://***:***@$(echo "$1" | sed -E 's|^https?://||')"
-          curl --head --silent --fail "$auth_url" > /dev/null
+          echo "Debug: Running curl with verbose output..."
+          curl -v --head --silent --fail "$auth_url" 2>&1 | grep -E "^(<|>|HTTP/)"
           return $?
         }
 
