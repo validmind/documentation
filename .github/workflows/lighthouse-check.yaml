@@ -25,6 +25,12 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
+    - name: Get commit SHA
+      id: get_sha
+      run: |
+        echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        echo "COMMIT_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     - name: Set PR preview URL
       id: set_url
       run: |
@@ -388,6 +394,8 @@ jobs:
         script: |
           const runId = context.runId;
           const baseUrl = process.env.PREVIEW_URL;
+          const commitSha = process.env.COMMIT_SHA;
+          const commitShaShort = process.env.COMMIT_SHA_SHORT;
 
           // Get artifacts for this run
           const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
@@ -471,6 +479,7 @@ jobs:
           comment += `${lighthouseComment}\n\n`;
           comment += `<details>\n<summary>Show Lighthouse scores</summary>\n\n`;
           comment += `Folder depth level checked: **${process.env.DEPTH}**\n\n`;
+          comment += `Commit SHA: [${commitShaShort}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${commitSha})\n\n`;
           comment += `Modify the workflow to check a different depth:\n`;
           comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
           comment += `- 1: All first-level subdirectories — /guide/\*.html, /developer/\*.html, ...\n`;
