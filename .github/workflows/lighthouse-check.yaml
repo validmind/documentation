@@ -496,11 +496,21 @@ jobs:
             return lighthouseReportUrl;
           };
 
+          // Parse the links output from the Lighthouse step
+          const links = (() => {
+            try {
+              return JSON.parse(`${{ steps.lighthouse.outputs.links }}`);
+            } catch {
+              return {};
+            }
+          })();
+
           const scoresTable = manifestJson
             .map(run => {
               const formatScore = (score) => score === null ? 'N/A' : score.toFixed(2);
               const displayPath = stripAuth(run.url).replace(baseUrl, '');
-              const reportUrl = getReportUrl(run);
+              // Use the public report URL from the links output, fallback to workflow run if missing
+              const reportUrl = links[run.url] || lighthouseReportUrl;
               return `| [${displayPath}](${reportUrl}) | ${formatScore(run.summary.accessibility)} | ${formatScore(run.summary.performance)} | ${formatScore(run.summary['best-practices'])} | ${formatScore(run.summary.seo)} |`;
             })
             .join('\n');
