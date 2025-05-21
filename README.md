@@ -232,7 +232,7 @@ Configure in `config.json`, generated with the Docker image:
 
 Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites to enable a better, accessible documentation for everyone.
 
-By default, Lighthouse checks only the top navigation pages (such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, etc.) in your documentation preview. You can configure this behavior in the workflow:
+By default, Lighthouse checks only the top-level pages in our site navigation, such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, and so forth. You can configure this behavior in the workflow:
 
 ```sh
 env:
@@ -244,21 +244,23 @@ env:
   DEFAULT_DEPTH: '0'
 ```
 
-On the first run, the workflow will wait until a preview site is available; in subsequent runs, the checks will run against the latest available site which might be behind HEAD by a commit. Keep this in mind when trying to debug issues — if in doubt, rerun the Lighthouse check. 
+**Tips:**
 
-**Important:** Running Lighthouse checks at a deeper folder depth greater than zero is recommended only for a working branch and then only if you want to perform more thorough audit of our docs site. Avoid merging depth configuration changes to the `main` branch, as deeper checks _significantly_ slow down our CI/CD pipeline. A full check of the docs site takes upward of 2-1/2 hours.
+- The workflow waits for a preview site on the first run. For subsequent runs, it checks the latest available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
+- Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
 
 ## Vale linter
 
-The Vale linter is used to enforce consistent writing style and catch common language issues in your documentation. It runs automatically on pull requests but can also be run locally. 
+The Vale linter is used to enforce consistent writing style and catch common language issues in our documentation source. Vale runs automatically on pull requests but can also be run locally when addressing source issues.
 
 ### Running Vale locally
 
-1. `brew install vale`
+```sh
+brew install vale
+vale site/
+```
 
-3. `vale site/`
-
-You can also adjust the path to focus only on the content you are working on. 
+**Tip:** Locally, you can use Vale to check specific content areas you are working on, such as `site/guides/`.
 
 ### Configuring Vale
 
@@ -266,12 +268,7 @@ You can also adjust the path to focus only on the content you are working on.
 - Community styles such as `Vale` and `Google` are installed automatically in the CI workflow.
 - The workflow is set up to ignore files and folders starting with an underscore (`_`) and the `site/plugin` directory.
 
-### Customizing rules
+### FUTURE: Customizing rules
 
 - To add or remove styles, edit the `BasedOnStyles` lines in your `vale.ini`.
 - To skip additional files or folders, update the `Skips` setting in `vale.ini` or adjust the workflow globs.
-
-### Troubleshooting
-
-- If you see errors about missing styles, ensure you have run the `vale install` commands above.
-- The linter will only work if `vale.ini` is present in your project root.
