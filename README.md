@@ -246,7 +246,7 @@ env:
 
 **Tips:**
 
-- On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the latest available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
+- On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
 - Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
 
 ## Vale linter
