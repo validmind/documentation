@@ -6,11 +6,9 @@ SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-FILE_PATH := notebooks/EXECUTED/model_development
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
-PROFILE := exe-demo
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
@@ -34,7 +32,7 @@ help:
 	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
 	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
 	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
-	@echo "  execute              Execute a Jupyter Notebook, optional overrides: PROFILE= FILE_PATH"
+	@echo "  execute              Execute a Jupyter Notebook or notebook directory"
 	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into validmind/"
@@ -48,7 +46,6 @@ clean:
 	@rm -rf $(SRC_DIR)
 	@rm -rf $(SRC_ROOT)
 	@rm -rf installation/*
-	rm -rf notebooks/EXECUTED/model_development/
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -69,11 +66,12 @@ clone:
 	fi; \
 	git clone --depth 1 -b $$CHECKOUT git@github.com:validmind/validmind-library.git $(SRC_DIR)
 
-	echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
+	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
 	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
 copy-installation:
 	@echo "\nCopying installation source files ..."
+	@mkdir -p installation
 	@cp -r $(SRC_ROOT)/installation/site/installation/* installation/
 
 # Delete PR branch on https://docs-demo.vm.validmind.ai/
@@ -123,15 +121,48 @@ docker-site-lite: get-source
 	@echo "\nRendering the configurable static HTML site for Docker (skip notebook execution) ..."
 	quarto render --profile docker 2>&1 | grep -v "WARN:" 1>&2
 
-# Get all source files
+# Get all source docs
 docs-site: get-source
 	@echo "\nRendering the static HTML site ..."
 	quarto render --profile production
 	@$(MAKE) execute PROFILE=exe-prod
 
-# Will default to `exe-demo` profile & the `notebooks/EXECUTED/model_development` if no input provided
+# Execute Juptyer Notebooks with a profile & provided credentials
 execute:
-	quarto render --profile $(PROFILE) $(FILE_PATH)
+	@bash -c ' \
+	echo "Select PROFILE:"; \
+	echo "1) exe-demo"; \
+	echo "2) exe-staging"; \
+	echo "3) exe-prod"; \
+	read -p "Enter choice [1-3] (default: 1): " PROFILE_CHOICE; \
+	if [ "$$PROFILE_CHOICE" = "1" ] || [ -z "$$PROFILE_CHOICE" ]; then PROFILE="exe-demo"; \
+	elif [ "$$PROFILE_CHOICE" = "2" ]; then PROFILE="exe-staging"; \
+	elif [ "$$PROFILE_CHOICE" = "3" ]; then PROFILE="exe-prod"; \
+	else echo "Invalid choice"; exit 1; fi; \
+	echo "Select FILE_PATH:"; \
+	echo "1) notebooks/EXECUTED/model_development"; \
+	echo "2) notebooks/EXECUTED/model_validation"; \
+	echo "3) Enter custom filepath"; \
+	read -p "Enter choice [1-3]: " FILE_CHOICE; \
+	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/model_development"; \
+	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/model_validation"; \
+	elif [ "$$FILE_CHOICE" = "3" ]; then read -p "Enter custom FILE_PATH: " CUSTOM_FILE_PATH; FILE_PATH="$$CUSTOM_FILE_PATH"; \
+	else echo "Invalid choice"; exit 1; fi; \
+	read -p "Enter VM_API_HOST (default: https://api.prod.validmind.ai/api/v1/tracking): " INPUT_VM_API_HOST; \
+	VM_API_HOST=$${INPUT_VM_API_HOST:-https://api.prod.validmind.ai/api/v1/tracking}; \
+	read -p "Enter VM_API_KEY: " VM_API_KEY; \
+	read -p "Enter VM_API_SECRET: " VM_API_SECRET; \
+	read -p "Enter VM_API_MODEL: " VM_API_MODEL; \
+	env_file="temp.env"; \
+	echo "VM_API_HOST=$$VM_API_HOST" > $$env_file; \
+	echo "VM_API_KEY=$$VM_API_KEY" >> $$env_file; \
+	echo "VM_API_SECRET=$$VM_API_SECRET" >> $$env_file; \
+	echo "VM_API_MODEL=$$VM_API_MODEL" >> $$env_file; \
+	set -a; \
+	source $$env_file; \
+	set +a; \
+	quarto render --profile "$$PROFILE" "$$FILE_PATH"; \
+	rm $$env_file '
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
@@ -145,6 +176,9 @@ notebooks:
 	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
 	@mkdir -p notebooks/EXECUTED/model_development/
 	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
+	@echo "Duplicating all files from notebooks/tutorials/model_validation/ for execution"
+	@mkdir -p notebooks/EXECUTED/model_validation/
+	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing

@@ -58,27 +58,40 @@ jobs:
         ref: ${{ github.head_ref }}
         filters: |
           notebooks:
-            - 'site/notebooks/**'
+            - 'site/notebooks/EXECUTED/**'
 
-    # If yes then create the .env file for use in execution step
-    - name: Create .env file
+    # If yes then create the dev.env file for use in execution step
+    - name: Create dev.env file
       if: steps.filter.outputs.notebooks == 'true'
-      id: create_env
+      id: create_dev_env
       run: |
-        touch .env
-        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> .env
-        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> .env
-        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> .env
-        echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> .env
-        cat .env
+        touch dev.env
+        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
+        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
+        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
+        echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
+        cat dev.env
 
-    # Only execute the demo notebook if .env file is created
-    - name: Execute demo ValidMind for model development series
-      if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_env.outcome == 'success' }}
+    # If yes then create the valid.env file for use in execution step
+    - name: Create valid.env file
+      if: steps.filter.outputs.notebooks == 'true'
+      id: create_valid_env
+      run: |
+        touch valid.env
+        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
+        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
+        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
+        echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
+        cat valid.env
+
+    # Only execute the demo notebooks for training if .env files are created
+    - name: Execute demo ValidMind for model development and validation series
+      if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
       uses: ./.github/actions/demo-notebook
       id: execute-demo-notebook
       with:
-        env_file: .env
+        dev_env: dev.env
+        valid_env: valid.env
 
     - name: Test for warnings or errors
       run: |
