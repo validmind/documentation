@@ -46,7 +46,6 @@ jobs:
           cat render_errors.log;
           exit 1;
           }
-
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -102,7 +101,7 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-      # Demo bucket is in us-east-1
+    # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
 
@@ -113,10 +112,31 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const url = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+          const previewUrl = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+          
+          // Delete old preview comments
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          for (const comment of comments) {
+            if (comment.user.login === 'github-actions[bot]' && comment.body.includes('## Validate docs site')) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: comment.id,
+              });
+            }
+          }
+          
+          let comment = `## Validate docs site\n\n`;
+          comment += `✓ INFO: A live preview of the docs site is available — [Open the preview](${previewUrl})\n\n`;
+
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
-            body: `A PR preview is available: [Preview URL](${url})`
+            body: comment
           });
