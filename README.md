@@ -227,3 +227,48 @@ Configure in `config.json`, generated with the Docker image:
    "JUPYTERHUB_URL": "https://your-custom-jupyter.validmind.ai"
  }
 ```
+
+## Configuring Lighthouse checks
+
+Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites to enable a better, accessible documentation for everyone.
+
+By default, Lighthouse checks only the top-level pages in our site navigation, such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, and so forth. You can configure this behavior in the workflow:
+
+```sh
+env:
+  # To change the default depth level:
+  # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
+  # 1 — All first-level subdirectories (e.g. /guide/*.html)
+  # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
+  # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
+  DEFAULT_DEPTH: '0'
+```
+
+**Tips:**
+
+- On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
+- Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
+
+## Vale linter
+
+The Vale linter is used to enforce consistent writing style and catch common language issues in our documentation source. Vale runs automatically on pull requests but can also be run locally when addressing source issues.
+
+### Running Vale locally
+
+```sh
+brew install vale
+vale site/
+```
+
+**Tip:** Locally, you can use Vale to check specific content areas you are working on, such as `site/guides/`.
+
+### Configuring Vale
+
+- The linter is configured via a `vale.ini` file in the root of the repository. This file specifies which styles to use and which files or directories to skip.
+- Community styles such as `Vale` and `Google` are installed automatically in the CI workflow.
+- The workflow is set up to ignore files and folders starting with an underscore (`_`) and the `site/plugin` directory.
+
+### FUTURE: Customizing rules
+
+- To add or remove styles, edit the `BasedOnStyles` lines in your `vale.ini`.
+- To skip additional files or folders, update the `Skips` setting in `vale.ini` or adjust the workflow globs.
