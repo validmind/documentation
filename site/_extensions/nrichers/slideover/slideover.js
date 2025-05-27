@@ -87,6 +87,13 @@ var Plugin = {
                 if (overlay.classList.contains('slideover--t')) {
                     content.classList.add('slideover--t');
                 }
+
+                // Add any additional modifier classes
+                overlay.classList.forEach(cls => {
+                    if (!['slideover--r', 'slideover--b', 'slideover--l', 'slideover--t'].includes(cls)) {
+                        content.classList.add(cls);
+                    }
+                });
                 
                 // Create header
                 const header = document.createElement('div');
