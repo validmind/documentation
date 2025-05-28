@@ -6,14 +6,14 @@ SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH := $(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME),$(shell git rev-parse --abbrev-ref HEAD))
 INSTALLATION_BRANCH := main
 LIBRARY_BRANCH ?= $(or $(BRANCH),main)
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute get-source notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
@@ -32,6 +32,7 @@ help:
 	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
 	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
 	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
+	@echo "  generate-sitemap     Generate a sitemap for the static HTML site"
 	@echo "  execute              Execute a Jupyter Notebook or notebook directory"
 	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
@@ -163,6 +164,74 @@ execute:
 	set +a; \
 	quarto render --profile "$$PROFILE" "$$FILE_PATH"; \
 	rm $$env_file '
+
+# Generate sitemap for the site
+generate-sitemap:
+	@echo "Generating sitemaps ..."
+	@find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
+		url_path=$$(echo "$$file" | sed 's|^_site/||'); \
+		if [ "$$(uname)" = "Darwin" ]; then \
+			lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
+		else \
+			lastmod=$$(stat -c "%y" "$$file" | sed 's/ /T/;s/$$/Z/'); \
+		fi; \
+		printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
+		printf "%s\n" "$$url_path" >> sitemap.urls.tmp; \
+	done
+	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
+	@cat sitemap.xml.tmp >> _site/sitemap.xml
+	@printf '</urlset>\n' >> _site/sitemap.xml
+	@rm sitemap.xml.tmp
+	@printf '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>ValidMind Documentation & Training Sitemap</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        h2 { color: #444; margin-top: 30px; }\n        ul { list-style: none; padding: 0; }\n        li { margin: 10px 0; }\n        a { color: #0066cc; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n        .root-pages { margin-bottom: 30px; }\n    </style>\n</head>\n<body>\n    <div class="root-pages">\n        <h2>Root Pages</h2>\n        <ul>\n' > _site/sitemap.html
+	@# Deduplicate URLs before processing
+	@sort -u sitemap.urls.tmp > sitemap.urls.unique.tmp
+	@mv sitemap.urls.unique.tmp sitemap.urls.tmp
+	@grep -E '^(index|404)\.html$$' sitemap.urls.tmp | while read -r url; do \
+		file="_site/$$url"; \
+		if [ -f "$$file" ] && grep -q '<title>' "$$file"; then \
+			title=$$(grep -m1 '<title>' "$$file" | sed 's/.*<title>\(.*\)<\/title>.*/\1/'); \
+		else \
+			title="$$url"; \
+		fi; \
+		if [ "$$title" != "Redirect" ]; then \
+			printf "            <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+		fi; \
+	done
+	@printf '        </ul>\n    </div>\n' >> _site/sitemap.html
+	@# Group remaining pages by top-level directory
+	@for dir in $$(grep -v -E '^(index|404)\.html$$' sitemap.urls.tmp | cut -d/ -f1 | grep -vE '\.(html|xml)$$' | sort -u); do \
+		printf '    <h2>%s/</h2>\n    <ul>\n' "$$dir" >> _site/sitemap.html; \
+		grep -E "^$$dir/[^/]+\.html$$" sitemap.urls.tmp | while read -r url; do \
+			file="_site/$$url"; \
+			if [ -f "$$file" ] && grep -q '<title>' "$$file"; then \
+				title=$$(grep -m1 '<title>' "$$file" | sed 's/.*<title>\(.*\)<\/title>.*/\1/'); \
+			else \
+				title="$$url"; \
+			fi; \
+			if [ "$$title" != "Redirect" ]; then \
+				printf "        <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+			fi; \
+		done; \
+		for sub in $$(grep -E "^$$dir/" sitemap.urls.tmp | grep -o -E "^$$dir/[^/]+/" | sed "s|^$$dir/||;s|/||" | sort -u); do \
+			printf '      <li>%s/\n        <ul>\n' "$$sub" >> _site/sitemap.html; \
+			grep -E "^$$dir/$$sub/" sitemap.urls.tmp | while read -r url; do \
+				file="_site/$$url"; \
+				if [ -f "$$file" ] && grep -q '<title>' "$$file"; then \
+					title=$$(grep -m1 '<title>' "$$file" | sed 's/.*<title>\(.*\)<\/title>.*/\1/'); \
+				else \
+					title="$$url"; \
+				fi; \
+				if [ "$$title" != "Redirect" ]; then \
+					printf "          <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+				fi; \
+			done; \
+			printf '        </ul>\n      </li>\n' >> _site/sitemap.html; \
+		done; \
+		printf '    </ul>\n' >> _site/sitemap.html; \
+	done
+	@printf '</body>\n</html>\n' >> _site/sitemap.html
+	@rm sitemap.urls.tmp
+	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
