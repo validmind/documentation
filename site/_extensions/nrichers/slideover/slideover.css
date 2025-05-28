@@ -186,15 +186,13 @@
 
 .slideover__toggle {
     display: flex;
-    align-items: left;
-    justify-content: left;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
     transition: transform 0.3s ease;
     color: #083e44;
-    margin: 0;
     cursor: pointer;
-    pointer-events: auto;
     position: absolute;
     top: 8px;
     right: 8px;
@@ -204,15 +202,38 @@
 .slideover__toggle svg {
     width: 24px;
     height: 24px;
-    display: block;
     fill: currentColor;
     stroke: currentColor;
     stroke-width: 1px;
-    pointer-events: auto;
 }
 
-.slideover__toggle--active {
-    transform: rotate(180deg);
+/* Rotation logic: default (open), --active for closed */
+.slideover__content.slideover--r .slideover__toggle {
+    transform: rotate(180deg); /* Open: left arrow */
+}
+.slideover__content.slideover--r .slideover__toggle--active {
+    transform: rotate(0deg); /* Closed: right arrow */
+}
+
+.slideover__content.slideover--l .slideover__toggle {
+    transform: rotate(0deg); /* Open: right arrow */
+}
+.slideover__content.slideover--l .slideover__toggle--active {
+    transform: rotate(180deg); /* Closed: left arrow */
+}
+
+.slideover__content.slideover--t .slideover__toggle {
+    transform: rotate(0deg); /* Open: down arrow */
+}
+.slideover__content.slideover--t .slideover__toggle--active {
+    transform: rotate(180deg); /* Closed: up arrow */
+}
+
+.slideover__content.slideover--b .slideover__toggle {
+    transform: rotate(180deg); /* Open: up arrow */
+}
+.slideover__content.slideover--b .slideover__toggle--active {
+    transform: rotate(0deg); /* Closed: down arrow */
 }
 
 .slideover__content-area {
