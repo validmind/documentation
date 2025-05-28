@@ -39,11 +39,16 @@ jobs:
           title: 'Merge main into staging'
           body: 'Automatically merge main into staging branch.'
 
-      - name: Merge pull request
+      - name: Merge pull request (with retries)
         if: ${{ steps.pr-number.outputs.pull-request-number != '' }}
-        run: gh pr merge --merge --auto "${{ steps.pr-number.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in {1..5}; do
+            gh pr merge --merge --auto "${{ steps.pr-number.outputs.pull-request-number }}" && break
+            echo "Merge failed, retrying in 10 seconds..."
+            sleep 10
+          done
 
       - name: Delete pull request branch
         if: ${{ success() && steps.pr-number.outputs.pull-request-number != '' }}
