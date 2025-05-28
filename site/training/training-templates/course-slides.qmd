@@ -18,6 +18,8 @@ format:
     view-distance: 2
     logo: /validmind.png
     footer: "{{< var validmind.training >}} | [Home {{< fa person-walking-dashed-line-arrow-right >}}](/training/training.qmd)"
+    revealjs-plugins:
+      - slideover
   html:
   # Change this to the file name prepended by a _ to get around the global HTML output settings required by _metadata.yml
     output-file: _course-slides.html
@@ -42,29 +44,36 @@ This {{#th}} module is part of a {{#}}-part series:
 
 ## In this course {.center}
 
-:::: {.columns .f4}
+<!-- :::: {.columns .f4}
 ::: {.column width="50%" .mt4 .pr4}
 ### Introduction
 - [Before you begin](#before-you-begin)
 
 :::
 
-::::
+:::: -->
 
 :::: {.columns .f4}
 
-::: {.column width="50%" .mt4 .pr4}
+::: {.column width="20%" .mt4 .pr4}
+### Introduction
+- [Before you begin](#before-you-begin)
+
+:::
+
+::: {.column width="35%" .mt4 .pr4}
 ### Section 1
 
 1. [iFrame embed right](#iframe-embed-right)
 2. [iFrame embed bottom](#iframe-embed-bottom)
-3. [iFrame embed footer](#iframe-embed-footer)
-4. [Scrollable single user guide](#scrollable-single-user-guide)
-5. [Scrollable tabset user guides](#scrollable-tabset-user-guide)
+3. [iFrame embed left](#iframe-embed-left)
+4. [iFrame embed top](#iframe-embed-top)
+5. [Scrollable single user guide](#scrollable-single-user-guide)
+6. [Scrollable tabset user guides](#scrollable-tabset-user-guide)
 
 :::
 
-::: {.column width="50%" .mt4}
+::: {.column width="45%" .mt4}
 ### Section 2
 
 Example embedded `iframe` for interactive copy/paste workaround:
@@ -122,7 +131,7 @@ Already logged in and refreshed this module? Click [{{< fa chevron-right >}}]() 
 Be sure to return to this page afterwards.
 :::
 
-2. After you successfully log in, refresh the page to connect this training module up to the {{< var validmind.platform >}}: 
+2. After you successfully log in, refresh the page to connect this training module up to the {{< var validmind.platform >}}:
 
 ::: {.tc}
 <button class="button" onClick="window.location.reload();">Refresh Page</button>
@@ -138,48 +147,82 @@ Be sure to return to this page afterwards.
 
 ## {background-iframe="https://app.prod.validmind.ai/" data-preload="yes"} 
 
-:::: {.fr .f5 .mv5 .nr4 .pa5 .overlay}
-This is a right-aligned modal `.overlay` <br>on top of the live {{< var vm.product >}} Platform.  
+:::: {.slideover--r}
+This is a collapsible right-aligned modal (`slideover--r`) on top of the live {{< var vm.product >}} Platform.
 
-- It mimics the style of the docs site callouts.
+- This modal uses a version of the [`nrichers/slideover` extension](https://github.com/nrichers/slideover) ...
+- ... with the styling modified to mimic the style of the docs site callouts.
 - **Bold text shows up in a different colour.**
-- You can use an additional callout style <br>with this class: `.embed`
+- You can use an additional callout style with this class: `.embed`
 
-::: {.f6 .pl3 .pr3 .embed}
-**This is the nested embed**, <br>which also has its own bold styling.
+::: {.embed}
+This is the nested embed, that has its own styling. Think of it as a callout within the slideovers.
+
+Speaking of important information in callouts ... if you update the extension, **make sure to reapply our custom CSS changes under `slideover.css`!**
+
 :::
 
-As you can see, you need to get creative <br>with some of your `<br>`s to determine <br>the max-width of the overlay box.
+- And code blocks look like this:
+  ```python
+  import validmind as vm
+
+  vm.init(
+      # api_host="...",
+      # api_key="...",
+      # api_secret="...",
+      # model="...",
+  )
+  ```
 
 ::::
 
 # iFrame embed bottom {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
+## {background-iframe="/notebooks/EXECUTED/model_development/1-set_up_validmind.html" background-interactive="yes" data-preload="yes"}
+
+:::: {.slideover--b}
+**This is a collapsible bottom-aligned modal (`slideover--b`) on top of a rendered site file.**
+
+When you add `background-interactive="yes"` to the `background-iframe` element, users can fully interact with the page contents.
+
+::::
+
+# iFrame embed left {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {background-iframe="https://app.prod.validmind.ai/" data-preload="yes"}
+
+:::: {.slideover--l .auto-collapse .three-quarters}
+**This is a collapsible left-aligned modal (`slideover--l`) at three-quarters size on top of the live {{< var vm.product >}} Platform.**
+
+When you add `.auto-collapse` to the slideover, the modal will auto-collapse after five seconds for that slide.
+
+You can adjust the size of the modals, for more or less screen real estate:
+
+- `.three-quarters` — 3/4s or 75% of the default width.
+- `.half` — 1/2s or 50% of the default width.
+- `.third` — 1/3 or 33ish% of the default width.
+
+The box will also automatically scroll once past a certain length (a percentage of your screen ... if you don't see some scrolling, make your browser window smaller!)...
+
+> Eternal-return right chaos contradict strong enlightenment deceptions virtues strong. Love contradict marvelous of faith. Burying moral battle noble moral strong inexpedient fearful.
+>
+> Passion burying spirit moral dead endless madness hope. Joy play free value mountains prejudice derive decrepit.
+>
+> Burying faithful dead truth faithful law love zarathustra love. Truth ocean of superiority ultimate battle mountains prejudice enlightenment love passion merciful truth faithful.
+>
+> Ultimate pinnacle moral depths revaluation grandeur revaluation evil. Convictions spirit.
+
+::::
+
+# iFrame embed top {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
 ## {background-iframe="/notebooks/EXECUTED/model_development/1-set_up_validmind.html" background-interactive="yes" data-preload="yes"} 
 
-:::: {.absolute bottom=15 left=0 right=50 .w-100 .f5 .tc .pl4 .pr4 .overlay}
-**This is a bottom-aligned modal `.overlay` on top of a rendered site file.**
+:::: {.slideover--t .auto-collapse-10}
+**This is a collapsible top-aligned modal (`slideover--t`) on top of a rendered site file.**
 
-::: {.f6}
-You can fully interact with the page contents. 
-:::
+When you add `.auto-collapse-10` to the slideover, the modal will auto-collapse after 10 seconds for that slide.
 ::::
-
-# iFrame embed footer {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
-
-## {background-iframe="https://app.prod.validmind.ai/settings" background-interactive="true" data-preload="yes"}
-
-<!-- Avoid overlapping with UI elements by moving instructions into footer -->
-::: footer
-:::: {.absolute bottom=0 left=50 right=50 .w-95 .f3 .tc .pl4 .overlay}
-Sometimes you'll need to move the `overlay` to the footer in order to avoid overlap with UI elements.
-
-::: {.f4}
-This will also stretch the overlay to 95%.
-:::
-
-::::
-:::
 
 # Scrollable single user guide {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
 
