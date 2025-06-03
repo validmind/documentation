@@ -1,0 +1,141 @@
+:::: {.content-visible unless-format="revealjs"}
+Single Line Text
+: Simple text value.
+
+Attachments
+: Upload supporting files for your model.^[[Edit model inventory fields](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+
+Long Text
+: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+
+Single Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+Multiple Select
+: Click **{{< fa plus >}} Add Option** to define a list of options. 
+
+Checkbox
+: A `true`/`false` value set by a toggle.
+
+Number
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+
+- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+![Simple number field type](number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
+
+:::
+
+::: {.w-40-ns}
+![Currency number field type](number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
+
+:::
+
+::::
+
+URL
+: Text value in valid URL format.
+
+Date
+: - Date value in `yyyy-mm-dd` format. 
+- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
+
+Date Time
+: - Date value in `yyyy-mm-dd, 24hr` format.
+- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
+
+Email
+: Text value in valid email (`user@domain.com`) format.
+
+User
+: 
+- Select list pre-populated with users from your {{< fa book-open >}} User Directory.^[[Managing users](/guide/configuration/managing-users.qmd)]
+- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
+
+Calculation <span id="calculation"></span> 
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+
+    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
+    2. Replace the demonstration formula with your own in the code box provided.
+    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
+
+::: {.callout title="Stick to basic operations."}
+Keep your code simple and avoid complex logic and imports.
+:::
+
+For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk: 
+
+![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" width=90% .screenshot}
+
+::: {.column-margin}
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+:::
+
+::::
+
+:::: {.content-hidden unless-format="revealjs"}
+Single Line Text
+: Simple text value.
+
+Attachments
+: [Upload supporting files for your model.](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} Files must be less than 50 MB each in size.
+
+Long Text
+: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+
+Single Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+Multiple Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+Checkbox
+: A `true`/`false` value set by a toggle.
+
+Number
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+
+- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+
+URL
+: Text value in valid URL format.
+
+Date
+: - Date value in `yyyy-mm-dd` format. 
+- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
+
+Date Time
+: - Date value in `yyyy-mm-dd, 24hr` format.
+- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
+
+Email
+: Text value in valid email (`user@domain.com`) format.
+
+User
+: 
+- Select list pre-populated with users from your [{{< fa book-open >}} User Directory](/guide/configuration/managing-users.qmd){target="_blank"}.
+- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
+
+Calculation <span id="calculation"></span> 
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+
+    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
+    2. Replace the demonstration formula with your own in the code box provided.
+    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
+
+::::
