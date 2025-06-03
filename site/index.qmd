@@ -72,22 +72,24 @@ filters:
 
 ```{=html}
 <style>
+/* Link styles */
 a {
-  color: #DE257E;
+  color: #083E44;
   text-decoration: none;
+  font-weight: bold;
 }
 
 a:hover {
-  /* color: #DE257E; */
   text-decoration: none;
 }
 
+/* Card hover */
 .card:hover {
   border: 1px solid #083E44;
   background-color: #EDF9FA;
 }
 
-
+/* Searchbox styles */
 #searchbox {
   max-width: 100%;
   padding: 10px;
@@ -117,7 +119,7 @@ a:hover {
 }
 
 #hits div:hover {
-  background-color: #EAF8FA;   /* Light green background for the entire search result on hover */
+  background-color: #EAF8FA;
 }
 
 #hits a strong {
@@ -129,14 +131,23 @@ a:hover {
   color: #222425;
   text-decoration: none;
 }
+
+/* Gradient background container */
 .column-screen {
-  background:linear-gradient(to bottom, #EDF9FA 80%, #ffffff); 
-  width: 100vw;       /* Full viewport width */
-  height: 100vh;      /* Full viewport height */
+  background: linear-gradient(to bottom, #EDF9FA 80%, #ffffff);
   margin: 0;
   padding: 0;
 }
-
+/* color of the text on homepage */
+.light-text {
+  color: #585F60; /* or #555, adjust to taste for brightness */
+}
+.tour-text-container {
+  max-width: 500px;
+  margin: 0 auto;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
 </style>
 ```
 
@@ -153,13 +164,15 @@ a:hover {
 ::: {.w-60-ns}
 
 <!-- Add a search box to home page-->
-<input id="searchbox" placeholder="Ask a question">
+<div class="search-wrapper">
+  <span class="search-icon"></span>
+  <input id="searchbox" type="text" placeholder="🔍 What are you looking for?" />
+  <!-- <span class="search-shortcut">/</span> -->
+</div>
 <div id="hits"></div>
 
 <!-- Use Lunr.js as the search library -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
-
-<!-- Enable custom search functionality-->
 <script src="scripts/validsearch.js"></script>
 
 <!-- ::: {.tc}
@@ -188,11 +201,8 @@ a:hover {
 
 ::::
 
-<!-- PAGE-WRAPPING CONTAINER -->
-::: {.column-screen}
-
 <!-- CENTERED WHITE BOX WITH FIXED WIDTH & FULL HEIGHT -->
-::: {.center .br3 .shadow-4 .bg-white .pa5 .w-80-ns .min-vh-100}
+::: {.center .br3 .shadow-4 .bg-white .pa5 .w-80-ns}
 
 <!-- TOP ROW: Setup + Admin | Model Dev | Model Validation -->
 :::: {.flex .flex-wrap .justify-around .mb5}
@@ -202,8 +212,11 @@ a:hover {
 ![](/homepage_docsite/setup_icon.svg){.mb3 width="48"}
 ::::
 ### Setup + Administration
-Invite users and control access to ValidMind by managing user roles, groups, and permissions.  
-[Setup QuickStart](guide/guides.qmd){.button-green .cta .mt3}
+<span class="light-text">
+Invite users and control access to ValidMind by managing user roles, groups, and permissions. 
+ </span>
+
+[**Setup QuickStart**](/get-started/quickstart-administrator.qmd){.button-green .cta .mt3}
 :::
 
 ::: {.w-25-ns .mb3}
@@ -211,8 +224,11 @@ Invite users and control access to ValidMind by managing user roles, groups, and
 ![](/homepage_docsite/model_icon.svg){.mb3 width="48"}
 ::::
 ### Model Development
-Save time by automating documentation and testing for your models using the ValidMind Library.  
-[developer quickstart](/validmind/validmind.qmd){.button-green .cta .mt3}
+<span class="light-text">
+Save time by automating documentation and testing for your models using the ValidMind Library. 
+</span>
+
+[**Developer quickstart**](/get-started/quickstart-developer.qmd){.button-green .cta .mt3}
 :::
 
 ::: {.w-25-ns .mb3}
@@ -220,49 +236,61 @@ Save time by automating documentation and testing for your models using the Vali
 ![](/homepage_docsite/model_valid_icon.svg){.mb3 width="48"}
 ::::
 ### Model Validation
-Quickly assess compliance by linking evidence from developers in your validation reports.  
-[Validator QuickStart](guide/model-validation/manage-validation-guidelines.qmd){.button-green .cta .mt3}
+<span class="light-text">
+Quickly assess compliance by linking evidence from developers in your validation reports. 
+</span>
+
+[**Validator QuickStart**](/get-started/quickstart.qmd){.button-green .cta .mt3}
 :::
 ::::
 
 <!-- VALIDMIND TOUR -->
 ::: {.tour-bg .tc .mt5 .mb5}
-### ValidMind *Tour*
+### ValidMind *<span class="pink normal-weight">Tour</span>*
+<span class="light-text tour-text-container">
 ValidMind is a toolkit that helps identify AI and LLM risks while generating regulatory-compliant model documentation for developers, data scientists, and compliance teams.  
-[What is ValidMind?](/training/fake-tour/product-tour.qmd){.button-green .cta .mt3}
+</span>
+
+[**What is ValidMind?**](/training/fake-tour/product-tour.qmd){.button-white .cta .mt3}
 :::
 
 <!-- FINAL ROW: Academy and Latest Release TEXT SIDE-BY-SIDE -->
 :::: {.flex .flex-wrap .justify-around .mt5}
 
 ::: {.w-50-ns .pr4}
-### ValidMind Academy  
+### ValidMind <span class="pink normal-weight">Academy</span> 
+<span class="light-text"> 
 Gain hands-on experience and explore what ValidMind has to offer with our interactive training environment.  
-[Learn through doing](/training/training.qmd){.button-green .cta .mt3}
+</span>
+[**Learn through doing**](/training/training.qmd){.button-white .cta .mt3}
 :::
 
 ::: {.w-50-ns .pl4}
 
 ### Latest Release  
 ![](/homepage_docsite/release_icon.svg){.mb3 width="30"} v1.26.09 / January 24, 2025  
-
+<span class="light-text">
 We’ve introduced two new quickstart Jupyter Notebooks dealing with option pricing in the Capital Markets section of our code samples.  
+</span>
 
-[View all releases](/releases/all-releases.qmd){.button-green .cta .mt3}
+[**View all releases**](/releases/all-releases.qmd)
 :::
 
 :::: 
 
 <!--END of white card -->
 :::
+<!-- CLOSE .column-screen to allow footer to render -->
+:::
+
 
 <!-- OUTSIDE OF THE WHITE CARD -->
-::: {.footer-container}
+<!-- ::: {.footer-container}
 
-::: {.footer-content}
+::: {.footer-content} -->
 
 <!-- LEFT SIDE: Logo and copyright -->
-::: {.footer-left}
+<!-- ::: {.footer-left}
 ![](/homepage_docsite/ValidMind MASTER Brand Assets_Logo-White R 2.svg){width="140"}
 
 ![](/homepage_docsite/Ellipse 1.svg){width="40"}
@@ -272,10 +300,10 @@ We’ve introduced two new quickstart Jupyter Notebooks dealing with option pric
 © Copyright 2025 ValidMind Inc.  
 All Rights Reserved.  
 [Privacy Policy](/privacy)   [Terms of Service](/terms)
-:::
+::: -->
 
 <!-- FOOTER COLUMNS -->
-::: {.footer-columns}
+<!-- ::: {.footer-columns}
 
 ::: {.footer-column}
 **Platform**  
@@ -319,6 +347,4 @@ All Rights Reserved.
 :::
 
 :::
-:::
-:::
-::: 
+:::  -->
