@@ -190,7 +190,7 @@ pre, pre.python, pre.bash, pre.yaml, pre.markdown {
   background-position: center top; 
   background-size: 1000px;
   z-index: -1;
-  /* width: 100%; */
+  width: 100%;
   background-size: contain;
 }
 
@@ -251,15 +251,6 @@ pre, pre.python, pre.bash, pre.yaml, pre.markdown {
 
 .navbar-logo {
   padding-right: 20px;
-}
-
-.nav-footer {
-  padding-top: 25px;
-}
-
-.nav-footer a:hover {
-  color: #1A202C;
-  text-decoration: none;
 }
 
 .alert, .alert-primary {
@@ -833,19 +824,6 @@ body::before {
   display: none; /* Hide the default close button if not needed */
 }
 
-/* Card look for main sections */
-.ba.b--black-10.br3.shadow-4.bg-white {
-  box-shadow: 0 -4px 16px rgba(6, 58, 59, 0.08); /* Top shadow only */
-  /* border-top: 1px solid #e5e7eb;
-  border-left: 1px solid #e5e7eb;
-  border-right: 1px solid #e5e7eb;
-  border-bottom: none; /* Remove bottom border */
-  /* border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  background: #fff; */ 
-}
 
 /* Button styles */
 .button, .button-green, .button-pink, .button-white, .cta {
@@ -903,6 +881,11 @@ body::before {
   color: #DE257E;
 }
 
+.center.bg-white {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: 0 -4px 16px rgba(6, 58, 59, 0.08); /* Only top shadow */
+}
 /*for doc homepage pink writing*/
 .normal-weight {
   font-weight: normal;
@@ -912,19 +895,6 @@ body::before {
 .bg-washed-blue {
   background: #edf9fa !important;
 }
-
-/* Search box */
-/* #searchbox {
-  max-width: 600px;
-  margin: 0 auto 24px auto;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-  font-size: 16px;
-  background: #fff;
-  box-shadow: 0 2px 8px #063a3b1a;
-} */
-
 
 .tour-bg {
   background-image: url("/homepage_docsite/freckles_bckgd.svg");
@@ -939,48 +909,62 @@ body::before {
 
 .page-footer {
   background-color: #26818B;
-  color: #26818B;
-  padding: 2rem 0rem;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-
-/* Sticky footer: ensure footer-container is always at the bottom */
-.page-footer {
-  background-color: #26818B;
   color: white;
-  padding: 2rem 1rem;
-  font-size: 0.875rem;
-  line-height: 1.6;
+  padding: 2rem 3vw;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }
 
 .page-footer a {
-  color: white;
   text-decoration: none;
-  font-weight: normal;
+  font-weight: 400 !important;
+  white-space: nowrap; /* prevent line breaks */
 }
 
 .page-footer a:hover {
   text-decoration: underline;
 }
+
 .page-footer img {
-  margin-bottom: 0.5rem;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
-/* html, body {
-  height: 100%;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-} */
-/* 
-body {
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-} */
+.page-footer br + br {
+  margin-bottom: 0.5em;
+}
 
-/* .footer-container {
-  margin-top: auto;
-} */
+.page-footer strong {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+}
+
+/* Move the 5 center columns to the right */
+.page-footer > *:nth-child(2) {
+  margin-left: 200px; /* Adjust this value as needed for your design */
+  display: flex;
+  gap: 4rem; /* space between columns */
+}
+
+/* Each column styling */
+.footer-column {
+  flex: 1 1 200px; /* allow growth but minimum width */
+  min-width: 180px;
+  text-align: left;
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 900px) {
+  .page-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .page-footer > *:nth-child(2) {
+    margin-left: 0;
+    gap: 2rem;
+    flex-direction: column;
+  }
+}
