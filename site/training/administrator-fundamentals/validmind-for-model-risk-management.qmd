@@ -1,0 +1,657 @@
+---
+title: "{{< var vm.product >}} for <br>Model Risk Management"
+subtitle: "Administrator Fundamentals — Module 3 of 4<br><br>_Click [{{< fa chevron-right >}}](#learning-objectives) to start_"
+lightbox: true
+format:
+  revealjs:
+    controls: true
+    controls-tutorial: true
+    help: true
+    controls-back-arrows: visible
+    transition: slide
+    theme: [default, ../assets/slides.scss]
+    slide-number: true
+    chalkboard: false
+    preview-links: auto
+    view-distance: 2
+    logo: /validmind.png
+    footer: "{{< var validmind.training >}} | [Home {{< fa person-walking-dashed-line-arrow-right >}}](/training/training.qmd)"
+    revealjs-plugins:
+      - slideover
+  html:
+  # Change this to the file name prepended by a _ to get around the global HTML output settings required by _metadata.yml
+    output-file: _validmind-for-model-risk-management.html
+    search: false
+title-slide-attributes:
+  data-background-color: "#083E44"
+  data-background-image: "../assets/home-hero.svg"
+skip_preview: true
+---
+
+# Learning objectives {.center}
+
+_"As an **administrator** who has set up user access to {{< var validmind.platform >}} and customized our model inventory, I want to further customize the {{< var vm.platform >}} by configuring workflows and attestations in accordance with our organization's requirements."_
+
+::: {.tc}
+<br>
+This third module is part of a four-part series:
+<br><br>
+[Validator Fundamentals](/training/administrator-fundamentals/administrator-fundamentals-register.qmd){.button target="_blank"}
+:::
+
+
+## Module 3 — Contents {.center}
+
+:::: {.columns .f3}
+::: {.column width="50%" .mt4 .pr4}
+### Introduction
+- [{{< var vm.product >}} for model validation](#validmind-for-model-validation)
+:::
+
+:::
+
+:::: {.columns .f3}
+
+::: {.column width="50%" .mt4 .pr4}
+### Section 1
+
+- [Train potential challenger model](#train-a-challenger-model)
+- [Run model evaluation tests](#run-model-evaluation-tests)
+
+:::
+
+::: {.column width="50%" .mt4}
+### Section 2
+
+- [Implement a custom test](#implement-custom-tests)
+- [Verify development test runs](#verify-test-runs)
+:::
+
+::::
+
+
+<br>
+First, let's make sure you can log in to {{< var vm.product >}}.
+
+{{< include /training/assets/_revealjs-navigation.qmd >}}
+
+## Before you begin {.center}
+
+::: {.panel-tabset}
+
+### Prerequisite course
+
+To continue, you need to have been [onboarded](administrator-fundamentals-register.qmd#register){target="_blank"} onto {{< var validmind.training >}} with the [**{{< fa circle-check >}} Validator**]{.bubble} role and completed the first two modules of this course:
+
+
+<!-- IMPORTANT: USE THE .HTML PATH AND NOT THE .QMD PATH FOR THE REVEALJS OUTPUT -->
+
+:::: {.columns}
+::: {.column width="60%"}
+::: {.tc}
+[Using {{< var vm.product >}} for Model Validation](using-validmind-for-model-validation.html){.button target="_blank"}
+:::
+
+:::
+::: {.column width="40%"}
+::: {.tc}
+[Running Data Quality Tests](running-data-quality-tests.html){.button target="_blank"}
+:::
+
+:::
+::::
+
+:::: {.tc .mt5 .f2 .embed}
+Already logged in and refreshed this module? Click [{{< fa chevron-right >}}]() to continue.
+
+:::
+
+### Log in
+
+1. Log in to check your access:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .tc}
+
+[Log in to JupyterHub]({{< var url.jupyterhub >}}/){.button target="_blank"}
+
+:::
+
+::: {.w-50-ns .tc}
+[Log in to {{< var vm.product >}}](https://app.prod.validmind.ai){.button target="_blank"}
+:::
+
+::::
+
+
+::: {.tc .f3}
+Be sure to return to this page afterwards.
+:::
+
+2. After you successfully log in, refresh the page to connect this training module up to the {{< var validmind.platform >}}: 
+
+::: {.tc}
+<button class="button" onClick="window.location.reload();">Refresh Page</button>
+
+:::
+
+:::
+
+<!-- USING THE VARIABLE IN THE HEADING MESSES UP THE PAGE ANCHOR -->
+
+# ValidMind for model validation {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="30%" .pr4 .f2}
+Jupyter Notebook series
+
+::: {.f3}
+These notebooks walk you through how to validate a model using {{< var vm.product >}}, complete with supporting test results attached as evidence to your validation report.
+
+::: {.f5 .nt2 .pl2 .mb4}
+<br>
+
+You will need to have already completed notebooks **1** and **2** during the first and second modules to proceed.
+
+:::
+
+:::
+:::
+
+::: {.column width="70%" .bl .pl4 .f3}
+### {{< var vm.product >}} for model validation
+
+Our series of four introductory notebooks for model administrators include sample code and how-to information to get you started with {{< var vm.product >}}:
+
+1 — [Set up the {{< var validmind.developer >}} for validation](/notebooks/tutorials/model_validation/1-set_up_validmind_for_validation.ipynb){target="_blank"}<br>
+2 — [Start the model validation process](/notebooks/tutorials/model_validation/2-start_validation_process.ipynb){target="_blank"}<br>
+3 — [Developing a potential challenger model](/notebooks/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}<br>
+4 — [Finalize testing and reporting](/notebooks/tutorials/model_validation/4-finalize_validation_reporting.ipynb){target="_blank"}<br>
+<br>
+
+::: {.f4 .pl3 .pr3 .embed}
+In this third module, we'll run through the remaining two notebooks **3** in Section 1 and **4** in Section 2 together.
+:::
+
+:::
+::::
+
+Let's continue our journey with **Section 1** on the next page. {{< fa hand-point-right >}}
+
+# Section 1 {background-color="#083E44" background-image="/assets/img/about-us-esphere.svg"}
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html" background-interactive="yes" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**3 — Developing a potential challenger model**
+
+This is the third notebook in our introductory series, which will walk you through how to evaluate your champion model against a potential challenger with {{< var vm.product >}}.
+
+**Scroll through this notebook** to explore. When you are done, click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## Get your code snippet
+
+:::: {.columns}
+
+::: {.column width="80%"}
+
+<!-- FOR COPYING THE CODE SNIPPET WE NEED TO USE THIS IFRAME WORKAROUND -->
+
+<div style="zoom: 0.6; overflow: hidden;">
+  <iframe 
+    src="https://app.prod.validmind.ai/model-inventory" 
+    width="100%" 
+    height="750" 
+    style="border: 1px solid #083E44; border-radius: 8px; border-right-width: 2px; border-bottom-width: 3px;"
+    data-preload="yes" 
+    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+    allow="clipboard-read; clipboard-write">
+  </iframe>
+</div>
+
+:::
+
+::: {.column width="20%" .f4}
+
+::: {.f5}
+{{< var vm.product >}} generates a unique *code snippet* for each registered model to connect with your validation environment:
+
+1. Select the name of your model you registered for this course to open up the model details page.
+2. On the left sidebar that appears for your model, click **Getting Started**.
+3. Locate the code snippet and click **Copy snippet to clipboard**.
+
+:::
+
+When you're done, click [{{< fa chevron-right >}}]() to continue.
+
+:::
+
+::::
+
+:::: {.tc .f6 .embed}
+**Can't load the {{< var validmind.platform >}}?**
+
+Make sure you're logged in and have refreshed the page in a Chromium-based web browser.
+
+:::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#initialize-the-validmind-library" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Connect to your model**
+
+With your code snippet copied to your clipboard:
+
+1. Open **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the **Setting up** section.
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#import-the-champion-model" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Import the champion model**
+
+Next, let's import the champion model submitted by the model development team in the format of a `.pkl` file for evaluation:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run the cell under the **Import the champion model** section.
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Train a challenger model {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="60%" .pr4 .f2}
+Champion vs. challenger models
+
+:::
+
+::: {.column width="40%" .bl .pl4 .f3}
+Try it **live** on the next pages. {{< fa hand-point-right >}}
+
+:::
+
+::::
+
+::: {.f4}
+
+We're curious how an alternate model compares to our champion model, so let's train a challenger model as a basis for our testing:
+
+::: {.panel-tabset}
+
+### Champion logistic regression model
+
+- Our champion *logistic regression model* is a simpler, parametric model that assumes a linear relationship between the independent variables and the log-odds of the outcome.
+- While logistic regression may not capture complex patterns as effectively, it offers a high degree of interpretability and is easier to explain to stakeholders.
+- However, model risk is not calculated in isolation from a single factor, but rather in consideration with trade-offs in predictive performance, ease of interpretability, and overall alignment with business objectives.
+
+### Challenger random forest classification model
+
+- A *random forest classification model* is an ensemble machine learning algorithm that uses multiple decision trees to classify data. In ensemble learning, multiple models are combined to improve prediction accuracy and robustness.
+- Random forest classification models generally have higher accuracy because they capture complex, non-linear relationships, but as a result they lack transparency in their predictions.
+
+:::
+
+:::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#training-a-potential-challenger-model" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Random forest classification model**
+
+Let's train our potential challenger model:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run the cell under the following Training a potential challenger model section: **Random forest classification model**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#initializing-the-model-objects" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Initialize the model objects**
+
+In addition to the initialized datasets, you'll also need to initialize a ValidMind model object (`vm_model`) that can be passed to other functions for analysis and tests on the data for each of our two models using [the `vm.init_model()` method](/validmind/validmind.qmd#init_model){target="_blank"}:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the section **Initializing the model objects**.
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Run model evaluation tests {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="50%" .pr4 .f2}
+Model evaluation testing
+
+:::
+
+::: {.column width="50%" .bl .pl4 .f2}
+Try it **live** on the next pages. {{< fa hand-point-right >}}
+
+:::
+
+::::
+
+::: {.f4}
+
+With everything ready for us, let's run the rest of our validation tests. We'll focus on comprehensive testing around model performance of both the champion and challenger models going forward as we've already verified the data quality of the datasets used to train the champion model:
+
+::: {.panel-tabset}
+
+### 1. Model performance tests
+
+We'll start with some performance tests, beginning with independent testing of our champion logistic regression model, then moving on to our potential challenger model.
+
+
+### 2. Model diagnostic tests
+
+Next, we want to inspect the robustness and stability testing comparison between our champion and challenger model.
+
+### 3. Feature importance tests
+
+Finally, we want to verify the relative influence of different input features on our models' predictions, as well as inspect the differences between our champion and challenger model to see if a certain model offers more understandable or logical importance scores for features.
+
+:::
+
+:::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#run-model-performance-tests" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Run model performance tests**
+
+Use the [`list_tests()` function](/validmind/validmind/tests.qmd#list_tests){target="_blank"} to identify all the model performance tests for classification:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run model performance tests**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {.scrollable}
+
+:::: {.columns}
+::: {.column width="30%" .pr4 .f2}
+Log a model finding
+
+::: {.f5 .nt2 .pl2 .mb4}
+(Scroll down for the full instructions.)
+:::
+
+::: {.tc}
+[Learn more ...](/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#log-a-model-finding){.button target="_blank"}
+
+:::
+
+<br>Try it **live** on the next page. {{< fa hand-point-right >}}
+
+:::
+
+::: {.column width="70%" .bl .pl4 .f4}
+As we can observe from the output in our notebook, our champion model doesn't pass the `MinimumAccuracy` test based on the default thresholds of the out-of-the-box test, so let's log a model finding in the {{< var validmind.platform >}}:
+
+#### Create a finding via a validation report
+
+1. From the **{{< fa cubes >}} Inventory** in the ValidMind Platform, go to the model you connected to earlier.
+
+2. In the left sidebar that appears for your model, click **{{< fa shield >}} Validation Report**.
+
+3. Locate the Data Preparation section and click on **2.2.2. Model Performance** to expand that section.
+
+4. Under the Model Performance Metrics section, locate Findings then click **Link Finding to Report**:
+
+    ![Validation report with the link finding option highlighted](/notebooks/tutorials/model_validation/link-finding.png){width=90% fig-alt="Screenshot showing the validation report with the link finding option highlighted" .screenshot}
+
+5. Click **{{< fa plus >}} Create New Finding** to add a finding.
+
+6. Enter in the details for your finding, for example:
+
+    - **[title]{.smallcaps}** — Champion Logistic Regression Model Fails Minimum Accuracy Threshold
+    - **[risk area]{.smallcaps}** — Model Performance
+    - **[documentation section]{.smallcaps}** — 3.2. Model Evaluation
+    - **[description]{.smallcaps}** — The logistic regression champion model was subjected to a Minimum Accuracy test to determine whether its predictive accuracy meets the predefined performance threshold of 0.7. The model achieved an accuracy score of 0.6136, which falls below the required minimum. As a result, the test produced a Fail outcome.
+
+7. Click **Save**.
+
+8. Select the finding you just added to link to your validation report.
+
+9. Click **Update Linked Findings** to insert your finding.
+
+10. Confirm that finding you inserted has been correctly inserted into section **2.2.2. Model Performance**  of the report.
+
+11. Click on the finding to expand the finding, where you can adjust details such as severity, owner, due date, status, etc. as well as include proposed remediation plans or supporting documentation as attachments.
+
+
+:::
+::::
+
+
+## {background-iframe="https://app.prod.validmind.ai/model-inventory/" background-interactive="true" data-preload="yes"}
+
+:::: {.slideover--b .auto-collapse-10}
+::: {.tc}
+**Create a model finding**
+
+:::
+
+1. Select the name of your model you registered for this course to open up the model details page.
+2. In the left sidebar that appears for your model, click **{{< fa shield >}} Validation Report**.
+3. Locate the Data Preparation section and click on **2.2.2. Model Performance** to expand that section.
+4. Under the Model Performance Metrics section, locate Findings then click **Link Finding to Report**.
+5. Click **{{< fa plus >}} Create New Finding** to add a finding.
+6. Enter in the details for your finding and click **Save**.
+7. Select the finding you just added to link to your validation report.
+8. Click **Update Linked Findings** to insert your finding.
+
+When you're done, click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#run-diagnostic-tests" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Run diagnostic tests**
+
+This time, use `list_tests()` to identify all the model diagnosis tests for classification:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run diagnostic tests**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/3-developing_challenger_model.html#run-feature-importance-tests" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Run feature importance tests**
+
+Use `list_tests()` again to identify all the feature importance tests for classification:
+
+1. Continue with **3 — Developing a potential challenger model**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/3-developing_challenger_model.ipynb){target="_blank"}
+2. Run all the cells under the Running model evaluation tests section: **Run feature importance tests**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Section 2 {background-color="#083E44" background-image="/assets/img/about-us-esphere.svg"}
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/4-finalize_validation_reporting.html" background-interactive="yes" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**4 — Finalize testing and reporting**
+
+This is the final notebook in our introductory series, which will walk you through how to supplement ValidMind tests with your own custom tests and include them as additional evidence in your validation report, and wrap up your validation testing.
+
+**Scroll through this notebook** to explore. When you are done, click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## Retrieve your code snippet
+
+:::: {.columns}
+
+::: {.column width="80%"}
+
+<!-- FOR COPYING THE CODE SNIPPET WE NEED TO USE THIS IFRAME WORKAROUND -->
+
+<div style="zoom: 0.6; overflow: hidden;">
+  <iframe 
+    src="https://app.prod.validmind.ai/model-inventory" 
+    width="100%" 
+    height="750" 
+    style="border: 1px solid #083E44; border-radius: 8px; border-right-width: 2px; border-bottom-width: 3px;"
+    data-preload="yes" 
+    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+    allow="clipboard-read; clipboard-write">
+  </iframe>
+</div>
+
+:::
+
+::: {.column width="20%"}
+
+::: {.f4}
+As usual, let's connect back up to your model in the {{< var validmind.platform >}}:
+
+1. Select the name of your model you registered for this course to open up the model details page.
+2. On the left sidebar that appears for your model, click **Getting Started**.
+3. Locate the code snippet and click **Copy snippet to clipboard**.
+
+:::
+
+:::
+
+::::
+
+When you're done, click [{{< fa chevron-right >}}]() to continue.
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/4-finalize_validation_reporting.html#initialize-the-validmind-library" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Connect to your model**
+
+With your code snippet copied to your clipboard:
+
+1. Open **4 — Finalize testing and validation**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/4-finalize_validation_reporting.ipynb){target="_blank"}
+2. Run all the cells under the **Setting up** section.
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Implement custom tests {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="30%" .pr4 .f2}
+Custom tests
+
+<br>Try it **live** on the next pages. {{< fa hand-point-right >}}
+
+:::
+
+::: {.column width="70%" .bl .pl4 .f3}
+Let's implement a *custom test* that calculates a confusion matrix:
+
+- You'll note that the custom test function is just a regular Python function that can include and require any Python library as you see fit.
+- In a usual model validation situation, you would load a saved custom test provided by the model development team. In the following section, we'll have you implement the same custom test and make it available for reuse, to familiarize you with the processes.
+
+:::
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/4-finalize_validation_reporting.html#implement-a-custom-inline-test" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Implement a custom inline test**
+
+An *inline test* refers to a test written and executed within the same environment as the code being tested — in the following example, right in our Jupyter Notebook —  without requiring a separate test file or framework:
+
+1. Continue with **4 — Finalize testing and validation**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/4-finalize_validation_reporting.ipynb){target="_blank"}
+2. Run all the cells in the following sections under Implementing custom tests: **Implement a custom inline test**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/4-finalize_validation_reporting.html#use-external-test-providers" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Use external test providers**
+
+Sometimes you may want to reuse the same set of custom tests across multiple models and share them with others in your organization, like the model development team would have done with you in this example workflow featured in this series of notebooks:
+
+1. Continue with **4 — Finalize testing and validation**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/4-finalize_validation_reporting.ipynb){target="_blank"}
+2. Run all the cells in the following sections under Implementing custom tests: **Use external test providers**
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# Verify test runs {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {background-iframe="/notebooks/EXECUTED/model_validation/4-finalize_validation_reporting.html#verify-test-runs" data-preload="yes"}
+
+:::: {.slideover--r .three-quarters}
+**Verify model development testing**
+
+Our final task is to verify that all the tests provided by the model development team were run and reported accurately:
+
+1. Continue with **4 — Finalize testing and validation**: [{{< fa square-arrow-up-right >}} JupyterHub]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/tutorials/model_validation/4-finalize_validation_reporting.ipynb){target="_blank"}
+2. Run all the cells under the **Verify test runs** section.
+
+When you're done, return to this page and click [{{< fa chevron-right >}}]() to continue.
+
+::::
+
+# In summary {background-color="#083E44" background-image="/training/assets/home-hero.svg"}
+
+## {.scrollable .center}
+
+:::: {.columns}
+::: {.column width="30%" .pr4 .f2}
+Developing challenger models
+
+:::
+
+::: {.column width="70%" .bl .pl4 .f3}
+In this third module, you learned how to:
+
+- [x] Initialize {{< var vm.product >}} `Model` objects
+- [x] Log a model finding within your validation report
+- [x] Implement, run, and log custom inline tests
+- [x] Register external test providers for reusable custom tests
+- [x] Verify testing done by model development using {{< var vm.product >}}
+
+:::
+::::
+
+::: {.tc}
+<br>
+Continue your model development journey with:
+<br><br>
+<!-- IMPORTANT: USE THE .HTML PATH AND NOT THE .QMD PATH FOR THE REVEALJS OUTPUT -->
+[Finalizing Validation Reports](finalizing-validation-reports.html){.button target="_blank"}
+:::
