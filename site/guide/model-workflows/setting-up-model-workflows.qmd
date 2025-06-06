@@ -17,14 +17,176 @@ Configure workflows to match your organizational needs for overseeing model deve
 
 Models in your model inventory transition through your organization's custom model lifecycles via model stages, which are in turn manipulated via workflows.
 
+## Workflow elements
+
+### Workflow step types
+
+#### Status Change
+
+- Transitions a status. 
+- Requires available model lifecycle statuses associated with the workflow.[^3]
+
+| Field | Description |
+|---:|---|
+| [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.[^4]  |
+| [set status to]{.smallcaps} | Select the status to transition to. |
+: **Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
+
+
+#### User Action
+- Creates a button that performs an action on behalf of the user. 
+- Requires available model lifecycle statuses associated with the workflow.[^5]
+
+| Field | Description |
+|---:|---|
+| [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.[^6]  |
+| [action button label]{.smallcaps} | Text that displays on your action button. |
+| [request fields]{.smallcaps}  (optional) | Include inventory fields alongside your action if desired. Select the field, then click **{{< fa plus >}} Add Field** to insert.[^7]  |
+| [to set status]{.smallcaps} | Select the status to transition to. |
+: **User Action** step configuration {.hover tbl-colwidths="[40,60]"}
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .mt2}
+
+![User Action step configuration with a request field of Date on Hold](configure-user-action.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Date On Hold" .screenshot group="user-action"}
+
+:::
+
+::: {.w-40-ns .mt2}
+
+![Action transition panel with the Date on Hold inventory field](user-action-inventory-field.png){fig-alt="A screenshot showing the action transition panel with the Date On Hold inventory field" .screenshot group="user-action"}
+
+Example
+: A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the model lifecycle status to <br>[On Hold]{.bubble}.
+
+:::
+
+::::
+
+::: {.callout title="All model inventory field types can be included as request fields on a User Action step. "}
+<span id="attachments"></span> 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .mt2}
+
+![User Action step configuration with a request field of Workflow Attachment](upload-workflow-attachment.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Workflow Attachment" .screenshot group="attachments"}
+
+:::
+
+::: {.w-40-ns .mt2}
+
+![Files uploaded under the Workflow Attachment inventory field](model-workflow-attachments.png){fig-alt="A screenshot showing the files uploaded under the Workflow Attachment inventory field" .screenshot group="attachments"}
+
+Example
+: An `In Initial Validation` action that requests an upload in the [workflow attachment]{.smallcaps} field, and transitions the model lifecycle status to [In Initial Validation]{.bubble}.
+
+:::
+
+::::
+:::
+
+#### Approval
+- When your resource reaches the approval step, roles or users in the selected **Approval Group** will receive your configured message. 
+- Requires either a **User Role**[^8] or **User Type** inventory field[^9] to select from, and must be connected to both an approval and rejection Status Change step.[^10]
+
+::: callout 
+Please note that roles or users must be assigned to the **Approval Group** field before the workflow is transitioned into the **Approval** step in order for the message to be displayed to those roles or users. 
+:::
+
+| Field | Description |
+|---:|---|
+| [approval group]{.smallcaps}  | Select the **User Role** or **User Type** inventory field that indicates roles or users responsible for approval. |
+| [threshold]{.smallcaps} | Percentage of approvers required for the resource to be approved.[^11] |
+| [approval message]{.smallcaps} | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
+: **Approval Group** step configuration {.hover tbl-colwidths="[35,65]"}
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+![APPROVAL GROUP step configuration with a User Roles selection of Validator](configure-approval-step.png){fig-alt="A screenshot showing an APPROVAL GROUP step configuration with a User Roles selection of Validator" .screenshot group="approval"}
+
+:::
+
+::: {.w-40-ns}
+![Setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator](approval-group-setup.png){fig-alt="A screenshot showing the setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator" .screenshot group="approval"}
+
+Example
+: A message shown to the User Roles — Validator requesting review of a model for compliance.
+
+:::
+
+::::
+
+#### Condition Branch
+- Allows diverging paths based on conditional requirements.
+- A `default` branch will be automatically included as a catch-all `else` path to ensure that your conditional logic is complete.
+
+::: {.callout-important}
+Workflows cannot be saved until condition branches are connected to other steps.
+:::
+
+To configure a condition branch:
+
+1. On the Configure Condition Branch modal, click **{{< fa plus >}} Add Branch**.
+2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**[^12] that apply to this path.
+3. Continue with steps 1 and 2 until your conditional branch logic is complete.
+
+    To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
+4. When you are finished setting up all your branch paths, click **Update Step** to save your step.
+
+    Proceed with linking the Condition Branch with your subsequent steps.[^13]
+
+For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
+
+- First, you'd set up a Condition Branch path to look for instances where `GenAI Model` is set to `true`.
+- Then, you would add an Approval step[^14] that requests a review of the model from the User Roles — `Legal Team`.
+- Finally, configure the `default` path to bypass this special approval. 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" .screenshot group="condition"}
+
+:::
+
+::: {.w-50-ns}
+![Legal Team Approval step configuration](legal-team-approval.png){fig-alt="Screenshot showing the Legal Team Approval step configuration" .screenshot group="condition"}
+
+:::
+
+::::
+
+::: {.column-margin}
+![Example Condition Branch where GenAI models require special approval from the User Roles — Legal Team](example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User Roles — Legal Team" .screenshot group="condition"}
+
+:::
+
+#### Wait
+
+- Creates a time condition for displaying next available action.
+- Used to enforce a time delay or a calendar date milestone. 
+
+::: {.callout title="Time stamp configuration is in the current user's timezone."}
+Other users viewing those fields or the workflow will see the value automatically in their timezone. 
+:::
+
+To configure a wait step, select when you would like to [resume workflow]{.smallcaps}: 
+
+| Option | Required field | Description | 
+|---:|---|---|
+| After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time in minutes, hours, or days. Applies to all models under the workflow. |
+| At Specified Date | [wait until]{.smallcaps} | Wait until a specific timestamp. Applies to all models under the workflow. If the milestone date inputted is in the past, the next workflow step will display immediately. |
+| At Specified Date on Model Field | [model field]{.smallcaps}[^15] | Wait until a specific timestamp as defined by a valid `Date` or `Date Time` type model inventory field on a per model basis. If the selected field is empty[^16] or the milestone date inputted is in the past, the next workflow step will display immediately. |
+: **Wait** step configuration {.hover tbl-colwidths="[30,15,45]"}
+
+### Workflow states
+
 ## Set up workflows
 
 :::{#model-workflows}
 :::
 
-## Workflows reference guides
 
-### Available workflow step types
-
-### Manage workflow states
 
