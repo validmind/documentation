@@ -883,15 +883,17 @@ body::before {
 }
 
 /* Added for the new footer */
-
 .page-footer {
   background-color: #26818B;
   color: white;
-  padding: 2rem 3vw;
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  gap: 4rem;
+  box-sizing: border-box;
+
 }
 
 .page-footer img {
@@ -903,52 +905,76 @@ body::before {
   margin-bottom: 0.5em;
 }
 
-/* Move the 5 center columns to the right */
-.page-footer > *:nth-child(2) {
-  margin-left: 200px; /* Adjust this value as needed for your design */
-  display: flex;
-  gap: 4rem; /* space between columns */
-}
-
-/* Each column styling */
-.footer-column {
-  flex: 1 1 200px; /* allow growth but minimum width */
+.footer-title {
+  flex: 1;
   min-width: 180px;
   text-align: left;
+  padding-bottom: 1.5rem;
 }
-/* Target all links inside the footer column */
+
+.footer-links-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.footer-links-horizontal a {
+  color: white;
+  text-decoration: none;
+  font-weight: 200;
+}
+
+.footer-links-horizontal a:hover {
+  text-decoration: underline;
+}
+
+/* Each column inside .footer-columns */
+.footer-column {
+  flex: 1 1 200px;
+  min-width: 180px;
+  text-align: right;
+}
+
+/* Footer links */
 .footer-column a {
-  font-weight: 200; /* Light font for links under the title */
-  color: white; /* Optional: ensure link color consistency */
+  font-weight: 200;
+  color: white;
   text-decoration: none;
 }
 
 .footer-column a:hover {
   text-decoration: underline;
 }
+
+/* Column section title */
 .footer-column strong {
   display: block;
   margin-bottom: 0.5em;
   font-size: 1.05em;
 }
-
-.footer-title {
-  flex: 1 1 200px; /* allow growth but minimum width */
-  min-width: 180px;
-  text-align: left;
-  padding-bottom: 1.5rem; /* adjust as needed */
+.nav-footer-center {
+  flex: 2;
+  display: flex;
+  justify-content: flex-start;  /* Align links left within the center */
+  align-items: center;          /* ✅ Vertically center them */
+  height: 100%;                 /* ✅ Fill height of parent */
 }
 
-
-/* Responsive: stack columns on small screens */
-@media (max-width: 900px) {
-  .page-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .page-footer > *:nth-child(2) {
-    margin-left: 0;
-    gap: 2rem;
-    flex-direction: column;
-  }
+.nav-footer-right {
+  flex: 1; /* Shrinks the right column */
 }
+
+.cc-window {
+  position: static !important;
+  margin-top: 2rem;
+  background-color: #1e1e1e;
+  color: white;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
