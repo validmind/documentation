@@ -5,11 +5,13 @@ page-layout: full
 listing:
   - id: whats-next
     type: grid
+    grid-columns: 2
     max-description-length: 250
     sort: false
     fields: [title, description]
     contents:
-    - ../../guide/configuration/accessing-validmind.qmd
+    - ../../developer/validmind-library.qmd
+    - ../../guide/model-documentation/work-with-test-results.qmd
 ---
 
 wip
@@ -18,26 +20,116 @@ wip
 
 ## {{< fa star-of-life >}} Before you begin
 
-To try out {{< var vm.product >}}, you need to be a registered user on the {{< var validmind.platform >}}.[^1]
+- [x] To try out {{< var vm.product >}}, you need to be a registered user on the {{< var validmind.platform >}}.[^1]
+- [x] You'll also want to make sure that you're logged into the {{< var validmind.platform >}}.[^2]
 
 :::
 
-## Register a model
+## Register your first model
 
-## Set up the {{< var validmind.developer >}}
+The first step to using {{< var vm.product >}} to develop models is to register them in the **{{< fa cubes >}} Inventory**:
 
-## Work with model documentation
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**. 
+   
+2. Click **{{< fa plus >}} Register New Model**.
 
-## What's next*
+3. Enter in the following model details:
+
+   - **Documentation template** — `Binary classification`
+   - **Use case** — `Marketing/Sales - Attrition/Churn Management`
+
+   You can fill in other options according to your preference.
+
+4. Click **Register Model** to add the model to your inventory.
+
+#### Get your code snippet
+
+Before we move on, let's also retrieve the unique *code snippet* for your model that will enable you to connect your testing environment with the correct model in the {{< var validmind.platform >}}:
+
+1. In the left sidebar that appears for your model, click **{{< fa rocket >}} Getting Started**.
+
+2. Locate the code snippet and click **{{< fa regular copy >}} Copy snippet to clipboard**.
+
+## Using the {{< var validmind.developer >}}
+
+Next, let's set up the {{< var validmind.developer >}} in your developer environment of choice so we can use it to run and log tests, which will help automate the documentation of your models.
+
+Our companion notebook, [Quickstart for model documentation](/notebooks/quickstart/quickstart_model_documentation.ipynb), will walk you through the steps of installing the {{< var vm.developer >}} in your environment, initializing the {{< var vm.developer >}} for use, and running a full suite of documentation tests that will log the results to the {{< var validmind.platform >}}.
+
+### Access the quickstart notebook
+
+You can either load the hosted version of our notebook, or download the notebook to run in your own local environment:
+
+#### Load the hosted notebook (recommended)
+
+1. Sign in to [JupyterHub]({{< var url.jupyterhub >}}) with your {{< var vm.product >}} login.
+
+<!-- NOT LIVE ON JUPYTERHUB YET, HASN'T BEEN UPDATED -->
+2. Open [Quickstart for model documentation]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/quickstart/quickstart_model_documentation.ipynb) and **[run the quickstart notebook](#run-the-quickstart-notebook).**
+
+#### Download the notebooks
+
+##### Option 1: Clone the GitHub repository
+
+1. Open a terminal or command prompt.
+
+2. Navigate to the directory where you want to clone the repository.
+
+3. Run the following command:
+   ```bash
+   git clone https://github.com/validmind/validmind-library.git
+   ```
+
+4. After the cloning process is complete, open `notebooks/quickstart/quickstart_model_documentation.ipynb` in your developer environment and **[run the quickstart notebook](#run-the-quickstart-notebook).**
+
+##### Option 2: Download the code samples
+
+1. Download our selection of code samples: [`notebooks.zip`](/notebooks.zip)
+
+2. Navigate to the location where you saved `notebooks.zip` and extract the contents.[^3]
+
+3. Navigate to the folder where you extracted the files.
+
+4. Open `notebooks/quickstart/quickstart_model_documentation.ipynb` in your developer environment and **[run the quickstart notebook](#run-the-quickstart-notebook).**
+
+### Run the quickstart notebook
+
+1. Follow the instructions to run the first two code cells in the notebook,[^4] which will set the stage by installing and initializing {{< var vm.product >}}:[^5]
+
+   - Hover over each cell and click the {{< fa circle-play >}} **icon**; OR
+   - Press `Shift + Enter` on Windows or `Cmd + Enter` if you are on a Mac
+
+   Under the cell at bottom of the **Get your code snippet** section, confirm that you see a success message that looks something like this:
+   
+   ```bash
+   2024-10-08 22:06:42,610 - INFO(validmind.api_client): 🎉 Connected to {{< var vm.product >}}!
+   📊 Model: [ValidMind Academy] Model development (ID: cmalgf3qi02ce199qm3rdkl46)
+   📁 Document Type: model_documentation
+   ```
+
+   This message verifies that the {{< var vm.developer >}} works as expected as is connected to the correct model within the {{< var vm.platform >}}. 
+
+2. Continue running the rest of the notebook to automatically populate test results for your sample model to your documentation for that model in the {{< var vm.platform >}}.
+
+## Working with model documentation
+
+## What's next
 
 :::{#whats-next}
 :::
 
-## Learn more*
-
-
-
 <!-- FOOTNOTES -->
 
 [^1]: [Register with {{< var vm.product >}}](/guide/configuration/register-with-validmind.qmd)
+
+[^2]: [Log in to {{< var vm.product >}}](/guide/configuration/log-in-to-validmind.qmd)
+
+[^3]: Depending on your operating system, you can right-click on `notebooks.zip` and select **Extract All ...** or **Extract Here**, for example.
+
+[^4]:
+
+   - Hover over each cell and click the {{< fa circle-play >}} **icon**; OR
+   - Press `Shift + Enter` on Windows or `Cmd + Enter` if you are on a Mac
+
+[^5]: [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd)
 
