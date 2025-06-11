@@ -894,14 +894,6 @@ body::before {
   border-top: 1px solid #e0e0e0;
 }
 
-.footer-section {
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
-  margin: 0 1vw;
-  flex: 1 1 0;
-}
-
 .footer-logo-info {
   display: flex;
   flex-direction: column;
@@ -986,8 +978,9 @@ body::before {
   width: 1px;
   min-height: 100px;
   background: rgba(255,255,255,0.3);
-  margin: 0 1vw;
   align-self: stretch;
+  margin: 0 0vw;
+  min-height: 80px;
 }
 
 .footer-user-guides {
@@ -998,35 +991,106 @@ body::before {
 
 .footer-user-guides-columns {
   display: flex;
-  gap: 2vw;
+  gap: 1vw;
 }
 
 .footer-user-guides-columns ul {
   min-width: 100px;
 }
 
-@media (max-width: 1100px) {
-  .page-footer {
-  flex-direction: column;
-    align-items: stretch;
-    padding: 1rem 2vw;
-  }
-  .footer-section, .footer-user-guides {
-    max-width: 100%;
-    margin: 0.5em 0;
-  }
-  .footer-divider {
-    display: none;
-  }
-  .footer-user-guides-columns {
-  flex-direction: column;
-    gap: 0.5em;
-  }
-}
-
 .page-footer ul,
 .page-footer ul li {
   list-style: none !important;
   margin-left: 0 !important;
+  margin-right: 0 !important;
   padding-left: 0 !important;
+}
+
+.cookie-preferences-link {
+  font-size: 0.875rem; /* equivalent to text-sm */
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.cookie-preferences-link:hover {
+  color: #cccccc;
+}
+
+/* Make Quarto's footer slots align at the top and reduce spacing */
+.quarto-nav-footer {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 0 !important;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #4e868b;
+}
+
+/* Remove default padding/margin from slot containers */
+.nav-footer-left, .nav-footer-center, .nav-footer-right {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  min-width: 0;
+}
+
+/* Make left and center fill available space */
+.nav-footer-left, .nav-footer-center {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+/* Make right only as wide as its content */
+.nav-footer-right {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* Make right only as wide as its content */
+.nav-footer-center {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* Make sure each section inside a slot is compact */
+.footer-section {
+  margin: 0 1vw;
+  min-width: 120px;
+  flex: 1 1 0;
+}
+
+#custom-cookie-preferences {
+  display: block;
+  margin-top: 0.5em;
+  text-align: left;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 1100px) {
+  .quarto-nav-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .nav-footer-left, .nav-footer-center, .nav-footer-right {
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .footer-divider {
+    display: none;
+  }
+}
+.footer-section,
+.footer-section ul,
+.footer-section li,
+.footer-section a,
+.footer-heading {
+  text-align: left !important;
 }
