@@ -101,9 +101,9 @@ Creates a button that performs an action on behalf of the user.
 | [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.[^8]  |
 | [action button label]{.smallcaps} | Text that displays on your action button. |
 | [request fields]{.smallcaps} | Include required inventory fields alongside your action.[^9]  |
-: **User Action** step configuration {.hover tbl-colwidths="[40,60]"}
+: **{{< fa arrow-pointer >}} User Action v2** step configuration {.hover tbl-colwidths="[40,60]"}
 
-:::: {.flex .flex-wrap .justify-around}
+<!-- :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns .mt2}
 
@@ -120,8 +120,8 @@ Example
 
 :::
 
-::::
-
+:::: -->
+<!-- 
 ::: {.callout title="All model inventory field types can be included as request fields on a User Action step. "}
 
 :::: {.flex .flex-wrap .justify-around}
@@ -142,26 +142,29 @@ Example
 :::
 
 ::::
-:::
+::: -->
 
 #### {{< fa users >}} Approval*
 <span id="approval"></span>
 
-- When your resource reaches the approval step, roles or users in the selected **Approval Group** will receive your configured message. 
-- Requires either a **User Role**[^8] or **User Type** inventory field[^9] to select from, and must be connected to both an approval and rejection Status Change step.[^10]
+When your workflow reaches the approval step, roles or users in the selected **[approval group]{.smallcaps}** will receive a preconfigured message.
 
-::: callout 
-Please note that roles or users must be assigned to the **Approval Group** field before the workflow is transitioned into the **Approval** step in order for the message to be displayed to those roles or users. 
+- Select from either **User Roles**,[^10] **Model Stakeholder Types**,[^11] or either **User Role** or **User Type** inventory field.[^12]
+- Must be connected to both an approval and rejection {{< fa cube >}} Model Stage Change step.[^13]
+
+::: {.callout}
+Please note that roles, stakeholders, or users must be assigned to the indicated **[approval group]{.smallcaps}** before the workflow is transitioned into the **{{< fa users >}} Approval** step in order for the message to be displayed to users in those categories.
+
 :::
 
 | Field | Description |
 |---:|---|
-| [approval group]{.smallcaps}  | Select the **User Role** or **User Type** inventory field that indicates roles or users responsible for approval. |
-| [threshold]{.smallcaps} | Percentage of approvers required for the resource to be approved.[^11] |
-| [approval message]{.smallcaps} | When your resource reaches this approval step, the users in the selected group will recieve the following message. |
-: **Approval Group** step configuration {.hover tbl-colwidths="[35,65]"}
+| [approval group]{.smallcaps}  | Select the roles, stakeholders, or user fields responsible for approval. |
+| [threshold]{.smallcaps} | Percentage of approvers required for the resource to be approved.[^14] |
+| Approval Message | When your resource reaches this approval step, the users in the selected group will receive the following message.[^15] |
+: **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
-:::: {.flex .flex-wrap .justify-around}
+<!-- :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns}
 ![APPROVAL GROUP step configuration with a User Roles selection of Validator](configure-approval-step.png){fig-alt="A screenshot showing an APPROVAL GROUP step configuration with a User Roles selection of Validator" .screenshot group="approval"}
@@ -176,7 +179,7 @@ Example
 
 :::
 
-::::
+:::: -->
 
 ### Conditional
 
@@ -215,13 +218,13 @@ To configure a condition branch:
 
     Proceed with linking the Condition Branch with your subsequent steps.[^13]
 
-For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
+<!-- For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
 
 - First, you'd set up a Condition Branch path to look for instances where `GenAI Model` is set to `true`.
 - Then, you would add an Approval step[^14] that requests a review of the model from the User Roles — `Legal Team`.
-- Finally, configure the `default` path to bypass this special approval. 
+- Finally, configure the `default` path to bypass this special approval.  -->
 
-:::: {.flex .flex-wrap .justify-around}
+<!-- :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns}
 ![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" .screenshot group="condition"}
@@ -238,7 +241,7 @@ For example, if you wanted your models where the field `GenAI Model` is set to `
 ::: {.column-margin}
 ![Example Condition Branch where GenAI models require special approval from the User Roles — Legal Team](example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User Roles — Legal Team" .screenshot group="condition"}
 
-:::
+::: -->
 
 #### {{< fa clock >}} Wait*
 <span id="wait"></span>
@@ -357,6 +360,20 @@ Deleting a workflow state may cause your existing workflows to malfunction.*CAN 
 
     - Select the field, then click **{{< fa plus >}} Add Field** to insert.
     - [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)
+
+[^10]: [Manage roles](/guide/configuration/manage-roles.qmd)
+
+[^11]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
+
+[^12]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
+
+[^13]: [Workflow step types](#workflow-step-types)
+
+[^14]: [Conditional requirements](#conditional-requirements)
+
+[^15]:
+
+    Enter in a **[title]{.smallcaps}** and a **[message]{.smallcaps}** to display.
 
 <!-- 
 
