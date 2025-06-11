@@ -26,131 +26,24 @@ To set up a new custom workflow, you'll need to complete these three steps in se
  2. [Configure the workflow steps](#configure-workflow-steps)
  3. [Link the workflow together](#link-workflow-together)
 
-### Add workflows
+### Add new workflows
 
-To add a new blank workflow:
-
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
-
-2. Under Workspace, select **Workflows**.
-
-3. Click **{{< fa plus >}} Add Workflow**.
-
-4. On the Add New Workflow modal, enter in a **[title]{.smallcaps}** and a **[description]{.smallcaps}** the workflow.
-
-5. Under **[workflow start]{.smallcaps}**, select when the workflow should be initiated:
-
-    - **Manually** — Start this workflow manually.[^3]
-    - **On Model Registration** — Start this workflow when a model is registered in your model inventory.[^4]
-    - **On Model Field Change** — Start this workflow on a change to a specific model inventory field.[^5]
-
-6. Under **[workflow expected duration]{.smallcaps}**, define the SLA for the workflow based on the start date in days, weeks, months, or years.
-
-7. Click **Add Workflow** to save your blank workflow, and then [configure your workflow steps](#configure-workflow-steps).
+{{< include _add-new-workflows.qmd >}}
 
 ### Configure workflow steps
 
-To add or edit workflow steps:
-
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
-
-2. Under Workspace, select **Workflows**.
-
-3. Click on the workflow you'd like to modify, then:
-
-    - To add a step, drag and drop a new step onto the canvas.
-    - Double-click the new step to open up the configuration modal.
-
-4. After you're finished with step configuration, click **Update Step** to apply your changes.
-
-5. After you've configured a step, you can then [link your workflow together](/guide/model-workflows/configure-custom-workflows.qmd#link-workflow-together).
-
-::: {.callout}
-Refer to [Workflow step types](/guide/model-workflows/setting-up-model-workflows.qmd#workflow-step-types) for information on available step types and details on how to set up conditional requirements.
-
-:::
-
-#### Add conditional requirements*
-
-Conditional requirements can be configured for the following step types:[^6]
-
-| Step type | Conditional options |
-|---:|---|
-| Status Change | Under **[when these conditions are met]{.smallcaps}**, you are able to set both `AND` and `OR` conditions. |
-| User Action | Under **[display action button when]{.smallcaps}**, you are able to set both `AND` and `OR` conditions.  |
-| Approval | Under **[threshold]{.smallcaps}**, you are able to set the minimum percentage of approvers required for the resource to be approved. |
-| Condition Branch | Under each branch's **[conditions]{.smallcaps}**, you're able to designate the `AND` and `OR` conditions that apply to that path. |
-: Step type conditional options {.hover tbl-colwidths="[20,80]"}
-
-For Status Change, User Action, and Condition Branch conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
-
-- Click **{{< fa plus >}} Rule** to add an independent rule.
-- Click **{{< fa plus >}} Group** to add a linked group of rules that all must be true to qualify. 
-
-<!-- {{< include _configure-workflow-steps.qmd >}} -->
+{{< include _configure-workflow-steps.qmd >}}
 
 ### Link workflow together
 
-To initiate the beginning of your workflow:^[After you’ve [configured your workflow steps](#configure-workflow-steps), you can then link your workflow together.]
+{{< include _link-workflow-together.qmd >}}
 
-1. Locate the [**Start**]{.bubble .green .green-bg} of your workflow.
-
-2. Drag from the **{{< fa circle >}}** at the bottom of [**Start**]{.bubble .green .green-bg} to the any **{{< fa circle >}}** on the first step of your workflow.
-
-3. Continue with [linking your steps together](#link-steps-together).
-
-#### Link steps together
-
-::: {.callout}
-Hover over a workflow step to view an animation of the steps connecting to and from that step.
-:::
-
-To link subsequent steps together:
-
-1. Click the **{{< fa circle >}}** below or to the right or left of the earlier step and drag it to connect to any **{{< fa circle >}}** on the subsequent step.
-
-    You're also able to link several different steps together at various points in the workflow, including stages that may circle back to previous steps.
-
-2. When you are finished, click **Save Workflow** to apply your changes.
-
-<!-- {{< include _link-workflow-steps.qmd >}} -->
-
-## Edit existing workflows
-
-
-<!-- # OLD UNDER HERE
-
-## Configure workflow steps*
-
-{{< include _configure-workflow-steps.qmd >}}
-
-### Add conditional requirements*
-
-Conditional requirements can be configured for all four available step types:
-
-| Step type | Conditional options |
-|---:|---|
-| Status Change | Under **[when these conditions are met]{.smallcaps}**, you are able to set both `AND` and `OR` conditions. |
-| User Action | Under **[display action button when]{.smallcaps}**, you are able to set both `AND` and `OR` conditions.  |
-| Approval | Under **[threshold]{.smallcaps}**, you are able to set the minimum percentage of approvers required for the resource to be approved. |
-| Condition Branch | Under each branch's **[conditions]{.smallcaps}**, you're able to designate the `AND` and `OR` conditions that apply to that path. |
-: Step type conditional options {.hover tbl-colwidths="[20,80]"}
-
-For Status Change[^3], User Action[^4], and Condition Branch[^5] conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
-
-- Click **{{< fa plus >}} Rule** to add an independent rule.
-- Click **{{< fa plus >}} Group** to add a linked group of rules that all must be true to qualify. 
-
-## Link workflow together*
-
-{{< include _link-workflow-steps.qmd >}}
-
-#### Link approval steps*
+##### Link approval steps*
 Approval steps need to be subsequently linked to both a [Rejected]{.bubble .red .red-bg} and an [Approved]{.bubble .green .green-bg} Status Change step:
 
-1. First, configure an **Approval** step.[^6]
+1. First, configure an **Approval** step.[^3]
 
-2. Then, drag two **Status Change** steps onto the canvas:[^7]
+2. Then, drag two **Status Change** steps onto the canvas:[^4]
 
     - Assign a `Rejected` status to one in the **Set Document Status** field.
     - Assign an `Approved` status to the other in the **Set Document Status** field.
@@ -162,7 +55,25 @@ Approval steps need to be subsequently linked to both a [Rejected]{.bubble .red 
 
 :::
 
-## Delete workflow steps*
+## Edit existing workflows
+
+You can edit a workflow in two ways:
+
+1. Via the **{{< fa gear >}} Settings** page:
+
+    a. In the left sidebar, click **{{< fa gear >}} Settings**.
+    b. Under Workspace, select **Workflows**.
+    c. Click on the workflow you'd like to modify to edit the configuration for that workflow.
+
+2. Via a workflow applied to a model:
+
+    a. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+    b. Select a model or find your model by applying a filter or searching for it.[^5]
+    c. On the landing page of your model, locate the [active workflows]{.smallcaps} section.
+    d. Click on the name of the workflow you'd like to abort to open that specific workflow's details.
+    e. On the workflow's detail modal, click on the **{{< fa ellipsis-vertical >}}** in the top-right hand corner and select **{{< fa pencil >}} Edit Workflow**.
+
+### Delete workflow steps
 
 1. Hover over the step until the **{{< fa ellipsis-vertical >}}** menu appears, then click on it.
 
@@ -172,15 +83,15 @@ Approval steps need to be subsequently linked to both a [Rejected]{.bubble .red 
 
 3. When you are finished, click **Save Workflow** to apply your changes.
 
-### Remove links between steps*
+### Remove links between steps
 
-1. Hover over a connection until the **{{< fa circle-xmark >}}** appears.
+1. Hover over a connection until the **{{< fa trash-can >}}** appears.
 
-2. Click **{{< fa circle-xmark >}}** to delete the connection.
+2. Click **{{< fa trash-can >}}** to delete the connection.
 
     On the confirmation dialogue that appears, select **OK** to confirm deletion.
 
-3. When you are finished, click **Save Workflow** to apply your changes. -->
+3. When you are finished, click **Save Workflow** to apply your changes.
 
 ## What's next
 
@@ -194,18 +105,11 @@ Approval steps need to be subsequently linked to both a [Rejected]{.bubble .red 
 
 [^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^3]: [Manage model workflows](/guide/model-workflows/manage-model-workflows.qmd#initiate-model-workflows)
+[^3]: [Setting up model workflows](/guide/model-workflows/setting-up-model-workflows.qmd#approval)
 
-[^4]:
+[^4]: [Setting up model workflows](/guide/model-workflows/setting-up-model-workflows.qmd#status-change)
 
-    ::: {.callout title="Please note that only one workflow can be configured to initiate on model registration."}
-    <br>
-    [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
-    :::
-
-[^5]: [Edit model inventory fields](/guide/model-inventory/edit-model-inventory-fields.qmd)
-
-[^6]: [Setting up model workflows](setting-up-model-workflows.qmd#workflow-step-types)
+[^5]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
 
 <!-- [^3]: [Status Change](#status-change) steps
 
