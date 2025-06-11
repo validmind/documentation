@@ -38,7 +38,22 @@ A workflow is comprised of an interplay of these elements:
 
 ### Transitions
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr5}
+[{{< fa cube >}} &hairsp; Model Stage Change](#stage-change){.button .button-fill}
+
+:::
+
+::: {.w-50-ns .pr3}
+[{{< fa wifi >}} &hairsp; Workflow State Change](#state-change){.button .button-fill}
+
+:::
+
+::::
+
 #### {{< fa cube >}} Model Stage Change
+<span id="stage-change"></span>
 
 - Transitions a model into another stage.
 - Requires available model stages associated with the workflow.[^4]
@@ -47,33 +62,46 @@ A workflow is comprised of an interplay of these elements:
 |---:|---|
 | [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.[^5]  |
 | [set model stage to]{.smallcaps} | Select the model stage to transition to. |
-: **Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
+: **{{< fa cube >}} Model Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
-#### {{< fa wifi >}} Workflow State Change*
+#### {{< fa wifi >}} Workflow State Change
+<span id="state-change"></span>
 
-Transitions the workflow into another state.[^6]
+Transitions the workflow into another workflow state.[^6]
 
 | Field | Description |
 |---:|---|
-| [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.[^4]  |
-| [set model stage to]{.smallcaps} | Select the model stage to transition to. |
-: **Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
+| [set workflow state to]{.smallcaps} | Select or add[^7] the workflow state to transition the workflow to.  |
+| [progress]{.smallcaps} | Indicate the progress of the workflow at this transition into the next state. |
+: **{{< fa wifi >}} Workflow State Change** step configuration {.hover tbl-colwidths="[30,70]"}
 
 ### Actions
 
-#### {{< fa arrow-pointer >}} User Action v2*
+:::: {.flex .flex-wrap .justify-around}
 
-- Creates a button that performs an action on behalf of the user. 
-- Requires available model lifecycle statuses associated with the workflow.[^5]
+::: {.w-50-ns .pr5}
+[{{< fa arrow-pointer >}} &hairsp; User Action v2](#user-action){.button .button-fill}
+
+:::
+
+::: {.w-50-ns .pr3}
+[{{< fa users >}} &hairsp; Approval](#approval){.button .button-fill}
+
+:::
+
+::::
+
+#### {{< fa arrow-pointer >}} User Action v2*
+<span id="user-action"></span>
+
+Creates a button that performs an action on behalf of the user.
 
 | Field | Description |
 |---:|---|
-| [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.[^6]  |
+| [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.[^8]  |
 | [action button label]{.smallcaps} | Text that displays on your action button. |
-| [request fields]{.smallcaps}  (optional) | Include inventory fields alongside your action if desired. Select the field, then click **{{< fa plus >}} Add Field** to insert.[^7]  |
-| [to set status]{.smallcaps} | Select the status to transition to. |
+| [request fields]{.smallcaps} | Include required inventory fields alongside your action.[^9]  |
 : **User Action** step configuration {.hover tbl-colwidths="[40,60]"}
-
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -117,6 +145,7 @@ Example
 :::
 
 #### {{< fa users >}} Approval*
+<span id="approval"></span>
 
 - When your resource reaches the approval step, roles or users in the selected **Approval Group** will receive your configured message. 
 - Requires either a **User Role**[^8] or **User Type** inventory field[^9] to select from, and must be connected to both an approval and rejection Status Change step.[^10]
@@ -151,7 +180,22 @@ Example
 
 ### Conditional
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr5}
+[{{< fa maximize >}} &hairsp; Condition Branch](#stage-change){.button .button-fill}
+
+:::
+
+::: {.w-50-ns .pr3}
+[{{< fa clock >}} &hairsp; Wait](#wait){.button .button-fill}
+
+:::
+
+::::
+
 #### {{< fa maximize >}} Condition Branch*
+<span id="condition-branch"></span>
 
 - Allows diverging paths based on conditional requirements.
 - A `default` branch will be automatically included as a catch-all `else` path to ensure that your conditional logic is complete.
@@ -197,7 +241,7 @@ For example, if you wanted your models where the field `GenAI Model` is set to `
 :::
 
 #### {{< fa clock >}} Wait*
-
+<span id="wait"></span>
 
 - Creates a time condition for displaying next available action.
 - Used to enforce a time delay or a calendar date milestone. 
@@ -217,11 +261,27 @@ To configure a wait step, select when you would like to [resume workflow]{.small
 
 ### Start / Stop
 
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr5}
+[{{< fa arrow-right-arrow-left >}} &hairsp; Run Workflow](#run-workflow){.button .button-fill}
+
+:::
+
+::: {.w-50-ns .pr3}
+[{{< fa circle-stop >}} &hairsp; End](#end){.button .button-fill}
+
+:::
+
+::::
+
 #### {{< fa arrow-right-arrow-left >}} Run Workflow*
+<span id="run-workflow"></span>
 
 WIP
 
 #### {{< fa circle-stop >}} End*
+<span id="end"></span>
 
 WIP
 
@@ -288,6 +348,15 @@ Deleting a workflow state may cause your existing workflows to malfunction.*CAN 
 [^5]: [Conditional requirements](#conditional-requirements)
 
 [^6]: [Workflow states](#workflow-states)
+
+[^7]: Click **{{< fa plus >}} Add New State** to create a new state unique to this workflow.
+
+[^8]: [Conditional requirements](#conditional-requirements)
+
+[^9]:
+
+    - Select the field, then click **{{< fa plus >}} Add Field** to insert.
+    - [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)
 
 <!-- 
 
