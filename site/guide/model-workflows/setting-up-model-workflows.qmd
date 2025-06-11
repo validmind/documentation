@@ -17,20 +17,55 @@ Configure workflows to match your organizational needs for overseeing model deve
 
 - Models in your model inventory transition through your organization's custom model lifecycles via model stages, which are in turn manipulated via workflows.
 - Workflows are comprised of workflow steps,[^1] and have their own states discrete from model stages.[^2]
+- Some step types allow you to define conditional requirements,[^3] providing flexible customization.
 
 ## Set up workflows
 
 :::{#model-workflows}
 :::
 
-## Workflow elements*
+## Workflow elements
 
-### Workflow step types*
+A workflow is comprised of an interplay of these elements:
 
-#### Status Change
+- [Workflow step types](#workflow-step-types)
+- [Conditional requirements](#conditional-requirements)
+- [Workflow states](#workflow-states)
 
-- Transitions a status. 
-- Requires available model lifecycle statuses associated with the workflow.[^3]
+### Workflow step types
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns .pl3}
+[{{< fa cube >}} model stage change&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#stage-change){.button-small}
+<br>
+[{{< fa wifi >}} workflow state change](#state-change){.button-small}
+<br>
+[{{< fa arrow-pointer >}} user action v2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#user-action){.button-small}
+<br>
+[{{< fa users >}} approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#approval){.button-small}
+
+:::
+
+::: {.w-70-ns}
+[{{< fa maximize >}} Condition Branch](#condition-branch){.button-small}
+<br>
+[{{< fa clock >}} wait&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#wait){.button-small}
+<br>
+[{{< fa arrow-right-arrow-left >}} run workflow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#run-workflow){.button-small}
+<br>
+[{{< fa circle-stop >}} end&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;](#end){.button-small}
+
+:::
+
+::::
+
+
+#### {{< fa cube >}} Model Stage Change*
+<span id="stage-change"></span>
+
+- Transitions a model into another stage.
+- Requires available model stages associated with the workflow.[^3]
 
 | Field | Description |
 |---:|---|
@@ -38,8 +73,14 @@ Configure workflows to match your organizational needs for overseeing model deve
 | [set status to]{.smallcaps} | Select the status to transition to. |
 : **Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
+#### {{< fa wifi >}} Workflow State Change
+<span id="state-change"></span>
 
-#### User Action
+WIP
+
+#### {{< fa arrow-pointer >}} User Action v2*
+<span id="user-action"></span>
+
 - Creates a button that performs an action on behalf of the user. 
 - Requires available model lifecycle statuses associated with the workflow.[^5]
 
@@ -50,6 +91,7 @@ Configure workflows to match your organizational needs for overseeing model deve
 | [request fields]{.smallcaps}  (optional) | Include inventory fields alongside your action if desired. Select the field, then click **{{< fa plus >}} Add Field** to insert.[^7]  |
 | [to set status]{.smallcaps} | Select the status to transition to. |
 : **User Action** step configuration {.hover tbl-colwidths="[40,60]"}
+
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -93,7 +135,9 @@ Example
 ::::
 :::
 
-#### Approval
+#### {{< fa users >}} Approval*
+<span id="approval"></span>
+
 - When your resource reaches the approval step, roles or users in the selected **Approval Group** will receive your configured message. 
 - Requires either a **User Role**[^8] or **User Type** inventory field[^9] to select from, and must be connected to both an approval and rejection Status Change step.[^10]
 
@@ -125,7 +169,9 @@ Example
 
 ::::
 
-#### Condition Branch
+#### {{< fa maximize >}} Condition Branch*
+<span id="condition-branch"></span>
+
 - Allows diverging paths based on conditional requirements.
 - A `default` branch will be automatically included as a catch-all `else` path to ensure that your conditional logic is complete.
 
@@ -169,7 +215,8 @@ For example, if you wanted your models where the field `GenAI Model` is set to `
 
 :::
 
-#### Wait
+#### {{< fa clock >}} Wait*
+<span id="wait"></span>
 
 - Creates a time condition for displaying next available action.
 - Used to enforce a time delay or a calendar date milestone. 
@@ -187,7 +234,17 @@ To configure a wait step, select when you would like to [resume workflow]{.small
 | At Specified Date on Model Field | [model field]{.smallcaps}[^15] | Wait until a specific timestamp as defined by a valid `Date` or `Date Time` type model inventory field on a per model basis. If the selected field is empty[^16] or the milestone date inputted is in the past, the next workflow step will display immediately. |
 : **Wait** step configuration {.hover tbl-colwidths="[30,15,45]"}
 
-### Conditional requirements
+#### {{< fa arrow-right-arrow-left >}} Run Workflow*
+<span id="run-workflow"></span>
+
+WIP
+
+#### {{< fa circle-stop >}} End*
+<span id="end"></span>
+
+WIP
+
+### Conditional requirements*
 
 Conditional requirements can be configured for the following step types:[^6]
 
@@ -216,7 +273,9 @@ For Status Change, User Action, and Condition Branch conditions, you're able to 
 
 [^2]: [Workflow states](#workflow-states)
 
-[^3]: [Manage model stages](manage-model-stages.qmd)
+[^3]: [Conditional requirements](#conditional-requirements)
+
+<!-- [^3]: [Manage model stages](manage-model-stages.qmd)
 
 [^4]: [Add conditional requirements](configure-custom-workflows.qmd#add-conditional-requirements)
 
@@ -242,4 +301,4 @@ For Status Change, User Action, and Condition Branch conditions, you're able to 
 
 [^15]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
 
-[^16]: Make model inventory fields **[required on registration]{.smallcaps}** to ensure necessary fields have valid values.
+[^16]: Make model inventory fields **[required on registration]{.smallcaps}** to ensure necessary fields have valid values. -->
