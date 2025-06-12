@@ -38,20 +38,6 @@ A workflow is comprised of an interplay of these elements:
 
 ### Transitions
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr5}
-[{{< fa cube >}} &hairsp; Model Stage Change](#stage-change){.button .button-fill}
-
-:::
-
-::: {.w-50-ns .pr5}
-[{{< fa wifi >}} &hairsp; Workflow State Change](#state-change){.button .button-fill}
-
-:::
-
-::::
-
 #### {{< fa cube >}} Model Stage Change
 <span id="stage-change"></span>
 
@@ -77,20 +63,6 @@ Transitions the workflow into another workflow state.[^6]
 
 ### Actions
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr5}
-[{{< fa arrow-pointer >}} &hairsp; User Action v2](#user-action){.button .button-fill}
-
-:::
-
-::: {.w-50-ns .pr5}
-[{{< fa users >}} &hairsp; Approval](#approval){.button .button-fill}
-
-:::
-
-::::
-
 #### {{< fa arrow-pointer >}} User Action v2
 <span id="user-action"></span>
 
@@ -108,8 +80,8 @@ Creates a button that performs an action on behalf of the user.
 
 When your workflow reaches the approval step, roles or users in the selected **[approval group]{.smallcaps}** will receive a preconfigured message.
 
-- Select from either **User Roles**,[^10] **Model Stakeholder Types**,[^11] or either **User Role** or **User Type** inventory field.[^12]
-- Must be connected to both a rejection and approval {{< fa cube >}} Model Stage Change step.[^13]
+- Select from either **User Roles**, **Model Stakeholder Types**,or either **User Role** or **User Type** inventory field.[^10]
+- Must be connected to both a rejection and approval {{< fa cube >}} Model Stage Change step.[^11]
 
 ::: {.callout}
 Please note that roles, stakeholders, or users must be assigned to the indicated **[approval group]{.smallcaps}** before the workflow is transitioned into the **{{< fa users >}} Approval** step in order for the message to be displayed to users in those categories.
@@ -119,25 +91,11 @@ Please note that roles, stakeholders, or users must be assigned to the indicated
 | Field | Description |
 |---:|---|
 | [approval group]{.smallcaps}  | Select the roles, stakeholders, or user fields responsible for approval. |
-| [threshold]{.smallcaps} | Percentage of approvers required for approval.[^14] |
-| Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps}  will shown this message.[^15] |
+| [threshold]{.smallcaps} | Percentage of approvers required for approval. |
+| Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps}  will shown this message.[^12] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
 ### Conditional
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr5}
-[{{< fa maximize >}} &hairsp; Condition Branch](#stage-change){.button .button-fill}
-
-:::
-
-::: {.w-50-ns .pr5}
-[{{< fa clock >}} &hairsp; Wait](#wait){.button .button-fill}
-
-:::
-
-::::
 
 #### {{< fa maximize >}} Condition Branch
 <span id="condition-branch"></span>
@@ -152,13 +110,13 @@ Workflows cannot be saved until condition branches are connected to other steps.
 To configure a condition branch:
 
 1. On the Configure Condition Branch modal, click **{{< fa plus >}} Add Branch**.
-2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**[^16] that apply to this path.
+2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**[^13] that apply to this path.
 3. Continue with steps 1 and 2 until your conditional branch logic is complete.
 
     To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
 4. When you are finished setting up all your branch paths, click **Update Step** to save your step.
 
-    Proceed with linking the Condition Branch with your subsequent steps.[^17]
+    Proceed with linking the Condition Branch with your subsequent steps.[^14]
 
 #### {{< fa clock >}} Wait
 <span id="wait"></span>
@@ -175,26 +133,12 @@ To configure a wait step, select when you would like to [resume workflow:]{.smal
 
 | Option | Required field | Description |
 |---:|---|---|
-| After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time in minutes, hours, or days. Applies to all models under the workflow. |
+| After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time. Applies to all models under the workflow. |
 | At Specified Date | [wait until]{.smallcaps} | Wait until a specific timestamp. Applies to all models under the workflow. If the milestone date inputted is in the past, the next workflow step will display immediately. |
-| At Specified Date on Model Field | [model field]{.smallcaps}[^18] | Wait until a specific timestamp as defined by a valid `Date` or `Date Time` type model inventory field on a per model basis. If the selected field is empty[^19] or the milestone date inputted is in the past, the next workflow step will display immediately. |
+| At Specified Date on Model Field | [model field]{.smallcaps}[^15] | Wait until a specific timestamp as defined by a model inventory field on a per model basis. If the selected field is empty[^16] or the milestone date inputted is in the past, the next workflow step will display immediately. |
 : **{{< fa clock >}} Wait** step configuration {.hover tbl-colwidths="[30,15,45]"}
 
 ### Workflow Logic
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr5}
-[{{< fa arrow-right-arrow-left >}} &hairsp; Run Workflow](#run-workflow){.button .button-fill}
-
-:::
-
-::: {.w-50-ns .pr5}
-[{{< fa circle-stop >}} &hairsp; End](#end){.button .button-fill}
-
-:::
-
-::::
 
 #### {{< fa arrow-right-arrow-left >}} Run Workflow
 <span id="run-workflow"></span>
@@ -205,16 +149,17 @@ Triggers another workflow indicated by **[select workflow to run]{.smallcaps}**,
 <span id="end"></span>
 
 - Designates the end of your workflow.
-- Use this step when all of your other steps have been configured and linked together.*
-
+- Use this step when all of your other steps have been configured and linked together.[^17]
 :::
 
 ### Conditional requirements
 
-Conditional requirements can be configured for the following step types:**
+Configure conditional requirements for the following step types:[^18]
 
 ::: {.panel-tabset}
 #### {{< fa cube >}} Model Stage Change
+
+[optional]{.smallcaps .pink}
 
 1. Under **[when these conditions are met]{.smallcaps}**, set your `AND` and `OR` conditions.
 2. Add a single independent rule or a linked condition group. These rules and groups can be nested if desired:
@@ -224,6 +169,8 @@ Conditional requirements can be configured for the following step types:**
 
 #### {{< fa arrow-pointer >}} User Action v2
 
+[optional]{.smallcaps .pink}
+
 1. Under **[display action button when]{.smallcaps}**, set your `AND` and `OR` conditions.
 2. Add a single independent rule or a linked condition group. These rules and groups can be nested if desired:
 
@@ -232,18 +179,9 @@ Conditional requirements can be configured for the following step types:**
 
 #### {{< fa users >}} Approval
 
-| Step type | Conditional options |
-|---:|---|
-| Status Change | Under **[when these conditions are met]{.smallcaps}**, you are able to set both `AND` and `OR` conditions. |
-| User Action | Under **[display action button when]{.smallcaps}**, you are able to set both `AND` and `OR` conditions.  |
-| Approval | Under **[threshold]{.smallcaps}**, you are able to set the minimum percentage of approvers required for the resource to be approved. |
-| Condition Branch | Under each branch's **[conditions]{.smallcaps}**, you're able to designate the `AND` and `OR` conditions that apply to that path. |
-: Step type conditional options {.hover tbl-colwidths="[20,80]"}
+- Select from either **User Roles**,[^19] **Model Stakeholder Types**,[^20] or either **User Role** or **User Type** inventory field[^21] for your **[approval group]{.smallcaps}**.
 
-For Status Change, User Action, and Condition Branch conditions, you're able to add a single independent **Rule** or a linked condition **Group**. These rules and groups can be nested if desired:
-
-- Click **{{< fa plus >}} Rule** to add an independent rule.
-- Click **{{< fa plus >}} Group** to add a linked group of rules that all must be true to qualify.
+- Under **[threshold]{.smallcaps}**, set the minimum percentage of approvers required for the resource to be approved.
 
 #### {{< fa maximize >}} Condition Branch
 
@@ -253,17 +191,23 @@ For Status Change, User Action, and Condition Branch conditions, you're able to 
     - Click **{{< fa plus >}} Add rule** to add an independent rule.
     - Click **{{< fa plus-minus >}} Add group** to add a linked group of rules that all must be true to qualify.
 
+#### {{< fa clock >}} Wait
+
+Select when you would like to [resume workflow:]{.smallcaps}
+
+- **After Time Interval** — Set the **[wait duration]{.smallcaps}** in minutes, hours, or days.
+- **At Specified Date** — Set the **[wait until]{.smallcaps}** a specific timestamp.
+- **At Specified Date on Model Field** — Set the **[model field]{.smallcaps}**[^22] with a valid `Date` or `Date Time` type model inventory field that defines the specific timestamp on a per model basis.
+
 :::
 
 ### Workflow states
 
-Workflow states are statuses unique to a specific workflow, discrete from model stages.**
-
-::: {.panel-tabset}
+Workflow states are statuses unique to a specific workflow, discrete from model stages.[^23]
 
 #### Add workflow states
 
-Add workflow states by either while configuring a **{{< fa wifi >}} Workflow State Change** step,** or via the **{{< fa gear >}} Settings** page:
+Add workflow states by either while configuring a **{{< fa wifi >}} Workflow State Change** step,[^24] or via the **{{< fa gear >}} Settings** page:
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 2. Under Workspace, select **Workflow States**.
@@ -275,7 +219,7 @@ Add workflow states by either while configuring a **{{< fa wifi >}} Workflow Sta
 #### Delete workflow states*
 
 ::: {.callout-important title="Workflow state deletion is permanent."}
-Deleting a workflow state may cause your existing workflows to malfunction.*CAN YOU EVEN DELETE A STATE THAT IS IN USE? Check
+If a state is in use on a workflow within a {{< fa wifi >}} Workflow State Change step, the state cannot be deleted.
 :::
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
@@ -284,7 +228,6 @@ Deleting a workflow state may cause your existing workflows to malfunction.*CAN 
 4. Hover over the workflow state until the **{{< fa trash-can >}}** appears, then click on it.
 5. After you confirm, the workflow state will be removed.
 
-:::
 
 ## What's next
 
@@ -314,29 +257,40 @@ Deleting a workflow state may cause your existing workflows to malfunction.*CAN 
     - Select the field, then click **{{< fa plus >}} Add Field** to insert.
     - [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)
 
-[^10]: [Manage roles](/guide/configuration/manage-roles.qmd)
+[^10]: [Conditional requirements](#conditional-requirements)
 
-[^11]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
-
-[^12]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
-
-[^13]: **[Configure custom workflows](configure-custom-workflows.qmd#create-custom-workflows):**<br><br>
+[^11]: **[Configure custom workflows](configure-custom-workflows.qmd#create-custom-workflows):**<br><br>
 
     1. Configure two **{{< fa cube >}} Model Stage Change** steps for your associated rejection and approval stages.
     2. Then, from the bottom of your **{{< fa users >}} Approval** step:
         a. Connect the left [**{{< fa circle >}}**]{.red} (red) to your rejection step.
         b. Connect the right [**{{< fa circle >}}**]{.green} (green) to your approval step.
 
-[^14]: [Conditional requirements](#conditional-requirements)
 
-[^15]:
+[^12]:
 
     Enter in a **[title]{.smallcaps}** and a **[message]{.smallcaps}** to display.
 
-[^16]: [Conditional requirements](#conditional-requirements)
+[^13]: [Conditional requirements](#conditional-requirements)
 
-[^17]: [Configure custom workflows](configure-custom-workflows.qmd#create-custom-workflows)
+[^14]: [Configure custom workflows](configure-custom-workflows.qmd#link-workflow-together)
 
-[^18]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
+[^15]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
 
-[^19]: Make model inventory fields **[required on registration]{.smallcaps}** to ensure necessary fields have valid values.
+[^16]: Make model inventory fields **[required on registration]{.smallcaps}** to ensure necessary fields have valid values.
+
+[^17]: [Configure custom workflows](configure-custom-workflows.qmd#link-workflow-together)
+
+[^18]: [Workflow step types](#workflow-step-types)
+
+[^19]: [Manage roles](/guide/configuration/manage-roles.qmd)
+
+[^20]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
+
+[^21]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
+
+[^22]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
+
+[^23]: [Manage model stages](manage-model-stages.qmd)
+
+[^24]: [Configure custom workflows](configure-custom-workflows.qmd#configure-workflow-steps)
