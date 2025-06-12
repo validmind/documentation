@@ -5,3 +5,75 @@ date: last-modified
 
 Learn from example workflow configurations to help you tailor workflows to fit your organization's requirements for managing model risk throughout your entire model lifecycles.
 
+## Example model lifecycle
+
+## Workflow step type examples**
+
+### User Action
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .mt2}
+
+![User Action step configuration with a request field of Date on Hold](configure-user-action.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Date On Hold" .screenshot group="user-action"}
+
+:::
+
+::: {.w-40-ns .mt2}
+
+![Action transition panel with the Date on Hold inventory field](user-action-inventory-field.png){fig-alt="A screenshot showing the action transition panel with the Date On Hold inventory field" .screenshot group="user-action"}
+
+Example
+: A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the model lifecycle status to <br>[On Hold]{.bubble}.
+
+:::
+
+::::
+
+### Approval
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+![APPROVAL GROUP step configuration with a User Roles selection of Validator](configure-approval-step.png){fig-alt="A screenshot showing an APPROVAL GROUP step configuration with a User Roles selection of Validator" .screenshot group="approval"}
+
+:::
+
+::: {.w-40-ns}
+![Setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator](approval-group-setup.png){fig-alt="A screenshot showing the setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator" .screenshot group="approval"}
+
+Example
+: A message shown to the User Roles — Validator requesting review of a model for compliance.
+
+:::
+
+::::
+
+### Condition Branch
+
+For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
+
+- First, you'd set up a Condition Branch path to look for instances where `GenAI Model` is set to `true`.
+- Then, you would add an Approval step[^14] that requests a review of the model from the User Roles — `Legal Team`.
+- Finally, configure the `default` path to bypass this special approval. 
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" .screenshot group="condition"}
+
+:::
+
+::: {.w-50-ns}
+![Legal Team Approval step configuration](legal-team-approval.png){fig-alt="Screenshot showing the Legal Team Approval step configuration" .screenshot group="condition"}
+
+:::
+
+::::
+
+::: {.column-margin}
+![Example Condition Branch where GenAI models require special approval from the User Roles — Legal Team](example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User Roles — Legal Team" .screenshot group="condition"}
+
+:::
+
+
