@@ -103,47 +103,6 @@ Creates a button that performs an action on behalf of the user.
 | [request fields]{.smallcaps} | Include required inventory fields alongside your action.[^9]  |
 : **{{< fa arrow-pointer >}} User Action v2** step configuration {.hover tbl-colwidths="[40,60]"}
 
-<!-- :::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .mt2}
-
-![User Action step configuration with a request field of Date on Hold](configure-user-action.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Date On Hold" .screenshot group="user-action"}
-
-:::
-
-::: {.w-40-ns .mt2}
-
-![Action transition panel with the Date on Hold inventory field](user-action-inventory-field.png){fig-alt="A screenshot showing the action transition panel with the Date On Hold inventory field" .screenshot group="user-action"}
-
-Example
-: A `Put On Hold` action that requests a value in the Date On Hold field, and transitions the model lifecycle status to <br>[On Hold]{.bubble}.
-
-:::
-
-:::: -->
-<!-- 
-::: {.callout title="All model inventory field types can be included as request fields on a User Action step. "}
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .mt2}
-
-![User Action step configuration with a request field of Workflow Attachment](upload-workflow-attachment.png){fig-alt="A screenshot showing a User Action step configuration with a request field of Workflow Attachment" .screenshot group="attachments"}
-
-:::
-
-::: {.w-40-ns .mt2}
-
-![Files uploaded under the Workflow Attachment inventory field](model-workflow-attachments.png){fig-alt="A screenshot showing the files uploaded under the Workflow Attachment inventory field" .screenshot group="attachments"}
-
-Example
-: An `In Initial Validation` action that requests an upload in the [workflow attachment]{.smallcaps} field, and transitions the model lifecycle status to [In Initial Validation]{.bubble}.
-
-:::
-
-::::
-::: -->
-
 #### {{< fa users >}} Approval
 <span id="approval"></span>
 
@@ -160,26 +119,9 @@ Please note that roles, stakeholders, or users must be assigned to the indicated
 | Field | Description |
 |---:|---|
 | [approval group]{.smallcaps}  | Select the roles, stakeholders, or user fields responsible for approval. |
-| [threshold]{.smallcaps} | Percentage of approvers required for the resource to be approved.[^14] |
-| Approval Message | When your resource reaches this approval step, the users in the selected group will receive the following message.[^15] |
+| [threshold]{.smallcaps} | Percentage of approvers required for approval.[^14] |
+| Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps}  will shown this message.[^15] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
-
-<!-- :::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns}
-![APPROVAL GROUP step configuration with a User Roles selection of Validator](configure-approval-step.png){fig-alt="A screenshot showing an APPROVAL GROUP step configuration with a User Roles selection of Validator" .screenshot group="approval"}
-
-:::
-
-::: {.w-40-ns}
-![Setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator](approval-group-setup.png){fig-alt="A screenshot showing the setup for the Approval Message shown to the APPROVAL GROUP of User Roles — Validator" .screenshot group="approval"}
-
-Example
-: A message shown to the User Roles — Validator requesting review of a model for compliance.
-
-:::
-
-:::: -->
 
 ### Conditional
 
@@ -217,31 +159,6 @@ To configure a condition branch:
 4. When you are finished setting up all your branch paths, click **Update Step** to save your step.
 
     Proceed with linking the Condition Branch with your subsequent steps.[^13]
-
-<!-- For example, if you wanted your models where the field `GenAI Model` is set to `true` to undergo a special legal approval process:
-
-- First, you'd set up a Condition Branch path to look for instances where `GenAI Model` is set to `true`.
-- Then, you would add an Approval step[^14] that requests a review of the model from the User Roles — `Legal Team`.
-- Finally, configure the `default` path to bypass this special approval.  -->
-
-<!-- :::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns}
-![CONDITION BRANCH step configuration with condition of GenAI Model = `true`](configure-condition-branch.png){fig-alt="A screenshot showing a CONDITION BRANCH step configuration with condition of GenAI Model = `true`" .screenshot group="condition"}
-
-:::
-
-::: {.w-50-ns}
-![Legal Team Approval step configuration](legal-team-approval.png){fig-alt="Screenshot showing the Legal Team Approval step configuration" .screenshot group="condition"}
-
-:::
-
-::::
-
-::: {.column-margin}
-![Example Condition Branch where GenAI models require special approval from the User Roles — Legal Team](example-condition-branch.png){fig-alt="A screenshot showing an example Condition Branch where GenAI models require special approval from the User Roles — Legal Team" .screenshot group="condition"}
-
-::: -->
 
 #### {{< fa clock >}} Wait*
 <span id="wait"></span>
@@ -378,14 +295,12 @@ Deleting a workflow state may cause your existing workflows to malfunction.*CAN 
 
 [^12]: [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)
 
-[^13]:
+[^13]: **[Configure custom workflows](configure-custom-workflows.qmd#create-custom-workflows):**<br><br>
 
     1. Configure two **{{< fa cube >}} Model Stage Change** steps for your associated rejection and approval stages.
     2. Then, from the bottom of your **{{< fa users >}} Approval** step:
         a. Connect the left [**{{< fa circle >}}**]{.red} (red) to your rejection step.
         b. Connect the right [**{{< fa circle >}}**]{.green} (green) to your approval step.
-    <br><br>
-    [Configure custom workflows](configure-custom-workflows.qmd#link-workflow-together)
 
 [^14]: [Conditional requirements](#conditional-requirements)
 
