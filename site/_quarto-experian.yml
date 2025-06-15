@@ -1,0 +1,28 @@
+# Quarto docker profile configuration for Experian
+# This profile uses placeholders for dynamic URL configuration
+
+# profile:
+#   default: docker
+
+project:
+  type: website
+  pre-render: 
+    - scripts/modify_urls.sh
+    - experian/rebrand_variables.py
+  # post-render: bash -c "git restore _variables.yml >/dev/null 2>&1 && echo 'Restored _variables.yml'"
+
+website:
+  title: "Experian powered by ValidMind"
+  favicon: experian/experian-favicon.svg
+  navbar:
+    logo: experian/experian-logo.svg
+
+# HTML format configuration
+format:
+  html:
+    # Include scripts and other resources in the header
+    include-in-header: 
+      - environments/heap-production.html
+      - zendesk-chat.html
+    css: [styles.css, experian/styles.css]
+    # css: [styles.css, experian/styles.css, experian/experian-styles-original.css]
