@@ -166,27 +166,43 @@ execute:
 	rm $$env_file '
 
 # Generate sitemap for the site
+# Generate sitemap for the site
 generate-sitemap:
 	@echo "Generating sitemaps ..."
-	@find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
+	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
+	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
+		BASE_URL="https://docs.validmind.ai"; \
+		PATH_PREFIX=""; \
+	else \
+		BASE_URL="https://docs-demo.vm.validmind.ai"; \
+		PATH_PREFIX="pr_previews/$$BRANCH/"; \
+	fi; \
+	find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
 		url_path=$$(echo "$$file" | sed 's|^_site/||'); \
 		if [ "$$(uname)" = "Darwin" ]; then \
 			lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
 		else \
 			lastmod=$$(stat -c "%y" "$$file" | sed 's/ /T/;s/$$/Z/'); \
 		fi; \
-		printf "  <url>\n    <loc>https://docs.validmind.ai/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
+		printf "  <url>\n    <loc>%s/%s%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
 		printf "%s\n" "$$url_path" >> sitemap.urls.tmp; \
 	done
 	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
 	@cat sitemap.xml.tmp >> _site/sitemap.xml
 	@printf '</urlset>\n' >> _site/sitemap.xml
 	@rm sitemap.xml.tmp
-	@printf '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>ValidMind Documentation & Training Sitemap</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        h2 { color: #444; margin-top: 30px; }\n        ul { list-style: none; padding: 0; }\n        li { margin: 10px 0; }\n        a { color: #0066cc; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n        .root-pages { margin-bottom: 30px; }\n    </style>\n</head>\n<body>\n    <div class="root-pages">\n        <h2>Root Pages</h2>\n        <ul>\n' > _site/sitemap.html
-	@# Deduplicate URLs before processing
-	@sort -u sitemap.urls.tmp > sitemap.urls.unique.tmp
-	@mv sitemap.urls.unique.tmp sitemap.urls.tmp
-	@grep -E '^(index|404)\.html$$' sitemap.urls.tmp | while read -r url; do \
+
+	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
+	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
+		BASE_URL="https://docs.validmind.ai"; \
+		PATH_PREFIX=""; \
+	else \
+		BASE_URL="https://docs-demo.vm.validmind.ai"; \
+		PATH_PREFIX="pr_previews/$$BRANCH/"; \
+	fi; \
+	printf '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>ValidMind Documentation & Training Sitemap</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        h2 { color: #444; margin-top: 30px; }\n        ul { list-style: none; padding: 0; }\n        li { margin: 10px 0; }\n        a { color: #0066cc; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n        .root-pages { margin-bottom: 30px; }\n    </style>\n</head>\n<body>\n    <div class="root-pages">\n        <h2>Root Pages</h2>\n        <ul>\n' > _site/sitemap.html; \
+	sort -u sitemap.urls.tmp > sitemap.urls.unique.tmp && mv sitemap.urls.unique.tmp sitemap.urls.tmp; \
+	grep -E '^(index|404)\.html$$' sitemap.urls.tmp | while read -r url; do \
 		file="_site/$$url"; \
 		if [ -f "$$file" ] && grep -q '<title>' "$$file"; then \
 			title=$$(grep -m1 '<title>' "$$file" | sed 's/.*<title>\(.*\)<\/title>.*/\1/'); \
@@ -194,12 +210,11 @@ generate-sitemap:
 			title="$$url"; \
 		fi; \
 		if [ "$$title" != "Redirect" ]; then \
-			printf "            <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+			printf "            <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
 		fi; \
-	done
-	@printf '        </ul>\n    </div>\n' >> _site/sitemap.html
-	@# Group remaining pages by top-level directory
-	@for dir in $$(grep -v -E '^(index|404)\.html$$' sitemap.urls.tmp | cut -d/ -f1 | grep -vE '\.(html|xml)$$' | sort -u); do \
+	done; \
+	printf '        </ul>\n    </div>\n' >> _site/sitemap.html; \
+	for dir in $$(grep -v -E '^(index|404)\.html$$' sitemap.urls.tmp | cut -d/ -f1 | grep -vE '\.(html|xml)$$' | sort -u); do \
 		printf '    <h2>%s/</h2>\n    <ul>\n' "$$dir" >> _site/sitemap.html; \
 		grep -E "^$$dir/[^/]+\.html$$" sitemap.urls.tmp | while read -r url; do \
 			file="_site/$$url"; \
@@ -209,7 +224,7 @@ generate-sitemap:
 				title="$$url"; \
 			fi; \
 			if [ "$$title" != "Redirect" ]; then \
-				printf "        <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+				printf "        <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
 			fi; \
 		done; \
 		for sub in $$(grep -E "^$$dir/" sitemap.urls.tmp | grep -o -E "^$$dir/[^/]+/" | sed "s|^$$dir/||;s|/||" | sort -u); do \
@@ -222,16 +237,17 @@ generate-sitemap:
 					title="$$url"; \
 				fi; \
 				if [ "$$title" != "Redirect" ]; then \
-					printf "          <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+					printf "          <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
 				fi; \
 			done; \
 			printf '        </ul>\n      </li>\n' >> _site/sitemap.html; \
 		done; \
 		printf '    </ul>\n' >> _site/sitemap.html; \
-	done
-	@printf '</body>\n</html>\n' >> _site/sitemap.html
+	done; \
+	printf '</body>\n</html>\n' >> _site/sitemap.html
 	@rm sitemap.urls.tmp
 	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
+
 
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
