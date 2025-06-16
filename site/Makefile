@@ -170,6 +170,9 @@ execute:
 generate-sitemap:
 	@echo "Generating sitemaps ..."
 	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
+	if [ "$$BRANCH" = "HEAD" ]; then \
+		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
+	fi; \
 	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
 		BASE_URL="https://docs.validmind.ai"; \
 		PATH_PREFIX=""; \
@@ -193,6 +196,9 @@ generate-sitemap:
 	@rm sitemap.xml.tmp
 
 	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
+	if [ "$$BRANCH" = "HEAD" ]; then \
+		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
+	fi; \
 	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
 		BASE_URL="https://docs.validmind.ai"; \
 		PATH_PREFIX=""; \
@@ -247,6 +253,7 @@ generate-sitemap:
 	printf '</body>\n</html>\n' >> _site/sitemap.html
 	@rm sitemap.urls.tmp
 	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
+
 
 
 # Get all source files
