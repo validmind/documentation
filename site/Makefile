@@ -170,7 +170,7 @@ execute:
 generate-sitemap:
 	@echo "Generating sitemaps ..."
 	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "$$BRANCH" = "HEAD" ]; then \
+	if [ "$$BRANCH" = "HEAD" ] || [ "$$BRANCH" = "staging" ]|| [ "$$BRANCH" = "prod" ]; then \
 		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
 	fi; \
 	if [ "$$BRANCH" = "main" ]; then \
@@ -199,7 +199,7 @@ generate-sitemap:
 	if [ "$$BRANCH" = "HEAD" ]; then \
 		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
 	fi; \
-	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
+	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]|| [ "$$BRANCH" = "prod" ]; then \
 		BASE_URL="https://docs.validmind.ai"; \
 		PATH_PREFIX=""; \
 	else \
