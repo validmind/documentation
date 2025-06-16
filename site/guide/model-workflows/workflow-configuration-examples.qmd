@@ -36,19 +36,17 @@ This workflow is initiated when a field is populated — in this case, when the 
 ![Example model validation cycle workflow](example_model-validation-workflow.png){fig-alt="A screenshot showing an example model validation cycle workflow" .screenshot group="model-validation"}
 :::
 
-
 ### On model deployment
 
 This workflow is initiated manually,[^7] when validation is complete and the model is approved for implementation.
 
-- test
-- test
-- test
+- After this workflow is manually started,[^8] the model owner schedules implementation by entering in a projected deployment date.
+- The workflow will wait until the timestamp indicated in the scheduled deployment date before revealing the next available action in the workflow — in this case, the option to deploy the model and enter in a concrete date the model was pushed to production.
+- Each action on this workflow is linked to a transition in model stage,[^9] as well as workflow state.[^10]
 
 ::: {.tc}
 ![Example model deployment cycle workflow](example_model-deployment-workflow.png){fig-alt="A screenshot showing an example model deployment cycle workflow" .screenshot group="model-validation"}
 :::
-
 
 :::
 
@@ -135,14 +133,42 @@ For example, if you wanted your models where the field `GenAI Model` is set to `
 
 [^1]: ![Adding a workflow that initiates on model registration](example_model-registration.png){fig-alt="A screenshot showing the modal for adding a workflow that initiates on model registration" .screenshot group="model-registration"}
 
+    **Workflow steps used:**
+
+    - [{{< fa arrow-pointer >}} User Action v2](#user-action-v2)
+    - [{{< fa cube >}} Model Stage Change](#model-stage-change)
+    - [{{< fa wifi >}} Workflow State Change](#workflow-state-change)
+    - [{{< fa users >}} Approval](#approval)
+
 [^2]: [Manage model stages](manage-model-stages.qmd)
 
 [^3]: [Setting up workflows](setting-up-model-workflows.qmd#workflow-states)
 
 [^4]: ![Adding a workflow that initiates on model validation](example_model-validation.png){fig-alt="A screenshot showing the modal for adding a workflow that initiates on model validation" .screenshot group="model-validation"}
 
+    **Workflow steps used:**
+
+    - [{{< fa arrow-pointer >}} User Action v2](#user-action-v2)
+    - [{{< fa cube >}} Model Stage Change](#model-stage-change)
+    - [{{< fa wifi >}} Workflow State Change](#workflow-state-change)
+    - [{{< fa maximize >}} Condition Branch](#condition-branch)
+    - [{{< fa users >}} Approval](#approval)
+
 [^5]: [Manage model stages](manage-model-stages.qmd)
 
 [^6]: [Setting up workflows](setting-up-model-workflows.qmd#workflow-states)
 
 [^7]: ![Adding a workflow that is manually initiated when a model is approved to be deployed](example_model-deployment.png){fig-alt="A screenshot showing the modal for addoing a workflow that is manually initiated when a model is approved to be deployed" .screenshot group="model-registration"}
+
+    **Workflow steps used:**
+
+    - [{{< fa arrow-pointer >}} User Action v2](#user-action-v2)
+    - [{{< fa cube >}} Model Stage Change](#model-stage-change)
+    - [{{< fa wifi >}} Workflow State Change](#workflow-state-change)
+    - [{{< fa clock >}} Wait](#wait)
+
+[^8]: [Manage model workflows](manage-model-workflows.qmd#initiate-model-workflows)
+
+[^9]: [Manage model stages](manage-model-stages.qmd)
+
+[^10]: [Setting up workflows](setting-up-model-workflows.qmd#workflow-states)
