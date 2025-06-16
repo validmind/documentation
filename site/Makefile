@@ -173,7 +173,7 @@ generate-sitemap:
 	if [ "$$BRANCH" = "HEAD" ]; then \
 		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
 	fi; \
-	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]; then \
+	if [ "$$BRANCH" = "main" ]; then \
 		BASE_URL="https://docs.validmind.ai"; \
 		PATH_PREFIX=""; \
 	else \
