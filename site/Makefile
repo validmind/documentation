@@ -175,7 +175,7 @@ generate-sitemap:
 		else \
 			lastmod=$$(stat -c "%y" "$$file" | sed 's/ /T/;s/$$/Z/'); \
 		fi; \
-		printf "  <url>\n    <loc>https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
+		printf "  <url>\n    <loc>https://docs.validmind.ai/%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
 		printf "%s\n" "$$url_path" >> sitemap.urls.tmp; \
 	done
 	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
@@ -194,7 +194,7 @@ generate-sitemap:
 			title="$$url"; \
 		fi; \
 		if [ "$$title" != "Redirect" ]; then \
-			printf "            <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+			printf "            <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 		fi; \
 	done
 	@printf '        </ul>\n    </div>\n' >> _site/sitemap.html
@@ -209,7 +209,7 @@ generate-sitemap:
 				title="$$url"; \
 			fi; \
 			if [ "$$title" != "Redirect" ]; then \
-				printf "        <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+				printf "        <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 			fi; \
 		done; \
 		for sub in $$(grep -E "^$$dir/" sitemap.urls.tmp | grep -o -E "^$$dir/[^/]+/" | sed "s|^$$dir/||;s|/||" | sort -u); do \
@@ -222,7 +222,7 @@ generate-sitemap:
 					title="$$url"; \
 				fi; \
 				if [ "$$title" != "Redirect" ]; then \
-					printf "          <li><a href=\"https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
+					printf "          <li><a href=\"https://docs.validmind.ai/%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 				fi; \
 			done; \
 			printf '        </ul>\n      </li>\n' >> _site/sitemap.html; \
