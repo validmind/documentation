@@ -168,26 +168,19 @@ execute:
 # Generate sitemap for the site
 # Generate sitemap for the site
 generate-sitemap:
+	$(eval BRANCH := $(shell git rev-parse --abbrev-ref HEAD))
+	$(eval BRANCH := $(if $(filter HEAD,$(BRANCH)),$(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME)),$(BRANCH)))
+	$(eval BASE_URL := $(if $(filter main staging prod,$(BRANCH)),https://docs.validmind.ai,https://docs-demo.vm.validmind.ai))
+	$(eval PATH_PREFIX := $(if $(filter main staging prod,$(BRANCH)),,pr_previews/$(BRANCH)/))
 	@echo "Generating sitemaps ..."
-	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "$$BRANCH" = "HEAD" ] || [ "$$BRANCH" = "staging" ]|| [ "$$BRANCH" = "prod" ]; then \
-		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
-	fi; \
-	if [ "$$BRANCH" = "main" ]; then \
-		BASE_URL="https://docs.validmind.ai"; \
-		PATH_PREFIX=""; \
-	else \
-		BASE_URL="https://docs-demo.vm.validmind.ai"; \
-		PATH_PREFIX="pr_previews/$$BRANCH/"; \
-	fi; \
-	find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
+	@find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
 		url_path=$$(echo "$$file" | sed 's|^_site/||'); \
 		if [ "$$(uname)" = "Darwin" ]; then \
 			lastmod=$$(stat -f "%Sm" -t "%Y-%m-%dT%H:%M:%SZ" "$$file"); \
 		else \
 			lastmod=$$(stat -c "%y" "$$file" | sed 's/ /T/;s/$$/Z/'); \
 		fi; \
-		printf "  <url>\n    <loc>%s/%s%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
+		printf "  <url>\n    <loc>$(BASE_URL)/$(PATH_PREFIX)%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n" "$$url_path" "$$lastmod" >> sitemap.xml.tmp; \
 		printf "%s\n" "$$url_path" >> sitemap.urls.tmp; \
 	done
 	@printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' > _site/sitemap.xml
@@ -195,18 +188,7 @@ generate-sitemap:
 	@printf '</urlset>\n' >> _site/sitemap.xml
 	@rm sitemap.xml.tmp
 
-	@BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "$$BRANCH" = "HEAD" ]; then \
-		BRANCH=$${GITHUB_HEAD_REF:-$${GITHUB_REF_NAME}}; \
-	fi; \
-	if [ "$$BRANCH" = "main" ] || [ "$$BRANCH" = "staging" ]|| [ "$$BRANCH" = "prod" ]; then \
-		BASE_URL="https://docs.validmind.ai"; \
-		PATH_PREFIX=""; \
-	else \
-		BASE_URL="https://docs-demo.vm.validmind.ai"; \
-		PATH_PREFIX="pr_previews/$$BRANCH/"; \
-	fi; \
-	printf '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>ValidMind Documentation & Training Sitemap</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        h2 { color: #444; margin-top: 30px; }\n        ul { list-style: none; padding: 0; }\n        li { margin: 10px 0; }\n        a { color: #0066cc; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n        .root-pages { margin-bottom: 30px; }\n    </style>\n</head>\n<body>\n    <div class="root-pages">\n        <h2>Root Pages</h2>\n        <ul>\n' > _site/sitemap.html; \
+	@printf '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <title>ValidMind Documentation & Training Sitemap</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }\n        h1 { color: #333; }\n        h2 { color: #444; margin-top: 30px; }\n        ul { list-style: none; padding: 0; }\n        li { margin: 10px 0; }\n        a { color: #0066cc; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n        .root-pages { margin-bottom: 30px; }\n    </style>\n</head>\n<body>\n    <div class="root-pages">\n        <h2>Root Pages</h2>\n        <ul>\n' > _site/sitemap.html; \
 	sort -u sitemap.urls.tmp > sitemap.urls.unique.tmp && mv sitemap.urls.unique.tmp sitemap.urls.tmp; \
 	grep -E '^(index|404)\.html$$' sitemap.urls.tmp | while read -r url; do \
 		file="_site/$$url"; \
@@ -216,7 +198,7 @@ generate-sitemap:
 			title="$$url"; \
 		fi; \
 		if [ "$$title" != "Redirect" ]; then \
-			printf "            <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
+			printf "            <li><a href=\"$(BASE_URL)/$(PATH_PREFIX)%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 		fi; \
 	done; \
 	printf '        </ul>\n    </div>\n' >> _site/sitemap.html; \
@@ -230,7 +212,7 @@ generate-sitemap:
 				title="$$url"; \
 			fi; \
 			if [ "$$title" != "Redirect" ]; then \
-				printf "        <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
+				printf "        <li><a href=\"$(BASE_URL)/$(PATH_PREFIX)%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 			fi; \
 		done; \
 		for sub in $$(grep -E "^$$dir/" sitemap.urls.tmp | grep -o -E "^$$dir/[^/]+/" | sed "s|^$$dir/||;s|/||" | sort -u); do \
@@ -243,7 +225,7 @@ generate-sitemap:
 					title="$$url"; \
 				fi; \
 				if [ "$$title" != "Redirect" ]; then \
-					printf "          <li><a href=\"%s/%s%s\">%s</a></li>\n" "$$BASE_URL" "$$PATH_PREFIX" "$$url" "$$title" >> _site/sitemap.html; \
+					printf "          <li><a href=\"$(BASE_URL)/$(PATH_PREFIX)%s\">%s</a></li>\n" "$$url" "$$title" >> _site/sitemap.html; \
 				fi; \
 			done; \
 			printf '        </ul>\n      </li>\n' >> _site/sitemap.html; \
