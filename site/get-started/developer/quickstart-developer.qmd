@@ -1,66 +1,142 @@
 ---
 title: "Quickstart — Model Development"
+subtitle: "15 minutes"
 date: last-modified
-page-layout: full
+listing:
+  - id: whats-next
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../../training/developer-fundamentals/developer-fundamentals-register.qmd
+    - ../../developer/validmind-library.qmd
+aliases: 
+  - try-with-jupyterhub.html
+  - try-with-colab.html
+  - try-in-your-own-environment.html
+  - ../platform/explore-sample-model-documentation.html
+  - ../platform/register-your-first-model.html
+  - ../platform/generate-documentation-for-your-model.html
 ---
 
-Register your first model, use the {{< var validmind.developer >}} to document a model and run tests, and edit your generated model documentation using the {{< var validmind.platform >}}.
+Register your first model, use the {{< var validmind.developer >}} to run tests and document a model, then review your generated model documentation within the {{< var validmind.platform >}}.
 
-<!-- THIS IS THE OLD INFO AS A PLACEHOLDER, NEW INFO TO COME -->
+{{< include /get-started/common-steps/_before-you-begin.qmd >}}
 
-::: {.attn}
+## Register your first model
 
-## {{< fa star-of-life >}} Before you begin
+The first step to using {{< var vm.product >}} to develop models is to register them in your model inventory:
 
-To try out {{< var vm.product >}}, you need to be a registered user on the {{< var validmind.platform >}}.
+{{< include /get-started/common-steps/_register-your-first-model.qmd >}}
 
-::: {.callout}
-## Need an account for {{< var vm.product >}}?
-Signing up is FREE — {{< var link.register >}} 
+::: {.column-margin}
+![Registration modal with the options filled out for the model development quickstart](developer-new-model.png){width=90% fig-alt="A screenshot showing the registration modal with the options filled out for the model development quickstart" .screenshot}
 :::
 
+{{< include /get-started/common-steps/_get-your-code-snippet.qmd >}}
+
+::: {.column-margin}
+![{{< fa rocket >}} Getting Started page with a sample code snippet](developer-code-snippet.png){width=90% fig-alt="A screenshot showing the Getting Started page with a sample code snippet" .screenshot}
 :::
 
-## Steps
+## Using the {{< var validmind.developer >}}
 
-1. In a web browser, open [Quickstart for model documentation]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/quickstart/quickstart_model_documentation.ipynb).
+Next, let's set up the {{< var validmind.developer >}} in your development environment of choice so we can use it to run and log tests, which helps automate the documentation of your models.
 
-   This link takes you to {{< var vm.product >}}'s JupyterHub instance where you can log in with the Auth0 credentials for your {{< var vm.product >}} account to access the **QuickStart for model documentation** notebook:
+Our companion notebook, **Quickstart for model documentation,**[^1] walks you through the steps of installing the {{< var vm.developer >}} in your environment, initializing the {{< var vm.developer >}} for use, and running a full suite of documentation tests that logs results to the {{< var validmind.platform >}}.
 
-   ![QuickStart notebook opened in JupyterHub](jupyterhub-dashboard.png){width=90% fig-alt="A screenshot showing the QuickStart notebook opened in JupyterHub" .screenshot}
+{{< include /get-started/common-steps/_access-quickstart-notebook.qmd >}}
 
-   The notebook will guide you through installing the {{< var validmind.developer >}}, initializing the Python environment, and finally connecting the {{< var vm.developer >}} to the {{< var validmind.platform >}}.
+1. Open [Quickstart for model documentation]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/quickstart/quickstart_model_documentation.ipynb) and [run the quickstart notebook](#run-the-quickstart-notebook).
 
-2. Follow the instructions to run the first two code cells in the notebook, which will set the stage by installing and initializing {{< var vm.product >}}:[^1]
+#### Download the notebooks
 
-   - Hover over each cell and click the {{< fa circle-play >}} **icon**; OR
-   - Press `Shift + Enter` on Windows or `Cmd + Enter` if you are on a Mac
-   
-   Under the cell at bottom of the **Initialize the ValidMind Library** section, confirm that you see a success message that looks something like this:
-   
-   ```bash
-   2024-10-08 22:06:42,610 - INFO(validmind.api_client): 🎉 Connected to {{< var vm.product >}}!
-   📊 Model: [Demo] Customer Churn Model (ID: clwqy70qd01my22ikc49paar9)
-   📁 Document Type: model_documentation
-   ```
-   
-   This message verifies that the {{< var vm.developer >}} works as expected as is connected to the correct model within the {{< var vm.platform >}}. 
+::: {.panel-tabset}
 
-You can now continue running the rest of the cells if you want to see how the demo notebook works or, to save some time, you can move on to the [Explore sample model documentation](/get-started/platform/explore-sample-model-documentation.qmd) to explore the {{< var vm.platform >}}.  
+{{< include /get-started/common-steps/_download-notebooks.qmd >}}
 
-#### Watch the tutorial
+1. After the cloning process is complete, open `notebooks/quickstart/quickstart_model_documentation.ipynb` in your development environment and [run the quickstart notebook](#run-the-quickstart-notebook).
 
-Need more help? Experience this guide in video format:
+{{< include /get-started/common-steps/_download-code-samples.qmd >}}
 
-{{< video https://www.youtube.com/embed/rIR8Mql7eGs?si=vnZA_zP4tAjFjI4r title='ValidMind QuickStart' >}}
+1. Open `notebooks/quickstart/quickstart_model_documentation.ipynb` in your development environment and [run the quickstart notebook](#run-the-quickstart-notebook).
 
-<!--- TO DO Screenshot --->
+:::
+
+{{< include /get-started/common-steps/_run-quickstart-notebook.qmd >}}
+
+::: {.column-margin}
+**Example success message:**
+
+```bash
+2025-06-10 22:06:42,610 - INFO(validmind.api_client): 🎉 Connected to {{< var vm.product >}}!
+📊 Model: [ValidMind] Model development quickstart (ID: cmbpnxrv6012o0g9w5049nsct)
+📁 Document Type: model_documentation
+```
+:::
+
+3. Continue running the rest of the notebook to automatically populate test results for your sample model to your documentation for that model in the {{< var vm.platform >}}.
+
+## Work with model documentation
+
+After you successfully run the notebook, return to the {{< var validmind.platform >}}:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Locate or search for the model you registered for this quickstart and click on it to select it.[^2]
+
+3. In the left sidebar that appears for the model, click **{{< fa book-open >}} Documentation**:
+
+   - Your model's documentation is broken down into sections, defined by your documentation templates.[^3]
+   - Each section can be assigned a completion status,[^4] allowing you to track the progress of your documentation.
+
+4. Click on any section of the documentation to review the test results and drafts of test result summaries generated by the {{< var validmind.developer >}}.
+
+   In any subsection, expand the **{{< var vm.product >}} Insights™** panel to view the Documentation Guidelines[^5] that tell you more about what these sections mean and help you with the task of documenting the model as a developer.
+
+5. Refine your model documentation by:
+
+   - Adding or editing content blocks[^6]
+   - Adding additional test results after you've logged them[^7]
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns .tc}
+
+![Example model details page with documentation outline](developer-model-details.png){fig-alt="A screenshot showing an example model details page with documentation outline" .screenshot group="documentation"}
+
+:::
+
+::: {.w-40-ns .tc}
+
+![Populated model documentation section with the **{{< var vm.product >}} Insights™** panel open](validmind-insights.png){fig-alt="A screenshot showing populated model documentation section with the ValidMind Insights™ panel open" .screenshot group="documentation"}
+
+:::
+
+::::
 
 ## What's next
 
-Continue with [Explore sample model documentation](/get-started/platform/explore-sample-model-documentation.qmd) to learn more about using the {{< var validmind.platform >}} hands-on.
+Now that you've grasped the basics of using {{< var vm.product >}} for model development, continue on your journey with our end-to-end training course for developers and browse through our resource hub for the {{< var validmind.developer >}}:
+
+:::{#whats-next}
+:::
 
 
 <!-- FOOTNOTES -->
 
-[^1]: [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd)
+[^1]: [Quickstart for model documentation](/notebooks/quickstart/quickstart_model_documentation.ipynb)
+
+[^2]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^3]: [Working with documentation templates](/guide/templates/working-with-documentation-templates.qmd)
+
+[^4]: [Assign documentation section statuses](/guide/model-documentation/assign-documentation-section-statuses.qmd)
+
+[^5]: [View documentation guidelines](/guide/model-documentation/view-documentation-guidelines.qmd)
+
+[^6]: [Work with content blocks](/guide/model-documentation/work-with-content-blocks.qmd)
+
+[^7]: [Work with test results](/guide/model-documentation/work-with-test-results.qmd)

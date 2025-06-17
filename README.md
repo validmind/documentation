@@ -106,7 +106,7 @@ When constructing links, refer to the `.qmd` file as Quarto will properly render
 
 | Correct | Incorrect |
 |---|---|
-| `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.qmd)` | `[Get started with JupyterHub](get-started/developer/try-with-jupyterhub.html)` |
+| `[Quickstart — Model Development](get-started/developer/quickstart-developer.qmd)` | `[Quickstart — Model Development](get-started/developer/quickstart-developer.html)` |
 
 When constructing filepaths, including while using [Quarto's Includes](https://quarto.org/docs/authoring/includes.html) (single-sourcing feature), you'll also want start with the root directory whenever possible as this minimizes usage of unclear relative paths: 
 
