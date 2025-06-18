@@ -123,18 +123,20 @@ a:hover {
 }
 
 /* Gradient background container */
-/* NR TO DO Check if this CSS does anything? */
 .column-screen {
   background: linear-gradient(to bottom, #EDF9FA 80%, #ffffff);
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   height: auto;
-  width: 100vw;
+  width: 100%;
   position: relative;
   top: 0;
   left: 0;
   z-index: 0; 
+}
+
+.column-screen > *:last-child {
+  margin-bottom: 0;
 }
 
 .center.bg-white {
@@ -150,6 +152,46 @@ a:hover {
 body,
 html {
   background: linear-gradient(to bottom, #EDF9FA 80%, #ffffff);
+}
+
+/* Home page specific: eliminate gap before footer */
+body {
+  margin-bottom: 0 !important;
+}
+
+.column-screen {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Force footer to connect */
+footer.footer {
+  margin-top: 0 !important;
+}
+
+/* Override Quarto's min-height calculation that creates the gap */
+#quarto-content {
+  min-height: auto !important;
+}
+
+/* Remove margins/padding from main element that creates gap above footer */
+main.content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#quarto-document-content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Override Quarto's grid and container settings that create gaps */
+.quarto-container {
+  min-height: auto !important;
+}
+
+.page-rows-contents {
+  grid-template-rows: [content-top] minmax(max-content, 1fr) [content-bottom] minmax(0px, max-content) [page-bottom] !important;
 }
 
 .tour-text-container {
