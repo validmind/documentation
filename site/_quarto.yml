@@ -1,9 +1,9 @@
 project:
   type: website
+  # post-render: make generate-sitemap
 
 metadata-files:
   - get-started/_sidebar.yaml
-  - guide/_sidebar.yaml
   - developer/_sidebar.yaml
   - training/_sidebar.yaml
   - validmind/_sidebar.yml
@@ -12,13 +12,14 @@ metadata-files:
 
 website:
   announcement: 
-    content: "[**{{< fa book-open-reader >}} EU AI Act Compliance**](https://validmind.com/download-whitepaper-the-eu-ai-act/) — Read our original regulation brief on how the EU AI Act aims to balance innovation with safety and accountability, setting standards for responsible AI use" 
-    position: below-navbar 
+    content: '[**{{< fa book-open-reader >}} EU AI Act Compliance**](https://validmind.com/download-whitepaper-the-eu-ai-act/) — Read our original regulation brief on how the EU AI Act aims to balance innovation with safety and accountability, setting standards for responsible AI use'
+    position: above-navbar 
   favicon: validmind.png
   title: "ValidMind"
   cookie-consent:
     type: express
     style: simple
+    position: center
   google-analytics: 
     tracking-id: "G-S46CKWPNSS"
     anonymize-ip: true
@@ -27,7 +28,7 @@ website:
   repo-url: https://github.com/validmind/documentation/
   repo-subdir: site/
   repo-actions: [edit, issue]
-
+  
   navbar:
     collapse-below: xl
     logo: about/ValidMind-logo-color.svg
@@ -35,58 +36,12 @@ website:
     title: false
     pinned: true
 
-    left:
-      - text: "About"
-        file: about/overview.qmd
-      - text: "Get Started"
-        file: get-started/get-started.qmd
-      - text: "Guides"
-        file: guide/guides.qmd
-      - text: "{{< fa cube >}} {{< var validmind.developer >}}"
-        menu:
-        - text: "{{< fa laptop-code >}} {{< var validmind.developer >}}"
-          file: developer/validmind-library.qmd
-        - text: "{{< fa cubes >}} Supported Models"
-          file: developer/supported-models.qmd
-        - text: "---"
-        - text:  "{{< fa rocket >}} QUICKSTART"
-        - text: "{{< fa file-pen >}} For Model Documentation"
-          file: notebooks/quickstart/quickstart_model_documentation.ipynb
-        - text: "{{< fa clipboard-check >}} For Model Validation"
-          file: notebooks/quickstart/quickstart_model_validation.ipynb
-        - text: "---"
-        - text:  "{{< fa vial >}} TESTING"
-        - text: "{{< fa flask-vial >}} Run Tests & Test Suites"
-          file: developer/model-testing/testing-overview.qmd
-        - text: "{{< fa microscope >}} Test Descriptions"
-          file: developer/model-testing/test-descriptions.qmd
-        - text: "{{< fa toolbox >}} Test Sandbox (BETA)"
-          file: developer/model-testing/test-sandbox.qmd
-        - text: "---"
-        - text: "{{< fa code >}} CODE SAMPLES"
-        - text: "{{< fa book-open-reader >}} All Code Samples · `LLM` · `NLP` · `Time Series` · `Etc.`"
-          file: developer/samples-jupyter-notebooks.qmd
-        - text: "{{< fa download >}} Download Code Samples · `notebooks.zip`"
-          file: notebooks.zip
-        - text: "{{< fa hand-point-right >}} Try it on JupyterHub {{< fa hand-point-left >}}"
-          file: https://jupyterhub.validmind.ai/
-        - text: "---"
-        - text: "{{< fa book >}} REFERENCE"
-        - text: "{{< var validmind.api >}}"
-          file: validmind/validmind.qmd
-      - text: "Support"
-        file: support/support.qmd
-      - text: "Training"
-        file: training/training.qmd
-      - text: "Releases"
-        file: releases/all-releases.qmd
-      # - text: "validmind.com {{< fa external-link >}}"
-      #   file: https://validmind.com/
-      #   target: _blank
     right:
+      # - text: "{{< fa cube >}} Documentation"
+      #   file: about/overview.qmd
       # HOME BUTTON FOR DEVELOPER & TRAINING SECTIONS
-      - text: "{{< fa house >}}"
-        file: index.qmd
+      # - text: "{{< fa house >}}"
+      #   file: index.qmd
       # DOCUMENTATION MENU FOR DEVELOPER & TRAINING SECTIONS
       - text: "{{< fa book-open >}} Documentation"
         menu:
@@ -125,6 +80,28 @@ website:
       #     file: training/developer-fundamentals/developer-fundamentals-register.qmd
       #   - text: "{{< fa user-check >}} For Validators"
       #     file: training/validator-fundamentals/validator-fundamentals-register.qmd
+
+      - text: "{{< fa book-open >}} Documentation"
+        menu:
+        - text: "{{< fa circle-info >}} About {{< var vm.product >}}"
+          file: about/overview.qmd
+        - text: "{{< fa rocket >}} Get Started"
+          file: get-started/get-started.qmd
+        - text: "{{< fa book >}} Guides"
+          file: guide/guides.qmd
+        - text: "{{< fa envelope-open-text >}} Support"
+          file: support/support.qmd
+        - text: "{{< fa bullhorn >}} Releases"
+          file: releases/all-releases.qmd
+        - text: "---"
+        - text:  "{{< fa cube >}} Python Library"
+        - text: "{{< fa code >}} {{< var validmind.developer >}}"
+          file: developer/validmind-library.qmd
+        - text: "---"
+        - text:  "{{< fa graduation-cap >}} {{< var validmind.training >}}"
+        - text: "{{< fa building-columns >}} Training Courses"
+          file: training/training.qmd
+
       - text: "Log In"
         menu:
           - text: "Public Internet"
@@ -141,6 +118,7 @@ website:
           - text: "---"
           - text: "<small>Which login should I use?</small>"
             href: "guide/configuration/log-in-to-validmind.qmd"
+        
 
 #  COMMENT THIS OUT WHEN DONE TESTING
       # - text: "{{< fa flask >}} Testing"
@@ -184,6 +162,113 @@ website:
         - text: "Software license agreement"
           file: about/fine-print/license-agreement.qmd
 
+    - title: "Guides"
+      contents:
+        - guide/guides.qmd
+        - text: "---"
+        - text: "Setup + Administration"
+        - file: guide/configuration/accessing-validmind.qmd
+          contents:
+            - guide/configuration/register-with-validmind.qmd
+            - guide/configuration/log-in-to-validmind.qmd
+        - file: guide/configuration/managing-your-organization.qmd
+          contents:
+            - guide/configuration/set-up-your-organization.qmd
+            - guide/configuration/configure-aws-privatelink.qmd
+            - guide/configuration/configure-google-private-service-connect.qmd
+            - guide/configuration/configure-azure-private-link.qmd
+        - file: guide/configuration/managing-users.qmd
+          contents:
+          - guide/configuration/manage-users.qmd
+          - guide/configuration/manage-groups.qmd
+          - guide/configuration/manage-roles.qmd
+          - guide/configuration/manage-model-stakeholder-types.qmd
+          - guide/configuration/manage-permissions.qmd
+        - file: guide/configuration/personalize-validmind.qmd
+          contents:
+          - guide/configuration/manage-your-profile.qmd
+          - guide/configuration/customize-your-dashboard.qmd
+        - text: "---"
+        - text: "Model Workflows"
+        - text: "Working with workflows"
+          file: guide/model-workflows/working-with-model-workflows.qmd
+          contents:
+          - text: "Customize lifecycle statuses"
+            file: guide/model-workflows/customize-model-lifecycle-statuses.qmd
+          - text: "Set up workflows"
+            file: guide/model-workflows/set-up-model-workflows.qmd
+        - text: "---"
+        - text: "Model Inventory"
+        - file: guide/model-inventory/working-with-model-inventory.qmd
+          contents:
+          - guide/model-inventory/register-models-in-inventory.qmd
+          - guide/model-inventory/customize-model-inventory-layout.qmd
+          - guide/model-inventory/edit-model-inventory-fields.qmd
+          - guide/model-inventory/customize-model-overview-page.qmd
+        - file: guide/model-inventory/managing-model-inventory.qmd
+          contents:
+          - guide/model-inventory/configure-model-interdependencies.qmd
+          - guide/model-inventory/manage-model-inventory-fields.qmd
+          - guide/model-inventory/archive-delete-models.qmd
+        - guide/model-inventory/view-model-activity.qmd
+        - text: "---"
+        - text: "Templates"
+        - file: guide/templates/working-with-documentation-templates.qmd
+          contents:
+          - guide/templates/view-documentation-templates.qmd
+          - guide/templates/customize-documentation-templates.qmd
+          - guide/templates/swap-documentation-templates.qmd
+        - guide/templates/manage-text-block-library.qmd
+        - text: "---"
+        - text: "Model Documentation"
+        - file: guide/model-documentation/working-with-model-documentation.qmd
+          contents:
+          - guide/model-documentation/view-documentation-guidelines.qmd
+          - guide/model-documentation/work-with-content-blocks.qmd
+          - guide/model-documentation/work-with-test-results.qmd
+          - text: "Assign section statuses"
+            file: guide/model-documentation/assign-documentation-section-statuses.qmd
+          - guide/model-documentation/collaborate-with-others.qmd
+          - guide/model-documentation/submit-for-approval.qmd
+        - text: "---"
+        - text: "Model Validation"
+        - guide/model-validation/manage-validation-guidelines.qmd
+        - file: guide/model-validation/preparing-validation-reports.qmd
+          contents:
+          - guide/model-validation/review-model-documentation.qmd
+          - guide/model-validation/assess-compliance.qmd
+          - guide/model-documentation/work-with-content-blocks.qmd
+          - guide/model-documentation/collaborate-with-others.qmd
+          - guide/model-documentation/submit-for-approval.qmd
+        - file: guide/model-validation/working-with-model-findings.qmd
+          contents:
+          - text: "View and filter findings"
+            file: guide/model-validation/view-filter-model-findings.qmd
+          - text: "Add and manage findings"
+            file: guide/model-validation/add-manage-model-findings.qmd
+        - text: "---"
+        - text: "Reporting"
+        - file: guide/reporting/working-with-analytics.qmd
+          contents:
+          - guide/reporting/view-report-data.qmd
+          - guide/reporting/manage-custom-reports.qmd
+        - guide/reporting/export-documentation.qmd
+        - text: "---"
+        - text: "Monitoring"
+        - file: guide/monitoring/ongoing-monitoring.qmd
+          contents:
+          - guide/monitoring/enable-monitoring.qmd
+          - guide/monitoring/review-monitoring-results.qmd
+          - text: "Metrics over time"
+            file: guide/monitoring/work-with-metrics-over-time.qmd
+        - text: "---"
+        - text: "Attestation"
+        - file: guide/attestation/working-with-attestations.qmd
+          contents:
+          - guide/attestation/set-up-attestations.qmd
+          - guide/attestation/complete-attestation-questionnaires.qmd
+          - guide/attestation/review-attestation-questionnaires.qmd
+
     - title: "Support"
       contents:
         - support/support.qmd
@@ -209,53 +294,121 @@ website:
               file: faq/faq-privacy.qmd
 
 # COMMENT THIS OUT WHEN DONE TESTING
-    # - title: "Testing"
-    #   contents:
-    #     - internal/testing.qmd
-    #     - text: "---"
-    #     - text: "EXPERIMENTS"
-    #     - file: internal/lightbox.qmd
-        # - file: internal/footnotes/footnotes.qmd
-        #   contents:
-        #     - internal/footnotes/hover-only.qmd
+    - title: "Testing"
+      contents:
+        - internal/testing.qmd
+        - text: "---"
+        - text: "EXPERIMENTS"
+        - file: internal/lightbox.qmd
+        - file: internal/footnotes/footnotes.qmd
+          contents:
+            - internal/footnotes/hover-only.qmd
 
   page-footer:
-    background: "#DE257E"
-    left: "© Copyright {{< now year >}} {{< var validmind.legal >}}  All Rights Reserved."
-    right:
-      - text: "validmind.com {{< fa external-link >}}"
-        href: https://validmind.com/
-        target: _blank
-      - text: "Privacy Policy"
-        href: https://validmind.com/about/legal/privacy-policy/
-      - text: "Terms of Use"
-        href: https://validmind.com/about/legal/terms-of-use/
-      - icon: github
-        href: https://github.com/validmind/documentation
-      - icon: linkedin
-        href: https://www.linkedin.com/company/validmind/
-
+    background: "#26818B"
+    left:
+      - text: |
+          <div class="footer-section footer-logo-info">
+            <img src="/assets/home-page/ValidMind%20MASTER%20Brand%20Assets_Logo-White%20R%202.svg" alt="ValidMind Logo" class="footer-logo" />
+            <div class="footer-logo-columns">
+              <div class="footer-logo-links">
+                <ul>
+                  <li><a href="/news">News</a></li>
+                  <li><a href="/careers">Careers</a></li>
+                  <li><a href="/contact">Contact</a></li>
+                  <li><a href="/legal">Legal</a></li>
+                </ul>
+              </div>
+              <div class="footer-company-info">
+                <div>© Copyright {{< now year >}} ValidMind Inc.<br>All Rights Reserved.</div>
+                <a id="open_preferences_center" class="cookie-preferences-link" href="#">Cookie preferences</a>
+              </div>
+            </div>
+          </div>
+    center:
+      - text: |
+          <div class="footer-section footer-user-guides">
+            <div class="footer-heading">User Guides</div>
+            <div class="footer-user-guides-columns">
+              <ul>
+                <li><a href="/get-started/get-started.qmd">Get started</a></li>
+                <li><a href="/guide/model-validation/manage-validation-guidelines.qmd">Onboarding</a></li>
+                <li><a href="/guide/guides.qmd">Model Inventory</a></li>
+                <li><a href="/releases/all-releases.qmd">What's new?</a></li>
+              </ul>
+              <ul>
+                <li><a href="/guide/model-documentation/working-with-model-documentation.qmd">Model documentation</a></li>
+                <li><a href="/guide/model-validation/manage-validation-guidelines.qmd">Model validation</a></li>
+                <li><a href="/guide/model-workflows/working-with-model-workflows.qmd">Model workflows</a></li>
+              </ul>
+              <ul>
+                <li><a href="/guide/reporting/working-with-analytics.qmd">Reporting</a></li>
+                <li><a href="/guide/monitoring/ongoing-monitoring.qmd">Monitoring</a></li>
+                <li><a href="/guide/attestation/working-with-attestations.qmd">Attestation</a></li>
+              </ul>
+            </div>
+          </div>
+      - text: |
+          <div class="footer-section">
+            <div class="footer-heading">ValidMind Library</div>
+            <ul>
+              <li><a href="/developer/validmind-library.qmd">For model development</a></li>
+              <li><a href="/developer/validmind-library.qmd#validation">For model validation</a></li>
+              <li><a href="/developer/samples-jupyter-notebooks.qmd">Code samples</a></li>
+              <li><a href="/validmind/validmind.qmd">API Reference</a></li>
+            </ul>
+          </div>
+      - text: |
+          <div class="footer-section">
+            <div class="footer-heading">Training</div>
+            <ul>
+              <li><a href="/training/training.qmd">Learning paths</a></li>
+              <li><a href="/training/training.qmd">Courses</a></li>
+              <li><a href="/training/training.qmd">Videos</a></li>
+            </ul>
+          </div>
+      - text: |
+          <div class="footer-section">
+            <div class="footer-heading">Support</div>
+            <ul>
+              <li><a href="/support/troubleshooting.qmd">Troubleshooting</a></li>
+              <li><a href="/faq/faq.qmd">FAQ</a></li>
+              <li><a href="/support/support.qmd">Get help</a></li>
+            </ul>
+          </div>
+      - text: |
+          <div class="footer-section">
+            <div class="footer-heading">Community</div>
+            <ul>
+              <li><a href="https://github.com/validmind/documentation">Github</a></li>
+              <li><a href="#">Slack</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
 format:
-  html:
-    grid:
-      body-width: 1000px
-      sidebar-width: 375px
-    footnotes-hover: true
-    reference-location: margin
-    code-overflow: wrap
-    code-annotations: below
-    theme: 
-      light: [cosmo, theme.scss]
+ html:
+   grid:
+     body-width: 1000px
+   footnotes-hover: true
+   reference-location: margin
+   code-overflow: wrap
+   code-annotations: below
+   theme:
+     light: [cosmo, theme.scss]
 #      dark: [cosmo, theme-dark.scss]
-    mainfont: Inter
-    css: styles.css
-    toc: true
-    link-external-newwindow: true
-    link-external-icon: true
-    callout-appearance: simple
-    link-external-filter: '^https:\/\/(docs\.validmind\.ai|docs-staging\.validmind\.ai|docs-demo\.vm\.validmind\.ai)\/.*'
-    lightbox: true
+   mainfont: Inter
+   css: styles.css
+   toc: true
+   link-external-newwindow: true
+   link-external-icon: true
+   callout-appearance: simple
+   link-external-filter: '^https:\/\/(docs\.validmind\.ai|docs-staging\.validmind\.ai|docs-demo\.vm\.validmind\.ai)\/.*'
+   lightbox: true
+
 
 filters:
-  - tachyons
-  - preview
+ - tachyons
+ - preview
+
+
+
