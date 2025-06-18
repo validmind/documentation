@@ -256,6 +256,7 @@ notebooks:
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
+	@rm -rf $(DEST_DIR_NB)/templates
 	@echo "Copying _metadata.yml into notebooks/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Zip up notebooks.zip ..."
