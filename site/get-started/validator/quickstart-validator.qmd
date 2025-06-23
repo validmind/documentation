@@ -1,0 +1,178 @@
+---
+title: "Quickstart — Model Validation"
+subtitle: "20 minutes"
+date: last-modified
+listing:
+  - id: whats-next
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../../training/validator-fundamentals/validator-fundamentals-register.qmd
+    - ../../developer/validmind-library.qmd
+---
+
+Use the {{< var validmind.developer >}} to run tests and validate a model, then attach your test results as evidence to your validation report in the {{< var validmind.platform >}}.
+
+{{< include /get-started/common-steps/_before-you-begin.qmd >}}
+
+## Register a model for validation
+
+Typically, you will be asked to validate a champion model that has already been independently registered in the model inventory and submitted to you. 
+
+For this quickstart, you'll register a dummy model first and assign yourself as the validator to familiarize you with the {{< var validmind.platform >}} interface:
+
+{{< include /get-started/common-steps/_register-your-first-model.qmd >}}
+
+::: {.column-margin}
+![Registration modal with the options filled out for the model validation quickstart](validator-new-model.png){width=90% fig-alt="A screenshot showing the registration modal with the options filled out for the model validation quickstart" .screenshot}
+:::
+
+#### Assign validator credentials
+
+In order to log tests as a validator instead of as a developer, we'll need to adjust your **model stakeholder** permissions.
+
+On the model details page after you've registered your model:
+
+::: {.panel-tabset}
+
+#### Remove yourself as model owner
+
+1. Click on the **[owners]{.smallcaps}** tile, then click on the **x** next to your name.
+2. Click **Save** to apply your changes to that role.
+
+#### Remove yourself as developer
+
+1. Click on the **[developers]{.smallcaps}** tile, then click on the **x** next to your name.
+2. Click **Save** to apply your changes to that role.
+
+#### Add yourself as validator
+
+1. Click on the **[validators]{.smallcaps}** tile, and select your name from the drop-down menu.
+2. Click **Save** to apply your changes to that role.
+
+:::
+
+::: {.column-margin}
+![Model stakeholders with only the [validators]{.smallcaps} assigned](model-stakeholders.png){width=90% fig-alt="A screenshot showing the model stakeholders with only validators assigned" .screenshot}
+:::
+
+{{< include /get-started/common-steps/_get-your-code-snippet.qmd >}}
+
+::: {.column-margin}
+![{{< fa rocket >}} Getting Started page with a sample code snippet](validator-code-snippet.png){width=90% fig-alt="A screenshot showing the Getting Started page with a sample code snippet" .screenshot}
+:::
+
+## Using the {{< var validmind.developer >}}
+
+Next, let's set up the {{< var validmind.developer >}} in your validation environment of choice so we can use it to run and log tests, which helps automate the validation of your models.
+
+Our companion notebook, **Quickstart for model validation,**[^1] walks you through the steps of installing the {{< var vm.developer >}} in your environment, initializing the {{< var vm.developer >}} for use, and running data quality and model evaluation tests that log results to the {{< var validmind.platform >}}.
+
+{{< include /get-started/common-steps/_access-quickstart-notebook.qmd >}}
+
+1. Open [Quickstart for model validation]({{< var url.jupyterhub >}}/hub/user-redirect/lab/tree/quickstart/quickstart_model_validation.ipynb) and [run the quickstart notebook](#run-the-quickstart-notebook).
+
+#### Download the notebooks
+
+::: {.panel-tabset}
+
+{{< include /get-started/common-steps/_download-notebooks.qmd >}}
+
+1. After the cloning process is complete, open `notebooks/quickstart/quickstart_model_validation.ipynb` in your validation environment and [run the quickstart notebook](#run-the-quickstart-notebook)..
+
+{{< include /get-started/common-steps/_download-code-samples.qmd >}}
+
+1. Open `notebooks/quickstart/quickstart_model_validation.ipynb` in your validation environment and [run the quickstart notebook](#run-the-quickstart-notebook).
+
+:::
+
+{{< include /get-started/common-steps/_run-quickstart-notebook.qmd >}}
+
+::: {.column-margin}
+**Example success message:**
+
+```bash
+2025-06-11 22:06:42,610 - INFO(validmind.api_client): 🎉 Connected to {{< var vm.product >}}!
+📊 Model: [ValidMind] Model validation quickstart (ID: cmbs6g0pi02li0g874mq9fek4)
+📁 Document Type: model_validation
+```
+:::
+
+3. Continue running the rest of the notebook to automatically populate test results for your sample model to your validation report for that model in the {{< var vm.platform >}}.
+
+## Work with validation reports
+
+After you successfully run the notebook, return to the {{< var validmind.platform >}}:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Locate or search for the model you registered for this quickstart and click on it to select it.[^2]
+
+3. In the left sidebar that appears for the model, click **{{< fa shield >}} Validation Report**:
+
+   - Your model's validation is broken down into sections, defined by your validation report templates.[^3]
+   - The report includes risk assessment summaries at the overall and per-section level, overviews of your compliance assessments provided within your validation report.[^4]
+   - Each sub-section allows you to attach test results as evidence,[^5] as well as log findings based on your evaluation of datasets or models.[^6]
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-40-ns .tc}
+
+![Example validation report with outline](validation-report-overview.png){fig-alt="A screenshot showing an example validation report with outline" .screenshot group="report"}
+
+:::
+
+::: {.w-40-ns .tc}
+
+![Validation report section with assessment summary and a sub-section](report-section.png){fig-alt="A screenshot a validation report section with assessment summary and a sub-section" .screenshot group="report"}
+
+:::
+
+::::
+
+#### Add evidence to your report
+
+Expand any section of the validation report to attach your test results and drafts of test result summaries generated by the {{< var validmind.developer >}} as evidence by clicking on **{{< fa link >}} Link Evidence to Report**.
+
+For example:
+
+1. Locate the 2.2.1. Data Quality section and click on **Class Imbalance Assessment**.
+
+2. Under the Class Imbalance Assessment sub-section, locate Validator Evidence then click **{{< fa link >}} Link Evidence to Report**.
+
+3. Select the Class Imbalance test results we logged: **ValidMind Data Validation Class Imbalance**
+
+4. Click **Update Linked Evidence** to add the test results to the validation report.
+
+::: {.column-margin}
+![Linking the Class Imbalance test results](insert-class-imbalance.png){fig-alt="A screenshot showing the modal for linking the Class Imbalance test results" .screenshot group="evidence"}
+
+![Class Imbalance test results inserted as validator evidence](inserted-validator-evidence.png){fig-alt="A screenshot showing the Class Imbalance test results inserted as validator evidence" .screenshot group="evidence"}
+
+:::
+
+## What's next
+
+Now that you've grasped the basics of using {{< var vm.product >}} for model validation, continue on your journey with our end-to-end training course for validators and browse through our resource hub for the {{< var validmind.developer >}}:
+
+:::{#whats-next}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Quickstart for model validation](/notebooks/quickstart/quickstart_model_validation.ipynb)
+
+[^2]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^3]: [Working with templates](/guide/templates/working-with-templates.qmd)
+
+[^4]: [Assess compliance](/guide/model-validation/assess-compliance.qmd#provide-compliance-assessments)
+
+[^5]: [Assess compliance](/guide/model-validation/assess-compliance.qmd#link-validator-evidence)
+
+[^6]: [Add and manage model findings](/guide/model-validation/add-manage-model-findings.qmd#add-findings-on-validation-reports)
+
