@@ -43,7 +43,8 @@ runs:
           libxext6 \
           libxi6 \
           libx11-xcb1 \
-          libdbus-1-3
+          libdbus-1-3 \
+          xvfb
       shell: bash
 
     - name: Install Python dependencies
@@ -95,11 +96,12 @@ runs:
       shell: bash
       if: ${{ steps.find_valid_env.outcome == 'success' }}
       run: |
-          cd site
-          cp ../${{ inputs.valid_env }} ../.env
-          source ../.env
+        cd site
+        cp ../${{ inputs.valid_env }} ../.env
+        source ../.env
+        xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' \
           quarto render --profile exe-demo notebooks/EXECUTED/model_validation &> render_errors.log || {
-            echo "Execute for ValidMind for model validation series failed";
-            cat render_errors.log;
-            exit 1;
+            echo "Execute for ValidMind for model validation series failed"
+            cat render_errors.log
+            exit 1
           }
