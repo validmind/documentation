@@ -26,7 +26,7 @@ runs:
         python3 -m pip install jupyter
         python -m pip install --upgrade pip
 
-    - name: Install system dependencies for Kaleido (Ubuntu 24.04 safe)
+    - name: Install system dependencies for Kaleido
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -74,13 +74,15 @@ runs:
       shell: bash
       if: ${{ steps.find_dev_env.outcome == 'success' }}
       run: |
-          cd site
-          cp ../${{ inputs.dev_env }} ../.env
-          source ../.env
-          quarto render --profile exe-demo notebooks/EXECUTED/model_development &> render_errors.log || {
-            echo "Execute for ValidMind for model development series failed";
-            cat render_errors.log;
-            exit 1;
+        cd site
+        cp ../${{ inputs.dev_env }} ../.env
+        source ../.env
+        xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' \
+          quarto render --profile exe-demo notebooks/EXECUTED/model_development \
+          &> render_errors.log || {
+            echo "Execute for ValidMind for model development series failed"
+            cat render_errors.log
+            exit 1
           }
 
     - name: Ensure valid.env file is available
