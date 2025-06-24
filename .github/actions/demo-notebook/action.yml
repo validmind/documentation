@@ -50,8 +50,10 @@ runs:
     - name: Install validmind for notebook execution
       shell: bash
       run: |
-        pip install --upgrade --no-cache-dir numpy==1.25.2
-        pip install --no-cache-dir -r validmind-requirements.txt
+        pip uninstall -y numpy shap || true
+        pip install --no-cache-dir numpy==1.25.2
+        pip install --no-cache-dir shap==0.44.1
+        pip install --no-cache-dir -r validmind-requirements.txt  # all other deps
 
     - name: Register validmind kernel
       shell: bash
