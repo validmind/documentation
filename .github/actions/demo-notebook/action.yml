@@ -26,14 +26,21 @@ runs:
         python3 -m pip install jupyter
         python -m pip install --upgrade pip
 
-    - name: Install validmind for notebook execution
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Poetry
       shell: bash
       run: |
-        pip install validmind
-        pip install validmind[llm]
-        pip install fairlearn aequitas
-        pip install shap==0.44.1
-        pip install anywidget
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+    - name: Install Python dependencies via Poetry
+      shell: bash
+      run: |
+        poetry install --no-interaction --no-root
 
     - name: Register validmind kernel
       shell: bash
