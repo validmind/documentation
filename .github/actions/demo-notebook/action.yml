@@ -52,14 +52,12 @@ runs:
         pip uninstall -y numpy shap || true
       shell: bash
 
-    - name: Preinstall exact numpy + shap combo
-      run: |
-        pip install --no-deps numpy==1.25.2 shap==0.44.1
+    - name: Install numpy/shap first
+      run: pip install numpy==1.25.2 shap==0.44.1
       shell: bash
 
-    - name: Install remaining dependencies
-      run: |
-        pip install --no-deps -r validmind-requirements.txt
+    - name: Install all other requirements
+      run: pip install -r validmind-requirements.txt
       shell: bash
 
     - name: Verify numpy and shap versions
