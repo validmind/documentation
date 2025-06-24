@@ -47,10 +47,6 @@ runs:
           xvfb
       shell: bash
 
-    - name: Install Python dependencies
-      run: pip install -r validmind-requirements.txt
-      shell: bash
-
     - name: Install validmind for notebook execution
       shell: bash
       run: |
@@ -60,6 +56,22 @@ runs:
       shell: bash
       run: |
         python -m ipykernel install --user --name validmind --display-name "ValidMind Library"
+
+    - name: Confirm kaleido install
+      shell: bash
+      run: |
+        pip show kaleido || {
+          echo "❌ Kaleido not found"
+          exit 1
+        }
+
+    - name: Kaleido smoke test
+      shell: bash
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 &
+        export DISPLAY=:99
+
+        python -c "import plotly.graph_objects as go; fig = go.Figure(); fig.add_scatter(y=[1, 2, 3]); fig.to_image(format='png'); print('✅ Kaleido works')"
 
     - name: Ensure dev.env file is available
       shell: bash
@@ -77,7 +89,10 @@ runs:
         cd site
         cp ../${{ inputs.dev_env }} ../.env
         source ../.env
-        xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' \
+
+        Xvfb :99 -screen 0 1024x768x24 &  # background display
+        export DISPLAY=:99
+
           quarto render --profile exe-demo notebooks/EXECUTED/model_development \
           &> render_errors.log || {
             echo "Execute for ValidMind for model development series failed"
@@ -101,7 +116,10 @@ runs:
         cd site
         cp ../${{ inputs.valid_env }} ../.env
         source ../.env
-        xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' \
+
+        Xvfb :99 -screen 0 1024x768x24 &  # background display
+        export DISPLAY=:99
+
           quarto render --profile exe-demo notebooks/EXECUTED/model_validation &> render_errors.log || {
             echo "Execute for ValidMind for model validation series failed"
             cat render_errors.log
