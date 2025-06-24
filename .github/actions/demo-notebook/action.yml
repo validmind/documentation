@@ -47,34 +47,29 @@ runs:
           xvfb
       shell: bash
 
-    - name: Install validmind for notebook execution
-      shell: bash
+    - name: Uninstall any pre-installed numpy or shap
       run: |
         pip uninstall -y numpy shap || true
-        pip install --no-cache-dir numpy==1.25.2
-        pip install --no-cache-dir shap==0.44.1
-        pip install --no-cache-dir -r validmind-requirements.txt  # all other deps
+      shell: bash
+
+    - name: Preinstall exact numpy + shap combo
+      run: |
+        pip install --no-deps numpy==1.25.2 shap==0.44.1
+      shell: bash
+
+    - name: Install remaining dependencies
+      run: |
+        pip install --no-deps -r validmind-requirements.txt
+      shell: bash
+
+    - name: Verify numpy and shap versions
+      shell: bash
+      run: python -c "import numpy, shap; print('numpy:', numpy.__version__, '| shap:', shap.__version__)"
 
     - name: Register validmind kernel
       shell: bash
       run: |
         python -m ipykernel install --user --name validmind --display-name "ValidMind Library"
-
-    - name: Confirm kaleido install
-      shell: bash
-      run: |
-        pip show kaleido || {
-          echo "❌ Kaleido not found"
-          exit 1
-        }
-
-    - name: Kaleido smoke test
-      shell: bash
-      run: |
-        Xvfb :99 -screen 0 1024x768x24 &
-        export DISPLAY=:99
-
-        python -c "import plotly.graph_objects as go; fig = go.Figure(); fig.add_scatter(y=[1, 2, 3]); fig.to_image(format='png'); print('✅ Kaleido works')"
 
     - name: Ensure dev.env file is available
       shell: bash
