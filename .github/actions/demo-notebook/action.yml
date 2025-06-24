@@ -53,7 +53,7 @@ runs:
       shell: bash
 
     - name: Install numpy/shap first
-      run: pip install numpy==1.25.2 shap==0.44.1
+      run: pip install --no-deps numpy==1.25.2 shap==0.44.1
       shell: bash
 
     - name: Install all other requirements
@@ -86,7 +86,7 @@ runs:
         cp ../${{ inputs.dev_env }} ../.env
         source ../.env
 
-        Xvfb :99 -screen 0 1024x768x24 &  # background display
+        Xvfb :99 -screen 0 1024x768x24 2> >(grep -v XF86) &
         export DISPLAY=:99
 
           quarto render --profile exe-demo notebooks/EXECUTED/model_development \
@@ -113,7 +113,7 @@ runs:
         cp ../${{ inputs.valid_env }} ../.env
         source ../.env
 
-        Xvfb :99 -screen 0 1024x768x24 &  # background display
+        Xvfb :99 -screen 0 1024x768x24 2> >(grep -v XF86) &
         export DISPLAY=:99
 
           quarto render --profile exe-demo notebooks/EXECUTED/model_validation &> render_errors.log || {
