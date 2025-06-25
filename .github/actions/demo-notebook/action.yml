@@ -20,11 +20,12 @@ runs:
     #     restore-keys: |
     #       python-pip-${{ runner.os }}-
 
-    - name: Install python3 for Jupyter Notebooks
-      shell: bash
-      run: |
-        python3 -m pip install jupyter
-        python -m pip install --upgrade pip
+    # - name: Install python3 for Jupyter Notebooks
+    #   shell: bash
+    #   run: |
+    #     python3 -m pip install jupyter
+    #     python -m pip install --upgrade pip
+    #     python -m pip install aequitas
 
     - name: Install Poetry
       shell: bash
@@ -41,7 +42,11 @@ runs:
 
         while [ $attempt -le $max_attempts ]; do
           echo "Attempt $attempt to install dependencies"
-          poetry install --no-interaction --no-root -vvv --network-timeout 120 && success=1 && break
+          python3 -m pip install jupyter
+          python -m pip install --upgrade pip
+          python -m pip install aequitas && \
+          poetry install --no-interaction --no-root && success=1 && break
+
           attempt=$((attempt + 1))
           sleep 5
         done
