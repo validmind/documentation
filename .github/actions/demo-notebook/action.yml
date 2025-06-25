@@ -12,20 +12,20 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # - name: Cache pip dependencies
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: ~/.cache/pip
-    #     key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/demo-notebook/action.yml') }}
-    #     restore-keys: |
-    #       python-pip-${{ runner.os }}-
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/demo-notebook/action.yml') }}
+        restore-keys: |
+          python-pip-${{ runner.os }}-
 
-    # - name: Install python3 for Jupyter Notebooks
-    #   shell: bash
-    #   run: |
-    #     python3 -m pip install jupyter
-    #     python -m pip install --upgrade pip
-    #     python -m pip install aequitas
+    - name: Install python3 for Jupyter Notebooks
+      shell: bash
+      run: |
+        python3 -m pip install jupyter
+        python -m pip install --upgrade pip
+        python -m pip install aequitas
 
     - name: Install Poetry
       shell: bash
@@ -42,11 +42,7 @@ runs:
 
         while [ $attempt -le $max_attempts ]; do
           echo "Attempt $attempt to install dependencies"
-          python3 -m pip install jupyter
-          python -m pip install --upgrade pip
-          python -m pip install aequitas && \
           poetry install --no-interaction --no-root && success=1 && break
-
           attempt=$((attempt + 1))
           sleep 5
         done
@@ -69,6 +65,15 @@ runs:
           --name validmind \
           --display-name "ValidMind Library" \
           --prefix $(poetry env info --path)
+
+    - name: Debug Jupyter kernel registration
+      shell: bash
+      run: |
+        echo "== Jupyter kernel list =="
+        poetry run jupyter kernelspec list
+
+        echo "== Kernel JSON =="
+        cat $(poetry env info --path)/share/jupyter/kernels/validmind/kernel.json || echo "Kernel file not found"
 
     - name: Ensure dev.env file is available
       shell: bash
