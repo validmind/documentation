@@ -55,17 +55,17 @@ runs:
       shell: bash
       if: ${{ steps.find_dev_env.outcome == 'success' }}
       run: |
+        set +e  # Disable immediate exit on errors — allows retry logic
+
         cd site
 
-        # Copy and source environment variables
+        # Load environment variables
         cp ../${{ inputs.dev_env }} ../.env
         source ../.env
 
-        # Optional: Check memory before rendering (for debugging CI crashes)
         echo "== Memory before render =="
         free -m || true
 
-        # Retry loop for stable execution
         max_attempts=3
         attempt=1
         success=0
@@ -73,17 +73,17 @@ runs:
         while [ $attempt -le $max_attempts ]; do
           echo "== Attempt $attempt of $max_attempts =="
 
-          # Use poetry to ensure correct env and capture logs
           poetry run quarto render --profile exe-demo notebooks/EXECUTED/model_development > render_out.log 2> render_err.log
 
-          if [ $? -eq 0 ]; then
+          status=$?
+          if [ $status -eq 0 ]; then
             echo "✅ Quarto render succeeded"
             success=1
             break
           else
             echo "❌ Quarto render failed (attempt $attempt)"
             echo "------ STDERR ------"
-            cat render_err.log
+            cat render_err.log || echo "(render_err.log missing)"
             echo "--------------------"
             attempt=$((attempt + 1))
             sleep 5
@@ -93,7 +93,7 @@ runs:
         if [ $success -ne 1 ]; then
           echo "🔥 Quarto render failed after $max_attempts attempts"
           echo "Final STDERR:"
-          cat render_err.log
+          cat render_err.log || echo "(render_err.log missing)"
           exit 1
         fi
 
