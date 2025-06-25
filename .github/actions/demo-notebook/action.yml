@@ -37,10 +37,13 @@ runs:
       run: |
         poetry install --no-interaction --no-root
 
-    # - name: Register validmind kernel
-    #   shell: bash
-    #   run: |
-    #     poetry run python -m ipykernel install --user --name validmind --display-name "ValidMind Library"
+    - name: Register 'validmind' Jupyter kernel in Poetry venv
+      shell: bash
+      run: |
+        poetry run python -m ipykernel install \
+          --name validmind \
+          --display-name "ValidMind Library" \
+          --prefix $(poetry env info --path)
 
     - name: Ensure dev.env file is available
       shell: bash
@@ -50,6 +53,12 @@ runs:
           echo "Error: dev.env file not found at ${{ inputs.dev_env }}"
           exit 1
         fi
+
+    - name: Debug Jupyter kernel list
+      shell: bash
+      run: |
+        poetry run jupyter kernelspec list
+        cat $(poetry env info --path)/share/jupyter/kernels/validmind/kernel.json || echo "Kernel not found"
 
     - name: Execute ValidMind model development notebooks with Quarto
       shell: bash
