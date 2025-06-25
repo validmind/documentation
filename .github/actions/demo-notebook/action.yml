@@ -51,18 +51,47 @@ runs:
           exit 1
         fi
 
-    - name: Execute ONLY the ValidMind for model development series with heap development
+    - name: Execute ValidMind model development notebooks with Quarto
       shell: bash
       if: ${{ steps.find_dev_env.outcome == 'success' }}
       run: |
-          cd site
-          cp ../${{ inputs.dev_env }} ../.env
-          source ../.env
-          poetry run quarto render --profile exe-demo notebooks/EXECUTED/model_development &> render_errors.log || {
-            echo "Execute for ValidMind for model development series failed";
-            cat render_errors.log;
-            exit 1;
-          }
+        cd site
+
+        # Copy and source environment variables
+        cp ../${{ inputs.dev_env }} ../.env
+        source ../.env
+
+        # Optional: Print memory status before execution (for debugging)
+        echo "== Memory before render =="
+        free -m || true
+
+        # Retry loop to render Quarto docs (optional but robust)
+        max_attempts=3
+        attempt=1
+        success=0
+
+        while [ $attempt -le $max_attempts ]; do
+          echo "Attempt $attempt of $max_attempts"
+
+          # Run Quarto using poetry and redirect output to log files
+          poetry run quarto render --profile exe-demo notebooks/EXECUTED/model_development > render_out.log 2> render_err.log
+
+          if [ $? -eq 0 ]; then
+            echo "✅ Quarto render succeeded"
+            success=1
+            break
+          else
+            echo "❌ Quarto render failed (attempt $attempt)"
+            cat render_err.log
+            attempt=$((attempt + 1))
+            sleep 5
+          fi
+        done
+
+        if [ $success -ne 1 ]; then
+          echo "🔥 Quarto render failed after $max_attempts attempts"
+          exit 1
+        fi
 
     # - name: Ensure valid.env file is available
     #   shell: bash
