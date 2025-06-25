@@ -12,13 +12,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache pip dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/demo-notebook/action.yml') }}
-        restore-keys: |
-          python-pip-${{ runner.os }}-
+    # - name: Cache pip dependencies
+    #   uses: actions/cache@v4
+    #   with:
+    #     path: ~/.cache/pip
+    #     key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/demo-notebook/action.yml') }}
+    #     restore-keys: |
+    #       python-pip-${{ runner.os }}-
 
     - name: Install python3 for Jupyter Notebooks
       shell: bash
@@ -32,10 +32,30 @@ runs:
         curl -sSL https://install.python-poetry.org | python3 -
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-    - name: Install Python dependencies via Poetry
+    - name: Install Python dependencies via Poetry with retry
       shell: bash
       run: |
-        poetry install --no-interaction --no-root
+        max_attempts=3
+        attempt=1
+        success=0
+
+        while [ $attempt -le $max_attempts ]; do
+          echo "Attempt $attempt to install dependencies"
+          poetry install --no-interaction --no-root -vvv --network-timeout 120 && success=1 && break
+          attempt=$((attempt + 1))
+          sleep 5
+        done
+
+        if [ $success -ne 1 ]; then
+          echo "Dependency installation failed after $max_attempts attempts"
+          exit 1
+        fi
+
+    - name: Cache Poetry downloads
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pypoetry
+        key: poetry-cache-${{ hashFiles('**/poetry.lock') }}
 
     - name: Register 'validmind' Jupyter kernel in Poetry venv
       shell: bash
