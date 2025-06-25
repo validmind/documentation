@@ -61,19 +61,19 @@ runs:
         cp ../${{ inputs.dev_env }} ../.env
         source ../.env
 
-        # Optional: Print memory status before execution (for debugging)
+        # Optional: Check memory before rendering (for debugging CI crashes)
         echo "== Memory before render =="
         free -m || true
 
-        # Retry loop to render Quarto docs (optional but robust)
+        # Retry loop for stable execution
         max_attempts=3
         attempt=1
         success=0
 
         while [ $attempt -le $max_attempts ]; do
-          echo "Attempt $attempt of $max_attempts"
+          echo "== Attempt $attempt of $max_attempts =="
 
-          # Run Quarto using poetry and redirect output to log files
+          # Use poetry to ensure correct env and capture logs
           poetry run quarto render --profile exe-demo notebooks/EXECUTED/model_development > render_out.log 2> render_err.log
 
           if [ $? -eq 0 ]; then
@@ -82,7 +82,9 @@ runs:
             break
           else
             echo "❌ Quarto render failed (attempt $attempt)"
+            echo "------ STDERR ------"
             cat render_err.log
+            echo "--------------------"
             attempt=$((attempt + 1))
             sleep 5
           fi
@@ -90,6 +92,8 @@ runs:
 
         if [ $success -ne 1 ]; then
           echo "🔥 Quarto render failed after $max_attempts attempts"
+          echo "Final STDERR:"
+          cat render_err.log
           exit 1
         fi
 
