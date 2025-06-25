@@ -58,6 +58,18 @@ runs:
         path: ~/.cache/pypoetry
         key: poetry-cache-${{ hashFiles('**/poetry.lock') }}
 
+    - name: Ensure ipykernel and Jupyter deps are reinstalled inside Poetry env
+      shell: bash
+      run: |
+        poetry run pip install --force-reinstall \
+          ipykernel traitlets tornado pyzmq debugpy
+
+    - name: Remove global validmind kernels (if they exist)
+      shell: bash
+      run: |
+        jupyter kernelspec list | grep validmind || true
+        jupyter kernelspec remove -f validmind || true
+
     - name: Register 'validmind' Jupyter kernel in Poetry venv
       shell: bash
       run: |
