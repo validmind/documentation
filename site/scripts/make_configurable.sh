@@ -3,7 +3,7 @@
 
 # Define input and output paths
 VARIABLES_PATH="_variables.yml"
-CONFIG_PATH="config.json"
+MANIFEST_PATH="validmind-docs.yaml"
 
 # Define placeholder values, same as in docker_entrypoint.sh
 VALIDMIND_PLACEHOLDER="https://app.prod.validmind-configurable-url.ai"
@@ -64,29 +64,35 @@ printf "\nFound favicon.svg:\n"
 printf "%s ...\n" "$(echo "$FAVICON_SVG" | head -n 5)"
 printf "\n"
 
-# Function to escape JSON string
-escape_json() {
-    echo "$1" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g; s/\r/\\r/g; s/\n/\\n/g'
+# Function to escape YAML multiline string
+escape_yaml_multiline() {
+    echo "$1" | sed 's/^/    /'
 }
 
-# Generate the JSON file with extracted values for fallback
-cat > "$CONFIG_PATH" << EOF
-{
-  "VALIDMIND_URL": "$VALIDMIND_URL",
-  "JUPYTERHUB_URL": "$JUPYTERHUB_URL",
-  "PRODUCT_NAME": "$PRODUCT_NAME",
-  "LOGO_SVG": "$(escape_json "$LOGO_SVG")",
-  "FAVICON_SVG": "$(escape_json "$FAVICON_SVG")"
-}
+# Generate the Kubernetes ConfigMap manifest with extracted values
+cat > "$MANIFEST_PATH" << EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: validmind-docs-config
+  namespace: cmvm-test
+data:
+  VALIDMIND_URL: "$VALIDMIND_URL"
+  JUPYTERHUB_URL: "$JUPYTERHUB_URL"
+  PRODUCT_NAME: "$PRODUCT_NAME"
+  LOGO_SVG: |
+$(escape_yaml_multiline "$LOGO_SVG")
+  FAVICON_SVG: |
+$(escape_yaml_multiline "$FAVICON_SVG")
 EOF
 
-# Check if JSON file was created successfully
-if [ ! -f "$CONFIG_PATH" ]; then
-    echo "Error: Failed to generate $CONFIG_PATH"
+# Check if manifest file was created successfully
+if [ ! -f "$MANIFEST_PATH" ]; then
+    echo "Error: Failed to generate $MANIFEST_PATH"
     exit 1
 fi
 
-printf "\nSuccessfully generated %s" "$CONFIG_PATH"
+printf "\nSuccessfully generated %s" "$MANIFEST_PATH"
 
 # Replace the actual URLs with placeholder URLs
 sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"

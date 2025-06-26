@@ -6,15 +6,13 @@ set -e
 echo "==== Start ValidMind URL configuration ===="
 
 # Define paths
-CONFIG_FILE="/usr/share/nginx/html/config.json"
+MANIFEST_FILE="/usr/share/nginx/html/validmind-docs.yaml"
 HTML_DIR="/usr/share/nginx/html"
 
 # Define placeholder values, same as in make_site_configurable.sh
 VALIDMIND_PLACEHOLDER="https://app.prod.validmind-configurable-url.ai"
 JUPYTERHUB_PLACEHOLDER="https://jupyterhub.validmind-configurable-url.ai"
 PRODUCT_PLACEHOLDER="CONFIGURABLE_PRODUCT_NAME"
-LOGO_PLACEHOLDER="VALIDMIND_LOGO_SVG_PLACEHOLDER"
-FAVICON_PLACEHOLDER="VALIDMIND_FAVICON_SVG_PLACEHOLDER"
 
 echo "Initializing ValidMind documentation site..."
 
@@ -51,37 +49,47 @@ if [ -n "${FAVICON_SVG:-}" ]; then
     echo "Using FAVICON_SVG from environment: $(echo "$FAVICON_SVG" | wc -c) characters"
 fi
 
-# If still empty, try config.json
-if { [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME" ] || [ -z "$LOGO_SVG" ] || [ -z "$FAVICON_SVG" ]; } && [ -f "$CONFIG_FILE" ]; then
-    echo "Looking for values in config file: $CONFIG_FILE"
+# Function to extract value from YAML manifest
+extract_yaml_value() {
+    local key="$1"
+    local file="$2"
     
-    if command -v jq > /dev/null 2>&1; then
-        # Use jq if available
-        [ -z "$VALIDMIND_URL" ] && VALIDMIND_URL=$(jq -r '.VALIDMIND_URL // empty' "$CONFIG_FILE")
-        [ -z "$JUPYTERHUB_URL" ] && JUPYTERHUB_URL=$(jq -r '.JUPYTERHUB_URL // empty' "$CONFIG_FILE")
-        [ -z "$PRODUCT_NAME" ] && PRODUCT_NAME=$(jq -r '.PRODUCT_NAME // empty' "$CONFIG_FILE")
-        [ -z "$LOGO_SVG" ] && LOGO_SVG=$(jq -r '.LOGO_SVG // empty' "$CONFIG_FILE")
-        [ -z "$FAVICON_SVG" ] && FAVICON_SVG=$(jq -r '.FAVICON_SVG // empty' "$CONFIG_FILE")
-    else
-        # Simple fallback if jq isn't available
-        [ -z "$VALIDMIND_URL" ] && VALIDMIND_URL=$(grep -o '"VALIDMIND_URL":"[^"]*"' "$CONFIG_FILE" 2>/dev/null | sed 's/"VALIDMIND_URL":"//;s/"//g')
-        [ -z "$JUPYTERHUB_URL" ] && JUPYTERHUB_URL=$(grep -o '"JUPYTERHUB_URL":"[^"]*"' "$CONFIG_FILE" 2>/dev/null | sed 's/"JUPYTERHUB_URL":"//;s/"//g')
-        [ -z "$PRODUCT_NAME" ] && PRODUCT_NAME=$(grep -o '"PRODUCT_NAME":"[^"]*"' "$CONFIG_FILE" 2>/dev/null | sed 's/"PRODUCT_NAME":"//;s/"//g')
-        # Note: SVG extraction via grep is complex due to multiline content and special characters
-        # If jq is not available and SVG content is needed, consider installing jq in the Docker image
-        if [ -z "$LOGO_SVG" ]; then
-            echo "Warning: jq not available for LOGO_SVG extraction. Install jq for full functionality."
-        fi
-        if [ -z "$FAVICON_SVG" ]; then
-            echo "Warning: jq not available for FAVICON_SVG extraction. Install jq for full functionality."
-        fi
+    # Extract simple key-value pairs
+    if [ "$key" = "VALIDMIND_URL" ] || [ "$key" = "JUPYTERHUB_URL" ] || [ "$key" = "PRODUCT_NAME" ]; then
+        grep "^[[:space:]]*${key}:" "$file" 2>/dev/null | sed "s/^[[:space:]]*${key}:[[:space:]]*//;s/[\"']//g"
+    # Extract multiline YAML values (for SVG content)
+    elif [ "$key" = "LOGO_SVG" ] || [ "$key" = "FAVICON_SVG" ]; then
+        awk "
+        /^[[:space:]]*${key}:[[:space:]]*\|/ { 
+            in_block=1; 
+            next 
+        } 
+        in_block && /^[[:space:]]*[A-Z_]+:/ { 
+            in_block=0 
+        } 
+        in_block && /^    / { 
+            sub(/^    /, \"\"); 
+            print 
+        }
+        " "$file" 2>/dev/null
     fi
+}
+
+# If still empty, try manifest file
+if { [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME" ] || [ -z "$LOGO_SVG" ] || [ -z "$FAVICON_SVG" ]; } && [ -f "$MANIFEST_FILE" ]; then
+    echo "Looking for values in manifest file: $MANIFEST_FILE"
     
-    [ -n "$VALIDMIND_URL" ] && echo "Using VALIDMIND_URL from config: $VALIDMIND_URL"
-    [ -n "$JUPYTERHUB_URL" ] && echo "Using JUPYTERHUB_URL from config: $JUPYTERHUB_URL"
-    [ -n "$PRODUCT_NAME" ] && echo "Using PRODUCT_NAME from config: $PRODUCT_NAME"
-    [ -n "$LOGO_SVG" ] && echo "Using LOGO_SVG from config: $(echo "$LOGO_SVG" | wc -c) characters"
-    [ -n "$FAVICON_SVG" ] && echo "Using FAVICON_SVG from config: $(echo "$FAVICON_SVG" | wc -c) characters"
+    [ -z "$VALIDMIND_URL" ] && VALIDMIND_URL=$(extract_yaml_value "VALIDMIND_URL" "$MANIFEST_FILE")
+    [ -z "$JUPYTERHUB_URL" ] && JUPYTERHUB_URL=$(extract_yaml_value "JUPYTERHUB_URL" "$MANIFEST_FILE")
+    [ -z "$PRODUCT_NAME" ] && PRODUCT_NAME=$(extract_yaml_value "PRODUCT_NAME" "$MANIFEST_FILE")
+    [ -z "$LOGO_SVG" ] && LOGO_SVG=$(extract_yaml_value "LOGO_SVG" "$MANIFEST_FILE")
+    [ -z "$FAVICON_SVG" ] && FAVICON_SVG=$(extract_yaml_value "FAVICON_SVG" "$MANIFEST_FILE")
+    
+    [ -n "$VALIDMIND_URL" ] && echo "Using VALIDMIND_URL from manifest: $VALIDMIND_URL"
+    [ -n "$JUPYTERHUB_URL" ] && echo "Using JUPYTERHUB_URL from manifest: $JUPYTERHUB_URL"
+    [ -n "$PRODUCT_NAME" ] && echo "Using PRODUCT_NAME from manifest: $PRODUCT_NAME"
+    [ -n "$LOGO_SVG" ] && echo "Using LOGO_SVG from manifest: $(echo "$LOGO_SVG" | wc -c) characters"
+    [ -n "$FAVICON_SVG" ] && echo "Using FAVICON_SVG from manifest: $(echo "$FAVICON_SVG" | wc -c) characters"
 fi
 
 # Finally, use hardcoded defaults as a last resort
