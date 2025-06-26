@@ -54,12 +54,15 @@ if [ -z "$PRODUCT_NAME" ]; then
     exit 1
 fi
 
-echo "Found values in $VARIABLES_PATH:"
-echo "VALIDMIND_URL: $VALIDMIND_URL"
-echo "JUPYTERHUB_URL: $JUPYTERHUB_URL"
-echo "PRODUCT_NAME: $PRODUCT_NAME"
-echo "LOGO_SVG: $(echo "$LOGO_SVG" | wc -c) characters"
-echo "FAVICON_SVG: $(echo "$FAVICON_SVG" | wc -c) characters"
+printf "\nFound values to configure in %s:\n" "$VARIABLES_PATH"
+printf "VALIDMIND_URL → %s\n" "$VALIDMIND_PLACEHOLDER"
+printf "JUPYTERHUB_URL → %s\n" "$JUPYTERHUB_PLACEHOLDER"
+printf "PRODUCT_NAME → %s\n" "$PRODUCT_PLACEHOLDER"
+printf "\nFound logo.svg:\n"
+printf "%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
+printf "\nFound favicon.svg:\n"
+printf "%s ...\n" "$(echo "$FAVICON_SVG" | head -n 5)"
+printf "\n"
 
 # Function to escape JSON string
 escape_json() {
@@ -83,7 +86,7 @@ if [ ! -f "$CONFIG_PATH" ]; then
     exit 1
 fi
 
-echo "Successfully generated $CONFIG_PATH from $VARIABLES_PATH"
+printf "\nSuccessfully generated %s" "$CONFIG_PATH"
 
 # Replace the actual URLs with placeholder URLs
 sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"
@@ -95,9 +98,4 @@ sed -i'.tmp' -E "s|(product:[ ]*\")([^\"]+)(\")|\1$PRODUCT_PLACEHOLDER\3|g" "$VA
 # Remove temporary files created by sed
 rm -f "${VARIABLES_PATH}.tmp"
 
-echo "Modified $VARIABLES_PATH with placeholder values and stored SVG files:"
-echo "VALIDMIND_URL: $VALIDMIND_PLACEHOLDER"
-echo "JUPYTERHUB_URL: $JUPYTERHUB_PLACEHOLDER"
-echo "PRODUCT_NAME: $PRODUCT_PLACEHOLDER"
-echo "LOGO_SVG: $LOGO_PLACEHOLDER"
-echo "FAVICON_SVG: $FAVICON_PLACEHOLDER"
+printf "\nSuccessfully modified %s\n" "$VARIABLES_PATH"
