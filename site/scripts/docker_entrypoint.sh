@@ -20,7 +20,7 @@ echo "Initializing ValidMind documentation site..."
 # Initialize variables as empty
 VALIDMIND_URL=""
 JUPYTERHUB_URL=""
-PRODUCT_NAME=""
+PRODUCT_NAME_LONG=""
 PRODUCT_NAME_SHORT=""
 LOGO_SVG=""
 FAVICON_SVG=""
@@ -36,9 +36,9 @@ if [ -n "${JUPYTERHUB_URL:-}" ]; then
     echo "Using JUPYTERHUB_URL from environment: $JUPYTERHUB_URL"
 fi
 
-if [ -n "${PRODUCT_NAME:-}" ]; then
-    PRODUCT_NAME="$PRODUCT_NAME"
-    echo "Using PRODUCT_NAME from environment: $PRODUCT_NAME"
+if [ -n "${PRODUCT_NAME_LONG:-}" ]; then
+    PRODUCT_NAME_LONG="$PRODUCT_NAME_LONG"
+    echo "Using PRODUCT_NAME_LONG from environment: $PRODUCT_NAME_LONG"
 fi
 
 if [ -n "${PRODUCT_NAME_SHORT:-}" ]; then
@@ -62,7 +62,7 @@ extract_yaml_value() {
     local file="$2"
     
     # Extract simple key-value pairs
-    if [ "$key" = "VALIDMIND_URL" ] || [ "$key" = "JUPYTERHUB_URL" ] || [ "$key" = "PRODUCT_NAME" ] || [ "$key" = "PRODUCT_NAME_SHORT" ]; then
+    if [ "$key" = "VALIDMIND_URL" ] || [ "$key" = "JUPYTERHUB_URL" ] || [ "$key" = "PRODUCT_NAME_LONG" ] || [ "$key" = "PRODUCT_NAME_SHORT" ]; then
         grep "^[[:space:]]*${key}:" "$file" 2>/dev/null | sed "s/^[[:space:]]*${key}:[[:space:]]*//;s/[\"']//g"
     # Extract multiline YAML values (for SVG content)
     elif [ "$key" = "LOGO_SVG" ] || [ "$key" = "FAVICON_SVG" ]; then
@@ -83,19 +83,19 @@ extract_yaml_value() {
 }
 
 # If still empty, try manifest file
-if { [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME" ] || [ -z "$PRODUCT_NAME_SHORT" ] || [ -z "$LOGO_SVG" ] || [ -z "$FAVICON_SVG" ]; } && [ -f "$MANIFEST_FILE" ]; then
+if { [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME_LONG" ] || [ -z "$PRODUCT_NAME_SHORT" ] || [ -z "$LOGO_SVG" ] || [ -z "$FAVICON_SVG" ]; } && [ -f "$MANIFEST_FILE" ]; then
     echo "Looking for values in manifest file: $MANIFEST_FILE"
     
     [ -z "$VALIDMIND_URL" ] && VALIDMIND_URL=$(extract_yaml_value "VALIDMIND_URL" "$MANIFEST_FILE")
     [ -z "$JUPYTERHUB_URL" ] && JUPYTERHUB_URL=$(extract_yaml_value "JUPYTERHUB_URL" "$MANIFEST_FILE")
-    [ -z "$PRODUCT_NAME" ] && PRODUCT_NAME=$(extract_yaml_value "PRODUCT_NAME" "$MANIFEST_FILE")
+    [ -z "$PRODUCT_NAME_LONG" ] && PRODUCT_NAME_LONG=$(extract_yaml_value "PRODUCT_NAME_LONG" "$MANIFEST_FILE")
     [ -z "$PRODUCT_NAME_SHORT" ] && PRODUCT_NAME_SHORT=$(extract_yaml_value "PRODUCT_NAME_SHORT" "$MANIFEST_FILE")
     [ -z "$LOGO_SVG" ] && LOGO_SVG=$(extract_yaml_value "LOGO_SVG" "$MANIFEST_FILE")
     [ -z "$FAVICON_SVG" ] && FAVICON_SVG=$(extract_yaml_value "FAVICON_SVG" "$MANIFEST_FILE")
     
     [ -n "$VALIDMIND_URL" ] && echo "Using VALIDMIND_URL from manifest: $VALIDMIND_URL"
     [ -n "$JUPYTERHUB_URL" ] && echo "Using JUPYTERHUB_URL from manifest: $JUPYTERHUB_URL"
-    [ -n "$PRODUCT_NAME" ] && echo "Using PRODUCT_NAME from manifest: $PRODUCT_NAME"
+    [ -n "$PRODUCT_NAME_LONG" ] && echo "Using PRODUCT_NAME_LONG from manifest: $PRODUCT_NAME_LONG"
     [ -n "$PRODUCT_NAME_SHORT" ] && echo "Using PRODUCT_NAME_SHORT from manifest: $PRODUCT_NAME_SHORT"
     [ -n "$LOGO_SVG" ] && printf "Using LOGO_SVG from manifest:\n%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
     [ -n "$FAVICON_SVG" ] && printf "Using FAVICON_SVG from manifest:\n%s ...\n" "$(echo "$FAVICON_SVG" | head -n 5)"
@@ -112,9 +112,9 @@ if [ -z "$JUPYTERHUB_URL" ]; then
     echo "INFO: Using default JUPYTERHUB_URL: $JUPYTERHUB_URL"
 fi
 
-if [ -z "$PRODUCT_NAME" ]; then
-    PRODUCT_NAME="ValidMind AI Risk Platform"
-    echo "INFO: Using default PRODUCT_NAME: $PRODUCT_NAME"
+if [ -z "$PRODUCT_NAME_LONG" ]; then
+    PRODUCT_NAME_LONG="ValidMind AI Risk Platform"
+    echo "INFO: Using default PRODUCT_NAME_LONG: $PRODUCT_NAME_LONG"
 fi
 
 if [ -z "$PRODUCT_NAME_SHORT" ]; then
@@ -131,7 +131,7 @@ if [ -z "$FAVICON_SVG" ]; then
 fi
 
 # Final check to ensure we have non-empty values for required parameters
-if [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME" ] || [ -z "$PRODUCT_NAME_SHORT" ]; then
+if [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME_LONG" ] || [ -z "$PRODUCT_NAME_SHORT" ]; then
     echo "Error: One or more required configuration values are still empty. This will cause replacement issues."
     exit 1
 fi
@@ -153,7 +153,7 @@ find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$VALIDMIND_PLACEHOLDER|$
 find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" {} \;
 
 echo "Replacing product name placeholders in HTML files..."
-find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME|g" {} \;
+find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" {} \;
 find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" {} \;
 
 # Replace SVG content with actual SVG files if provided
@@ -172,7 +172,7 @@ echo "Replacing placeholders in search.json..."
 if [ -f "$HTML_DIR/search.json" ]; then
     sed -i "s|$VALIDMIND_PLACEHOLDER|$VALIDMIND_URL|g" "$HTML_DIR/search.json"
     sed -i "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" "$HTML_DIR/search.json"
-    sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME|g" "$HTML_DIR/search.json"
+    sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" "$HTML_DIR/search.json"
     sed -i "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" "$HTML_DIR/search.json"
 else
     echo "search.json file not found"

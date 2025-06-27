@@ -25,7 +25,7 @@ VALIDMIND_URL=$(awk '/url:/{flag=1} flag && /us1:/{gsub(/"/, "", $2); print $2; 
 JUPYTERHUB_URL=$(awk '/url:/{flag=1} flag && /jupyterhub:/{gsub(/"/, "", $2); print $2; exit}' "$VARIABLES_PATH")
 
 # Extract product name (long) from _variables.yml
-PRODUCT_NAME=$(awk '
+PRODUCT_NAME_LONG=$(awk '
 /^validmind:/ { in_validmind=1; next }
 /^[a-zA-Z]/ && in_validmind { in_validmind=0 }
 in_validmind && /product:/ { 
@@ -81,8 +81,8 @@ if [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ]; then
     exit 1
 fi
 
-if [ -z "$PRODUCT_NAME" ]; then
-    echo "Error: Could not extract PRODUCT_NAME from $VARIABLES_PATH"
+if [ -z "$PRODUCT_NAME_LONG" ]; then
+    echo "Error: Could not extract PRODUCT_NAME_LONG from $VARIABLES_PATH"
     exit 1
 fi
 
@@ -94,7 +94,7 @@ fi
 printf "\nFound values to configure in %s:\n" "$VARIABLES_PATH"
 printf "VALIDMIND_URL: %s → %s\n" "$VALIDMIND_URL" "$VALIDMIND_PLACEHOLDER"
 printf "JUPYTERHUB_URL: %s → %s\n" "$JUPYTERHUB_URL" "$JUPYTERHUB_PLACEHOLDER"
-printf "PRODUCT_NAME: %s → %s\n" "$PRODUCT_NAME" "$PRODUCT_PLACEHOLDER_LONG"
+printf "PRODUCT_NAME_LONG: %s → %s\n" "$PRODUCT_NAME_LONG" "$PRODUCT_PLACEHOLDER_LONG"
 printf "PRODUCT_NAME_SHORT: %s → %s\n" "$PRODUCT_NAME_SHORT" "$PRODUCT_PLACEHOLDER_SHORT"
 printf "\nFound logo.svg:\n"
 printf "%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
@@ -117,7 +117,7 @@ metadata:
 data:
   VALIDMIND_URL: "$VALIDMIND_URL"
   JUPYTERHUB_URL: "$JUPYTERHUB_URL"
-  PRODUCT_NAME: "$PRODUCT_NAME"
+  PRODUCT_NAME_LONG: "$PRODUCT_NAME_LONG"
   PRODUCT_NAME_SHORT: "$PRODUCT_NAME_SHORT"
   LOGO_SVG: |
 $(escape_yaml_multiline "$LOGO_SVG")
