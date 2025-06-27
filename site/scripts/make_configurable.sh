@@ -8,7 +8,8 @@ MANIFEST_PATH="validmind-docs.yaml"
 # Define placeholder values, same as in docker_entrypoint.sh
 VALIDMIND_PLACEHOLDER="https://app.prod.validmind-configurable-url.ai"
 JUPYTERHUB_PLACEHOLDER="https://jupyterhub.validmind-configurable-url.ai"
-PRODUCT_PLACEHOLDER="CONFIGURABLE_PRODUCT_NAME"
+PRODUCT_PLACEHOLDER_LONG="CONFIGURABLE_PRODUCT_NAME_LONG"
+PRODUCT_PLACEHOLDER_SHORT="CONFIGURABLE_PRODUCT_SHORT"
 
 # Check if variables file exists
 if [ ! -f "$VARIABLES_PATH" ]; then
@@ -23,12 +24,29 @@ git diff "$VARIABLES_PATH" > /dev/null 2>&1 || git add "$VARIABLES_PATH" -N
 VALIDMIND_URL=$(awk '/url:/{flag=1} flag && /us1:/{gsub(/"/, "", $2); print $2; exit}' "$VARIABLES_PATH")
 JUPYTERHUB_URL=$(awk '/url:/{flag=1} flag && /jupyterhub:/{gsub(/"/, "", $2); print $2; exit}' "$VARIABLES_PATH")
 
-# Extract product name from _variables.yml
+# Extract product name (long) from _variables.yml
 PRODUCT_NAME=$(awk '
 /^validmind:/ { in_validmind=1; next }
 /^[a-zA-Z]/ && in_validmind { in_validmind=0 }
 in_validmind && /product:/ { 
     # Extract quoted string
+    start = index($0, "\"")
+    if (start > 0) {
+        line = substr($0, start+1)
+        end = index(line, "\"")
+        if (end > 0) {
+            print substr(line, 1, end-1)
+            exit
+        }
+    }
+}' "$VARIABLES_PATH")
+
+# Extract product name (short) from _variables.yml
+PRODUCT_NAME_SHORT=$(awk '
+/^vm:/ { in_vm=1; next }
+/^[a-zA-Z]/ && in_vm { in_vm=0 }
+in_vm && /product:/ { 
+    # Extract quoted string, handling HTML entities
     start = index($0, "\"")
     if (start > 0) {
         line = substr($0, start+1)
@@ -68,10 +86,16 @@ if [ -z "$PRODUCT_NAME" ]; then
     exit 1
 fi
 
+if [ -z "$PRODUCT_NAME_SHORT" ]; then
+    echo "Error: Could not extract PRODUCT_NAME_SHORT from $VARIABLES_PATH"
+    exit 1
+fi
+
 printf "\nFound values to configure in %s:\n" "$VARIABLES_PATH"
 printf "VALIDMIND_URL: %s → %s\n" "$VALIDMIND_URL" "$VALIDMIND_PLACEHOLDER"
 printf "JUPYTERHUB_URL: %s → %s\n" "$JUPYTERHUB_URL" "$JUPYTERHUB_PLACEHOLDER"
-printf "PRODUCT_NAME: %s → %s\n" "$PRODUCT_NAME" "$PRODUCT_PLACEHOLDER"
+printf "PRODUCT_NAME: %s → %s\n" "$PRODUCT_NAME" "$PRODUCT_PLACEHOLDER_LONG"
+printf "PRODUCT_NAME_SHORT: %s → %s\n" "$PRODUCT_NAME_SHORT" "$PRODUCT_PLACEHOLDER_SHORT"
 printf "\nFound logo.svg:\n"
 printf "%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
 printf "\nFound favicon.svg:\n"
@@ -94,6 +118,7 @@ data:
   VALIDMIND_URL: "$VALIDMIND_URL"
   JUPYTERHUB_URL: "$JUPYTERHUB_URL"
   PRODUCT_NAME: "$PRODUCT_NAME"
+  PRODUCT_NAME_SHORT: "$PRODUCT_NAME_SHORT"
   LOGO_SVG: |
 $(escape_yaml_multiline "$LOGO_SVG")
   FAVICON_SVG: |
@@ -113,7 +138,7 @@ sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARI
 sed -i'.tmp' -E "s|(jupyterhub:[ ]*\")([^\"]+)(\")|\1$JUPYTERHUB_PLACEHOLDER\3|g" "$VARIABLES_PATH"
 
 # Replace only the first product: line after validmind: section
-awk -v placeholder="$PRODUCT_PLACEHOLDER" '
+awk -v placeholder="$PRODUCT_PLACEHOLDER_LONG" '
 /^validmind:/ { in_validmind=1; print; next }
 /^[a-zA-Z]/ && in_validmind { in_validmind=0 }
 in_validmind && /^[[:space:]]*product:/ && !replaced { 
@@ -123,11 +148,22 @@ in_validmind && /^[[:space:]]*product:/ && !replaced {
 { print }
 ' "$VARIABLES_PATH" > "$VARIABLES_PATH.tmp" && mv "$VARIABLES_PATH.tmp" "$VARIABLES_PATH"
 
+# Replace only the first product: line after vm: section
+awk -v placeholder="$PRODUCT_PLACEHOLDER_SHORT" '
+/^vm:/ { in_vm=1; print; next }
+/^[a-zA-Z]/ && in_vm { in_vm=0 }
+in_vm && /^[[:space:]]*product:/ && !replaced_vm { 
+    sub(/product:[[:space:]]*"[^"]*"/, "product: \"" placeholder "\"")
+    replaced_vm=1
+}
+{ print }
+' "$VARIABLES_PATH" > "$VARIABLES_PATH.tmp" && mv "$VARIABLES_PATH.tmp" "$VARIABLES_PATH"
+
 # Remove temporary files created by sed
 rm -f "${VARIABLES_PATH}.tmp"
 
 # Replace title in _quarto.yml
-sed -i'.tmp' -E "s|title: \"ValidMind\"|title: \"$PRODUCT_PLACEHOLDER\"|g" "_quarto.yml"
+sed -i'.tmp' -E "s|title: \"ValidMind\"|title: \"$PRODUCT_PLACEHOLDER_LONG\"|g" "_quarto.yml"
 rm -f "_quarto.yml.tmp"
 
 printf "\nSuccessfully modified %s and _quarto.yml\n" "$VARIABLES_PATH"
