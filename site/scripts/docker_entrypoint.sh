@@ -152,14 +152,23 @@ echo "$JUPYTERHUB_COUNT instances of $JUPYTERHUB_PLACEHOLDER"
 echo "$PRODUCT_COUNT instances of $PRODUCT_PLACEHOLDER_LONG"
 echo "$PRODUCT_SHORT_COUNT instances of $PRODUCT_PLACEHOLDER_SHORT"
 
+# Detect sed version for portability (BSD vs GNU)
+if sed --version >/dev/null 2>&1; then
+    # GNU sed (Ubuntu/Linux)
+    SED_INPLACE="sed -i"
+else
+    # BSD sed (macOS) 
+    SED_INPLACE="sed -i ''"
+fi
+
 # Replace placeholders in HTML files
 echo "Replacing URL placeholders in HTML files..."
-find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$VALIDMIND_PLACEHOLDER|$VALIDMIND_URL|g" {} \;
-find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" {} \;
+find "$HTML_DIR" -type f -name "*.html" -exec $SED_INPLACE "s|$VALIDMIND_PLACEHOLDER|$VALIDMIND_URL|g" {} \;
+find "$HTML_DIR" -type f -name "*.html" -exec $SED_INPLACE "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" {} \;
 
 echo "Replacing product name placeholders in HTML files..."
-find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" {} \;
-find "$HTML_DIR" -type f -name "*.html" -exec sed -i "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" {} \;
+find "$HTML_DIR" -type f -name "*.html" -exec $SED_INPLACE "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" {} \;
+find "$HTML_DIR" -type f -name "*.html" -exec $SED_INPLACE "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" {} \;
 
 # Replace SVG content with actual SVG files if provided
 if [ -n "$LOGO_SVG" ]; then
@@ -175,10 +184,10 @@ fi
 # Replace placeholders in search.json file
 echo "Replacing placeholders in search.json..."
 if [ -f "$HTML_DIR/search.json" ]; then
-    sed -i "s|$VALIDMIND_PLACEHOLDER|$VALIDMIND_URL|g" "$HTML_DIR/search.json"
-    sed -i "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" "$HTML_DIR/search.json"
-    sed -i "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" "$HTML_DIR/search.json"
-    sed -i "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" "$HTML_DIR/search.json"
+    $SED_INPLACE "s|$VALIDMIND_PLACEHOLDER|$VALIDMIND_URL|g" "$HTML_DIR/search.json"
+    $SED_INPLACE "s|$JUPYTERHUB_PLACEHOLDER|$JUPYTERHUB_URL|g" "$HTML_DIR/search.json"
+    $SED_INPLACE "s|$PRODUCT_PLACEHOLDER_LONG|$PRODUCT_NAME_LONG|g" "$HTML_DIR/search.json"
+    $SED_INPLACE "s|$PRODUCT_PLACEHOLDER_SHORT|$PRODUCT_NAME_SHORT|g" "$HTML_DIR/search.json"
 else
     echo "search.json file not found"
 fi

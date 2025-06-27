@@ -133,9 +133,20 @@ fi
 
 printf "\nSuccessfully generated %s" "$MANIFEST_PATH"
 
+# Detect sed version for portability (BSD vs GNU)
+if sed --version >/dev/null 2>&1; then
+    # GNU sed (Ubuntu/Linux)
+    SED_INPLACE="sed -i"
+    SED_EXTENDED="sed -E"
+else
+    # BSD sed (macOS) 
+    SED_INPLACE="sed -i .tmp"
+    SED_EXTENDED="sed -E"
+fi
+
 # Replacements in _variables.yml
-sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"
-sed -i'.tmp' -E "s|(jupyterhub:[ ]*\")([^\"]+)(\")|\1$JUPYTERHUB_PLACEHOLDER\3|g" "$VARIABLES_PATH"
+$SED_INPLACE -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"
+$SED_INPLACE -E "s|(jupyterhub:[ ]*\")([^\"]+)(\")|\1$JUPYTERHUB_PLACEHOLDER\3|g" "$VARIABLES_PATH"
 
 # Replace only the first product: line after validmind: section
 awk -v placeholder="$PRODUCT_PLACEHOLDER_LONG" '
@@ -159,11 +170,11 @@ in_vm && /^[[:space:]]*product:/ && !replaced_vm {
 { print }
 ' "$VARIABLES_PATH" > "$VARIABLES_PATH.tmp" && mv "$VARIABLES_PATH.tmp" "$VARIABLES_PATH"
 
-# Remove temporary files created by sed
+# Remove temporary files created by sed (for BSD sed)
 rm -f "${VARIABLES_PATH}.tmp"
 
 # Replace title in _quarto.yml
-sed -i'.tmp' -E "s|title: \"ValidMind\"|title: \"$PRODUCT_PLACEHOLDER_LONG\"|g" "_quarto.yml"
+$SED_INPLACE -E "s|title: \"ValidMind\"|title: \"$PRODUCT_PLACEHOLDER_LONG\"|g" "_quarto.yml"
 rm -f "_quarto.yml.tmp"
 
 printf "\nSuccessfully modified %s and _quarto.yml\n" "$VARIABLES_PATH"
