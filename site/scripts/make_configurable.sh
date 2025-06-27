@@ -126,4 +126,8 @@ in_validmind && /^[[:space:]]*product:/ && !replaced {
 # Remove temporary files created by sed
 rm -f "${VARIABLES_PATH}.tmp"
 
-printf "\nSuccessfully modified %s\n" "$VARIABLES_PATH"
+# Replace title in _quarto.yml
+sed -i'.tmp' -E "s|title: \"ValidMind\"|title: \"$PRODUCT_PLACEHOLDER\"|g" "_quarto.yml"
+rm -f "_quarto.yml.tmp"
+
+printf "\nSuccessfully modified %s and _quarto.yml\n" "$VARIABLES_PATH"
