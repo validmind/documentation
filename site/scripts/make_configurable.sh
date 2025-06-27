@@ -94,11 +94,9 @@ fi
 
 printf "\nSuccessfully generated %s" "$MANIFEST_PATH"
 
-# Replace the actual URLs with placeholder URLs
+# Replacements in _variables.yml
 sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"
 sed -i'.tmp' -E "s|(jupyterhub:[ ]*\")([^\"]+)(\")|\1$JUPYTERHUB_PLACEHOLDER\3|g" "$VARIABLES_PATH"
-
-# Replace the product name with placeholder in _variables.yml
 sed -i'.tmp' -E "s|(product:[ ]*\")([^\"]+)(\")|\1$PRODUCT_PLACEHOLDER\3|g" "$VARIABLES_PATH"
 
 # Remove temporary files created by sed
