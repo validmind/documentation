@@ -95,25 +95,25 @@ fi
 # Finally, use hardcoded defaults as a last resort
 if [ -z "$VALIDMIND_URL" ]; then
     VALIDMIND_URL="https://app.prod.validmind.ai"
-    echo "Using default VALIDMIND_URL: $VALIDMIND_URL"
+    echo "INFO: Using default VALIDMIND_URL: $VALIDMIND_URL"
 fi
 
 if [ -z "$JUPYTERHUB_URL" ]; then
     JUPYTERHUB_URL="https://jupyterhub.validmind.ai"
-    echo "Using default JUPYTERHUB_URL: $JUPYTERHUB_URL"
+    echo "INFO: Using default JUPYTERHUB_URL: $JUPYTERHUB_URL"
 fi
 
 if [ -z "$PRODUCT_NAME" ]; then
-    PRODUCT_NAME="&#8203;ValidMind"
-    echo "Using default PRODUCT_NAME: $PRODUCT_NAME"
+    PRODUCT_NAME="ValidMind AI Risk Platform"
+    echo "INFO: Using default PRODUCT_NAME: $PRODUCT_NAME"
 fi
 
 if [ -z "$LOGO_SVG" ]; then
-    echo "Warning: No LOGO_SVG provided. Using placeholder."
+    echo "INFO: Using original logo."
 fi
 
 if [ -z "$FAVICON_SVG" ]; then
-    echo "Warning: No FAVICON_SVG provided. Using placeholder."
+    echo "INFO: Using original favicon."
 fi
 
 # Final check to ensure we have non-empty values for required parameters
