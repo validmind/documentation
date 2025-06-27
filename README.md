@@ -1,6 +1,6 @@
 # ValidMind
 
-![](site/about/ValidMind-logo-color.svg)
+![](site/logo.svg)
 
 This is the home for the user-facing documentation and related infrastructure for ValidMind. If you want to make updates to our external docs site, you're in the right place!
 
