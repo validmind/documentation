@@ -1,6 +1,6 @@
 # ValidMind
 
-![](site/about/ValidMind-logo-color.svg)
+![](site/logo.svg)
 
 This is the home for the user-facing documentation and related infrastructure for ValidMind. If you want to make updates to our external docs site, you're in the right place!
 
@@ -175,57 +175,55 @@ make docker-serve
 
 Access the site locally: http://localhost:4444  
 
-### URL configuration for Docker
+### Local Kubernetes development with Kind
 
-If you need to change where our docs site links to ValidMind or JupyterHub, this section explains how.
+For local development and testing, you can run the docs site in a Kubernetes environment using Kind (Kubernetes in Docker).
 
-Two parameters can be configured:
+#### Quick setup
 
-- `VALIDMIND_URL` — where to access the platform, defaults to our public ValidMind app
-- `JUPYTERHUB_URL` — where to access JupyterHub, defaults to our public instance
+```bash
+# Build the Docker image and generate validmind-docs.yaml
+make docker-build
 
-#### How to configure
+# Start Kind cluster and deploy docs
+make kind-serve
 
-Pass environment variables through a Kubernetes manifest, use a config file, or use public defaults if none are specified.
-
-Configure in a [Kubernetes manifest](validmind-docs.yaml):
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: validmind-docs
-  labels:
-    app: validmind-docs
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: validmind-docs
-  template:
-    metadata:
-      labels:
-        app: validmind-docs
-    spec:
-      containers:
-      - name: validmind-docs
-        image: validmind/docs:latest
-        ports:
-        - containerPort: 80
-        env:
-        - name: VALIDMIND_URL
-          value: "https://your-custom-app.validmind.ai"
-        - name: JUPYTERHUB_URL
-          value: "https://your-custom-jupyter.validmind.ai"
+# Access at http://localhost:4444/
 ```
 
-Configure in `config.json`, generated with the Docker image:
+**Tip:** The container configuration on startup can take 20 seconds or more before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
 
-```json
-{
-   "VALIDMIND_URL": "https://your-custom-app.validmind.ai",
-   "JUPYTERHUB_URL": "https://your-custom-jupyter.validmind.ai"
- }
+#### Configuration
+
+The setup uses three configuration files, you need to configure only the first:
+
+- **`site/validmind-docs.yaml`** — Generated ConfigMap with configurable environment variables for URLs, product names, and branding (logo and favicon)
+- **`validmind-docs-deployment.yaml`** — Kubernetes Deployment and Service manifest
+- **`kind-config.yaml`** — Kind cluster configuration
+
+#### Environment variables
+
+Configure URLs, product names, and branding by editing the generated `site/validmind-docs.yaml`:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: validmind-docs-config
+  namespace: cmvm-test
+data:
+  VALIDMIND_URL: "https://your-custom-app.validmind.ai"
+  JUPYTERHUB_URL: "https://your-custom-jupyter.validmind.ai"
+  PRODUCT_NAME_LONG: "Your Custom Platform Name"
+  PRODUCT_NAME_SHORT: "YourBrand"
+```
+
+#### Additional commands
+
+```bash
+make kind-stop      # Stop the Kind cluster
+make kind-restart   # Restart with updated configuration
+make kind-logs      # View container logs
 ```
 
 ## Configuring Lighthouse checks
