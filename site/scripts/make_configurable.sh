@@ -24,7 +24,21 @@ VALIDMIND_URL=$(awk '/url:/{flag=1} flag && /us1:/{gsub(/"/, "", $2); print $2; 
 JUPYTERHUB_URL=$(awk '/url:/{flag=1} flag && /jupyterhub:/{gsub(/"/, "", $2); print $2; exit}' "$VARIABLES_PATH")
 
 # Extract product name from _variables.yml
-PRODUCT_NAME=$(awk '/vm:/{flag=1} flag && /product:/{gsub(/"/, "", $2); print $2; exit}' "$VARIABLES_PATH")
+PRODUCT_NAME=$(awk '
+/^validmind:/ { in_validmind=1; next }
+/^[a-zA-Z]/ && in_validmind { in_validmind=0 }
+in_validmind && /product:/ { 
+    # Extract quoted string
+    start = index($0, "\"")
+    if (start > 0) {
+        line = substr($0, start+1)
+        end = index(line, "\"")
+        if (end > 0) {
+            print substr(line, 1, end-1)
+            exit
+        }
+    }
+}' "$VARIABLES_PATH")
 
 # Extract SVG content from logo.svg and favicon.svg
 if [ -f "logo.svg" ]; then
@@ -55,9 +69,9 @@ if [ -z "$PRODUCT_NAME" ]; then
 fi
 
 printf "\nFound values to configure in %s:\n" "$VARIABLES_PATH"
-printf "VALIDMIND_URL → %s\n" "$VALIDMIND_PLACEHOLDER"
-printf "JUPYTERHUB_URL → %s\n" "$JUPYTERHUB_PLACEHOLDER"
-printf "PRODUCT_NAME → %s\n" "$PRODUCT_PLACEHOLDER"
+printf "VALIDMIND_URL: %s → %s\n" "$VALIDMIND_URL" "$VALIDMIND_PLACEHOLDER"
+printf "JUPYTERHUB_URL: %s → %s\n" "$JUPYTERHUB_URL" "$JUPYTERHUB_PLACEHOLDER"
+printf "PRODUCT_NAME: %s → %s\n" "$PRODUCT_NAME" "$PRODUCT_PLACEHOLDER"
 printf "\nFound logo.svg:\n"
 printf "%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
 printf "\nFound favicon.svg:\n"
@@ -97,7 +111,17 @@ printf "\nSuccessfully generated %s" "$MANIFEST_PATH"
 # Replacements in _variables.yml
 sed -i'.tmp' -E "s|(us1:[ ]*\")([^\"]+)(\")|\1$VALIDMIND_PLACEHOLDER\3|g" "$VARIABLES_PATH"
 sed -i'.tmp' -E "s|(jupyterhub:[ ]*\")([^\"]+)(\")|\1$JUPYTERHUB_PLACEHOLDER\3|g" "$VARIABLES_PATH"
-sed -i'.tmp' -E "s|(product:[ ]*\")([^\"]+)(\")|\1$PRODUCT_PLACEHOLDER\3|g" "$VARIABLES_PATH"
+
+# Replace only the first product: line after validmind: section
+awk -v placeholder="$PRODUCT_PLACEHOLDER" '
+/^validmind:/ { in_validmind=1; print; next }
+/^[a-zA-Z]/ && in_validmind { in_validmind=0 }
+in_validmind && /^[[:space:]]*product:/ && !replaced { 
+    sub(/product:[[:space:]]*"[^"]*"/, "product: \"" placeholder "\"")
+    replaced=1
+}
+{ print }
+' "$VARIABLES_PATH" > "$VARIABLES_PATH.tmp" && mv "$VARIABLES_PATH.tmp" "$VARIABLES_PATH"
 
 # Remove temporary files created by sed
 rm -f "${VARIABLES_PATH}.tmp"
