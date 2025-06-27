@@ -145,86 +145,129 @@ After you pull in the changes, commit them to this repo as part of the release n
 
 <!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
-## Build and serve the site with Docker
-
-You can build and serve the static HTML docs site using Docker — for deployment as part of our product or for testing in a consistent local environment.
-
-### Prerequisites  
-
-- [Docker](https://docs.docker.com/get-docker/)
-
-### Build the site  
-
-```bash
-cd site
-make docker-build
-```
-
-This command:
-
-1. Gets all the source files.
-2. Renders the static site in `site/_site`.  
-3. Builds a Docker image using the `Dockerfile`.  
-
-### Serve the site  
-
-```bash
-cd site
-make docker-serve
-```
-
-Access the site locally: http://localhost:4444  
-
-### Local Kubernetes development with Kind
+### Local development with Kind
 
 For local development and testing, you can run the docs site in a Kubernetes environment using Kind (Kubernetes in Docker).
 
-#### Quick setup
+#### Quickstart
 
 ```bash
-# Build the Docker image and generate validmind-docs.yaml
+# Render the docs site, build the Docker image, and generate validmind-docs.yaml
+cd site
 make docker-build
 
 # Start Kind cluster and deploy docs
 make kind-serve
-
-# Access at http://localhost:4444/
 ```
+
+Access the docs site in your browser at http://localhost:4444/.
 
 **Tip:** The container configuration on startup can take 20 seconds or more before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
 
-#### Configuration
-
-The setup uses three configuration files, you need to configure only the first:
-
-- **`site/validmind-docs.yaml`** — Generated ConfigMap with configurable environment variables for URLs, product names, and branding (logo and favicon)
-- **`validmind-docs-deployment.yaml`** — Kubernetes Deployment and Service manifest
-- **`kind-config.yaml`** — Kind cluster configuration
-
-#### Environment variables
-
-Configure URLs, product names, and branding by editing the generated `site/validmind-docs.yaml`:
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: validmind-docs-config
-  namespace: cmvm-test
-data:
-  VALIDMIND_URL: "https://your-custom-app.validmind.ai"
-  JUPYTERHUB_URL: "https://your-custom-jupyter.validmind.ai"
-  PRODUCT_NAME_LONG: "Your Custom Platform Name"
-  PRODUCT_NAME_SHORT: "YourBrand"
-```
-
-#### Additional commands
+#### Additional helpful commands
 
 ```bash
 make kind-stop      # Stop the Kind cluster
 make kind-restart   # Restart with updated configuration
 make kind-logs      # View container logs
 ```
+
+#### Configuration files
+
+- **`kind-config.yaml`** — Kind cluster configuration
+- **`validmind-docs-deployment.yaml`** — Kubernetes Deployment and Service manifest
+- **`site/validmind-docs.yaml`** — Generated ConfigMap with URLs, product names, and logo and favicon (not stored in GitHub)
+
+#### Testing custom ConfigMaps
+
+The Kubernetes ConfigMap provides environment-specific configuration for the ValidMind documentation site to enable runtime customization, without having to rebuild the static docs site.
+
+Supported parameters:
+
+| Key                   | Description                                                                  |
+|-----------------------|------------------------------------------------------------------------------|
+| `VALIDMIND_URL`       | Base URL for the ValidMind web application (e.g. staging or production)      |
+| `JUPYTERHUB_URL`      | URL to the JupyterHub instance used for running notebooks                    |
+| `PRODUCT_NAME_LONG`   | Full product name for use in UI headers and titles                           |
+| `PRODUCT_NAME_SHORT`  | Abbreviated product name for compact UI elements                             |
+| `LOGO_SVG`            | Inline SVG markup for the application logo (used in headers or splash screens) |
+| `FAVICON_SVG`         | Inline SVG markup for the browser favicon                                    |
+
+
+To make testing easier, [custom-validmind-docs.yaml](custom-validmind-docs.yaml) provides a ConfigMap that:
+
+- Points to staging for the ValidMind URL
+- Changes the product long and short names to be generic
+- Changes the logo and favicon colors to all green, from the default pink and green
+
+Testing this ConfigMap locally:
+
+```bash
+# Get your environment up
+cd site
+make docker-build
+make kind-serve
+
+# Apply the custom ConfigMap
+kubectl apply -f custom-validmind-docs.yaml
+kubectl rollout restart deployment/validmind-docs -n cmvm-test
+
+# Verify the configuration changes took effect
+make kind-logs
+```
+
+You should see something like this in the logs:
+
+```bash
+❯ make kind-logs
+
+Showing logs from ValidMind docs pod ...
+Switched to context "kind-validmind-docs".
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/40-replace-placeholders.sh
+==== Start docs site configuration ====
+Initializing ValidMind documentation site...
+INFO: Environment variables:
+INFO: VALIDMIND_URL=https://app.staging.validmind.ai
+INFO: JUPYTERHUB_URL=https://saturnhub.validmind.ai
+INFO: PRODUCT_NAME_LONG=Model Governance Risk Platform
+INFO: PRODUCT_NAME_SHORT=Model Governance
+Using VALIDMIND_URL from environment: https://app.staging.validmind.ai
+Using JUPYTERHUB_URL from environment: https://saturnhub.validmind.ai
+Using PRODUCT_NAME_LONG from environment: Model Governance Risk Platform
+Using PRODUCT_NAME_SHORT from environment: Model Governance
+Using LOGO_SVG from environment: 2924 characters
+Using FAVICON_SVG from environment: 705 characters
+Checking manifest file for missing values: /usr/share/nginx/html/validmind-docs.yaml
+Found placeholders:
+11 instances of https://app.prod.validmind-configurable-url.ai
+130 instances of https://jupyterhub.validmind-configurable-url.ai
+645 instances of CONFIGURABLE_PRODUCT_NAME_LONG
+1919 instances of CONFIGURABLE_PRODUCT_SHORT
+Replacing URL placeholders in HTML files...
+Replacing product name placeholders in HTML files...
+Replacing logo.svg with custom content...
+Replacing favicon.svg with custom content...
+Replacing placeholders in search.json...
+After replacement:
+0 instances of https://app.prod.validmind-configurable-url.ai
+0 instances of https://jupyterhub.validmind-configurable-url.ai
+0 instances of CONFIGURABLE_PRODUCT_NAME_LONG
+0 instances of CONFIGURABLE_PRODUCT_SHORT
+✓ All placeholder replacements completed successfully
+==== End docs site configuration ====
+```
+
+Similarly, http://localhost:4444/ in your browsers should show an all green logo and favicon, with the generic product name:
+
+![Rebranded docs site example](internal/assets/custom-validmind_yaml_example.png)
 
 ## Configuring Lighthouse checks
 
