@@ -13,7 +13,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases kind-serve kind-stop kind-logs
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases kind-serve kind-stop kind-restart kind-logs
 
 # Help section
 help:
@@ -42,6 +42,7 @@ help:
 	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
 	@echo "  kind-serve           Set up Kind cluster for ValidMind docs"
 	@echo "  kind-stop            Stop Kind cluster for ValidMind docs"
+	@echo "  kind-restart         Restart Kind cluster for ValidMind docs"
 	@echo "  kind-logs            Show logs from ValidMind docs pod"
 
 # Clean up source directory
@@ -141,6 +142,8 @@ kind-stop:
 	@echo "\nStopping Kind cluster 'validmind-docs' ..."
 	@kind delete cluster --name validmind-docs || echo "Cluster may not exist"
 	@echo "Kind cluster stopped."
+
+kind-restart: kind-stop kind-serve
 
 kind-logs:
 	@echo "\nShowing logs from ValidMind docs pod ..."
