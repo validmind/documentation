@@ -13,10 +13,10 @@ COPY site/_site /usr/share/nginx/html
 COPY site/validmind-docs.yaml /usr/share/nginx/html/validmind-docs.yaml
 
 # Copy the URL replacement script
-COPY site/scripts/docker_entrypoint.sh /docker-entrypoint.d/40-replace-url-placeholders.sh
+COPY site/scripts/docker_entrypoint.sh /docker-entrypoint.d/40-replace-placeholders.sh
 
 # Make the URL replacement script executable
-RUN chmod +x /docker-entrypoint.d/40-replace-url-placeholders.sh
+RUN chmod +x /docker-entrypoint.d/40-replace-placeholders.sh
 
 # Expose port 4444
 EXPOSE 4444

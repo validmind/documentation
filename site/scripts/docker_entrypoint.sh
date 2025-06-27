@@ -17,43 +17,61 @@ PRODUCT_PLACEHOLDER_SHORT="CONFIGURABLE_PRODUCT_SHORT"
 
 echo "Initializing ValidMind documentation site..."
 
-# Initialize variables as empty
-VALIDMIND_URL=""
-JUPYTERHUB_URL=""
-PRODUCT_NAME_LONG=""
-PRODUCT_NAME_SHORT=""
-LOGO_SVG=""
-FAVICON_SVG=""
+# Debug: Show what environment variables are available
+echo "INFO: Environment variables:"
+echo "INFO: VALIDMIND_URL=${VALIDMIND_URL:-<not set>}"
+echo "INFO: JUPYTERHUB_URL=${JUPYTERHUB_URL:-<not set>}"
+echo "INFO: PRODUCT_NAME_LONG=${PRODUCT_NAME_LONG:-<not set>}"
+echo "INFO: PRODUCT_NAME_SHORT=${PRODUCT_NAME_SHORT:-<not set>}"
 
-# First check environment variables
-if [ -n "${VALIDMIND_URL:-}" ]; then
-    VALIDMIND_URL="$VALIDMIND_URL"
+# First check environment variables and set variables for use
+ENV_VALIDMIND_URL="${VALIDMIND_URL:-}"
+ENV_JUPYTERHUB_URL="${JUPYTERHUB_URL:-}"
+ENV_PRODUCT_NAME_LONG="${PRODUCT_NAME_LONG:-}"
+ENV_PRODUCT_NAME_SHORT="${PRODUCT_NAME_SHORT:-}"
+ENV_LOGO_SVG="${LOGO_SVG:-}"
+ENV_FAVICON_SVG="${FAVICON_SVG:-}"
+
+if [ -n "$ENV_VALIDMIND_URL" ]; then
+    VALIDMIND_URL="$ENV_VALIDMIND_URL"
     echo "Using VALIDMIND_URL from environment: $VALIDMIND_URL"
+else
+    echo "INFO: VALIDMIND_URL not found in environment, will check manifest"
 fi
 
-if [ -n "${JUPYTERHUB_URL:-}" ]; then
-    JUPYTERHUB_URL="$JUPYTERHUB_URL"
+if [ -n "$ENV_JUPYTERHUB_URL" ]; then
+    JUPYTERHUB_URL="$ENV_JUPYTERHUB_URL"
     echo "Using JUPYTERHUB_URL from environment: $JUPYTERHUB_URL"
+else
+    echo "INFO: JUPYTERHUB_URL not found in environment, will check manifest"
 fi
 
-if [ -n "${PRODUCT_NAME_LONG:-}" ]; then
-    PRODUCT_NAME_LONG="$PRODUCT_NAME_LONG"
+if [ -n "$ENV_PRODUCT_NAME_LONG" ]; then
+    PRODUCT_NAME_LONG="$ENV_PRODUCT_NAME_LONG"
     echo "Using PRODUCT_NAME_LONG from environment: $PRODUCT_NAME_LONG"
+else
+    echo "INFO: PRODUCT_NAME_LONG not found in environment, will check manifest"
 fi
 
-if [ -n "${PRODUCT_NAME_SHORT:-}" ]; then
-    PRODUCT_NAME_SHORT="$PRODUCT_NAME_SHORT"
+if [ -n "$ENV_PRODUCT_NAME_SHORT" ]; then
+    PRODUCT_NAME_SHORT="$ENV_PRODUCT_NAME_SHORT"
     echo "Using PRODUCT_NAME_SHORT from environment: $PRODUCT_NAME_SHORT"
+else
+    echo "INFO: PRODUCT_NAME_SHORT not found in environment, will check manifest"
 fi
 
-if [ -n "${LOGO_SVG:-}" ]; then
-    LOGO_SVG="$LOGO_SVG"
+if [ -n "$ENV_LOGO_SVG" ]; then
+    LOGO_SVG="$ENV_LOGO_SVG"
     echo "Using LOGO_SVG from environment: $(echo "$LOGO_SVG" | wc -c) characters"
+else
+    echo "INFO: LOGO_SVG not found in environment, will check manifest"
 fi
 
-if [ -n "${FAVICON_SVG:-}" ]; then
-    FAVICON_SVG="$FAVICON_SVG"
+if [ -n "$ENV_FAVICON_SVG" ]; then
+    FAVICON_SVG="$ENV_FAVICON_SVG"
     echo "Using FAVICON_SVG from environment: $(echo "$FAVICON_SVG" | wc -c) characters"
+else
+    echo "INFO: FAVICON_SVG not found in environment, will check manifest"
 fi
 
 # Function to extract value from YAML manifest
@@ -88,22 +106,38 @@ extract_yaml_value() {
 }
 
 # If still empty, try manifest file
-if { [ -z "$VALIDMIND_URL" ] || [ -z "$JUPYTERHUB_URL" ] || [ -z "$PRODUCT_NAME_LONG" ] || [ -z "$PRODUCT_NAME_SHORT" ] || [ -z "$LOGO_SVG" ] || [ -z "$FAVICON_SVG" ]; } && [ -f "$MANIFEST_FILE" ]; then
-    echo "Looking for values in manifest file: $MANIFEST_FILE"
+if [ -f "$MANIFEST_FILE" ]; then
+    echo "Checking manifest file for missing values: $MANIFEST_FILE"
     
-    [ -z "$VALIDMIND_URL" ] && VALIDMIND_URL=$(extract_yaml_value "VALIDMIND_URL" "$MANIFEST_FILE")
-    [ -z "$JUPYTERHUB_URL" ] && JUPYTERHUB_URL=$(extract_yaml_value "JUPYTERHUB_URL" "$MANIFEST_FILE")
-    [ -z "$PRODUCT_NAME_LONG" ] && PRODUCT_NAME_LONG=$(extract_yaml_value "PRODUCT_NAME_LONG" "$MANIFEST_FILE")
-    [ -z "$PRODUCT_NAME_SHORT" ] && PRODUCT_NAME_SHORT=$(extract_yaml_value "PRODUCT_NAME_SHORT" "$MANIFEST_FILE")
-    [ -z "$LOGO_SVG" ] && LOGO_SVG=$(extract_yaml_value "LOGO_SVG" "$MANIFEST_FILE")
-    [ -z "$FAVICON_SVG" ] && FAVICON_SVG=$(extract_yaml_value "FAVICON_SVG" "$MANIFEST_FILE")
+    if [ -z "$VALIDMIND_URL" ]; then
+        VALIDMIND_URL=$(extract_yaml_value "VALIDMIND_URL" "$MANIFEST_FILE")
+        [ -n "$VALIDMIND_URL" ] && echo "Using VALIDMIND_URL from manifest: $VALIDMIND_URL"
+    fi
     
-    [ -n "$VALIDMIND_URL" ] && echo "Using VALIDMIND_URL from manifest: $VALIDMIND_URL"
-    [ -n "$JUPYTERHUB_URL" ] && echo "Using JUPYTERHUB_URL from manifest: $JUPYTERHUB_URL"
-    [ -n "$PRODUCT_NAME_LONG" ] && echo "Using PRODUCT_NAME_LONG from manifest: $PRODUCT_NAME_LONG"
-    [ -n "$PRODUCT_NAME_SHORT" ] && echo "Using PRODUCT_NAME_SHORT from manifest: $PRODUCT_NAME_SHORT"
-    [ -n "$LOGO_SVG" ] && printf "Using LOGO_SVG from manifest:\n%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
-    [ -n "$FAVICON_SVG" ] && printf "Using FAVICON_SVG from manifest:\n%s ...\n" "$(echo "$FAVICON_SVG" | head -n 5)"
+    if [ -z "$JUPYTERHUB_URL" ]; then
+        JUPYTERHUB_URL=$(extract_yaml_value "JUPYTERHUB_URL" "$MANIFEST_FILE")
+        [ -n "$JUPYTERHUB_URL" ] && echo "Using JUPYTERHUB_URL from manifest: $JUPYTERHUB_URL"
+    fi
+    
+    if [ -z "$PRODUCT_NAME_LONG" ]; then
+        PRODUCT_NAME_LONG=$(extract_yaml_value "PRODUCT_NAME_LONG" "$MANIFEST_FILE")
+        [ -n "$PRODUCT_NAME_LONG" ] && echo "Using PRODUCT_NAME_LONG from manifest: $PRODUCT_NAME_LONG"
+    fi
+    
+    if [ -z "$PRODUCT_NAME_SHORT" ]; then
+        PRODUCT_NAME_SHORT=$(extract_yaml_value "PRODUCT_NAME_SHORT" "$MANIFEST_FILE")
+        [ -n "$PRODUCT_NAME_SHORT" ] && echo "Using PRODUCT_NAME_SHORT from manifest: $PRODUCT_NAME_SHORT"
+    fi
+    
+    if [ -z "$LOGO_SVG" ]; then
+        LOGO_SVG=$(extract_yaml_value "LOGO_SVG" "$MANIFEST_FILE")
+        [ -n "$LOGO_SVG" ] && printf "Using LOGO_SVG from manifest:\n%s ...\n" "$(echo "$LOGO_SVG" | head -n 5)"
+    fi
+    
+    if [ -z "$FAVICON_SVG" ]; then
+        FAVICON_SVG=$(extract_yaml_value "FAVICON_SVG" "$MANIFEST_FILE")
+        [ -n "$FAVICON_SVG" ] && printf "Using FAVICON_SVG from manifest:\n%s ...\n" "$(echo "$FAVICON_SVG" | head -n 5)"
+    fi
 fi
 
 # Finally, use hardcoded defaults as a last resort
