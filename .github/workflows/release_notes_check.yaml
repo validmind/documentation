@@ -4,19 +4,23 @@ on:
   pull_request:
     types: [opened, synchronize, labeled, unlabeled, edited, ready_for_review]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   ci_check:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Install dependencies
         run: pip install PyGithub pyyaml
