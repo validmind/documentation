@@ -3,7 +3,7 @@
 
 set -e
 
-echo "==== Start ValidMind docs site configuration ===="
+echo "==== Start docs site configuration ===="
 
 # Define paths
 MANIFEST_FILE="/usr/share/nginx/html/validmind-docs.yaml"
@@ -63,7 +63,12 @@ extract_yaml_value() {
     
     # Extract simple key-value pairs
     if [ "$key" = "VALIDMIND_URL" ] || [ "$key" = "JUPYTERHUB_URL" ] || [ "$key" = "PRODUCT_NAME_LONG" ] || [ "$key" = "PRODUCT_NAME_SHORT" ]; then
-        grep "^[[:space:]]*${key}:" "$file" 2>/dev/null | sed "s/^[[:space:]]*${key}:[[:space:]]*//;s/[\"']//g"
+        local value=$(grep "^[[:space:]]*${key}:" "$file" 2>/dev/null | sed "s/^[[:space:]]*${key}:[[:space:]]*//;s/[\"']//g")
+        # Strip &#8203; from the beginning of PRODUCT_NAME_SHORT
+        if [ "$key" = "PRODUCT_NAME_SHORT" ]; then
+            value=$(echo "$value" | sed 's/^&#8203;//')
+        fi
+        echo "$value"
     # Extract multiline YAML values (for SVG content)
     elif [ "$key" = "LOGO_SVG" ] || [ "$key" = "FAVICON_SVG" ]; then
         awk "
@@ -118,7 +123,7 @@ if [ -z "$PRODUCT_NAME_LONG" ]; then
 fi
 
 if [ -z "$PRODUCT_NAME_SHORT" ]; then
-    PRODUCT_NAME_SHORT="&#8203;ValidMind"
+    PRODUCT_NAME_SHORT="ValidMind"
     echo "INFO: Using default PRODUCT_NAME_SHORT: $PRODUCT_NAME_SHORT"
 fi
 
@@ -181,15 +186,15 @@ fi
 # Verify replacement
 VALIDMIND_AFTER=$(grep -r "$VALIDMIND_PLACEHOLDER" "$HTML_DIR" | wc -l)
 JUPYTERHUB_AFTER=$(grep -r "$JUPYTERHUB_PLACEHOLDER" "$HTML_DIR" | wc -l)
-PRODUCT_AFTER=$(grep -r "$PRODUCT_PLACEHOLDER_LONG" "$HTML_DIR" | wc -l)
+PRODUCT_LONG_AFTER=$(grep -r "$PRODUCT_PLACEHOLDER_LONG" "$HTML_DIR" | wc -l)
 PRODUCT_SHORT_AFTER=$(grep -r "$PRODUCT_PLACEHOLDER_SHORT" "$HTML_DIR" | wc -l)
 echo "After replacement:"
 echo "$VALIDMIND_AFTER instances of $VALIDMIND_PLACEHOLDER"
 echo "$JUPYTERHUB_AFTER instances of $JUPYTERHUB_PLACEHOLDER"
-echo "$PRODUCT_AFTER instances of $PRODUCT_PLACEHOLDER_LONG"
+echo "$PRODUCT_LONG_AFTER instances of $PRODUCT_PLACEHOLDER_LONG"
 echo "$PRODUCT_SHORT_AFTER instances of $PRODUCT_PLACEHOLDER_SHORT"
 
-if [ "$VALIDMIND_AFTER" -eq 0 ] && [ "$JUPYTERHUB_AFTER" -eq 0 ] && [ "$PRODUCT_AFTER" -eq 0 ] && [ "$PRODUCT_SHORT_AFTER" -eq 0 ]; then
+if [ "$VALIDMIND_AFTER" -eq 0 ] && [ "$JUPYTERHUB_AFTER" -eq 0 ] && [ "$PRODUCT_LONG_AFTER" -eq 0 ] && [ "$PRODUCT_SHORT_AFTER" -eq 0 ]; then
     echo "✓ All placeholder replacements completed successfully"
 else
     echo "⚠ Some placeholders might not have been replaced"
@@ -197,4 +202,4 @@ else
     grep -l "$VALIDMIND_PLACEHOLDER\|$JUPYTERHUB_PLACEHOLDER\|$PRODUCT_PLACEHOLDER_LONG\|$PRODUCT_PLACEHOLDER_SHORT" "$HTML_DIR" | head -5
 fi
 
-echo "==== End ValidMind docs site configuration ===="
+echo "==== End docs site configuration ===="
