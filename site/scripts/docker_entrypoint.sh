@@ -3,7 +3,7 @@
 
 set -e
 
-echo "==== Start ValidMind URL configuration ===="
+echo "==== Start ValidMind docs site configuration ===="
 
 # Define paths
 MANIFEST_FILE="/usr/share/nginx/html/validmind-docs.yaml"
@@ -177,4 +177,4 @@ else
     grep -l "$VALIDMIND_PLACEHOLDER\|$JUPYTERHUB_PLACEHOLDER\|$PRODUCT_PLACEHOLDER" "$HTML_DIR" | head -5
 fi
 
-echo "==== URL configuration complete ===="
+echo "==== End ValidMind docs site configuration ===="
