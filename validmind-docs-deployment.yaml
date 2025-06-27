@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validmind-docs
+  namespace: cmvm-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: validmind-docs
+  template:
+    metadata:
+      labels:
+        app: validmind-docs
+    spec:
+      containers:
+      - name: validmind-docs
+        image: validmind-docs:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: validmind-docs-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: validmind-docs-service
+  namespace: cmvm-test
+spec:
+  selector:
+    app: validmind-docs
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+  type: NodePort 
