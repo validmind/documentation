@@ -13,7 +13,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases kind-serve kind-stop kind-logs
 
 # Help section
 help:
@@ -40,6 +40,9 @@ help:
 	@echo "  release-notes        Generate release notes from pull requests since latest tag and update releases sidebar"
 	@echo "  test-descriptions    Copy the ValidMind tests docs into tests/"
 	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
+	@echo "  kind-serve           Set up Kind cluster for ValidMind docs"
+	@echo "  kind-stop            Stop Kind cluster for ValidMind docs"
+	@echo "  kind-logs            Show logs from ValidMind docs pod"
 
 # Clean up source directory
 clean:
@@ -109,9 +112,40 @@ docker-build: docker-site-lite
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
+# Requires that you've run `make docker-build`
 docker-serve:
 	@echo "\nStarting the Docker container on http://localhost:4444/ ..."
 	@docker run -p 4444:80 validmind-docs
+
+# Requires that you've run `make docker-build`
+kind-serve:
+	@echo "\nSetting up Kind cluster for ValidMind docs ..."
+	@if ! kind get clusters | grep -q validmind-docs; then \
+		echo "Creating Kind cluster 'validmind-docs' ..."; \
+		kind create cluster --name validmind-docs --config ../kind-config.yaml; \
+	else \
+		echo "Kind cluster 'validmind-docs' already exists"; \
+	fi
+	@echo "Loading Docker image into Kind cluster ..."
+	@kind load docker-image validmind-docs --name validmind-docs
+	@echo "Applying Kubernetes manifests ..."
+	@kubectl config use-context kind-validmind-docs
+	@kubectl create namespace cmvm-test --dry-run=client -o yaml | kubectl apply -f -
+	@kubectl apply -f validmind-docs.yaml
+	@kubectl apply -f ../validmind-docs-deployment.yaml
+	@echo "\nValidMind docs is now running in Kind cluster!"
+	@echo "Access it at: http://localhost:4444/"
+	@echo "To stop: make kind-stop"
+
+kind-stop:
+	@echo "\nStopping Kind cluster 'validmind-docs' ..."
+	@kind delete cluster --name validmind-docs || echo "Cluster may not exist"
+	@echo "Kind cluster stopped."
+
+kind-logs:
+	@echo "\nShowing logs from ValidMind docs pod ..."
+	@kubectl config use-context kind-validmind-docs
+	@kubectl logs -l app=validmind-docs -n cmvm-test --tail=50 -f
 
 docker-site: get-source
 	@echo "\nRendering the configurable static HTML site for Docker ..."
