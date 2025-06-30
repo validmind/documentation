@@ -314,8 +314,8 @@ release-notes:
 		echo "Example: make release-notes TAG=cmvm/25.07"; \
 		exit 1; \
 	fi
-	@echo "Creating new branch: release-notes-for-$(TAG)..."
-	@git checkout -b release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
+	# @echo "Creating new branch: release-notes-for-$(TAG)..."
+	# @git checkout -b release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
 	@echo "Cloning release-notes repository..."
 	@rm -rf .tmp-release-notes
 	@git clone git@github.com:validmind/release-notes.git .tmp-release-notes
