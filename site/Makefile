@@ -18,32 +18,33 @@ SRC_DIR := $(SRC_ROOT)/validmind-library
 # Help section
 help:
 	@echo "Available targets:"
-	@echo "  help                 Display this help message (default target)"
-	@echo "  clean                Remove the _source/ directory"
-	@echo "  clone                Clone the validmind-library repository into _source/"
-	@echo "                       Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
-	@echo "  copy-installation    Copy customer-managed installation docs into installation/"
-	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
-	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
-	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
-	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
-	@echo "  docker-build         Builds a Docker image of the docs site"
-	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
-	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
-	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
-	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
-	@echo "  generate-sitemap     Generate a sitemap for the static HTML site"
-	@echo "  execute              Execute a Jupyter Notebook or notebook directory"
-	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
-	@echo "  kind-serve           Set up Kind cluster for ValidMind docs"
-	@echo "  kind-stop            Stop Kind cluster for ValidMind docs"
-	@echo "  kind-restart         Restart Kind cluster for ValidMind docs"
-	@echo "  kind-logs            Show logs from ValidMind docs pod"
-	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
-	@echo "  python-docs          Copy the Python library docs into validmind/"
-	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag (example: TAG=cmvm/25.07)"
-	@echo "  test-descriptions    Copy the ValidMind tests docs into tests/"
-	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
+	@echo "  help                     Display this help message (default target)"
+	@echo "  clean                    Remove the _source/ directory"
+	@echo "  clone                    Clone the validmind-library repository into _source/"
+	@echo "                           Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
+	@echo "  copy-installation        Copy customer-managed installation docs into installation/"
+	@echo "  delete-demo-branch       Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-demo-branch       Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-prod              Deploy docs prod site to s3://docs-ci-cd-prod/site/"
+	@echo "  deploy-staging           Deploy docs staging site to s3://docs-ci-cd-staging/site/"
+	@echo "  docker-build             Builds a Docker image of the docs site"
+	@echo "  docker-serve             Serves the docs site at http://localhost:4444/"
+	@echo "  docker-site              Get source, render site with Docker profile, execute notebooks"
+	@echo "  docker-site-lite         Get source and render site with Docker profile (skips notebook execution)"
+	@echo "  docs-site                Get all source files and render the production docs site with Quarto"
+	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
+	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
+	@echo "  get-source               Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
+	@echo "  kind-serve               Set up Kind cluster for ValidMind docs"
+	@echo "  kind-stop                Stop Kind cluster for ValidMind docs"
+	@echo "  kind-restart             Restart Kind cluster for ValidMind docs"
+	@echo "  kind-logs                Show logs from ValidMind docs pod"
+	@echo "  notebooks                Copy Jupyter notebooks into notebooks/"
+	@echo "  python-docs              Copy the Python library docs into validmind/"
+	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag or repo/tag"
+	@echo "                           Examples: TAG=cmvm/25.07 or TAG=validmind-library/v2.8.22"
+	@echo "  test-descriptions        Copy the ValidMind tests docs into tests/"
+	@echo "  yearly-releases          Collate releases by year into a listing landing and update releases sidebar"
 
 # Clean up source directory
 clean:
@@ -55,13 +56,13 @@ clean:
 # Prompt for a branch or release tag and clone the repository
 clone:
 	@if [ -n "$(LIBRARY_BRANCH)" ] && [ "$(LIBRARY_BRANCH)" != "main" ]; then \
-		echo "\nWARNING: Cloning non-release files from $(LIBRARY_BRANCH) — DO NOT COMMIT"; \
+		echo "\nWARN: Cloning non-release files from $(LIBRARY_BRANCH) — DO NOT COMMIT"; \
 		echo "\nCloning validmind-library repo from $(LIBRARY_BRANCH) ..."; \
 		CHECKOUT="$(LIBRARY_BRANCH)"; \
 	else \
 		read -p "Enter release tag (example: v2.8.10, or HEAD for latest): " TAG; \
 		if [ "$$TAG" = "HEAD" ]; then \
-			echo "\nWARNING: Cloning latest non-release files — DO NOT COMMIT"; \
+			echo "\nWARN: Cloning latest non-release files — DO NOT COMMIT"; \
 			echo "\nCloning validmind-library repo at HEAD ..."; \
 			CHECKOUT="$(LIBRARY_BRANCH)"; \
 		else \
@@ -309,7 +310,7 @@ python-docs:
 # Release notes target
 release-notes:
 	@if [ -z "$(TAG)" ]; then \
-		echo "Error: TAG parameter is required"; \
+		echo "ERROR: TAG parameter is required"; \
 		echo "Usage: make release-notes TAG=<tag>"; \
 		echo "Example: make release-notes TAG=cmvm/25.07"; \
 		exit 1; \
@@ -319,17 +320,38 @@ release-notes:
 	@echo "Cloning release-notes repository..."
 	@rm -rf .tmp-release-notes
 	@git clone git@github.com:validmind/release-notes.git .tmp-release-notes
-	@if [ ! -d ".tmp-release-notes/releases/$(TAG)" ]; then \
-		echo "Error: Tag folder 'releases/$(TAG)' not found in release-notes repository"; \
+	@echo "Determining copy paths for tag: $(TAG)..."
+	@if echo "$(TAG)" | grep -q "cmvm"; then \
+		VERSION=$$(echo "$(TAG)" | sed -E 's|^cmvm/||'); \
+		COPY_PATHS="frontend/$$VERSION documentation/$$VERSION"; \
+		echo "Processing cmvm tag, version: $$VERSION"; \
+	else \
+		COPY_PATHS="$(TAG)"; \
+		echo "Processing standard tag: $(TAG)"; \
+	fi; \
+	FOUND_ANY=false; \
+	for path in $$COPY_PATHS; do \
+		if [ -d ".tmp-release-notes/releases/$$path" ]; then \
+			FOUND_ANY=true; \
+			echo "Found source directory: releases/$$path"; \
+		fi; \
+	done; \
+	if [ "$$FOUND_ANY" = "false" ]; then \
+		echo "ERROR: No valid source directories found for tag $(TAG)"; \
+		echo "Expected one of: $$COPY_PATHS"; \
 		rm -rf .tmp-release-notes; \
-		git checkout -; \
-		git branch -D release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g'); \
 		exit 1; \
-	fi
-	@echo "Creating target directory..."
-	@mkdir -p releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')
-	@echo "Copying release notes for tag: $(TAG)..."
-	@cp -r .tmp-release-notes/releases/$(TAG)/* releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	fi; \
+	echo "Creating directories and copying release notes..."; \
+	for path in $$COPY_PATHS; do \
+		if [ -d ".tmp-release-notes/releases/$$path" ]; then \
+			echo "Copying: releases/$$path -> releases/$$path"; \
+			mkdir -p "releases/$$path"; \
+			cp -r ".tmp-release-notes/releases/$$path"/* "releases/$$path/"; \
+		else \
+			echo "WARN: Source directory releases/$$path not found, skipping"; \
+		fi; \
+	done
 	@echo "Cleaning up temporary files..."
 	@rm -rf .tmp-release-notes
 	# @echo "Committing changes ..."
