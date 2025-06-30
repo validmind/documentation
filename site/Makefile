@@ -327,13 +327,13 @@ release-notes:
 		exit 1; \
 	fi
 	@echo "Creating target directory..."
-	@mkdir -p site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')
+	@mkdir -p releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')
 	@echo "Copying release notes for tag: $(TAG)..."
-	@cp -r .tmp-release-notes/releases/$(TAG)/* site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	@cp -r .tmp-release-notes/releases/$(TAG)/* releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
 	@echo "Cleaning up temporary files..."
 	@rm -rf .tmp-release-notes
 	# @echo "Committing changes ..."
-	# @git add site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	# @git add releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
 	# @git commit -m "Merge release notes for $(TAG)"
 	# @echo "Pushing branch ..."
 	# @git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
