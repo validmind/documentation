@@ -41,7 +41,7 @@ help:
 	@echo "  kind-logs            Show logs from ValidMind docs pod"
 	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
 	@echo "  python-docs          Copy the Python library docs into validmind/"
-	@echo "  release-notes        Generate release notes from pull requests since latest tag and update releases sidebar"
+	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag (example: TAG=cmvm/25.07)"
 	@echo "  test-descriptions    Copy the ValidMind tests docs into tests/"
 	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
 
@@ -306,17 +306,42 @@ python-docs:
 		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
 	fi
 
-# Generate release notes
+# Release notes target
 release-notes:
-	@python ../release-scripts/generate_release_objects.py; \
-	if [ $$? -eq 0 ]; then \
-		cd ../; \
-		git status | grep -v 'release-scripts/'; \
-		cd site/; \
-		quarto preview; \
-	else \
-		echo "Release note generation failed, git status and quarto preview"; \
+	@if [ -z "$(TAG)" ]; then \
+		echo "Error: TAG parameter is required"; \
+		echo "Usage: make release-notes TAG=<tag>"; \
+		echo "Example: make release-notes TAG=cmvm/25.07"; \
+		exit 1; \
 	fi
+	@echo "Creating new branch: release-notes-for-$(TAG)..."
+	@git checkout -b release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
+	@echo "Cloning release-notes repository..."
+	@rm -rf .tmp-release-notes
+	@git clone git@github.com:validmind/release-notes.git .tmp-release-notes
+	@if [ ! -d ".tmp-release-notes/releases/$(TAG)" ]; then \
+		echo "Error: Tag folder 'releases/$(TAG)' not found in release-notes repository"; \
+		rm -rf .tmp-release-notes; \
+		git checkout -; \
+		git branch -D release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g'); \
+		exit 1; \
+	fi
+	@echo "Creating target directory..."
+	@mkdir -p site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')
+	@echo "Copying release notes for tag: $(TAG)..."
+	@cp -r .tmp-release-notes/releases/$(TAG)/* site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	@echo "Cleaning up temporary files..."
+	@rm -rf .tmp-release-notes
+	# @echo "Committing changes ..."
+	# @git add site/installation/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	# @git commit -m "Merge release notes for $(TAG)"
+	# @echo "Pushing branch ..."
+	# @git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
+	# @echo "Creating pull request ..."
+	# @echo "# Pull Request Description\n\n## What and why?\n\nGenerated release notes for \`$(TAG)\`: [**PREVIEW LIVE**](https://cautious-carnival-ggrg7r1.pages.github.io/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/release-notes.html)\n\n(Original source: https://github.com/validmind/release-notes/releases/$(TAG))\n\n" > .tmp-pr-body.md
+	# @gh pr create --title "Release notes for \`$(TAG)\`" --body-file .tmp-pr-body.md --label "internal"
+	# @rm -f .tmp-pr-body.md
+	# @echo "Successfully created PR for release notes $(TAG)!" 
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
