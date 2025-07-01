@@ -366,7 +366,7 @@ release-notes:
 	@echo "Pushing branch ..."
 	@git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')
 	@echo "Creating pull request ..."
-	@echo "# Pull Request Description\n\n## What and why?\n\nGenerated release notes for \`$(TAG)\`: [**PREVIEW LIVE**](https://cautious-carnival-ggrg7r1.pages.github.io/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/release-notes.html)\n\n(Original source: https://github.com/validmind/release-notes/releases/$(TAG))\n\n" > .tmp-pr-body.md
+	@echo "# Pull Request Description\n\n## What and why?\n\nThis PR contains the generated release notes for \`$(shell echo "$(TAG)" | sed -E 's|^cmvm/||')\`.\n\n" > .tmp-pr-body.md
 	@gh pr create --title "Release notes for \`$(TAG)\`" --body-file .tmp-pr-body.md --label "internal"
 	@rm -f .tmp-pr-body.md
 	@echo "Successfully created PR for release notes $(TAG)!" 
