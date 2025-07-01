@@ -361,7 +361,7 @@ release-notes:
 	@echo "Cleaning up temporary files..."
 	@rm -rf .tmp-release-notes
 	@echo "Committing changes ..."
-	@git add releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	@git add releases/
 	@git commit -m "Merge release notes for $(TAG)"
 	@echo "Pushing branch ..."
 	@git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')
