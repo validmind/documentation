@@ -315,8 +315,14 @@ release-notes:
 		echo "Example: make release-notes TAG=cmvm/25.07"; \
 		exit 1; \
 	fi
-	# @echo "Creating new branch: release-notes-for-$(TAG)..."
-	# @git checkout -b release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
+	@BRANCH_NAME="release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')"; \
+	if git show-ref --verify --quiet "refs/heads/$$BRANCH_NAME"; then \
+		echo "Branch $$BRANCH_NAME already exists, checking it out..."; \
+		git checkout "$$BRANCH_NAME"; \
+	else \
+		echo "Creating new branch: $$BRANCH_NAME..."; \
+		git checkout -b "$$BRANCH_NAME"; \
+	fi
 	@echo "Cloning release-notes repository..."
 	@rm -rf .tmp-release-notes
 	@git clone git@github.com:validmind/release-notes.git .tmp-release-notes
@@ -354,16 +360,16 @@ release-notes:
 	done
 	@echo "Cleaning up temporary files..."
 	@rm -rf .tmp-release-notes
-	# @echo "Committing changes ..."
-	# @git add releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
-	# @git commit -m "Merge release notes for $(TAG)"
-	# @echo "Pushing branch ..."
-	# @git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|/|-|g')
-	# @echo "Creating pull request ..."
-	# @echo "# Pull Request Description\n\n## What and why?\n\nGenerated release notes for \`$(TAG)\`: [**PREVIEW LIVE**](https://cautious-carnival-ggrg7r1.pages.github.io/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/release-notes.html)\n\n(Original source: https://github.com/validmind/release-notes/releases/$(TAG))\n\n" > .tmp-pr-body.md
-	# @gh pr create --title "Release notes for \`$(TAG)\`" --body-file .tmp-pr-body.md --label "internal"
-	# @rm -f .tmp-pr-body.md
-	# @echo "Successfully created PR for release notes $(TAG)!" 
+	@echo "Committing changes ..."
+	@git add releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/
+	@git commit -m "Merge release notes for $(TAG)"
+	@echo "Pushing branch ..."
+	@git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')
+	@echo "Creating pull request ..."
+	@echo "# Pull Request Description\n\n## What and why?\n\nGenerated release notes for \`$(TAG)\`: [**PREVIEW LIVE**](https://cautious-carnival-ggrg7r1.pages.github.io/releases/$$(echo "$(TAG)" | sed -E 's|^cmvm/||')/release-notes.html)\n\n(Original source: https://github.com/validmind/release-notes/releases/$(TAG))\n\n" > .tmp-pr-body.md
+	@gh pr create --title "Release notes for \`$(TAG)\`" --body-file .tmp-pr-body.md --label "internal"
+	@rm -f .tmp-pr-body.md
+	@echo "Successfully created PR for release notes $(TAG)!" 
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
