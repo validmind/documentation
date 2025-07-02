@@ -352,6 +352,7 @@ release-notes:
 	for path in $$COPY_PATHS; do \
 		if [ -d ".tmp-release-notes/releases/$$path" ]; then \
 			echo "Copying: releases/$$path -> releases/$$path"; \
+			rm -rf "releases/$$path"; \
 			mkdir -p "releases/$$path"; \
 			cp -r ".tmp-release-notes/releases/$$path"/* "releases/$$path/"; \
 		else \
