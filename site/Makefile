@@ -365,11 +365,18 @@ release-notes:
 	@git commit -m "Merge release notes for $(TAG)"
 	@echo "Pushing branch ..."
 	@git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')
-	@echo "Creating pull request ..."
-	@echo "# Pull Request Description\n\n## What and why?\n\nThis PR contains the generated release notes for \`$(shell echo "$(TAG)" | sed -E 's|^cmvm/||')\`.\n\n" > .tmp-pr-body.md
-	@gh pr create --title "Release notes for \`$(TAG)\`" --body-file .tmp-pr-body.md --label "internal"
-	@rm -f .tmp-pr-body.md
-	@echo "Successfully created PR for release notes $(TAG)!" 
+	@echo "Checking for existing pull request ..."
+	@PR_TITLE="Release notes for \`$(TAG)\`"; \
+	EXISTING_PR=$$(gh pr list --search "$$PR_TITLE" --state open --json title,number --jq '.[] | select(.title == "'"$$PR_TITLE"'") | .number'); \
+	if [ -n "$$EXISTING_PR" ]; then \
+		echo "Pull request with title '$$PR_TITLE' already exists (#$$EXISTING_PR), skipping creation"; \
+	else \
+		echo "Creating pull request ..."; \
+		echo "# Pull Request Description\n\n## What and why?\n\nThis PR contains the generated release notes for \`$(shell echo "$(TAG)" | sed -E 's|^cmvm/||')\`.\n\n" > .tmp-pr-body.md; \
+		gh pr create --title "$$PR_TITLE" --body-file .tmp-pr-body.md --label "internal"; \
+		rm -f .tmp-pr-body.md; \
+		echo "Successfully created PR for release notes $(TAG)!"; \
+	fi
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
