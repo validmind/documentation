@@ -1,0 +1,42 @@
+---
+title: "Interfaces to support code explainer feature in ValidMind (#358)"
+categories: [validmind-library, 2.8.26, documentation, enhancement, highlight]
+sidebar: release-notes
+toc-expand: true
+date: "June 26, 2025"
+# Content edited by AI - 2025-06-27 15:05
+# Content validated by AI (temperature: 0.3) - 2025-06-27 15:05
+# Content overwritten from an earlier version - 2025-06-27 15:05
+# PR URL: https://github.com/validmind/validmind-library/pull/358
+---
+
+This update introduces an experimental feature for text generation tasks within the ValidMind project. It includes interfaces to utilize the `code_explainer` LLM feature, currently in the experimental namespace to gather feedback.
+
+How to use:
+
+1. Read the source code as a string:
+   ```python
+   with open("customer_churn.py", "r") as f:
+       source_code = f.read()
+   ```
+
+2. Define the input for the `run_task` task. The input requires two variables in dictionary format:
+   ```python
+   code_explainer_input = {
+       "source_code": source_code,
+       "additional_instructions": """
+       Please explain the code in a way that is easy to understand.
+       """
+   }
+   ```
+
+3. Run the `code_explainer` task with `generation_type="code_explainer"`:
+   ```python
+   result = vm.experimental.agents.run_task(
+       task="code_explainer",
+       input=code_explainer_input
+   )
+   ```
+
+Example Output:
+![Key functions and components breakdown](/releases/validmind-library/v2.8.26/1c7b130e-bbe4-4049-88f9-50807c04f3d2.png){fig-alt="A dark-themed document titled Main Purpose and Overall Functionality outlines the configuration of a tool for machine learning model management. The document is structured with headings and bullet points, detailing sections such as Breakdown of Key Functions or Components, Assumptions or Limitations, and Potential Risks or Failure Points. Key functions include data ingestion, preprocessing, and model deployment, with specific tasks like data validation and feature extraction. Assumptions cover data availability and model performance, while risks address data quality issues and model drift. The document concludes with a section on Recommended Mitigation Strategies or Improvements, suggesting enhanced data validation and monitoring practices."}

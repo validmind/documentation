@@ -1,0 +1,156 @@
+---
+title: "2.8.26 Patch release notes"
+date: "June 26, 2025"
+categories: [validmind-library, 2.8.26, patch release]
+sidebar: release-notes
+toc-expand: true
+# Content edited by AI - 2025-06-27 15:05
+# Content validated by AI (temperature: 0.3) - 2025-06-27 15:05
+# Content overwritten from an earlier version - 2025-06-27 15:05
+---
+
+This release includes a demo notebook for the code explainer, support for customizable judge LLM and embeddings in ValidMind tests, a section to inject custom context via docstring, and interfaces to support the code explainer feature in ValidMind, among other enhancements.
+
+<!--- Release: [v2.8.26](https://github.com/validmind/validmind-library/releases/tag/v2.8.26) --->
+<!--- Compare API call: gh api repos/validmind/validmind-library/compare/3a15eee09bdb6548c9ab8e20b469d9cd06c7a1bc...3a15eee09bdb6548c9ab8e20b469d9cd06c7a1bc --->
+
+## Highlights
+
+
+<!--- PR #376: https://github.com/validmind/validmind-library/pull/376 --->
+<!--- Labels: highlight --->
+### Quickstart guide for model validation with ValidMind Library (#376)
+
+Get started with model validation using the ValidMind Library with our new quickstart guide:
+
+- Learn how to use ValidMind to validate models in a model validation workflow.
+- Set up the ValidMind Library in your environment to audit data quality adjustments and validate a proposed champion model using ValidMind tests for a binary classification model.
+
+
+<!--- PR #373: https://github.com/validmind/validmind-library/pull/373 --->
+<!--- Labels: enhancement, highlight --->
+### Add demo notebook for code explainer (#373)
+
+This update introduces a comprehensive script and Jupyter notebook for documenting and explaining a customer churn prediction model using the ValidMind library.
+
+
+<!--- PR #358: https://github.com/validmind/validmind-library/pull/358 --->
+<!--- Labels: documentation, enhancement, highlight --->
+### Interfaces to support code explainer feature in ValidMind (#358)
+
+This update introduces an experimental feature for text generation tasks within the ValidMind project. It includes interfaces to utilize the `code_explainer` LLM feature, currently in the experimental namespace to gather feedback.
+
+How to use:
+
+1. Read the source code as a string:
+   ```python
+   with open("customer_churn.py", "r") as f:
+       source_code = f.read()
+   ```
+
+2. Define the input for the `run_task` task. The input requires two variables in dictionary format:
+   ```python
+   code_explainer_input = {
+       "source_code": source_code,
+       "additional_instructions": """
+       Please explain the code in a way that is easy to understand.
+       """
+   }
+   ```
+
+3. Run the `code_explainer` task with `generation_type="code_explainer"`:
+   ```python
+   result = vm.experimental.agents.run_task(
+       task="code_explainer",
+       input=code_explainer_input
+   )
+   ```
+
+Example Output:
+![Key functions and components breakdown](/releases/validmind-library/v2.8.26/1c7b130e-bbe4-4049-88f9-50807c04f3d2.png){fig-alt="A dark-themed document titled Main Purpose and Overall Functionality outlines the configuration of a tool for machine learning model management. The document is structured with headings and bullet points, detailing sections such as Breakdown of Key Functions or Components, Assumptions or Limitations, and Potential Risks or Failure Points. Key functions include data ingestion, preprocessing, and model deployment, with specific tasks like data validation and feature extraction. Assumptions cover data availability and model performance, while risks address data quality issues and model drift. The document concludes with a section on Recommended Mitigation Strategies or Improvements, suggesting enhanced data validation and monitoring practices."}
+
+## Enhancements
+
+
+<!--- PR #386: https://github.com/validmind/validmind-library/pull/386 --->
+<!--- Labels: enhancement --->
+### Support customizable judge LLM and embeddings in ValidMind tests (#386)
+
+This update enhances your experience by allowing you to use your own `LLM`. All existing tests that use an `LLM` now support a user-defined `LLM` or `Embedding` model, provided it is compatible with the `Langchain Chat/Embedding` framework. This functionality is available for `RAGAS` and prompt validation tests, offering greater customization and flexibility in your AI and prompt validation processes.
+
+
+<!--- PR #366: https://github.com/validmind/validmind-library/pull/366 --->
+<!--- Labels: enhancement --->
+### Support qualitative text generation in `run_task` function (#366)
+
+This update enhances the `run_task` function in the `validmind/experimental/agents.py` file to support a new task type. You can now generate qualitative text for a specific section of a document using the `vm.experimental.agents.run_task` method. The generated content will be displayed in the `model_overview` text block section.
+
+![Model overview section](/releases/validmind-library/v2.8.26/38e50cab-596e-46ea-8b2a-6ce91e152bed.png){fig-alt="A webpage section titled Model Overview with a status indicator labeled In Progress. Below the title, there is a timestamp indicating the last update was a few seconds ago by Anil Saradhya. The main content is a paragraph discussing the Demo Customer Churn Model, its objectives, and how it integrates with financial institutions to predict customer behavior. The text emphasizes the models use of machine learning techniques and the importance of data validation and quality checks. The layout features a clean, white background with black text, and the section is organized in a single-column format."}
+
+
+<!--- PR #375: https://github.com/validmind/validmind-library/pull/375 --->
+<!--- Labels: enhancement --->
+### Add status flags to ongoing monitoring tests in ValidMind Library (#375)
+
+This update enhances the `log_metric` and `alog_metric` functions in the ValidMind Library by adding visual status indicators for monitoring metrics. You can now use the `passed` parameter in the `log_metric()` function to include status badges in Metrics Over Time blocks. The `passed` parameter accepts a boolean value: `passed=True` shows a green "Satisfactory" badge, while `passed=False` shows a yellow "Requires Attention" badge.
+
+This feature lets you visually assess metric performance against defined business rules. You can set the status manually or determine it programmatically using custom evaluation functions with specific acceptance criteria. The status indicators help quickly identify metrics that need attention, support compliance documentation with clear visual cues, and enable more targeted alerts based on metric status.
+
+
+
+<img width="100%" src="/releases/validmind-library/v2.8.26/3688a6c5-cd0a-408b-9d33-b8125d7d456f.png" alt="A line chart titled GIN Score displays data over time with the x-axis labeled Recorded At (Time) and the y-axis labeled GIN Score ranging from 0.58 to 0.83. The chart features a pink line with data points, showing a wave-like pattern, indicating fluctuations in the GIN Score. A tooltip is visible near the last data point, showing the date June 7, 2025, 2:00 AM, with a value of 0.75 and a status labeled Satisfactory. A green line labeled Satisfactory runs horizontally across the chart at approximately 0.75, while a blue line labeled low_risk is at 0.58. The interface includes a toggle between Chart and Data views at the top left, a green Satisfactory indicator at the top right, and a Delete button in the upper right corner." />
+
+
+
+
+<img width="100%" src="/releases/validmind-library/v2.8.26/7779918e-fc0f-4375-af71-b0cc39a9ade4.png" alt="A line chart titled GINI Score displays data over time with the x-axis labeled Recorded At [Time] and the y-axis labeled GINI Score. The chart features a pink line with circular data points, showing a wave-like pattern with peaks and troughs, indicating fluctuations in the GINI score. A tooltip is visible near the last data point, showing the date June 9, 2025, 2:00 AM, a value of 0.5, and a status labeled Requires Attention. Horizontal reference lines in blue, green, and yellow represent high risk, medium risk, and low risk thresholds, respectively. The top right corner contains a Delete button and a yellow badge labeled Requires Attention." />
+
+
+
+
+<!--- PR #372: https://github.com/validmind/validmind-library/pull/372 --->
+<!--- Labels: enhancement --->
+### Update quickstart for model documentation in Jupyter notebooks (#372)
+
+We've improved our Jupyter notebooks to make the model documentation quickstart guide more user-friendly and informative for beginners. A new "quickstart" directory has been added to `notebooks/`, along with an updated README to guide you:
+
+![Screenshot 2025-05-14 at 11 29 11 AM](/releases/validmind-library/v2.8.26/9ee33c82-4cc9-4bf7-bad0-14d890cadfed.png)
+
+To get started with documenting models using the ValidMind Library, check out our updated **Quickstart for model documentation** notebook:
+
+- Learn the basics of using ValidMind to document models as part of a model development workflow.
+- Set up the ValidMind Library in your environment and generate a draft of documentation using ValidMind tests for a binary classification model.
+
+::: {.callout-important}
+This update removes the old `notebooks/code_samples/quickstart_customer_churn_full_suite.ipynb` file as the new file and directory replace it.
+:::
+
+
+
+<img width="100%" src="/releases/validmind-library/v2.8.26/194f3dd7-6e3b-4956-b94e-ed4760a3e32c.png" alt="A webpage section titled Preprocessing the raw dataset includes instructions for preparing a dataset for ValidMind. The section is divided into two main parts: Split the dataset and Separate features and targets. Under Split the dataset, three bullet points explain the use of train_df, validation_df, and test_df for training, validation, and testing respectively, with a code snippet showing the command customer_churn.preprocess(raw_df). The Separate features and targets section describes the need to differentiate inputs and correct answers, with code snippets defining x_train, x_val, y_train, and y_val using the customer_churn.target_column variable. The layout uses a clear hierarchy with bold section titles and code snippets in a monospaced font." />
+
+
+
+
+<img width="100%" src="/releases/validmind-library/v2.8.26/306ab4e3-d0a1-4586-8c29-029bbfaef359.png" alt="A webpage section titled Training an XGBoost classifier model contains text and code snippets. The text explains the process of setting up early stopping to prevent overfitting and evaluating model performance using three metrics: error, logloss, and auc. Below the text, a code snippet demonstrates setting early stopping rounds to 10. Another code block shows setting evaluation metrics with model.set_params and a list of metrics. The final code snippet illustrates fitting the model using model.fit with parameters x_train, y_train, x_val, and y_val, and setting verbose to False. The layout is structured with explanatory text followed by corresponding code examples." />
+
+
+
+## Documentation
+
+
+<!--- PR #354: https://github.com/validmind/validmind-library/pull/354 --->
+<!--- Labels: documentation, enhancement --->
+### Add section to inject custom context via docstring (#354)
+
+This update enhances the Jupyter notebook `add_context_to_llm_descriptions.ipynb` by introducing a new section. This section guides you on embedding explicit instructions within a test's docstring to influence LLM-generated test result descriptions. Titled **Add test-specific context using the docstring**, it addresses the issue where non-instructional context in docstrings was previously ignored by the LLM. You are now advised to format specific lines as instructions using syntax like: *INSTRUCTION: Please add the following note at the end of the description: "NOTE: This is a sample of the data, for the full data results please look in the appendix."* This ensures your intended context is reliably included in the LLM-generated descriptions.
+
+## Other changes
+
+
+<!--- PR #380: https://github.com/validmind/validmind-library/pull/380 --->
+<!--- Labels: dependencies --->
+### Update registration and login info in docs site and notebooks (#380)
+
+This update standardizes the alert messages displayed across various notebooks by updating the text and some CSS styling details in the HTML blocks.
+
