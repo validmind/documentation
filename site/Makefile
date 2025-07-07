@@ -80,15 +80,15 @@ copy-installation:
 	@mkdir -p installation
 	@cp -r $(SRC_ROOT)/installation/site/installation/* installation/
 
-# Delete PR branch on https://docs-demo.vm.validmind.ai/
+# Delete PR branch on https://docs-staging.validmind.ai/
 delete-demo-branch:
 	@aws s3 rm s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeleted https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/"
+	@echo "\nDeleted https://docs-staging.validmind.ai/pr_previews/$(GIT_BRANCH)/"
 
-# Deploy PR branch to https://docs-demo.vm.validmind.ai/
+# Deploy PR branch to https://docs-staging.validmind.ai/
 deploy-demo-branch:
 	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
+	@echo "\nDeployed to https://docs-staging.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
@@ -176,7 +176,7 @@ execute:
 generate-sitemap:
 	$(eval BRANCH := $(shell git rev-parse --abbrev-ref HEAD))
 	$(eval BRANCH := $(if $(filter HEAD,$(BRANCH)),$(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME)),$(BRANCH)))
-	$(eval BASE_URL := $(if $(filter main staging prod,$(BRANCH)),https://docs.validmind.ai,https://docs-demo.vm.validmind.ai))
+	$(eval BASE_URL := $(if $(filter main staging prod,$(BRANCH)),https://docs.validmind.ai,https://docs-staging.validmind.ai))
 	$(eval PATH_PREFIX := $(if $(filter main staging prod,$(BRANCH)),,pr_previews/$(BRANCH)/))
 	@echo "Generating sitemaps ..."
 	@find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
