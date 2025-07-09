@@ -22,6 +22,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
+      - name: "Checkout documentation repository"
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/installation
+          path: site/_source/installation
+          token: ${{ secrets.INSTALLATION_RO_PAT }}
+
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
@@ -33,6 +40,9 @@ jobs:
       - name: Setup R environment
         uses: ./.github/actions/setup-r
   
+      - name: Populate installation
+        run: cp -r site/_source/installation/site/installation site/installation
+
       - name: Render staging docs site
         run: |
             cd site
