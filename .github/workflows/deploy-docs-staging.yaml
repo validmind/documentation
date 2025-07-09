@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Check out installation repository
         uses: actions/checkout@v2
 
       - name: "Checkout documentation repository"
@@ -27,6 +27,13 @@ jobs:
         with:
           repository: validmind/installation
           path: site/_source/installation
+          token: ${{ secrets.INSTALLATION_RO_PAT }}
+
+      - name: Check out release-notes repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/release-notes
+          path: site/_source/release-notes
           token: ${{ secrets.INSTALLATION_RO_PAT }}
 
       - name: Set up Python 3.11
@@ -42,6 +49,13 @@ jobs:
   
       - name: Populate installation
         run: cp -r site/_source/installation/site/installation site/installation
+
+      - name: Populate release notes
+        run: |
+          cp -r site/_source/release-notes/releases/validmind-library site/releases/validmind-library
+          cp -r site/_source/release-notes/releases/frontend site/releases/frontend
+          cp -r site/_source/release-notes/releases/documentation site/releases/documentation
+          cp -r site/_source/release-notes/releases/cmvm site/installation/releases
 
       - name: Render staging docs site
         run: |
