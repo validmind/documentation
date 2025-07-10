@@ -13,33 +13,38 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
 	@echo "Available targets:"
-	@echo "  help                 Display this help message (default target)"
-	@echo "  clean                Remove the _source/ directory"
-	@echo "  clone                Clone the validmind-library repository into _source/"
-	@echo "                       Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
-	@echo "  copy-installation    Copy customer-managed installation docs into installation/"
-	@echo "  delete-demo-branch   Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
-	@echo "  deploy-demo-branch   Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
-	@echo "  deploy-prod          Deploy docs prod site to s3://docs-ci-cd-prod/site/"
-	@echo "  deploy-staging       Deploy docs staging site to s3://docs-ci-cd-staging/site/"
-	@echo "  docker-build         Builds a Docker image of the docs site"
-	@echo "  docker-serve         Serves the docs site at http://localhost:4444/"
-	@echo "  docker-site          Get source, render site with Docker profile, execute notebooks"
-	@echo "  docker-site-lite     Get source and render site with Docker profile (skips notebook execution)"
-	@echo "  docs-site            Get all source files and render the production docs site with Quarto"
-	@echo "  generate-sitemap     Generate a sitemap for the static HTML site"
-	@echo "  execute              Execute a Jupyter Notebook or notebook directory"
-	@echo "  get-source           Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
-	@echo "  notebooks            Copy Jupyter notebooks into notebooks/"
-	@echo "  python-docs          Copy the Python library docs into validmind/"
-	@echo "  release-notes        Generate release notes from pull requests since latest tag and update releases sidebar"
-	@echo "  test-descriptions    Copy the ValidMind tests docs into tests/"
-	@echo "  yearly-releases      Collate releases by year into a listing landing and update releases sidebar"
+	@echo "  help                     Display this help message (default target)"
+	@echo "  clean                    Remove the _source/ directory"
+	@echo "  clone                    Clone the validmind-library repository into _source/"
+	@echo "                           Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
+	@echo "  copy-installation        Copy customer-managed installation docs into installation/"
+	@echo "  delete-demo-branch       Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-demo-branch       Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
+	@echo "  deploy-prod              Deploy docs prod site to s3://docs-ci-cd-prod/site/"
+	@echo "  deploy-staging           Deploy docs staging site to s3://docs-ci-cd-staging/site/"
+	@echo "  docker-build             Builds a Docker image of the docs site"
+	@echo "  docker-serve             Serves the docs site at http://localhost:4444/"
+	@echo "  docker-site              Get source, render site with Docker profile, execute notebooks"
+	@echo "  docker-site-lite         Get source and render site with Docker profile (skips notebook execution)"
+	@echo "  docs-site                Get all source files and render the production docs site with Quarto"
+	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
+	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
+	@echo "  get-source               Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
+	@echo "  kind-serve               Set up Kind cluster for ValidMind docs"
+	@echo "  kind-stop                Stop Kind cluster for ValidMind docs"
+	@echo "  kind-restart             Restart Kind cluster for ValidMind docs"
+	@echo "  kind-logs                Show logs from ValidMind docs pod"
+	@echo "  notebooks                Copy Jupyter notebooks into notebooks/"
+	@echo "  python-docs              Copy the Python library docs into validmind/"
+	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag or repo/tag"
+	@echo "                           Examples: TAG=cmvm/25.07 or TAG=validmind-library/v2.8.22"
+	@echo "  test-descriptions        Copy the ValidMind tests docs into tests/"
+	@echo "  yearly-releases          Collate releases by year into a listing landing and update releases sidebar"
 
 # Clean up source directory
 clean:
@@ -51,13 +56,13 @@ clean:
 # Prompt for a branch or release tag and clone the repository
 clone:
 	@if [ -n "$(LIBRARY_BRANCH)" ] && [ "$(LIBRARY_BRANCH)" != "main" ]; then \
-		echo "\nWARNING: Cloning non-release files from $(LIBRARY_BRANCH) — DO NOT COMMIT"; \
+		echo "\nWARN: Cloning non-release files from $(LIBRARY_BRANCH) — DO NOT COMMIT"; \
 		echo "\nCloning validmind-library repo from $(LIBRARY_BRANCH) ..."; \
 		CHECKOUT="$(LIBRARY_BRANCH)"; \
 	else \
 		read -p "Enter release tag (example: v2.8.10, or HEAD for latest): " TAG; \
 		if [ "$$TAG" = "HEAD" ]; then \
-			echo "\nWARNING: Cloning latest non-release files — DO NOT COMMIT"; \
+			echo "\nWARN: Cloning latest non-release files — DO NOT COMMIT"; \
 			echo "\nCloning validmind-library repo at HEAD ..."; \
 			CHECKOUT="$(LIBRARY_BRANCH)"; \
 		else \
@@ -75,15 +80,15 @@ copy-installation:
 	@mkdir -p installation
 	@cp -r $(SRC_ROOT)/installation/site/installation/* installation/
 
-# Delete PR branch on https://docs-demo.vm.validmind.ai/
+# Delete PR branch on https://docs-staging.validmind.ai/
 delete-demo-branch:
 	@aws s3 rm s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --recursive && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeleted https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/"
+	@echo "\nDeleted https://docs-staging.validmind.ai/pr_previews/$(GIT_BRANCH)/"
 
-# Deploy PR branch to https://docs-demo.vm.validmind.ai/
+# Deploy PR branch to https://docs-staging.validmind.ai/
 deploy-demo-branch:
 	@quarto render --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null; 
-	@echo "\nDeployed to https://docs-demo.vm.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
+	@echo "\nDeployed to https://docs-staging.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
 
 # Deployment to https://docs.validmind.ai/
 deploy-prod:
@@ -109,6 +114,7 @@ docker-build: docker-site-lite
 	@echo "\nBuilding the Docker image ..."
 	@docker build -f ../Dockerfile -t validmind-docs ..
 
+# Requires that you've run `make docker-build`
 docker-serve:
 	@echo "\nStarting the Docker container on http://localhost:4444/ ..."
 	@docker run -p 4444:80 validmind-docs
@@ -170,7 +176,7 @@ execute:
 generate-sitemap:
 	$(eval BRANCH := $(shell git rev-parse --abbrev-ref HEAD))
 	$(eval BRANCH := $(if $(filter HEAD,$(BRANCH)),$(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME)),$(BRANCH)))
-	$(eval BASE_URL := $(if $(filter main staging prod,$(BRANCH)),https://docs.validmind.ai,https://docs-demo.vm.validmind.ai))
+	$(eval BASE_URL := $(if $(filter main staging prod,$(BRANCH)),https://docs.validmind.ai,https://docs-staging.validmind.ai))
 	$(eval PATH_PREFIX := $(if $(filter main staging prod,$(BRANCH)),,pr_previews/$(BRANCH)/))
 	@echo "Generating sitemaps ..."
 	@find _site -name "*.html" -not -path "*/internal/*" -not -path "*/site_libs/*" -not -path "*/sitemap.html/*" -not -path "*/training.html/*" | while read -r file; do \
@@ -236,10 +242,40 @@ generate-sitemap:
 	@rm sitemap.urls.tmp
 	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
 
-
-
 # Get all source files
 get-source: clean clone copy-installation notebooks python-docs test-descriptions
+
+# Requires that you've run `make docker-build`
+kind-serve:
+	@echo "\nSetting up Kind cluster for ValidMind docs ..."
+	@if ! kind get clusters | grep -q validmind-docs; then \
+		echo "Creating Kind cluster 'validmind-docs' ..."; \
+		kind create cluster --name validmind-docs --config ../kind-config.yaml; \
+	else \
+		echo "Kind cluster 'validmind-docs' already exists"; \
+	fi
+	@echo "Loading Docker image into Kind cluster ..."
+	@kind load docker-image validmind-docs --name validmind-docs
+	@echo "Applying Kubernetes manifests ..."
+	@kubectl config use-context kind-validmind-docs
+	@kubectl create namespace cmvm-test --dry-run=client -o yaml | kubectl apply -f -
+	@kubectl apply -f validmind-docs.yaml
+	@kubectl apply -f ../validmind-docs-deployment.yaml
+	@echo "\nValidMind docs is now running in Kind cluster!"
+	@echo "Access it at: http://localhost:4444/"
+	@echo "To stop: make kind-stop"
+
+kind-stop:
+	@echo "\nStopping Kind cluster 'validmind-docs' ..."
+	@kind delete cluster --name validmind-docs || echo "Cluster may not exist"
+	@echo "Kind cluster stopped."
+
+kind-restart: kind-stop kind-serve
+
+kind-logs:
+	@echo "\nShowing logs from ValidMind docs pod ..."
+	@kubectl config use-context kind-validmind-docs
+	@kubectl logs -l app=validmind-docs -n cmvm-test --tail=50 -f
 
 # Copy over Jupyter notebooks and supporting files
 notebooks:
@@ -271,16 +307,76 @@ python-docs:
 		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
 	fi
 
-# Generate release notes
+# Release notes target
 release-notes:
-	@python ../release-scripts/generate_release_objects.py; \
-	if [ $$? -eq 0 ]; then \
-		cd ../; \
-		git status | grep -v 'release-scripts/'; \
-		cd site/; \
-		quarto preview; \
+	@if [ -z "$(TAG)" ]; then \
+		echo "ERROR: TAG parameter is required"; \
+		echo "Usage: make release-notes TAG=<tag>"; \
+		echo "Example: make release-notes TAG=cmvm/25.07"; \
+		exit 1; \
+	fi
+	@BRANCH_NAME="release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')"; \
+	if git show-ref --verify --quiet "refs/heads/$$BRANCH_NAME"; then \
+		echo "Branch $$BRANCH_NAME already exists, checking it out..."; \
+		git checkout "$$BRANCH_NAME"; \
 	else \
-		echo "Release note generation failed, git status and quarto preview"; \
+		echo "Creating new branch: $$BRANCH_NAME..."; \
+		git checkout -b "$$BRANCH_NAME"; \
+	fi
+	@echo "Cloning release-notes repository..."
+	@rm -rf .tmp-release-notes
+	@git clone git@github.com:validmind/release-notes.git .tmp-release-notes
+	@echo "Determining copy paths for tag: $(TAG)..."
+	@if echo "$(TAG)" | grep -q "cmvm"; then \
+		VERSION=$$(echo "$(TAG)" | sed -E 's|^cmvm/||'); \
+		COPY_PATHS="frontend/$$VERSION documentation/$$VERSION"; \
+		echo "Processing cmvm tag, version: $$VERSION"; \
+	else \
+		COPY_PATHS="$(TAG)"; \
+		echo "Processing standard tag: $(TAG)"; \
+	fi; \
+	FOUND_ANY=false; \
+	for path in $$COPY_PATHS; do \
+		if [ -d ".tmp-release-notes/releases/$$path" ]; then \
+			FOUND_ANY=true; \
+			echo "Found source directory: releases/$$path"; \
+		fi; \
+	done; \
+	if [ "$$FOUND_ANY" = "false" ]; then \
+		echo "ERROR: No valid source directories found for tag $(TAG)"; \
+		echo "Expected one of: $$COPY_PATHS"; \
+		rm -rf .tmp-release-notes; \
+		exit 1; \
+	fi; \
+	echo "Creating directories and copying release notes..."; \
+	for path in $$COPY_PATHS; do \
+		if [ -d ".tmp-release-notes/releases/$$path" ]; then \
+			echo "Copying: releases/$$path -> releases/$$path"; \
+			rm -rf "releases/$$path"; \
+			mkdir -p "releases/$$path"; \
+			cp -r ".tmp-release-notes/releases/$$path"/* "releases/$$path/"; \
+		else \
+			echo "WARN: Source directory releases/$$path not found, skipping"; \
+		fi; \
+	done
+	@echo "Cleaning up temporary files..."
+	@rm -rf .tmp-release-notes
+	@echo "Committing changes ..."
+	@git add releases/
+	@git commit -m "Merge release notes for $(TAG)"
+	@echo "Pushing branch ..."
+	@git push -u origin release-notes-for-$$(echo "$(TAG)" | sed -E 's|^cmvm/||; s|/|-|g')
+	@echo "Checking for existing pull request ..."
+	@PR_TITLE="Release notes for \`$(TAG)\`"; \
+	EXISTING_PR=$$(gh pr list --search "$$PR_TITLE" --state open --json title,number --jq '.[] | select(.title == "'"$$PR_TITLE"'") | .number'); \
+	if [ -n "$$EXISTING_PR" ]; then \
+		echo "Pull request with title '$$PR_TITLE' already exists (#$$EXISTING_PR), skipping creation"; \
+	else \
+		echo "Creating pull request ..."; \
+		echo "# Pull Request Description\n\n## What and why?\n\nThis PR contains the generated release notes for \`$(shell echo "$(TAG)" | sed -E 's|^cmvm/||')\`.\n\n" > .tmp-pr-body.md; \
+		gh pr create --title "$$PR_TITLE" --body-file .tmp-pr-body.md --label "internal"; \
+		rm -f .tmp-pr-body.md; \
+		echo "Successfully created PR for release notes $(TAG)!"; \
 	fi
 
 test-descriptions:

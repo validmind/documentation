@@ -31,9 +31,31 @@ runs:
       run: |
         pip install validmind
         pip install validmind[llm]
-        pip install fairlearn aequitas
-        pip install shap==0.44.1
-        pip install anywidget
+
+    - name: Clone validmind-library
+      shell: bash
+      run: |
+        git clone https://github.com/validmind/validmind-library.git
+        cp validmind-library/poetry.lock poetry.lock
+
+    - name: Cache validmind-library poetry install
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/pypoetry
+          ~/.cache/pip
+        key: validmind-library-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          validmind-library-${{ runner.os }}-
+
+    - name: Install dependencies from validmind-library
+      shell: bash
+      run: |
+        pip install poetry==1.7.1
+        cd validmind-library
+        poetry export --without-hashes --format=requirements.txt > ../requirements.txt
+        cd ..
+        pip install -r requirements.txt
 
     - name: Register validmind kernel
       shell: bash

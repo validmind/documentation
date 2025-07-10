@@ -86,7 +86,7 @@ jobs:
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials
-        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }} && aws configure set default.region us-east-1
 
       - name: Deploy docs prod site
-        run: aws s3 sync site/_site s3://docs-ci-cd-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager

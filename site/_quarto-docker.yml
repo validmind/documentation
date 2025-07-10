@@ -7,8 +7,8 @@ profile:
 # Project settings with pre-render and post-render steps for Docker
 project:
   type: website
-  pre-render: scripts/modify_urls.sh
-  post-render: bash -c "git restore _variables.yml >/dev/null 2>&1 && echo 'Restored _variables.yml'"
+  pre-render: scripts/make_configurable.sh
+  post-render: bash -c "git restore _variables.yml _quarto.yml >/dev/null 2>&1 && echo 'Restored _variables.yml and _quarto.yml'"
 
 # HTML format configuration
 format:
@@ -16,4 +16,3 @@ format:
     # Include scripts and other resources in the header
     include-in-header: 
       - environments/heap-production.html
-      - zendesk-chat.html

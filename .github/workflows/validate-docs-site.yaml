@@ -47,6 +47,7 @@ jobs:
           exit 1;
           }
           make generate-sitemap
+
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -104,17 +105,17 @@ jobs:
 
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
-      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
-      run: aws s3 sync site/_site s3://docs-ci-cd-demo/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager
+      run: aws s3 sync site/_site s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }} --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
 
     - name: Post comment with preview URL
       uses: actions/github-script@v6
       with:
         script: |
-          const previewUrl = `https://docs-demo.vm.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
-          
+          const previewUrl = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+
           // Delete old preview comments
           const { data: comments } = await github.rest.issues.listComments({
             owner: context.repo.owner,
