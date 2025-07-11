@@ -13,16 +13,17 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
 	@echo "Available targets:"
 	@echo "  help                     Display this help message (default target)"
 	@echo "  clean                    Remove the _source/ directory"
-	@echo "  clone                    Clone the validmind-library repository into _source/"
+	@echo "  clone                    Clone other required repositories into _source/"
 	@echo "                           Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
 	@echo "  copy-installation        Copy customer-managed installation docs into installation/"
+	@echo "  copy-release-notes       Copy release notes into releases/ and installation/releases/"
 	@echo "  delete-demo-branch       Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-demo-branch       Deploy docs demo site to s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
 	@echo "  deploy-prod              Deploy docs prod site to s3://docs-ci-cd-prod/site/"
@@ -34,7 +35,7 @@ help:
 	@echo "  docs-site                Get all source files and render the production docs site with Quarto"
 	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
 	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
-	@echo "  get-source               Get all source files (clean, clone, copy-installation, notebooks, python-docs, test-descriptions)"
+	@echo "  get-source               Get all source files (clean, clone, copy-installation, copy-release-notes, notebooks, python-docs, test-descriptions)"
 	@echo "  kind-serve               Set up Kind cluster for ValidMind docs"
 	@echo "  kind-stop                Stop Kind cluster for ValidMind docs"
 	@echo "  kind-restart             Restart Kind cluster for ValidMind docs"
@@ -52,6 +53,8 @@ clean:
 	@rm -rf $(SRC_DIR)
 	@rm -rf $(SRC_ROOT)
 	@rm -rf installation/*
+	@rm -rf releases/validmind-library releases/frontend releases/documentation
+	@rm -rf installation/releases
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -75,10 +78,29 @@ clone:
 	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
 	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
+	@echo "\nCloning release-notes repo from main ..."; \
+	git clone --depth 1 -b main git@github.com:validmind/release-notes.git $(SRC_ROOT)/release-notes
+
 copy-installation:
 	@echo "\nCopying installation source files ..."
 	@mkdir -p installation
 	@cp -r $(SRC_ROOT)/installation/site/installation/* installation/
+
+copy-release-notes:
+	@echo "\nCopying release notes source files ..."
+	@mkdir -p releases/validmind-library releases/frontend releases/documentation installation/releases
+	@if [ -d "$(SRC_ROOT)/release-notes/releases/validmind-library" ]; then \
+		cp -r $(SRC_ROOT)/release-notes/releases/validmind-library/* releases/validmind-library/; \
+	fi
+	@if [ -d "$(SRC_ROOT)/release-notes/releases/frontend" ]; then \
+		cp -r $(SRC_ROOT)/release-notes/releases/frontend/* releases/frontend/; \
+	fi
+	@if [ -d "$(SRC_ROOT)/release-notes/releases/documentation" ]; then \
+		cp -r $(SRC_ROOT)/release-notes/releases/documentation/* releases/documentation/; \
+	fi
+	@if [ -d "$(SRC_ROOT)/release-notes/releases/cmvm" ]; then \
+		cp -r $(SRC_ROOT)/release-notes/releases/cmvm/* installation/releases/; \
+	fi
 
 # Delete PR branch on https://docs-staging.validmind.ai/
 delete-demo-branch:
@@ -243,7 +265,7 @@ generate-sitemap:
 	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
 
 # Get all source files
-get-source: clean clone copy-installation notebooks python-docs test-descriptions
+get-source: clean clone copy-installation copy-release-notes notebooks python-docs test-descriptions
 
 # Requires that you've run `make docker-build`
 kind-serve:
