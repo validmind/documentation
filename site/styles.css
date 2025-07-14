@@ -864,8 +864,8 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex: 0 1 200px; /* Increase width as needed */
-  min-width: 260px;
+  flex: 0 1 200px;
+  min-width: 200px;
   max-width: 400px;
 }
 
@@ -874,27 +874,34 @@ body::before {
   margin-bottom: 0.15em;
 }
 
-.footer-logo-columns {
+.footer-logo-column {
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin-top: 0.5em;
+  margin-top: 0.25em;
 }
 
 .footer-company-info {
-  font-size: 1.1em;
+  font-size: 1em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 0;
+  margin-left: 0.25em;
+}
+
+.footer-company-legal {
+  font-size: 1em !important;
+}
+
+.footer a.external::after {
+  content: none !important;
+  background-image: none !important;
+  margin-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .cookie-preferences-link {
-  font-size: 1.1em;
-}
-
-.cookie-preferences-link:hover {
-  color: #cccccc;
+  font-size: 1em !important;
 }
 
 #custom-cookie-preferences {
@@ -1027,33 +1034,57 @@ body::before {
 }
 
 /* Responsive: stack footer columns and allow full width on small screens */
-@media (max-width: 768px) {
-  .page-footer,
-  .quarto-nav-footer {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-  .nav-footer-left, .nav-footer-center, .nav-footer-right {
-    flex-direction: column !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
 
-  .footer-logo-info,
-  .footer-user-guides,
-  .footer-section {
-    max-width: 100% !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    margin-bottom: 1.5em;
-  }
-
-  .footer-user-guides-columns {
-    flex-direction: column;
-    gap: 0.5em;
+@media (max-width: 1124px) {
+  .nav-footer-center,
+  .nav-footer-right {
+    display: none !important;
   }
 }
+
+@media (min-width: 1125px) {
+  .nav-footer-center,
+  .nav-footer-right {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  @media (max-width: 768px) {
+    .page-footer,
+    .quarto-nav-footer {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+  
+    .nav-footer-left,
+    .nav-footer-center,
+    .nav-footer-right {
+      flex-direction: column !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+  
+    .nav-footer-center,
+    .nav-footer-right {
+      display: none;
+    }
+  
+    .footer-logo-info,
+    .footer-user-guides,
+    .footer-section {
+      max-width: 100% !important;
+      min-width: 0 !important;
+      width: 100% !important;
+      margin-bottom: 1.5em;
+    }
+  
+    .footer-user-guides-columns {
+      flex-direction: column;
+      gap: 0.5em;
+    }
+  }
 
 /* Listing page fix for code blocks
 .listing-title code {
