@@ -1,5 +1,5 @@
 ---
-title: "Set monitoring thresholds and notification alerts"
+title: "Set thresholds and alerts"
 date: last-modified
 ---
 
@@ -9,7 +9,7 @@ When logging a metric using `log_metric()`, you can define *thresholds* that ind
 
 Thresholds help you track the operational status of a model by flagging metric values that may indicate drift, underperformance, or other forms of risk. For example, you might define thresholds that signal *low*, *medium*, or *high* risk based on the distribution of a metric over time.
 
-Once thresholds are defined, the ValidMind UI will highlight metric values using the appropriate risk level color. This makes it easier to monitor performance and identify trends across model versions or time periods.
+Once thresholds are defined, the {{< var validmind.platform >}} will highlight metric values using the appropriate status badge. This makes it easier to monitor performance and identify trends across model versions or time periods.
 
 ## Best practices
 
@@ -20,7 +20,22 @@ Once thresholds are defined, the ValidMind UI will highlight metric values using
 
 Thresholds and notifications work together to improve visibility into model performance and compliance risk, helping you take timely action when needed.
 
-## Define thresholds in log_metric
+<!-- 
+Coming: Multilevel batches: Ability to set levels (red, yellow, green) that will replace badges.
+More emphasis on monitoring; alerts are very simple — sends alert if threshold is breached. Future: could be 3 consecutive breaches in a week. 
+
+TO DO:
+- Update guide with example from notebnook (log metrics over time notpeoobk)
+- Replace figure on ongoing mojitoring page in ongoing monitoring for scorecard notebook. (Juan to send images)
+- on landing page: add more notebooks and GitHub link
+- on review monitoring results
+
+2 notebooks for monitoring (custoemr churn, scorecard, — elvate svcorecard over customer chiurn) - notebooks/code_samples/credit_risk/application_scorecard_full_suite.ipynb
+
+https://github.com/validmind/validmind-library/blob/main/notebooks/code_samples/ongoing_monitoring/application_scorecard_ongoing_monitoring.ipynb - for the scorecard use case
+-->
+
+## Define thresholds in `log_metric()`
 
 You can define thresholds by passing a dictionary to the `thresholds` parameter in `log_metric()`:
 
@@ -44,7 +59,7 @@ Thresholds can be specified for any metric logged through `log_metric()` and are
 
 ## Use status flags to indicate acceptable performance
 
-Beyond threshold-based coloring, you can also flag whether a metric value is acceptable using the `passed` parameter. This is useful when:
+Beyond threshold-based status badge, you can also flag whether a metric value is acceptable using the `passed` parameter. This is useful when:
 
 - Business rules are more complex than simple thresholds
 - You want a clear visual indicator for metrics that require attention
@@ -76,7 +91,7 @@ log_metric(
 )
 ```
 
-In the {{< var validmind.platform >}}, metrics flagged with `passed=False` show a yellow **Requires Attention** badge, while those with `passed=True` show a green **Satisfactory** badge:
+In the {{< var validmind.platform >}}, metrics flagged with `passed=False` show a yellow [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg} badge, while those with `passed=True` show a green [{{< fa check >}} Satisfactory]{.bubble .green-bg} badge:
 
 :::: {.flex .flex-wrap .justify-around .w-100}
 
