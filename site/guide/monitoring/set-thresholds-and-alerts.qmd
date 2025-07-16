@@ -1,0 +1,108 @@
+---
+title: "Set monitoring thresholds and notification alerts"
+date: last-modified
+---
+
+When logging a metric using `log_metric()`, you can define *thresholds* that indicate the risk level associated with different metric values. You can also optionally configure *status flags* to indicate whether a metric passes custom acceptance criteria and use this to trigger alert notifications or escalate issues for follow-up.
+
+## Why use thresholds
+
+Thresholds help you track the operational status of a model by flagging metric values that may indicate drift, underperformance, or other forms of risk. For example, you might define thresholds that signal *low*, *medium*, or *high* risk based on the distribution of a metric over time.
+
+Once thresholds are defined, the ValidMind UI will highlight metric values using the appropriate risk level color. This makes it easier to monitor performance and identify trends across model versions or time periods.
+
+## Best practices
+
+- Use thresholds to capture known risk boundaries based on historical or business benchmarks
+- Use the `passed` flag to apply more nuanced or domain-specific acceptance criteria
+- Start with visual indicators and only enable alerts for cases that truly require follow-up
+- Document your criteria for `passed` to ensure consistency and auditability
+
+Thresholds and notifications work together to improve visibility into model performance and compliance risk, helping you take timely action when needed.
+
+## Define thresholds in log_metric
+
+You can define thresholds by passing a dictionary to the `thresholds` parameter in `log_metric()`:
+
+```python
+log_metric(
+   key="F1 Score",
+   value=0.72,
+   recorded_at=datetime.now(),
+   thresholds={"medium_risk": 0.75, "high_risk": 0.6}
+)
+```
+
+In this example:
+
+- Values below `0.75` are marked as *medium risk*
+- Values below `0.6` are marked as *high risk*
+
+The thresholds are inclusive and cumulative: once a value falls below a threshold, it is marked with the highest applicable risk level.
+
+Thresholds can be specified for any metric logged through `log_metric()` and are automatically displayed in Metrics Over Time charts.
+
+## Use status flags to indicate acceptable performance
+
+Beyond threshold-based coloring, you can also flag whether a metric value is acceptable using the `passed` parameter. This is useful when:
+
+- Business rules are more complex than simple thresholds
+- You want a clear visual indicator for metrics that require attention
+- You plan to trigger alerts or workflows based on pass/fail status
+
+Set the `passed` value explicitly:
+
+```python
+log_metric(
+   key="Test Coverage",
+   value=0.85,
+   recorded_at=datetime.now(),
+   thresholds={"medium_risk": 0.9},
+   passed=True
+)
+```
+
+Or determine it programmatically using a custom function:
+
+```python
+def is_acceptable(val): return val >= 0.8
+
+log_metric(
+   key="Test Coverage",
+   value=0.75,
+   recorded_at=datetime.now(),
+   thresholds={"medium_risk": 0.9},
+   passed=is_acceptable(0.75)
+)
+```
+
+In the {{< var validmind.platform >}}, metrics flagged with `passed=False` show a yellow **Requires Attention** badge, while those with `passed=True` show a green **Satisfactory** badge:
+
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pa2}
+![A metric that requires attention](/guide/monitoring/monitoring-threshold-requires-attention.png)
+:::
+
+::: {.w-50-ns .pa2}
+![A metric that is satisfactory](/guide/monitoring/monitoring-threshold-satisfactory.png)
+:::
+ 
+::::
+
+## Configure alert notifications (optional)
+
+If a metric is logged which doesn't meet the `passed` requirement, an email is sent to model stakeholders, notifying them that the given model is past the given Ongoing Monitoring Test Threshold and requires attention. Stakeholders who receive this email notification include:
+
+- Model owner
+- Model developer
+- Validator
+
+You can set up notifications to alert your team when a metric breaches a threshold or fails an acceptance rule. To configure alerts:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under TBD, select **TBD**.
+3. TBD
+4. TBD
+5. TBD
