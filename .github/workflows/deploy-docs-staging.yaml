@@ -103,4 +103,4 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
 
       - name: Deploy docs staging site
-        run: aws s3 sync site/_site s3://validmind-docs-staging/site --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-staging/site --delete --exclude "installation/helm-repo/*" --exclude "site/pr_previews/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
