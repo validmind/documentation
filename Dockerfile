@@ -6,6 +6,9 @@ FROM nginx:alpine
 # Install jq for better JSON handling
 RUN apk add --no-cache jq
 
+# Security Upgrade Zone
+RUN apk upgrade --no-cache libxml2
+
 # Copy the static site content to the Nginx HTML directory
 COPY site/_site /usr/share/nginx/html
 
