@@ -7,19 +7,20 @@ resources:
   - assets/**
 filters:
     - tachyons
-# listing:
-#   - id: releases
-#     type: grid
-#     grid-columns: 3
-#     max-description-length: 150
-#     sort: false
-#     fields: [title, subtitle, date]
-#     contents:
-#      MAKE-RELEASE-NOTES-LATEST-MARKER
-#       - /releases/2025/2025-jan-31/release-notes.qmd
-#       - /releases/2025/2025-mar-07/release-notes.qmd
-#       - /releases/2025/2025-apr-24/release-notes.qmd
-#      MAKE-RELEASE-NOTES-OLDEST-MARKER
+listing:
+  id: index-releases
+  contents:
+    - ../releases/**/pr*.qmd
+  include:
+    categories: "*highlight*"
+  fields: [date, title]
+  sort: "date desc"
+  max-description-length: 300
+  type: table
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  page-size: 1
 format:
   html:
     css: styles.css
@@ -238,6 +239,38 @@ main.content {
    padding: 2rem 0rem;
   }
 
+
+/* Release notes listing area */
+.quarto-listing-default {
+  padding: 0px;
+  border: 0px
+}
+
+.pagination {
+  display: none !important;
+}
+
+.table {
+  border-top: 0px;
+  border-bottom: 0px white;
+  margin-top: -75px !important;
+}
+
+.table a {
+    word-break: break-word;
+}
+
+.table>thead {
+  display: none !important;
+}
+
+table.quarto-listing-table a {
+  color: #555;
+  text-decoration: none;
+  font-weight: bold;
+
+}
+
  /* Add after existing styles */
 @media (max-width: 768px) {
   /* Search box mobile styles */
@@ -442,7 +475,7 @@ ValidMind is a platform that helps identify AI and LLM risks while generating re
 :::
 
 ::: {.nt3}
-[**What is ValidMind?**](/training/fake-tour/product-tour.qmd){.button .button-white}
+[**What is ValidMind?**](https://validmind.com/request-demo/){.button .button-white}
 :::
 
 :::
@@ -492,12 +525,15 @@ ValidMind [Academy]{.pink}
 
 ::: {.f3 .b}
 Latest Release
+
+![](/assets/home-page/release_icon.svg){.mb3 width="30" style="top: 4px"}
 :::
 
-![](/assets/home-page/release_icon.svg){.mb3 width="30" style="top: 4px"}&ensp;**25.03.05** / April 24, 2025  
+::: {.pl4 .mid-gray}
 
-::: {.pl4 .nt3 .mid-gray}
-We've released the ability to manage model stakeholder types within the ValidMind Platform, support for custom configuration of test-driven blocks via the ValidMind Library, an updated Python API reference within our documentation, and more.
+::: {#index-releases}
+:::
+
 :::
 
 :::
@@ -515,6 +551,3 @@ We've released the ability to manage model stakeholder types within the ValidMin
 
 <!-- CLOSE .column-screen to allow footer to render -->
 :::
-
-<!-- ::: {.preview source="releases/highlights.qmd#category=highlight" height="240" width="430" offset="90"}
-::: -->
