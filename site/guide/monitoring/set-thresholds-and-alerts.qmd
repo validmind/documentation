@@ -1,0 +1,114 @@
+---
+title: "Set thresholds and alerts"
+date: last-modified
+---
+
+When logging a metric, you can define thresholds or use the `passed` parameter to flag whether the metric meets performance criteria. If a metric breaches a threshold, stakeholders receive email alert notifications.
+
+These thresholds and alerts apply to metrics over time blocks[^1], helping you track model performance and identify issues more easily. Thresholds help you flag values that suggest drift, underperformance, or other types of risk—for example, by signaling low, medium, or high risk based on how a metric evolves over time.
+
+Together, thresholds and notifications improve your visibility into model performance and compliance risk, enabling timely intervention when needed.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Metrics over time have already been logged via the {{< var validmind.developer >}} for your model.[^1]
+- [x] You are a [{{< fa code >}} Developer]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^2]
+
+:::
+
+## Use a custom function
+
+To programmatically evaluate whether a metric passes specific criteria, use a custom function:
+
+```
+def custom_evaluator(value):
+   return value > 0.6
+
+log_metric(
+   key="Test Metric",
+   value=0.65,
+   recorded_at=datetime.now(),
+   thresholds={"medium_risk": 0.6},
+   passed=custom_evaluator(0.65)
+)
+```
+
+In this example:
+
+- The custom function evaluates if `0.65 > 0.6`, returning `True`.
+- This evaluation results in `passed=True`, displaying a [{{< fa check >}} Satisfactory]{.bubble .green-bg} badge.
+- Separately, values at or below 0.6 are marked as medium risk by the threshold.
+- The threshold and `passed` parameter work independently.
+
+## Set the `passed` parameter
+
+To flag whether a metric value meets performance criteria, set the `passed` value explicitly:
+
+```
+log_metric(
+   key="Test Coverage",
+   value=0.85,
+   recorded_at=datetime.now(),
+   thresholds={"medium_risk": 0.9},
+   passed=True
+)
+```
+
+In this example:
+
+- The metric value (`0.85`) is above the medium risk threshold (`0.9`) and the threshold is not triggered.
+- Setting `passed=True` displays a [{{< fa check >}} Satisfactory]{.bubble .green-bg} badge to indicate the threshold status.
+- Alternatively, if you need to flag a metric with [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg} badge, set `passed=False`.
+
+## Output examples
+
+These examples visualize GINI scores which are commonly used to evaluate classification performance, particularly in credit risk and binary classification problems.
+
+### [{{< fa check >}} Satisfactory]{.bubble .green-bg}
+
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pa2}
+Here, the GINI score fluctuates over time but stays above the medium risk threshold. It ends on an upward trend, with the latest value of `0.75` classified as satisfactory, as indicated in the upper-right corner.
+:::
+
+::: {.w-50-ns .pa2}
+![A metric that is satisfactory](/guide/monitoring/monitoring-threshold-satisfactory.png)
+:::
+ 
+::::
+
+### [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg}
+
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pa2}
+Here, the GINI score drops to `0.5`, breaching the threshold. This indicates potential performance degradation or model risk, as indicated in the upper-right corner.
+:::
+
+::: {.w-50-ns .pa2}
+![A metric that requires attention](/guide/monitoring/monitoring-threshold-requires-attention.png)
+:::
+ 
+::::
+
+## Alert notifications
+
+If a logged metric breaches a threshold, alert notifications are triggered. An email is sent to model stakeholders notifying them that the model has a metric that did not pass an ongoing monitoring threshold and requires attention.
+
+Stakeholders who receive email alert notification include:
+
+- The model owners
+- The model developers
+- The validators
+
+Responding to these notifications involves prioritizing the alerts and taking appropriate action, ideally as part of your documented ongoing monitoring plan.[^2]
+
+<!-- FOOTNOTES -->
+
+[^1]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd)
+
+[^2]: [Ongoing monitoring plan](/guide/monitoring/ongoing-monitoring.qmd#ongoing-monitoring-plan)
