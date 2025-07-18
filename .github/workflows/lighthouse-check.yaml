@@ -21,6 +21,65 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
+    - name: Wait for validation workflow to complete
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const maxWaitTime = 45 * 60 * 1000; // 45 minutes in milliseconds
+          const pollInterval = 60 * 1000; // 60 seconds in milliseconds
+          const startTime = Date.now();
+          
+          console.log(`Waiting for "Validate docs site" workflow to complete for PR #${context.issue.number}`);
+          console.log(`Head SHA: ${context.payload.pull_request.head.sha}`);
+          
+          while (Date.now() - startTime < maxWaitTime) {
+            try {
+              // Get workflow runs for the validate-docs-site workflow
+              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'validate-docs-site.yaml',
+                head_sha: context.payload.pull_request.head.sha,
+                per_page: 5
+              });
+              
+              console.log(`Found ${runs.workflow_runs.length} workflow runs for this commit`);
+              
+              if (runs.workflow_runs.length > 0) {
+                // Get the most recent run
+                const latestRun = runs.workflow_runs[0];
+                console.log(`Latest run: ${latestRun.id}, status: ${latestRun.status}, conclusion: ${latestRun.conclusion}`);
+                
+                if (latestRun.status === 'completed') {
+                  if (latestRun.conclusion === 'success') {
+                    console.log('✅ Validation workflow completed successfully');
+                    break;
+                  } else {
+                    throw new Error(`❌ Validation workflow failed with conclusion: ${latestRun.conclusion}`);
+                  }
+                } else if (latestRun.status === 'in_progress' || latestRun.status === 'queued') {
+                  console.log(`⏳ Validation workflow is ${latestRun.status}, continuing to wait...`);
+                } else {
+                  console.log(`⚠️  Unexpected status: ${latestRun.status}`);
+                }
+              } else {
+                console.log('⏳ No workflow runs found yet, validation may not have started...');
+              }
+              
+              console.log(`Elapsed time: ${Math.round((Date.now() - startTime) / 1000 / 60)} minutes`);
+              await new Promise(resolve => setTimeout(resolve, pollInterval));
+              
+            } catch (error) {
+              console.error('Error checking workflow status:', error);
+              throw error;
+            }
+          }
+          
+          // Check if we timed out
+          if (Date.now() - startTime >= maxWaitTime) {
+            throw new Error('⏰ Timed out waiting for validation workflow to complete');
+          }
+          
     - name: Check out repository
       uses: actions/checkout@v4
 
