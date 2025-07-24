@@ -1,1 +1,0 @@
-Redirecting to /rapidoc@9.3.8/dist/rapidoc-min.js
