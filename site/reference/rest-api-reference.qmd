@@ -13,13 +13,13 @@ listing:
       - admin-api.qmd
 ---
 
-This page contains reference documentation for the ValidMind API. 
+This page contains reference documentation for the ValidMind REST APIs. 
 
 ::: {.panel-tabset}
 
-## ValidMind API Overview
+## ValidMind API
 
-The ValidMind Public API allows clients to programmatically interact with models, templates, groups, business units, and other organizational resources. It follows REST principles and uses JSON for both requests and responses.
+The ValidMind API allows clients to programmatically interact with models, templates, groups, business units, and other organizational resources.
 
 ### Base URL
 
@@ -62,9 +62,9 @@ This version of the API is **v1**, specified in the path (`/vm/api/v1`). Future 
 - **Health and authentication checks**  
   Basic endpoints to validate authentication (`/test-auth`) and check service status (`/health`).
 
-## ValidMind Admin API Overview
+## ValidMind Admin API
 
-The ValidMind Admin API provides endpoints to manage organizations, users, roles, templates, and system bootstrap. It is intended for internal or privileged use and requires a valid **admin API key** for all operations.
+The ValidMind Admin API provides endpoints to manage organizations, users, roles, templates, and system bootstrap. It is intended for internal or privileged use.
 
 ### Base URL
 
@@ -94,23 +94,34 @@ This version of the API is **v1**, specified in the path (`/admin/api/v1`). Futu
 
 :::
 
-
 ## Authentication
 
-All endpoints require API key authentication. Include the key in the `Authorization` header:
+All endpoints require an authentication header that includes your API key and API secret:
 
 ```
--H x-api-key <api-key>
--H x-api-secret <api-secret>
+-H x-api-key API_KEY
+-H x-api-secret API_SECRET
 ```
 
-Some endpoints also support the `X-Fields` header to return a partial response based on a field mask.
+### Get your API key and secret
 
-## Rate Limiting
+1. In the left sidebar, click **{{< fa gear >}} Settings**. 
 
-All authenticated requests are subject to rate limits. If a rate limit is exceeded, the API responds with a `429 Too Many Requests` error.
+2. Under Your Account, select **Profile**. 
 
-## Common Response Codes
+3. Under Access Keys:
+
+   - Locate [api key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+   - Locate [secret key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+
+## Data formats
+
+The APIs follows REST principles and uses JSON for both requests and responses.
+
+- All endpoints consume and produce `application/json`.
+- CSV format is optionally supported for some listing endpoints using the `format=csv` query parameter.
+
+## Common response codes
 
 | Code | Meaning                      |
 |------|------------------------------|
@@ -121,7 +132,8 @@ All authenticated requests are subject to rate limits. If a rate limit is exceed
 | 404  | Resource not found           |
 | 500  | Internal server error        |
 
-## Data Formats
+## Reference
 
-- All endpoints consume and produce `application/json`
-- CSV format is optionally supported for some listing endpoints using the `format=csv` query parameter
+::: {#api-reference-listing}
+
+:::
