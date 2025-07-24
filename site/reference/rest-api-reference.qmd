@@ -1,0 +1,143 @@
+---
+title: "REST API Reference"
+date: last-modified
+listing:
+  - id: api-reference-listing
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - title: "{{< var vm.product >}} API"
+        description: "Interact with models, templates, groups, business units, and other organizational resources."
+        path: vm-api.qmd
+      - title: "{{< var vm.product >}} Admin API"
+        description: "Manage organizations, users, roles, templates, and system bootstrap."
+        path: admin-api.qmd
+---
+
+This page contains reference documentation for the ValidMind REST APIs.
+
+::: {.panel-tabset}
+
+## ValidMind API
+
+The ValidMind API allows clients to programmatically interact with models, templates, groups, business units, and other organizational resources.
+
+### Base URL
+
+```
+https://api.validmind.com/vm/api/v1
+```
+
+### Versioning
+
+This version of the API is **v1**, specified in the path (`/vm/api/v1`). Future breaking changes will be introduced under a new version path.
+
+### Key capabilities
+
+- **Model inventory management**  
+  Retrieve, filter, create, and update models.  
+  Supports querying by tiering, owners, validators, status, and more.  
+  Supports exporting model data as JSON or CSV.
+
+- **Group and access control**  
+  List, create, and manage access groups.  
+  Add or remove users and resources to/from groups.  
+  Filter by default groups and apply sorting.
+
+- **Business unit management**  
+  Retrieve and manage business units associated with the organization.  
+  Supports filtering, search, and pagination.
+
+- **Template access**  
+  Retrieve available templates used for model documentation and validation.  
+  Includes support for fetching template metadata and default structures.
+
+- **Use case management**  
+  Create and organize use cases and use case categories.  
+  Supports sorting, filtering, and hierarchical structures.
+
+- **Field masking for optimized responses**  
+  Use the `X-Fields` header to control which fields are returned in API responses.  
+  Useful for minimizing payload size and tailoring data for frontend consumption.
+
+- **Health and authentication checks**  
+  Basic endpoints to validate authentication (`/test-auth`) and check service status (`/health`).
+
+## ValidMind Admin API
+
+The ValidMind Admin API provides endpoints to manage organizations, users, roles, templates, and system bootstrap. It is intended for internal or privileged use.
+
+### Base URL
+
+```
+https://api.validmind.com/admin/api/v1
+```
+
+### Versioning
+
+This version of the API is **v1**, specified in the path (`/admin/api/v1`). Future breaking changes will be introduced under a new version path.
+
+
+### Key capabilities
+
+- **Organization management**
+  - Create, update, and retrieve organizations
+  - Bootstrap an initial organization with default configuration
+  - Fetch or upload default templates and configuration data
+
+- **User management**
+  - Create and update users and admin users
+  - Assign roles and organizations
+  - Regenerate user API credentials
+
+- **System bootstrap**
+  - One-time initialization of a base organization, admin user, and default data
+
+:::
+
+## Authentication
+
+All endpoints require an authentication header that includes your API key and API secret:
+
+```
+-H x-api-key API_KEY
+-H x-api-secret API_SECRET
+```
+
+### Get your API key and secret
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**. 
+
+2. Under Your Account, select **Profile**. 
+
+3. Under Access Keys:
+
+   - Locate [api key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+   - Locate [secret key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+
+## Data formats
+
+The APIs follows REST principles and uses JSON for both requests and responses.
+
+- All endpoints consume and produce `application/json`.
+- CSV format is optionally supported for some listing endpoints using the `format=csv` query parameter.
+
+## Common response codes
+
+| Code | Meaning                      |
+|------|------------------------------|
+| 200  | Success                      |
+| 400  | Bad request (validation)     |
+| 401  | Authentication failed        |
+| 403  | Authorization failed         |
+| 404  | Resource not found           |
+| 500  | Internal server error        |
+
+## Reference
+
+::: {#api-reference-listing}
+
+:::
