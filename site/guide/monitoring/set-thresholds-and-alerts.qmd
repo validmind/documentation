@@ -33,7 +33,7 @@ thresholds = {
 }
 
 def passed_fn(value):
-    return value > thresholds["high_risk"]
+    return value >= thresholds["low_risk"]
 
 log_metric(
     key="GINI Score",
@@ -41,16 +41,17 @@ log_metric(
     recorded_at=datetime(2025, 6, 10),
     thresholds=thresholds,
     passed=passed_fn(gini)
-) 
+)
 ```
 
 In this example:
 
 - Three risk thresholds are defined: high risk (`0.5`), medium risk (`0.6`), and low risk (`0.8`).
+- The custom function evaluates if the value meets or exceeds the low risk threshold.
 - The GINI value of `0.75` falls between the medium risk and low risk thresholds.
-- The custom function evaluates if `0.75 > 0.5` (high risk threshold), returning `True`.
-- This evaluation results in `passed=True`, displaying a [{{< fa check >}} Satisfactory]{.bubble .green-bg} status badge.
-- While the metric passes the custom function check, it would still trigger the medium risk threshold since `0.75` is above `0.6`.
+- Since `0.75` is below `0.8`, the function returns `False`, and `passed=False`.
+- Although the passed flag is False, the metric is still classified as medium risk for threshold-based visualizations.
+- This results in a [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg} status badge.
 - The threshold classifications and `passed` parameter work independently, one determines risk level visualization and the other determines the status badge.
 
 ## Set the `passed` parameter
