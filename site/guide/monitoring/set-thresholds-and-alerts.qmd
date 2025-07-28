@@ -24,24 +24,35 @@ Together, thresholds and notifications improve your visibility into model perfor
 To programmatically evaluate whether a metric passes specific criteria, use a custom function:
 
 ```
-def custom_evaluator(value):
-   return value > 0.6
+gini = 0.75
+
+thresholds = {
+    "high_risk": 0.5,
+    "medium_risk": 0.6,
+    "low_risk": 0.8,
+}
+
+def passed_fn(value):
+    return value >= thresholds["low_risk"]
 
 log_metric(
-   key="Test Metric",
-   value=0.65,
-   recorded_at=datetime.now(),
-   thresholds={"medium_risk": 0.6},
-   passed=custom_evaluator(0.65)
+    key="GINI Score",
+    value=gini, 
+    recorded_at=datetime(2025, 6, 10),
+    thresholds=thresholds,
+    passed=passed_fn(gini)
 )
 ```
 
 In this example:
 
-- The custom function evaluates if `0.65 > 0.6`, returning `True`.
-- This evaluation results in `passed=True`, displaying a [{{< fa check >}} Satisfactory]{.bubble .green-bg} badge.
-- Separately, values at or below 0.6 are marked as medium risk by the threshold.
-- The threshold and `passed` parameter work independently.
+- Three risk thresholds are defined: high risk (`0.5`), medium risk (`0.6`), and low risk (`0.8`).
+- The custom function evaluates if the value meets or exceeds the low risk threshold.
+- The GINI value of `0.75` falls between the medium risk and low risk thresholds.
+- Since `0.75` is below `0.8`, the function returns `False`, and `passed=False`.
+- Although the passed flag is False, the metric is still classified as medium risk for threshold-based visualizations.
+- This results in a [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg} status badge.
+- The threshold classifications and `passed` parameter work independently, one determines risk level visualization and the other determines the status badge.
 
 ## Set the `passed` parameter
 
@@ -67,7 +78,7 @@ In this example:
 
 These examples visualize GINI scores which are commonly used to evaluate classification performance, particularly in credit risk and binary classification problems.
 
-### [{{< fa check >}} Satisfactory]{.bubble .green-bg}
+#### [{{< fa check >}} Satisfactory]{.bubble .green-bg}
 
 :::: {.flex .flex-wrap .justify-around .w-100}
 
@@ -81,7 +92,7 @@ Here, the GINI score fluctuates over time but stays above the medium risk thresh
  
 ::::
 
-### [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg}
+#### [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg}
 
 :::: {.flex .flex-wrap .justify-around .w-100}
 
@@ -97,13 +108,28 @@ Here, the GINI score drops to `0.5`, breaching the threshold. This indicates pot
 
 ## Alert notifications
 
-If a logged metric breaches a threshold, alert notifications are triggered. An email is sent to model stakeholders notifying them that the model has a metric that did not pass an ongoing monitoring threshold and requires attention.
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pr2}
+The `passed` boolean is determined by you, either through a custom function, such as `passed_fn` in the earlier example, or by assigning a value directly. This approach allows you to interpret the configured thresholds according to your own logic, rather than relying on automatic evaluation.
+
+A metric is considered to have breached a threshold when its value falls within the high or medium risk range, that is, when it is below the low risk threshold (in this example, below `0.8`). Breaching a threshold affects visual risk indicators and triggers alert notifications, independently of whether the passed flag is `True` or `False`.
+
+An email is sent to model stakeholders notifying them that the model has a metric that did not pass an ongoing monitoring threshold and requires attention.
 
 Stakeholders who receive email alert notification include:
 
 - The model owners
 - The model developers
 - The validators
+
+:::
+
+::: {.w-50-ns .pl2}
+![Sample alert notification email](/guide/monitoring/automated-alert-notification-email.png){fig-alt="Automated email alert from ValidMind notifying that the GINI Score for the [Test] Customer Churn model is 0.75, which falls between the medium (0.6) and low (0.8) risk thresholds, with a button to view the model." .screenshot}
+:::
+
+::::
 
 Responding to these notifications involves prioritizing the alerts and taking appropriate action, ideally as part of your documented ongoing monitoring plan.[^2]
 
