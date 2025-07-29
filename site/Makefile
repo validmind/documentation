@@ -54,8 +54,7 @@ clean:
 	@rm -rf $(SRC_DIR)
 	@rm -rf $(SRC_ROOT)
 	@rm -rf installation/*
-	@rm -rf releases/validmind-library releases/frontend releases/documentation
-	@rm -rf installation/releases
+	@rm -rf releases/validmind-library releases/frontend releases/documentation releases/cmvm
 
 # Prompt for a branch or release tag and clone the repository
 clone:
@@ -89,19 +88,7 @@ copy-installation:
 
 copy-release-notes:
 	@echo "\nCopying release notes source files ..."
-	@mkdir -p releases/validmind-library releases/frontend releases/documentation installation/releases
-	@if [ -d "$(SRC_ROOT)/release-notes/releases/validmind-library" ]; then \
-		cp -r $(SRC_ROOT)/release-notes/releases/validmind-library/* releases/validmind-library/; \
-	fi
-	@if [ -d "$(SRC_ROOT)/release-notes/releases/frontend" ]; then \
-		cp -r $(SRC_ROOT)/release-notes/releases/frontend/* releases/frontend/; \
-	fi
-	@if [ -d "$(SRC_ROOT)/release-notes/releases/documentation" ]; then \
-		cp -r $(SRC_ROOT)/release-notes/releases/documentation/* releases/documentation/; \
-	fi
-	@if [ -d "$(SRC_ROOT)/release-notes/releases/cmvm" ]; then \
-		cp -r $(SRC_ROOT)/release-notes/releases/cmvm/* installation/releases/; \
-	fi
+	@cp -r $(SRC_ROOT)/release-notes/releases ./
 
 # Delete PR branch on https://docs-staging.validmind.ai/
 delete-demo-branch:
