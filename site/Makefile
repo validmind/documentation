@@ -1,6 +1,7 @@
 # Define source and destination directories
 LIBRARY_BRANCH ?= $(or $(LIBRARY),main)
 INSTALLATION_BRANCH ?= $(or $(INSTALLATION),main)
+RELEASE_NOTES_BRANCH ?= $(or $(RELEASE_NOTES),main)
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
@@ -21,7 +22,10 @@ help:
 	@echo "  help                     Display this help message (default target)"
 	@echo "  clean                    Remove the _source/ directory"
 	@echo "  clone                    Clone other required repositories into _source/"
-	@echo "                           Optional, for PR testing: LIBRARY=<branch-name> INSTALLATION=<branch-name>"
+	@echo "                           Optional, for PR testing:" 
+	@echo "                              LIBRARY=<branch-name>"
+	@echo "                              INSTALLATION=<branch-name>"
+	@echo "                              RELEASE_NOTES=<branch-name>"
 	@echo "  copy-installation        Copy customer-managed installation docs into installation/"
 	@echo "  copy-release-notes       Copy release notes into releases/ and installation/releases/"
 	@echo "  delete-demo-branch       Delete docs demo site in s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/"
@@ -77,8 +81,8 @@ clone:
 	@echo "\nCloning installation repo from $(INSTALLATION_BRANCH) ..."; \
 	git clone --depth 1 -b $(INSTALLATION_BRANCH) git@github.com:validmind/installation.git $(SRC_ROOT)/installation
 
-	@echo "\nCloning release-notes repo from main ..."; \
-	git clone --depth 1 -b main git@github.com:validmind/release-notes.git $(SRC_ROOT)/release-notes
+	@echo "\nCloning release-notes repo from $(RELEASE_NOTES_BRANCH) ..."; \
+	git clone --depth 1 -b $(RELEASE_NOTES_BRANCH) git@github.com:validmind/release-notes.git $(SRC_ROOT)/release-notes
 
 copy-installation:
 	@echo "\nCopying installation source files ..."
