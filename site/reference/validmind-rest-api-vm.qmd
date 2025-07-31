@@ -1,29 +1,27 @@
 ---
-title: "{{< var vm.product >}} REST APIs"
+title: "{{< var vm.product >}} Public REST API"
 date: last-modified
 listing:
-  - id: api-reference-listing
+  - id: vm-api-reference-listing
     type: grid
     grid-columns: 2
     max-description-length: 250
     sort: false
     fields: [title, description]
     contents:
-      - title: "{{< var vm.product >}} Public API"
+      - title: "{{< var vm.product >}} Public REST API Reference"
         description: "Interact with models, templates, groups, business units, and other organizational resources."
         path: vm-api.qmd
-      - title: "{{< var vm.product >}} Admin API"
-        description: "Manage organizations, users, roles, templates, and system bootstrap."
-        path: admin-api.qmd
+page-layout: full
 ---
 
-The {{< var validmind.platform >}} provides RESTful APIs for interacting with organizational resources and managing administrative configurations, supporting different levels of access and functionality.
+The {{< var validmind.platform >}} provides a RESTful APIs to programmatically interact with:
 
-::: {.panel-tabset}
-
-## ValidMind Public API
-
-The ValidMind API allows clients to programmatically interact with models, templates, groups, business units, and other organizational resources.
+- Models
+- Groups
+- Business units
+- Use cases
+- Templates
 
 ### Base URL
 
@@ -35,46 +33,16 @@ https://api.dev.vm.validmind.ai/vm/api/v1/
 
 This version of the API is **v1**, specified in the path (`/vm/api/v1`). Future breaking changes will be introduced under a new version path.
 
-### Key capabilities
+### Authentication
 
-The API provides functionality for working with:
-
-- Models
-- Groups
-- Business units
-- Use cases
-- Templates
-
-## ValidMind Admin API
-
-The ValidMind Admin API provides endpoints for working with:
-
-- Organizations
-- Users
-- Usage information
-
-### Base URL
-
-```
-https://api.dev.vm.validmind.ai/admin/api/v1/
-```
-
-### Versioning
-
-This version of the API is **v1**, specified in the path (`/admin/api/v1`). Future breaking changes will be introduced under a new version path.
-
-:::
-
-## Authentication
-
-### Required headers
+#### Required headers
 
 All API endpoints require authentication using two headers that must be included with every request:
 
 - `x-api-key`: Your ValidMind API key
 - `x-api-secret`: Your ValidMind API secret 
 
-### Request example
+#### Request example
 
 To use this cURL example, replace `API_KEY` and `API_SECRET` with your own credentials:
 
@@ -85,7 +53,7 @@ curl -X GET "https://api.validmind.com/vm/api/v1/models" \
   -H 'x-api-secret: API_SECRET'
 ```
 
-### Get your API key and secret
+#### Get your API key and secret
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**. 
 
@@ -96,14 +64,14 @@ curl -X GET "https://api.validmind.com/vm/api/v1/models" \
    - Locate [api key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
    - Locate [secret key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
 
-## Data formats
+### Data formats
 
 The APIs follows REST principles and uses JSON for both requests and responses.
 
 - All endpoints consume and produce `application/json`.
 - CSV format is optionally supported for some listing endpoints using the `format=csv` query parameter.
 
-## Common response codes
+### Common response codes
 
 | Code | Meaning                      |
 |------|------------------------------|
@@ -116,6 +84,6 @@ The APIs follows REST principles and uses JSON for both requests and responses.
 
 ## Reference
 
-::: {#api-reference-listing}
+::: {#vm-api-reference-listing}
 
 :::
