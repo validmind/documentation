@@ -28,7 +28,7 @@ The ValidMind API allows clients to programmatically interact with models, templ
 ### Base URL
 
 ```
-https://api.validmind.com/vm/api/v1
+https://api.dev.vm.validmind.ai/vm/api/v1/
 ```
 
 ### Versioning
@@ -47,36 +47,42 @@ The API provides functionality for working with:
 
 ## ValidMind Admin API
 
-The ValidMind Admin API provides endpoints to manage organizations, users, roles, templates, and system bootstrap. It is intended for internal or privileged use.
+The ValidMind Admin API provides endpoints for working with:
+
+- Organizations
+- Users
+- Usage information
 
 ### Base URL
 
 ```
-https://api.validmind.com/admin/api/v1
+https://api.dev.vm.validmind.ai/admin/api/v1/
 ```
 
 ### Versioning
 
 This version of the API is **v1**, specified in the path (`/admin/api/v1`). Future breaking changes will be introduced under a new version path.
 
-
-### Key capabilities
-
-The API provides functionality for working with:
-
-- Organizations
-- Users
-- Usage information
-
 :::
 
 ## Authentication
 
-All endpoints require an authentication header that includes your API key and API secret:
+### Required headers
+
+All API endpoints require authentication using two headers that must be included with every request:
+
+- `x-api-key`: Your ValidMind API key
+- `x-api-secret`: Your ValidMind API secret 
+
+### Request example
+
+To use this cURL example, replace `API_KEY` and `API_SECRET` with your own credentials:
 
 ```
--H x-api-key API_KEY
--H x-api-secret API_SECRET
+curl -X GET "https://api.validmind.com/vm/api/v1/models" \
+  -H 'accept: application/json' \
+  -H 'x-api-key: API_KEY' \
+  -H 'x-api-secret: API_SECRET'
 ```
 
 ### Get your API key and secret
