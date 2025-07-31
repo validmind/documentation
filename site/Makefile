@@ -57,7 +57,7 @@ clean:
 	@rm -rf $(SRC_DIR)
 	@rm -rf $(SRC_ROOT)
 	@rm -rf installation/*
-	@rm -rf releases/validmind-library releases/frontend releases/documentation releases/cmvm
+	@rm -rf releases/backend releases/cmvm releases/documentation releases/frontend releases/installation releases/validmind-library
 
 # Prompt for a branch or release tag and clone the repository
 clone:
