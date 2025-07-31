@@ -1,0 +1,89 @@
+---
+title: "{{< var vm.product >}} Public REST API"
+date: last-modified
+listing:
+  - id: vm-api-reference-listing
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - title: "{{< var vm.product >}} Public REST API Reference"
+        description: "Programmatically interact with models, groups, business units, use cases, and templates."
+        path: vm-api.qmd
+page-layout: full
+---
+
+The {{< var validmind.platform >}} provides a RESTful APIs to programmatically interact with:
+
+- Models
+- Groups
+- Business units
+- Use cases
+- Templates
+
+## Base URL
+
+```
+https://api.dev.vm.validmind.ai/vm/api/v1/
+```
+
+## Versioning
+
+This version of the API is **v1**, specified in the path (`/vm/api/v1`). Future breaking changes will be introduced under a new version path.
+
+## Authentication
+
+### Required headers
+
+All API endpoints require authentication using two headers that must be included with every request:
+
+- `x-api-key`: Your ValidMind API key
+- `x-api-secret`: Your ValidMind API secret 
+
+### Request example
+
+To use this cURL example, replace `API_KEY` and `API_SECRET` with your own credentials:
+
+```
+curl -X GET "https://api.dev.vm.validmind.ai/vm/api/v1/models" \
+  -H 'accept: application/json' \
+  -H 'x-api-key: API_KEY' \
+  -H 'x-api-secret: API_SECRET'
+```
+
+### Get your API key and secret
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**. 
+
+2. Under Your Account, select **Profile**. 
+
+3. Under Access Keys:
+
+   - Locate [api key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+   - Locate [secret key]{.smallcaps} and click **{{< fa clipboard >}} Copy to Clipboard**.
+
+## Data formats
+
+The APIs follows REST principles and uses JSON for both requests and responses.
+
+- All endpoints consume and produce `application/json`.
+- CSV format is optionally supported for some listing endpoints using the `format=csv` query parameter.
+
+## Common response codes
+
+| Code | Meaning                      |
+|------|------------------------------|
+| 200  | Success                      |
+| 400  | Bad request (validation)     |
+| 401  | Authentication failed        |
+| 403  | Authorization failed         |
+| 404  | Resource not found           |
+| 500  | Internal server error        |
+
+## Reference
+
+::: {#vm-api-reference-listing}
+
+:::

@@ -13,7 +13,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
 
 # Help section
 help:
@@ -35,7 +35,8 @@ help:
 	@echo "  docs-site                Get all source files and render the production docs site with Quarto"
 	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
 	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
-	@echo "  get-source               Get all source files (clean, clone, copy-installation, copy-release-notes, notebooks, python-docs, test-descriptions)"
+	@echo "  get-api-json             Download Swagger JSON specs from ValidMind APIs into reference/"
+	@echo "  get-source               Get all source files (clean, clone, copy-installation, copy-release-notes, notebooks, python-docs, test-descriptions, get-api-json)"
 	@echo "  kind-serve               Set up Kind cluster for ValidMind docs"
 	@echo "  kind-stop                Stop Kind cluster for ValidMind docs"
 	@echo "  kind-restart             Restart Kind cluster for ValidMind docs"
@@ -250,6 +251,17 @@ generate-sitemap:
 	printf '</body>\n</html>\n' >> _site/sitemap.html
 	@rm sitemap.urls.tmp
 	@echo "Sitemaps generated at _site/sitemap.xml and _site/sitemap.html"
+
+# Download Swagger JSON specs from ValidMind APIs
+get-api-json:
+	@rm -f reference/vm-api-swagger.json reference/admin-api-swagger.json reference/rapidoc-min.js
+	@mkdir -p reference
+	@echo "Fetching VM API Swagger spec ..."
+	@curl -s -o reference/vm-api-swagger.json "https://api.dev.vm.validmind.ai/vm/api/v1/swagger.json" || echo "Failed to fetch VM API spec"
+	@echo "Fetching Admin API Swagger spec ..."
+	@curl -s -o reference/admin-api-swagger.json "https://api.dev.vm.validmind.ai/admin/api/v1/swagger.json" || echo "Failed to fetch Admin API spec"
+	@echo "Fetching RapiDoc JavaScript library ..."
+	@curl -s -o reference/rapidoc-min.js "https://unpkg.com/rapidoc/dist/rapidoc-min.js" || echo "Failed to fetch RapiDoc library"
 
 # Get all source files
 get-source: clean clone copy-installation copy-release-notes notebooks python-docs test-descriptions
