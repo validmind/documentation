@@ -8,8 +8,8 @@ are incomplete or contain redundant information and higher scores indicate bette
 relevancy. This metric is computed using the `user_input`, the `retrieved_contexts`
 and the `response`.
 
-The Response Relevancy is defined as the mean cosine similartiy of the original
-`user_input` to a number of artifical questions, which are generated (reverse-engineered)
+The Response Relevancy is defined as the mean cosine similarity of the original
+`user_input` to a number of artificial questions, which are generated (reverse-engineered)
 based on the `response`:
 
 $$
@@ -26,7 +26,7 @@ Where:
 
 **Note**: *This is a reference-free metric, meaning that it does not require a
 `ground_truth` answer to compare against. A similar metric that does evaluate the
-correctness of a generated answser with respect to a `ground_truth` answer is
+correctness of a generated answers with respect to a `ground_truth` answer is
 `validmind.model_validation.ragas.AnswerCorrectness`.*
 
 ### Configuring Columns
