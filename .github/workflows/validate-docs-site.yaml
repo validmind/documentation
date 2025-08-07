@@ -58,6 +58,16 @@ jobs:
           }
           make generate-sitemap
 
+    - name: Test for warnings or errors
+      run: |
+        if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
+          echo "Warnings or errors detected during Quarto render"
+          cat site/render_errors.log
+          exit 1
+        else
+          echo "No warnings or errors detected during Quarto render"
+        fi
+
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -102,16 +112,6 @@ jobs:
       with:
         dev_env: dev.env
         valid_env: valid.env
-
-    - name: Test for warnings or errors
-      run: |
-        if grep -q 'WARN:\|ERROR:' site/render_errors.log; then
-          echo "Warnings or errors detected during Quarto render"
-          cat site/render_errors.log
-          exit 1
-        else
-          echo "No warnings or errors detected during Quarto render"
-        fi
 
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
