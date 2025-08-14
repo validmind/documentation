@@ -1,0 +1,166 @@
+name: Free disk space
+description: Reclaim space on GitHub-hosted Linux runners and optionally create/release a disk reserve
+inputs:
+  # Reserve controls
+  create_reserve_gb:
+    description: Create a reserve file of this size (GB) under $RUNNER_TEMP (delete later to free space)
+    default: "0"
+  release_reserve:
+    description: If "true", delete the reserve file at $RUNNER_TEMP/disk-reserve.bin
+    default: "false"
+
+  # Cleanup toggles (safe defaults)
+  remove_dotnet:
+    description: Remove preinstalled .NET SDKs (/usr/share/dotnet)
+    default: "false"
+  remove_android:
+    description: Remove Android SDK (/usr/local/lib/android)
+    default: "false"
+  remove_haskell:
+    description: Remove GHC/Haskell toolchain (/opt/ghc)
+    default: "false"
+  prune_docker:
+    description: docker system prune -af and volume prune
+    default: "false"
+  apt_cleanup:
+    description: apt-get clean and remove apt lists
+    default: "false"
+
+  # Power knobs (use with care)
+  remove_toolcache_patterns:
+    description: |
+      Newline-separated patterns inside /opt/hostedtoolcache to delete (dangerous).
+      Example:
+        go/*
+        Ruby/*
+    default: ""
+
+  # Workspace paths you want deleted (e.g., build artifacts) — useful at the end with if: always()
+  remove_paths:
+    description: Newline-separated paths to delete from the workspace
+    default: ""
+
+  # Optional diagnostics
+  show_du:
+    description: If "true", show top disk consumers
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Show initial disk usage
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "== Initial df =="
+        df -hT /
+        echo
+        echo "== Workspace usage =="
+        du -xhd1 "$GITHUB_WORKSPACE" 2>/dev/null | sort -h || true
+
+    # Create a reserve file early to guarantee headroom you can release later
+    - name: Create reserve
+      if: ${{ inputs.create_reserve_gb != '' && inputs.create_reserve_gb != '0' && inputs.release_reserve != 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        : "${RUNNER_TEMP:=/tmp}"
+        RESERVE="${RUNNER_TEMP}/disk-reserve.bin"
+        echo "Creating ${RESERVE} of size ${{ inputs.create_reserve_gb }}G"
+        if command -v fallocate >/dev/null 2>&1; then
+          fallocate -l "${{ inputs.create_reserve_gb }}G" "$RESERVE"
+        else
+          dd if=/dev/zero of="$RESERVE" bs=1M count=$((1024*${{ inputs.create_reserve_gb }}))
+        fi
+        ls -lh "$RESERVE" || true
+
+    # Release the reserve right before post-steps
+    - name: Release reserve
+      if: ${{ inputs.release_reserve == 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        : "${RUNNER_TEMP:=/tmp}"
+        RESERVE="${RUNNER_TEMP}/disk-reserve.bin"
+        echo "Deleting reserve $RESERVE (if present)"
+        rm -f "$RESERVE" || true
+
+    # Optional removals of preinstalled SDKs
+    - name: Remove preinstalled SDKs (opt-in)
+      if: ${{ inputs.remove_dotnet == 'true' || inputs.remove_android == 'true' || inputs.remove_haskell == 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        if [[ "${{ inputs.remove_dotnet }}" == "true" ]]; then
+          sudo rm -rf /usr/share/dotnet || true
+        fi
+        if [[ "${{ inputs.remove_android }}" == "true" ]]; then
+          sudo rm -rf /usr/local/lib/android || true
+        fi
+        if [[ "${{ inputs.remove_haskell }}" == "true" ]]; then
+          sudo rm -rf /opt/ghc || true
+        fi
+
+    # Docker & APT cleanup
+    - name: Prune Docker (opt-in)
+      if: ${{ inputs.prune_docker == 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        sudo docker system prune -af || true
+        sudo docker volume prune -f || true
+        sudo docker image prune -af || true
+
+    - name: Apt cache cleanup (opt-in)
+      if: ${{ inputs.apt_cleanup == 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/*
+
+    # Hosted toolcache removal (dangerous)
+    - name: Remove hosted toolcache entries (dangerous; opt-in)
+      if: ${{ inputs.remove_toolcache_patterns != '' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        TOOLCACHE_ROOT="/opt/hostedtoolcache"
+        while IFS= read -r pattern; do
+          [[ -z "$pattern" ]] && continue
+          echo "Removing ${TOOLCACHE_ROOT}/${pattern}"
+          sudo bash -c "shopt -s nullglob dotglob; rm -rf ${TOOLCACHE_ROOT}/${pattern}"
+        done <<< "${{ inputs.remove_toolcache_patterns }}"
+
+    # Workspace cleanup (safe for your own outputs; keep caches out of here)
+    - name: Remove workspace paths (opt-in)
+      if: ${{ inputs.remove_paths != '' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        while IFS= read -r p; do
+          [[ -z "$p" ]] && continue
+          echo "Removing workspace path: $p"
+          rm -rf "$p" || true
+        done <<< "${{ inputs.remove_paths }}"
+
+    - name: Diagnostics (opt-in)
+      if: ${{ inputs.show_du == 'true' }}
+      shell: bash
+      run: |
+        set -euxo pipefail
+        echo "== Top-level offenders on / =="
+        sudo du -xhd1 / 2>/dev/null | sort -h | tail -n 20 || true
+        echo
+        echo "== Workspace offenders =="
+        du -xhd1 "$GITHUB_WORKSPACE" 2>/dev/null | sort -h | tail -n 20 || true
+
+    - name: Show final disk usage
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "== Final df =="
+        df -hT /
+        echo
+        echo "== Final workspace usage =="
+        du -xhd1 "$GITHUB_WORKSPACE" 2>/dev/null | sort -h || true
