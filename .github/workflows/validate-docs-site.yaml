@@ -14,7 +14,7 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-    - name: Check out repository
+    - name: Check out documentation repository
       uses: actions/checkout@v2
 
     # Reclaim space + create a reserve for deterministic headroom
@@ -163,7 +163,7 @@ jobs:
             body: comment
           });
 
- # Release headroom and shrink before final lightweight steps & post-job
+    # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
       if: always()
       uses: ./.github/actions/free-disk-space
