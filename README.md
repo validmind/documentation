@@ -85,9 +85,26 @@ These directories may have sub-directories depending on their size and grouped s
 #### Supporting `site` directories
 - `_site` — This is where static files rendered by `quarto render` get placed.
 - `assets` — This is where general shared assets live (stylesheets, promotional images, all videos, etc.).
+- `css` — Modular CSS files organized by functionality and imported into the main stylesheet.
 - `internal` — For internal testing only.
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
+
+##### CSS organization (IN PROGRESS)
+
+The site uses a modular CSS architecture to maintain organized and maintainable styles:
+
+```
+site/
+├── css/
+│   ├── _bug-fixes.css      # Bug fixes and CSS conflict resolutions
+│   └── _codeblocks.css     # All code block and syntax highlighting styles  
+└── styles.css              # Main styles with modular imports
+```
+
+- **`styles.css`** — Main stylesheet that imports modular CSS files and contains site-wide styling
+- **`css/_bug-fixes.css`** — Isolated fixes for CSS conflicts and browser-specific issues
+- **`css/_codeblocks.css`** — All styling related to code blocks, syntax highlighting, and pre-formatted text
 
 ### Auxiliary `internal` directories
 
