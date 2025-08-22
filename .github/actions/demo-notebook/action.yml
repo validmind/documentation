@@ -48,14 +48,28 @@ runs:
         restore-keys: |
           validmind-library-${{ runner.os }}-
 
-    - name: Install dependencies from validmind-library
+    - name: Install Poetry (with export plugin)
+      uses: snok/install-poetry@v1
+      with:
+        plugins: poetry-plugin-export
+        virtualenvs-create: false # optional: install into runner Python instead of venv
+
+    - name: Export and install deps
       shell: bash
       run: |
-        pip install poetry
         cd validmind-library
-        poetry export --without-hashes --format=requirements.txt > ../requirements.txt
+        poetry export -f requirements.txt --without-hashes -o ../requirements.txt
         cd ..
         pip install -r requirements.txt
+
+    # - name: Install dependencies from validmind-library
+    #   shell: bash
+    #   run: |
+    #     pip install poetry==1.7.1
+    #     cd validmind-library
+    #     poetry export --without-hashes --format=requirements.txt > ../requirements.txt
+    #     cd ..
+    #     pip install -r requirements.txt
 
     - name: Register validmind kernel
       shell: bash
