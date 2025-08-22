@@ -51,7 +51,7 @@ runs:
     - name: Install dependencies from validmind-library
       shell: bash
       run: |
-        # Detect Poetry version from the cloned repo's lockfile and install that version
+        # Detect Poetry version from the cloned repo's lockfile header and install that version
         POETRY_VERSION=$(grep -m1 -oE 'Poetry [0-9]+(\.[0-9]+){1,2}' validmind-library/poetry.lock | awk '{print $2}')
         if [ -n "$POETRY_VERSION" ]; then
           echo "Installing Poetry version $POETRY_VERSION from validmind-library/poetry.lock"
@@ -64,8 +64,14 @@ runs:
           pip install poetry
         fi
 
+        # Ensure 'poetry export' is available (Poetry 1.2+ requires the export plugin)
+        if ! poetry help export >/dev/null 2>&1; then
+          echo "'poetry export' not found; installing plugin 'poetry-plugin-export'"
+          pip install poetry-plugin-export || poetry self add poetry-plugin-export
+        fi
+
         cd validmind-library
-        poetry export --without-hashes --format=requirements.txt > ../requirements.txt
+        poetry export -f requirements.txt --without-hashes -o ../requirements.txt
         cd ..
 
         pip install -r requirements.txt
