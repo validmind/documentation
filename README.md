@@ -53,7 +53,7 @@ Supported profiles:
 
 - `development`: For developing new product documentation or docs site features
 - `staging`: To preview the staging docs site after checking out the `staging` branch
-- `prod`: To preview the production docs site after checking out the `prod` branch
+- `production`: To preview the production docs site after checking out the `prod` branch
 - `docker`: Not recommended; follow the steps in [local development with Kind](#local-development-with-kind)
 
 ### Render the docs site
