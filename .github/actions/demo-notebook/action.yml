@@ -51,47 +51,10 @@ runs:
     - name: Install dependencies from validmind-library
       shell: bash
       run: |
-        # Detect Poetry version from the cloned repo's lockfile header and install that version
-        POETRY_VERSION=$(grep -m1 -oE 'Poetry [0-9]+(\.[0-9]+){1,2}' validmind-library/poetry.lock | awk '{print $2}')
-        if [ -n "$POETRY_VERSION" ]; then
-          echo "Installing Poetry version $POETRY_VERSION from validmind-library/poetry.lock"
-          pip install "poetry==${POETRY_VERSION}" || {
-            echo "Failed to install Poetry $POETRY_VERSION via pip; installing latest Poetry instead";
-            pip install poetry;
-          }
-        else
-          echo "Warning: Could not detect Poetry version from validmind-library/poetry.lock; installing latest Poetry"
-          pip install poetry
-        fi
-
-        # Ensure 'poetry export' is available (Poetry 1.2+ requires the export plugin)
-        if ! poetry help export >/dev/null 2>&1; then
-          echo "'poetry export' not found; installing plugin 'poetry-plugin-export'"
-          pip install poetry-plugin-export || poetry self add poetry-plugin-export
-        fi
-
+        pip install poetry
         cd validmind-library
-        # Export only the main dependency group to avoid optional/extras conflicts
-        poetry export -f requirements.txt --without-hashes --only main -o ../requirements.txt
+        poetry export --without-hashes --format=requirements.txt > ../requirements.txt
         cd ..
-
-        # Workaround for duplicate unmarked numpy pins that can confuse pip's resolver
-        if grep -qE '^numpy==[0-9]+' requirements.txt; then
-          NUM_DUPES=$(grep -E '^numpy==[0-9][^;]*$' requirements.txt | wc -l | tr -d ' ')
-          if [ "$NUM_DUPES" -gt 1 ]; then
-            echo "Detected $NUM_DUPES duplicate unmarked numpy pins; keeping the highest version"
-            BEST=$(grep -E '^numpy==[0-9][^;]*$' requirements.txt | cut -d= -f3 | sort -V | tail -n1)
-            awk -v best="$BEST" '\
-              BEGIN{OFS=""} \
-              { \
-                if ($0 ~ /^numpy==[0-9][^;]*$/) { \
-                  if ($0 == "numpy==" best) print; \
-                } else { print } \
-              }' requirements.txt > requirements.fixed.txt
-            mv requirements.fixed.txt requirements.txt
-          fi
-        fi
-
         pip install -r requirements.txt
 
     - name: Register validmind kernel
