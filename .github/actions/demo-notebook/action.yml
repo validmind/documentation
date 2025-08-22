@@ -65,19 +65,26 @@ runs:
           validmind-library-${{ runner.os }}-poetry-${{ steps.poetry_spec.outputs.spec }}-
           validmind-library-${{ runner.os }}-
 
-    - name: Install dependencies from validmind-library
+    - name: Install dependencies from validmind-library (composite-safe)
       shell: bash
       run: |
+        set -Eeuo pipefail
+        # Install Poetry (whatever spec you chose earlier)
         python -m pip install "${{ steps.poetry_spec.outputs.spec }}"
-        python -m pip install "poetry-plugin-export>=1.9"
+        # If you're on Poetry 1.7+, make sure the export plugin is present
+        python -m pip install "poetry-plugin-export>=1.9" || true
         poetry --version
-        poetry self show plugins
-        poetry check -C validmind-library -v
-        # Use explicit --output for compatibility
-        poetry export -C validmind-library --without-hashes -f requirements.txt --output ./requirements.txt
-        ls -l ./requirements.txt
-        head -n 20 ./requirements.txt  # sanity check contents
-        pip install -r ./requirements.txt
+        poetry self show plugins || true
+
+        # Export requirements to the *caller* workspace explicitly
+        poetry export -C "$GITHUB_WORKSPACE/validmind-library" \
+          --without-hashes -f requirements.txt \
+          > "$GITHUB_WORKSPACE/requirements.txt"
+
+        # Sanity checks and install
+        ls -l "$GITHUB_WORKSPACE/requirements.txt"
+        head -n 10 "$GITHUB_WORKSPACE/requirements.txt"
+        pip install -r "$GITHUB_WORKSPACE/requirements.txt"
 
     - name: Register validmind kernel
       shell: bash
