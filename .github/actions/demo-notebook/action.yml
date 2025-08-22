@@ -71,8 +71,26 @@ runs:
         fi
 
         cd validmind-library
-        poetry export -f requirements.txt --without-hashes -o ../requirements.txt
+        # Export only the main dependency group to avoid optional/extras conflicts
+        poetry export -f requirements.txt --without-hashes --only main -o ../requirements.txt
         cd ..
+
+        # Workaround for duplicate unmarked numpy pins that can confuse pip's resolver
+        if grep -qE '^numpy==[0-9]+' requirements.txt; then
+          NUM_DUPES=$(grep -E '^numpy==[0-9][^;]*$' requirements.txt | wc -l | tr -d ' ')
+          if [ "$NUM_DUPES" -gt 1 ]; then
+            echo "Detected $NUM_DUPES duplicate unmarked numpy pins; keeping the highest version"
+            BEST=$(grep -E '^numpy==[0-9][^;]*$' requirements.txt | cut -d= -f3 | sort -V | tail -n1)
+            awk -v best="$BEST" '\
+              BEGIN{OFS=""} \
+              { \
+                if ($0 ~ /^numpy==[0-9][^;]*$/) { \
+                  if ($0 == "numpy==" best) print; \
+                } else { print } \
+              }' requirements.txt > requirements.fixed.txt
+            mv requirements.fixed.txt requirements.txt
+          fi
+        fi
 
         pip install -r requirements.txt
 
