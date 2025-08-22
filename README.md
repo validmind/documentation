@@ -42,19 +42,30 @@ If you are creating a pull request, test your changes by rendering or previewing
 
 ### Preview the docs site
 
+To get an accurate preview of the docs site, specify a Quarto profile:
+
 ```bash
 cd site
-quarto preview
+quarto preview --profile development
 ```
+
+Supported profiles:
+
+- `development`: For developing new product documentation or docs site features
+- `staging`: To preview the staging docs site after checking out the `staging` branch
+- `prod`: To preview the production docs site after checking out the `prod` branch
+- `docker`: Not recommended; follow the steps in [local development with Kind](#local-development-with-kind)
 
 ### Render the docs site
 
-To render the site:
+To render the production docs site:
 
 ```bash
 cd site
-quarto render
+quarto render --profile production
 ```
+
+Supports the same profiles as preview.
 
 The rendered static HTML output lives in:
 
