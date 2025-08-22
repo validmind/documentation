@@ -19,29 +19,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Check out documentation repository
         uses: actions/checkout@v2
 
-      - name: "Checkout documentation repository"
+      # Reclaim space + create a reserve for deterministic headroom
+      - name: Free space + create reserve
+        uses: ./.github/actions/free-disk-space
+        with:
+          remove_dotnet: "true"
+          remove_android: "true"
+          remove_haskell: "true"
+          prune_docker: "true"
+          apt_cleanup: "true"
+          create_reserve_gb: "3"
+
+      - name: Check out installation repository
         uses: actions/checkout@v4
         with:
           repository: validmind/installation
           path: site/_source/installation
           token: ${{ secrets.INSTALLATION_RO_PAT }}
 
+      - name: Check out release-notes repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/release-notes
+          path: site/_source/release-notes
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          check-latest: false
 
-      - name: Fetch Quarto
-        uses: ./.github/actions/fetch-quarto
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Setup R environment
         uses: ./.github/actions/setup-r
 
       - name: Populate installation
         run: cp -r site/_source/installation/site/installation site/installation
+
+      - name: Populate release notes
+        run: cp -r site/_source/release-notes/releases site
 
       - name: Render prod docs site
         run: |
@@ -62,7 +84,6 @@ jobs:
           echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
           echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
           echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
-          cat dev.env
 
       # If yes then create the valid.env file for use in execution step
       - name: Create valid.env file
@@ -73,7 +94,6 @@ jobs:
           echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
           echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
           echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
-          cat valid.env
 
       # Only execute the production notebooks for training if .env files are created
       - name: Execute production ValidMind for model development and validation series
@@ -86,7 +106,25 @@ jobs:
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials
-        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set default.region us-east-1
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }} && aws configure set default.region us-east-1
 
       - name: Deploy docs prod site
-        run: aws s3 sync site/_site s3://docs-ci-cd-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager
+
+      # Release headroom and shrink before final lightweight steps & post-job
+      - name: Release reserve & shrink
+        if: always()
+        uses: ./.github/actions/free-disk-space
+        with:
+          release_reserve: "true"
+          remove_paths: |
+            site/_source/installation
+            site/_source/release-notes
+            site/render_errors.log
+            site/_freeze
+            dev.env
+            valid.env
+
+      - name: Final disk usage
+        if: always()
+        run: df -hT /

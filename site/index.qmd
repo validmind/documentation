@@ -8,115 +8,125 @@ resources:
 filters:
     - tachyons
 listing:
-  - id: admin
-    type: grid
-    grid-columns: 1
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents:
-    - /guide/configuration/accessing-validmind.qmd
-    - /guide/configuration/managing-your-organization.qmd
-    - /guide/configuration/managing-users.qmd
-  - id: developer
-    type: grid
-    grid-columns: 1
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents:
-    - /developer/validmind-library.qmd
-    - /developer/supported-models.qmd
-    - /developer/samples-jupyter-notebooks.qmd
-  - id: validator
-    type: grid
-    grid-columns: 1
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents:
-    - /guide/model-validation/preparing-validation-reports.qmd
-    - /guide/model-validation/working-with-model-findings.qmd
-    - /guide/reporting/working-with-analytics.qmd
-  - id: releases
-    type: grid
-    grid-columns: 3
-    max-description-length: 150
-    sort: false
-    fields: [title, subtitle, description]
-    contents:
-    # MAKE-RELEASE-NOTES-LATEST-MARKER
-      - /releases/2025/2025-apr-24/release-notes.qmd
-      - /releases/2025/2025-mar-07/release-notes.qmd
-      - /releases/2025/2025-jan-31/release-notes.qmd
-    # MAKE-RELEASE-NOTES-OLDEST-MARKER
-  - id: validmind-academy
-    type: grid
-    image-height: 200px
-    sort: false
-    contents:
-    - path: training/administrator-fundamentals/administrator-fundamentals-register.qmd
-      image: training/administrator-fundamentals/administrator-fundamentals.png
-      title: "Administrator Fundamentals {{< fa gear >}}"
-      subtitle: "Register now {{< fa chevron-right >}}"
-    - path: training/developer-fundamentals/developer-fundamentals-register.qmd
-      title: "Developer Fundamentals {{< fa code >}}"
-      subtitle: "Register now {{< fa chevron-right >}}"
-      image: training/developer-fundamentals/developer-fundamentals.png
-    - path: training/validator-fundamentals/validator-fundamentals-register.qmd
-      image: training/validator-fundamentals/validator-fundamentals.png
-      title: "Validator Fundamentals {{< fa user-check >}}"
-      subtitle: "Register now {{< fa chevron-right >}}"
-    fields: [image, title, subtitle]
+  id: index-releases
+  contents:
+    - ../releases/frontend/**/pr*.qmd
+    - ../releases/documentation/**/pr*.qmd
+    - ../releases/validmind-library/**/pr*.qmd
+  include:
+    categories: highlight
+  fields: [date, title]
+  sort: "date desc"
+  max-description-length: 300
+  type: table
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  page-size: 3
+format:
+  html:
+    css: styles.css
 ---
 
 ```{=html}
 <style>
+
+/* Hide search icon on home page only */
+button.aa-DetachedSearchButton svg {
+  display: none !important;
+ }
+
+/* Link styles */
 a {
-  color: #DE257E;
+  color: #196972;
   text-decoration: none;
+  font-weight: bold;
 }
 
 a:hover {
-  /* color: #DE257E; */
   text-decoration: none;
 }
 
-.card:hover {
-  border: 1px solid #083E44;
-  background-color: #F9F9F9;
-}
 
 #searchbox {
-  max-width: 100%;
-  padding: 10px;
-  border-radius: 8px;
   width: 100%;
+  max-width: 100%;
+  min-width: 680px;
+  padding: 10px;
+  border: 3px solid #083E44;
+  border-radius: 8px;
   box-sizing: border-box;
+  margin: 0 auto;
+
+  font-size: 110%;
+}
+
+#searchbox:focus {
+  outline: none;
+  border-color: #083E44;
+  box-shadow: 0 0 0 2px rgba(8, 62, 68, 0.3);
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 23px;
+  transform: translateY(-45%);
+  color: #888;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.search-wrapper #searchbox {
+  padding-left: 55px;
+}
+
+.search-shortcut {
+  position: absolute;
+  right: 10px;
+  top: 23px;
+  transform: translateY(-45%);
+  color: #DE257E;
+  pointer-events: none;
+  z-index: 2;
 }
 
 #hits {
   display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   overflow-y: auto;
-  width: 100vw;
-  max-width: 800px;
   max-height: 400px;
-  margin: 20px auto;
+  margin-top: 5px;
   padding: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  background-color: white;
+  border: 2px solid #083E44;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
 }
 
 #hits div {
-  border-bottom: 1px solid #ccc; 
+  border-bottom: 1px solid #eee; 
   border-radius: 4px;
-  padding: 5px;
-  margin-bottom: 5px;
+  padding: 10px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s ease;
 }
 
 #hits div:hover {
-  background-color: #EAF8FA;   /* Light green background for the entire search result on hover */
+  background-color: #EAF8FA;
 }
 
 #hits a strong {
@@ -129,12 +139,252 @@ a:hover {
   text-decoration: none;
 }
 
+/* Gradient background container */
+.column-screen {
+  background: linear-gradient(to bottom, #EDF9FA 80%, #ffffff);
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0; 
+}
+
+.column-screen > *:last-child {
+  margin-bottom: 0;
+}
+
+.center.bg-white {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: 0 -4px 16px rgba(6, 58, 59, 0.08);
+}
+
+.home-section-card {
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 260px;
+  flex: 1 1 0;
+  min-height: 340px;
+  justify-content: space-between;
+}
+
+.flex.flex-wrap.justify-around {
+  align-items: stretch;
+}
+
+
+/*to fix white gap at the top*/
+.quarto-container,
+.page-columns,
+.page-layout,
+body,
+html {
+  background: linear-gradient(to bottom, #EDF9FA 80%, #ffffff);
+}
+
+/* Home page specific: eliminate gap before footer */
+body {
+  margin-bottom: 0 !important;
+}
+
+.column-screen {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Force footer to connect */
+footer.footer {
+  margin-top: 0 !important;
+}
+
+/* Override Quarto's min-height calculation that creates the gap */
+#quarto-content {
+  min-height: auto !important;
+}
+
+/* Remove margins/padding from main element that creates gap above footer */
+main.content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#quarto-document-content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Override Quarto's grid and container settings that create gaps */
+.quarto-container {
+  min-height: auto !important;
+}
+
+.page-rows-contents {
+  grid-template-rows: [content-top] minmax(max-content, 1fr) [content-bottom] minmax(0px, max-content) [page-bottom] !important;
+}
+
+.tour-text-container {
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+ 
+ .tour-bg {
+   background-image: 
+     linear-gradient(to right, white 0px, transparent 60px, transparent calc(100% - 60px), white 100%),
+     linear-gradient(to bottom, white 0px, transparent 15px, transparent calc(100% - 15px), white 100%),
+     url("/assets/home-page/freckles_bckgd.svg");
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-size: 100% auto;
+   background-attachment: scroll;
+   padding: 2rem 0rem;
+}
+
+/* Release notes listing area */
+.pagination {
+  display: none !important;
+}
+
+.table {
+  border-top: 0px;
+  border-bottom: 0px white;
+  margin-top: -5px !important;
+}
+
+.table>thead {
+  display: none !important;
+}
+
+.listing-date {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+table.quarto-listing-table a {
+  color: #555;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.quarto-listing-table td:first-child {
+  min-width: 120px;
+}
+
+tr {
+  position: relative;
+}
+
+tr::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  background-image: url("/assets/home-page/release_icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+td {
+  vertical-align: top;
+}
+
+
+ /* Add after existing styles */
+@media (max-width: 768px) {
+/* Make body width responsive on mobile */
+  .quarto-container {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  .page-columns {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+/* Search box mobile styles */
+  #searchbox {
+    min-width: auto;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .search-wrapper {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  /* Container mobile styles */
+  .center.bg-white {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  
+  .w-40-ns {
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .w-30-ns {
+    display: none; /* Hide filler columns on mobile */
+  }
+
+  
+  .flex.flex-wrap.justify-around {
+    flex-direction: column;
+  }
+  
+  .pt5, .pl5, .pr5, .pb4 {
+    padding: 1rem !important;
+  }
+  
+  /* Button mobile styles */
+  .button, .cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  /* Text sizing for mobile */
+  .f3 {
+    font-size: 1.5rem !important;
+  }
+  
+  .f4 {
+    font-size: 1rem !important;
+  }
+  
+  .f5 {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Touch-friendly improvements */
+  a, button, .button, .cta {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 </style>
 ```
-
 ::: {.column-screen}
-
-<!-- INTRO BANNER -->
 
 :::: {.flex .flex-wrap .justify-around .hero}
 
@@ -142,37 +392,30 @@ a:hover {
 <!-- FILLER COLUMN DO NOT REMOVE -->
 :::
 
-::: {.w-60-ns}
-
+::: {.w-80-ns}
 <!-- Add a search box to home page-->
-<input id="searchbox" placeholder="Ask a question">
-<div id="hits"></div>
+<div class="search-wrapper">
+  <span class="search-icon">
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="10" cy="10" r="6"/>
+      <path d="m14.5 14.5 5.5 5.5"/>
+    </svg>
+  </span>
+  <input id="searchbox" type="text" placeholder="What are you looking for?" />
+  <span class="search-shortcut">
+    <svg viewBox="0 0 24 24" width="30" height="30">
+      <rect x="2" y="2" width="20" height="20" rx="6" ry="6" fill="#f5f5f5" stroke="#DE257E" stroke-width="1"/>
+      <line x1="10" y1="17" x2="14" y2="7" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </span>
+  <div id="hits"></div>
+</div>
 
 <!-- Use Lunr.js as the search library -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
-
-<!-- Enable custom search functionality-->
 <script src="scripts/validsearch.js"></script>
 
-::: {.tc}
-[quickstart](get-started/get-started.qmd){.button-pink .cta}
-[open-source software](https://github.com/validmind/validmind-library/){.button-white .cta}
-
 :::
-
-:::
-
-<!-- ::: {.w-40-ns}
-
-::: {.image-container}
-![](assets/img/platform-line-1.png)
-![](assets/img/platform-line-2.png)
-![](assets/img/platform-line-3.png)
-![](assets/img/platform-line-4.png)
-![](assets/img/platform-line-5.png)
-:::
-
-::: -->
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
@@ -180,222 +423,79 @@ a:hover {
 
 ::::
 
+<!-- CENTERED WHITE BOX WITH FIXED WIDTH & FULL HEIGHT -->
+::: {.center .br3 .shadow-4 .bg-white .w-80-ns}
+
+<!-- TOP ROW: Setup + Admin | Model Dev | Model Validation -->
+:::: {.flex .flex-wrap .justify-around .pt5 .pl5 .pr5}
+
+::: {.w-100-ns .flex .flex-wrap .justify-around}
+
+::: {.home-section-card}
+![](/assets/home-page/setup_icon.svg){.mb3 width="48" fig-alt="Decorative graphic without functional meaning"}
+
+::: {.f3 .b .nt3 .nb3}
+Setup + Administration
 :::
 
-<!-- GET STARTED SECTION -->
+[Invite users and control access to {{< var vm.product >}} by managing user roles, groups, and permissions.]{.mid-gray .f4}
 
-::: {.column-screen}
+[**Setup QuickStart**](/get-started/administrator/quickstart-administrator.qmd){.button .button-green}
+:::
 
-:::: {.flex .flex-wrap .justify-around .get-started}
+::: {.home-section-card}
+![](/assets/home-page/model_icon.svg){.mb3 width="48" fig-alt="Decorative graphic without functional meaning"}
+
+::: {.f3 .b .nt3 .nb3}
+Model Development
+:::
+
+[Save time by automating documentation and testing for your models using our {{< var vm.developer >}}.]{.mid-gray .f4}
+
+[**Developer Quickstart**](/get-started/developer/quickstart-developer.qmd){.button .button-green}
+:::
+
+::: {.home-section-card}
+![](/assets/home-page/model_valid_icon.svg){.mb3 width="48" fig-alt="Decorative graphic without functional meaning"}
+
+::: {.f3 .b .nt3 .nb3}
+Model Validation
+:::
+
+[Quickly assess compliance by linking evidence from developers in your validation reports.]{.mid-gray .f4}
+
+[**Validator QuickStart**](/get-started/validator/quickstart-validator.qmd){.button .button-green}
+:::
+
+:::
+
+::::
+
+<!-- VALIDMIND TOUR -->
+::: {.tour-bg .tc}
+
+:::: {.flex .flex-wrap .justify-around .pl5 .pr5}
 
 ::: {.w-10-ns}
 <!-- FILLER COLUMN DO NOT REMOVE -->
 :::
 
+::: {.w-80-ns .flex .flex-wrap .justify-around}
 
-::: {.w-25-ns .mb4}
+::: { .w-80-ns}
 
-:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow .tc}
-
-:::: {.ph4}
-
-:::: {.navy .f4 .tl}
-[for administrators]{.smallcaps}
-::::
-
-:::{#admin}
+::: {.f3 .b}
+{{< var vm.product >}} [Tour]{.pink}
 :::
 
-[all user guides](guide/guides.qmd){.button-green .cta}
-
-
-::::
-
-
-:::: 
-
+::: {.pl2 .pr2 .nt2 .mid-gray .f5}
+{{< var vm.product >}} is a platform that helps identify AI and LLM risks while generating regulatory-compliant model documentation for developers, data scientists, and compliance teams.
 :::
 
-::: {.w-25-ns .mb4}
-
-:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow .tc}
-
-:::: {.ph4}
-
-:::: {.navy .f4 .tl}
-[for model developers]{.smallcaps}
-::::
-
-:::{#developer}
+::: {.nt3}
+[**Request a Demo**](https://validmind.com/request-demo/){.button .button-white}
 :::
 
-[developer reference](/validmind/validmind.qmd){.button-green .cta}
-
-::::
-
-:::: 
-
-:::
-
-::: {.w-25-ns .mb4}
-
-:::: {.ba .b--black-10 .br3 .shadow-4 .bg-white .pt4 .pb3 .h-100 .grow .tc}
-
-:::: {.ph4}
-
-:::: {.navy .f4 .tl}
-[for model validators]{.smallcaps}
-::::
-
-:::{#validator}
-:::
-
-[validation guidelines](guide/model-validation/manage-validation-guidelines.qmd){.button-green .cta}
-
-::::
-
-:::: 
-
-:::
-
-
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-
-::::
-
-:::
-
-<!-- TRAINING SECTION -->
-
-::: {.column-page}
-
-
-:::: {.flex .flex-wrap .justify-around .training}
-
-
-:::: {.f2}
-![](logo.svg){height=50px} **Academy**
-:::: 
-
-:::: {.f4}
-Gain **hands-on experience** and explore what {{< var vm.product >}} has to offer with our interactive training environment.
-::::
-
-::: {.w-100-ns .content-center .mt2}
-
-:::{#validmind-academy}
-:::
-
-:::
-
-::::
-
-:::
-
-<!-- OVERVIEW SECTION -->
-
-::: {.column-screen}
-
-:::: {.flex .flex-wrap .justify-around .overview}
-
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-
-::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
-
-![](assets/img/icon-trust.svg)
-
-:::: {.f3}
-[Be]{.pink}**Valid.**
-:::: 
-
-:::: {.f4}
-Accelerate innovation, unlock advanced potential, and deploy with compliance.
-::::
-
-[request a demo](https://validmind.com/contact/){.button-pink .cta}
-
-:::
-
-::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
-
-![](assets/img/icon-connect.svg)
-
-:::: {.f3}
-Events
-:::: 
-
-:::: {.f4}
-Connect with the {{< var vm.product >}} team at events for the model and AI risk community.
-::::
-
-[find events](https://validmind.com/events/){.button-pink .cta}
-
-:::
-
-::: {.w-25-ns .mb4 .tc .ph2 .br3 .bg-washed-blue .pt4 .pb3 .ph4}
-
-![](assets/img/icon-automate.svg)
-
-:::: {.f3}
-Blog
-:::: 
-
-:::: {.f4}
-Gain insights through our original content on model risk management.
-::::
-
-[read our blog](https://validmind.com/blog/){.button-pink .cta}
-
-:::
-
-
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-
-::::
-
-:::
-
-
-<!-- RELEASES SECTION -->
-
-::: {.column-screen}
-
-:::: {.flex .flex-wrap .justify-around .releases}
-
-::: {.w-10-ns}
-<!-- FILLER COLUMN DO NOT REMOVE -->
-:::
-
-::: {.w-70-ns .mb4}
-
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-70-ns}
-
-:::: {.f2}
-Latest Releases
-
-::::
-
-:::
-
-::: {.w-30-ns .tr}
-:::: {.f4}
-[[all releases {{< fa chevron-right >}} ](releases/all-releases.qmd)]{.smallcaps}
-
-:::
-
-:::
-
-::::
-
-:::{#releases}
 :::
 
 
@@ -407,4 +507,63 @@ Latest Releases
 
 ::::
 
+:::
+
+<!-- FINAL ROW: Academy and Latest Release TEXT SIDE-BY-SIDE -->
+:::: {.flex .flex-wrap .justify-around .pt4 .pl5 .pr5 .pb5}
+
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+::: {.w-100-ns .flex .flex-wrap .justify-around}
+
+::: {.w-40-ns .pl4}
+
+::: {.f3 .b}
+{{< var vm.product >}} [Academy]{.pink}
+:::
+
+[Gain hands-on experience and explore what {{< var vm.product >}} has to offer with our interactive training environment.]{.mid-gray}
+
+::: {.nt3}
+[**Learn through doing**](/training/training.qmd){.button .button-white}
+:::
+
+:::
+
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+::: {.w-40-ns .pr4}
+
+::: {.f3 .b}
+Latest Features
+
+:::
+
+::: {.pl4 .nb2 .mid-gray}
+
+::: {#index-releases}
+:::
+
+:::
+
+[View all releases](/releases/all-releases.qmd)
+
+:::
+
+:::
+
+::: {.w-10-ns}
+<!-- FILLER COLUMN DO NOT REMOVE -->
+:::
+
+::::
+
+<!-- END of white card -->
+:::
+
+<!-- CLOSE .column-screen to allow footer to render -->
 :::

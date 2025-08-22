@@ -8,7 +8,7 @@ on:
     workflows: ["Merge main into staging"]
     types:
       - completed
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,20 +19,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Check out documentation repository
         uses: actions/checkout@v2
+
+      # Reclaim space + create a reserve for deterministic headroom
+      - name: Free space + create reserve
+        uses: ./.github/actions/free-disk-space
+        with:
+          remove_dotnet: "true"
+          remove_android: "true"
+          remove_haskell: "true"
+          prune_docker: "true"
+          apt_cleanup: "true"
+          create_reserve_gb: "3"
+
+      - name: Check out installation repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/installation
+          path: site/_source/installation
+          token: ${{ secrets.INSTALLATION_RO_PAT }}
+
+      - name: Check out release-notes repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/release-notes
+          path: site/_source/release-notes
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          check-latest: false
   
-      - name: Fetch Quarto
-        uses: ./.github/actions/fetch-quarto
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Setup R environment
         uses: ./.github/actions/setup-r
   
+      - name: Populate installation
+        run: cp -r site/_source/installation/site/installation site/installation
+
+      - name: Populate release notes
+        run: cp -r site/_source/release-notes/releases site
+
       - name: Render staging docs site
         run: |
             cd site
@@ -52,7 +84,6 @@ jobs:
           echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
           echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
           echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
-          cat dev.env
 
       # If yes then create the valid.env file for use in execution step
       - name: Create valid.env file
@@ -63,7 +94,6 @@ jobs:
           echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
           echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
           echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
-          cat valid.env
 
       # Only execute the staging notebooks for training if .env files are created
       - name: Execute staging ValidMind for model development and validation series
@@ -79,4 +109,22 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
 
       - name: Deploy docs staging site
-        run: aws s3 sync site/_site s3://docs-ci-cd-staging/site --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-staging/site --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+
+      # Release headroom and shrink before final lightweight steps & post-job
+      - name: Release reserve & shrink
+        if: always()
+        uses: ./.github/actions/free-disk-space
+        with:
+          release_reserve: "true"
+          remove_paths: |
+            site/_source/installation
+            site/_source/release-notes
+            site/render_errors.log
+            site/_freeze
+            dev.env
+            valid.env
+
+      - name: Final disk usage
+        if: always()
+        run: df -hT /

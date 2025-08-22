@@ -18,36 +18,101 @@ To ensure your model continues to perform as expected, it's important to regular
 ## Prerequisites
 
 - [x] {{< var link.login >}}
-- [x] You are a [{{< fa code >}} Developer]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
+- [x] The model is registered in the model inventory.[^1]
+- [x] Monitoring has been enabled for your model.[^2]
+- [x] You are a [{{< fa code >}} Developer]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^3]
 - [x] The model is in the pre-approval stage for performance testing or the model has been approved and is in production.
 
 :::
 
-## Steps 
+## Steps
 
 ::: {.callout}
-For results to be present and available for review, ongoing monitoring must be enabled.[^2]
+For results to be present and available for review, ongoing monitoring must be enabled.[^4]
 :::
 
 1. In the {{< var validmind.platform >}}, click **{{< fa cubes >}} Inventory** in the left sidebar.
 
-2. Select a model or find your model by applying a filter or searching for it.[^3]
+2. Select a model or find your model by applying a filter or searching for it.[^5]
 
-3. In the left sidebar, click **{{< fa desktop >}} Ongoing Monitoring**. 
+3. In the left sidebar that appears for your model, click **Ongoing Monitoring** under {{< fa file >}} Documents.[^6]
    
-    - You can now explore the different sections of the template and review the results. 
+    - Explore the different sections of the template and review the results.
     - Any deviations from the expected performance should be identified and acted on if necessary.
 
-    For example, click **2.3. Target Drift** under 2. Data Quality & Drift Assessment and scroll down:
+    For example, click **3.1 Target Drift** under 2. Data Quality & Drift Assessment and scroll down:
 
-    ![Sample monitoring results](target-prediction-distribution-plot.png){fig-alt="An image showing sample monitoring results in the ValidMind Platform" .screenshot}
+## Examples
+
+#### [{{< fa check >}} Satisfactory]{.bubble .green-bg}
+
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pa2}
+
+
+The results of a target prediction distribution plot, which is a diagnostic tool used to identify prediction drift (shifts in prediction distributions) between a reference dataset and a monitoring dataset.
+
+The metric compares distributions via Kernel Density Estimation (KDE) and calculates key distribution moments (mean, standard deviation, skewness, and kurtosis) to detect changes. A prediction drift might suggest underlying changes in data characteristics that could impact model reliability.
+
+Key findings:
+
+- Mean: Identical for both datasets (0.1764), suggesting no shift in central tendency.
+- Standard Deviation: Small increase from 0.0981 to 0.0988 (drift of 0.72%), still within acceptable range.
+- Skewness: Minimal difference (drift of -0.13%), indicating similar asymmetry.
+- Kurtosis: Slight increase from 0.2543 to 0.2598 (2.15% drift), hinting at a slightly sharper peak in the monitoring data.
+
+All values are within the threshold of 5% (`drift_pct_threshold = 5`), and so all metrics pass.
+:::
+
+::: {.w-50-ns .pa2}
+![Target prediction distribution plot](/guide/monitoring/distribution-of-reference-and-monitor-predictions-full.png){fig-alt="An image showing a target prediction distribution plot as explained in the text." .screenshot}
+:::
+ 
+::::
+
+#### [{{< fa triangle-exclamation >}} Requires Attention]{.bubble .yellow-bg}
+
+:::: {.flex .flex-wrap .justify-around .w-100}
+
+::: {.w-50-ns .pa2}
+
+The output of a prediction probabilities histogram drift analysis, which evaluates whether a model’s predicted probabilities for each class have changed significantly between a reference dataset and a monitoring dataset. This is especially important for models where probability calibration is key to decision-making and risk assessment.
+
+The metric analyzes histogram-based distribution metrics for Class 0 and Class 1 using four statistics:
+
+- Mean: average prediction probability
+- Variance: spread of the distribution
+- Skewness: asymmetry
+- Kurtosis: tail heaviness
+
+Each metric includes reference and monitoring values, % drift, and pass/fail status based on a 10% drift threshold (`drift_pct_threshold = 10`).
+
+The final assessment is that the model requires attention: 
+
+- The model is stable for Class 0
+- Further investigation is needed for Class 1 due to the drift in kurtosis
+
+:::
+
+::: {.w-50-ns .pa2}
+![Prediction probabilities histogram drift](/guide/monitoring/prediction-probabilities-histogram-drift-full.png){fig-alt="An image showing a prediction probabilities histogram drift analysis as explained in the text." .screenshot}
+:::
+ 
+::::
 
 
 <!-- FOOTNOTES -->
 
-[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+[^1]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
 
 [^2]: [Enable monitoring](enable-monitoring.qmd)
 
-[^3]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+[^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^4]: [Enable monitoring](enable-monitoring.qmd)
+
+[^5]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^6]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
 

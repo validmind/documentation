@@ -85,9 +85,26 @@ These directories may have sub-directories depending on their size and grouped s
 #### Supporting `site` directories
 - `_site` — This is where static files rendered by `quarto render` get placed.
 - `assets` — This is where general shared assets live (stylesheets, promotional images, all videos, etc.).
+- `css` — Modular CSS files organized by functionality and imported into the main stylesheet.
 - `internal` — For internal testing only.
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
+
+##### CSS organization (IN PROGRESS)
+
+The site uses a modular CSS architecture to maintain organized and maintainable styles:
+
+```
+site/
+├── css/
+│   ├── _bug-fixes.css      # Bug fixes and CSS conflict resolutions
+│   └── _codeblocks.css     # All code block and syntax highlighting styles  
+└── styles.css              # Main styles with modular imports
+```
+
+- **`styles.css`** — Main stylesheet that imports modular CSS files and contains site-wide styling
+- **`css/_bug-fixes.css`** — Isolated fixes for CSS conflicts and browser-specific issues
+- **`css/_codeblocks.css`** — All styling related to code blocks, syntax highlighting, and pre-formatted text
 
 ### Auxiliary `internal` directories
 
@@ -145,11 +162,11 @@ After you pull in the changes, commit them to this repo as part of the release n
 
 <!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
-### Local development with Kind
+## Local development with Kind
 
 For local development and testing, you can run the docs site in a Kubernetes environment using Kind (Kubernetes in Docker).
 
-#### Quickstart
+### Quickstart
 
 ```bash
 # Render the docs site, build the Docker image, and generate validmind-docs.yaml
@@ -164,7 +181,7 @@ Access the docs site in your browser at http://localhost:4444/.
 
 **Tip:** The container configuration on startup can take 20 seconds or more before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
 
-#### Additional helpful commands
+### Additional helpful commands
 
 ```bash
 make kind-stop      # Stop the Kind cluster
@@ -172,17 +189,17 @@ make kind-restart   # Restart with updated configuration
 make kind-logs      # View container logs
 ```
 
-#### Configuration files
+### Configuration files
 
 - **`kind-config.yaml`** — Kind cluster configuration
 - **`validmind-docs-deployment.yaml`** — Kubernetes Deployment and Service manifest
-- **`site/validmind-docs.yaml`** — Generated ConfigMap with URLs, product names, and logo and favicon (not stored in GitHub)
+- **`site/validmind-docs.yaml`** — ConfigMap with URLs, product names, and logo and favicon (generated on the fly, not stored in GitHub)
 
-#### Testing custom ConfigMaps
+### Create a rebranded docs site
 
-The Kubernetes ConfigMap provides environment-specific configuration for the ValidMind documentation site to enable runtime customization, without having to rebuild the static docs site.
+Apply a Kubernetes ConfigMap to provide environment-specific configuration for the ValidMind documentation site. This ConfigMap lets you customize the site at runtime without rebuilding the static files.
 
-Supported parameters:
+Supported environment variables:
 
 | Key                   | Description                                                                  |
 |-----------------------|------------------------------------------------------------------------------|
@@ -193,14 +210,13 @@ Supported parameters:
 | `LOGO_SVG`            | Inline SVG markup for the application logo (used in headers or splash screens) |
 | `FAVICON_SVG`         | Inline SVG markup for the browser favicon                                    |
 
-
-To make testing easier, [custom-validmind-docs.yaml](custom-validmind-docs.yaml) provides a ConfigMap that:
+To provide a working example you can adapt, [custom-validmind-docs.yaml](site/custom-validmind-docs.yaml) includes a ConfigMap that:
 
 - Points to staging for the ValidMind URL
 - Changes the product long and short names to be generic
 - Changes the logo and favicon colors to all green, from the default pink and green
 
-Testing this ConfigMap locally:
+### Testing ConfigMaps locally
 
 ```bash
 # Get your environment up
@@ -216,7 +232,7 @@ kubectl rollout restart deployment/validmind-docs -n cmvm-test
 make kind-logs
 ```
 
-You should see something like this in the logs:
+You should see output similar to this in the logs:
 
 ```bash
 ❯ make kind-logs
