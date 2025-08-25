@@ -180,6 +180,9 @@ For local development and testing, you can run the docs site in a Kubernetes env
 ### Quickstart
 
 ```bash
+# Install Kind on macOS
+brew install kind
+
 # Render the docs site, build the Docker image, and generate validmind-docs.yaml
 cd site
 make docker-build
@@ -190,7 +193,7 @@ make kind-serve
 
 Access the docs site in your browser at http://localhost:4444/.
 
-**Tip:** The container configuration on startup can take 20 seconds or more before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
+**Tip:** The container configuration on startup can take up to 60 seconds before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
 
 ### Additional helpful commands
 
