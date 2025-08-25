@@ -21,39 +21,38 @@ runs:
     - name: Install validmind for notebook execution
       shell: bash
       run: |
-        pip install validmind
-        pip install validmind[llm]
+        pip install validmind[all]
 
-    - name: Clone validmind-library @ prod
-      shell: bash
-      run: |
-        git clone --depth 1 --single-branch --branch prod https://github.com/validmind/validmind-library.git
-        cp validmind-library/poetry.lock poetry.lock
+    # - name: Clone validmind-library @ prod
+    #   shell: bash
+    #   run: |
+    #     git clone --depth 1 --single-branch --branch prod https://github.com/validmind/validmind-library.git
+    #     cp validmind-library/poetry.lock poetry.lock
 
     # 2) Set up Python and enable pip cache keyed by the lockfile
-    - uses: actions/setup-python@v5
-      id: py
-      with:
-        python-version: '3.11' # or your matrix
-        cache: 'pip'
-        cache-dependency-path: |
-          poetry.lock # add more files if they affect deps
+    # - uses: actions/setup-python@v5
+    #   id: py
+    #   with:
+    #     python-version: '3.11' # or your matrix
+    #     cache: 'pip'
+    #     cache-dependency-path: |
+    #       poetry.lock # add more files if they affect deps
 
-    - name: Install Poetry (with export plugin)
-      uses: snok/install-poetry@v1
-      with:
-        plugins: poetry-plugin-export
+    # - name: Install Poetry (with export plugin)
+    #   uses: snok/install-poetry@v1
+    #   with:
+    #     plugins: poetry-plugin-export
 
-    - name: Install dependencies from validmind-library
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        cd validmind-library
-        poetry export -f requirements.txt --without-hashes \
-          | awk -F';' '!/numpy==2\.2\.6 *; *python_version *>= *"3\.11"/' \
-          > ../requirements.txt
-        cd ..
-        pip install -r requirements.txt
+    # - name: Install dependencies from validmind-library
+    #   shell: bash
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     cd validmind-library
+    #     poetry export -f requirements.txt --without-hashes \
+    #       | awk -F';' '!/numpy==2\.2\.6 *; *python_version *>= *"3\.11"/' \
+    #       > ../requirements.txt
+    #     cd ..
+    #     pip install -r requirements.txt
 
     # - name: Cache validmind-library poetry install
     #   uses: actions/cache@v4
