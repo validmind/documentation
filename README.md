@@ -182,7 +182,7 @@ make kind-serve
 
 Access the docs site in your browser at http://localhost:4444/.
 
-**Tip:** The container configuration on startup can take 20 seconds or more before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
+**Tip:** The container configuration on startup can take up to 60 seconds before http://localhost:4444/ becomes available. Use `make kind-logs` to follow along.
 
 ### Additional helpful commands
 
