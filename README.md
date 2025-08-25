@@ -169,6 +169,9 @@ For local development and testing, you can run the docs site in a Kubernetes env
 ### Quickstart
 
 ```bash
+# Install Kind on macOS
+brew install kind
+
 # Render the docs site, build the Docker image, and generate validmind-docs.yaml
 cd site
 make docker-build
