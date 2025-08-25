@@ -51,8 +51,8 @@ jobs:
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
 
-    # - name: Setup R environment
-    #   uses: ./.github/actions/setup-r
+    - name: Setup R environment
+      uses: ./.github/actions/setup-r
 
     # - name: Populate installation
     #   run: cp -r site/_source/installation/site/installation site/installation
@@ -60,25 +60,25 @@ jobs:
     # - name: Populate release notes
     #   run: cp -r site/_source/release-notes/releases site
 
-    # - name: Render demo docs site
-    #   run: |
-    #       cd site
-    #       quarto render --profile development 2>&1 | tee render_errors.log || {
-    #       echo "Quarto render failed immediately";
-    #       cat render_errors.log;
-    #       exit 1;
-    #       }
-    #       make generate-sitemap
+    - name: Render demo docs site
+      run: |
+          cd site
+          quarto render --profile development 2>&1 | tee render_errors.log || {
+          echo "Quarto render failed immediately";
+          cat render_errors.log;
+          exit 1;
+          }
+          make generate-sitemap
 
-    # - name: Test for warnings or errors
-    #   run: |
-    #     if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
-    #       echo "Warnings or errors detected during Quarto render"
-    #       cat site/render_errors.log
-    #       exit 1
-    #     else
-    #       echo "No warnings or errors detected during Quarto render"
-    #     fi
+    - name: Test for warnings or errors
+      run: |
+        if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
+          echo "Warnings or errors detected during Quarto render"
+          cat site/render_errors.log
+          exit 1
+        else
+          echo "No warnings or errors detected during Quarto render"
+        fi
 
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
@@ -142,7 +142,7 @@ jobs:
             repo: context.repo.repo,
             issue_number: context.issue.number,
           });
-          
+
           for (const comment of comments) {
             if (comment.user.login === 'github-actions[bot]' && comment.body.includes('## Validate docs site')) {
               await github.rest.issues.deleteComment({
@@ -152,7 +152,7 @@ jobs:
               });
             }
           }
-          
+
           let comment = `## Validate docs site\n\n`;
           comment += `✓ INFO: A live preview of the docs site is available — [Open the preview](${previewUrl})\n\n`;
 
