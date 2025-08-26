@@ -28,15 +28,6 @@ jobs:
         apt_cleanup: "true"
         create_reserve_gb: "3"
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        check-latest: false
-
-    - name: Set up Quarto
-      uses: quarto-dev/quarto-actions/setup@v2
-
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -48,6 +39,17 @@ jobs:
         filters: |
           notebooks:
             - 'site/notebooks/EXECUTED/**'
+
+    - name: Set up Python 3.11
+      if: steps.filter.outputs.notebooks == 'true'
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        check-latest: false
+
+    - name: Set up Quarto
+      if: steps.filter.outputs.notebooks == 'true'
+      uses: quarto-dev/quarto-actions/setup@v2
 
     # If yes then create the dev.env file for use in execution step
     - name: Create dev.env file
@@ -90,6 +92,7 @@ jobs:
       run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/*" --no-cli-pager
 
     - name: Post comment with preview URLs
+      if: steps.execute_demo_notebook.outcome == 'success'
       uses: actions/github-script@v6
       with:
         script: |
