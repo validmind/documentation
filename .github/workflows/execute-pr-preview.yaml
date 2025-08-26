@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  validate:
+  execute:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
@@ -75,7 +75,7 @@ jobs:
     - name: Execute demo ValidMind for model development and validation series
       if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
       uses: ./.github/actions/demo-notebook
-      id: execute-demo-notebook
+      id: execute_demo_notebook
       with:
         dev_env: dev.env
         valid_env: valid.env
@@ -91,11 +91,11 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const base = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/model_development`;
+          const base = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/`;
 
           const previewLinks = [
-            { text: 'Model development series', url: `${base}/1-set_up_validmind.html` },
-            { text: 'Model validation series', url: `${base}/2-train_model.html` }, // <- add more if you like
+            { text: 'Model development series', url: `${base}/model_development/1-set_up_validmind.html` },
+            { text: 'Model validation series', url: `${base}/model_validation/1-set_up_validmind_for_validation.html` }, // <- add more if you like
           ];
 
           // Unique marker to identify comments created by THIS step only
