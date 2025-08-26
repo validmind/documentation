@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  setup:
+  validate:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
@@ -54,11 +54,6 @@ jobs:
     - name: Populate release notes
       run: cp -r site/_source/release-notes/releases site
 
-  validate:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
     - name: Render demo docs site
       run: |
           cd site
@@ -79,11 +74,6 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
@@ -107,11 +97,6 @@ jobs:
             body: comment
           });
 
-  cleanup:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
       if: always()

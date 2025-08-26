@@ -7,10 +7,9 @@ on:
 permissions:
   issues: write
   pull-requests: write
-  checks: read
 
 jobs:
-  setup:
+  execute:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
@@ -38,11 +37,6 @@ jobs:
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
 
-  execute:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
     - name: Filter changed files
@@ -86,60 +80,35 @@ jobs:
         dev_env: dev.env
         valid_env: valid.env
 
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       if: steps.execute_demo_notebook.outcome == 'success'
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
-
-    - name: Wait for full site deploy
-      if: ${{ github.event.pull_request.draft == false }}
-      uses: lewagon/wait-on-check-action@v1.3.4
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        check-name: 'Validate docs site (render, test, and deploy) / deploy'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 60
-        allowed-conclusions: success
 
     - name: Deploy executed notebooks only
       if: steps.execute_demo_notebook.outcome == 'success'
       run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/*" --no-cli-pager
 
     - name: Post comment with preview URLs
-      if: steps.execute_demo_notebook.outcome == 'success'
       uses: actions/github-script@v6
       with:
         script: |
-          const base = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/`;
+          const base = 'https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}';
+          const devUrl = `${base}/notebooks/EXECUTED/model_development/1-set_up_validmind.html`;
+          const valUrl = `${base}/notebooks/EXECUTED/model_validation/1-set_up_validmind_for_validation.html`;
 
-          const previewLinks = [
-            { text: 'Model development series', url: `${base}/model_development/1-set_up_validmind.html` },
-            { text: 'Model validation series', url: `${base}/model_validation/1-set_up_validmind_for_validation.html` }, // <- add more if you like
-          ];
+          let comment = `## Execute training notebooks for PRs\n\n`;
+          comment += `✓ INFO: Live previews are available:\n\n`;
+          comment += `- [Model development series](${devUrl})\n`;
+          comment += `- [Model validation series](${valUrl})\n`;
 
-          let comment = `${marker}\n`;
-          comment += `## Execute training notebooks for PRs\n\n`;
-          comment += `✓ INFO: Live previews of the executed notebooks are available:\n\n`;
-          comment += previewLinks.map(({ text, url }) => `- [${text}](${url})`).join('\n');
-
-          github.rest.issues.createComment({
+          await github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
             body: comment
           });
 
-  cleanup:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
-    steps:
-    # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
       if: always()
       uses: ./.github/actions/free-disk-space
