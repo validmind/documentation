@@ -12,14 +12,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache pip dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: python-pip-${{ runner.os }}-${{ hashFiles('.github/actions/prod-notebook/action.yml') }}
-        restore-keys: |
-          python-pip-${{ runner.os }}-
-
     - name: Install python3 for Jupyter Notebooks
       shell: bash
       run: |
@@ -29,33 +21,7 @@ runs:
     - name: Install validmind for notebook execution
       shell: bash
       run: |
-        pip install validmind
-        pip install validmind[llm]
-
-    - name: Clone validmind-library
-      shell: bash
-      run: |
-        git clone https://github.com/validmind/validmind-library.git
-        cp validmind-library/poetry.lock poetry.lock
-
-    - name: Cache validmind-library poetry install
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/pypoetry
-          ~/.cache/pip
-        key: validmind-library-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          validmind-library-${{ runner.os }}-
-
-    - name: Install dependencies from validmind-library
-      shell: bash
-      run: |
-        pip install poetry==1.7.1
-        cd validmind-library
-        poetry export --without-hashes --format=requirements.txt > ../requirements.txt
-        cd ..
-        pip install -r requirements.txt
+        pip install validmind[all]
 
     - name: Register validmind kernel
       shell: bash
