@@ -42,11 +42,11 @@ jobs:
         path: site/_source/release-notes
         token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        check-latest: false
+    # - name: Set up Python 3.11
+    #   uses: actions/setup-python@v5
+    #   with:
+    #     python-version: '3.11'
+    #     check-latest: false
 
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
@@ -82,46 +82,46 @@ jobs:
 
     # See if site/notebooks/ has updates
     # Checks the current PR branch against the target branch
-    - name: Filter changed files
-      uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        base: ${{ github.event.pull_request.base_ref }}
-        ref: ${{ github.head_ref }}
-        filters: |
-          notebooks:
-            - 'site/notebooks/EXECUTED/**'
+    # - name: Filter changed files
+    #   uses: dorny/paths-filter@v2
+    #   id: filter
+    #   with:
+    #     base: ${{ github.event.pull_request.base_ref }}
+    #     ref: ${{ github.head_ref }}
+    #     filters: |
+    #       notebooks:
+    #         - 'site/notebooks/EXECUTED/**'
 
     # If yes then create the dev.env file for use in execution step
-    - name: Create dev.env file
-      if: steps.filter.outputs.notebooks == 'true'
-      id: create_dev_env
-      run: |
-        touch dev.env
-        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
-        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
-        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
-        echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
+    # - name: Create dev.env file
+    #   if: steps.filter.outputs.notebooks == 'true'
+    #   id: create_dev_env
+    #   run: |
+    #     touch dev.env
+    #     echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
+    #     echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
+    #     echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
+    #     echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
 
     # If yes then create the valid.env file for use in execution step
-    - name: Create valid.env file
-      if: steps.filter.outputs.notebooks == 'true'
-      id: create_valid_env
-      run: |
-        touch valid.env
-        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
-        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
-        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
-        echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
+    # - name: Create valid.env file
+    #   if: steps.filter.outputs.notebooks == 'true'
+    #   id: create_valid_env
+    #   run: |
+    #     touch valid.env
+    #     echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
+    #     echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
+    #     echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
+    #     echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
 
     # Only execute the demo notebooks for training if .env files are created
-    - name: Execute demo ValidMind for model development and validation series
-      if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
-      uses: ./.github/actions/demo-notebook
-      id: execute-demo-notebook
-      with:
-        dev_env: dev.env
-        valid_env: valid.env
+    # - name: Execute demo ValidMind for model development and validation series
+    #   if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
+    #   uses: ./.github/actions/demo-notebook
+    #   id: execute-demo-notebook
+    #   with:
+    #     dev_env: dev.env
+    #     valid_env: valid.env
 
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
