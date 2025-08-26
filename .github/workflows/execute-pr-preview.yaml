@@ -7,10 +7,15 @@ on:
 permissions:
   issues: write
   pull-requests: write
+  checks: read
+  statuses: read
+  contents: read
+  actions: read
 
 jobs:
   execute:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: github.event.pull_request.draft == false
 
     steps:
@@ -84,6 +89,16 @@ jobs:
     - name: Configure AWS credentials
       if: steps.execute_demo_notebook.outcome == 'success'
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
+
+    # Wait until the full preview is uploaded
+    - name: Wait for full preview deploy
+      uses: lewagon/wait-on-check-action@v1.3.4
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+        check-name: 'Validate docs site (render, test, and deploy) / validate'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        wait-interval: 60
+        allowed-conclusions: success
 
     - name: Deploy executed notebooks only
       if: steps.execute_demo_notebook.outcome == 'success'
