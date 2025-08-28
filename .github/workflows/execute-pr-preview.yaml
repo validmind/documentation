@@ -1,0 +1,130 @@
+name: Execute training notebooks for PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+    - name: Check out documentation repository
+      uses: actions/checkout@v4
+
+    # Reclaim space + create a reserve for deterministic headroom
+    - name: Free space + create reserve
+      uses: ./.github/actions/free-disk-space
+      with:
+        remove_dotnet: "true"
+        remove_android: "true"
+        remove_haskell: "true"
+        prune_docker: "true"
+        apt_cleanup: "true"
+        create_reserve_gb: "3"
+
+    # See if site/notebooks/ has updates
+    # Checks the current PR branch against the target branch
+    - name: Filter changed files
+      uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: ${{ github.event.pull_request.base_ref }}
+        ref: ${{ github.head_ref }}
+        filters: |
+          notebooks:
+            - 'site/notebooks/EXECUTED/**'
+
+    - name: Set up Python 3.11
+      if: steps.filter.outputs.notebooks == 'true'
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        check-latest: false
+
+    - name: Set up Quarto
+      if: steps.filter.outputs.notebooks == 'true'
+      uses: quarto-dev/quarto-actions/setup@v2
+
+    # If yes then create the dev.env file for use in execution step
+    - name: Create dev.env file
+      if: steps.filter.outputs.notebooks == 'true'
+      id: create_dev_env
+      run: |
+        touch dev.env
+        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
+        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
+        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
+        echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
+
+    # If yes then create the valid.env file for use in execution step
+    - name: Create valid.env file
+      if: steps.filter.outputs.notebooks == 'true'
+      id: create_valid_env
+      run: |
+        touch valid.env
+        echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
+        echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
+        echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
+        echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
+
+    # Only execute the demo notebooks for training if .env files are created
+    - name: Execute demo ValidMind for model development and validation series
+      if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
+      uses: ./.github/actions/demo-notebook
+      id: execute_demo_notebook
+      with:
+        dev_env: dev.env
+        valid_env: valid.env
+
+    # Demo bucket is in us-east-1
+    - name: Configure AWS credentials
+      if: steps.execute_demo_notebook.outcome == 'success'
+      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
+
+    - name: Deploy executed notebooks only
+      if: steps.execute_demo_notebook.outcome == 'success'
+      run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/*" --no-cli-pager
+
+    - name: Post comment with preview URLs
+      if: steps.execute_demo_notebook.outcome == 'success'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const base = 'https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}';
+          const devUrl = `${base}/notebooks/EXECUTED/model_development/1-set_up_validmind.html`;
+          const valUrl = `${base}/notebooks/EXECUTED/model_validation/1-set_up_validmind_for_validation.html`;
+
+          let comment = `## Execute training notebooks for PRs\n\n`;
+          comment += `✓ INFO: Live previews are available —\n\n`;
+          comment += `- [Open model development series](${devUrl})\n`;
+          comment += `- [Open model validation series](${valUrl})\n`;
+
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: comment
+          });
+
+    - name: Release reserve & shrink
+      if: always()
+      uses: ./.github/actions/free-disk-space
+      with:
+        release_reserve: "true"
+        remove_paths: |
+          site/_source/installation
+          site/_source/release-notes
+          site/render_errors.log
+          site/_freeze
+          dev.env
+          valid.env
+
+    - name: Final disk usage
+      if: always()
+      run: df -hT /
