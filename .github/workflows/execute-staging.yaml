@@ -1,0 +1,91 @@
+name: Execute training notebooks for staging
+
+on:
+  workflow_run:
+    workflows: ["Deploy docs site to staging"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  execute:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out documentation repository
+        uses: actions/checkout@v4
+
+      # Reclaim space + create a reserve for deterministic headroom
+      - name: Free space + create reserve
+        uses: ./.github/actions/free-disk-space
+        with:
+          remove_dotnet: "true"
+          remove_android: "true"
+          remove_haskell: "true"
+          prune_docker: "true"
+          apt_cleanup: "true"
+          create_reserve_gb: "3"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          check-latest: false
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Create dev.env file
+        id: create_dev_env
+        run: |
+          touch dev.env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> dev.env
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> dev.env
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> dev.env
+          echo VM_API_MODEL=${{ secrets.PLATFORM_DEV_MODEL }} >> dev.env
+
+      - name: Create valid.env file
+        id: create_valid_env
+        run: |
+          touch valid.env
+          echo VM_API_HOST=${{ secrets.PLATFORM_API_HOST }} >> valid.env
+          echo VM_API_KEY=${{ secrets.PLATFORM_API_KEY }} >> valid.env
+          echo VM_API_SECRET=${{ secrets.PLATFORM_API_SECRET }} >> valid.env
+          echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
+
+      # Only execute the staging notebooks for training if .env files are created
+      - name: Execute staging ValidMind for model development and validation series
+        if: ${{ steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
+        uses: ./.github/actions/staging-notebook
+        id: execute-staging-notebook
+        with:
+          dev_env: dev.env
+          valid_env: valid.env
+
+      # Staging bucket is in us-west-2
+      - name: Configure AWS credentials
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
+
+      - name: Deploy executed notebooks only
+        run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/notebooks/EXECUTED --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/notebooks/EXECUTED/*" --no-cli-pager
+
+      # Release headroom and shrink before final lightweight steps & post-job
+      - name: Release reserve & shrink
+        if: always()
+        uses: ./.github/actions/free-disk-space
+        with:
+          release_reserve: "true"
+          remove_paths: |
+            site/_source/installation
+            site/_source/release-notes
+            site/render_errors.log
+            site/_freeze
+            dev.env
+            valid.env
+
+      - name: Final disk usage
+        if: always()
+        run: df -hT /
