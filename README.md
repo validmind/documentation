@@ -343,3 +343,5 @@ vale site/
 
 - To add or remove styles, edit the `BasedOnStyles` lines in your `vale.ini`.
 - To skip additional files or folders, update the `Skips` setting in `vale.ini` or adjust the workflow globs.
+
+<!-- TEST CHANGE -->
