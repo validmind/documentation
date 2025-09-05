@@ -100,6 +100,22 @@ jobs:
           const devUrl = `${base}/notebooks/EXECUTED/model_development/1-set_up_validmind.html`;
           const valUrl = `${base}/notebooks/EXECUTED/model_validation/1-set_up_validmind_for_validation.html`;
 
+          // Delete old preview comments
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          for (const comment of comments) {
+            if (comment.user.login === 'github-actions[bot]' && comment.body.includes('## Execute training notebooks for PRs')) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: comment.id,
+              });
+            }
+          }
+
           let comment = `## Execute training notebooks for PRs\n\n`;
           comment += `✓ INFO: Live previews are available —\n\n`;
           comment += `- [Open model development series](${devUrl})\n`;
