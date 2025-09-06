@@ -2,14 +2,13 @@
 LIBRARY_BRANCH ?= $(or $(LIBRARY),main)
 INSTALLATION_BRANCH ?= $(or $(INSTALLATION),main)
 RELEASE_NOTES_BRANCH ?= $(or $(RELEASE_NOTES),main)
+LIBRARY_BRANCH ?= $(or $(BRANCH),main)
+GIT_BRANCH := $(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME),$(shell git rev-parse --abbrev-ref HEAD))
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
 DEST_DIR_TESTS := tests
-GIT_BRANCH := $(or $(GITHUB_HEAD_REF),$(GITHUB_REF_NAME),$(shell git rev-parse --abbrev-ref HEAD))
-INSTALLATION_BRANCH := main
-LIBRARY_BRANCH ?= $(or $(BRANCH),main)
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
