@@ -261,9 +261,9 @@ get-api-json:
 	@rm -f reference/vm-api-swagger.json reference/admin-api-swagger.json reference/rapidoc-min.js
 	@mkdir -p reference
 	@echo "Fetching VM API Swagger spec ..."
-	@curl -s -o reference/vm-api-swagger.json "https://api.dev.vm.validmind.ai/vm/api/v1/swagger.json" || echo "Failed to fetch VM API spec"
+	@curl -s -o reference/vm-api-swagger.json "https://api.prod.validmind.ai/vm/api/v1/swagger.json" || echo "Failed to fetch VM API spec"
 	@echo "Fetching Admin API Swagger spec ..."
-	@curl -s -o reference/admin-api-swagger.json "https://api.dev.vm.validmind.ai/admin/api/v1/swagger.json" || echo "Failed to fetch Admin API spec"
+	@curl -s -o reference/admin-api-swagger.json "https://api.prod.validmind.ai/admin/api/v1/swagger.json" || echo "Failed to fetch Admin API spec"
 	@echo "Fetching RapiDoc JavaScript library ..."
 	@curl -s -o reference/rapidoc-min.js "https://unpkg.com/rapidoc/dist/rapidoc-min.js" || echo "Failed to fetch RapiDoc library"
 
