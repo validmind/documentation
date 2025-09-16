@@ -1,0 +1,42 @@
+name: Setup Quarto (vendored Linux)
+description: Use a vendored Quarto tarball on Linux GitHub runners
+
+inputs:
+  version:
+    description: "Quarto version directory under .github/quarto"
+    required: true
+  root:
+    description: "Root folder where archives live"
+    required: false
+    default: ".github/quarto"
+
+runs:
+  using: composite
+  steps:
+    - name: Log selected Quarto version
+      shell: bash
+      run: |
+        echo "Using Quarto version: ${{ inputs.version }}"
+
+    - name: Extract Quarto
+      shell: bash
+      run: |
+        set -euo pipefail
+        ARCHIVE="${{ inputs.root }}/${{ inputs.version }}/quarto-linux-amd64.tar.gz"
+        if [ ! -f "$ARCHIVE" ]; then
+          echo "Missing $ARCHIVE"
+          exit 1
+        fi
+        DEST="${RUNNER_TEMP}/quarto"
+        mkdir -p "$DEST"
+        tar -xzf "$ARCHIVE" -C "$DEST"
+        BIN_DIR="$(find "$DEST" -maxdepth 2 -type d -name bin | head -n1)"
+        if [ ! -d "$BIN_DIR" ]; then
+          echo "Could not find bin dir"
+          exit 1
+        fi
+        echo "$BIN_DIR" >> "$GITHUB_PATH"
+
+    - name: Verify Quarto on PATH
+      shell: bash
+      run: quarto --version
