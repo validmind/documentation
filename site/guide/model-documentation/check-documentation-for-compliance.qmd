@@ -9,12 +9,13 @@ listing:
     sort: false
     fields: [title, description]
     contents: 
+    - ../../templates/customize-virtual-document-validator.qmd
     - ../../about/overview-llm-features.qmd
 aliases: 
   - /guide/model-documentation/check-documents-for-compliance.html
 ---
 
-Use the {{< var validmind.checker >}} to analyze your completed model documentation by comparing it against regulatory standards. 
+Use the {{< var validmind.checker >}} to analyze your completed model documentation by comparing it against regulatory standards.
 
 ## What is the {{< var validmind.checker >}}?
 
@@ -22,7 +23,7 @@ Use the {{< var validmind.checker >}} to analyze your completed model documentat
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-25-ns .pt3 .pr4}
-![Document checker](/about/overview-llm-features-check-document.png){fig-alt="A screenshot showing the LLM feature for checking documentation that can be accessed with the Check Document button" .screenshot}
+![{{< var vm.checker >}}](/about/overview-llm-features-check-document.png){fig-alt="A screenshot showing the LLM feature for checking documentation that can be accessed with the Check Document button" .screenshot}
 
 :::
 
@@ -37,50 +38,50 @@ The {{< var validmind.checker >}} is a compliance tool that reviews technical do
 
 ::::
 
-As a compliance tool, the {{< var vm.checker >}} is most useful when your model documentation is sufficiently complete and you are preparing models for regulatory submission or internal audit, as it helps reduce manual review effort and improve quality assurance. 
+As a compliance tool, the {{< var vm.checker >}} is most useful when your model documentation is sufficiently complete and you are preparing models for regulatory submission or internal audit, as it helps reduce manual review effort and improve quality assurance.
 
-Supported regulations include:
+By default, {{< var vm.product >}} supports the following regulations:
 
-- Federal Reserve Supervisory Letter SR 11-7 (United States)
-- Bank of England Prudential Regulation Authority (PRA) Supervisory Statement SS1/23 (United Kingdom)
-- Office of the Superintendent of Financial Institutions (OSFI) Guideline E-23 (Canada)
-- European Union Artificial Intelligence Act (Regulation (EU) 2024/1689, EU AI Act)
+- Federal Reserve Supervisory Letter SR 11-7 (United States)[^1]
+- Bank of England Prudential Regulation Authority (PRA) Supervisory Statement SS1/23 (United Kingdom)[^2]
+- Office of the Superintendent of Financial Institutions (OSFI) Guideline E-23 (Canada)[^3]
+- European Union Artificial Intelligence Act (Regulation (EU) 2024/1689, EU AI Act)[^4]
 
 ::: {.attn}
 
 ## Prerequisites
 
 - [x] {{< var link.login >}}
-- [x] The model you are documenting is registered in the model inventory.[^1]
+- [x] The model you are documenting is registered in the model inventory.[^5]
 - [x] The model must have sufficiently complete documentation that can be checked against a regulatory standard.
-- [x] You are a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble}, or assigned another role with sufficient permissions to perform the tasks in this guide.[^2]
+- [x] You are a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble}, or assigned another role with sufficient permissions to perform the tasks in this guide.[^6]
 :::
 
 ## Check model documentation
 
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
-2. Select a model or find your model by applying a filter or searching for it.[^3]
+2. Select a model or find your model by applying a filter or searching for it.[^7]
 
-3. In the left sidebar that appears for your model, click **{{< fa file >}} Documents** and select a Document type file.[^4].
+3. In the left sidebar that appears for your model, click **{{< fa file >}} Documents** and select a Document type file.[^8].
 
-4. Locate the Document Check box on the right and click **{{< fa check >}} Check Document**.
+4. Locate the {{< var vm.checker >}} box on the right and click **{{< fa check >}} Check Document**.
 
 ### Select a regulation
 
-1. In the **{{< var validmind.checker >}}**, click **Select a regulation** and pick which one to check your document against:
+1. In the {{< var vm.checker >}} modal, select a **[regulation]{.smallcaps}** and an associated **[assessment]{.smallcaps}** from the drop-down menus to to check your document against:
 
-   ![Select a regulation to check your document against](/guide/model-documentation/check-documents-for-compliance-select-regulation.png){fig-alt="A screenshot showing the Select a regulation dropdown in the checker" .screenshot}
+   ![Example **[regulation or policy]{.smallcaps}** and **[assessment]{.smallcaps}** selected to check a document against](/guide/model-documentation/vdv-selection.png){fig-alt="A screenshot showing the REGULATION OR POLICY and ASSESSMENT dropdowns in the Document Checker" .screenshot}
 
-   A list of regulation-based questions appears that you can review and expand.
-   
+   A list of regulation-based questions appears for your review.
+
 2. Scroll to the bottom and click **Check Document**.
 
-The system analyzes your documentation, identifies gaps, and generates recommendations for specific questions that you can review in the next step.
+The {{< var validmind.checker >}} analyzes your documentation, identifies gaps, and generates recommendations for specific questions that you review in the next step.
 
 ### Review the findings
 
-1. After the {{< var validmind.checker >}} has completed its analysis, expand individual questions or click **Expand All** to look through the findings:
+1. After the {{< var vm.checker >}} has completed its analysis, expand individual questions or click **Expand All** to look through the findings:
 
 ::: {.pl4}
 [Gap Identified]{.bubble .red-b .red-bg} — A question that is not addressed and requires attention.<br>
@@ -93,11 +94,11 @@ The system analyzes your documentation, identifies gaps, and generates recommend
      - **Finding** — An analysis of how the documentation currently addresses the question
      - **Recommendation** — If suggested, guidance on how to revise the documentation to better address the question
 
-   ![Sample question that is not addressed](/guide/model-documentation/check-documents-for-compliance-gap-identified.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'Gap identified' with a recommendation to add a policy paragraph." .screenshot}
+   ![Sample question that is not addressed](/guide/model-documentation/vdv-gap-identified.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'Gap identified' with a recommendation to add a policy paragraph." .screenshot}
 
-   ![Sample question that is partially addressed](/guide/model-documentation/check-documents-for-compliance-partial-gap.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'Gap identified' with a recommendation to add a policy paragraph." .screenshot}
+   ![Sample question that is partially addressed](/guide/model-documentation/vdv-partial-gap.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'Gap identified' with a recommendation to add a policy paragraph." .screenshot}
 
-   ![Sample question that is fully addressed](/guide/model-documentation/check-documents-for-compliance-no-significant-gaps.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'No significant gaps.' with a recommendation to add a policy paragraph." .screenshot}
+   ![Sample question that is fully addressed](/guide/model-documentation/vdv-no-significant-gaps.png){fig-alt="A screenshot showing the question 'Is the documentation sufficient to allow an expert to adjust parameters?' and the finding 'No significant gaps.' with a recommendation to add a policy paragraph." .screenshot}
 
 Use the feedback provided by the {{< var validmind.checker >}} to review the appropriate sections of your documentation and decide what revisions should be made. Or, if you have run the {{< var vm.checker >}} before and were just checking that all documentation issues have been addressed, submit your model for validation.
 
@@ -107,10 +108,18 @@ Use the feedback provided by the {{< var validmind.checker >}} to review the app
 :::
 <!-- FOOTNOTES -->
 
-[^1]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+[^1]: [SR 11-7](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm)
 
-[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+[^2]: [SS1/23](https://www.bankofengland.co.uk/prudential-regulation/publication/2023/may/model-risk-management-principles-for-banks-ss)
 
-[^3]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+[^3]: [Guideline E-23](https://www.osfi-bsif.gc.ca/en/guidance/guidance-library/guideline-e-23-model-risk-management-2027)
 
-[^4]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
+[^4]: [Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng)
+
+[^5]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^6]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^7]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+
+[^8]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
