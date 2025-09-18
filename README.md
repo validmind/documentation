@@ -100,9 +100,9 @@ These directories may have sub-directories depending on their size and grouped s
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 
-##### SCSS and CSS organization (IN PROGRESS)
+##### Stylesheet organization (IN PROGRESS)
 
-The site uses a modular CSS architecture to maintain organized and maintainable styles:
+The site uses a modular stylesheet architecture to maintain organized and maintainable styles:
 
 ```
 site/
