@@ -117,7 +117,7 @@ site/
 ├── theme-dark.scss              # Dark theme styles (NOT CURRENTLY USED)
 └── theme.scss                   # Light theme styles with modular imports
 
-**IN PROGRESS**: To make our CSS more manageable, we’re gradually moving classes out of `styles.css` and into modular files imported in `theme.scss`. If you need to touch `styles.css`, consider moving all of the classes related to your change into a modular file at the same time.
+**IN PROGRESS**: To make our styles more manageable, we’re gradually moving classes out of `styles.css` and into modular files imported in `theme.scss`. If you need to touch `styles.css`, consider moving all of the classes related to your change into a modular file at the same time.
 
 ### Auxiliary `internal` directories
 
