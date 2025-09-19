@@ -118,7 +118,8 @@ site/
 └── theme.scss                   # Light theme styles with modular imports
 ```
 
-**IN PROGRESS**: To make our styles more manageable, we’re gradually moving classes out of `styles.css` and into modular files imported in `theme.scss`. If you need to touch `styles.css`, consider moving all of the classes related to your change into a modular file at the same time.
+> [!NOTE]
+> **IN PROGRESS**: To make our styles more manageable, we’re gradually moving classes out of `styles.css` and into modular files imported in `theme.scss`. If you need to touch `styles.css`, consider moving all of the classes related to your change into a modular file at the same time.
 
 ### Auxiliary `internal` directories
 
