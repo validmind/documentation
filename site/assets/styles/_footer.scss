@@ -1,23 +1,10 @@
 /* Footer Styles */
 
-/* Nav footer hover styles */
-a.nav-link:not(nav#TOC a.nav-link, .nav-footer a:hover, #nav-menu-log-in:hover):before,
-a.dropdown-item:before {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #ffffff;
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
+/* Nav footer hover styles - removed duplicate (already in styles.css) */
 
 /* Cookie preferences link */
 .cookie-preferences-link {
-  font-size: 1em !important;
+  font-size: 1em;
   min-height: 0px;
 }
 
@@ -83,15 +70,13 @@ a.dropdown-item:before {
 }
 
 .footer-company-legal {
-  font-size: 1em !important;
+  font-size: 1em;
 }
 
 /* Remove external link icons from footer */
 .footer a.external::after {
   content: none !important;
   background-image: none !important;
-  margin-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 /* Footer sections */
@@ -109,10 +94,10 @@ a.dropdown-item:before {
 
 .footer-section ul {
   list-style: none;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .footer-section,
@@ -120,7 +105,7 @@ a.dropdown-item:before {
 .footer-section li,
 .footer-section a,
 .footer-heading {
-  text-align: left !important;
+  text-align: left;
 }
 
 .footer-link, .footer-section a {
@@ -155,50 +140,40 @@ a.dropdown-item:before {
   flex: 1;
 }
 
-.page-footer ul,
-.page-footer ul li {
-  list-style: none !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding-left: 0 !important;
-}
+/* Redundant list styling removed - Bootstrap .list-unstyled handles this */
 
 /* Make Quarto's footer slots align at the top and reduce spacing */
 .nav-footer {
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-  gap: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
   width: 100%;
   padding: 20px 0px;
   background: #26818B;
 }
 
-/* Remove default padding/margin from slot containers */
-.nav-footer-left, .nav-footer-center, .nav-footer-right {
-  margin: 0.5rem !important;
-  padding: 0.5rem !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  min-width: 0;
-  margin-right: 0.25rem;
-  flex: 0 1 auto !important;
-  min-width: 0 !important;
+/* Hide right section when it only contains whitespace */
+.nav-footer-right {
+  display: none;
 }
 
-/* Center the content within nav-footer-center on desktop only */
-@media (min-width: 1150px) {
-  .nav-footer-center {
-    flex: 1 1 auto !important;
-    justify-content: center !important;
-    max-width: 1200px;
-    margin: 0 auto !important;
-  }
+/* Override Bootstrap's centering constraints */
+.nav-footer-center {
+  max-width: none !important;
+  margin: 0 !important;
+  flex: 1 !important;
+}
+
+.nav-footer-center .footer-items {
+  display: flex;
+  justify-content: left !important;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .nav-footer-center .nav-item {
-  margin-right: 1rem;
+  margin-right: 0; /* Remove since we're using gap now */
   min-width: 140px;
 }
 
@@ -206,79 +181,17 @@ a.dropdown-item:before {
   margin-right: 0;
 }
 
-/* Responsive: stack footer columns and allow full width on small screens */
-@media (max-width: 1149px) {
-  .nav-footer-center,
-  .nav-footer-right {
-    display: none !important;
-  }
-  
-  .nav-footer-left {
-    display: flex !important;
-  }
-}
-
-@media (min-width: 1150px) {
-  .nav-footer-left,
-  .nav-footer-center {
-    display: flex !important;
-  }
-  .nav-footer-right {
-    display: none !important;
-  }
-}
-
+/* Left-align footer items when wrapping on smaller screens */
 @media (max-width: 768px) {
-  .page-footer,
-  .quarto-nav-footer {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .nav-footer-left,
-  .nav-footer-center,
-  .nav-footer-right {
-    flex-direction: column !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
+  .nav-footer-center {
     justify-content: flex-start !important;
-    margin: 0 !important;
-    flex: 1 1 auto !important;
   }
-  
-  .nav-footer-center,
-  .nav-footer-right {
-    display: none;
-  }
+}
 
-  .footer-logo-info,
-  .footer-user-guides,
-  .footer-section {
-    max-width: 100% !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    margin-bottom: 1.5em;
-  }
-
-  .footer-company-info {
-    font-size: 1em;
-    font-weight: normal;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 0.25em;
-  }
-  
-  .footer-company-info > * {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: inherit;
-    white-space: normal;
-  }
-
-  .footer-user-guides-columns {
-    flex-direction: column;
-    gap: 0.5em;
+/* Prevent left section from expanding and competing with center */
+@media (min-width: 768px) {
+  .nav-footer-left {
+    flex: 0 0 auto !important;
+    padding-right: 20px;
   }
 }
