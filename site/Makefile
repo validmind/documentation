@@ -22,7 +22,7 @@ help:
 	@echo "  clean                    Remove the _source/ directory"
 	@echo "  clone                    Clone other required repositories into _source/"
 	@echo "                           Optional, for PR testing:" 
-	@echo "                              LIBRARY=<branch-name>"
+	@echo "                              LIBRARY_BRANCH=<branch-name>"
 	@echo "                              INSTALLATION_BRANCH=<branch-name>"
 	@echo "                              RELEASE_NOTES_BRANCH=<branch-name>"
 	@echo "  copy-installation        Copy customer-managed installation docs into installation/"
