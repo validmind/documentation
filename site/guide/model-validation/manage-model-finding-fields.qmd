@@ -101,64 +101,72 @@ a. Make your desired changes to your finding field, then click **Save**.
 
 #### Finding field types
 
-Single Line Text
-: Simple text value.
+{{< include /guide/model-inventory/_field-types.qmd >}}
 
-Attachments
-: Upload supporting files for your model.[^13] Files must be less than 50 MB each in size.
+::: {.callout}
+## Use finding types[^13] in your formulas to create dynamic calculations.
 
-Long Text
-: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+Use simple dot notation to include finding types:
 
-Single Select
-: Click **{{< fa plus >}} Add Option** to define a list of options.
+- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
+- `finding_type.name` — Human-readable name: `Validation Issue`
+:::
 
-Multiple Select
-: Click **{{< fa plus >}} Add Option** to define a list of options. 
 
-Checkbox
-: A `true`/`false` value set by a toggle.
+Example use cases:
 
-Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+- Calculate different risk scores based on finding type.
+- Generate dynamic titles and descriptions.
+- Set different due dates or priorities by finding category.
+- Create type-specific business logic in formulas.
 
-- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+::: {.panel-tabset}
 
-:::: {.flex .flex-wrap .justify-around}
+#### Severity calculation
 
-::: {.w-50-ns}
-![Simple number field type](/guide/model-inventory/number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
+```python
+# Calculate different severity scores based on finding type
+
+if finding_type.tag == "VALIDATION_ISSUE":
+    return severity_score * 2.5
+elif finding_type.tag == "POLICY_EXCEPTION":
+    return severity_score * 1.0
+else:
+    return severity_score * 1.8
+```
+
+#### Due date calculation
+
+```python
+# Dynamically calculate due dates based on finding type
+
+base_days = 30
+if finding_type.tag == "VALIDATION_ISSUE":
+    urgency_multiplier = 0.5  # 15 days
+elif finding_type.tag == "MODEL_LIMITATION":
+    urgency_multiplier = 2.0  # 60 days
+else:
+    urgency_multiplier = 1.0  # 30 days
+
+return base_days * urgency_multiplier
+```
+
+#### Custom fields & parent model data
+
+```python
+# Combine finding types with custom fields and parent model data
+
+risk_factor = custom_field_risk_score or 1.0
+model_criticality = parent_model_params.get("criticality_level", "medium")
+
+if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
+    return risk_factor * 3.0
+else:
+    return risk_factor * 1.5
+```
 
 :::
 
-::: {.w-40-ns}
-![Currency number field type](/guide/model-inventory/number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
-
-:::
-
-::::
-
-URL
-: Text value in valid URL format.
-
-Date
-: - Date value in `yyyy-mm-dd` format. 
-- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date fields under your profile.[^14]
-
-Date Time
-: - Date value in `yyyy-mm-dd, 24hr` format.
-- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date time fields under your profile.[^15]
-
-Email
-: Text value in valid email (`user@domain.com`) format.
-
-User
-: 
-- Select list pre-populated with users from your {{< fa book-open >}} User Directory.[^16]
-- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
 
 ## Add finding field groups
 
@@ -172,7 +180,7 @@ To group finding fields, first create a finding field group:
 
 4. Click **Create Group** to add the new group.
 
-5. Assign the desired fields to the group.[^17]
+5. Assign the desired fields to the group.[^14]
 
 ## Delete finding fields
 
@@ -228,12 +236,6 @@ To group finding fields, first create a finding field group:
 
 [^12]: [Add finding field groups](#add-finding-field-groups)
 
-[^13]: [Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)
+[^13]: [Manage finding types](manage-finding-types.qmd)
 
-[^14]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)
-
-[^15]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)
-
-[^16]: [Manage users](/guide/configuration/manage-users.qmd)
-
-[^17]: [Add or edit finding fields](#add-or-edit-finding-fields)
+[^14]: [Add or edit finding fields](#add-or-edit-finding-fields)
