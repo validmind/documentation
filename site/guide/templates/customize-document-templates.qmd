@@ -27,7 +27,7 @@ Check the [document template]{.smallcaps} section[^3] in the right sidebar.
 
 :::
 
-## Edit template outline
+## Edit template outlines
 
 {{< include _customize-document-templates.qmd >}}
 
@@ -37,7 +37,7 @@ Check the [document template]{.smallcaps} section[^3] in the right sidebar.
 To add guidelines to your template, edit the YAML template directly.
 :::
 
-## Edit YAML template 
+## Edit YAML templates
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**. 
 
@@ -51,9 +51,11 @@ To add guidelines to your template, edit the YAML template directly.
 
 4. Click the template to edit and on the template details page, select **{{< fa pencil >}} Edit Raw**. 
 
-5. In the Edit Template YAML editor that opens, make your changes according to the template schema,[^5] then click **Continue** to view a side-by-side comparison of your changes with the previous version of the template.
+5. In the Edit Template YAML editor that opens, make your changes according to the template schema,[^5] including the addition of any shared text blocks from your library.[^6]
 
-6. On the Review Changes screen:
+6. Once you're finished editing, click **Continue** to view a side-by-side comparison of your changes with the previous version of the template.
+
+7. On the Review Changes screen:
    - Add a description in **[version notes]{.smallcaps}** to track your changes.
    - Click **Save Version #** to save the new version.
 
@@ -163,9 +165,56 @@ a:hover {
 
 :::
 
-## Duplicate template
+### Add text blocks to templates
 
-{{< include /guide/templates/_duplicate-template.qmd >}}
+To add shared text blocks[^7] to your templates via the YAML editor:
+
+::: {.panel-tabset}
+
+#### 1. Retrieve keys for shared blocks
+
+a. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+b. Under Documents, select **Block Library**.
+
+c. Select **Shared Blocks** and click **{{< fa ellipsis-vertical >}}** under the right-most column for the block you'd like to insert into a template.
+
+d. Select **{{< fa pencil >}} Edit Details** and review the details for that block.
+
+e. To the right of the [key]{.smallcaps}, click **{{< fa copy >}}** to copy the key to your clipboard.
+
+#### 2. Insert block keys into YAML templates
+
+a. With your shared text block's key copied to your clipboard, open up the editor for a YAML template.[^8]
+
+b. Under a section or subsection's `contents` block sequence,[^9] insert a sequence item of `content_type: text` with your `block_key` nested under `options`.
+
+    For example:
+
+      ```yaml
+      - id: section
+        title: Section
+        contents:
+          - content_id: shared_block2
+            content_type: text
+            options:
+              block_key: cmg5jb7tw000rgraxmxsavxez
+      - id: parent_section
+        title: Parent Section
+        sections:
+          - id: subsection
+            title: Subsection
+            parent_section: parent_section
+            contents:
+              - content_id: shared_block1
+                content_type: text
+                options:
+                  block_key: cmg5m1vru0000ibaxa34pl0wp
+      ```
+
+c. Finish editing your template, then save a new version.
+
+:::
 
 ## Troubleshooting
 
@@ -185,4 +234,12 @@ Common issues with YAML include incorrect indenting, imbalanced quotes, or missi
 [^4]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
 
 [^5]: [Template schema](#template-schema)
+
+[^6]: [Add text blocks to templates](#add-text-blocks-to-templates)
+
+[^7]: [Manage text block library](manage-text-block-library.qmd)
+
+[^8]: [Edit YAML templates](#edit-yaml-templates)
+
+[^9]: [Template schema](#template-schema)
 
