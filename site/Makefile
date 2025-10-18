@@ -324,12 +324,12 @@ notebooks:
 
 # Make Python library docs & copy them over
 python-docs:
-	@if [ -d "$(SRC_DIR)/docs" ]; then \
-		echo "\nUpdating Python source ..."; \
-		rm -rf $(DEST_DIR_PYTHON); \
-		mkdir -p $(DEST_DIR_PYTHON); \
-		rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; \
-	fi
+	echo "\nUpdating Python source ...";
+	@cd _source/validmind-library && make install && make quarto-docs;
+	@cd ../../;
+	rm -rf $(DEST_DIR_PYTHON);
+	mkdir -p $(DEST_DIR_PYTHON);
+	rsync -av --exclude '_build' --exclude 'templates' $(SRC_DIR)/docs/ $(DEST_DIR_PYTHON)/; 
 
 # Release notes target
 release-notes:
