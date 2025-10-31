@@ -28,6 +28,13 @@ jobs:
         apt_cleanup: "true"
         create_reserve_gb: "3"
 
+    - name: Check out validmind-library repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/validmind-library
+        path: site/_source/validmind-library
+        token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+        
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
@@ -49,6 +56,20 @@ jobs:
 
     - name: Setup R environment
       uses: ./.github/actions/setup-r
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Generate Python library docs
+      run: |
+        cd site/_source/validmind-library
+        make install && make quarto-docs
+        cd ../../
+        rm -rf validmind
+        mkdir -p validmind
+        rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
 
     - name: Populate installation
       run: cp -r site/_source/installation/site/installation site/installation

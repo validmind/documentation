@@ -3,7 +3,7 @@ title: "Manage model finding fields"
 date: last-modified
 ---
 
-Manage the fields that appear on all finding types logged on your models. Choose from an array of field types with different properties and use cases.
+{{< include /guide/model-validation/_model-finding-fields.qmd >}}
 
 ::: {.attn}
 
@@ -71,94 +71,76 @@ For example, if you first search by keyword for `Regression` under **Title** wit
 
     Here you can edit existing finding fields, or add a new one:
 
-::: {.panel-tabset}
-
-#### Add finding fields
-
-To add a new finding field, click **{{< fa plus >}} Add Field**:
-
-a. Finding fields require a [type]{.smallcaps},[^8] a [name]{.smallcaps}, a [description]{.smallcaps} and a [finding type]{.smallcaps}.[^9]
-
-    - (Optional) You can also choose to indicate that a field is **[required when creating findings]{.smallcaps}**.
-    - (Optional) You can also assign a field to a group.[^10]
-    - Assign **[write permissions]{.smallcaps}** to allow granular access to editing this field gated by model stakeholder types.[^11]
-
-a. When you are satisfied with the setup of your finding field, click **Save**.
-
-#### Edit finding fields
-
-To edit an existing finding field:
-
-a. Hover over the finding field you would like to edit.
-
-    Expand any inventory field group to see more fields.[^12]
-
-a. When the **{{< fa ellipsis-vertical >}}** appears under the Actions column, select **{{< fa pencil >}} Edit Details**.
-
-a. Make your desired changes to your finding field, then click **Save**.
-
-:::
+{{< include /guide/model-validation/_add-edit-finding-fields.qmd >}}
 
 #### Finding field types
 
-Single Line Text
-: Simple text value.
+{{< include /guide/model-inventory/_field-types.qmd >}}
 
-Attachments
-: Upload supporting files for your model.[^13] Files must be less than 50 MB each in size.
+::: {.callout}
+## Use finding types[^8] in your formulas to create dynamic calculations.
 
-Long Text
-: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+Use simple dot notation to include finding types:
 
-Single Select
-: Click **{{< fa plus >}} Add Option** to define a list of options.
+- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
+- `finding_type.name` — Human-readable name: `Validation Issue`
+:::
 
-Multiple Select
-: Click **{{< fa plus >}} Add Option** to define a list of options. 
 
-Checkbox
-: A `true`/`false` value set by a toggle.
+Example use cases:
 
-Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+- Calculate different risk scores based on finding type.
+- Generate dynamic titles and descriptions.
+- Set different due dates or priorities by finding category.
+- Create type-specific business logic in formulas.
 
-- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+::: {.panel-tabset}
 
-:::: {.flex .flex-wrap .justify-around}
+#### Severity calculation
 
-::: {.w-50-ns}
-![Simple number field type](/guide/model-inventory/number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
+```python
+# Calculate different severity scores based on finding type
+
+if finding_type.tag == "VALIDATION_ISSUE":
+    return severity_score * 2.5
+elif finding_type.tag == "POLICY_EXCEPTION":
+    return severity_score * 1.0
+else:
+    return severity_score * 1.8
+```
+
+#### Due date calculation
+
+```python
+# Dynamically calculate due dates based on finding type
+
+base_days = 30
+if finding_type.tag == "VALIDATION_ISSUE":
+    urgency_multiplier = 0.5  # 15 days
+elif finding_type.tag == "MODEL_LIMITATION":
+    urgency_multiplier = 2.0  # 60 days
+else:
+    urgency_multiplier = 1.0  # 30 days
+
+return base_days * urgency_multiplier
+```
+
+#### Custom fields & parent model data
+
+```python
+# Combine finding types with custom fields and parent model data
+
+risk_factor = custom_field_risk_score or 1.0
+model_criticality = params.model.get("criticality_level", "medium")
+
+if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
+    return risk_factor * 3.0
+else:
+    return risk_factor * 1.5
+```
 
 :::
 
-::: {.w-40-ns}
-![Currency number field type](/guide/model-inventory/number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
-
-:::
-
-::::
-
-URL
-: Text value in valid URL format.
-
-Date
-: - Date value in `yyyy-mm-dd` format. 
-- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date fields under your profile.[^14]
-
-Date Time
-: - Date value in `yyyy-mm-dd, 24hr` format.
-- Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date time fields under your profile.[^15]
-
-Email
-: Text value in valid email (`user@domain.com`) format.
-
-User
-: 
-- Select list pre-populated with users from your {{< fa book-open >}} User Directory.[^16]
-- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
 
 ## Add finding field groups
 
@@ -172,7 +154,7 @@ To group finding fields, first create a finding field group:
 
 4. Click **Create Group** to add the new group.
 
-5. Assign the desired fields to the group.[^17]
+5. Assign the desired fields to the group.[^9]
 
 ## Delete finding fields
 
@@ -199,41 +181,14 @@ To group finding fields, first create a finding field group:
     Click, hold, and drag to the right to reveal additional columns.
     :::
 
-[^4]: [Working with model workflows](/guide/model-workflows/working-with-model-workflows.qmd)
+[^4]: [Working with workflows](/guide/workflows/working-with-workflows.qmd)
 
 [^5]: [Finding field types](#finding-field-types)
 
-[^6]: [Configure model workflows](/guide/model-workflows/configure-model-workflows.qmd)
+[^6]: [Configure workflows](/guide/workflows/configure-workflows.qmd)
 
 [^7]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
 
-[^8]: [Finding field types](#finding-field-types)
+[^8]: [Manage finding types](manage-finding-types.qmd)
 
-[^9]: [Manage finding types](manage-finding-types.qmd)
-
-[^10]: [Add finding field groups](#add-finding-field-groups)
-
-[^11]:
-
-    ::: {.callout title="Leave this field blank to leave permissions as default."}
-    - By default, only the <br>[{{< fa hand >}} Customer Admin]{.bubble} role has write access.
-    - All other users will have read-only access unless specified under the **[write permissions]{.smallcaps}** as a model stakeholder type.
-
-    ::: {.tc}
-    [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
-
-    :::
-
-    :::
-
-[^12]: [Add finding field groups](#add-finding-field-groups)
-
-[^13]: [Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)
-
-[^14]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)
-
-[^15]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)
-
-[^16]: [Manage users](/guide/configuration/manage-users.qmd)
-
-[^17]: [Add or edit finding fields](#add-or-edit-finding-fields)
+[^9]: [Add or edit finding fields](#add-or-edit-finding-fields)
