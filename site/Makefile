@@ -92,6 +92,7 @@ copy-installation:
 copy-release-notes:
 	@echo "\nCopying release notes source files ..."
 	@cp -r $(SRC_ROOT)/release-notes/releases ./
+	@rm -f releases/backend-releases.qmd releases/cmvm-releases.qmd
 
 # Delete PR branch on https://docs-staging.validmind.ai/
 delete-demo-branch:
