@@ -106,7 +106,7 @@ Triggers another workflow indicated by **[select workflow to run]{.smallcaps}**,
 
 ### {{< fa circle-nodes >}} Webhook
 
-When a workflow reaches a webhook step, the workflow will be paused. Set up a webhook step to listen for a `POST` request that resumes the workflow:
+When a workflow reaches a webhook step, the workflow will be paused. Listen for a `POST` request that resumes the workflow:
 
 ::: {.panel-tabset}
 
@@ -136,18 +136,18 @@ When a workflow reaches a webhook step, the workflow will be paused. Set up a we
 
 ### {{< fa cloud-arrow-up >}} HTTP Request
 
-Set up a workflow step to send an HTTP request:
+Sends a HTTP request:
 
 | Field | Description |
 |---:|---|
 | [url]{.smallcaps} | Enter in the URL to send the HTTP request to. |
-| [method]{.smallcaps} | Select the HTTP request method: `GET`, `POST`, `PUT` `DELETE` |
-| [timeout (seconds)]{.smallcaps} | Enter in a request timeout in seconds. |
+| [method]{.smallcaps} | Select the HTTP request method: `GET`, `POST`, `PUT` `DELETE`[^request-types] |
+| [timeout (seconds)]{.smallcaps} | Enter in a request timeout in seconds.[^request-timeout] |
 | [fail on non-]{.smallcaps}[2]{.smallercaps}[xx]{.smallcaps}  (optional) | Toggle whether or not the request will be considered failed if the response status code is not in the `2xx` range. |
 | [allow invalid certificates]{.smallcaps} (optional) | Toggle whether or not the request will be allowed to use invalid certificates. |
 | [follow redirects]{.smallcaps} (optional) | Toggle whether or not the request will follow redirects. |
 | [require https]{.smallcaps} (optional) | Toggle whether or not the request will require HTTPS. |
-| [headers]{.smallcaps} (optional) | Include headers with your request. |
+| [headers]{.smallcaps} (optional) | Include headers with your request.[^request-headers] |
 : **{{< fa cloud-arrow-up >}} HTTP Request** step configuration {.hover tbl-colwidths="[30,70]"}
 
 
@@ -177,6 +177,20 @@ Set up a workflow step to send an HTTP request:
 
     1. Include optional details about the model the workflow is running on using the **{ } Insert Variable** drop-down.
     2. Click on the **Preview** tab and choose a model under **[select model for preview]{.smallcaps}** to confirm how the notification will appear when rendered.
+
+[^request-types]: `PUT` and `POST` requests have additional configuration fields:
+
+    - **[body type]{.smallcaps}** — Select whether the body is `JSON` or `Text`.
+    - **[body]{.smallcaps}** — Enter in your payload.
+
+[^request-timeout]: Max 300 seconds, or enter `0` to disable timeout.
+
+[^request-headers]:
+
+    1. Click **{{< fa plus >}} Add Header** to enter a header.
+    2. Provide a **Header Name** and **Header Value**.
+
+
 
 ::::
 
@@ -218,11 +232,11 @@ Triggers another workflow indicated by **[select workflow to run]{.smallcaps}**,
 
 #### {{< fa circle-nodes >}} Webhook
 
-When a workflow reaches a webhook step, the workflow will be paused. Set up a webhook step to listen for a `POST` request that resumes the workflow.
+When a workflow reaches a webhook step, the workflow will be paused. Listen for a `POST` request that resumes the workflow.
 
 #### {{< fa cloud-arrow-up >}} HTTP Request
 
-Set up a workflow step to send an HTTP request.
+Send a HTTP request.
 
 #### {{< fa circle-stop >}} End
 
