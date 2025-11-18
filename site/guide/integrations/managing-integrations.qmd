@@ -16,18 +16,28 @@ listing:
 Integrations connect ValidMind with the external tools your teams rely on so data, workflows, and reporting stay aligned without manual handoffs.
 
 - Streamline data exchange between ValidMind and cloud platforms to keep datasets current.
+- Standardize authentication and permissions to manage access consistently across environments.
 - Trigger downstream actions in project tracking or service desk tools when model events occur.
 - Sync risk and compliance evidence across systems to maintain a single source of truth.
 - Embed ValidMind insights inside partner applications so stakeholders can act where they already work.
-- Standardize authentication and permissions to manage access consistently across environments.
 
 ### Key concepts
 
 - **Integration** — The part of ValidMind designed to exchange data or actions with another system, such as REST APIs or webhooks.
-- **Connector** — A packaged adapter that knows how to authenticate, map data, and orchestrate workflows with a specific third-party platform.
-- **Authentication flow** — The sequence of credentials, tokens, or approvals required for two systems to trust and communicate with each other.
-- **Event subscription** — A configuration that tells ValidMind or a partner platform which events to publish so the other side can react in real time.
-- **Data mapping** — The translation layer that aligns fields, taxonomies, and governance requirements between ValidMind and the integrated tool.
+- **Secret** — A credential that stores the API key, password, or token required by the external service.
+- **Connection** — A packaged adapter that knows how to authenticate, map data, and orchestrate workflows with a specific third-party platform.
+- **HTTP request** — A workflow step that sends data from ValidMind to another service.
+- **Webhook** — A workflow step that does the opposite. Another system sends a POST request to a secure ValidMind URL to start the workflow.
+
+### How workflows support integrations
+
+With workflows, you can let ValidMind exchange information with any supported external system or service that can send or receive standard HTTP calls.
+
+An *HTTP request* step sends data from ValidMind to another service. A workflow can notify a partner tool when a model reaches a certain state or request an update in an external system. This pattern is useful when ValidMind owns the event and needs to push it outward.
+
+A *webhook* step does the opposite. Another system sends a POST request to a secure ValidMind URL to start the workflow. This lets external tools trigger actions inside ValidMind when an event occurs on their side.
+
+Together these steps support event driven exchange, keep integrations flexible, and allow teams to coordinate lifecycle, compliance, and reporting activity with systems that do not yet have dedicated connectors.
 
 :::{#integrations-listing}
 :::
