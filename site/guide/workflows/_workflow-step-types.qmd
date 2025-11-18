@@ -7,7 +7,7 @@
 
 | Field | Description |
 |---:|---|
-| [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.^[ [Conditional requirements](/guide/workflows/conditional-requirements.qmd)]  |
+| [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.^[ [Conditional requirements](/guide/workflows/conditional-requirements.qmd#model-stage-change-optional)]  |
 | [set model stage to]{.smallcaps} | Select the model stage to transition to. |
 : **{{< fa cube >}} Model Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
@@ -26,7 +26,7 @@ Creates a button that performs an action on behalf of the user.
 
 | Field | Description |
 |---:|---|
-| [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd)]  |
+| [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#user-action-v2-optional)]  |
 | [action button label]{.smallcaps} | Text that displays on your action button. |
 | [request fields]{.smallcaps} (optional) | Include required inventory fields alongside your action.[^step-types-1]  |
 | [user action deadline]{.smallcaps} (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
@@ -37,7 +37,7 @@ Creates a button that performs an action on behalf of the user.
 
 Display a preconfigured message to users in the selected **[approval group]{.smallcaps}**.
 
-- Select from either **User Roles**, **Model Stakeholder Types**,or either **User Role** or **User Type** inventory field.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd)]
+- Select from either **User Roles**, **Model Stakeholder Types**,or either **User Role** or **User Type** inventory field.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#approval-required)]
 - Must be connected to both a rejection and approval {{< fa cube >}} Model Stage Change step.[^step-types-2]
 
 | Field | Description |
@@ -49,9 +49,8 @@ Display a preconfigured message to users in the selected **[approval group]{.sma
 
 ### {{< fa bullhorn >}} Broadcast
 
-Send email notifications to users in selected groups.
-
-Select from either **User Roles** or **Model Stakeholder Types**.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd)]
+- Send email notifications to users in selected groups.
+- Select from either **User Roles** or **Model Stakeholder Types**.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#broadcast-required)]
 
 | Field | Description |
 |---:|---|
@@ -72,7 +71,7 @@ Workflows cannot be saved until condition branches are connected to other steps.
 To configure a condition branch:
 
 1. On the Configure Condition Branch modal, click **{{< fa plus >}} Add Branch**.
-2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd)] that apply to this path.
+2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#condition-branch-required)] that apply to this path.
 3. Continue with steps 1 and 2 until your conditional branch logic is complete.
 
     To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
@@ -82,7 +81,7 @@ To configure a condition branch:
 
 ### {{< fa clock >}} Wait
 
-- Creates a time condition for displaying next available action.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd)]
+- Creates a time condition for displaying next available action.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#wait-required)]
 - Used to enforce a time delay or a calendar date milestone.
 
 ::: {.callout title="Time stamp configuration is in the current user's timezone."}
@@ -97,7 +96,7 @@ To configure a wait step, select when you would like to [resume workflow:]{.smal
 | After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time. Applies to all models under the workflow. |
 | At Specified Date | [wait until]{.smallcaps} | Wait until a specific timestamp. Applies to all models under the workflow. If the milestone date inputted is in the past, the next workflow step will display immediately. |
 | At Specified Date on Model Field | [model field]{.smallcaps}^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] | Wait until a specific timestamp as defined by a model inventory field on a per model basis. If the selected field is empty^[Make model inventory fields **[required when creating models]{.smallcaps}** to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
-| Time Delta from Specified Date on Model Field | [model field]{.smallcaps},^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] [time delta direction]{.smallcaps}, [wait duration]{.smallcaps} | Wait for a calculated time relative to a date in a model field on a per model basis. If the selected field is empty^[Make model inventory fields **[required when creating models]{.smallcaps}** to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
+| Time Delta from Specified Date on Model Field | [model field]{.smallcaps}, [time delta direction]{.smallcaps}, [wait duration]{.smallcaps} | Wait for a calculated time relative to a date in a model field on a per model basis. If the selected field is empty^[Make model inventory fields **[required when creating models]{.smallcaps}** to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
 : **{{< fa clock >}} Wait** step configuration {.hover tbl-colwidths="[30,15,45]"}
 
 ### {{< fa arrow-right-arrow-left >}} Run Workflow
@@ -136,7 +135,7 @@ When a workflow reaches a webhook step, the workflow will be paused. Listen for 
 
 ### {{< fa cloud-arrow-up >}} HTTP Request
 
-Sends a HTTP request:
+Sends a HTTP request with optional additional conditions.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#http-request-optional)]
 
 | Field | Description |
 |---:|---|
@@ -183,11 +182,11 @@ Sends a HTTP request:
     - **[body type]{.smallcaps}** — Select whether the body is `JSON` or `Text`.
     - **[body]{.smallcaps}** — Enter in your payload.
 
-[^request-timeout]: Max 300 seconds, or enter `0` to disable timeout.*
+[^request-timeout]: Max 300 seconds, or enter `0` to disable timeout.
 
 [^request-headers]:
 
-    1. Click **{{< fa plus >}} Add Header** to enter a header.*
+    1. Click **{{< fa plus >}} Add Header** to enter a header.
     2. Provide a **Header Name** and **Header Value**.
 
 
