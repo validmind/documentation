@@ -1,0 +1,103 @@
+---
+title: "Use HTTP requests and webhooks"
+date: last-modified
+---
+
+Use HTTP request steps to send data from ValidMind to another service, configure workflows to start when external systems send webhook POST requests, or add webhook step triggers that pause workflow execution until an external system sends a POST request.
+
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure workflows.[^1]
+- [x] You understand how to configure workflows and add steps to workflows.[^2]
+- [x] Secrets are configured for any external systems that require authentication.[^3]
+- [x] Connections are configured for any external systems you plan to integrate with.[^4]
+
+:::
+
+## Add HTTP request steps
+
+HTTP request steps send data from ValidMind to an external service. Use them to notify partner tools when a model reaches a certain state or request updates in external systems.
+
+1. Open the workflow you want to modify.
+
+2. Drag and drop an **HTTP Request** step from the **Workflow Steps** modal onto the canvas.
+
+3. Double-click the step to open the **Configure HTTP Request** modal.
+
+4. Configure the request:
+
+   - **URL** — Enter the endpoint URL where the external service expects to receive data, such as `https://example.com/webhook`.
+   - **Method** — Select the HTTP method from the dropdown (GET, POST, PUT, DELETE, etc.).
+   - **Timeout (seconds)** — Set how long to wait for a response before timing out. Maximum is 300 seconds, or set to 0 to disable timeout.
+   - **Headers** — Click **+ Add header** to include custom HTTP headers required by the external service, such as `Content-Type` or `Authorization`.
+   - **Fail on non-2xx** — When enabled, the request is considered failed if the response status code is not in the 2xx range (e.g., 404, 500).
+   - **Allow invalid certificates** — When enabled, the request can proceed even if SSL certificates are invalid.
+   - **Follow redirects** — When enabled, the request automatically follows HTTP redirects.
+   - **Require HTTPS** — When enabled, only HTTPS URLs are allowed.
+
+5. Click **Update Step** to save your configuration.
+
+The HTTP request step executes when the workflow reaches this step, sending the configured request to the external service.
+
+## Start workflows via webhook
+
+Configure workflows to start automatically when an external system sends a POST request to a ValidMind webhook URL. This lets external tools trigger actions inside ValidMind when events occur on their side.
+
+1. Open the workflow you want to configure, or [create a new workflow](/guide/workflows/configure-workflows.qmd#add-new-workflows).
+
+2. In the workflow configuration, locate the **[workflow start]{.smallcaps}** section.
+
+3. Select **Via Webhook**.
+
+   The workflow description updates to indicate that the workflow starts when a webhook event is received.
+
+4. Save your workflow configuration.
+
+After saving, ValidMind generates a unique webhook URL for this workflow. External systems can send POST requests to this URL to trigger the workflow.
+
+## Add webhook step triggers
+
+Webhook step triggers pause workflow execution and wait for an external system to send a POST request to a ValidMind webhook URL. Use them when you need to pause a workflow until an external system performs an action or provides data.
+
+1. Open the workflow you want to modify.
+
+2. Drag and drop a **Webhook** step from the **Workflow Steps** modal onto the canvas.
+
+3. Double-click the step to open the **Webhook Step Trigger** modal.
+
+4. Review the webhook configuration:
+
+   - **URL** — ValidMind generates a unique webhook URL for this step. Copy this URL to configure your external system to send POST requests here.
+   - **Select target model for payload** — Choose the model that should be associated with the webhook payload, or leave as "No model selected" if not applicable.
+   - **Payload** — The JSON structure that external systems must send in their POST request:
+     ```json
+     {
+       "action": "run_step",
+       "target": "<target_cuid>",
+       "entity_name": "InventoryModel"
+     }
+     ```
+   - **Authentication headers** — External systems must include these headers in their POST request:
+     - `x-api-key` — Your API key
+     - `x-api-secret` — Your API secret
+   - **Wait for webhook trigger when reached** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
+
+5. Click **Update Step** to save your configuration.
+
+When the workflow reaches this step, it pauses and waits for the external system to send a POST request to the webhook URL. Once the request is received and validated, the workflow continues to the next step.
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Configure workflows](/guide/workflows/configure-workflows.qmd)
+
+[^3]: [Manage secrets](manage-secrets.qmd)
+
+[^4]: [Configure connections](configure-connections.qmd)
+
+
