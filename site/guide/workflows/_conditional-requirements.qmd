@@ -1,12 +1,7 @@
 :::: {.content-visible unless-format="revealjs"}
-Configure conditional requirements for the following step types:^[[Workflow step types](/guide/workflows/setting-up-workflows.qmd#workflow-step-types)]
+Conditional requirements are required or optional for the following step types:^[[Workflow step types](/guide/workflows/workflow-step-types.qmd)]
 
-::: {.panel-tabset}
-### Transitions
-
-#### {{< fa cube >}} Model Stage Change
-
-[optional]{.smallcaps .pink}
+### {{< fa cube >}} Model Stage Change [optional]{.smallercaps .pink}
 
 1. Under **[when these conditions are met]{.smallcaps}**, set your `AND` and `OR` conditions.
 2. Add a single independent rule or a linked condition group. These rules and groups can be nested if desired:
@@ -14,31 +9,40 @@ Configure conditional requirements for the following step types:^[[Workflow step
     - Click **{{< fa plus >}} Add Rule** to add an independent rule.
     - Click **{{< fa plus-minus >}} Add Group** to add a linked group of rules that all must be true to qualify.
 
-### Actions
+### {{< fa arrow-pointer >}} User Action v2 [optional]{.smallercaps .pink}
 
-#### {{< fa arrow-pointer >}} User Action v2
+::: {.panel-tabset}
 
-[optional]{.smallcaps .pink}
+#### User display rules
 
-User display rules
-: 1. Under **[display action button when]{.smallcaps}**, set your `AND` and `OR` conditions.
+1. Under **[display action button when]{.smallcaps}**, set your `AND` and `OR` conditions.
+
 2. Add a single independent rule or a linked condition group. These rules and groups can be nested if desired:
-        - Click **{{< fa plus >}} Add Rule** to add an independent rule.
-        - Click **{{< fa plus-minus >}} Add Group** to add a linked group of rules that all must be true to qualify.
 
-Require model inventory fields
-: - Select any **[requested fields]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)] to be entered by users during the action.
+    - Click **{{< fa plus >}} Add Rule** to add an independent rule.
+    - Click **{{< fa plus-minus >}} Add Group** to add a linked group of rules that all must be true to qualify.
+
+#### Require model inventory fields
+
+- Select any **[requested fields]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)] to be entered by users during the action.
+
 - **Toggle Optional** to on if the field should be optional and not required.
 
-Enable user action deadline
-: 1. Toggle **Enable deadline** on to configure a **[user action deadline]{.smallcaps}** for when users should complete this action by.
-2. Then, under **[end action:]{.smallcaps}** select the type of deadline:
-        - **After Time Interval** — Set the **[amount]{.smallcaps}** and **[unit]{.smallcaps}** of the deadline.
-        - **At Specified Date** — Set the date and time the action should [wait until]{.smallcaps}.
-        - **At Specified Date on Model Field** — Select a date, date time, or calculated **[model field]{.smallcaps}** that defines the deadline.
-        - **Time Delta from Specified Date on Model Field** — Select a date, date time, or calculated **[model field]{.smallcaps}** to calculate a deadline from, then set a **[time delta direction]{.smallcaps}** and **[wait duration]{.smallcaps}**.
+#### Enable user action deadline
 
-#### {{< fa users >}} Approval
+1. Toggle **Enable deadline** on to configure a **[user action deadline]{.smallcaps}** for when users should complete this action by.
+
+2. Then, under **[end action]{.smallcaps}**, select the type of deadline:
+    - **After Time Interval** — Set the **[amount]{.smallcaps}** and **[unit]{.smallcaps}** of the deadline.
+    - **At Specified Date** — Set the date and time the action should [wait until]{.smallcaps}.
+    - **At Specified Date on Model Field** — Select a date, date time, or calculated **[model field]{.smallcaps}** that defines the deadline.
+    - **Time Delta from Specified Date on Model Field** — Select a date, date time, or calculated **[model field]{.smallcaps}** to calculate a deadline from, then set a **[time delta direction]{.smallcaps}** and **[wait duration]{.smallcaps}**.
+
+:::
+
+
+
+### {{< fa users >}} Approval [required]{.smallercaps .pink}
 
 1. Click **{{< fa plus >}} Add Rule** under [approval group]{.smallcaps} to set your `AND` conditions.^[One approver per rule must provide approval.]
 
@@ -49,13 +53,11 @@ Enable user action deadline
 
 <!-- - Under **[threshold]{.smallcaps}**, set the minimum percentage of approvers required for the resource to be approved. -->
 
-#### {{< fa bullhorn >}} Broadcast
+### {{< fa bullhorn >}} Broadcast [required]{.smallercaps .pink}
 
 Select from either **Model Stakeholder Types**^[[Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)] or **User Roles**.^[[Manage roles](/guide/configuration/manage-roles.qmd)]
 
-### Conditional
-
-#### {{< fa maximize >}} Condition Branch
+### {{< fa maximize >}} Condition Branch [required]{.smallercaps .pink}
 
 1. Under each branch's **[conditions]{.smallcaps}**, set your `AND` and `OR` conditions.
 2. Add a single independent rule or a linked condition group. These rules and groups can be nested if desired:
@@ -63,19 +65,67 @@ Select from either **Model Stakeholder Types**^[[Manage model stakeholder types]
     - Click **{{< fa plus >}} Add Rule** to add an independent rule.
     - Click **{{< fa plus-minus >}} Add Group** to add a linked group of rules that all must be true to qualify.
 
-#### {{< fa clock >}} Wait
+### {{< fa clock >}} Wait [required]{.smallercaps .pink}
 
-Select when you would like to [resume workflow:]{.smallcaps}
+Select when you would like to [resume workflow]{.smallcaps}:
 
-- **After Time Interval** — Set the **[wait duration]{.smallcaps}** in minutes, hours, or days.
-- **At Specified Date** — Set a time to **[wait until]{.smallcaps}** as defined by a specific timestamp.
-- **At Specified Date on Model Field** — Set the **[model field]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] with a valid `Date` or `Date Time` type model inventory field that defines the specific timestamp on a per model basis.
-- **Time Delta from Specified Date on Model Field** —
-    a. Set the **[model field]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] with a valid `Date` or `Date Time` type model inventory field that defines the specific timestamp on a per model basis.
-    b. Select a **[time delta direction]{.smallcaps}** relative to your selected field.
-    c. Enter in a **[wait duration]{.smallcaps}** in minutes, hours, days, or months for the delta.
+::: {.panel-tabset}
+
+#### **After Time Interval**
+
+Set the **[wait duration]{.smallcaps}** in minutes, hours, or days.
+
+#### At Specified Date
+
+Set a time to **[wait until]{.smallcaps}** as defined by a specific timestamp.
+
+#### At Specified Date on Model Field
+
+Set the **[model field]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] with a valid `Date` or `Date Time` type model inventory field that defines the specific timestamp on a per model basis.
+
+##### Time Delta from Specified Date on Model Field
+
+a. Set the **[model field]{.smallcaps}**^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] to a valid `Date` or `Date Time` type model inventory field that defines the specific timestamp on a per model basis.
+
+b. Select a **[time delta direction]{.smallcaps}** relative to your selected field.
+
+c. Enter in a **[wait duration]{.smallcaps}** in minutes, hours, days, or months for the delta.
 
 :::
+
+
+### {{< fa cloud-arrow-up >}} HTTP Request [optional]{.smallercaps .pink}
+
+::: {.panel-tabset}
+
+#### Request timeout
+
+- Enter in a request timeout in seconds under **[timeout (seconds)]{.smallcaps}**.
+
+- Max 300 seconds, or enter `0` to disable timeout.
+
+#### Request options
+
+Toggle the following request options on or off:
+
+- **[fail on non-]{.smallcaps}[2]{.smallercaps}[xx]{.smallcaps}** — Whether or not the request will be considered failed if the response status code is not in the `2xx` range.
+
+- **[allow invalid certificates]{.smallcaps}** — Whether or not the request will be allowed to use invalid certificates.
+
+- **[follow redirects]{.smallcaps}** — Whether or not the request will follow redirects.
+
+- **[require https]{.smallcaps}** — Whether or not the request will require HTTPS.
+
+#### Request headers
+
+Enter in optional headers to include with your request:
+
+1. Click **{{< fa plus >}} Add Header** under [headers]{.smallcaps} to enter a header.
+
+2. Provide a **Header Name** and **Header Value**.
+
+:::
+
 
 ::::
 
@@ -88,12 +138,15 @@ Configure conditional requirements for the following step types:
 
 - {{< fa arrow-pointer >}} User Action v2 **[optional]{.smallercaps}**
 
-- {{< fa users >}} Approval
+- {{< fa users >}} Approval **[required]{.smallercaps}**
 
-- {{< fa bullhorn >}} Broadcast
+- {{< fa bullhorn >}} Broadcast **[required]{.smallercaps}**
 
-- {{< fa maximize >}} Condition Branch
+- {{< fa maximize >}} Condition Branch **[required]{.smallercaps}**
 
-- {{< fa clock >}} Wait
+- {{< fa clock >}} Wait **[required]{.smallercaps}**
+
+- {{< fa cloud-arrow-up >}} HTTP Request **[optional]{.smallercaps}**
+
 
 ::::
