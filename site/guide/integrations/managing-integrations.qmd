@@ -13,94 +13,71 @@ listing:
       - configure-connections.qmd
 ---
 
-Integrations connect the {{< var validmind.platform >}} with external systems or services and keep information synchronized. 
+Integrations connect the {{< var validmind.platform >}} with external systems or services, enabling bidirectional data synchronization, workflow automation, and API access.
 
-Integrations can react to external events and trigger actions inside the {{< var vm.platform >}}. They can also send updates back to other systems when activities occur in the {{< var vm.platform >}}. This bidirectional flow reduces manual updates and helps maintain a single, reliable source of information. Standardized authentication and permissions to support predictable access control.
+The {{< var validmind.platform >}} supports various integration patterns to keep information synchronized between systems and reduce manual updates. Integrations can react to external events and trigger actions inside the {{< var vm.platform >}}, or send updates back to other systems when activities occur in the {{< var vm.platform >}}. This bidirectional flow helps maintain a single, reliable source of information while supporting standardized authentication and predictable access control.
+
+Through integrations, you can connect to analytics and reporting tools, link model inventories with external systems, coordinate workflows with ticket management platforms, trigger workflows via webhooks, access the platform through a public REST API, and integrate testing and documentation capabilities with development platforms.
 
 ## What you can do with integrations
 
-:::: { .columns }
-
-::: {.column width="50%" .pr2}
 ### Analytics and reporting
 
-- {{<var vm.product >}} provides built-in analytics and dashboarding
-- Import analytics into other reporting tools
+{{< var vm.product >}} provides built-in analytics and dashboarding capabilities. You can also import analytics data into external reporting tools to create comprehensive dashboards and reports that combine {{< var vm.product >}} data with information from other sources.
 
-Supports: Microsoft Power BI, Looker (coming soon), Snowflake (coming soon)
-:::
+Supports: {{< fa brands microsoft >}} Microsoft Power BI, Looker (coming soon), Snowflake (coming soon)
 
-::: {.column width="50%" .pl2}
 ### Model inventory
 
-- {{<var vm.product >}} can link to models in external systems
-- Continuous data synchronization
-- Supports: AWS SageMaker, GitLab, MLFlow, AWS Bedrock (coming soon), Databricks (coming soon)
-:::
+{{< var vm.product >}} can link to models stored in external model registries and development platforms, enabling continuous data synchronization between systems. This keeps your model inventory up to date with the latest model versions, metadata, and deployment information from external systems.
 
-::::
+Supports: {{< fa brands aws >}} AWS SageMaker, {{< fa brands gitlab >}} GitLab, MLflow, {{< fa brands aws >}} AWS Bedrock (coming soon), Databricks (coming soon)
 
-:::: { .columns }
+### Workflow support
 
-::: {.column width="50%" .pr2}
-### Workflows
+{{< var vm.product >}} can link to tickets in external systems, maintaining continuous data synchronization. Tickets can be automatically linked to ValidMind Findings, enabling seamless tracking and coordination between your validation workflow and external project management or issue tracking systems.
 
-- {{<var vm.product >}} can link to tickets in external systems
-- Continuous data synchronization
-- Tickets link to ValidMind Findings
-- Supports: ServiceNow and Atlassian Jira
-:::
+Supports: ServiceNow and {{< fa brands atlassian >}} Atlassian Jira
 
-::: {.column width="50%" .pl2}
 ### Webhook triggers
 
-- Webhooks integrate with {{<var vm.product >}} workflows
-- Start workflows from webhooks
-<!-- - Send webhooks from workflows -->
-- Pause workflows and wait for webhooks to continue
-:::
+Webhooks integrate with {{< var vm.product >}} workflows to enable event-driven integration patterns. You can start workflows automatically when external systems send webhook POST requests, or pause workflow execution and wait for an external system to send a webhook to continue. This allows external tools to trigger actions inside {{< var vm.product >}} when events occur on their side, creating flexible integration workflows that coordinate lifecycle, compliance, and reporting activities with systems that do not yet have dedicated connectors.
 
-::::
-
-:::: { .columns }
-
-::: {.column width="50%" .pr2}
 ### Public REST API
 
-- {{<var vm.product >}} provides a public HTTP REST API
-- CRUD operations on all ValidMind resources
-- Examples: create model, set model to “in validation”
-:::
+{{< var vm.product >}} provides a public HTTP REST API that enables programmatic access to platform resources. You can perform CRUD operations on all ValidMind resources, such as creating models, setting model status to "in validation," retrieving documentation, and managing inventory. The REST API supports integration with custom scripts, automation tools, and external platforms that need direct access to {{< var vm.product >}} functionality.
 
-::: {.column width="50%" .pl2}
-### Testing & documentation
+### Testing and documentation
 
-- Python library exposes Python API
-- Run tests and test suites 
-- Generate documentation
-- Supports ongoing monitoring
-- Integrates with other platforms
-- Supports: MLflow, SageMaker
-:::
+The {{< var validmind.developer >}} exposes a Python API that enables you to run tests and test suites, generate documentation, and support ongoing monitoring workflows. Results can be uploaded to the {{< var validmind.platform >}} and integrated with other development platforms to create seamless workflows from model development through validation and deployment.
 
-::::
+Supports: MLflow, {{< fa brands aws >}} AWS SageMaker
 
 ## Key concepts
 
-**Integration**
-: The part of ValidMind designed to exchange data or actions with another system, such as REST APIs or webhooks.
+<!-- TO EDIT THESE KEY CONCEPTS, SEE `about/glossary/_integrations.qmd` -->
 
-**Secret**
-: A credential that stores the API key, password, or token required by the external service.
+:::: {.flex .flex-wrap .justify-around}
 
-**Connection**
-: A packaged adapter that knows how to authenticate, map data, and orchestrate workflows with a specific third-party platform.
+::: {.w-50-ns}
 
-**HTTP request**
-: A workflow step that sends data from ValidMind to another service.
+{{< include /about/glossary/integrations/_integration.qmd >}}
 
-**Webhook**
-: A workflow step that does the opposite to an HTTP request. Another system sends a POST request to a secure ValidMind URL to start the workflow.
+{{< include /about/glossary/integrations/_secret.qmd >}}
+
+{{< include /about/glossary/integrations/_connection.qmd >}}
+
+:::
+
+::: {.w-40-ns}
+
+{{< include /about/glossary/integrations/_http-request.qmd >}}
+
+{{< include /about/glossary/integrations/_webhook.qmd >}}
+
+:::
+
+::::
 
 :::{#integrations-listing}
 :::
