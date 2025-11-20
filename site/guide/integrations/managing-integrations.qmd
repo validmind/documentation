@@ -11,50 +11,102 @@ listing:
     contents:
       - manage-secrets.qmd 
       - configure-connections.qmd
+      - use-integrations-in-workflows.qmd
 ---
 
 Integrations connect the {{< var validmind.platform >}} with external systems or services, enabling bidirectional data synchronization, workflow automation, and API access.
 
-The {{< var validmind.platform >}} supports various integration patterns to keep information synchronized between systems and reduce manual updates:
-
-- React to external events and trigger actions inside the {{< var vm.platform >}}
-- Send updates back to other systems when activities occur in the {{< var vm.platform >}}. 
-
-This bidirectional flow helps maintain a single, reliable source of information while supporting standardized authentication and predictable access control.
-
 ## What you can do with integrations
 
+The {{< var validmind.platform >}} supports various ways to integrate with external systems and services to make changes in one system visible in the other, keeping information synchronized:
+
+:::: {.columns}
+
+::: {.column width="50%" .pr2}
 ### Analytics and reporting
 
-{{< var vm.product >}} provides built-in analytics and dashboarding capabilities. You can also import analytics data into external reporting tools to create comprehensive dashboards and reports that combine {{< var vm.product >}} data with information from other sources.
+Access built-in analytics and dashboards. Or, import analytics data into external reporting tools to build unified reports that combine {{< var vm.product >}} insights with other sources.
 
-Supports: {{< fa brands microsoft >}} Microsoft Power BI, Looker (coming soon), Snowflake (coming soon)
+Supports: 
 
+- Microsoft Power BI
+- Looker ([coming soon]{.smallcaps})
+- Snowflake ([coming soon]{.smallcaps})
+:::
+
+::: {.column width="50%" .pl2}
 ### Model inventory
 
-{{< var vm.product >}} can link to models stored in external model registries and development platforms, enabling continuous data synchronization between systems. This keeps your model inventory up to date with the latest model versions, metadata, and deployment information from external systems.
+Link to models in external registries and development platforms and keep inventories synced with versions, inventory fields, and other metadata.
 
-Supports: {{< fa brands aws >}} AWS SageMaker, {{< fa brands gitlab >}} GitLab, MLflow, {{< fa brands aws >}} AWS Bedrock (coming soon), Databricks (coming soon)
+Supports:
 
-### Workflow support
+- AWS SageMaker
+- GitLab
+- MLflow
+- AWS Bedrock ([coming soon]{.smallcaps})
+- Databricks ([coming soon]{.smallcaps})
+:::
 
-{{< var vm.product >}} can link to tickets in external systems, maintaining continuous data synchronization. Tickets can be automatically linked to ValidMind Findings, enabling seamless tracking and coordination between your validation workflow and external project management or issue tracking systems.
+::::
 
-Supports: ServiceNow and {{< fa brands atlassian >}} Atlassian Jira
+:::: {.columns}
 
-### Webhook triggers
+::: {.column width="50%" .pr2}
+### Workflows
 
-Webhooks integrate with {{< var vm.product >}} workflows to enable event-driven integration patterns. You can start workflows automatically when external systems send webhook POST requests, or pause workflow execution and wait for an external system to send a webhook to continue. This allows external tools to trigger actions inside {{< var vm.product >}} when events occur on their side, creating flexible integration workflows that coordinate lifecycle, compliance, and reporting activities with systems that do not yet have dedicated connectors.
+Bidirectional flow of events: 
 
+- {{< var vm.product >}} workflows can notify an external system through HTTP requests that a model has reached a given state or request an update.
+
+- External systems can trigger actions inside {{< var vm.product >}} through webhooks by sending a POST request to start a workflow or resume one that is paused and waiting.
+:::
+
+::: {.column width="50%" .pl2}
 ### Public REST API
 
-{{< var vm.product >}} provides a public HTTP REST API that enables programmatic access to platform resources. You can perform CRUD operations on all ValidMind resources, such as creating models, setting model status to "in validation," retrieving documentation, and managing inventory. The REST API supports integration with custom scripts, automation tools, and external platforms that need direct access to {{< var vm.product >}} functionality.
+Gain programmatic access to platform resources. The API supports integration with custom scripts, automation tools, and external platforms that need direct access to {{< var vm.product >}}.
 
-### Testing and documentation
+Perform full CRUD operations, such as:
 
-The {{< var validmind.developer >}} exposes a Python API that enables you to run tests and test suites, generate documentation, and support ongoing monitoring workflows. Results can be uploaded to the {{< var validmind.platform >}} and integrated with other development platforms to create seamless workflows from model development through validation and deployment.
+- Creating models
+- Updating validation status
+- Retrieving documentation
+- Managing inventory
+:::
 
-Supports: MLflow, {{< fa brands aws >}} AWS SageMaker
+::::
+
+::: {.columns}
+
+::: {.column width="50%" .pl2}
+### Testing & documentation
+
+Integrate the {{< var validmind.developer >}} with other development platforms to to run tests and test suites, generate documentation, and support ongoing monitoring. 
+
+See the results locally or upload them to the {{< var validmind.platform >}}.
+
+Supports:
+
+- MLflow
+- AWS SageMaker
+:::
+
+::: {.column width="50%" .pl2}
+### Service integration
+
+Link to tickets in external systems and keep them synchronized. 
+
+Attach tickets to {{< var vm.product >}} artifacts, such as model artifacts, to support coordinated tracking across your validation workflow and external project or issue management tools.
+
+Supports:
+
+- ServiceNow
+- Atlassian Jira
+
+:::
+
+::::
 
 ## Key concepts
 
@@ -81,6 +133,8 @@ Supports: MLflow, {{< fa brands aws >}} AWS SageMaker
 :::
 
 ::::
+
+## Manage integrations
 
 :::{#integrations-listing}
 :::
