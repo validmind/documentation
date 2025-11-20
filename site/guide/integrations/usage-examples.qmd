@@ -1,19 +1,9 @@
 ---
-title: "Use integrations in workflows"
+title: "Usage examples"
 date: last-modified
 ---
 
-Use HTTP request steps to send data from ValidMind to another service, configure workflows to start when external systems send webhook POST requests, or add webhook step triggers that pause workflow execution until an external system sends a POST request.
-
-## How workflows support integrations
-
-With workflows, you can let ValidMind exchange information with any supported external system or service that can send or receive standard HTTP calls.
-
-An *HTTP request* step sends data from ValidMind to another service. A workflow can notify a partner tool when a model reaches a certain state or request an update in an external system. This pattern is useful when ValidMind owns the event and needs to push it outward.
-
-A *webhook* step does the opposite. Another system sends a POST request to  start a ValidMind workflow or to continue a workflow that is paused while waiting for a webhook to continue. This lets external tools trigger actions inside ValidMind when an event occurs on their side.
-
-Together these steps support event driven exchange, keep integrations flexible, and allow teams to coordinate lifecycle, compliance, and reporting activity with systems that do not yet have dedicated connectors.
+Learn from example workflow configurations to help you tailor workflows to fit your organization's requirements for managing model risk throughout your entire model lifecycles.
 
 ::: {.attn}
 
@@ -27,9 +17,13 @@ Together these steps support event driven exchange, keep integrations flexible, 
 
 :::
 
-## Add HTTP request steps
+## Workflow examples
 
-HTTP request steps send data from ValidMind to an external service. Use them to notify partner tools when a model reaches a certain state or request updates in external systems.
+Use HTTP request steps to send data from {{< var vm.product >}} to another service, configure workflows to start when external systems send webhook POST requests, or add webhook step triggers that pause workflow execution until an external system sends a POST request.
+
+### Add HTTP request steps
+
+HTTP request steps send data from {{< var vm.product >}} to an external service. Use them to notify partner tools when a model reaches a certain state or request updates in external systems.
 
 1. Open the workflow you want to modify.
 
@@ -52,9 +46,9 @@ HTTP request steps send data from ValidMind to an external service. Use them to 
 
 The HTTP request step executes when the workflow reaches this step, sending the configured request to the external service.
 
-## Start workflows via webhook
+### Start workflows via webhook
 
-Configure workflows to start automatically when an external system sends a POST request to a ValidMind webhook URL. This lets external tools trigger actions inside ValidMind when events occur on their side.
+Configure workflows to start automatically when an external system sends a POST request to a {{< var vm.product >}} webhook URL. This lets external tools trigger actions inside {{< var vm.product >}} when events occur on their side.
 
 1. Open the workflow you want to configure, or [create a new workflow](/guide/workflows/configure-workflows.qmd#add-new-workflows).
 
@@ -66,11 +60,20 @@ Configure workflows to start automatically when an external system sends a POST 
 
 4. Save your workflow configuration.
 
-After saving, ValidMind generates a unique webhook URL for this workflow. External systems can send POST requests to this URL to trigger the workflow.
+After saving, {{< var vm.product >}} generates a unique webhook URL for this workflow. External systems can send POST requests to this URL to trigger the workflow.
+
+The example could be curls, like this for running a workflow from the start:
+
+```bash
+curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/cmi6nu5mi000d0f67u3mif3xd/naUM -H 'Content-Type: application/json' -H 'x-api-key: 9d412fc2863c35bc51fa2b4e869930e6' -H 'x-api-secret: 7799d7d8f9b0cb646c7d37a57b6612ecf509f3c0b020f8bda83273e9c920fa5e' --data '{
+  "action": "run_workflow",
+  "target": "cmglcb4v100e70np28h3s6ph1",
+  "entity_name": "InventoryModel"
+}'
 
 ## Add webhook step triggers
 
-Webhook step triggers pause workflow execution and wait for an external system to send a POST request to a ValidMind webhook URL. Use them when you need to pause a workflow until an external system performs an action or provides data.
+Webhook step triggers pause workflow execution and wait for an external system to send a POST request to a {{< var vm.product >}} webhook URL. Use them when you need to pause a workflow until an external system performs an action or provides data.
 
 1. Open the workflow you want to modify.
 
@@ -80,7 +83,7 @@ Webhook step triggers pause workflow execution and wait for an external system t
 
 4. Review the webhook configuration:
 
-   - **URL** — ValidMind generates a unique webhook URL for this step. Copy this URL to configure your external system to send POST requests here.
+   - **URL** — {{< var vm.product >}} generates a unique webhook URL for this step. Copy this URL to configure your external system to send POST requests here.
    - **Select target model for payload** — Choose the model that should be associated with the webhook payload, or leave as "No model selected" if not applicable.
    - **Payload** — The JSON structure that external systems must send in their POST request:
      ```json
@@ -98,6 +101,16 @@ Webhook step triggers pause workflow execution and wait for an external system t
 5. Click **Update Step** to save your configuration.
 
 When the workflow reaches this step, it pauses and waits for the external system to send a POST request to the webhook URL. Once the request is received and validated, the workflow continues to the next step.
+
+And this one to continue a workflow from the paused workflow step, which "pause workflow and wait for webhook to continue" refers to:
+
+```bash
+curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/cmi6nu5mi000d0f67u3mif3xd/HcPW -H 'Content-Type: application/json' -H 'x-api-key: 9d412fc2863c35bc51fa2b4e869930e6' -H 'x-api-secret: 7799d7d8f9b0cb646c7d37a57b6612ecf509f3c0b020f8bda83273e9c920fa5e' --data '{
+  "action": "run_step",
+  "target": "cmglcb4v100e70np28h3s6ph1",
+  "entity_name": "InventoryModel"
+}'
+```
 
 <!-- FOOTNOTES -->
 
