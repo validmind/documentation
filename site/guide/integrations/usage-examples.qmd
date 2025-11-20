@@ -3,7 +3,7 @@ title: "Usage examples"
 date: last-modified
 ---
 
-Learn from example workflow configurations to help you tailor workflows to fit your organization's requirements for managing model risk throughout your entire model lifecycles.
+Adapt these integration examples for your own workflows or other integrations to fit your organization's requirements for connecting to external systems.
 
 ::: {.attn}
 
@@ -14,16 +14,19 @@ Learn from example workflow configurations to help you tailor workflows to fit y
 - [x] You understand how to configure workflows and add steps to workflows.[^2]
 - [x] Secrets are configured for any external systems that require authentication.[^3]
 - [x] Connections are configured for any external systems you plan to integrate with.[^4]
+- [x] You have admin access to the external systems you plan to integrate with.
 
 :::
 
 ## Workflow examples
 
-Use HTTP request steps to send data from {{< var vm.product >}} to another service, configure workflows to start when external systems send webhook POST requests, or add webhook step triggers that pause workflow execution until an external system sends a POST request.
+### Create a Jira issue
 
-### Add HTTP request steps
+Use a HTTP request step to to create a Jira ticket when a model validation fails or requires attention:
 
-HTTP request steps send data from {{< var vm.product >}} to an external service. Use them to notify partner tools when a model reaches a certain state or request updates in external systems.
+::: {.column-margin}
+![Create a Jira issue](usage-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 4." .screenshot}
+:::
 
 1. Open the workflow you want to modify.
 
@@ -31,20 +34,64 @@ HTTP request steps send data from {{< var vm.product >}} to an external service.
 
 3. Double-click the step to open the **Configure HTTP Request** modal.
 
-4. Configure the request:
+4. Configure the required fields, replacing `{{Jira Personal Access Token}}` with your own token:
 
-   - **URL** — Enter the endpoint URL where the external service expects to receive data, such as `https://example.com/webhook`.
-   - **Method** — Select the HTTP method from the dropdown (GET, POST, PUT, DELETE, etc.).
-   - **Timeout (seconds)** — Set how long to wait for a response before timing out. Maximum is 300 seconds, or set to 0 to disable timeout.
-   - **Headers** — Click **+ Add header** to include custom HTTP headers required by the external service, such as `Content-Type` or `Authorization`.
-   - **Fail on non-2xx** — When enabled, the request is considered failed if the response status code is not in the 2xx range (e.g., 404, 500).
-   - **Allow invalid certificates** — When enabled, the request can proceed even if SSL certificates are invalid.
-   - **Follow redirects** — When enabled, the request automatically follows HTTP redirects.
-   - **Require HTTPS** — When enabled, only HTTPS URLs are allowed.
+   - **URL** — `https://yourcompany.atlassian.net/rest/api/3/issue`
+   - **Method** — POST
+   - **Headers** — Add the following headers:
+     - `Content-Type: application/json`
+     - `Authorization: Bearer {{Jira Personal Access Token}}`
+   - **Body Type** — JSON
+   - **Body** — Use the following JSON structure:
+   
+   ```json
+   {
+     "fields": {
+       "project": {
+         "key": "MODEL"
+       },
+       "summary": "Model validation failed: {{Model Name}}",
+       "description": "The model [{{Model Name}}|{{Model URL}}] failed validation. Review findings in ValidMind.",
+       "issuetype": {
+         "name": "Bug"
+       }
+     }
+   }
+   ```
 
 5. Click **Update Step** to save your configuration.
 
-The HTTP request step executes when the workflow reaches this step, sending the configured request to the external service.
+This HTTP request step executes when the workflow reaches this step, sending the request to create a Jira ticket to the request endpoint.
+
+### Create a ServiceNow incident
+
+Create a ServiceNow incident when a data drift issue is detected over time, replacing `{{ServiceNow Credentials}}` with your own credentials:
+
+::: {.column-margin}
+![Create a ServiceNow incident](usage-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 4." .screenshot}
+:::
+
+
+**Configuration:**
+
+- **URL** — `https://yourinstance.service-now.com/api/now/table/incident`
+- **Method** — POST
+- **Headers** — Add the following headers:
+  - `Content-Type: application/json`
+  - `Authorization: Basic {{ServiceNow Credentials}}`
+- **Body Type** — JSON
+- **Body** — Use the following JSON structure:
+
+  ```json
+  {
+    "short_description": "Data drift issue detected: {{Model Name}}",
+    "description": "A potential issue has been identified for model {{Model Name}} (link: [{{Model URL}}]({{Model URL}})). Please review the ongoing monitoring documentation in ValidMind.",
+    "urgency": "2",
+    "category": "Model Risk"
+  }
+  ```
+
+This HTTP request step executes when the workflow reaches this step, sending the request to create a ServiceNow incident to the request endpoint.
 
 ### Start workflows via webhook
 
