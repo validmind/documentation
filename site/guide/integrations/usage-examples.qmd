@@ -3,7 +3,7 @@ title: "Usage examples"
 date: last-modified
 ---
 
-Adapt these integration examples for your own workflows or other integrations to fit your organization's requirements for connecting to external systems.
+Adapt these integration usage examples for your own workflows to interact with external systems.
 
 - [Create a Jira ticket](#create-a-jira-ticket)
 - [Create a ServiceNow incident](#create-a-servicenow-incident)
@@ -27,7 +27,7 @@ Adapt these integration examples for your own workflows or other integrations to
 
 ### Create a Jira ticket
 
-Use a HTTP request step to to create a Jira ticket when a model validation fails or requires attention:
+To create a Jira ticket when model validation requires attention:
 
 ::: {.column-margin}
 ![Create a Jira issue](usage-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 4." .screenshot}
@@ -35,7 +35,7 @@ Use a HTTP request step to to create a Jira ticket when a model validation fails
 
 1. Under **Settings** > **Workflows**, open the workflow you want to modify.
 
-2. From the **Workflow Steps** modal, drag and drop a **HTTP Request** step onto the canvas.
+2. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it your workflow.
 
 3. Double-click the step to open the **Configure HTTP Request** modal.
 
@@ -43,7 +43,7 @@ Use a HTTP request step to to create a Jira ticket when a model validation fails
 
    - **URL** — `https://yourcompany.atlassian.net/rest/api/3/issue`
    - **Method** — POST
-   - **Headers** — Add the following headers:
+   - **Headers** — Add:
      - `Content-Type: application/json`
      - `Authorization: Bearer {{Jira Personal Access Token}}`
    - **Body Type** — JSON
@@ -66,15 +66,15 @@ Use a HTTP request step to to create a Jira ticket when a model validation fails
 
 5. Click **Update Step** to save your configuration.
 
-This HTTP request step executes when the workflow reaches this step, sending the request to create a Jira ticket to the request endpoint.
+The HTTP request to create the Jira ticket gets sent when the workflow executes the step.
 
 ### Create a ServiceNow incident
 
-Use a HTTP request step to create a ServiceNow incident when a data drift issue is detected over time:
+To create a ServiceNow incident when a data drift issue is detected during ongoing monitoring:
 
 1. Under **Settings** > **Workflows**, open the workflow you want to modify.
 
-2. From the **Workflow Steps** modal, drag and drop a **HTTP Request** step onto the canvas.
+2. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it your workflow.
 
 3. Double-click the step to open the **Configure HTTP Request** modal.
 
@@ -86,7 +86,7 @@ Use a HTTP request step to create a ServiceNow incident when a data drift issue 
 
    - **URL** — `https://yourinstance.service-now.com/api/now/table/incident`
    - **Method** — POST
-   - **Headers** — Add the following headers:
+   - **Headers** — Add:
      - `Content-Type: application/json`
      - `Authorization: Basic {{ServiceNow Credentials}}`
    - **Body Type** — JSON
@@ -101,15 +101,17 @@ Use a HTTP request step to create a ServiceNow incident when a data drift issue 
    }
    ```
 
-This HTTP request step executes when the workflow reaches this step, sending the request to create a ServiceNow incident to the request endpoint.
+The HTTP request to create the ServiceNow incident gets sent when the workflow executes the step.
 
 ### Start workflows via webhook
 
-To run a {{< var vm.product >}} workflow from an external system by sending a POST request with the `run_workflow` action to a webhook URL:
+To start a {{< var vm.product >}} workflow from an external system:
+
+#### On the {{< var validmind.platform >}}
 
 1. Add a new workflow, selecting the **Via Webhook** workflow start option.[^5]
 
-2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas.
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas, then connect it your workflow.
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
@@ -121,7 +123,7 @@ To run a {{< var vm.product >}} workflow from an external system by sending a PO
    
      ```json
      {
-       "action": "run_step",
+       "action": "run_workflow",
        "target": "<target_cuid>",
        "entity_name": "InventoryModel"
      }
@@ -134,7 +136,9 @@ To run a {{< var vm.product >}} workflow from an external system by sending a PO
 
 5. Click **Save Workflow**.
 
-To start the workflow, send a POST request to the webhook URL with a JSON payload containing the `run_workflow` action and the `target_cuid`:
+#### From the external system
+
+Send a POST request to the webhook URL with a JSON payload that includes the `run_workflow` action:
 
 ```bash
 curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx -H 'Content-Type: application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
@@ -146,11 +150,13 @@ curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxx
 
 ### Add webhook step triggers
 
-To wait for an external system to send a POST request with the `run_step` action to a {{< var vm.product >}} webhook URL. Use them when you need to pause a workflow until an external system performs an action or provides data.
+To trigger a waiting {{< var vm.product >}} workflow step to continue from an external system:
+
+#### On the {{< var validmind.platform >}}
 
 1. Open the workflow you want to configure, or add a new workflow.[^5]
 
-2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas.
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas, then connect it your workflow.
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
@@ -175,7 +181,11 @@ To wait for an external system to send a POST request with the `run_step` action
 
 5. Click **Update Step** to save your configuration.
 
-When the workflow reaches this step, it pauses and waits for the external system. To continue the workflow, send a POST request to the webhook URL with a JSON payload containing the `run_step` action and the `target_cuid`:
+When the workflow reaches this step, it pauses and waits for the external system.
+
+#### From the external system
+
+To continue the workflow, send a POST request to the webhook URL with a JSON payload containing the `run_step` action and the `target_cuid`:
 
 ```bash
 curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx  -H 'Content-Type: application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
