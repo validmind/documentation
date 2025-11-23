@@ -41,21 +41,23 @@ To create a Jira ticket when model validation requires attention:
 ![Create a Jira issue](integrations-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 4." .screenshot}
 :::
 
-1. Under **Settings** > **Workflows**, open the workflow you want to modify.
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
+2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow** to start afresh.
 
-3. Double-click the step to open the **Configure HTTP Request** modal.
+3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
 
-4. Configure the required fields, replacing the placeholder values with your own:
+4. Double-click the step to open the **Configure HTTP Request** modal.
 
-   - **URL** — `https://yourcompany.atlassian.net/rest/api/3/issue`
-   - **Method** — POST
-   - **Headers** — Add:
-     - `Content-Type: application/json`
-     - `Authorization: Bearer {{Jira Personal Access Token}}`
-   - **Body Type** — JSON
-   - **Body** — Use the following JSON payload:
+5. Configure the required fields, replacing the placeholder values with your own:
+
+   - **[url]{.smallcaps}** — `https://yourcompany.atlassian.net/rest/api/3/issue`
+   - **[method]{.smallcaps}** — POST
+   - **[headers]{.smallcaps}** — Add:
+     - `Content-Type`: `application/json`
+     - `Authorization`: `Bearer {{Jira Personal Access Token}}`
+   - **[body type]{.smallcaps}** — JSON
+   - **[body]{.smallcaps}** — Use the following JSON payload:
    
    ```json
    {
@@ -72,7 +74,7 @@ To create a Jira ticket when model validation requires attention:
    }
    ```
 
-5. Click **Update Step** to save your configuration.
+6. Click **Update Step** to save your configuration.
 
 The HTTP request to create the Jira ticket gets sent when the workflow executes the step.
 
@@ -80,25 +82,27 @@ The HTTP request to create the Jira ticket gets sent when the workflow executes 
 
 To create a ServiceNow incident when a data drift issue is detected during ongoing monitoring:
 
-1. Under **Settings** > **Workflows**, open the workflow you want to modify.
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
+2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow** to start afresh.
 
-3. Double-click the step to open the **Configure HTTP Request** modal.
+3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
 
-4. Configure the required fields, replacing the placeholder values with your own:
+4. Double-click the step to open the **Configure HTTP Request** modal.
+
+5. Configure the required fields, replacing the placeholder values with your own:
 
 ::: {.column-margin}
 ![Create a ServiceNow incident](integrations-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 4." .screenshot}
 :::
 
-   - **URL** — `https://yourinstance.service-now.com/api/now/table/incident`
-   - **Method** — POST
-   - **Headers** — Add:
-     - `Content-Type: application/json`
-     - `Authorization: Basic {{ServiceNow Credentials}}`
-   - **Body Type** — JSON
-   - **Body** — Use the following JSON payload:
+   - **[url]{.smallcaps}** — `https://yourinstance.service-now.com/api/now/table/incident`
+   - **[method]{.smallcaps}** — POST
+   - **[headers]{.smallcaps}** — Add:
+     - `Content-Type`: `application/json`
+     - `Authorization`: `Basic {{ServiceNow Credentials}}`
+   - **[body type]{.smallcaps}** — JSON
+   - **[body]{.smallcaps}** — Use the following JSON payload:
 
    ```json
    {
@@ -115,7 +119,7 @@ The HTTP request to create the ServiceNow incident gets sent when the workflow e
 
 To start a {{< var vm.product >}} workflow from an external system:
 
-#### On the {{< var validmind.platform >}}
+#### Configure the workflow on {{< var vm.product >}}
 
 1. Add a new workflow, selecting the **Via Webhook** workflow start option.[^5]
 
@@ -123,11 +127,11 @@ To start a {{< var vm.product >}} workflow from an external system:
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
-4. Configure the webhook details:
+4. Copy or select the webhook details:
 
-   - **URL** — The unique webhook URL to use when configuring your external system to send POST requests.
-   - **Select target model for payload** — The model that should be associated with the webhook payload, or leave as `No model selected` if not applicable.
-   - **Payload** — The JSON payload that external systems must send in their POST request, where `target_cuid` is the CUID of the target model:
+   - **URL** — Click **{{< fa regular copy >}} Copy** for the unique POST webhook URL to use when configuring your external system.
+   - **[select target model for payload]{.smallcaps}** — Select the model that is associated with the webhook payload from the dropdown.
+   - **Payload** — Click **{{< fa regular copy >}} Copy** for the JSON payload that external systems must send in their POST request, where the value for `target_cuid` is shown after you select a target:
    
      ```json
      {
@@ -137,21 +141,21 @@ To start a {{< var vm.product >}} workflow from an external system:
      }
      ```
 
-   - **Authentication headers** — External systems must include these headers in their POST request:
-     - `x-api-key` — Your API key
-     - `x-api-secret` — Your API secret
-   - **Wait for webhook trigger when reached** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
+   - For the required authentication headers, click **{{< fa regular copy >}} Copy** for each of the following key-value pairs and paste them into your external system:
+     - `x-api-key`: `{{API Key}}`
+     - `x-api-secret`: `{{API Secret}}`
+   - **[wait for webhook trigger when reached]{.smallcaps}** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
 
 5. Click **Save Workflow**.
 
-#### From the external system
+#### Start the workflow from the external system
 
-Send a POST request to the webhook URL with a JSON payload that includes the `run_workflow` action:
+Send a POST request to the webhook URL with a JSON payload that includes the `run_workflow` action for the target model CUID:
 
 ```bash
-curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx -H 'Content-Type: application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
+curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx -H 'Content-Type`: `application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
   "action": "run_workflow",
-  "target": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+  "target": "<target_cuid>",
   "entity_name": "InventoryModel"
 }'
 ```
@@ -160,7 +164,7 @@ curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxx
 
 To trigger a waiting {{< var vm.product >}} workflow step to continue from an external system:
 
-#### On the {{< var validmind.platform >}}
+#### Configure the workflow on {{< var vm.product >}}
 
 1. Open the workflow you want to configure, or add a new workflow.[^5]
 
@@ -168,11 +172,11 @@ To trigger a waiting {{< var vm.product >}} workflow step to continue from an ex
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
-4. Review and update the webhook details:
+4. Copy or select the webhook details:
 
-   - **URL** — The unique webhook URL to use when configuring your external system to send POST requests.
-   - **Select target model for payload** — The model that should be associated with the webhook payload, or leave as `No model selected` if not applicable.
-   - **Payload** — The JSON payload that external systems must send in their POST request, where `target_cuid` is the CUID of the target model:
+   - **URL** — Click **{{< fa regular copy >}} Copy** for the unique POST webhook URL to use when configuring your external system.
+   - **[select target model for payload]{.smallcaps}** — Select the model that is associated with the webhook payload from the dropdown.
+   - **Payload** — Click **{{< fa regular copy >}} Copy** for the JSON payload that external systems must send in their POST request, where the value for `target_cuid` is shown after you select a target:
 
      ```json
      {
@@ -182,23 +186,23 @@ To trigger a waiting {{< var vm.product >}} workflow step to continue from an ex
      }
      ```
 
-   - **Authentication headers** — External systems must include these headers in their POST request:
-     - `x-api-key` — Your API key
-     - `x-api-secret` — Your API secret
-   - **Wait for webhook trigger when reached** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
+   - For the required authentication headers, click **{{< fa regular copy >}} Copy** for each of the following key-value pairs and paste them into your external system:
+     - `x-api-key`: `{{API Key}}`
+     - `x-api-secret`: `{{API Secret}}`
+   - **[wait for webhook trigger when reached]{.smallcaps}** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
 
 5. Click **Update Step** to save your configuration.
 
 When the workflow reaches this step, it pauses and waits for the external system.
 
-#### From the external system
+#### Trigger the workflow to continue from the external system
 
-To continue the workflow, send a POST request to the webhook URL with a JSON payload containing the `run_step` action and the `target_cuid`:
+Send a POST request to the webhook URL with a JSON payload containing the `run_step` action for the model CUID:
 
 ```bash
-curl -X POST https://api.dev.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx  -H 'Content-Type: application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
+curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx  -H 'Content-Type`: `application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
   "action": "run_step",
-  "target": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+  "target": "<target_cuid>",
   "entity_name": "InventoryModel"
 }'
 ```
