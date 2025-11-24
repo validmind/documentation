@@ -1,0 +1,223 @@
+---
+title: "Managing integrations"
+date: last-modified
+listing:
+  - id: integrations-listing
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - manage-secrets.qmd 
+      - configure-connections.qmd
+      - integrations-examples.qmd
+---
+
+Integrations connect the {{< var validmind.platform >}} with external systems or services, enabling bidirectional data synchronization, workflow automation, and API access.
+
+## What can I do with integrations?
+
+```{mermaid}
+graph TD
+    A[ValidMind Platform]
+    B[Analytics and reporting]
+    C[Model inventory]
+    D[Workflows]
+    E[Public REST API]
+    F[Testing & documentation]
+    G[Service integration]
+    
+    A <--> B
+    A <--> C
+    A <--> D
+    A <--> E
+    A <--> F
+    A <--> G
+```
+
+<!-- The {{< var validmind.platform >}} supports various ways to integrate with external systems and services to make changes in one system visible in the other, keeping information synchronized: -->
+
+### Analytics and reporting
+
+Access built-in analytics and dashboards. Or, import analytics data into external reporting tools to build unified reports that combine {{< var vm.product >}} insights with other sources.[^1]
+
+**Supported**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-33-ns}
+- Microsoft Power BI
+:::
+
+::: {.w-33-ns}
+<!-- - Looker -->
+:::
+
+::: {.w-33-ns}
+<!-- - Snowflake -->
+:::
+
+::::
+
+---
+
+### Model inventory
+
+Link to models in external registries and development platforms and keep inventories synced with versions, inventory fields, and other metadata.[^2]
+
+**Supported**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-33-ns}
+- AWS SageMaker
+<!-- - Databricks -->
+:::
+
+::: {.w-33-ns}
+- MLflow
+<!-- - AWS Bedrock -->
+:::
+
+::: {.w-33-ns}
+- GitLab
+:::
+
+::::
+
+---
+
+### Workflows
+
+::: {.column-margin}
+![Workflow integration example](simple-integrations-workflow.png){width=80% fig-alt="A workflow showing an automation sequence. A green start node runs an HTTP request that sends a POST to https://some.example.com/request. The workflow then moves to a webhook step that pauses until a webhook call is received. Once the webhook arrives, the flow continues to a red end node." .screenshot}
+:::
+
+Manage model lifecycles by configuring workflows to transition models through your organization’s custom model stages.[^3]
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50 .pr5}
+**From {{< var vm.product >}}**  
+Send HTTP requests to external services when a model reaches a specific state or to trigger updates in other systems.
+:::
+
+::: {.w-50 .pl3 .pr3}
+**From external systems**  
+Send webhooks (POST requests) into {{< var vm.product >}} to start workflows or to resume workflows that are paused and waiting for input.
+:::
+
+::::
+
+---
+
+### Public REST API
+
+Gain programmatic access to platform resources. The API supports integration with custom scripts, automation tools, and external platforms that need direct access to {{< var vm.product >}}.[^4]
+
+**CRUD examples**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-33-ns}
+- Create models
+:::
+
+::: {.w-33-ns}
+- Get artifacts (findings)
+:::
+
+::: {.w-33-ns}
+- Manage model inventory
+:::
+
+::::
+
+---
+
+### Testing & documentation
+
+Integrate the {{< var validmind.developer >}} with other development platforms to run tests and test suites, generate documentation, and support ongoing monitoring. See the results locally or upload them to the {{< var validmind.platform >}}.[^5]
+
+**Supported**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-33-ns}
+- MLflow
+:::
+
+::: {.w-33-ns}
+- AWS SageMaker
+:::
+
+::: {.w-33-ns}
+&nbsp;
+:::
+
+::::
+
+---
+
+### Service integrations
+
+Link to tickets in external systems and keep them synchronized. Attach tickets to {{< var vm.product >}} artifacts, such as model artifacts, to support coordinated tracking across your validation workflow and external project or issue management tools.
+
+**Supported**
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-33-ns}
+- ServiceNow
+:::
+
+::: {.w-33-ns}
+- Atlassian Jira
+:::
+
+::: {.w-33-ns}
+&nbsp;
+:::
+
+::::
+
+
+## Key concepts
+
+<!-- TO EDIT THESE KEY CONCEPTS, SEE `about/glossary/_integrations.qmd` -->
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr3}
+
+{{< include /about/glossary/integrations/_integration.qmd >}}
+
+{{< include /about/glossary/integrations/_secret.qmd >}}
+
+{{< include /about/glossary/integrations/_connection.qmd >}}
+
+:::
+
+::: {.w-50-ns .pl3}
+
+{{< include /about/glossary/integrations/_http-request.qmd >}}
+
+{{< include /about/glossary/integrations/_webhook.qmd >}}
+
+:::
+
+::::
+
+## Manage integrations
+
+:::{#integrations-listing}
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Analytics and reporting](/guide/reporting/working-with-analytics.qmd)
+[^2]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd)
+[^3]: [Introduction to workflows](/guide/workflows/introduction-to-workflows.qmd)
+[^4]: [Public REST API](/reference/validmind-rest-api-vm.qmd)
+[^5]: [Testing & documentation](/developer/validmind-library.qmd)
