@@ -43,9 +43,9 @@ To create a Jira ticket when model validation requires attention:
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow** to start afresh.
+2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow**[^5] to start afresh.
 
-3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
+3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step[^6] onto the canvas, then connect it to your workflow.
 
 4. Double-click the step to open the **Configure HTTP Request** modal.
 
@@ -76,7 +76,7 @@ To create a Jira ticket when model validation requires attention:
 
 6. Click **Update Step** to save your configuration.
 
-The HTTP request to create the Jira ticket gets sent when the workflow executes the step.
+The HTTP request to create the Jira ticket is sent when the workflow executes the step.
 
 ### Create a ServiceNow incident
 
@@ -84,25 +84,21 @@ To create a ServiceNow incident when a data drift issue is detected during ongoi
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow** to start afresh.
+2. Under Workflows, select a workflow you can modify or click  **{{< fa plus >}} Add Model Workflow**[^7] to start afresh.
 
-3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step onto the canvas, then connect it to your workflow.
+3. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step[^8] onto the canvas, then connect it to your workflow.
 
 4. Double-click the step to open the **Configure HTTP Request** modal.
 
 5. Configure the required fields, replacing the placeholder values with your own:
 
-::: {.column-margin}
-![Create a ServiceNow incident](integrations-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 4." .screenshot}
-:::
-
-   - **[url]{.smallcaps}** — `https://yourinstance.service-now.com/api/now/table/incident`
-   - **[method]{.smallcaps}** — POST
-   - **[headers]{.smallcaps}** — Add:
-     - `Content-Type`: `application/json`
-     - `Authorization`: `Basic {{ServiceNow Credentials}}`
-   - **[body type]{.smallcaps}** — JSON
-   - **[body]{.smallcaps}** — Use the following JSON payload:
+    - **[url]{.smallcaps}** — `https://yourinstance.service-now.com/api/now/table/incident`
+    - **[method]{.smallcaps}** — POST
+    - **[headers]{.smallcaps}** — Add:
+      - `Content-Type`: `application/json`
+      - `Authorization`: `Basic {{ServiceNow Credentials}}`
+    - **[body type]{.smallcaps}** — JSON
+    - **[body]{.smallcaps}** — Use the following JSON payload:
 
    ```json
    {
@@ -113,17 +109,23 @@ To create a ServiceNow incident when a data drift issue is detected during ongoi
    }
    ```
 
-The HTTP request to create the ServiceNow incident gets sent when the workflow executes the step.
+::: {.column-margin}
+![Create a ServiceNow incident](integrations-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 4." .screenshot}
+:::
+
+The HTTP request to create the ServiceNow incident is sent when the workflow executes the step.
 
 ### Start workflows via webhook
 
 To start a {{< var vm.product >}} workflow from an external system:
 
-#### Configure the workflow on {{< var vm.product >}}
+::: {.panel-tabset}
 
-1. Add a new workflow, selecting the **Via Webhook** workflow start option.[^5]
+#### a. Configure workflow in {{< var vm.product >}}
 
-2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas, then connect it to your workflow.
+1. Add a new workflow, selecting the **Via Webhook** workflow start option.[^9]
+
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step[^10] onto the canvas, then connect it to your workflow.
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
@@ -148,7 +150,7 @@ To start a {{< var vm.product >}} workflow from an external system:
 
 5. Click **Save Workflow**.
 
-#### Start the workflow from the external system
+#### b. Start workflow from external system
 
 Send a POST request to the webhook URL with a JSON payload that includes the `run_workflow` action for the target model CUID:
 
@@ -159,16 +161,19 @@ curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxx
   "entity_name": "InventoryModel"
 }'
 ```
+:::
 
 ### Add webhook step triggers
 
 To trigger a waiting {{< var vm.product >}} workflow step to continue from an external system:
 
-#### Configure the workflow on {{< var vm.product >}}
+::: {.panel-tabset}
 
-1. Open the workflow you want to configure, or add a new workflow.[^5]
+#### a. Configure workflow in {{< var vm.product >}}
 
-2. From the **Workflow Steps** modal, drag and drop a **Webhook** step onto the canvas, then connect it to your workflow.
+1. Open the workflow you want to configure, or add a new workflow.[^11]
+
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step[^12] onto the canvas, then connect the step to your workflow.
 
 3. Double-click the step to open the **Webhook Step Trigger** modal.
 
@@ -189,13 +194,12 @@ To trigger a waiting {{< var vm.product >}} workflow step to continue from an ex
    - For the required authentication headers, click **{{< fa regular copy >}} Copy** for each of the following key-value pairs and paste them into your external system:
      - `x-api-key`: `{{API Key}}`
      - `x-api-secret`: `{{API Secret}}`
-   - **[wait for webhook trigger when reached]{.smallcaps}** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
 
 5. Click **Update Step** to save your configuration.
 
 When the workflow reaches this step, it pauses and waits for the external system.
 
-#### Trigger the workflow to continue from the external system
+#### b. Trigger workflow to continue from external system
 
 Send a POST request to the webhook URL with a JSON payload containing the `run_step` action for the model CUID:
 
@@ -206,6 +210,8 @@ curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxx
   "entity_name": "InventoryModel"
 }'
 ```
+
+:::
 
 <!-- FOOTNOTES -->
 
@@ -219,4 +225,27 @@ curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxx
 
 [^5]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
 
+[^6]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#http-request)
+
+[^7]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
+
+[^8]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#http-request)
+
+[^9]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
+
+[^10]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#webhook)
+
+[^11]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
+
+[^12]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#webhook)
+
+<!-- HERE -->
+
+<!--
+
+[^5]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
+
+[^6]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#webhook)
+
+ -->
 
