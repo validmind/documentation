@@ -1,9 +1,11 @@
 ---
-title: "Manage model finding fields"
+title: "Manage artifact fields"
 date: last-modified
+aliases: 
+  - manage-model-finding-fields.html
 ---
 
-{{< include /guide/model-validation/_model-finding-fields.qmd >}}
+{{< include /guide/model-validation/_artifact-fields.qmd >}}
 
 ::: {.attn}
 
@@ -14,28 +16,28 @@ date: last-modified
 
 :::
 
-## View, search, and filter findings fields
+## View, search, and filter artifacts fields
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Findings, select **Finding Fields**.
+2. Under Artifacts, select **Artifact Fields**.
 
-    Displayed in groups[^2] as lists are the findings fields available to findings in your organization with a quick view of:[^3]
+    Displayed in groups[^2] as lists are the artifacts fields available to artifacts in your organization with a quick view of:[^3]
 
     - Number of workflows that field is used in[^4]
     - The field key
     - The field type[^5]
     - Field description
-    - Whether or not the field is required when creating findings
-    - Quick actions you can take on the finding field
+    - Whether or not the field is required when creating artifacts
+    - Quick actions you can take on the artifact field
 
-3. Narrow down existing findings fields available to your findings by searching or filtering for results:
+3. Narrow down existing artifacts fields available to your artifacts by searching or filtering for results:
 
 ::: {.panel-tabset}
 
 #### Search fields
 
-a. Click **{{< fa magnifying-glass >}} Search** to search by keywords within a findings field.
+a. Click **{{< fa magnifying-glass >}} Search** to search by keywords within an artifacts field.
 
 b. Select whether to search in the **Title** or **Description**.
 
@@ -47,8 +49,8 @@ c. Click **Search** to narrow down your results by your entered keywords.
 
 a. Click **{{< fa filter >}} Filter** to filter fields by any of the following criteria:
 
-    - **[finding types]{.smallcaps}** — The types of findings that use this field.
-    - **[required on creation]{.smallcaps}** — Whether or not the field was set up as required on finding creation.
+    - **[artifact types]{.smallcaps}** — The types of artifacts that use this field.
+    - **[required on creation]{.smallcaps}** — Whether or not the field was set up as required on artifact creation.
     - **[types]{.smallcaps}** — What type of field it is.
     - **[workflow triggered by field]{.smallcaps}** — What workflows are initiated when this field is edited.[^6]
     - **[write permissions]{.smallcaps}** — Which model stakeholder types have permissions to edit this field.[^7]
@@ -62,25 +64,25 @@ b. Click **Apply Filters** to narrow down your results by your configured criter
 For example, if you first search by keyword for `Regression` under **Title** without clearing that search, any additional filters applied will only apply to the results returned by that initial search.
 :::
 
-## Add or edit finding fields
+## Add or edit artifact fields
 <span id="add-edit"></span>
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Findings, select **Finding Fields**.
+2. Under Artifacts, select **Artifact Fields**.
 
-    Here you can edit existing finding fields, or add a new one:
+    Here you can edit existing artifact fields, or add a new one:
 
-{{< include /guide/model-validation/_add-edit-finding-fields.qmd >}}
+{{< include /guide/model-validation/_add-edit-artifact-fields.qmd >}}
 
-#### Finding field types
+#### Artifact field types
 
 {{< include /guide/model-inventory/_field-types.qmd >}}
 
 ::: {.callout}
-## Use finding types[^8] in your formulas to create dynamic calculations.
+## Use artifact types[^8] in your formulas to create dynamic calculations.
 
-Use simple dot notation to include finding types:
+Use simple dot notation to include artifact types:
 
 - `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
 - `finding_type.name` — Human-readable name: `Validation Issue`
@@ -89,9 +91,9 @@ Use simple dot notation to include finding types:
 
 Example use cases:
 
-- Calculate different risk scores based on finding type.
+- Calculate different risk scores based on artifact type.
 - Generate dynamic titles and descriptions.
-- Set different due dates or priorities by finding category.
+- Set different due dates or priorities by artifact category.
 - Create type-specific business logic in formulas.
 
 ::: {.panel-tabset}
@@ -99,7 +101,7 @@ Example use cases:
 #### Severity calculation
 
 ```python
-# Calculate different severity scores based on finding type
+# Calculate different severity scores based on artifact type
 
 if finding_type.tag == "VALIDATION_ISSUE":
     return severity_score * 2.5
@@ -112,7 +114,7 @@ else:
 #### Due date calculation
 
 ```python
-# Dynamically calculate due dates based on finding type
+# Dynamically calculate due dates based on artifact type
 
 base_days = 30
 if finding_type.tag == "VALIDATION_ISSUE":
@@ -128,7 +130,7 @@ return base_days * urgency_multiplier
 #### Custom fields & parent model data
 
 ```python
-# Combine finding types with custom fields and parent model data
+# Combine artifact types with custom fields and parent model data
 
 risk_factor = custom_field_risk_score or 1.0
 model_criticality = params.model.get("criticality_level", "medium")
@@ -142,13 +144,13 @@ else:
 :::
 
 
-## Add finding field groups
+## Add artifact field groups
 
-To group finding fields, first create a finding field group:
+To group artifact fields, first create an artifact field group:
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Findings, select **Finding Fields**.
+2. Under Artifacts, select **Artifact Fields**.
 
 3. Click **{{< fa plus >}} Add Group** and enter in a **[name]{.smallcaps}** and a **[description]{.smallcaps}** for the group.
 
@@ -156,11 +158,11 @@ To group finding fields, first create a finding field group:
 
 5. Assign the desired fields to the group.[^9]
 
-## Delete finding fields
+## Delete artifact fields
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-2. Under Findings, select **Finding Fields**.
+2. Under Artifacts, select **Artifact Fields**.
 
 3. Hover over the field you would like to delete.
 
@@ -173,7 +175,7 @@ To group finding fields, first create a finding field group:
 
 [^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^2]: [Add finding field groups](#add-finding-field-groups)
+[^2]: [Add artifact field groups](#add-artifact-field-groups)
 
 [^3]:
 
@@ -183,12 +185,12 @@ To group finding fields, first create a finding field group:
 
 [^4]: [Working with workflows](/guide/workflows/working-with-workflows.qmd)
 
-[^5]: [Finding field types](#finding-field-types)
+[^5]: [Artifact field types](#artifact-field-types)
 
 [^6]: [Configure workflows](/guide/workflows/configure-workflows.qmd)
 
 [^7]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
 
-[^8]: [Manage finding types](manage-finding-types.qmd)
+[^8]: [Manage artifact types](manage-artifact-types.qmd)
 
-[^9]: [Add or edit finding fields](#add-or-edit-finding-fields)
+[^9]: [Add or edit artifact fields](#add-or-edit-artifact-fields)
