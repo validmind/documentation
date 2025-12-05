@@ -67,6 +67,18 @@ Follow the steps in [Install and initialize the {{< var validmind.developer >}}]
 
 {{< include /releases/_how-to-upgrade.qmd >}}
 
+## Cannot initialize the {{< var validmind.developer >}}
+
+### Issue
+When you run `vm.init()`, you encounter an error message like this: 
+
+  ```bash
+  HTTPSConnectionPool: SSL_VERIFY_FAILED: Certificate verify failed: unable to get local issuer certificate ```
+
+### Fix
+
+This is because of an SSL Certificate Authority issue. In rare cases this means there is an active man-in-the-middle attack. Most commonly this is because your corporate HTTPS proxy & firewall is intercepting the connection and your local python environment does not have the Certificate Bundle that the firewall requires. Reach out to your internal IT team and give them the details on your python environment and ask them for help getting the correct CA Bundle installed in your python environment.
+
 ## Additional resources
 
 :::{#more}
