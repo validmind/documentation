@@ -43,9 +43,10 @@ Make sure you are installing the latest version of the {{< var vm.developer >}}[
   ```
 
 
-## Cannot initialize the {{< var validmind.developer >}}
+## Missing API credentials when initializing the {{< var validmind.developer >}}
 
 ### Issue
+
 When you run `vm.init()`, you encounter an error message like this: 
 
   ```bash
@@ -59,25 +60,30 @@ or
   ```
 
 ### Fix
+
 Make sure that you are using the correct initialization credentials for the model you are trying to connect to. 
 
 Follow the steps in [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd) for detailed instructions on how to integrate the {{< var vm.developer >}} and upload to the {{< var vm.platform >}}.
 
-<span id="how-to-upgrade"><span>
-
-{{< include /releases/_how-to-upgrade.qmd >}}
-
-## Cannot initialize the {{< var validmind.developer >}}
+## SSL verification errors when initializing the {{< var validmind.developer >}}
 
 ### Issue
+
 When you run `vm.init()`, you encounter an error message like this: 
 
-  ```bash
-  HTTPSConnectionPool: SSL_VERIFY_FAILED: Certificate verify failed: unable to get local issuer certificate ```
+```bash
+HTTPSConnectionPool: SSL_VERIFY_FAILED: Certificate verify failed: unable to get local issuer certificate 
+```
 
 ### Fix
 
-This is because of an SSL Certificate Authority issue. In rare cases this means there is an active man-in-the-middle attack. Most commonly this is because your corporate HTTPS proxy & firewall is intercepting the connection and your local python environment does not have the Certificate Bundle that the firewall requires. Reach out to your internal IT team and give them the details on your python environment and ask them for help getting the correct CA Bundle installed in your python environment.
+This error indicates a Certificate Authority issue. In rare cases it can signal an active man-in-the-middle attack. More often it reflects a corporate HTTPS proxy and firewall that intercept the connection while your local Python environment lacks the required certificate bundle.
+
+Contact your internal IT team. Provide details about your Python environment and ask for help installing the correct CA bundle.
+
+<span id="how-to-upgrade"><span>
+
+{{< include /releases/_how-to-upgrade.qmd >}}
 
 ## Additional resources
 
