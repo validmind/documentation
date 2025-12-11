@@ -1,0 +1,87 @@
+### How do I create effective filter queries?
+
+On the **Select Your Filters** dialog, you can build complex filter queries with AND/OR logic and nested conditions. The filter system supports both core fields and custom fields, including attachments.
+
+#### Add filter rules
+
+1. Click **+ Rule** to add a filter condition.
+
+2. Select a field from the dropdown. Fields are organized into groups:
+   - **Core Fields**: Standard database fields (Name, Status, Business Unit, Tier, etc.)
+   - **Stakeholders**: Owners, Developers, Validators, Custom Stakeholders
+   - **Custom Fields**: Organization-specific fields (grouped by category)
+
+3. Select an operator from the dropdown. Available operators depend on the field type:
+   - **Text fields**: equals, not equals, contains, begins with, ends with, is empty, is not empty
+   - **Number fields**: equals, not equals, greater than, less than, between, is empty, is not empty
+   - **Date fields**: equals, not equals, before, after, between, is empty, is not empty
+   - **Boolean fields**: equals, not equals, is empty, is not empty
+   - **Multi-select fields**: in, not in, contains, is empty, is not empty
+
+4. Enter or select a value based on the field type:
+   - Text: Enter text or use textarea for longer content
+   - Number: Enter numeric value or use range slider
+   - Date: Use date picker
+   - Boolean: Select checkbox
+   - Select/Multi-select: Choose from dropdown with search
+   - Entity fields (users, models): Select from dropdown with search
+
+#### Add groups for complex logic
+
+1. Click **Add group** to create a nested group of conditions.
+
+2. Groups enable OR logic between sets of conditions. For example, you can create a query like: "Show items matching (condition A AND condition B) OR (condition C AND condition D)".
+
+3. Groups can be nested multiple levels deep.
+
+#### Combine rules and groups with AND/OR logic
+
+- **Rules**: By default, multiple rules are combined with AND logic (all conditions must match).
+
+- **Combinators**: Click the **AND** or **OR** button between rules or groups to change how conditions are combined.
+
+- **AND logic**: All conditions must match.
+
+- **OR logic**: At least one condition must match.
+
+#### Supported field types
+
+You can filter on:
+- **Core fields**: Standard fields such as Name, Status, Business Unit, Tier, Use Case, Performance Rating, Owners, Developers, Validators
+- **Custom fields**: All custom field types including text, number, date, boolean, single-select, multi-select, attachments, user fields, custom stakeholder fields, and calculated fields
+
+#### Filter on attachments
+
+For attachment fields, you can filter by:
+- **File name**: Use the "contains" operator to search within file names
+- **File type(s)**: Select one or more file types
+- **File size**: Filter by file size or use size ranges
+
+#### View and manage active filters
+
+After applying filters, active filter conditions appear as individual chips below the page header with the label "Filtered by:". Each chip displays:
+- Field name (human-readable)
+- Operator (if applicable)
+- Value(s) (formatted for display)
+- Remove button ({{< fa xmark >}} icon)
+
+Filter chips show the query structure:
+- **AND** appears in gray between chips
+- **OR** appears in orange between chips (to highlight OR logic)
+- **Parentheses** indicate nested groups: `( ... )`
+
+Example: `Filtered by: [status = Active ×] AND [tier = Production ×] OR ( [owner = John ×] AND [developer = Jane ×] )`
+
+#### Remove individual filters
+
+- Click the {{< fa xmark >}} button on any filter chip to remove that specific filter condition.
+- The remaining filters are automatically reapplied.
+- If removing a filter leaves no filters, all filters are cleared.
+
+#### Smart query restructuring
+
+When you remove individual filter chips, the system automatically restructures the query to maintain a valid filter state:
+- Single-item groups flatten to the parent level
+- Empty groups are automatically removed
+- The query structure remains valid after each removal
+
