@@ -149,10 +149,10 @@ Entity fields
 
 Groups combine multiple rules that are evaluated together and can be nested one level deep. You use groups for more complex queries, such as: 
 
-::: {.pl4 .pr4}
-_Condition A AND (Condition B OR Condition C)_
+::: {.pl4 .pr4 .tc}
+_Condition A AND (Condition B OR Condition C)<br><small>Example: Use case is Attrition/Churn Management AND (Business Unit is Commerical Banking OR Business Unit is Retail Banking)</small>_
 
-![<small>Use case is Attrition/Churn Management AND (Business Unit is Commerical Banking OR Business Unit is Retail Banking)</small>](/guide/model-inventory/select-your-filters-group.png){fig-alt="A rule AND a group of OR rules" .screenshot}
+![](/guide/model-inventory/select-your-filters-group.png){fig-alt="A rule AND a group of OR rules" .screenshot}
 :::
 
 To add a group:
@@ -165,21 +165,19 @@ To add a group:
 
 ## Combinators
 
-Combinators define how multiple rules or groups are logically combined when matching conditions. By default, multiple rules are combined with **AND** logic, meaning all conditions must match. 
-
-Supported combinators:
-
 :::: {.columns}
 
 ::: {.column width="70%" .pr3}
 
-::: {.pl4}
-AND
-: All conditions must match
+Combinators define how multiple rules or groups are logically combined when matching conditions. By default, multiple rules are combined with **AND** logic, meaning all conditions must match. 
 
-OR
-: At least one condition must match
-:::
+Supported combinators:
+
+- **AND**: All conditions must match
+
+- **OR**: At least one condition must match
+
+To change the combinator:
 
 1. Click the **AND** or **OR** button between rules or groups to change how conditions are combined.
 
@@ -193,8 +191,12 @@ OR
 ::::
 
 
-::: {.callout title="Cannot change the top-level"}
-Note that logic must evaluate to true for the filter to be applied. You cannot apply conflicting logic like _Show items matching condition A AND condition B OR condition C_. To achive more complex queries, use groups.
+::: {.callout title="Why can't I AND and OR top-level combinators?"}
+Combinators must evaluate logically for the filter to be applied. You cannot apply conflicting logic at the top-level, such as: 
+
+_Show items matching condition A AND condition B OR condition C_. 
+
+{{< fa hand-point-right >}} **To achive more complex queries, use groups.**
 :::
 
 ## Examples
