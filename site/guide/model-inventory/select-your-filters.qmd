@@ -6,47 +6,132 @@ search: false
 
 Filtering supports simple and complex conditions using AND or OR logic with nested groups. You can filter on both the default fields created by {{< var vm.product >}} and custom fields created by your organization.
 
+**TO DO How to get to the filter modal**
+
+Validation issues:
+
+1. In the left sidebar, click **{{< fa triangle-exclamation >}} Validation Issues** to view a list of validation issues across all models.
+
+2. Click **{{< fa filter >}} Filter**.
+
+Model inventory:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Click **{{< fa filter >}} Filter**.
+
 ## Step 1: Add a rule
 
+Rules define individual conditions. To add a filter rule:
+
 1. Click **{{< fa plus >}} Rule** to add a filter condition. 
+   
+    A filter rule contains three components:
 
-    A new filter row appears with three components:
+:::: {.columns}
 
-    - **Field selector**: Dropdown to choose the field to filter by
-    - **Operator selector**: Dropdown to select the comparison operator
-    - **Value editor**: Input area that varies based on the selected field type
+::: {.column width="50%" .pl4 .pr3}
+Field selector
+: Dropdown to choose the field to filter by
+
+Operator selector
+: Dropdown to select the comparison operator
+
+Value editor
+: Input area that varies based on the selected field type
+:::
+
+::: {.column width="50%" .pl3}
+![A screenshot showing a new filter row with three components](/guide/model-inventory/select-your-filters-rule.png){fig-alt="A new filter row with three components" .screenshot}
+:::
+
+::::
 
 2. From the field selector dropdown, select one of:
 
-    - **Core fields** — The default fields, such as Business Unit or Model Stage
-    - **Stakeholders or assignees** — The owner, developer, or validator, if applicable
-    - **Custom fields** — The organization-specific fields you added
+:::: {.columns}
 
-3. From the operator selector dropdown, select one of:
+::: {.column width="30%" .pl4 .pr2}
+**Default fields**  
+One of the fields always created, such as Business Unit or Model Stage.
+:::
 
+::: {.column width="30%" .pl4 .pr3}
+**Stakeholders or assignees**  
+Owner, Developer, or Validator, if applicable.
+:::
 
-    - **Text fields** — equals, not equals, contains, begins with, ends with, is empty, is not empty
-    - **Number fields** — equals, not equals, greater than, less than, between, is empty, is not empty
-    - **Date fields** — equals, not equals, before, after, between, is empty, is not empty
-    - **Boolean fields** — equals, not equals, is empty, is not empty
-    - **Multi-select fields** — in, not in, contains, is empty, is not empty
+::: {.column width="30%" .pl3}
+**Custom fields**  
+One of the organization-specific fields you added.
+:::
 
-    The available operators automatically update based on the selected field type.
+::::
 
-4. From the value editor, enter or select a value based on the field type:
+3. From the operator selector dropdown, select one of: ^[The available operators update automatically based on the selected field type.]
 
-   - **Text** — Text input or text area  longer content
-   - **Number** — Number input or range slider
-   - **Date** — Date picker
-   - **Boolean** — Checkbox
-   - **Select/multi-select** — Dropdown with search
-   - **Entity fields (users, models)** — Dropdown with search and loading states
+:::: {.columns}
+
+::: {.column width="30%" .pl4 .pr2}
+Text fields
+: equals, not equals, contains, begins with, ends with, is empty, is not empty
+
+Date fields
+: equals, not equals, before, after, between, is empty, is not empty
+:::
+
+::: {.column width="30%" .pl4 .pr3}
+Number fields
+: equals, not equals, greater than, less than, between, is empty, is not empty
+
+Boolean fields
+: equals, not equals, is empty, is not empty
+:::
+
+::: {.column width="30%" .pl3}
+Multi-select fields
+: in, not in, contains, is empty, is not empty
+:::
+
+::::
+
+4. From the value editor, enter or select a value based on the field type:^[Value input changes based on field type]
+
+:::: {.columns}
+
+::: {.column width="30%" .pl4 .pr2}
+Text
+: Text input or text area for longer content
+
+Date
+: Date picker
+:::
+
+::: {.column width="30%" .pl4 .pr3}
+Number
+: Number input or range slider
+
+Boolean
+: Checkbox
+:::
+
+::: {.column width="30%" .pl3}
+Select/multi-select
+: Dropdown with search
+
+Entity fields
+: Dropdown with search for users or models
+:::
+
+::::
 
 5. Add more rules
 
 Click **{{< fa plus >}} Rule** again to add additional conditions. By default, multiple rules are combined with **AND** logic (all conditions must match).
 
 ## Step 2: Create groups
+
+Groups combine multiple rules that are evaluated together and allow for more complex logic. To add groups:
 
 Groups enable **OR** logic, allowing queries like "Show items matching (condition A AND condition B) OR (condition C)". Groups can be nested multiple levels deep.
 
@@ -67,55 +152,73 @@ Click the **AND** or **OR** button between rules or groups to change how conditi
 
 Show models that are Active AND in the Credit Risk business unit:
 
-1. Add rule: Field = "Status", Operator = "equals", Value = "Active"
-2. Add rule: Field = "Business Unit", Operator = "equals", Value = "Credit Risk"
-3. Click **Apply Filters**
+1. Add rule: Field = "Status", Operator = "equals", Value = "Active".
+
+2. Add rule: Field = "Business Unit", Operator = "equals", Value = "Credit Risk".
+
+3. Click **Apply Filters**.
 
 ### OR query with groups
 
 Show models that are (Active AND in Credit Risk) OR (In Review AND in Market Risk):
 
-1. Add rule: Field = "Status", Operator = "equals", Value = "Active"
-2. Add rule: Field = "Business Unit", Operator = "equals", Value = "Credit Risk"
-3. Click **Add group** to create a new group
-4. Change combinator to "OR" (between the two groups)
-5. In the new group, add: Status = "In Review", Business Unit = "Market Risk"
-6. Click **Apply Filters**
+1. Add rule: Field = "Status", Operator = "equals", Value = "Active".
+
+2. Add rule: Field = "Business Unit", Operator = "equals", Value = "Credit Risk".
+
+3. Click **Add group** to create a new group.
+
+4. Change combinator to "OR" (between the two groups).
+
+5. In the new group, add: Status = "In Review", Business Unit = "Market Risk".
+
+6. Click **Apply Filters**.
 
 ### Custom field filter
 
 Show models where Custom Field 'Risk Level' is 'High':
 
-1. Add rule: Field = "Custom Fields > Risk Level", Operator = "equals", Value = "High"
-2. Click **Apply Filters**
+1. Add rule: Field = "Custom Fields > Risk Level", Operator = "equals", Value = "High".
+
+2. Click **Apply Filters**.
 
 ### Complex nested query
 
 Show models where (Status is Active OR In Review) AND (Risk Level is High OR Medium) AND Owner is John Doe:
 
-1. Create first group: Status = "Active" OR Status = "In Review"
-2. Create second group: Risk Level = "High" OR Risk Level = "Medium"
-3. Add rule: Owner = "John Doe"
-4. Ensure all groups use AND combinator
-5. Click **Apply Filters**
+1. Create first group: Status = "Active" OR Status = "In Review".
+
+2. Create second group: Risk Level = "High" OR Risk Level = "Medium".
+
+3. Add rule: Owner = "John Doe".
+
+4. Ensure all groups use AND combinator.
+
+5. Click **Apply Filters**.
 
 ### Date range filter
 
 Show findings created between January 1, 2025 and January 31, 2025:
 
-1. Add rule: Field = "Created Date", Operator = "between"
-2. Enter start date: January 1, 2025
-3. Enter end date: January 31, 2025
-4. Click **Apply Filters**
+1. Add rule: Field = "Created Date", Operator = "between".
+
+2. Enter start date: January 1, 2025.
+
+3. Enter end date: January 31, 2025.
+
+4. Click **Apply Filters**.
 
 ### Filter by owner and PDF attachments
 
 Show models owned by a specific user that have attachments with "pdf" in the file name:
 
-1. Add rule: Field = "Owner", Operator = "in", Value = [Select user from dropdown]
-2. Add rule: Field = "Supporting Documents", Operator = "file name contains", Value = "pdf"
-3. Ensure the combinator between rules is set to "AND"
-4. Click **Apply Filters**
+1. Add rule: Field = "Owner", Operator = "in", Value = [Select user from dropdown].
+
+2. Add rule: Field = "Supporting Documents", Operator = "file name contains", Value = "pdf".
+
+3. Ensure the combinator between rules is set to "AND".
+
+4. Click **Apply Filters**.
 
 :::
 
@@ -130,6 +233,8 @@ After applying filters, active filter conditions appear as individual chips belo
 
 ### Remove individual filters
 
-- Click the {{< fa xmark >}} button on any filter chip to remove that specific filter condition.
-- The remaining filters are automatically reapplied.
-- If removing a filter leaves no filters, all filters are cleared.
+1. Click the {{< fa xmark >}} button on any filter chip to remove that specific filter condition.
+
+2. 
+
+The remaining filters are automatically reapplied. If removing a filter leaves no filters, all filters are cleared.
