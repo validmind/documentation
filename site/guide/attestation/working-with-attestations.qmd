@@ -24,8 +24,9 @@ listing:
 - [x] If applicable, model artifacts have been documented.[^2]
 - [x] You are assigned a role with sufficient permissions to perform attestation tasks:[^3]
    - [{{< fa hand >}} Customer Admin]{.bubble} — Sets up attestations
-   - [Model owner]{.bubble} — Completes attestation questionnaires
-   - [{{< fa circle-check >}} Validator]{.bubble}  — Reviews and signs off on attestation questionnaires
+   - [Submitter]{.bubble} — Completes attestation questionnaires
+   - [Reviewer]{.bubble} — Reviews attestation questionnaires
+   - [Approver]{.bubble} — Signs off on attestation questionnaires
 
 :::
 
@@ -37,7 +38,7 @@ listing:
 
 Attestation on the {{< var validmind.platform >}} begins at the start of the attestation period after the process has been set up initially. The platform captures a snapshot of each model and its artifacts, preserving the state at that point in time. Changes made after the process starts do not affect the historical record.
 
-Model owners and validators each see a banner on their dashboard when an attestation requires action. The banner links directly to their active respective attestation tasks, also known as _attestation instances_:
+Attestation participants see a banner on their dashboard when an attestation requires action. The banner links directly to their active attestation tasks, also known as _attestation instances_:
 
 ![Dashboard prompt for attestations](attestation-banner.png){width="80%" fig-alt="Attestation prompt with a link to the attestation labelled 'Open Attestations'" .screenshot}
 
@@ -46,30 +47,33 @@ Responsibilities for the attestation process are shared:
 ::: {.tc}
 ```{mermaid}
 graph LR
-    subgraph Model Owner
+    subgraph Submitter
         A["**Not Started**"] --> B["**In Progress**"]
         B --> C["**Ready for Review**"]
     end
     
-    subgraph Validator
+    subgraph Reviewer
         C --> D["**Reviewed**"]
-        D --> E["**Signed Off**"]
         D -.-> B
+    end
+    
+    subgraph Approver
+        D --> E["**Signed Off**"]
     end
 ```
 
-[The attestation process — Model owner and validator responsibilities]{.silver .small}
+[The attestation process — Submitter, reviewer, and approver responsibilities]{.silver .small}
 :::
 
 ::: {.column-margin .callout title="Attestation is collaborative"}
-A validator can request changes from the model owner by rejecting the attestation questionnaire. 
+A reviewer can request changes from the submitter by rejecting the attestation questionnaire. 
 
 ___
 
 The platform maintains a history of all status changes and notes.
 :::
 
-The model owner is responsible for completing the questionnaire and addressing change requests from their reviewer. In turn, the validator is responsible for reviewing the questionnaire, requesting any necessary changes, and signing off.
+The submitter is responsible for completing the questionnaire and addressing change requests. The reviewer is responsible for reviewing the questionnaire and requesting any necessary changes. The approver is responsible for signing off on the questionnaire.
 
 Plan your attestation periods ahead of time to ensure they can be completed on time. The start date must be today or a future date, and you cannot set a date in the past to trigger attestation retroactively.
 
