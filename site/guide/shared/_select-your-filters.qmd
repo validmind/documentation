@@ -1,0 +1,341 @@
+---
+tbl-cap-location: bottom
+---
+
+Filtering supports simple and complex conditions using AND or OR logic with nested groups. You can filter on both the default fields created by {{< var vm.product >}} and custom fields created by your organization.
+
+## Rules
+
+Rules define individual conditions to filter by, such as the business unit or owner. 
+
+To add a rule:
+
+1. Click click **{{< fa plus >}} Add Rule** to add a filter condition. 
+   
+    A filter rule contains three components:
+
+    ![](/guide/shared/select-your-filters-rule.png){width="90%" fig-alt="A new filter row with three components" .screenshot}
+
+:::: {.columns}
+
+::: {.column width="30%" .pl4 .pr2}
+Field selector
+: Dropdown to choose the field type to filter by.
+:::
+
+::: {.column width="30%" .pl4 .pr3}
+Operator selector
+: Dropdown to select the comparison operator.
+:::
+
+::: {.column width="30%" .pl3}
+Value editor
+: Input area that varies based on the selected field type.
+:::
+
+::::
+
+2. From the field selector dropdown, select one of:
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
+- **[model information]{.smallcaps}** — One of the model inventory fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[stakeholders]{.smallcaps}** — Owner, Developer, or Validator, or custom stakeholders if applicable.
+- **[model inventory fields]{.smallcaps}** — One of the organization-specific model inventory fields you added for your own use.
+
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+- **[artifact information]{.smallcaps}** — One of the artifact fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[assignees]{.smallcaps}** — User assigned to the Validation Issue type artifact.
+- **[artifact fields]{.smallcaps}** — One of the organization-specific artifact fields you added for your own use.
+
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.both"}
+:::: {.columns}
+
+::: {.column width="50%" .pl4 .pr2}
+[Model Inventory Filters]{.small-text}
+
+- **[model information]{.smallcaps}** — One of the model inventory fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[stakeholders]{.smallcaps}** — Owner, Developer, or Validator, or custom stakeholders if applicable.
+- **[model inventory fields]{.smallcaps}** — One of the organization-specific model inventory fields you added for your own use.
+:::
+
+::: {.column width="50%" .pl4 .pr3}
+
+[Artifact Filters]{.small-text}
+
+- **[artifact information]{.smallcaps}** — One of the artifact fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[assignees]{.smallcaps}** — User assigned to the Validation Issue type artifact.
+- **[artifact fields]{.smallcaps}** — One of the organization-specific artifact fields you added for your own use.
+:::
+
+
+::::
+
+::::
+
+
+3. From the operator dropdown, select one of:<br>[Available operators update based on the field selector]{.small-text}
+
+::: {.pl4 .pr4 .pt2 .pb2}
+| Text fields      | Date fields          | Number fields          | Boolean fields        | Multi-select fields   |
+|------------------|---------------------|------------------------|----------------------|----------------------|
+| equals           | equals              | equals                 | equals               | in                   |
+| not equals       | not equals          | not equals             | not equals           | not in               |
+| contains         | before              | greater than           | is empty             | contains             |
+| begins with      | after               | less than              | is not empty         | is empty             |
+| ends with        | between             | between                |                      | is not empty         |
+| is empty         | is empty            | is empty               |                      |                      |
+| is not empty     | is not empty        | is not empty           |                      |                      |
+: **Operator selector** options {.hover}
+:::
+
+4. From the value editor, enter or select a value based on the field type:<br>[Value input changes based on field selector]{.small-text}
+
+:::: {.columns}
+
+::: {.column width="30%" .pl4 .pr2}
+Text
+: Text input or text area for longer content
+:::
+
+::: {.column width="30%" .pl4 .pr3}
+Date
+: Date picker
+:::
+
+::: {.column width="30%" .pl3}
+Number
+: Number input or range slider
+:::
+
+::::
+
+:::: {.columns}
+
+::: {.column width="30%" .pl4 .pr2}
+Boolean
+: Checkbox
+:::
+
+::: {.column width="30%" .pl4 .pr3}
+Select/multi-select
+: Dropdown with search
+:::
+
+::: {.column width="30%" .pl3}
+Entity fields
+: Dropdown with search for users or models
+:::
+
+::::
+
+5. (Optional) Add more rules by following the same steps.
+
+6. Click **Apply Filters**.
+
+## Groups
+
+Groups combine multiple rules that are evaluated together and can be nested one level deep. You use groups for more complex filters, such as _Condition A AND (Condition B OR Condition C)_.
+
+To add a group:
+
+1. Click **{{< fa folder-plus >}} Add Group** to create a nested group of conditions.
+
+2. Follow the same steps as in [**Rules**](#rules) to add one or several conditions to the group.
+
+3. Click **Apply Filters**.
+
+::: {.pl4 .pr4 .tc}
+![<small>Example: Use case is Attrition/Churn Management AND (Business Unit is Commerical Banking OR Business Unit is Retail Banking)</small>](/guide/shared/select-your-filters-group.png){fig-alt="A rule AND a group of OR rules" .screenshot}
+:::
+
+## Combinators
+
+Combinators define how multiple rules or groups are logically combined when matching conditions. By default, multiple rules are combined with **AND** logic, meaning all conditions must match. 
+
+Supported combinators:
+
+:::: {.columns}
+
+::: {.column width="70%" .pr5}
+- **AND** — All conditions must match
+- **OR** — At least one condition must match
+
+To change the combinator:
+
+1. Click the **AND** or **OR** button between rules or groups to change how conditions are combined.
+
+2. Click **Apply Filters**.
+:::
+
+::: {.column width="30%" .pr5}
+![](/guide/shared/select-your-filters-combinators.png){fig-alt="The AND and OR combinators" .screenshot}
+:::
+
+::::
+
+
+::: {.embed-tip}
+### Why can't I use both AND and OR top-level combinators?
+
+Combinators must evaluate logically for the filter to be applied: 
+
+&ensp;{{< fa xmark >}} _Show items matching Condition A AND Condition B OR Condition C_<br>
+&ensp;{{< fa check >}} _Show items matching Condition A AND (Condition B OR Condition C)_
+
+{{< fa lightbulb >}} **To achive more complex filters, use groups.**
+:::
+
+## View active filters
+
+After applying filters, active filter conditions appear as individual chips next to the label **{{< fa filter >}} Filtered by:**. 
+
+- Field names
+- Operators
+- Values
+
+## Remove active filters
+
+Click the {{< fa xmark >}} icon on any filter chip to remove that specific filter condition. The remaining filters are automatically reapplied.
+
+## Examples
+[Available values depend on your organization's custom configuration]{.small-text}
+
+::: {.panel-tabset}
+
+### Simple single rule
+
+Show models where _Model Inventory Field: `Risk Level` is `High`_ (requires that you have a custom select field called `Risk Level`):
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. Click **{{< fa plus >}} Add Rule**:
+
+    - Field = `Model Inventory Field: Risk Level`
+    - Operator = `equals`
+    - Value = `High`
+
+3. Click **Apply Filters**.
+
+### Simple AND query
+
+Show models that are _Model Stage: In Production AND in Business Unit: Risk Management_:
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. On the Select Your Filters dialog that opens, click **{{< fa plus >}} Add Rule**:
+
+    - Field = `Model Stage`
+    - Operator = `in`
+    - Value = `In Production`
+
+3. Add another rule:
+
+    - Field = `Business Unit`
+    - Operator = `in`
+    - Value = `Risk Management`
+
+4. Click **Apply Filters**.
+
+### OR query with groups
+
+Show models that are _(Model Stage: In Production AND in Business Unit: Risk Management) OR (Model Stage: In Production AND in Use: Attrition/Churn Management)_:
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. Click **{{< fa plus >}} Add Rule** to add your rules:
+
+    a. First rule:
+        - Field = `Model Stage`
+        - Operator = `in`
+        - Value = `In Production`
+    b. Second rule:
+        - Field = `Business Unit`
+        - Operator = `in`
+        - Value = `Risk Management`
+
+3. Click **{{< fa folder-plus >}} Add Group** to create a new group:
+
+    a. Change combinator to `OR` (between the two groups).
+    b. In the new group, click **{{< fa plus >}} Add Rule** to add:
+
+        i. First rule:
+            - Field = `Model Stage`
+            - Operator = `in`
+            - Value = `In Production`
+        ii. Second rule:
+            - Field = `Use`
+            - Operator = `in`
+            - Value = `Attrition/Churn Management`
+
+4. Click **Apply Filters**.
+
+### Complex nested query
+
+Show models where _(Model Stage: Active OR In Periodic Review) AND (Risk Level: High OR Medium) AND Owner: John Doe_:
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. Click **{{< fa folder-plus >}} Add Group** to add your groups:
+
+    a. First group:
+        - Field = `Model Stage`
+        - Operator = `in`
+        - Value = `In Production`, `In Periodic Review`
+    b. Second group:
+        - Field = `Model Inventory Field: Risk Level`
+        - Operator = `equals`
+        - Value = `High`, `Medium`
+
+3. **{{< fa plus >}} Add Rule** to add a rule:
+
+    - Field = `Owner`
+    - Operator = `in`
+    - Value = `John Doe`
+
+5. Ensure all groups and rules use AND combinator.
+
+6. Click **Apply Filters**.
+
+### Date range filter
+
+Show models _implemented between January 1, 2025 and January 31, 2025_:
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. **{{< fa plus >}} Add Rule**:
+
+    - Field = `Implementation Date`
+    - Operator = `between`.
+
+    a. Enter start date — January 1, 2025
+    b. Enter end date — January 31, 2025
+
+3. Click **Apply Filters**.
+
+### Filter by owner and PDF attachments
+
+Show _models owned by a specific user that have `.pdf` attachments_:
+
+1. On the Inventory page, click **{{< fa filter >}} Filter**.
+
+2. Click **{{< fa plus >}} Add Rule**:
+
+    - Field = `Owner`
+    - Operator = `in`
+    - Value = Select the user from dropdown.
+
+3. Add another rule:
+
+    - Field = `Attachments`
+    - Operator = `file name contains`
+    - Value = `.pdf`.
+
+4. Ensure the combinator between rules is set to `AND`.
+
+5. Click **Apply Filters**.
+
+:::
