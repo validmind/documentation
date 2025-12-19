@@ -237,16 +237,49 @@ main.content {
   line-height: 1.7;
 }
  
- .tour-bg {
-   background-image: 
-     linear-gradient(to right, white 0px, transparent 60px, transparent calc(100% - 60px), white 100%),
-     linear-gradient(to bottom, white 0px, transparent 15px, transparent calc(100% - 15px), white 100%),
-     url("/assets/home-page/freckles_bckgd.svg");
-   background-repeat: no-repeat;
-   background-position: center center;
-   background-size: 100% auto;
-   background-attachment: scroll;
-   padding: 2rem 0rem;
+.tour-bg {
+  background-image: 
+    linear-gradient(to right, white 0px, transparent 60px, transparent calc(100% - 60px), white 100%),
+    linear-gradient(to bottom, white 0px, transparent 15px, transparent calc(100% - 15px), white 100%),
+    url("/assets/home-page/freckles_bckgd.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% auto;
+  background-attachment: scroll;
+  padding: 2rem 0rem;
+}
+
+.blur {
+  position: relative;
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  z-index: 0;
+}
+
+.blur::before {
+  content: "";
+  position: absolute;
+  top: -1em;
+  bottom: -0.25em;
+  left: -0.5em;
+  right: -0.5em;
+
+  /* Lighter base */
+  background-color: rgba(255, 255, 255, 0.10);
+  border-radius: 50%;
+
+  /* Softer diffusion */
+  filter: blur(12px);
+
+  box-shadow:
+    0 0 25px rgba(255, 255, 255, 0.20),
+    0 0 55px rgba(255, 255, 255, 0.12),
+    0 0 90px rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  z-index: -1;
 }
 
 /* Release notes listing area */
@@ -488,8 +521,11 @@ Validation
 Use [cases]{.pink}
 ::: -->
 
-::: {.f4}
+::: {.f4 .blur}
+<!-- <span class="blur"> -->
 {{< var vm.product >}} gives you the tools for effective [AI governance]{.pink .b} and [model risk management]{.pink .b}, whether you are working toward EU AI Act compliance or managing model risk under SR 11-7, SS1/23, or E-23.
+<!-- </span> -->
+
 :::
 
 ::: {.nt3}
