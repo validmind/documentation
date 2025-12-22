@@ -45,22 +45,78 @@
 
 .reveal #title-slide .subtitle {
   font-variant: small-caps;
-  // color: white;
-  margin-left: 0;
+  color: black;
+  -webkit-text-stroke: 5px white;
+  text-stroke: 5px white;
+  paint-order: stroke fill;
+  position: relative;
   display: inline-block;
-  background: #fff;
   padding: 10px 30px;
-  border-radius: 5px;
-  opacity: 0.8;
-  mask-image: 
-    linear-gradient(to right, transparent, black 10px, black calc(100% - 30px), transparent),
-    linear-gradient(to bottom, transparent, black 10px, black calc(100% - 10px), transparent);
-  -webkit-mask-image: 
-    linear-gradient(to right, transparent, black 10px, black calc(100% - 30px), transparent),
-    linear-gradient(to bottom, transparent, black 10px, black calc(100% - 10px), transparent);
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
+  font-variant: small-caps;
 }
+
+.reveal #title-slide .subtitle::before {
+  content: "";
+  position: absolute;
+
+  /* slightly wider pill */
+  inset: -0px -150px;
+
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 9999px;
+  z-index: -1;
+
+  /* gentle optical softness */
+  filter: blur(2.5px);
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-image:
+    /* A) horizontal taper (elongated) */
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0,0,0,0.12) 8%,
+      rgba(0,0,0,1) 28%,
+      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,0.12) 92%,
+      transparent 100%
+    ),
+    /* B) soft edge feather (wider ellipse) */
+    radial-gradient(
+      ellipse 160% 25% at center,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,0.85) 35%,
+      rgba(0,0,0,0.55) 55%,
+      rgba(0,0,0,0.25) 70%,
+      rgba(0,0,0,0.1) 82%,
+      transparent 92%
+    );
+
+  mask-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0,0,0,0.12) 8%,
+      rgba(0,0,0,1) 28%,
+      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,0.12) 92%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 160% 90% at center,
+      rgba(0,0,0,1) 0%,
+      rgba(0,0,0,1) 50%,
+      rgba(0,0,0,0.6) 70%,
+      rgba(0,0,0,0.25) 82%,
+      transparent 94%
+    );
+
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
 
 .reveal .slide-logo {
   display: block;
