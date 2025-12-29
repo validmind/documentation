@@ -361,6 +361,33 @@ quarto preview index.qmd --profile docker
 
 After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **RUM Applications** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
 
+## Copyright headers
+
+All `.qmd`, `.yml`, and `.yaml` files in the documentation repository should include copyright headers as YAML comments:
+
+- **For .qmd files**: Copyright headers appear at the top of the YAML frontmatter block (after the opening `---`).
+- **For .yml and .yaml files**: Copyright headers appear at the very top of the file.
+
+### Adding copyright headers
+
+To add copyright headers to all files that are missing them:
+
+```bash
+cd site
+make copyright
+```
+
+### Verifying copyright headers
+
+To verify that all files have copyright headers:
+
+```bash
+cd site
+make verify-copyright
+```
+
+Copyright verification runs automatically in CI as part of the PR validation workflow. If files are missing copyright headers, the workflow will fail with a list of files that need to be updated.
+
 ## Vale linter
 
 The Vale linter is used to enforce consistent writing style and catch common language issues in our documentation source. Vale runs automatically on pull requests but can also be run locally when addressing source issues.
