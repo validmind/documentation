@@ -13,7 +13,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions yearly-releases
+.PHONY: help clean clone copy-installation copy-release-notes copyright delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes test-descriptions verify-copyright yearly-releases
 
 # Help section
 help:
@@ -49,6 +49,8 @@ help:
 	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag or repo/tag"
 	@echo "                           Examples: TAG=cmvm/25.07 or TAG=validmind-library/v2.8.22"
 	@echo "  test-descriptions        Copy the ValidMind tests docs into tests/"
+	@echo "  copyright                Add copyright headers to .qmd and .yml/.yaml files"
+	@echo "  verify-copyright         Verify that all .qmd and .yml/.yaml files have copyright headers"
 	@echo "  yearly-releases          Collate releases by year into a listing landing and update releases sidebar"
 
 # Clean up source directory
@@ -413,6 +415,14 @@ test-descriptions:
 	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
 	@echo "Copying _metadata.yml into tests/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
+
+copyright:
+	@echo "\nAdding copyright headers to .qmd and .yml/.yaml files ..."
+	@cd .. && python site/scripts/copyright_qmd_files.py
+
+verify-copyright:
+	@echo "\nVerifying copyright headers in .qmd and .yml/.yaml files ..."
+	@cd .. && python site/scripts/verify_copyright_qmd.py
 
 # Collate yearly releases
 yearly-releases:
