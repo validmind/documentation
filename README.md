@@ -326,14 +326,15 @@ env:
 
 ## Monitoring
 
-The documentation site uses [Datadog Real User Monitoring (RUM)](https://docs.datadoghq.com/real_user_monitoring/) to track user interactions, page views, performance metrics, and JavaScript errors in staging and production environments.
+The documentation site uses [Datadog Real User Monitoring (RUM)](https://docs.datadoghq.com/real_user_monitoring/) to track user interactions, page views, performance metrics, and JavaScript errors in staging, production, and Docker environments.
 
 Datadog RUM is configured via environment-specific HTML files in `site/environments/`:
 
 - `datadog-staging.html` — RUM configuration for the staging environment
 - `datadog-production.html` — RUM configuration for the production environment
+- `datadog-docker.html` — RUM configuration for the docker environment
 
-These files are automatically included in the HTML header when using the corresponding Quarto profiles (`staging` or `production`). The development environment does not include Datadog tracking.
+These files are automatically included in the HTML header when using the corresponding Quarto profiles (`staging`, `production`, or `docker`). The development environment does not include Datadog tracking.
 
 ### What is tracked
 
@@ -354,6 +355,8 @@ cd site
 quarto preview index.qmd --profile staging
 # or
 quarto preview index.qmd --profile production
+# or
+quarto preview index.qmd --profile docker
 ```
 
 After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **RUM Applications** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
