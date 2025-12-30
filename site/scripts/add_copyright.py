@@ -459,6 +459,8 @@ def main():
         for file_path in modified_files:
             print(file_path)
         print(f"\nAdded copyright headers in {count_qmd} .qmd, {count_yml} .yml, and {count_yaml} .yaml files.")
+    else:
+        print("No copyright header updates needed.")
 
 
 if __name__ == "__main__":
