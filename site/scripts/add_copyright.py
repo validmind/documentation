@@ -7,7 +7,7 @@ This script adds a standard ValidMind copyright
 block to all .qmd, .yml, and .yaml files in the documentation repository.
 
 How to use:
-    python site/scripts/copyright_qmd_files.py
+    python site/scripts/add_copyright.py
 """
 
 import os
@@ -220,16 +220,16 @@ def copyright_yaml_file(file_path, copyright):
                 return False
             else:
                 # Need to replace existing copyright
-                # Format copyright with newline after each line, then add blank line
-                copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
-                new_lines = copyright_formatted.splitlines(keepends=True)
-                # Ensure blank line by checking if last line has newline and adding one more
-                if not new_lines or not new_lines[-1].endswith("\n"):
-                    new_lines.append("\n")
-                new_lines = new_lines + lines[len(copyright_lines):]
+                # Format copyright as lines with newlines
+                copyright_lines_formatted = [line + "\n" for line in copyright.rstrip().splitlines()]
+                # Add blank line only if next line isn't already blank
+                next_line_idx = len(copyright_lines)
+                if next_line_idx < len(lines) and lines[next_line_idx].strip():
+                    copyright_lines_formatted.append("\n")
+                new_lines = copyright_lines_formatted + lines[len(copyright_lines):]
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.writelines(new_lines)
-                return
+                return True
     
     # Check if there's a copyright block that needs updating (might be in different position)
     copyright_start = None
@@ -243,11 +243,11 @@ def copyright_yaml_file(file_path, copyright):
     
     if copyright_start is not None and copyright_end is not None:
         # Replace existing copyright block
-        # Format copyright with newline after each line, then add blank line
-        copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
-        copyright_lines_new = copyright_formatted.splitlines(keepends=True)
-        # Ensure blank line
-        if not copyright_lines_new or not copyright_lines_new[-1].endswith("\n"):
+        # Format copyright as lines with newlines
+        copyright_lines_new = [line + "\n" for line in copyright.rstrip().splitlines()]
+        # Add blank line only if next line isn't already blank
+        next_line_idx = copyright_end + 1
+        if next_line_idx < len(lines) and lines[next_line_idx].strip():
             copyright_lines_new.append("\n")
         new_lines = lines[:copyright_start] + copyright_lines_new + lines[copyright_end+1:]
         with open(file_path, "w", encoding="utf-8") as f:
@@ -255,11 +255,15 @@ def copyright_yaml_file(file_path, copyright):
         return True
     
     # Add copyright at the beginning
-    # Format copyright with newline after each line, then add blank line
-    copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
-    new_content = copyright_formatted + "".join(lines)
+    # Format copyright as lines with newlines
+    copyright_lines_formatted = [line + "\n" for line in copyright.rstrip().splitlines()]
+    # Add blank line only if first line of file isn't already blank
+    if lines and lines[0].strip():
+        copyright_lines_formatted.append("\n")
+    new_content = "".join(copyright_lines_formatted) + "".join(lines)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
+    return True
 
 
 def main():
@@ -314,18 +318,17 @@ def main():
                 
                 # Files starting with _ should be treated as YAML (no frontmatter)
                 # Skip .qmd files that start with _
-                if file.startswith("_"):
-                    if file.endswith((".yml", ".yaml")):
-                        try:
-                            if copyright_yaml_file(file_path, copyright):
-                                modified_files.append(str(file_path))
-                                if file.endswith(".yml"):
-                                    count_yml += 1
-                                elif file.endswith(".yaml"):
-                                    count_yaml += 1
-                        except Exception as e:
-                            print(f"Error processing {file_path}: {e}")
-                # Process .qmd files
+                if file.startswith("_") and file.endswith((".yml", ".yaml")):
+                    try:
+                        if copyright_yaml_file(file_path, copyright):
+                            modified_files.append(str(file_path))
+                            if file.endswith(".yml"):
+                                count_yml += 1
+                            elif file.endswith(".yaml"):
+                                count_yaml += 1
+                    except Exception as e:
+                        print(f"Error processing {file_path}: {e}")
+                # Process .qmd files (not starting with _)
                 elif file.endswith(".qmd"):
                     try:
                         if copyright_qmd_file(file_path, copyright):
@@ -333,8 +336,7 @@ def main():
                             count_qmd += 1
                     except Exception as e:
                         print(f"Error processing {file_path}: {e}")
-                
-                # Process .yml and .yaml files
+                # Process .yml and .yaml files (not starting with _)
                 elif file.endswith((".yml", ".yaml")):
                     try:
                         if copyright_yaml_file(file_path, copyright):
@@ -348,7 +350,6 @@ def main():
     
     # Output results
     if modified_files:
-        print("Copyright header added to:")
         for file_path in modified_files:
             print(file_path)
         print(f"\nAdded copyright headers in {count_qmd} .qmd, {count_yml} .yml, and {count_yaml} .yaml files.")

@@ -204,9 +204,14 @@ def main():
     
     # Files missing copyright headers
     missing_copyright = []
-    count_qmd = 0
-    count_yml = 0
-    count_yaml = 0
+    count_qmd_missing = 0
+    count_yml_missing = 0
+    count_yaml_missing = 0
+    
+    # Total files checked
+    total_qmd = 0
+    total_yml = 0
+    total_yaml = 0
     
     # Process files
     try:
@@ -231,44 +236,50 @@ def main():
                                 
                                 # Files starting with _ should be treated as YAML (no frontmatter)
                                 # Skip .qmd files that start with _
-                                if file.startswith("_"):
-                                    if file.endswith((".yml", ".yaml")):
-                                        try:
-                                            if not verify_yaml_file(file_path, copyright):
-                                                missing_copyright.append(str(file_path))
-                                                if file.endswith(".yml"):
-                                                    count_yml += 1
-                                                elif file.endswith(".yaml"):
-                                                    count_yaml += 1
-                                        except Exception as e:
-                                            # Log error but continue processing
-                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
-                                # Process .qmd files
+                                if file.startswith("_") and file.endswith((".yml", ".yaml")):
+                                    try:
+                                        if file.endswith(".yml"):
+                                            total_yml += 1
+                                        elif file.endswith(".yaml"):
+                                            total_yaml += 1
+                                        if not verify_yaml_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                            if file.endswith(".yml"):
+                                                count_yml_missing += 1
+                                            elif file.endswith(".yaml"):
+                                                count_yaml_missing += 1
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                # Process .qmd files (not starting with _)
                                 elif file.endswith(".qmd"):
                                     try:
+                                        total_qmd += 1
                                         if not verify_qmd_file(file_path, copyright):
                                             missing_copyright.append(str(file_path))
-                                            count_qmd += 1
+                                            count_qmd_missing += 1
                                     except Exception as e:
                                         # Log error but continue processing
                                         print(f"Error verifying {file_path}: {e}", file=sys.stderr)
                                 
-                                # Process .yml files
+                                # Process .yml files (not starting with _)
                                 elif file.endswith(".yml"):
                                     try:
+                                        total_yml += 1
                                         if not verify_yaml_file(file_path, copyright):
                                             missing_copyright.append(str(file_path))
-                                            count_yml += 1
+                                            count_yml_missing += 1
                                     except Exception as e:
                                         # Log error but continue processing
                                         print(f"Error verifying {file_path}: {e}", file=sys.stderr)
                                 
-                                # Process .yaml files
+                                # Process .yaml files (not starting with _)
                                 elif file.endswith(".yaml"):
                                     try:
+                                        total_yaml += 1
                                         if not verify_yaml_file(file_path, copyright):
                                             missing_copyright.append(str(file_path))
-                                            count_yaml += 1
+                                            count_yaml_missing += 1
                                     except Exception as e:
                                         # Log error but continue processing
                                         print(f"Error verifying {file_path}: {e}", file=sys.stderr)
@@ -288,9 +299,11 @@ def main():
     if missing_copyright:
         print("Files missing a copyright header:")
         print("\n".join(missing_copyright))
-        print(f"\nMissing copyright headers in {count_qmd} .qmd, {count_yml} .yml, and {count_yaml} .yaml files.")
+        print(f"\nMissing copyright headers in {count_qmd_missing} .qmd, {count_yml_missing} .yml, and {count_yaml_missing} .yaml files.")
         print("\nFix the errors by running `make copyright` and then try verifying the copyright headers again.")
         sys.exit(1)
+    else:
+        print(f"All copyright headers verified successfully in {total_qmd} .qmd, {total_yml} .yml, and {total_yaml} .yaml files.")
 
 
 if __name__ == "__main__":
