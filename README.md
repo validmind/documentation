@@ -326,30 +326,50 @@ env:
 
 ## Copyright headers
 
-All `.qmd`, `.yml`, and `.yaml` files in the documentation repository should include copyright headers as YAML comments:
+All `.qmd`, `.yml`, and `.yaml` files in the documentation repository must include copyright headers as YAML comments. Our templates already include the header, but you might need to follow these steps if you added new files independently.
 
-- **For .qmd files**: Copyright headers appear at the top of the YAML frontmatter block (after the opening `---`).
-- **For .yml and .yaml files**: Copyright headers appear at the very top of the file.
+### Add copyright headers
 
-### Adding copyright headers
+1. To add copyright headers to all files that are missing them:
 
-To add copyright headers to all files that are missing them:
+    ```bash
+    cd site
+    make copyright
+    ```
 
-```bash
-cd site
-make copyright
-```
+2. Commit your changes.
 
-### Verifying copyright headers
+### Verify copyright headers
 
-To verify that all files have copyright headers:
+Copyright header verification runs automatically in CI but you can also test locally:
 
 ```bash
 cd site
 make verify-copyright
 ```
 
-Copyright verification runs automatically in CI as part of the PR validation workflow. If files are missing copyright headers, the workflow will fail with a list of files that need to be updated.
+If files are missing copyright headers, the workflow will fail with a list of files that need to be updated.
+
+### Update copyright headers
+
+Copyright does not need to be reasserted or updated annually, but you can update the headers by editing the copyrights file and re-running the make action to apply the headers:
+
+1. Edit `scripts/copyright.txt` to update the current year, for example `2027`:
+
+    ```
+    # Copyright © 2023-2027 ValidMind Inc. All rights reserved.
+    # See the LICENSE file in the root of this repository for details.
+    # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+    ```
+
+2. Add the updated copyright header:
+
+    ```
+    cd site
+    make copyright
+    ```
+
+3. Commit the changes.
 
 ## Vale linter
 
