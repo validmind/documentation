@@ -1,7 +1,3 @@
-# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
-# See the LICENSE file in the root of this repository for details.
-# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
-
 """
 This script adds a standard ValidMind copyright
 block to all .qmd, .yml, and .yaml files in the documentation repository.
@@ -99,19 +95,30 @@ def should_ignore(path, gitignore_patterns, repo_root):
     return False
 
 
+def format_copyright_yaml(copyright):
+    """Format copyright with # comment markers for YAML/frontmatter."""
+    lines = copyright.strip().splitlines()
+    return "\n".join(f"# {line}" for line in lines)
+
+
+def format_copyright_html(copyright):
+    """Format copyright with HTML comment markers for embedded files."""
+    lines = copyright.strip().splitlines()
+    return "<!-- " + "\n".join(lines) + " -->"
+
+
 def copyright_qmd_file(file_path, copyright):
     """Add copyright to a .qmd file in the frontmatter.
     Returns True if copyright was added or updated, False otherwise."""
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
     
+    # Format copyright with YAML comment markers
+    copyright_formatted = format_copyright_yaml(copyright) + "\n"
+    
     # Check if file has frontmatter (starts with ---)
     if not content.strip().startswith("---"):
         # No frontmatter, add it at the beginning
-        # Strip trailing newlines from copyright and format with exactly one newline at the end
-        copyright_clean = copyright.rstrip()
-        # Split into lines and add newline to each line, then join
-        copyright_formatted = "\n".join(copyright_clean.splitlines()) + "\n"
         new_content = f"---\n{copyright_formatted}---\n\n{content}"
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(new_content)
@@ -129,10 +136,6 @@ def copyright_qmd_file(file_path, copyright):
     
     if start_idx is None:
         # Malformed, add frontmatter at the beginning
-        # Strip trailing newlines from copyright and format with exactly one newline at the end
-        copyright_clean = copyright.rstrip()
-        # Split into lines and add newline to each line, then join
-        copyright_formatted = "\n".join(copyright_clean.splitlines()) + "\n"
         new_content = f"---\n{copyright_formatted}---\n\n{content}"
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(new_content)
@@ -147,45 +150,39 @@ def copyright_qmd_file(file_path, copyright):
     
     if end_idx is None:
         # Malformed frontmatter, add copyright after opening ---
-        # Strip trailing newlines from copyright and format with exactly one newline at the end
-        copyright_clean = copyright.rstrip()
-        # Split into lines and add newline to each line, then join
-        copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
+        copyright_lines = [line + "\n" for line in copyright_formatted.rstrip().splitlines()]
         lines.insert(start_idx + 1, "".join(copyright_lines))
         with open(file_path, "w", encoding="utf-8") as f:
             f.writelines(lines)
         return True
     
-    # Check if copyright already exists in frontmatter
+    # Check if copyright already exists in frontmatter (check for raw content)
     frontmatter_content = "".join(lines[start_idx:end_idx+1])
-    if "# Copyright ©" in frontmatter_content and "# SPDX-License-Identifier:" in frontmatter_content:
+    copyright_first_line = copyright.strip().splitlines()[0]
+    copyright_last_line = copyright.strip().splitlines()[-1]
+    
+    if copyright_first_line in frontmatter_content and copyright_last_line in frontmatter_content:
         # Copyright exists, check if we need to update it
         # Find the copyright block
         copyright_start = None
         copyright_end = None
         for i in range(start_idx + 1, end_idx):
-            if lines[i].strip().startswith("# Copyright"):
+            if copyright_first_line in lines[i]:
                 copyright_start = i
-            elif copyright_start is not None and lines[i].strip().startswith("# SPDX-License-Identifier:"):
+            elif copyright_start is not None and copyright_last_line in lines[i]:
                 copyright_end = i
                 break
         
         if copyright_start is not None and copyright_end is not None:
             # Replace existing copyright
-            # Strip trailing newlines from copyright and format with exactly one newline at the end
-            copyright_clean = copyright.rstrip()
-            # Split into lines and add newline to each line, then join
-            copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
+            copyright_lines = [line + "\n" for line in copyright_formatted.rstrip().splitlines()]
             new_lines = lines[:copyright_start] + ["".join(copyright_lines)] + lines[copyright_end+1:]
             with open(file_path, "w", encoding="utf-8") as f:
                 f.writelines(new_lines)
             return True
     
     # Add copyright after opening ---
-    # Strip trailing newlines from copyright and format with exactly one newline at the end
-    copyright_clean = copyright.rstrip()
-    # Split into lines and add newline to each line, then join
-    copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
+    copyright_lines = [line + "\n" for line in copyright_formatted.rstrip().splitlines()]
     lines.insert(start_idx + 1, "".join(copyright_lines))
     with open(file_path, "w", encoding="utf-8") as f:
         f.writelines(lines)
@@ -198,12 +195,16 @@ def copyright_yaml_file(file_path, copyright):
     with open(file_path, "r", encoding="utf-8") as f:
         lines = f.readlines()
     
-    # Check if copyright already exists at the start
-    copyright_lines = copyright.strip().splitlines()
-    if len(lines) >= len(copyright_lines):
-        # Check if first lines match copyright
+    # Format copyright with YAML comment markers
+    copyright_formatted = format_copyright_yaml(copyright)
+    copyright_formatted_lines = copyright_formatted.splitlines()
+    
+    # Check if copyright already exists at the start (check for raw content)
+    copyright_raw_lines = copyright.strip().splitlines()
+    if len(lines) >= len(copyright_raw_lines):
+        # Check if first lines contain the copyright content
         matches = True
-        for i, copyright_line in enumerate(copyright_lines):
+        for i, copyright_line in enumerate(copyright_raw_lines):
             if i >= len(lines):
                 matches = False
                 break
@@ -212,39 +213,39 @@ def copyright_yaml_file(file_path, copyright):
                 break
         
         if matches:
-            # Check if we need to update (copyright might be different)
-            actual_copyright = "".join(lines[:len(copyright_lines)]).rstrip()
-            expected_copyright = copyright.rstrip()
-            if actual_copyright == expected_copyright:
+            # Copyright exists at start, check if it needs updating
+            # Compare formatted versions
+            actual_first_lines = "".join(lines[:len(copyright_raw_lines)]).rstrip()
+            if copyright_formatted in actual_first_lines or all(line in actual_first_lines for line in copyright_raw_lines):
                 # Already correct, no update needed
                 return False
             else:
                 # Need to replace existing copyright
-                # Format copyright as lines with newlines
-                copyright_lines_formatted = [line + "\n" for line in copyright.rstrip().splitlines()]
+                copyright_lines_new = [line + "\n" for line in copyright_formatted_lines]
                 # Add blank line only if next line isn't already blank
-                next_line_idx = len(copyright_lines)
+                next_line_idx = len(copyright_raw_lines)
                 if next_line_idx < len(lines) and lines[next_line_idx].strip():
-                    copyright_lines_formatted.append("\n")
-                new_lines = copyright_lines_formatted + lines[len(copyright_lines):]
+                    copyright_lines_new.append("\n")
+                new_lines = copyright_lines_new + lines[len(copyright_raw_lines):]
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.writelines(new_lines)
                 return True
     
     # Check if there's a copyright block that needs updating (might be in different position)
+    copyright_first_line = copyright_raw_lines[0]
+    copyright_last_line = copyright_raw_lines[-1]
     copyright_start = None
     copyright_end = None
     for i, line in enumerate(lines):
-        if line.strip().startswith("# Copyright"):
+        if copyright_first_line in line:
             copyright_start = i
-        elif copyright_start is not None and line.strip().startswith("# SPDX-License-Identifier:"):
+        elif copyright_start is not None and copyright_last_line in line:
             copyright_end = i
             break
     
     if copyright_start is not None and copyright_end is not None:
         # Replace existing copyright block
-        # Format copyright as lines with newlines
-        copyright_lines_new = [line + "\n" for line in copyright.rstrip().splitlines()]
+        copyright_lines_new = [line + "\n" for line in copyright_formatted_lines]
         # Add blank line only if next line isn't already blank
         next_line_idx = copyright_end + 1
         if next_line_idx < len(lines) and lines[next_line_idx].strip():
@@ -255,12 +256,103 @@ def copyright_yaml_file(file_path, copyright):
         return True
     
     # Add copyright at the beginning
-    # Format copyright as lines with newlines
-    copyright_lines_formatted = [line + "\n" for line in copyright.rstrip().splitlines()]
+    copyright_lines_new = [line + "\n" for line in copyright_formatted_lines]
     # Add blank line only if first line of file isn't already blank
     if lines and lines[0].strip():
-        copyright_lines_formatted.append("\n")
-    new_content = "".join(copyright_lines_formatted) + "".join(lines)
+        copyright_lines_new.append("\n")
+    new_content = "".join(copyright_lines_new) + "".join(lines)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+    return True
+
+
+def copyright_qmd_embedded_file(file_path, copyright):
+    """Add copyright to an embedded .qmd file (starting with _) using HTML comments.
+    Returns True if copyright was added or updated, False otherwise."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Format copyright with HTML comment markers
+    copyright_formatted = format_copyright_html(copyright)
+    copyright_raw_lines = copyright.strip().splitlines()
+    
+    # Check if copyright already exists (check for raw content in any comment format)
+    copyright_first_line = copyright_raw_lines[0]
+    copyright_last_line = copyright_raw_lines[-1]
+    
+    if copyright_first_line in content and copyright_last_line in content:
+        # Copyright exists, check if it's in the correct HTML format
+        if copyright_formatted in content:
+            # Already correct, no update needed
+            return False
+        
+        # Need to replace existing copyright (could be in YAML frontmatter or wrong format)
+        # Check for YAML frontmatter with copyright
+        if content.strip().startswith("---"):
+            lines = content.splitlines(keepends=True)
+            # Find frontmatter boundaries
+            start_idx = None
+            end_idx = None
+            for i, line in enumerate(lines):
+                if line.strip() == "---":
+                    if start_idx is None:
+                        start_idx = i
+                    else:
+                        end_idx = i
+                        break
+            
+            if start_idx is not None and end_idx is not None:
+                # Check if frontmatter only contains copyright
+                frontmatter_lines = lines[start_idx+1:end_idx]
+                frontmatter_content = "".join(frontmatter_lines).strip()
+                has_only_copyright = all(
+                    line.strip().startswith("#") and any(cl in line for cl in copyright_raw_lines)
+                    for line in frontmatter_lines if line.strip()
+                )
+                
+                if has_only_copyright:
+                    # Remove frontmatter and add HTML copyright
+                    remaining_content = "".join(lines[end_idx+1:]).lstrip()
+                    new_content = copyright_formatted + "\n\n" + remaining_content
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(new_content)
+                    return True
+        
+        # Try to find and replace HTML comment copyright
+        import re
+        html_comment_pattern = r'<!--[^>]*?' + re.escape(copyright_first_line) + r'.*?' + re.escape(copyright_last_line) + r'[^>]*?-->'
+        if re.search(html_comment_pattern, content, re.DOTALL):
+            new_content = re.sub(html_comment_pattern, copyright_formatted, content, flags=re.DOTALL)
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            return True
+    
+    # Check if file has YAML frontmatter that should be removed
+    if content.strip().startswith("---"):
+        lines = content.splitlines(keepends=True)
+        start_idx = None
+        end_idx = None
+        for i, line in enumerate(lines):
+            if line.strip() == "---":
+                if start_idx is None:
+                    start_idx = i
+                else:
+                    end_idx = i
+                    break
+        
+        if start_idx is not None and end_idx is not None:
+            # Check if frontmatter is empty or only whitespace
+            frontmatter_content = "".join(lines[start_idx+1:end_idx]).strip()
+            if not frontmatter_content:
+                # Remove empty frontmatter
+                remaining_content = "".join(lines[end_idx+1:]).lstrip()
+                new_content = copyright_formatted + "\n\n" + remaining_content
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(new_content)
+                return True
+    
+    # Add copyright at the beginning
+    new_content = copyright_formatted + "\n\n" + content.lstrip()
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
     return True
@@ -316,19 +408,28 @@ def main():
                 if file == "plugin.yml":
                     continue
                 
-                # Files starting with _ should be treated as YAML (no frontmatter)
-                # Skip .qmd files that start with _
-                if file.startswith("_") and file.endswith((".yml", ".yaml")):
-                    try:
-                        if copyright_yaml_file(file_path, copyright):
-                            modified_files.append(str(file_path))
-                            if file.endswith(".yml"):
-                                count_yml += 1
-                            elif file.endswith(".yaml"):
-                                count_yaml += 1
-                    except Exception as e:
-                        print(f"Error processing {file_path}: {e}")
-                # Process .qmd files (not starting with _)
+                # Files starting with _ need special handling
+                if file.startswith("_"):
+                    if file.endswith((".yml", ".yaml")):
+                        # YAML files starting with _ use YAML comments (no frontmatter)
+                        try:
+                            if copyright_yaml_file(file_path, copyright):
+                                modified_files.append(str(file_path))
+                                if file.endswith(".yml"):
+                                    count_yml += 1
+                                elif file.endswith(".yaml"):
+                                    count_yaml += 1
+                        except Exception as e:
+                            print(f"Error processing {file_path}: {e}")
+                    elif file.endswith(".qmd"):
+                        # Embedded .qmd files use HTML comments
+                        try:
+                            if copyright_qmd_embedded_file(file_path, copyright):
+                                modified_files.append(str(file_path))
+                                count_qmd += 1
+                        except Exception as e:
+                            print(f"Error processing {file_path}: {e}")
+                # Process regular .qmd files (not starting with _)
                 elif file.endswith(".qmd"):
                     try:
                         if copyright_qmd_file(file_path, copyright):

@@ -1,7 +1,3 @@
-# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
-# See the LICENSE file in the root of this repository for details.
-# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
-
 """
 This script verifies that all .qmd, .yml, and .yaml files under the
 documentation repository have the ValidMind copyright block.
@@ -131,21 +127,12 @@ def verify_qmd_file(file_path, copyright):
     if end_idx is None:
         return False
     
-    # Check frontmatter for copyright
-    frontmatter_lines = lines[start_idx+1:end_idx]
-    frontmatter_content = "\n".join(frontmatter_lines)
+    # Check frontmatter for copyright content (raw text without comment markers)
+    frontmatter_content = "\n".join(lines[start_idx+1:end_idx])
     
-    # Check if copyright header exists
+    # Check if all copyright lines are present in frontmatter
     copyright_lines = copyright.strip().splitlines()
-    if len(copyright_lines) < 3:
-        return False
-    
-    # Check for copyright header components
-    has_copyright = any("# Copyright ©" in line for line in frontmatter_lines)
-    has_license_ref = any("# See the LICENSE file" in line for line in frontmatter_lines)
-    has_spdx = any("# SPDX-License-Identifier:" in line for line in frontmatter_lines)
-    
-    return has_copyright and has_license_ref and has_spdx
+    return all(line in frontmatter_content for line in copyright_lines)
 
 
 def verify_yaml_file(file_path, copyright):
@@ -153,30 +140,28 @@ def verify_yaml_file(file_path, copyright):
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
     
-    # Check if file starts with copyright
+    # Check if copyright content is present (raw text without comment markers)
     copyright_lines = copyright.strip().splitlines()
-    if len(copyright_lines) < 3:
-        return False
     
+    # Check the beginning of the file for copyright content
+    # The copyright should be in the first few lines
     content_lines = content.splitlines()
-    if len(content_lines) < len(copyright_lines):
-        return False
+    first_lines_content = "\n".join(content_lines[:len(copyright_lines) + 2])
     
-    # Check if first lines match copyright header exactly
-    for i, copyright_line in enumerate(copyright_lines):
-        if i >= len(content_lines):
-            return False
-        # Check if the line contains the copyright text (allowing for whitespace differences)
-        if copyright_line.strip() not in content_lines[i]:
-            return False
+    # Check if all copyright lines are present in the first lines
+    return all(line in first_lines_content for line in copyright_lines)
+
+
+def verify_qmd_embedded_file(file_path, copyright):
+    """Verify that an embedded .qmd file has the copyright header as HTML comment."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
     
-    # Also verify we have the key components
-    first_lines_content = "\n".join(content_lines[:len(copyright_lines)])
-    has_copyright = "# Copyright ©" in first_lines_content
-    has_license_ref = "# See the LICENSE file" in first_lines_content
-    has_spdx = "# SPDX-License-Identifier:" in first_lines_content
+    # Check if copyright content is present (raw text)
+    copyright_lines = copyright.strip().splitlines()
     
-    return has_copyright and has_license_ref and has_spdx
+    # Check if all copyright lines are present in the file
+    return all(line in content for line in copyright_lines)
 
 
 def main():
@@ -234,24 +219,35 @@ def main():
                                 if file == "plugin.yml":
                                     continue
                                 
-                                # Files starting with _ should be treated as YAML (no frontmatter)
-                                # Skip .qmd files that start with _
-                                if file.startswith("_") and file.endswith((".yml", ".yaml")):
-                                    try:
-                                        if file.endswith(".yml"):
-                                            total_yml += 1
-                                        elif file.endswith(".yaml"):
-                                            total_yaml += 1
-                                        if not verify_yaml_file(file_path, copyright):
-                                            missing_copyright.append(str(file_path))
+                                # Files starting with _ need special handling
+                                if file.startswith("_"):
+                                    if file.endswith((".yml", ".yaml")):
+                                        # YAML files starting with _ use YAML comments
+                                        try:
                                             if file.endswith(".yml"):
-                                                count_yml_missing += 1
+                                                total_yml += 1
                                             elif file.endswith(".yaml"):
-                                                count_yaml_missing += 1
-                                    except Exception as e:
-                                        # Log error but continue processing
-                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
-                                # Process .qmd files (not starting with _)
+                                                total_yaml += 1
+                                            if not verify_yaml_file(file_path, copyright):
+                                                missing_copyright.append(str(file_path))
+                                                if file.endswith(".yml"):
+                                                    count_yml_missing += 1
+                                                elif file.endswith(".yaml"):
+                                                    count_yaml_missing += 1
+                                        except Exception as e:
+                                            # Log error but continue processing
+                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                    elif file.endswith(".qmd"):
+                                        # Embedded .qmd files use HTML comments
+                                        try:
+                                            total_qmd += 1
+                                            if not verify_qmd_embedded_file(file_path, copyright):
+                                                missing_copyright.append(str(file_path))
+                                                count_qmd_missing += 1
+                                        except Exception as e:
+                                            # Log error but continue processing
+                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                # Process regular .qmd files (not starting with _)
                                 elif file.endswith(".qmd"):
                                     try:
                                         total_qmd += 1
