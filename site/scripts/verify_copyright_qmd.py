@@ -55,8 +55,8 @@ def should_ignore(path, gitignore_patterns, repo_root):
     rel_path_str = str(rel_path).replace("\\", "/")
     path_parts = rel_path.parts
     
-    # Ignore directories that start with _
-    for part in path_parts:
+    # Ignore directories that start with _ (exclude filename from check)
+    for part in path_parts[:-1]:
         if part.startswith("_"):
             return True
     
