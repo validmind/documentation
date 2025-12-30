@@ -55,6 +55,11 @@ def should_ignore(path, gitignore_patterns, repo_root):
     rel_path_str = str(rel_path).replace("\\", "/")
     path_parts = rel_path.parts
     
+    # Ignore directories that start with _
+    for part in path_parts:
+        if part.startswith("_"):
+            return True
+    
     # Check each pattern
     for pattern in gitignore_patterns:
         # Handle patterns starting with / (absolute from repo root)
@@ -220,8 +225,23 @@ def main():
                                 if should_ignore(file_path, gitignore_patterns, repo_root):
                                     continue
                                 
+                                # Files starting with _ should be treated as YAML (no frontmatter)
+                                if file.startswith("_"):
+                                    if file.endswith((".qmd", ".yml", ".yaml")):
+                                        try:
+                                            if not verify_yaml_file(file_path, copyright):
+                                                missing_copyright.append(str(file_path))
+                                                if file.endswith(".qmd"):
+                                                    count_qmd += 1
+                                                elif file.endswith(".yml"):
+                                                    count_yml += 1
+                                                elif file.endswith(".yaml"):
+                                                    count_yaml += 1
+                                        except Exception as e:
+                                            # Log error but continue processing
+                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
                                 # Process .qmd files
-                                if file.endswith(".qmd"):
+                                elif file.endswith(".qmd"):
                                     try:
                                         if not verify_qmd_file(file_path, copyright):
                                             missing_copyright.append(str(file_path))

@@ -55,6 +55,11 @@ def should_ignore(path, gitignore_patterns, repo_root):
     rel_path_str = str(rel_path).replace("\\", "/")
     path_parts = rel_path.parts
     
+    # Ignore directories that start with _
+    for part in path_parts:
+        if part.startswith("_"):
+            return True
+    
     # Check each pattern
     for pattern in gitignore_patterns:
         # Handle patterns starting with / (absolute from repo root)
@@ -212,9 +217,13 @@ def copyright_yaml_file(file_path, copyright):
                 return
             else:
                 # Need to replace existing copyright
-                # Strip trailing newlines from copyright and ensure it ends with exactly one newline
-                copyright_clean = copyright.rstrip() + "\n"
-                new_lines = copyright_clean.splitlines(keepends=True) + lines[len(copyright_lines):]
+                # Format copyright with newline after each line, then add blank line
+                copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
+                new_lines = copyright_formatted.splitlines(keepends=True)
+                # Ensure blank line by checking if last line has newline and adding one more
+                if not new_lines or not new_lines[-1].endswith("\n"):
+                    new_lines.append("\n")
+                new_lines = new_lines + lines[len(copyright_lines):]
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.writelines(new_lines)
                 return
@@ -231,18 +240,21 @@ def copyright_yaml_file(file_path, copyright):
     
     if copyright_start is not None and copyright_end is not None:
         # Replace existing copyright block
-        # Strip trailing newlines from copyright and ensure it ends with exactly one newline
-        copyright_clean = copyright.rstrip() + "\n"
-        copyright_lines_new = copyright_clean.splitlines(keepends=True)
+        # Format copyright with newline after each line, then add blank line
+        copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
+        copyright_lines_new = copyright_formatted.splitlines(keepends=True)
+        # Ensure blank line
+        if not copyright_lines_new or not copyright_lines_new[-1].endswith("\n"):
+            copyright_lines_new.append("\n")
         new_lines = lines[:copyright_start] + copyright_lines_new + lines[copyright_end+1:]
         with open(file_path, "w", encoding="utf-8") as f:
             f.writelines(new_lines)
         return
     
     # Add copyright at the beginning
-    # Strip trailing newlines from copyright and ensure it ends with exactly one newline
-    copyright_clean = copyright.rstrip() + "\n"
-    new_content = copyright_clean + "".join(lines)
+    # Format copyright with newline after each line, then add blank line
+    copyright_formatted = "\n".join(copyright.rstrip().splitlines()) + "\n\n"
+    new_content = copyright_formatted + "".join(lines)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
@@ -287,8 +299,15 @@ def main():
                 if should_ignore(file_path, gitignore_patterns, repo_root):
                     continue
                 
+                # Files starting with _ should be treated as YAML (no frontmatter)
+                if file.startswith("_"):
+                    if file.endswith((".qmd", ".yml", ".yaml")):
+                        try:
+                            copyright_yaml_file(file_path, copyright)
+                        except Exception as e:
+                            print(f"Error processing {file_path}: {e}")
                 # Process .qmd files
-                if file.endswith(".qmd"):
+                elif file.endswith(".qmd"):
                     try:
                         copyright_qmd_file(file_path, copyright)
                     except Exception as e:
