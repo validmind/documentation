@@ -17,12 +17,13 @@ from pathlib import Path
 
 
 def find_repo_root():
-    """Find the repository root by looking for .gitignore file."""
+    """Find the repository root by looking for .git directory."""
     current = Path(__file__).resolve()
     # Start from the scripts directory, go up to find repo root
+    # Look for .git directory as the definitive indicator of repo root
     for parent in current.parents:
-        gitignore_path = parent / ".gitignore"
-        if gitignore_path.exists():
+        git_dir = parent / ".git"
+        if git_dir.exists() and git_dir.is_dir():
             return parent
     # Fallback: assume we're in site/scripts, so repo root is ../..
     return current.parent.parent.parent
@@ -56,22 +57,38 @@ def should_ignore(path, gitignore_patterns, repo_root):
     
     # Check each pattern
     for pattern in gitignore_patterns:
+        # Handle patterns starting with / (absolute from repo root)
+        is_absolute = pattern.startswith("/")
+        if is_absolute:
+            pattern = pattern[1:]  # Remove leading /
+        
         # Handle directory patterns (ending with /)
-        if pattern.endswith("/"):
+        is_dir_pattern = pattern.endswith("/")
+        if is_dir_pattern:
             pattern = pattern[:-1]
-            # Check if any parent directory matches
+        
+        if is_absolute:
+            # Absolute patterns must match from repo root
+            # Check if path starts with pattern or matches at any parent level
+            if fnmatch.fnmatch(rel_path_str, pattern) or rel_path_str.startswith(pattern + "/"):
+                return True
+            # Check parent directories
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern) or fnmatch.fnmatch(check_path, pattern + "/*"):
+                if fnmatch.fnmatch(check_path, pattern) or check_path.startswith(pattern + "/"):
                     return True
         else:
-            # Check full path and filename
-            if fnmatch.fnmatch(rel_path_str, pattern) or fnmatch.fnmatch(path.name, pattern):
+            # Relative patterns can match anywhere in the path
+            # Check full path
+            if fnmatch.fnmatch(rel_path_str, pattern) or pattern in rel_path_str:
+                return True
+            # Check filename only
+            if fnmatch.fnmatch(path.name, pattern):
                 return True
             # Check if any parent directory matches
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern):
+                if fnmatch.fnmatch(check_path, pattern) or pattern in check_path:
                     return True
     
     return False
@@ -85,7 +102,11 @@ def copyright_qmd_file(file_path, copyright):
     # Check if file has frontmatter (starts with ---)
     if not content.strip().startswith("---"):
         # No frontmatter, add it at the beginning
-        new_content = f"---\n{copyright}---\n\n{content}"
+        # Strip trailing newlines from copyright and format with exactly one newline at the end
+        copyright_clean = copyright.rstrip()
+        # Split into lines and add newline to each line, then join
+        copyright_formatted = "\n".join(copyright_clean.splitlines()) + "\n"
+        new_content = f"---\n{copyright_formatted}---\n\n{content}"
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(new_content)
         return
@@ -102,7 +123,11 @@ def copyright_qmd_file(file_path, copyright):
     
     if start_idx is None:
         # Malformed, add frontmatter at the beginning
-        new_content = f"---\n{copyright}---\n\n{content}"
+        # Strip trailing newlines from copyright and format with exactly one newline at the end
+        copyright_clean = copyright.rstrip()
+        # Split into lines and add newline to each line, then join
+        copyright_formatted = "\n".join(copyright_clean.splitlines()) + "\n"
+        new_content = f"---\n{copyright_formatted}---\n\n{content}"
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(new_content)
         return
@@ -116,7 +141,10 @@ def copyright_qmd_file(file_path, copyright):
     
     if end_idx is None:
         # Malformed frontmatter, add copyright after opening ---
-        copyright_lines = copyright.splitlines(keepends=True)
+        # Strip trailing newlines from copyright and format with exactly one newline at the end
+        copyright_clean = copyright.rstrip()
+        # Split into lines and add newline to each line, then join
+        copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
         lines.insert(start_idx + 1, "".join(copyright_lines))
         with open(file_path, "w", encoding="utf-8") as f:
             f.writelines(lines)
@@ -138,14 +166,20 @@ def copyright_qmd_file(file_path, copyright):
         
         if copyright_start is not None and copyright_end is not None:
             # Replace existing copyright
-            copyright_lines = copyright.splitlines(keepends=True)
+            # Strip trailing newlines from copyright and format with exactly one newline at the end
+            copyright_clean = copyright.rstrip()
+            # Split into lines and add newline to each line, then join
+            copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
             new_lines = lines[:copyright_start] + ["".join(copyright_lines)] + lines[copyright_end+1:]
             with open(file_path, "w", encoding="utf-8") as f:
                 f.writelines(new_lines)
             return
     
     # Add copyright after opening ---
-    copyright_lines = copyright.splitlines(keepends=True)
+    # Strip trailing newlines from copyright and format with exactly one newline at the end
+    copyright_clean = copyright.rstrip()
+    # Split into lines and add newline to each line, then join
+    copyright_lines = [line + "\n" for line in copyright_clean.splitlines()]
     lines.insert(start_idx + 1, "".join(copyright_lines))
     with open(file_path, "w", encoding="utf-8") as f:
         f.writelines(lines)
@@ -178,7 +212,9 @@ def copyright_yaml_file(file_path, copyright):
                 return
             else:
                 # Need to replace existing copyright
-                new_lines = copyright.splitlines(keepends=True) + lines[len(copyright_lines):]
+                # Strip trailing newlines from copyright and ensure it ends with exactly one newline
+                copyright_clean = copyright.rstrip() + "\n"
+                new_lines = copyright_clean.splitlines(keepends=True) + lines[len(copyright_lines):]
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.writelines(new_lines)
                 return
@@ -195,14 +231,18 @@ def copyright_yaml_file(file_path, copyright):
     
     if copyright_start is not None and copyright_end is not None:
         # Replace existing copyright block
-        copyright_lines_new = copyright.splitlines(keepends=True)
+        # Strip trailing newlines from copyright and ensure it ends with exactly one newline
+        copyright_clean = copyright.rstrip() + "\n"
+        copyright_lines_new = copyright_clean.splitlines(keepends=True)
         new_lines = lines[:copyright_start] + copyright_lines_new + lines[copyright_end+1:]
         with open(file_path, "w", encoding="utf-8") as f:
             f.writelines(new_lines)
         return
     
     # Add copyright at the beginning
-    new_content = copyright + "".join(lines)
+    # Strip trailing newlines from copyright and ensure it ends with exactly one newline
+    copyright_clean = copyright.rstrip() + "\n"
+    new_content = copyright_clean + "".join(lines)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
