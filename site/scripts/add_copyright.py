@@ -156,20 +156,19 @@ def copyright_qmd_file(file_path, copyright):
             f.writelines(lines)
         return True
     
-    # Check if copyright already exists in frontmatter (check for raw content)
+    # Check if copyright already exists in frontmatter using generic markers
     frontmatter_content = "".join(lines[start_idx:end_idx+1])
-    copyright_first_line = copyright.strip().splitlines()[0]
-    copyright_last_line = copyright.strip().splitlines()[-1]
+    copyright_start_marker = "Copyright ©"
+    copyright_end_marker = "SPDX-License-Identifier:"
     
-    if copyright_first_line in frontmatter_content and copyright_last_line in frontmatter_content:
-        # Copyright exists, check if we need to update it
-        # Find the copyright block
+    if copyright_start_marker in frontmatter_content and copyright_end_marker in frontmatter_content:
+        # Copyright exists, find the copyright block
         copyright_start = None
         copyright_end = None
         for i in range(start_idx + 1, end_idx):
-            if copyright_first_line in lines[i]:
+            if copyright_start_marker in lines[i]:
                 copyright_start = i
-            elif copyright_start is not None and copyright_last_line in lines[i]:
+            elif copyright_start is not None and copyright_end_marker in lines[i]:
                 copyright_end = i
                 break
         
@@ -204,58 +203,61 @@ def copyright_yaml_file(file_path, copyright):
     copyright_formatted = format_copyright_yaml(copyright)
     copyright_formatted_lines = copyright_formatted.splitlines()
     
-    # Check if copyright already exists at the start (check for raw content)
+    # Generic markers to detect any copyright block
+    copyright_start_marker = "Copyright ©"
+    copyright_end_marker = "SPDX-License-Identifier:"
     copyright_raw_lines = copyright.strip().splitlines()
-    if len(lines) >= len(copyright_raw_lines):
-        # Check if first lines contain the copyright content
-        matches = True
-        for i, copyright_line in enumerate(copyright_raw_lines):
-            if i >= len(lines):
-                matches = False
-                break
-            if copyright_line not in lines[i]:
-                matches = False
+    
+    # Check if copyright already exists at the start using generic markers
+    if len(lines) >= 3 and copyright_start_marker in lines[0]:
+        # Find the end of copyright block
+        copyright_end_idx = None
+        for i in range(min(len(lines), len(copyright_raw_lines) + 2)):
+            if copyright_end_marker in lines[i]:
+                copyright_end_idx = i
                 break
         
-        if matches:
+        if copyright_end_idx is not None:
             # Copyright exists at start, check if it needs updating
-            # Compare formatted versions
-            actual_first_lines = "".join(lines[:len(copyright_raw_lines)]).rstrip()
-            if copyright_formatted in actual_first_lines or all(line in actual_first_lines for line in copyright_raw_lines):
+            actual_first_lines = "".join(lines[:copyright_end_idx + 1]).rstrip()
+            if copyright_formatted in actual_first_lines:
                 # Already correct, no update needed
                 return False
             else:
                 # Need to replace existing copyright
                 copyright_lines_new = [line + "\n" for line in copyright_formatted_lines]
                 # Add blank line only if next line isn't already blank
-                next_line_idx = len(copyright_raw_lines)
+                next_line_idx = copyright_end_idx + 1
                 if next_line_idx < len(lines) and lines[next_line_idx].strip():
                     copyright_lines_new.append("\n")
-                new_lines = copyright_lines_new + lines[len(copyright_raw_lines):]
+                new_lines = copyright_lines_new + lines[copyright_end_idx + 1:]
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.writelines(new_lines)
                 return True
     
     # Check if there's a copyright block that needs updating (might be in different position)
-    copyright_first_line = copyright_raw_lines[0]
-    copyright_last_line = copyright_raw_lines[-1]
     copyright_start = None
     copyright_end = None
     for i, line in enumerate(lines):
-        if copyright_first_line in line:
+        if copyright_start_marker in line:
             copyright_start = i
-        elif copyright_start is not None and copyright_last_line in line:
+        elif copyright_start is not None and copyright_end_marker in line:
             copyright_end = i
             break
     
     if copyright_start is not None and copyright_end is not None:
+        # Check if existing copyright already matches
+        existing_copyright = "".join(lines[copyright_start:copyright_end + 1])
+        if copyright_formatted in existing_copyright:
+            # Already correct, no update needed
+            return False
         # Replace existing copyright block
         copyright_lines_new = [line + "\n" for line in copyright_formatted_lines]
         # Add blank line only if next line isn't already blank
         next_line_idx = copyright_end + 1
         if next_line_idx < len(lines) and lines[next_line_idx].strip():
             copyright_lines_new.append("\n")
-        new_lines = lines[:copyright_start] + copyright_lines_new + lines[copyright_end+1:]
+        new_lines = lines[:copyright_start] + copyright_lines_new + lines[copyright_end + 1:]
         with open(file_path, "w", encoding="utf-8") as f:
             f.writelines(new_lines)
         return True
@@ -281,11 +283,11 @@ def copyright_qmd_embedded_file(file_path, copyright):
     copyright_formatted = format_copyright_html(copyright)
     copyright_raw_lines = copyright.strip().splitlines()
     
-    # Check if copyright already exists (check for raw content in any comment format)
-    copyright_first_line = copyright_raw_lines[0]
-    copyright_last_line = copyright_raw_lines[-1]
+    # Generic markers to detect any copyright block
+    copyright_start_marker = "Copyright ©"
+    copyright_end_marker = "SPDX-License-Identifier:"
     
-    if copyright_first_line in content and copyright_last_line in content:
+    if copyright_start_marker in content and copyright_end_marker in content:
         # Copyright exists, check if it's in the correct HTML format
         if copyright_formatted in content:
             # Already correct, no update needed
@@ -309,9 +311,8 @@ def copyright_qmd_embedded_file(file_path, copyright):
             if start_idx is not None and end_idx is not None:
                 # Check if frontmatter only contains copyright
                 frontmatter_lines = lines[start_idx+1:end_idx]
-                frontmatter_content = "".join(frontmatter_lines).strip()
                 has_only_copyright = all(
-                    line.strip().startswith("#") and any(cl in line for cl in copyright_raw_lines)
+                    line.strip().startswith("#") and (copyright_start_marker in line or copyright_end_marker in line or "LICENSE" in line)
                     for line in frontmatter_lines if line.strip()
                 )
                 
@@ -323,9 +324,8 @@ def copyright_qmd_embedded_file(file_path, copyright):
                         f.write(new_content)
                     return True
         
-        # Try to find and replace HTML comment copyright
-        import re
-        html_comment_pattern = r'<!--[^>]*?' + re.escape(copyright_first_line) + r'.*?' + re.escape(copyright_last_line) + r'[^>]*?-->'
+        # Try to find and replace HTML comment copyright using generic markers
+        html_comment_pattern = r'<!--\s*' + re.escape(copyright_start_marker) + r'.*?' + re.escape(copyright_end_marker) + r'[^>]*?-->'
         if re.search(html_comment_pattern, content, re.DOTALL):
             new_content = re.sub(html_comment_pattern, copyright_formatted, content, flags=re.DOTALL)
             with open(file_path, "w", encoding="utf-8") as f:
