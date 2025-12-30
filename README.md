@@ -359,7 +359,7 @@ quarto preview index.qmd --profile production
 quarto preview index.qmd --profile docker
 ```
 
-After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **RUM Applications** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
+After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **Real User Monitoring** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
 
 ## Copyright headers
 
