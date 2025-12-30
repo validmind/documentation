@@ -324,6 +324,53 @@ env:
 - On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
 - Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
 
+## Copyright headers
+
+All `.qmd`, `.yml`, and `.yaml` files in the documentation repository must include copyright headers as YAML comments. Our templates already include the header, but you might need to follow these steps if you added new files independently.
+
+### Add copyright headers
+
+1. To add copyright headers to all files that are missing them:
+
+    ```bash
+    cd site
+    make add-copyright
+    ```
+
+2. Commit your changes.
+
+### Verify copyright headers
+
+Copyright header verification runs automatically in CI but you can also test locally:
+
+```bash
+cd site
+make verify-copyright
+```
+
+If files are missing copyright headers, the workflow will fail with a list of files that need to be updated.
+
+### Update copyright headers
+
+Copyright does not need to be reasserted or updated annually, but you can update the headers by editing the copyrights file and re-running the make action to apply the headers:
+
+1. Edit `scripts/copyright.txt` to update the current year, for example `2027`:
+
+    ```
+    # Copyright © 2023-2027 ValidMind Inc. All rights reserved.
+    # See the LICENSE file in the root of this repository for details.
+    # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+    ```
+
+2. Add the updated copyright header:
+
+    ```
+    cd site
+    make add-copyright
+    ```
+
+3. Commit the changes.
+
 ## Vale linter
 
 The Vale linter is used to enforce consistent writing style and catch common language issues in our documentation source. Vale runs automatically on pull requests but can also be run locally when addressing source issues.
