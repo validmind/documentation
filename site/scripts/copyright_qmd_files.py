@@ -299,9 +299,14 @@ def main():
                 if should_ignore(file_path, gitignore_patterns, repo_root):
                     continue
                 
+                # Ignore plugin.yml files
+                if file == "plugin.yml":
+                    continue
+                
                 # Files starting with _ should be treated as YAML (no frontmatter)
+                # Skip .qmd files that start with _
                 if file.startswith("_"):
-                    if file.endswith((".qmd", ".yml", ".yaml")):
+                    if file.endswith((".yml", ".yaml")):
                         try:
                             copyright_yaml_file(file_path, copyright)
                         except Exception as e:
