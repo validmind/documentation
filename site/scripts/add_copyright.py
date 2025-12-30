@@ -174,6 +174,11 @@ def copyright_qmd_file(file_path, copyright):
                 break
         
         if copyright_start is not None and copyright_end is not None:
+            # Check if existing copyright already matches expected format
+            existing_copyright = "".join(lines[copyright_start:copyright_end+1])
+            if copyright_formatted.rstrip() in existing_copyright:
+                # Already correct, no update needed
+                return False
             # Replace existing copyright
             copyright_lines = [line + "\n" for line in copyright_formatted.rstrip().splitlines()]
             new_lines = lines[:copyright_start] + ["".join(copyright_lines)] + lines[copyright_end+1:]
