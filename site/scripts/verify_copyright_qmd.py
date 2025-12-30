@@ -11,17 +11,19 @@ How to use:
 """
 
 import os
+import sys
 import fnmatch
 from pathlib import Path
 
 
 def find_repo_root():
-    """Find the repository root by looking for .gitignore file."""
+    """Find the repository root by looking for .git directory."""
     current = Path(__file__).resolve()
     # Start from the scripts directory, go up to find repo root
+    # Look for .git directory as the definitive indicator of repo root
     for parent in current.parents:
-        gitignore_path = parent / ".gitignore"
-        if gitignore_path.exists():
+        git_dir = parent / ".git"
+        if git_dir.exists() and git_dir.is_dir():
             return parent
     # Fallback: assume we're in site/scripts, so repo root is ../..
     return current.parent.parent.parent
@@ -55,22 +57,38 @@ def should_ignore(path, gitignore_patterns, repo_root):
     
     # Check each pattern
     for pattern in gitignore_patterns:
+        # Handle patterns starting with / (absolute from repo root)
+        is_absolute = pattern.startswith("/")
+        if is_absolute:
+            pattern = pattern[1:]  # Remove leading /
+        
         # Handle directory patterns (ending with /)
-        if pattern.endswith("/"):
+        is_dir_pattern = pattern.endswith("/")
+        if is_dir_pattern:
             pattern = pattern[:-1]
-            # Check if any parent directory matches
+        
+        if is_absolute:
+            # Absolute patterns must match from repo root
+            # Check if path starts with pattern or matches at any parent level
+            if fnmatch.fnmatch(rel_path_str, pattern) or rel_path_str.startswith(pattern + "/"):
+                return True
+            # Check parent directories
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern) or fnmatch.fnmatch(check_path, pattern + "/*"):
+                if fnmatch.fnmatch(check_path, pattern) or check_path.startswith(pattern + "/"):
                     return True
         else:
-            # Check full path and filename
-            if fnmatch.fnmatch(rel_path_str, pattern) or fnmatch.fnmatch(path.name, pattern):
+            # Relative patterns can match anywhere in the path
+            # Check full path
+            if fnmatch.fnmatch(rel_path_str, pattern) or pattern in rel_path_str:
+                return True
+            # Check filename only
+            if fnmatch.fnmatch(path.name, pattern):
                 return True
             # Check if any parent directory matches
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern):
+                if fnmatch.fnmatch(check_path, pattern) or pattern in check_path:
                     return True
     
     return False
@@ -179,42 +197,61 @@ def main():
     if internal_dir.exists():
         directories_to_scan.append(internal_dir)
     
-    # Invalid files
-    errors = []
+    # Files missing copyright headers
+    missing_copyright = []
     
     # Process files
-    for directory in directories_to_scan:
-        for root, dirs, files in os.walk(directory):
-            # Filter out ignored directories
-            dirs[:] = [d for d in dirs if not should_ignore(Path(root) / d, gitignore_patterns, repo_root)]
-            
-            for file in files:
-                file_path = Path(root) / file
-                
-                # Check if file should be ignored
-                if should_ignore(file_path, gitignore_patterns, repo_root):
-                    continue
-                
-                # Process .qmd files
-                if file.endswith(".qmd"):
+    try:
+        for directory in directories_to_scan:
+            try:
+                for root, dirs, files in os.walk(directory):
                     try:
-                        if not verify_qmd_file(file_path, copyright):
-                            errors.append(str(file_path))
+                        # Filter out ignored directories
+                        dirs[:] = [d for d in dirs if not should_ignore(Path(root) / d, gitignore_patterns, repo_root)]
+                        
+                        for file in files:
+                            file_path = Path(root) / file
+                            
+                            try:
+                                # Check if file should be ignored
+                                if should_ignore(file_path, gitignore_patterns, repo_root):
+                                    continue
+                                
+                                # Process .qmd files
+                                if file.endswith(".qmd"):
+                                    try:
+                                        if not verify_qmd_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                
+                                # Process .yml and .yaml files
+                                elif file.endswith((".yml", ".yaml")):
+                                    try:
+                                        if not verify_yaml_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                            except Exception as e:
+                                # Continue processing other files even if one fails
+                                print(f"Error processing {file_path}: {e}", file=sys.stderr)
                     except Exception as e:
-                        errors.append(f"{file_path} (error: {e})")
-                
-                # Process .yml and .yaml files
-                elif file.endswith((".yml", ".yaml")):
-                    try:
-                        if not verify_yaml_file(file_path, copyright):
-                            errors.append(str(file_path))
-                    except Exception as e:
-                        errors.append(f"{file_path} (error: {e})")
+                        # Continue processing other directories even if one fails
+                        print(f"Error processing directory {root}: {e}", file=sys.stderr)
+            except Exception as e:
+                # Continue processing other directories even if one fails
+                print(f"Error accessing directory {directory}: {e}", file=sys.stderr)
+    except Exception as e:
+        # Catch any unexpected errors but still report what we found
+        print(f"Unexpected error during file scanning: {e}", file=sys.stderr)
     
-    if errors:
-        print("\n".join(errors))
-        print("\nPlease fix the errors above by running `make copyright`")
-        exit(1)
+    if missing_copyright:
+        print("Files missing a copyright header:")
+        print("\n".join(missing_copyright))
+        print("\nFix the errors by running `make copyright` and then try verifying the copyright headers again.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
