@@ -334,7 +334,7 @@ All `.qmd`, `.yml`, and `.yaml` files in the documentation repository must inclu
 
     ```bash
     cd site
-    make copyright
+    make add-copyright
     ```
 
 2. Commit your changes.
@@ -366,7 +366,7 @@ Copyright does not need to be reasserted or updated annually, but you can update
 
     ```
     cd site
-    make copyright
+    make add-copyright
     ```
 
 3. Commit the changes.

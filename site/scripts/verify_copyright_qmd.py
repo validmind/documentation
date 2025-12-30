@@ -296,7 +296,7 @@ def main():
         print("Files missing a copyright header:")
         print("\n".join(missing_copyright))
         print(f"\nMissing copyright headers in {count_qmd_missing} .qmd, {count_yml_missing} .yml, and {count_yaml_missing} .yaml files.")
-        print("\nFix the errors by running `make copyright` and then try verifying the copyright headers again.")
+        print("\nFix the errors by running `make add-copyright` and then verify the copyright headers again.")
         sys.exit(1)
     else:
         print(f"All copyright headers verified successfully in {total_qmd} .qmd, {total_yml} .yml, and {total_yaml} .yaml files.")
