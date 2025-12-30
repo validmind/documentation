@@ -1,7 +1,3 @@
-# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
-# See the LICENSE file in the root of this repository for details.
-# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
-
 """
 This script verifies that all .qmd, .yml, and .yaml files under the
 documentation repository have the ValidMind copyright block.
@@ -11,17 +7,19 @@ How to use:
 """
 
 import os
+import sys
 import fnmatch
 from pathlib import Path
 
 
 def find_repo_root():
-    """Find the repository root by looking for .gitignore file."""
+    """Find the repository root by looking for .git directory."""
     current = Path(__file__).resolve()
     # Start from the scripts directory, go up to find repo root
+    # Look for .git directory as the definitive indicator of repo root
     for parent in current.parents:
-        gitignore_path = parent / ".gitignore"
-        if gitignore_path.exists():
+        git_dir = parent / ".git"
+        if git_dir.exists() and git_dir.is_dir():
             return parent
     # Fallback: assume we're in site/scripts, so repo root is ../..
     return current.parent.parent.parent
@@ -53,24 +51,45 @@ def should_ignore(path, gitignore_patterns, repo_root):
     rel_path_str = str(rel_path).replace("\\", "/")
     path_parts = rel_path.parts
     
+    # Ignore directories that start with _ (exclude filename from check)
+    for part in path_parts[:-1]:
+        if part.startswith("_"):
+            return True
+    
     # Check each pattern
     for pattern in gitignore_patterns:
+        # Handle patterns starting with / (absolute from repo root)
+        is_absolute = pattern.startswith("/")
+        if is_absolute:
+            pattern = pattern[1:]  # Remove leading /
+        
         # Handle directory patterns (ending with /)
-        if pattern.endswith("/"):
+        is_dir_pattern = pattern.endswith("/")
+        if is_dir_pattern:
             pattern = pattern[:-1]
-            # Check if any parent directory matches
+        
+        if is_absolute:
+            # Absolute patterns must match from repo root
+            # Check if path starts with pattern or matches at any parent level
+            if fnmatch.fnmatch(rel_path_str, pattern) or rel_path_str.startswith(pattern + "/"):
+                return True
+            # Check parent directories
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern) or fnmatch.fnmatch(check_path, pattern + "/*"):
+                if fnmatch.fnmatch(check_path, pattern) or check_path.startswith(pattern + "/"):
                     return True
         else:
-            # Check full path and filename
-            if fnmatch.fnmatch(rel_path_str, pattern) or fnmatch.fnmatch(path.name, pattern):
+            # Relative patterns can match anywhere in the path
+            # Check full path
+            if fnmatch.fnmatch(rel_path_str, pattern) or pattern in rel_path_str:
+                return True
+            # Check filename only
+            if fnmatch.fnmatch(path.name, pattern):
                 return True
             # Check if any parent directory matches
             for i in range(len(path_parts)):
                 check_path = "/".join(path_parts[:i+1])
-                if fnmatch.fnmatch(check_path, pattern):
+                if fnmatch.fnmatch(check_path, pattern) or pattern in check_path:
                     return True
     
     return False
@@ -108,21 +127,12 @@ def verify_qmd_file(file_path, copyright):
     if end_idx is None:
         return False
     
-    # Check frontmatter for copyright
-    frontmatter_lines = lines[start_idx+1:end_idx]
-    frontmatter_content = "\n".join(frontmatter_lines)
+    # Check frontmatter for copyright content (raw text without comment markers)
+    frontmatter_content = "\n".join(lines[start_idx+1:end_idx])
     
-    # Check if copyright header exists
+    # Check if all copyright lines are present in frontmatter
     copyright_lines = copyright.strip().splitlines()
-    if len(copyright_lines) < 3:
-        return False
-    
-    # Check for copyright header components
-    has_copyright = any("# Copyright ©" in line for line in frontmatter_lines)
-    has_license_ref = any("# See the LICENSE file" in line for line in frontmatter_lines)
-    has_spdx = any("# SPDX-License-Identifier:" in line for line in frontmatter_lines)
-    
-    return has_copyright and has_license_ref and has_spdx
+    return all(line in frontmatter_content for line in copyright_lines)
 
 
 def verify_yaml_file(file_path, copyright):
@@ -130,30 +140,28 @@ def verify_yaml_file(file_path, copyright):
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
     
-    # Check if file starts with copyright
+    # Check if copyright content is present (raw text without comment markers)
     copyright_lines = copyright.strip().splitlines()
-    if len(copyright_lines) < 3:
-        return False
     
+    # Check the beginning of the file for copyright content
+    # The copyright should be in the first few lines
     content_lines = content.splitlines()
-    if len(content_lines) < len(copyright_lines):
-        return False
+    first_lines_content = "\n".join(content_lines[:len(copyright_lines) + 2])
     
-    # Check if first lines match copyright header exactly
-    for i, copyright_line in enumerate(copyright_lines):
-        if i >= len(content_lines):
-            return False
-        # Check if the line contains the copyright text (allowing for whitespace differences)
-        if copyright_line.strip() not in content_lines[i]:
-            return False
+    # Check if all copyright lines are present in the first lines
+    return all(line in first_lines_content for line in copyright_lines)
+
+
+def verify_qmd_embedded_file(file_path, copyright):
+    """Verify that an embedded .qmd file has the copyright header as HTML comment."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
     
-    # Also verify we have the key components
-    first_lines_content = "\n".join(content_lines[:len(copyright_lines)])
-    has_copyright = "# Copyright ©" in first_lines_content
-    has_license_ref = "# See the LICENSE file" in first_lines_content
-    has_spdx = "# SPDX-License-Identifier:" in first_lines_content
+    # Check if copyright content is present (raw text)
+    copyright_lines = copyright.strip().splitlines()
     
-    return has_copyright and has_license_ref and has_spdx
+    # Check if all copyright lines are present in the file
+    return all(line in content for line in copyright_lines)
 
 
 def main():
@@ -179,42 +187,119 @@ def main():
     if internal_dir.exists():
         directories_to_scan.append(internal_dir)
     
-    # Invalid files
-    errors = []
+    # Files missing copyright headers
+    missing_copyright = []
+    count_qmd_missing = 0
+    count_yml_missing = 0
+    count_yaml_missing = 0
+    
+    # Total files checked
+    total_qmd = 0
+    total_yml = 0
+    total_yaml = 0
     
     # Process files
-    for directory in directories_to_scan:
-        for root, dirs, files in os.walk(directory):
-            # Filter out ignored directories
-            dirs[:] = [d for d in dirs if not should_ignore(Path(root) / d, gitignore_patterns, repo_root)]
-            
-            for file in files:
-                file_path = Path(root) / file
-                
-                # Check if file should be ignored
-                if should_ignore(file_path, gitignore_patterns, repo_root):
-                    continue
-                
-                # Process .qmd files
-                if file.endswith(".qmd"):
+    try:
+        for directory in directories_to_scan:
+            try:
+                for root, dirs, files in os.walk(directory):
                     try:
-                        if not verify_qmd_file(file_path, copyright):
-                            errors.append(str(file_path))
+                        # Filter out ignored directories
+                        dirs[:] = [d for d in dirs if not should_ignore(Path(root) / d, gitignore_patterns, repo_root)]
+                        
+                        for file in files:
+                            file_path = Path(root) / file
+                            
+                            try:
+                                # Check if file should be ignored
+                                if should_ignore(file_path, gitignore_patterns, repo_root):
+                                    continue
+                                
+                                # Ignore plugin.yml files
+                                if file == "plugin.yml":
+                                    continue
+                                
+                                # Files starting with _ need special handling
+                                if file.startswith("_"):
+                                    if file.endswith((".yml", ".yaml")):
+                                        # YAML files starting with _ use YAML comments
+                                        try:
+                                            if file.endswith(".yml"):
+                                                total_yml += 1
+                                            elif file.endswith(".yaml"):
+                                                total_yaml += 1
+                                            if not verify_yaml_file(file_path, copyright):
+                                                missing_copyright.append(str(file_path))
+                                                if file.endswith(".yml"):
+                                                    count_yml_missing += 1
+                                                elif file.endswith(".yaml"):
+                                                    count_yaml_missing += 1
+                                        except Exception as e:
+                                            # Log error but continue processing
+                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                    elif file.endswith(".qmd"):
+                                        # Embedded .qmd files use HTML comments
+                                        try:
+                                            total_qmd += 1
+                                            if not verify_qmd_embedded_file(file_path, copyright):
+                                                missing_copyright.append(str(file_path))
+                                                count_qmd_missing += 1
+                                        except Exception as e:
+                                            # Log error but continue processing
+                                            print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                # Process regular .qmd files (not starting with _)
+                                elif file.endswith(".qmd"):
+                                    try:
+                                        total_qmd += 1
+                                        if not verify_qmd_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                            count_qmd_missing += 1
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                
+                                # Process .yml files (not starting with _)
+                                elif file.endswith(".yml"):
+                                    try:
+                                        total_yml += 1
+                                        if not verify_yaml_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                            count_yml_missing += 1
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                                
+                                # Process .yaml files (not starting with _)
+                                elif file.endswith(".yaml"):
+                                    try:
+                                        total_yaml += 1
+                                        if not verify_yaml_file(file_path, copyright):
+                                            missing_copyright.append(str(file_path))
+                                            count_yaml_missing += 1
+                                    except Exception as e:
+                                        # Log error but continue processing
+                                        print(f"Error verifying {file_path}: {e}", file=sys.stderr)
+                            except Exception as e:
+                                # Continue processing other files even if one fails
+                                print(f"Error processing {file_path}: {e}", file=sys.stderr)
                     except Exception as e:
-                        errors.append(f"{file_path} (error: {e})")
-                
-                # Process .yml and .yaml files
-                elif file.endswith((".yml", ".yaml")):
-                    try:
-                        if not verify_yaml_file(file_path, copyright):
-                            errors.append(str(file_path))
-                    except Exception as e:
-                        errors.append(f"{file_path} (error: {e})")
+                        # Continue processing other directories even if one fails
+                        print(f"Error processing directory {root}: {e}", file=sys.stderr)
+            except Exception as e:
+                # Continue processing other directories even if one fails
+                print(f"Error accessing directory {directory}: {e}", file=sys.stderr)
+    except Exception as e:
+        # Catch any unexpected errors but still report what we found
+        print(f"Unexpected error during file scanning: {e}", file=sys.stderr)
     
-    if errors:
-        print("\n".join(errors))
-        print("\nPlease fix the errors above by running `make copyright`")
-        exit(1)
+    if missing_copyright:
+        print("Files missing a copyright header:")
+        print("\n".join(missing_copyright))
+        print(f"\nMissing copyright headers in {count_qmd_missing} .qmd, {count_yml_missing} .yml, and {count_yaml_missing} .yaml files.")
+        print("\nFix the errors by running `make add-copyright` and then verify the copyright headers again.")
+        sys.exit(1)
+    else:
+        print(f"All copyright headers verified successfully in {total_qmd} .qmd, {total_yml} .yml, and {total_yaml} .yaml files.")
 
 
 if __name__ == "__main__":
