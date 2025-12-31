@@ -324,6 +324,43 @@ env:
 - On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
 - Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
 
+## Monitoring
+
+The documentation site uses [Datadog Real User Monitoring (RUM)](https://docs.datadoghq.com/real_user_monitoring/) to track user interactions, page views, performance metrics, and JavaScript errors in staging, production, and Docker environments.
+
+Datadog RUM is configured via environment-specific HTML files in `site/environments/`:
+
+- `datadog-staging.html` — RUM configuration for the staging environment
+- `datadog-production.html` — RUM configuration for the production environment
+- `datadog-docker.html` — RUM configuration for the docker environment
+
+These files are automatically included in the HTML header when using the corresponding Quarto profiles (`staging`, `production`, or `docker`). The development environment does not include Datadog tracking.
+
+### What is tracked
+
+Datadog RUM automatically collects:
+
+- Page views and navigation patterns
+- User sessions and interactions
+- Performance metrics (load times, Core Web Vitals)
+- JavaScript errors and exceptions
+- Resource loading issues
+
+### Testing
+
+To verify Datadog is working correctly when previewing locally:
+
+```bash
+cd site
+quarto preview index.qmd --profile staging
+# or
+quarto preview index.qmd --profile production
+# or
+quarto preview index.qmd --profile docker
+```
+
+After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **Real User Monitoring** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
+
 ## Copyright headers
 
 All `.qmd`, `.yml`, and `.yaml` files in the documentation repository must include copyright headers as YAML comments. Our templates already include the header, but you might need to follow these steps if you added new files independently.
