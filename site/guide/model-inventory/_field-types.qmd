@@ -3,89 +3,124 @@ See the LICENSE file in the root of this repository for details.
 SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
 :::: {.content-visible unless-format="revealjs"}
+
 Attachments
 : Upload supporting files for your model.^[[Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
 
 Calculation <span id="calculation"></span>
-: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.[^calculation-field-restrictions]
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.[^calculation-field-complexity]
 
     1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
     2. Replace the demonstration formula with your own in the code box provided.
-    4. Click **Test Calculation {{< fa caret-down >}}** to open the testing area.
+    4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
     5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
-    :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-    For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk:[^risk-tier-calculation]
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 
-    ![Adding a calculation type field that automatically calculates risk tier](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates risk tier" width=90% .screenshot}
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
 
-    ::::
+### Example — Risk Tier Calculation
 
-    :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
-    ::: {.callout}
-    ## Use artifact types[^8] in your formulas to create dynamic calculations.
+You have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk.
 
-    Use simple dot notation to include artifact types:
+##### Example formula
 
-    - `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
-    - `finding_type.name` — Human-readable name: `Validation Issue`
-    :::
+You want a calculated field that automatically returns a risk score based on  `materiality` and `complexity`:
+
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+
+##### Example Calculation field configuration
+
+ Your calculated field is grouped under `Model Risk` inventory fields, and can only be manually overridden by that model's Model Validators:
+
+![Adding a calculation type field that automatically calculates risk tier](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates risk tier" width=90% .screenshot}
+
+:::
+:::
 
 
-    Example use cases:
+::::
 
-    - Calculate different risk scores based on artifact type.
-    - Generate dynamic titles and descriptions.
-    - Set different due dates or priorities by artifact category.
-    - Create type-specific business logic in formulas.
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
 
-    ::: {.panel-tabset}
+::: {.callout}
 
-    #### Severity calculation
+## Use artifact types[^8] in your formulas to create dynamic calculations.
 
-    ```python
-    # Calculate different severity scores based on artifact type
+Use simple dot notation to include artifact types:
 
-    if finding_type.tag == "VALIDATION_ISSUE":
-        return severity_score * 2.5
-    elif finding_type.tag == "POLICY_EXCEPTION":
-        return severity_score * 1.0
-    else:
-        return severity_score * 1.8
-    ```
+- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
+- `finding_type.name` — Human-readable name: `Validation Issue`
 
-    #### Due date calculation
+:::
 
-    ```python
-    # Dynamically calculate due dates based on artifact type
 
-    base_days = 30
-    if finding_type.tag == "VALIDATION_ISSUE":
-        urgency_multiplier = 0.5  # 15 days
-    elif finding_type.tag == "MODEL_LIMITATION":
-        urgency_multiplier = 2.0  # 60 days
-    else:
-        urgency_multiplier = 1.0  # 30 days
+Example use cases:
 
-    return base_days * urgency_multiplier
-    ```
+- Calculate different risk scores based on artifact type.
+- Generate dynamic titles and descriptions.
+- Set different due dates or priorities by artifact category.
+- Create type-specific business logic in formulas.
 
-    #### Custom fields & parent model data
+::: {.panel-tabset}
 
-    ```python
-    # Combine artifact types with custom fields and parent model data
+#### Severity calculation
 
-    risk_factor = custom_field_risk_score or 1.0
-    model_criticality = params.model.get("criticality_level", "medium")
+```python
+# Calculate different severity scores based on artifact type
 
-    if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
-        return risk_factor * 3.0
-    else:
-        return risk_factor * 1.5
-    ```
+if finding_type.tag == "VALIDATION_ISSUE":
+    return severity_score * 2.5
+elif finding_type.tag == "POLICY_EXCEPTION":
+    return severity_score * 1.0
+else:
+    return severity_score * 1.8
+```
 
-    :::
-    ::::
+#### Due date calculation
+
+```python
+# Dynamically calculate due dates based on artifact type
+
+base_days = 30
+if finding_type.tag == "VALIDATION_ISSUE":
+    urgency_multiplier = 0.5  # 15 days
+elif finding_type.tag == "MODEL_LIMITATION":
+    urgency_multiplier = 2.0  # 60 days
+else:
+    urgency_multiplier = 1.0  # 30 days
+
+return base_days * urgency_multiplier
+```
+
+#### Custom fields & parent model data
+
+```python
+# Combine artifact types with custom fields and parent model data
+
+risk_factor = custom_field_risk_score or 1.0
+model_criticality = params.model.get("criticality_level", "medium")
+
+if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
+    return risk_factor * 3.0
+else:
+    return risk_factor * 1.5
+```
+
+:::
+
+::::
 
 Checkbox
 : A `true`/`false` value set by a toggle.
@@ -118,11 +153,13 @@ Number
 :::: {.flex .flex-wrap .justify-around}
 
 ::: {.w-50-ns}
+
 ![Simple number field type](/guide/model-inventory/number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
 
 :::
 
 ::: {.w-40-ns}
+
 ![Currency number field type](/guide/model-inventory/number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
 
 :::
@@ -143,16 +180,19 @@ User
 - Select list pre-populated with users from your {{< fa book-open >}} User Directory.^[[Manage users](/guide/configuration/manage-users.qmd)]
 - Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
 
-
 <!-- ADDITIONAL FOOTNOTES -->
 
-[^calculation-field-restrictions]:
+[^calculation-field-complexity]:
 
-::: {.callout title="Stick to basic operations."}
-Keep your code simple and avoid complex logic and imports.
-:::
+    ::: {.callout title="Stick to basic operations."}
+    Keep your code simple and avoid complex logic and imports.
+
+    :::
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
+
+<!-- INVENTORY CALCULATION FOOTNOTES -->
+
 [^risk-tier-calculation]:
 
     **Example formula:**
@@ -168,9 +208,11 @@ Keep your code simple and avoid complex logic and imports.
             # Low Risk: Both materiality and complexity are low risk
             return "Low Risk"
     ```
+
 ::::
 
 ::::
+
 
 :::: {.content-hidden unless-format="revealjs"}
 Attachments
