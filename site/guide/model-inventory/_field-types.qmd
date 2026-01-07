@@ -54,7 +54,74 @@ You want a calculated field that automatically returns a risk score based on  `m
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
 
-::: {.callout}
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Use artifact types in your formulas to create dynamic calculations.
+
+Use simple dot notation to include [artifact types](/guide/model-validation/manage-artifact-types.qmd){target="_blank"}:
+
+- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
+- `finding_type.name` — Human-readable name: `Validation Issue`
+
+##### Example use cases
+
+- Calculate different risk scores based on artifact type.
+- Generate dynamic titles and descriptions.
+- Set different due dates or priorities by artifact category.
+- Create type-specific business logic in formulas.
+
+::: {.panel-tabset}
+
+#### Severity calculation
+
+```python
+# Calculate different severity scores based on artifact type
+
+if finding_type.tag == "VALIDATION_ISSUE":
+    return severity_score * 2.5
+elif finding_type.tag == "POLICY_EXCEPTION":
+    return severity_score * 1.0
+else:
+    return severity_score * 1.8
+```
+
+#### Due date calculation
+
+```python
+# Dynamically calculate due dates based on artifact type
+
+base_days = 30
+if finding_type.tag == "VALIDATION_ISSUE":
+    urgency_multiplier = 0.5  # 15 days
+elif finding_type.tag == "MODEL_LIMITATION":
+    urgency_multiplier = 2.0  # 60 days
+else:
+    urgency_multiplier = 1.0  # 30 days
+
+return base_days * urgency_multiplier
+```
+
+#### Custom fields & parent model data
+
+```python
+# Combine artifact types with custom fields and parent model data
+
+risk_factor = custom_field_risk_score or 1.0
+model_criticality = params.model.get("criticality_level", "medium")
+
+if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
+    return risk_factor * 3.0
+else:
+    return risk_factor * 1.5
+```
+
+:::
+
+:::
+:::
+
+<!-- ::: {.callout}
 
 ## Use artifact types[^8] in your formulas to create dynamic calculations.
 
@@ -118,7 +185,7 @@ else:
     return risk_factor * 1.5
 ```
 
-:::
+::: -->
 
 ::::
 
@@ -188,28 +255,6 @@ User
     Keep your code simple and avoid complex logic and imports.
 
     :::
-
-:::: {.content-visible when-format="html" when-meta="includes.inventory"}
-
-<!-- INVENTORY CALCULATION FOOTNOTES -->
-
-[^risk-tier-calculation]:
-
-    **Example formula:**
-
-    ```python
-        def formula(params):
-            # High Risk: If materiality is high risk, return high risk regardless of complexity
-            if params.materiality == "High Risk":
-                    return "High Risk"
-            # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
-            if params.materiality == "Low Risk" and params.complexity  == "High Risk":
-                    return "Medium Risk"
-            # Low Risk: Both materiality and complexity are low risk
-            return "Low Risk"
-    ```
-
-::::
 
 ::::
 
