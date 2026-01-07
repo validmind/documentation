@@ -7,34 +7,18 @@ Attachments
 : Upload supporting files for your model.^[[Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
 
 Calculation <span id="calculation"></span>
-: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.[^calculation-field-restrictions]
 
-    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
+    1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
     2. Replace the demonstration formula with your own in the code box provided.
-    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+    4. Click **Test Calculation {{< fa caret-down >}}** to open the testing area.
+    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
     :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-    ::: {.callout title="Stick to basic operations."}
-    Keep your code simple and avoid complex logic and imports.
-    :::
+    For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk:[^risk-tier-calculation]
 
-    For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk: 
+    ![Adding a calculation type field that automatically calculates risk tier](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates risk tier" width=90% .screenshot}
 
-    ![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" width=90% .screenshot}
-
-    ::: {.column-margin}
-    ```python
-        def formula(params):
-            # High Risk: If materiality is high risk, return high risk regardless of complexity
-            if params.materiality == "High Risk":
-                    return "High Risk"
-            # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
-            if params.materiality == "Low Risk" and params.complexity  == "High Risk":
-                    return "Medium Risk"
-            # Low Risk: Both materiality and complexity are low risk
-            return "Low Risk"
-    ```
-    :::
     ::::
 
     :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
@@ -158,6 +142,33 @@ User
 : 
 - Select list pre-populated with users from your {{< fa book-open >}} User Directory.^[[Manage users](/guide/configuration/manage-users.qmd)]
 - Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
+
+
+<!-- ADDITIONAL FOOTNOTES -->
+
+[^calculation-field-restrictions]:
+
+::: {.callout title="Stick to basic operations."}
+Keep your code simple and avoid complex logic and imports.
+:::
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
+[^risk-tier-calculation]:
+
+    **Example formula:**
+
+    ```python
+        def formula(params):
+            # High Risk: If materiality is high risk, return high risk regardless of complexity
+            if params.materiality == "High Risk":
+                    return "High Risk"
+            # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+            if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                    return "Medium Risk"
+            # Low Risk: Both materiality and complexity are low risk
+            return "Low Risk"
+    ```
+::::
 
 ::::
 
