@@ -4,18 +4,25 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
 :::: {.content-visible unless-format="revealjs"}
 
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 Attachments
 : Upload supporting files for your model.^[[Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+::::
 
-Calculation <span id="calculation"></span>
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+Attachments
+: Upload supporting files for your finding.^[[Manage supporting documentation](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+::::
+
+Calculation
 : Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.[^calculation-field-complexity]
 
-    1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
-    2. Replace the demonstration formula with your own in the code box provided.
-    4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
-
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
+1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+2. Replace the demonstration formula with your own in the code box provided.
+4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+<br><br>
 
 ::: {.callout-button .pl4 .nt4}
 ::: {.callout collapse="true" appearance="minimal"}
@@ -53,6 +60,11 @@ You want a calculated field that automatically returns a risk score based on  `m
 ::::
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+1. Select from the drop-down of **[available artifact fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+2. Replace the demonstration formula with your own in the code box provided.
+4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+<br><br>
 
 ::: {.callout-button .pl4 .nt4}
 ::: {.callout collapse="true" appearance="minimal"}
@@ -120,72 +132,6 @@ else:
 
 :::
 :::
-
-<!-- ::: {.callout}
-
-## Use artifact types[^8] in your formulas to create dynamic calculations.
-
-Use simple dot notation to include artifact types:
-
-- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
-- `finding_type.name` — Human-readable name: `Validation Issue`
-
-:::
-
-
-Example use cases:
-
-- Calculate different risk scores based on artifact type.
-- Generate dynamic titles and descriptions.
-- Set different due dates or priorities by artifact category.
-- Create type-specific business logic in formulas.
-
-::: {.panel-tabset}
-
-#### Severity calculation
-
-```python
-# Calculate different severity scores based on artifact type
-
-if finding_type.tag == "VALIDATION_ISSUE":
-    return severity_score * 2.5
-elif finding_type.tag == "POLICY_EXCEPTION":
-    return severity_score * 1.0
-else:
-    return severity_score * 1.8
-```
-
-#### Due date calculation
-
-```python
-# Dynamically calculate due dates based on artifact type
-
-base_days = 30
-if finding_type.tag == "VALIDATION_ISSUE":
-    urgency_multiplier = 0.5  # 15 days
-elif finding_type.tag == "MODEL_LIMITATION":
-    urgency_multiplier = 2.0  # 60 days
-else:
-    urgency_multiplier = 1.0  # 30 days
-
-return base_days * urgency_multiplier
-```
-
-#### Custom fields & parent model data
-
-```python
-# Combine artifact types with custom fields and parent model data
-
-risk_factor = custom_field_risk_score or 1.0
-model_criticality = params.model.get("criticality_level", "medium")
-
-if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
-    return risk_factor * 3.0
-else:
-    return risk_factor * 1.5
-```
-
-::: -->
 
 ::::
 
@@ -261,14 +207,15 @@ User
 
 :::: {.content-hidden unless-format="revealjs"}
 Attachments
-: [Upload supporting files for your model.](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} Files must be less than 50 MB each in size.
+: Upload supporting files for your [model](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} or [finding](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation){target="_blank"}. Files must be less than 50 MB each in size.
 
 Calculation <span id="calculation"></span> 
 : Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
 
-    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
+    1. Select from the drop-down of **[available model fields]{.smallcaps}** or **[available artifact fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
     2. Replace the demonstration formula with your own in the code box provided.
-    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
+    4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
 Checkbox
 : A `true`/`false` value set by a toggle.
