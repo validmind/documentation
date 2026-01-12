@@ -6,6 +6,8 @@ title: "Manage artifact fields"
 date: last-modified
 aliases: 
   - manage-model-finding-fields.html
+includes:
+    artifacts: true
 ---
 
 {{< include /guide/model-validation/_artifact-fields.qmd >}}
@@ -88,71 +90,6 @@ To rename the field keys for artifact fields:
 
 {{< include /guide/model-inventory/_field-types.qmd >}}
 
-::: {.callout}
-## Use artifact types[^8] in your formulas to create dynamic calculations.
-
-Use simple dot notation to include artifact types:
-
-- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
-- `finding_type.name` — Human-readable name: `Validation Issue`
-:::
-
-
-Example use cases:
-
-- Calculate different risk scores based on artifact type.
-- Generate dynamic titles and descriptions.
-- Set different due dates or priorities by artifact category.
-- Create type-specific business logic in formulas.
-
-::: {.panel-tabset}
-
-#### Severity calculation
-
-```python
-# Calculate different severity scores based on artifact type
-
-if finding_type.tag == "VALIDATION_ISSUE":
-    return severity_score * 2.5
-elif finding_type.tag == "POLICY_EXCEPTION":
-    return severity_score * 1.0
-else:
-    return severity_score * 1.8
-```
-
-#### Due date calculation
-
-```python
-# Dynamically calculate due dates based on artifact type
-
-base_days = 30
-if finding_type.tag == "VALIDATION_ISSUE":
-    urgency_multiplier = 0.5  # 15 days
-elif finding_type.tag == "MODEL_LIMITATION":
-    urgency_multiplier = 2.0  # 60 days
-else:
-    urgency_multiplier = 1.0  # 30 days
-
-return base_days * urgency_multiplier
-```
-
-#### Custom fields & parent model data
-
-```python
-# Combine artifact types with custom fields and parent model data
-
-risk_factor = custom_field_risk_score or 1.0
-model_criticality = params.model.get("criticality_level", "medium")
-
-if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
-    return risk_factor * 3.0
-else:
-    return risk_factor * 1.5
-```
-
-:::
-
-
 ## Add artifact field groups
 
 To group artifact fields, first create an artifact field group:
@@ -165,7 +102,7 @@ To group artifact fields, first create an artifact field group:
 
 4. Click **Create Group** to add the new group.
 
-5. Assign the desired fields to the group.[^9]
+5. Assign the desired fields to the group.[^8]
 
 ## Delete artifact fields
 
@@ -204,6 +141,4 @@ To group artifact fields, first create an artifact field group:
 
 [^7]: [Manage model stakeholder types](/guide/configuration/manage-model-stakeholder-types.qmd)
 
-[^8]: [Manage artifact types](manage-artifact-types.qmd)
-
-[^9]: [Add or edit artifact fields](#add-or-edit-artifact-fields)
+[^8]: [Add or edit artifact fields](#add-or-edit-artifact-fields)

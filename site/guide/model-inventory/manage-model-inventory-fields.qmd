@@ -7,6 +7,8 @@ date: last-modified
 aliases:
   - manage-inventory-custom-fields.html
   - /guide/manage-inventory-custom-fields.html
+includes:
+    inventory: true
 ---
 
 {{< include /guide/model-inventory/_model-inventory-fields.qmd >}}
@@ -88,28 +90,6 @@ To rename the field keys for custom inventory fields:
 #### Inventory field types
 
 {{< include /guide/model-inventory/_field-types.qmd >}}
-
-::: {.callout title="Stick to basic operations."}
-Keep your code simple and avoid complex logic and imports.
-:::
-
-For example, say you have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk: 
-
-![Adding a calculation type field](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field" width=90% .screenshot}
-
-::: {.column-margin}
-```python
-    def formula(params):
-        # High Risk: If materiality is high risk, return high risk regardless of complexity
-        if params.materiality == "High Risk":
-                return "High Risk"
-        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
-        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
-                return "Medium Risk"
-        # Low Risk: Both materiality and complexity are low risk
-        return "Low Risk"
-```
-:::
 
 ## Add inventory field groups
 
