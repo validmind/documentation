@@ -109,7 +109,7 @@
     saveBtn.addEventListener('click', function() {
       const newUrl = input.value.trim();
       if (newUrl && !isValidUrl(newUrl)) {
-        alert('Please enter a valid URL (e.g., https://app.staging.validmind.ai)');
+        alert('Enter a valid URL for ValidMind (example: https://myurl.validmind.ai)');
         return;
       }
       setCustomUrl(newUrl);
