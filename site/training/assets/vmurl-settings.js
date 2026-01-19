@@ -78,7 +78,7 @@
           <p class="vmurl-current">Current: <code>${currentUrl}</code>${customUrl ? ' (custom)' : ' (default)'}</p>
           <label for="vmurl-input">Custom ValidMind URL:</label>
           <input type="url" id="vmurl-input" class="vmurl-input" 
-                 placeholder="https://app.staging.validmind.ai" 
+                 placeholder="https://myurl.validmind.ai" 
                  value="${customUrl || ''}">
           <p class="vmurl-hint">Enter the base URL for the ValidMind platform. Leave empty to use the default.</p>
         </div>
