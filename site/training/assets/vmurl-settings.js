@@ -83,7 +83,7 @@
           <p class="vmurl-hint">Enter the base URL for the ValidMind platform. Leave empty to use the default.</p>
         </div>
         <div class="vmurl-modal-footer">
-          <button class="vmurl-btn vmurl-btn-secondary" id="vmurl-reset">Reset to default</button>
+          <button class="vmurl-btn vmurl-btn-secondary" id="vmurl-reset">Reset to Default</button>
           <button class="vmurl-btn vmurl-btn-primary" id="vmurl-save">Save &amp; Reload</button>
         </div>
       </div>
