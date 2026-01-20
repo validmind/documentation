@@ -84,7 +84,7 @@
         </div>
         <div class="vmurl-modal-footer">
           <button class="vmurl-btn vmurl-btn-secondary" id="vmurl-reset">Reset to default</button>
-          <button class="vmurl-btn vmurl-btn-primary" id="vmurl-save">Save &amp; reload</button>
+          <button class="vmurl-btn vmurl-btn-primary" id="vmurl-save">Save &amp; Reload</button>
         </div>
       </div>
     `;
