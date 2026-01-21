@@ -72,7 +72,8 @@ The rule will guide the AI to:
 
 #### Tips
 
-- **Finding PRs from Shortcut:** Shortcut stories typically have GitHub PRs linked in the story. The AI can use the Shortcut MCP to get story details, then use the GitHub MCP to fetch PR information.
+- **Provide the epic ID if you have it:** Epics often contain richer context than individual stories — including links to backend/frontend PRs, related stories, and broader feature goals. If you know the epic ID, include it for better results.
+- **Finding PRs from Shortcut:** Shortcut stories and epics typically have GitHub PRs linked in descriptions or comments. The AI will automatically look up the parent epic when given a story ID to find these links.
 - **Provide screenshots:** Attach screenshots from demos to help the AI verify UI element names and user flows.
 - **Include your notes:** Add bullet points or draft content to guide the output focus.
 - **Specify the doc type:** Mention if you need a task (how-to), concept (explanation), or reference doc.
