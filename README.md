@@ -40,6 +40,54 @@ Some interactive tables, such as our breaking changes and dependency history rel
 
 If you are creating a pull request, test your changes by rendering or previewing the site. Note that if this is your first time contributing, you will be asked to sign a contributor license agreement (CLA).
 
+### Using the Cursor documentation rule
+
+If you use [Cursor](https://cursor.sh), we have a rule at `.cursor/rules/create-user-documentation.mdc` that helps generate and update documentation by pulling context from multiple sources.
+
+#### Setup
+
+The rule requires MCP (Model Context Protocol) servers configured in your `~/.cursor/mcp.json`:
+
+- **Shortcut MCP** — For story/epic context and acceptance criteria
+- **GitHub MCP** — For PR details and implementation changes  
+- **Notion MCP** (optional) — For feature specifications
+
+See [Cursor's MCP documentation](https://docs.cursor.com/context/model-context-protocol) for setup instructions.
+
+#### How to use
+
+Start a new Cursor chat and provide your typical inputs:
+
+```
+Create documentation for the new webhook notifications feature. 
+The Shortcut story is #1234. I'll attach some screenshots.
+```
+
+The rule will guide the AI to:
+1. Fetch the Shortcut story for requirements and acceptance criteria
+2. Look up linked GitHub PRs (Shortcut stories often reference backend/frontend PRs)
+3. Use your screenshots to verify UI elements
+4. Apply ValidMind style guide conventions
+5. Generate documentation using the appropriate template
+
+#### Tips
+
+- **Finding PRs from Shortcut:** Shortcut stories typically have GitHub PRs linked in the story. The AI can use the Shortcut MCP to get story details, then use the GitHub MCP to fetch PR information.
+- **Provide screenshots:** Attach screenshots from demos to help the AI verify UI element names and user flows.
+- **Include your notes:** Add bullet points or draft content to guide the output focus.
+- **Specify the doc type:** Mention if you need a task (how-to), concept (explanation), or reference doc.
+
+#### Example prompts
+
+**New feature documentation:**
+> "Create docs for the attestation feature. Shortcut epic is #500. Here are screenshots from the demo."
+
+**Update existing docs:**
+> "Update the model registration guide to include bulk import from PR #567 in validmind/frontend."
+
+**Training materials:**
+> "Create a training module for administrators on configuring workflows. Shortcut story #890 has the requirements."
+
 ### Preview the docs site
 
 To get an accurate preview of the docs site, specify a Quarto profile:
