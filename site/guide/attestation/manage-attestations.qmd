@@ -54,7 +54,7 @@ For testing purposes only, you can trigger the attestation process:
 
 5. Click **Confirm**.
 
-After starting the schedule, attestation participants are notified via **My Inbox** that the attestation is ready to be completed.
+After starting the schedule, attestation participants are notified via My Inbox that the attestation is ready to be completed.
 
 ## Edit attestation periods
 
@@ -92,27 +92,121 @@ This action cannot be undone. The history of previous attestation periods is una
 
 5. Click **Confirm** to cancel the period.
 
-## View details
+## View attestations dashboard
 
-View the status and progress of attestation instances for an active attestation period.
+When an attestation period is active or completed, the **{{< fa clipboard-check >}} Attestations** item appears in the left sidebar. This dashboard provides a centralized view for tracking, reviewing, and exporting attestation data.
+
+To access the dashboard:
+
+1. In the left sidebar, click **{{< fa clipboard-check >}} Attestations**.
+
+2. Use the dropdown at the top to select the attestation period to view. You can choose from active periods or view completed historical periods.
+
+The dashboard organizes information across five tabs:
+
+::: {.panel-tabset}
+
+### Progress
+
+The Progress tab displays a swimlane view of all attestation submissions organized by status:
+
+- **Not Started** — Submissions awaiting action from submitters.
+- **In Progress** — Submissions currently being completed.
+- **Ready for Review** — Submissions awaiting reviewer action.
+- **Reviewed** — Submissions awaiting approver sign-off.
+- **Signed Off** — Completed submissions.
+
+Click any submission card to view its details, including the questionnaire responses and associated models.
+
+### Responses
+
+The Responses tab provides a consolidated view of all questionnaire responses across submissions. Each questionnaire field appears as a column, making it easy to compare responses and identify patterns.
+
+Use this view to:
+
+- Review all submissions at a glance.
+- Compare responses across different submitters.
+- Export responses for compliance reporting.
+
+### Inventory
 
 ::: {.column-margin}
-![Attestation details view](attestations-view-details.png){fig-alt="Attestation details view" .screenshot}
+![Before and after snapshot comparison](attestations-before-after.png){fig-alt="Before and after toggle for comparing snapshots" .screenshot width=50%}
 :::
 
-To access attestation details:
+The Inventory tab shows a snapshot of all models included in the attestation scope at the time the period started. This provides an organization-wide view of the model inventory state.
 
-- From the banner when an attestation period is active: Click **View Details**.
-- Under **Attestation Periods**, hover over an attestation period and when **{{< fa ellipsis-vertical >}}** appears, select **{{< fa eye >}} View Details**.
+Click any model to view its snapshot details in a modal, which displays the model field values captured at that point in time. Click **View Live Data** to navigate to the current model inventory record.
 
-The details view shows:
+For completed attestation periods, use the **Before** and **After** toggle to compare the model state at the start versus the completion of the period.
 
-- **Progress chart** — Attestations by status: Not Started, In Progress, Ready For Review, Reviewed, Signed Off
-- **Total attestations** — The count of all attestation instances
-- **Search** — Filter by group, owner, reviewer, or approver
-- **Attestation table** — Columns for Group, Owner, Reviewer, Approver, Status, and Last Updated
 
-Each combination of group and owner creates a separate attestation instance. This allows multiple attestations to run simultaneously, with each submitter responsible for their own group's attestation.
+### Validation Issues
+
+The Validation Issues tab shows all validation issues that were open at the time of the snapshot, including:
+
+- Title and artifact ID
+- Severity and status
+- Associated inventory model
+- Risk area, assignee, and due date
+
+### Artifacts
+
+The Artifacts tab displays model artifacts captured in the snapshot, organized by artifact type.
+
+:::
+
+## Export attestation data
+
+Export attestation data in CSV or Excel format for external reporting and compliance documentation.
+
+1. Navigate to the **{{< fa clipboard-check >}} Attestations** dashboard.
+
+2. Select the tab containing the data to export: Progress, Responses, Inventory, Validation Issues, or Artifacts.
+
+3. Click **{{< fa download >}} Export** in the upper right.
+
+4. Choose your preferred format and save the file.
+
+## Complete attestation periods
+
+When all submissions in an attestation period have been signed off, the period is automatically marked as complete. Administrators can also manually complete a period before all submissions are finished.
+
+::: {.callout-important title="Completing a period triggers a final snapshot"}
+When a period is completed, the platform captures a final snapshot of all models and artifacts. This enables before/after comparison in the Inventory tab.
+:::
+
+To manually complete an attestation period:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Workspace, select **Attestation Templates** and then click the attestation template.
+
+3. Under **Attestation Periods**, hover over an active attestation period.
+
+4. When **{{< fa ellipsis-vertical >}}** appears, select **{{< fa check >}} Complete Period**.
+
+5. Click **Confirm**.
+
+After completing a period, no further actions can be taken on any submissions, regardless of their current status.
+
+## Delete attestation templates
+
+Remove attestation templates that are no longer needed. When a template is deleted, all related data including schedules, executions, and snapshots is automatically cleaned up.
+
+::: {.callout-important title="Deletion is blocked for active periods"}
+You cannot delete an attestation template if it has any active attestation periods. Complete or cancel all active periods before deleting the template.
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Workspace, select **Attestation Templates**.
+
+3. Locate the template to delete and hover over it.
+
+4. When **{{< fa ellipsis-vertical >}}** appears, select [**{{< fa trash >}} Delete**]{.red}.
+
+5. Click **Confirm** to delete the template.
 
 <!-- FOOTNOTES -->
 
