@@ -1,4 +1,7 @@
 ---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
 title: "Working with attestations"
 date: last-modified
 listing:
@@ -36,15 +39,35 @@ listing:
 
 {{< include /about/glossary/_attestation.qmd >}}
 
+### Where do I access attestations?
+
+<!-- NR TO DO Ask Steven for better screenshot -->
+::: {.column-margin .mt5}
+![Sample attestations in progress](attestations-dashboard-progress.png){fig-alt="Attestation progress showing swimlane view" .screenshot}
+:::
+
+When an attestation period is active or has been completed in the past, **{{< fa clipboard-check >}} Attestations** appears in the left sidebar. This centralized dashboard provides:
+
+- A swimlane view of all attestation submissions organized by status
+- Consolidated questionnaire responses across all submissions
+- Organization-wide snapshots of models, validation issues, and artifacts
+- Export capabilities for compliance reporting
+
+Attestation participants can also access their individual tasks via **{{< fa inbox >}} My Inbox** in the left sidebar, where tasks appear under the Tasks tab with the current attestation status.
+
+::: {.callout-note}
+The Attestations sidebar item only appears when there is at least one active or completed attestation period. If your organization has not yet configured attestations, this option is not visible.
+:::
+
 ### How does the attestation process work?
 
-Attestation on the {{< var validmind.platform >}} begins at the start of the attestation period after the process has been set up initially. The platform captures a snapshot of each model and its artifacts, preserving the state at that point in time. Changes made after the process starts do not affect the historical record.
+Attestation on the {{< var validmind.platform >}} begins at the start of the attestation period after the process has been set up initially. The platform captures a snapshot of each model and its artifacts, preserving the state at that point in time. A second snapshot is captured when the attestation period is completed, enabling comparative analysis between the start and end states.
 
 Responsibilities for the attestation process are shared:
 
 ::: {.tc}
 ```{mermaid}
-graph TD
+graph LR
     subgraph Submitter
         A["**Not Started**"] --> B["**In Progress**"]
         B --> C["**Ready for Review**"]
@@ -63,12 +86,6 @@ graph TD
 [The attestation process — Submitter, reviewer, and approver responsibilities]{.silver .small}
 :::
 
-::: {.column-margin .mt5}
-![Sample attestations in progress](attestation-q1-attestation-progress.gif){fig-alt="Attestation progress" .screenshot}
-:::
-
-Attestation participants access their tasks via **{{< fa inbox >}} My Inbox** in the left sidebar. Tasks appear under the **Tasks** tab with the current attestation status, also known as _attestation instances_.
-
 The submitter is responsible for completing the questionnaire and addressing change requests. The reviewer is responsible for reviewing the questionnaire and requesting any necessary changes. The approver is responsible for signing off on the questionnaire.
 
 Plan your attestation periods ahead of time to ensure they can be completed on time. The start date must be today or a future date, and you cannot set a date in the past to trigger attestation retroactively.
@@ -78,23 +95,25 @@ Plan your attestation periods ahead of time to ensure they can be completed on t
 Attestation submissions are organized by owner AND group. This structure supports organizations where:
 
 - Model owners may own models across multiple groups, such as Fraud and Know-Your-Customer (KYC).
-- Each group has its own validation and governance team
-- Reviewers and approvers are roles scoped to specific groups
+- Each group has its own validation and governance team.
+- Reviewers and approvers are roles scoped to specific groups.
 
 ::: {.callout title="Example scenario"}
-Steven owns 10 models: 4 in the Fraud group and 6 in the KYC group. Emma is the Governance Lead for Fraud, and Fernanda is the Governance Lead for KYC.
+Steven owns 10 models: 4 in the Fraud group and 6 in the KYC group. Emma is the Governance Lead for Fraud, and Kam is the Governance Lead for KYC.
 
-If attestations were organized by owner alone, neither Emma nor Fernanda would have permissions to see all of Steven's models. With owner+group organization:
+If attestations were organized by owner alone, neither Emma nor Kam would have permissions to see all of Steven's models. With owner+group organization:
 
 - Steven submits Attestation #1 for his 4 Fraud models → Emma approves
-- Steven submits Attestation #2 for his 6 KYC models → Fernanda approves
+- Steven submits Attestation #2 for his 6 KYC models → Kam approves
 
-This approach ensures 100% accountability per group, where Emma approves all Fraud models and Fernanda approves all KYC models. If Fraud has two co-leads (Emma and Andres), either can approve.
+This approach ensures 100% accountability per group, where Emma approves all Fraud models and Kam approves all KYC models. If Fraud has two co-leads (Emma and Andres), either can approve.
 :::
 
 ## How do I create meaningful attestation questionnaires?
 
-Attestation questionnaires are typically used in model risk management to confirm that key controls, governance processes and documentation requirements have been followed throughout a model's lifecycle. These questionnaires are part of a broader effort to ensure accountability and regulatory compliance. 
+Attestation questionnaires are typically used in model risk management to confirm that key controls, governance processes and documentation requirements have been followed throughout a model's lifecycle. These questionnaires are part of a broader effort to ensure accountability and regulatory compliance.
+
+Questionnaires are composed of structured fields that you define when configuring the attestation template. Each field can be a text input, dropdown, checkbox, or other field type, with optional validation rules. Responses are collected consistently across all submissions and can be viewed in the consolidated Responses tab or exported for external reporting.
 
 Areas typically covered in the questionnaire:
 

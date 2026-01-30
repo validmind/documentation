@@ -1,44 +1,142 @@
-:::: {.content-visible unless-format="revealjs"}
-Single Line Text
-: Simple text value.
+<!-- Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+Refer to the LICENSE file in the root of this repository for details.
+SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
+:::: {.content-visible unless-format="revealjs"}
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 Attachments
 : Upload supporting files for your model.^[[Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+::::
 
-Long Text
-: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+Attachments
+: Upload supporting files for your artifact.^[[Manage supporting documentation](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+::::
 
-Single Select
-: Click **{{< fa plus >}} Add Option** to define a list of options.
+Calculation
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
 
-Multiple Select
-: Click **{{< fa plus >}} Add Option** to define a list of options. 
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
+1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+2. Replace the demonstration formula with your own in the code box provided.^[**Stick to basic operations**.<br>Keep your code simple and avoid complex logic and imports.]
+3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+4. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+<br><br>
 
-Checkbox
-: A `true`/`false` value set by a toggle.
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
 
-Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+### Example — Risk Tier Calculation
 
-- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+You have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk.
 
-:::: {.flex .flex-wrap .justify-around}
+##### Example formula
 
-::: {.w-50-ns}
-![Simple number field type](/guide/model-inventory/number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
+You want a calculated field that automatically returns a risk score based on `materiality` and `complexity`:
+
+```python
+    def formula(params):
+        # High Risk: If materiality is high risk, return high risk regardless of complexity
+        if params.materiality == "High Risk":
+                return "High Risk"
+        # Medium Risk: If materiality is low risk but complexity is high risk, return medium risk
+        if params.materiality == "Low Risk" and params.complexity  == "High Risk":
+                return "Medium Risk"
+        # Low Risk: Both materiality and complexity are low risk
+        return "Low Risk"
+```
+
+##### Example Calculation field configuration
+
+Your calculated field is grouped under `Model Risk` inventory fields, and can only be manually overridden by that model's Model Validators:
+
+![Adding a calculation type field that automatically calculates risk tier](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates risk tier" width=90% .screenshot}
+
+:::
+:::
+
+
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+1. Select from the drop-down of **[available artifact fields]{.smallcaps}** and **[model fields available via]{.smallcaps} `params.model`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+2. Replace the demonstration formula with your own in the code box provided.^[**Stick to basic operations**.<br>Keep your code simple and avoid complex logic and imports.]
+4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+<br><br>
+
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Use artifact types in your formulas to create dynamic calculations.
+
+Use simple dot notation to include [artifact types](/guide/model-validation/manage-artifact-types.qmd){target="_blank"}:
+
+- `finding_type.tag` — Technical tag: `VALIDATION_ISSUE`
+- `finding_type.name` — Human-readable name: `Validation Issue`
+
+##### Example use cases
+
+- Calculate different risk scores based on artifact type.
+- Generate dynamic titles and descriptions.
+- Set different due dates or priorities by artifact category.
+- Create type-specific business logic in formulas.
+
+::: {.panel-tabset}
+
+#### Severity calculation
+
+```python
+# Calculate different severity scores based on artifact type
+
+if finding_type.tag == "VALIDATION_ISSUE":
+    return severity_score * 2.5
+elif finding_type.tag == "POLICY_EXCEPTION":
+    return severity_score * 1.0
+else:
+    return severity_score * 1.8
+```
+
+#### Due date calculation
+
+```python
+# Dynamically calculate due dates based on artifact type
+
+base_days = 30
+if finding_type.tag == "VALIDATION_ISSUE":
+    urgency_multiplier = 0.5  # 15 days
+elif finding_type.tag == "MODEL_LIMITATION":
+    urgency_multiplier = 2.0  # 60 days
+else:
+    urgency_multiplier = 1.0  # 30 days
+
+return base_days * urgency_multiplier
+```
+
+#### Custom fields & parent model data
+
+```python
+# Combine artifact types with custom fields and parent model data
+
+risk_factor = custom_field_risk_score or 1.0
+model_criticality = params.model.get("criticality_level", "medium")
+
+if finding_type.tag == "VALIDATION_ISSUE" and model_criticality == "high":
+    return risk_factor * 3.0
+else:
+    return risk_factor * 1.5
+```
 
 :::
 
-::: {.w-40-ns}
-![Currency number field type](/guide/model-inventory/number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
-
+:::
 :::
 
 ::::
 
-URL
-: Text value in valid URL format.
+Checkbox
+: A `true`/`false` value set by a toggle.
 
 Date
 : - Date value in `yyyy-mm-dd` format. 
@@ -53,47 +151,65 @@ Date Time
 Email
 : Text value in valid email (`user@domain.com`) format.
 
+Long Text
+: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+
+Multiple Select
+: Click **{{< fa plus >}} Add Option** to define a list of options. 
+
+Number
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+
+- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+
+![Simple number field type](/guide/model-inventory/number-simple.png){fig-alt="A screenshot showing a simple number field type" .screenshot group="number"} 
+
+:::
+
+::: {.w-40-ns}
+
+![Currency number field type](/guide/model-inventory/number-currency.png){fig-alt="A screenshot showing a currency number field type" .screenshot group="number"}
+
+:::
+
+::::
+
+Single Line Text
+: Simple text value.
+
+Single Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+URL
+: Text value in valid URL format.
+
 User
 : 
 - Select list pre-populated with users from your {{< fa book-open >}} User Directory.^[[Manage users](/guide/configuration/manage-users.qmd)]
 - Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
 
-Calculation <span id="calculation"></span> 
-: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
-
-    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
-    2. Replace the demonstration formula with your own in the code box provided.
-    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
-
 ::::
 
+
 :::: {.content-hidden unless-format="revealjs"}
-Single Line Text
-: Simple text value.
-
 Attachments
-: [Upload supporting files for your model.](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} Files must be less than 50 MB each in size.
+: Upload supporting files for your [model](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} or [artifact](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation){target="_blank"}. Files must be less than 50 MB each in size.
 
-Long Text
-: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+Calculation
+: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
 
-Single Select
-: Click **{{< fa plus >}} Add Option** to define a list of options.
-
-Multiple Select
-: Click **{{< fa plus >}} Add Option** to define a list of options.
+    1. Select from the drop-down of **[available model fields]{.smallcaps}** (model inventory fields), or **[available artifact fields]{.smallcaps}** and **[model fields available via]{.smallcaps} `params.model`** (artifact fields) to allow your formula access to the field's values.
+    2. Replace the demonstration formula with your own in the code box provided.
+    4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
 Checkbox
 : A `true`/`false` value set by a toggle.
-
-Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
-
-    - **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-    - **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-
-URL
-: Text value in valid URL format.
 
 Date
 : - Date value in `yyyy-mm-dd` format. 
@@ -106,16 +222,30 @@ Date Time
 Email
 : Text value in valid email (`user@domain.com`) format.
 
+Long Text
+: Toggle **Enable rich text formatting** to create a template using the rich text editor.
+
+Multiple Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+Number
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+
+    - **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+    - **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+
+Single Line Text
+: Simple text value.
+
+Single Select
+: Click **{{< fa plus >}} Add Option** to define a list of options.
+
+URL
+: Text value in valid URL format.
+
 User
 : 
 - Select list pre-populated with users from your [{{< fa book-open >}} User Directory](/guide/configuration/manage-users.qmd){target="_blank"}.
 - Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
-
-Calculation <span id="calculation"></span> 
-: Define a `formula(params)` function that automatically calculates and returns a value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
-
-    1. Click **{{< fa plus >}}** in front of the inventory field to allow your formula access to the field's values.
-    2. Replace the demonstration formula with your own in the code box provided.
-    3. Enter in sample values in the testing area then click **{{< fa play >}} Test Formula** to validate your formula.
 
 ::::
