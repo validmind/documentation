@@ -94,6 +94,9 @@ jobs:
             }
             make generate-sitemap
 
+      - name: Add robots.txt for staging
+        run: cp site/environments/robots-staging.txt site/_site/robots.txt
+
       # Staging bucket is in us-west-2
       - name: Configure AWS credentials
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
