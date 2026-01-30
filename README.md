@@ -40,6 +40,55 @@ Some interactive tables, such as our breaking changes and dependency history rel
 
 If you are creating a pull request, test your changes by rendering or previewing the site. Note that if this is your first time contributing, you will be asked to sign a contributor license agreement (CLA).
 
+### Using the Cursor documentation rule
+
+If you use [Cursor](https://cursor.sh), we have a rule at `.cursor/rules/create-user-documentation.mdc` that helps generate and update documentation by pulling context from multiple sources.
+
+#### Setup
+
+The rule requires MCP (Model Context Protocol) servers configured in your `~/.cursor/mcp.json`:
+
+- **Shortcut MCP** — For story/epic context and acceptance criteria
+- **GitHub MCP** — For PR details and implementation changes  
+- **Notion MCP** (optional) — For feature specifications
+
+See [Cursor's MCP documentation](https://docs.cursor.com/context/model-context-protocol) for setup instructions.
+
+#### How to use
+
+Start a new Cursor chat and provide your typical inputs:
+
+```
+Create documentation for the new webhook notifications feature. 
+The Shortcut story is #1234. I'll attach some screenshots.
+```
+
+The rule will guide the AI to:
+1. Fetch the Shortcut story for requirements and acceptance criteria
+2. Look up linked GitHub PRs (Shortcut stories often reference backend/frontend PRs)
+3. Use your screenshots to verify UI elements
+4. Apply ValidMind style guide conventions
+5. Generate documentation using the appropriate template
+
+#### Tips
+
+- **Provide the epic ID if you have it:** Epics often contain richer context than individual stories — including links to backend/frontend PRs, related stories, and broader feature goals. If you know the epic ID, include it for better results.
+- **Finding PRs from Shortcut:** Shortcut stories and epics typically have GitHub PRs linked in descriptions or comments. The AI will automatically look up the parent epic when given a story ID to find these links.
+- **Provide screenshots:** Attach screenshots from demos to help the AI verify UI element names and user flows.
+- **Include your notes:** Add bullet points or draft content to guide the output focus.
+- **Specify the doc type:** Mention if you need a task (how-to), concept (explanation), or reference doc.
+
+#### Example prompts
+
+**New feature documentation:**
+> "Create docs for the attestation feature. Shortcut epic is #500. Here are screenshots from the demo."
+
+**Update existing docs:**
+> "Update the model registration guide to include bulk import from PR #567 in validmind/frontend."
+
+**Training materials:**
+> "Create a training module for administrators on configuring workflows. Shortcut story #890 has the requirements."
+
 ### Preview the docs site
 
 To get an accurate preview of the docs site, specify a Quarto profile:
@@ -323,6 +372,90 @@ env:
 
 - On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
 - Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
+
+## Monitoring
+
+The documentation site uses [Datadog Real User Monitoring (RUM)](https://docs.datadoghq.com/real_user_monitoring/) to track user interactions, page views, performance metrics, and JavaScript errors in staging, production, and Docker environments.
+
+Datadog RUM is configured via environment-specific HTML files in `site/environments/`:
+
+- `datadog-staging.html` — RUM configuration for the staging environment
+- `datadog-production.html` — RUM configuration for the production environment
+- `datadog-docker.html` — RUM configuration for the docker environment
+
+These files are automatically included in the HTML header when using the corresponding Quarto profiles (`staging`, `production`, or `docker`). The development environment does not include Datadog tracking.
+
+### What is tracked
+
+Datadog RUM automatically collects:
+
+- Page views and navigation patterns
+- User sessions and interactions
+- Performance metrics (load times, Core Web Vitals)
+- JavaScript errors and exceptions
+- Resource loading issues
+
+### Testing
+
+To verify Datadog is working correctly when previewing locally:
+
+```bash
+cd site
+quarto preview index.qmd --profile staging
+# or
+quarto preview index.qmd --profile production
+# or
+quarto preview index.qmd --profile docker
+```
+
+After navigating through the preview site, check your Datadog dashboard at **Digital Experience** > **Real User Monitoring** to confirm data is being received. Note that localhost URLs will appear in the data, which is expected for local testing.
+
+## Copyright headers
+
+All `.qmd`, `.yml`, and `.yaml` files in the documentation repository must include copyright headers as YAML comments. Our templates already include the header, but you might need to follow these steps if you added new files independently.
+
+### Add copyright headers
+
+1. To add copyright headers to all files that are missing them:
+
+    ```bash
+    cd site
+    make add-copyright
+    ```
+
+2. Commit your changes.
+
+### Verify copyright headers
+
+Copyright header verification runs automatically in CI but you can also test locally:
+
+```bash
+cd site
+make verify-copyright
+```
+
+If files are missing copyright headers, the workflow will fail with a list of files that need to be updated.
+
+### Update copyright headers
+
+Copyright does not need to be reasserted or updated annually, but you can update the headers by editing the copyrights file and re-running the make action to apply the headers:
+
+1. Edit `scripts/copyright.txt` to update the current year, for example `2027`:
+
+    ```
+    # Copyright © 2023-2027 ValidMind Inc. All rights reserved.
+    # See the LICENSE file in the root of this repository for details.
+    # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+    ```
+
+2. Add the updated copyright header:
+
+    ```
+    cd site
+    make add-copyright
+    ```
+
+3. Commit the changes.
 
 ## Vale linter
 
