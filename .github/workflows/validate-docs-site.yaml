@@ -94,6 +94,9 @@ jobs:
           }
           make generate-sitemap
 
+    - name: Add robots.txt for PR preview
+      run: cp site/environments/robots-staging.txt site/_site/robots.txt
+
     - name: Test for warnings or errors
       run: |
         if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
