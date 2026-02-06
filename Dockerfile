@@ -7,7 +7,7 @@ FROM nginx:alpine
 RUN apk add --no-cache jq
 
 # Security Upgrade Zone
-RUN apk upgrade --no-cache libxml2
+RUN apk upgrade --no-cache libxml2 libexpat
 
 # Copy the static site content to the Nginx HTML directory
 COPY site/_site /usr/share/nginx/html
