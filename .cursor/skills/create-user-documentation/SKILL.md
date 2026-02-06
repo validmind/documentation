@@ -1,0 +1,417 @@
+---
+name: create-user-documentation
+description: Generate or update user documentation for ValidMind software features. Use when creating .qmd files, updating docs based on Shortcut stories/epics, or following ValidMind style conventions.
+---
+
+# Create User Documentation
+
+Use this skill when creating new or updating existing user documentation for ValidMind software features.
+
+---
+
+## Workflow
+
+### 1. Gather Context from Typical Inputs
+
+Documentation updates typically start with these inputs from the writer:
+
+#### Shortcut Context (Primary Source)
+The writer provides Shortcut story/epic IDs or links. Use these to gather:
+- `stories-get-by-id` — Full story details, acceptance criteria, description
+- `epics-get-by-id` — Epic overview for larger features
+- `stories-search` — Find related stories in the same epic or with similar labels
+
+**Always check for parent epic:** When given a story ID, check if it belongs to an epic (`epic_id` field in the story). If so, fetch the epic with `epics-get-by-id` — epics often contain:
+- Broader feature context and goals
+- Links to backend/frontend GitHub PRs
+- Related stories that may affect documentation
+- Overall acceptance criteria beyond the individual story
+
+**Extract from Shortcut:**
+- Feature requirements and acceptance criteria
+- User-facing behavior descriptions
+- Edge cases and limitations
+- Related stories for cross-references
+- GitHub PR links (often found in epic or story descriptions/comments)
+
+#### Backend/Frontend PRs (Implementation Details)
+The writer provides PR numbers or links. Use these to understand what changed:
+- `get_pull_request` — PR description, context, reviewer comments
+- `get_pull_request_files` — List of changed files
+- `get_file_contents` — Read specific implementation files if needed
+
+**Extract from PRs:**
+- Actual UI changes and new fields/buttons
+- API changes or new endpoints
+- Configuration options
+- Implementation notes from PR description
+
+#### Screenshots from Demos
+The writer attaches screenshots showing the feature in action. Use these to:
+- Verify UI element names and locations
+- Understand the user flow
+- Identify what needs visual documentation
+- Confirm the feature matches Shortcut acceptance criteria
+
+#### Writer's Notes
+The writer provides human context such as:
+- Draft content or bullet points
+- Specific sections to focus on
+- Questions to address
+- Audience considerations
+- Links to existing docs that need updating
+
+#### Notion (Optional — Feature Specs)
+If available, the writer may provide Notion links to feature specs:
+- `notion-fetch` — Retrieve full page content
+- Look for: detailed requirements, UI mockups, stakeholder context
+
+### 2. Choose the Appropriate Template
+
+Templates are available in `internal/templates/`. Choose based on content type:
+
+#### Task Template (`internal/templates/task.qmd`)
+Step-by-step instructions for completing a specific action.
+- Use for: "How to configure X", "Setting up Y", "Managing Z"
+- Structure: Prerequisites → Steps → Troubleshooting → What's next
+- **Title convention:** Start with a verb, nouns in plural (e.g., "Register models in the inventory")
+
+#### Concept Template (`internal/templates/concept.qmd`)
+Understanding a feature or system.
+- Use for: "What is X?", "How X works", "Understanding Y"
+- Structure: Introduction → Key concepts → Examples → What's next
+- **Title convention:** Nouns only, end with `-overview` if introducing a product area
+
+#### Reference Template (`internal/templates/reference.qmd`)
+Technical specifications or API details.
+- Use for: Field descriptions, configuration options, API endpoints
+- Structure: Sections → Subsections → Additional Resources
+- **Note:** Only use if content cannot be generated programmatically
+
+#### Other Templates
+- `mermaid-diagrams.qmd` — For process flows and diagrams
+- `tachyons-flexbox.qmd` — For responsive column layouts
+- `single-source/` — For content shared between guides and training
+
+---
+
+## Style Guide Reference
+
+Follow the ValidMind style guide at `site/about/contributing/style-guide/` in the documentation repo. Key principles summarized below — refer to the full guide for details.
+
+### Voice and Tone
+
+**Human-first approach:**
+- Use **active voice** — "You'll need to review" not "The content will be reviewed by you"
+- Use **common language** — Define acronyms on first use
+- **Break it down** — Bulleted lists, visual aids, digestible parts
+
+**Inclusive and welcoming:**
+- Show empathy, acknowledge user frustrations
+- Focus on solutions, not problems
+- Use bias-free communication
+- Provide alt text for images
+
+**Conversational but professional:**
+- Address reader directly (second person: "you")
+- Use contractions where appropriate
+- Avoid stiff formality
+
+### Conventions
+
+**American English** spelling and grammar.
+
+**Titles:**
+- Task titles: Start with verb, nouns in plural ("Register models in the inventory")
+- Parent tasks: Use gerund ("Working with the model inventory")
+- Reference titles: Name only, or end with "reference"
+
+**Formatting:**
+
+| Element | Format | Example |
+|---------|--------|---------|
+| UI elements (interactive) | Bold | **{{< fa cubes >}} Inventory** |
+| Statuses/roles | Bubble class | `[Status Name]{.bubble}` |
+| First use of terms | Italics | *Uncertainty* is defined as... |
+| Code/params/files | Backticks | `.env` file, `classifier_full_suite` |
+| Smallcaps UI | Smallcaps class | `[model status]{.smallcaps}` |
+
+**UI element bolding:**
+- Bold UI elements only when the user must interact with them directly in a numbered step (e.g., "Click **Settings**").
+- Do not bold UI elements when mentioned descriptively (e.g., "tasks appear under the Tasks tab").
+
+**List punctuation:**
+- End list items with a period if the item contains a verb.
+- List items that are noun phrases only (no verb) do not need a period.
+
+**Callouts:**
+```markdown
+::: {.callout title="Note or tip"}
+Supplemental information.
+:::
+
+::: {.callout-important title="Warning"}
+Critical information or caveats.
+:::
+```
+
+**Links:**
+- Always use `.qmd` extension, not `.html`
+- Use absolute paths from site root: `/guide/feature/page.qmd`
+- Use margin footnotes instead of inline links in instructional text
+- Use variables for product names: `{{< var validmind.platform >}}`
+
+**Footnotes (at end of file):**
+```markdown
+<!-- FOOTNOTES -->
+
+[^1]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+```
+
+**Screenshots:**
+```markdown
+![Description](image.png){fig-alt="Detailed alt text" .screenshot}
+```
+
+**Responsive columns (use Tachyons, NOT CSS Grid):**
+```markdown
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+Column 1
+:::
+
+::: {.w-50-ns}
+Column 2
+:::
+
+::::
+```
+
+---
+
+## Required File Structure
+
+### YAML Header (Required)
+```yaml
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Title in Sentence Case"
+date: last-modified
+---
+```
+
+### Opening Paragraph
+- One sentence describing what the page covers and why it matters
+- No heading before this paragraph
+
+### Prerequisites Block (for tasks)
+```markdown
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Additional prerequisite
+- [x] Required role or permission[^1]
+
+:::
+```
+
+---
+
+## Navigation Updates
+
+When creating new pages, update the appropriate navigation file:
+
+- **Sidebar navigation:** `site/guide/_sidebar.yaml`, `site/get-started/_sidebar.yaml`, etc.
+- **Main config:** `site/_quarto.yml` for top-level pages
+- **Listing pages:** Parent `.qmd` files with `listing:` YAML for grid layouts
+
+**Always add aliases when moving/renaming files:**
+```yaml
+aliases:
+  - /old/path/to/page.html
+```
+
+---
+
+## Review Checklist
+
+Before finalizing:
+- [ ] Copyright header present
+- [ ] Title follows sentence case and naming conventions
+- [ ] Prerequisites listed (for tasks)
+- [ ] Steps are numbered and actionable
+- [ ] UI elements are bolded with Font Awesome icons
+- [ ] Links use `.qmd` extension and absolute paths
+- [ ] Images have descriptive alt text and `.screenshot` class
+- [ ] Footnotes for cross-references (not inline links)
+- [ ] American English spelling
+- [ ] Active voice throughout
+- [ ] Page added to navigation (`_sidebar.yaml` or `_quarto.yml`)
+
+---
+
+## Example Prompts
+
+**Creating new documentation:**
+> "Create documentation for the new attestation feature. Here's the Notion spec: [URL]. The Shortcut epic is #1234."
+
+**Updating existing documentation:**
+> "Update the model registration docs to include the new bulk import feature from PR #567."
+
+**From scratch with context:**
+> "I need to document how users configure webhook notifications. I'll provide screenshots and the Shortcut story has acceptance criteria."
+
+---
+
+## Training Materials (Revealjs)
+
+Training courses use a different format and style. Templates are in `site/training/training-templates/`.
+
+### Course Structure
+
+Each course lives in its own subdirectory: `/training/course-name/`
+
+A course consists of:
+1. **Course registration page** (`course-registration.qmd`) — Overview and sign-up
+2. **Course slides** (`course-slides.qmd`) — Revealjs presentation
+
+### Course Registration Template (`training-templates/course-registration.qmd`)
+
+```yaml
+---
+title: "Course Title"
+subtitle: For {{< var vm.product >}}
+listing:
+  - id: modules
+    type: grid
+    contents:
+    # IMPORTANT: Use .html path for revealjs output
+    - path: course-slides.html
+      title: "Module Title"
+      subtitle: "Module 1"
+      description: "{{< fa check >}} Learning point 1 <br> {{< fa check >}} Learning point 2"
+      reading-time: "30"
+---
+```
+
+### Course Slides Template (`training-templates/course-slides.qmd`)
+
+**YAML Header:**
+```yaml
+---
+title: "Module Title"
+subtitle: "Course Name — Module # of #"
+lightbox: true
+format:
+  revealjs:
+    include-in-header:
+      - text: |
+          <script src="/training/assets/vmurl-settings.js"></script>
+    theme: [default, ../assets/slides.scss]
+    slide-number: true
+    footer: "{{< var validmind.training >}} | [Home {{< fa person-walking-dashed-line-arrow-right >}}](/training/training.qmd)"
+    revealjs-plugins:
+      - slideover
+  html:
+    output-file: _course-slides.html
+    search: false
+title-slide-attributes:
+  data-background-color: "#083E44"
+  data-background-image: "../assets/home-hero.svg"
+---
+```
+
+### Training-Specific Conventions
+
+**Links:** Use inline links (not footnotes) — footnotes don't display in presentation mode.
+
+**Section Headers:** Use background colors/images for major sections:
+```markdown
+# Section Title {background-color="#083E44" background-image="/assets/img/about-us-esphere.svg"}
+```
+
+**Interactive iFrame Embeds:**
+```markdown
+## {background-iframe="https://app.prod.validmind.ai/" data-preload="yes"}
+
+:::: {.slideover--r}
+Right-aligned modal content over the live platform.
+::::
+```
+
+**Slideover Positions:**
+- `.slideover--r` — Right-aligned
+- `.slideover--l` — Left-aligned
+- `.slideover--t` — Top-aligned
+- `.slideover--b` — Bottom-aligned
+
+**Slideover Options:**
+- `.auto-collapse` — Auto-collapse after 5 seconds
+- `.auto-collapse-10` — Auto-collapse after 10 seconds
+- `.three-quarters`, `.half`, `.third` — Width options
+
+**Scrollable Content:**
+```markdown
+## {.scrollable}
+
+:::: {.columns}
+::: {.column width="30%"}
+Summary content
+:::
+
+::: {.column width="70%" .bl .pl4}
+Detailed instructions (scrollable)
+:::
+::::
+```
+
+**Embed Callout (within slideovers):**
+```markdown
+::: {.embed}
+Important information styled as a nested callout.
+:::
+```
+
+**Learning Objectives Format:**
+```markdown
+# Learning objectives {.center}
+
+_"As a {{ role }} who ... {{< var vm.product >}}, I want to learn how to {{ task A }}, {{ task B }}, and {{ task C }}."_
+```
+
+**Summary Slide Format:**
+```markdown
+In this module, you learned how to:
+
+- [x] Task 1
+- [x] Task 2
+- [x] Task 3
+```
+
+---
+
+## MCP Tool Reference
+
+### Notion
+- `notion-search` — Find pages/databases by keyword
+- `notion-fetch` — Get full page content by URL or ID
+
+### Shortcut
+- `stories-search` — Find stories by various filters
+- `stories-get-by-id` — Get full story details
+- `epics-get-by-id` — Get epic details
+- `iterations-get-active` — Current sprint context
+
+### GitHub
+- `list_pull_requests` — Find PRs by state/branch
+- `get_pull_request` — Full PR details
+- `get_pull_request_files` — Changed files in PR
+- `list_commits` — Recent commits
+- `get_file_contents` — Read specific files
