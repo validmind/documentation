@@ -21,10 +21,10 @@ SPECIAL_TITLES = {
 
 
 def dir_to_title(dirname: str) -> str:
-    """Convert directory name to sidebar display title."""
+    """Convert directory name to sidebar display title (sentence-style capitalization)."""
     if dirname in SPECIAL_TITLES:
         return SPECIAL_TITLES[dirname]
-    return dirname.replace("_", " ").title()
+    return dirname.replace("_", " ").capitalize()
 
 
 def main() -> None:
