@@ -22,6 +22,7 @@ You need:
 
 - [Quarto CLI](https://quarto.org/docs/get-started/)
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
+- To use Cursor to author documentation, the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
 ### Additional dependencies
@@ -42,37 +43,7 @@ If you are creating a pull request, test your changes by rendering or previewing
 
 ### Using the Cursor documentation skill
 
-If you use [Cursor](https://cursor.sh), [validmind/skills](https://github.com/validmind/skills) will help you author content.
-
-The [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill assists with generating and updating documentation by pulling context from multiple sources.
-#### Prerequisties
-
-Make sure you have the Skills repo cloned locally under your ValidMind directory:
-
-```bash
-gh repo clone validmind/skills
-```
-#### Installation
-
-1. Open **Cursor Settings** (Cmd+Shift+J on Mac, Ctrl+Shift+J on Windows/Linux)
-2. Navigate to **Rules**
-3. Click **Add Rule** in the Project Rules section
-4. Select **Remote Rule (Github)**
-5. Enter the repository URL: `https://github.com/validmind/skills`
-
-#### Setup
-
-The skill requires MCP (Model Context Protocol) servers configured in your `~/.cursor/mcp.json`:
-
-- **Shortcut MCP** — For story/epic context and acceptance criteria
-- **GitHub MCP** — For PR details and implementation changes
-- **Notion MCP** (optional) — For feature specifications
-
-See [Cursor's MCP documentation](https://docs.cursor.com/context/model-context-protocol) for setup instructions.
-
-#### How to use
-
-Start a new Cursor chat and provide your typical inputs:
+If you use [Cursor](https://cursor.sh), the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill helps you author content. Start a new Cursor chat and provide your inputs:
 
 ```
 Create documentation for the new webhook notifications feature. 
