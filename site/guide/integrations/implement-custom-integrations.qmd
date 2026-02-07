@@ -1,0 +1,225 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Implement custom integrations"
+date: last-modified
+---
+
+Connect {{< var vm.product >}} to third-party systems that aren't supported out of the box by building custom integrations using our reference API.
+
+Custom integrations let you link resources, such as AI systems or models, from internal registries, proprietary platforms, or any service you control to the {{< var vm.product >}} model inventory.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You can manage permissions.[^1]
+- [x] Your integration service is deployed and accessible from {{< var vm.product >}}.
+- [x] You have the endpoint URL and API key for your integration service.
+- [x] A secret containing your API key exists in integration secrets.[^2]
+
+:::
+
+## How custom integrations work
+
+To create a custom integration, you build a service that implements the reference API endpoints:
+
+1. Build a service that implements the required endpoints and connects to your data sources.
+2. Deploy your service at a URL accessible to {{< var vm.product >}}.
+3. Configure a custom integration in {{< var vm.product >}} that points to your service URL.
+4. After implementation, your users can browse and link resources from your system to records in the model inventory.
+
+Data flows bidirectionally — {{< var vm.product >}} reads your data and can write back metadata to enable linking.
+
+```{mermaid}
+flowchart LR
+    VM[ValidMind Platform]
+    API[Your API service]
+    DATA[Your data sources]
+    
+    VM <-->|Reference API| API
+    API <--> DATA
+```
+
+## Reference API
+
+The reference API defines the HTTP endpoints your service must implement. {{< var vm.product >}} calls these endpoints to discover and synchronize resources.
+
+::: {.callout title="Reference implementation"}
+A reference implementation with sample code is available. Contact your ValidMind representative for access.
+:::
+
+### Required endpoints
+
+Your service must expose these endpoints at the `/api/v1` base path:
+
+**List models**
+: `GET /models` — Returns all models from your system. Supports optional `?resource_type=` filter.
+
+**Get model**
+: `GET /models/{id}` — Returns a specific model by its unique identifier.
+
+**Update model** (optional)
+: `PUT /models/{id}` — Accepts metadata updates from {{< var vm.product >}}, enabling bidirectional sync.
+
+**Health check**
+: `GET /health` — Returns the connection status so users can test the integration.
+
+### Optional endpoints
+
+**List tickets**
+: `GET /tickets` — Returns tickets or findings from your system.
+
+**Get ticket**
+: `GET /tickets/{id}` — Returns a specific ticket by ID.
+
+**Schema**
+: `GET /schema` — Returns field definitions to enable formula and workflow access to your integration data.
+
+**Resource types**
+: `GET /resource-types` — Returns available resource categories for filtering in the UI.
+
+### Model response format
+
+Your models endpoint should return objects with these fields:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `id` | Yes | Unique identifier |
+| `name` | Yes | Human-readable name |
+| `status` | No | Lifecycle status (active, training, deprecated) |
+| `resource_type` | No | Category for filtering (ml_model, llm, agent) |
+| `metadata` | No | Flexible object with additional fields |
+| `created_at` | No | ISO 8601 timestamp |
+| `updated_at` | No | ISO 8601 timestamp |
+
+### Authentication
+
+{{< var vm.product >}} authenticates requests using the `X-API-Key` header. Your service should validate this key and return `401 Unauthorized` if invalid or missing.
+
+### Bidirectional sync
+
+When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} model identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
+
+::: {.callout collapse="true" title="Code examples"}
+
+**GET /models response**
+
+```json
+[
+  {
+    "id": "model-001",
+    "name": "fraud-detection-xgboost",
+    "status": "active",
+    "resource_type": "ml_model",
+    "metadata": {
+      "framework": "xgboost",
+      "version": "2.1.3"
+    },
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-22T14:20:00Z"
+  }
+]
+```
+
+**PUT /models/{id} request body** (what {{< var vm.product >}} sends)
+
+```json
+{
+  "vm_cuid": "mdl_abc123xyz"
+}
+```
+
+**Health check response**
+
+```json
+{
+  "status": "healthy"
+}
+```
+
+**Error response format**
+
+```json
+{
+  "detail": "Model not found"
+}
+```
+
+:::
+
+## Set up custom integrations
+
+### Best practices
+
+**Secure your service**
+: Deploy your integration service behind HTTPS. Validate the API key on every request.
+
+**Handle errors gracefully**
+: Return appropriate HTTP status codes (`400`, `401`, `404`, `500`) and error messages so users can troubleshoot connection issues.
+
+**Paginate large responses**
+: If your external system contains many resources, implement pagination to keep responses fast.
+
+**Monitor availability**
+: Track the health of your integration service. {{< var vm.product >}} displays connection status in the UI, so users notice outages quickly.
+
+**Version your API**
+: Include version information in your API path (`/api/v1/`) to support future changes without breaking existing integrations.
+
+### Add a custom integration
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Connections**.
+
+3. Click **{{< fa plus >}} Add Connection**.
+
+4. In the modal that opens, select **Custom Integration**.
+
+5. Enter the:
+
+   - **[integration name]{.smallcaps}** — A display name to identify this integration.
+   - **[description]{.smallcaps}** (optional) — Additional details about the intended usage.
+   - **[endpoint url]{.smallcaps}** — The base URL of your deployed integration that implements the reference API.
+   - **[api key]{.smallcaps}** — Select a secret containing the API key for authenticating with your integration.
+   - **[integration types]{.smallcaps}** — Select which types of objects this integration provides:
+     - **Model Registry** — Sync models from your external system.
+     - **Artifact / Ticket Source** — Sync artifacts or tickets from your external system.
+   - **[initial status]{.smallcaps}** — Set to `Operational` to enable immediately or `Disabled` to finish setup later.
+
+6. Click **Save Integration**.
+
+7. Test the connection to verify your service is reachable:
+
+   a. Hover over the custom integration you created.
+   
+   b. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa circle-check >}} Test Connection**.
+   
+   If the test succeeds, the message **{{< fa check-circle >}} Connection successful** displays.
+
+### Link resources
+
+After configuring your custom integration, link resources to models in the inventory:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a model by clicking on it.
+
+3. In the right sidebar, locate your custom integration connection.
+
+4. Hover over the connection.
+
+5. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa link >}} Link Model**.
+
+6. In the modal that opens, select the resource from your external system.
+
+7. Click **Link Model**.
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Manage secrets](manage-secrets.qmd)
