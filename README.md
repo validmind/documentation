@@ -42,8 +42,16 @@ If you are creating a pull request, test your changes by rendering or previewing
 
 ### Using the Cursor documentation skill
 
-If you use [Cursor](https://cursor.sh), we have a skill at [validmind/skills](https://github.com/validmind/skills) that helps generate and update documentation by pulling context from multiple sources.
+If you use [Cursor](https://cursor.sh), [validmind/skills](https://github.com/validmind/skills) will help you author content.
 
+The [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill assists with generating and updating documentation by pulling context from multiple sources.
+#### Prerequisties
+
+Make sure you have the Skills repo cloned locally under your ValidMind directory:
+
+```bash
+gh repo clone validmind/skills
+```
 #### Installation
 
 1. Open **Cursor Settings** (Cmd+Shift+J on Mac, Ctrl+Shift+J on Windows/Linux)
