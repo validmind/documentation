@@ -56,6 +56,56 @@ Your calculated field is grouped under `Model Risk` inventory fields, and can on
 :::
 :::
 
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Example — Date arithmetic and vm_today
+
+Formulas can use date and time types for scheduling and countdowns. The following are available in your formula:
+
+| Name | Description |
+|------|-------------|
+| `vm_today` | Today's date (updates each time the formula runs) |
+| `date` | Python's `datetime.date` class |
+| `datetime` | Python's `datetime.datetime` class |
+| `timedelta` | Duration in days, seconds, or microseconds |
+| `relativedelta` | Duration in months, years, etc. (from `dateutil`) |
+
+**Next review date** — Add an interval to an approval date based on risk tier:
+
+```python
+def formula(params):
+    if params.dmApprovedDate == "":
+        return "N/A"
+    approved_date = date.fromtimestamp(int(params.dmApprovedDate) / 1000)
+    review_frequency = {
+        "Tier 1": relativedelta(months=3),
+        "Tier 2": relativedelta(months=6),
+        "Tier 3": relativedelta(years=1),
+    }
+    frequency = review_frequency.get(params.dmRiskTier)
+    if not frequency:
+        return "N/A"
+    next_review_date = approved_date + frequency
+    return next_review_date.isoformat()
+```
+
+**Days remaining** — Use `vm_today` to show a countdown to the next review (formula re-evaluates so the countdown updates over time):
+
+```python
+def formula(params):
+    if not params.nextReviewDate:
+        return "N/A"
+    next_review = date.fromisoformat(params.nextReviewDate)
+    difference = next_review - vm_today
+    return f"{difference.days} days remaining"
+```
+
+**Note:** Date fields are passed into formulas as millisecond timestamps; use `date.fromtimestamp(int(params.fieldName) / 1000)` to convert. Formula results are strings — use `.isoformat()` for date values.
+
+:::
+:::
+
 
 ::::
 
