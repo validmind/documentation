@@ -48,7 +48,7 @@ def update_sidebar(base: Path, subdirs: list) -> None:
     for d in subdirs:
         title = dir_to_title(d)
         lines.append(f'            - section: "{title}"')
-        lines.append(f'              contents: "notebooks/use_cases/{d}/**"')
+        lines.append(f'              contents: "notebooks/use_cases/{d}/**/*.ipynb"')
 
     new_block = "\n".join(lines)
 
@@ -71,7 +71,7 @@ def update_sidebar(base: Path, subdirs: list) -> None:
             r'          file: developer/samples-jupyter-notebooks\.qmd\n)'
             r'          contents:\n'
             r'(            - (?:text|section): "[^"]+"\n'
-            r'              contents: "notebooks/(?:code_samples|use_cases)/[^"]+\*\*"\n)*',
+            r'              contents: "notebooks/(?:code_samples|use_cases)/[^"]+\*\*(?:/\*\.ipynb)?"\n)*',
             re.MULTILINE,
         )
         match = pattern.search(text)
