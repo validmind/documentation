@@ -138,6 +138,51 @@ These directories may have sub-directories depending on their size and grouped s
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 
+### Generated documentation
+
+Some documentation content is auto-generated from backend source files. These scripts ensure the docs stay in sync with the codebase.
+
+#### Permissions documentation
+
+The permissions tables in `site/guide/configuration/manage-permissions.qmd` are auto-generated from the backend source files. To regenerate:
+
+```bash
+python scripts/generate_permissions_docs.py
+```
+
+**Requirements:**
+- The `backend` repo must be cloned at `../backend/` relative to this repo
+- Python 3.9+
+
+The script reads from:
+- `backend/src/backend/templates/platform_resources/data.json` — resource and action definitions
+- `backend/src/backend/templates/platform_resources/org_initials.json` — role permission assignments
+
+Output: `site/guide/configuration/_permissions-generated.qmd`
+
+Run this script when backend permission definitions change to keep documentation in sync.
+
+#### Template schema documentation
+
+The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. To regenerate:
+
+```bash
+pip install json-schema-for-humans
+python scripts/generate_template_schema_docs.py
+```
+
+**Requirements:**
+- The `backend` repo must be cloned at `../backend/` relative to this repo
+- Python 3.9+
+- `json-schema-for-humans` package installed
+
+The script reads from:
+- `backend/src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json` — template schema definition
+
+Output: `site/guide/templates/_template-schema-generated.html`
+
+Run this script when the backend template schema changes to keep documentation in sync.
+
 #### Stylesheet organization (IN PROGRESS)
 
 The site uses a modular stylesheet architecture to maintain organized and maintainable styles:
