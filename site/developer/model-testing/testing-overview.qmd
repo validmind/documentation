@@ -7,83 +7,108 @@ date: last-modified
 aliases:
   - /guide/testing-overview.html
 listing:
-  - id: tests-beginner
+  - id: explore-tests
+    type: grid
+    grid-columns: 3
+    max-description-length: 350
+    sort: false
+    fields: [title, description]
+    contents:
+    - ../../notebooks/how_to/tests/explore_tests/explore_tests.ipynb
+    - ../../notebooks/how_to/tests/explore_tests/explore_test_suites.ipynb
+    - test-sandbox.qmd
+  - id: run-tests
     type: grid
     grid-columns: 2
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents: 
-    - ../../notebooks/how_to/run_tests/1_run_dataset_based_tests.ipynb
-#    - ../../notebooks/archive/configure_test_parameters.ipynb
-    - ../../notebooks/code_samples/custom_tests/implement_custom_tests.ipynb
-  - id: tests-explore
-    type: grid
-    max-description-length: 250
+    max-description-length: 350
     sort: false
     fields: [title, description]
     contents:
-    - ../../notebooks/how_to/explore_tests.ipynb
-    - ../../notebooks/how_to/explore_test_suites.ipynb
-    - test-sandbox.qmd
-
-  - id: tests-intermediate
-    type: grid
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents:
-    - ../../notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb
-    - ../../notebooks/how_to/configure_dataset_features.ipynb
-    - ../../notebooks/how_to/run_documentation_sections.ipynb
-    - ../../notebooks/how_to/run_documentation_tests_with_config.ipynb
-    - ../../notebooks/how_to/run_tests_that_require_multiple_datasets.ipynb
-    - ../../notebooks/how_to/run_unit_metrics.ipynb
-  - id: tests-advanced
-    type: grid
-    max-description-length: 250
-    sort: false
-    fields: [title, description]
-    contents: 
-    - ../../notebooks/how_to/document_multiple_results_for_the_same_test.ipynb
-    - ../../notebooks/how_to/load_datasets_predictions.ipynb
-    - ../../notebooks/how_to/understand_utilize_rawdata.ipynb
+    - ../../notebooks/how_to/tests/run_tests/1_run_dataset_based_tests.ipynb
+    - ../../notebooks/how_to/tests/run_tests/2_run_comparison_tests.ipynb
   - id: tests-custom
     type: grid
     max-description-length: 250
     sort: false
     fields: [title, description]
-    contents: 
-    - ../../notebooks/code_samples/custom_tests/implement_custom_tests.ipynb
-    - ../../notebooks/code_samples/custom_tests/integrate_external_test_providers.ipynb
-    - path: /notebooks/how_to/customize_test_result_descriptions.ipynb
-      title: "Customize test result descriptions"
-      description: "Learn how to take control over the context that drives test description generation."
+    contents:
+    - ../../notebooks/how_to/tests/custom_tests/implement_custom_tests.ipynb
+    - ../../notebooks/how_to/tests/custom_tests/integrate_external_test_providers.ipynb
 ---
 
 {{< var vm.product >}} provides many built-in tests and test suites, which help you produce documentation during stages of the model lifecycle, such as model development and validation, where you need to ensure that your work satisfies regulatory and risk management requirements.
 
-## Getting started
+## Explore tests
 
-Start by running a pre-made test, then modify it, and finally create your own test:
+Start by exploring {{<var validmind.developer >}}'s available tests and tests suites using the {{< var vm.developer >}} or the interactive test sandbox:
 
-:::{#tests-beginner}
+:::{#explore-tests}
 :::
 
-## Explore tests and test suites
 
-Next, find available tests and test suites using the {{< var vm.developer >}} or the interactive test sandbox:
+### When do I use tests and test suites?
 
-:::{#tests-explore}
+While you have the flexibility to decide when to use which {{< var vm.product >}} tests, we have identified a few typical scenarios with their own characteristics and needs:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns}
+
+#### Dataset testing
+
+To document and validate your dataset:
+
+- For generic tabular datasets: use the [`tabular_dataset`](/validmind/validmind/test_suites/tabular_datasets.qmd){target="_blank"} test suite.
+- For time-series datasets: use the [`time_series_dataset`](/validmind/validmind/test_suites/time_series.qmd#timeseriesdataset){target="_blank"} test suite. 
+
 :::
 
+::: {.w-30-ns}
+
+#### Model testing
+
+To document and validate your model:
+
+- For binary classification models: use the [`classifier`](/validmind/validmind/test_suites/classifier.qmd){target="_blank"} test suite.
+- For time series models: use the [`timeseries`](/validmind/validmind/test_suites/time_series.qmd){target="_blank"} test suite.
+
+:::
+
+::: {.w-30-ns}
+
+#### End-to-end testing
+
+To document a binary classification model and the relevant dataset end-to-end: 
+
+Use the [`classifier_full_suite`](/validmind/validmind/test_suites/classifier.qmd#classifierfullsuite){target="_blank"} test suite.
+
+:::
+
+::::
+
+## Run tests
+
+Next, learn how to use the {{<var validmind.developer >}} to run tests on datasets and models:
+
+:::{#run-tests}
+:::
+
+::: {.column-margin}
 ::: {.grid}
 ::: {.g-col-8}
 {{< video https://www.youtube.com/embed/5J7wysDIXgI?si=KPkFhx3O6NknijRf title='How do I add tests?' >}}
 :::
 :::
+:::
 
-## Intermediate
+### Can I use my own tests?
+
+Absolutely! {{< var vm.product >}} supports custom tests that you develop yourself or that are provided by third-party test libraries, also referred to as _test providers_. We provide instructions with code examples that you can adapt:
+
+:::{#tests-custom}
+:::
+
+<!-- ## Intermediate
 
 Building on previous sections, add your own test provider, set up datasets, run tests on individual sections in your model documentation, and more:
 
@@ -135,14 +160,9 @@ Use the [`classifier_full_suite`](/validmind/validmind/test_suites/classifier.qm
 
 :::
 
-::::
+:::: -->
 
-## Can I use my own tests?
 
-Absolutely! {{< var vm.product >}} supports custom tests that you develop yourself or that are provided by third-party test libraries, also referred to as _test providers_. We provide instructions with code examples that you can adapt:
-
-:::{#tests-custom}
-:::
 
 ## {{< var validmind.api >}} reference
 
