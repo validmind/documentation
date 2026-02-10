@@ -18,10 +18,16 @@ from pathlib import Path
 # Display title for directories that need fixed capitalization (e.g. acronyms)
 SPECIAL_TITLES = {
     "data_and_datasets": "Data and datasets",
+    "tests": "Testing",
 }
 
-# Subdirectories to exclude
-EXCLUDED_DIRS = {"tests"}
+# Subdirectories to exclude from the sidebar only (tests has its own
+# dedicated section in the sidebar already).
+SIDEBAR_EXCLUDED_DIRS = {"tests"}
+
+# Directories whose notebooks live in nested subdirectories and need a
+# recursive glob (**/*.ipynb) instead of a flat one (*.ipynb).
+RECURSIVE_GLOB_DIRS = {"tests"}
 
 
 def dir_to_title(dirname: str) -> str:
@@ -130,6 +136,7 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
     listing_lines = ["listing:"]
     for d in subdirs:
         listing_id = dir_to_listing_id(d)
+        glob = "**/*.ipynb" if d in RECURSIVE_GLOB_DIRS else "*.ipynb"
         listing_lines.append(f"  - id: {listing_id}")
         listing_lines.append(f"    type: grid")
         listing_lines.append(f"    grid-columns: 2")
@@ -137,7 +144,7 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
         listing_lines.append(f"    max-description-length: 350")
         listing_lines.append(f'    image-height: "100%"')
         listing_lines.append(f"    fields: [title, description, reading-time]")
-        listing_lines.append(f'    contents: "../../notebooks/how_to/{d}/*.ipynb"')
+        listing_lines.append(f'    contents: "../../notebooks/how_to/{d}/{glob}"')
 
     # --- Update YAML front matter ---
     frontmatter, body = _split_frontmatter(text)
@@ -154,7 +161,7 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
     fm_lines.append(closing)
 
     # --- Build new panel-tabset block ---
-    tabset_lines = ["## Feature guides by topic", "", ":::{.panel-tabset}", ""]
+    tabset_lines = ["## How-to guides by topic", "", ":::{.panel-tabset}", ""]
     for d in subdirs:
         listing_id = dir_to_listing_id(d)
         title = dir_to_title(d)
@@ -168,9 +175,9 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
 
     new_tabset = "\n".join(tabset_lines)
 
-    # Replace everything from "## Feature guides by topic" to end of body.
+    # Replace everything from "## How-to guides by topic" to end of body.
     feature_pattern = re.compile(
-        r"## Feature guides by topic\n?.*", re.DOTALL
+        r"## How-to guides by topic\n?.*", re.DOTALL
     )
     if feature_pattern.search(body):
         body = feature_pattern.sub(new_tabset, body)
@@ -198,14 +205,20 @@ def main() -> None:
         )
     how_to = base / "notebooks" / "how_to"
 
-    subdirs = sorted(
-        d
-        for d in os.listdir(how_to)
-        if (how_to / d).is_dir() and d not in EXCLUDED_DIRS
+    all_subdirs = sorted(
+        d for d in os.listdir(how_to) if (how_to / d).is_dir()
     )
 
-    update_sidebar(base, subdirs)
-    update_feature_overview(base, subdirs)
+    # Sidebar excludes tests (it has its own dedicated section).
+    sidebar_subdirs = [d for d in all_subdirs if d not in SIDEBAR_EXCLUDED_DIRS]
+
+    # Feature overview includes all dirs, with tests listed first.
+    overview_subdirs = [d for d in all_subdirs if d in SIDEBAR_EXCLUDED_DIRS] + [
+        d for d in all_subdirs if d not in SIDEBAR_EXCLUDED_DIRS
+    ]
+
+    update_sidebar(base, sidebar_subdirs)
+    update_feature_overview(base, overview_subdirs)
 
 
 if __name__ == "__main__":
