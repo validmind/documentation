@@ -2,9 +2,9 @@
 # Refer to the LICENSE file in the root of this repository for details.
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
 """
-Update developer/how-to/feature-overview.qmd so that each subdirectory of
-notebooks/how_to/ (excluding tests/) is listed explicitly in alphabetical
-order, with listings in the YAML front matter and a panel-tabset in the body.
+Update developer/_sidebar.yaml and developer/how-to/feature-overview.qmd
+so that each subdirectory of notebooks/how_to/ (excluding tests/) is listed
+explicitly in alphabetical order, with fixed capitalization where needed.
 
 Run from the site/ directory, e.g.:
     cd site && python scripts/developer-sidebar/update_how_tos.py
@@ -34,6 +34,71 @@ def dir_to_title(dirname: str) -> str:
 def dir_to_listing_id(dirname: str) -> str:
     """Convert a directory name to a listing id (hyphens instead of underscores)."""
     return dirname.replace("_", "-")
+
+
+def update_sidebar(base: Path, subdirs: list) -> None:
+    """Update developer/_sidebar.yaml with how-to subdirectories."""
+    sidebar_path = base / "developer" / "_sidebar.yaml"
+
+    if not sidebar_path.is_file():
+        raise SystemExit(f"Sidebar file not found: {sidebar_path}")
+
+    # Build the new contents block (YAML). Use "section" so Quarto renders
+    # expandable accordion items; "text" alone does not expand.
+    lines = [
+        "          contents:",
+    ]
+    for d in subdirs:
+        title = dir_to_title(d)
+        lines.append(f'            - section: "{title}"')
+        lines.append(f'              contents: "notebooks/how_to/{d}/**/*.ipynb"')
+
+    new_block = "\n".join(lines)
+
+    text = sidebar_path.read_text()
+
+    # Try to find and replace an existing expanded contents block under
+    # "Use library features" (re-run case).
+    pattern = re.compile(
+        r'(        - text: "Use library features"\n'
+        r"          file: developer/how-to/feature-overview\.qmd\n)"
+        r"          contents:\n"
+        r'(            - (?:text|section): "[^"]+"\n'
+        r'              contents: "notebooks/how_to/[^"]+\*\*(?:/\*\.ipynb)?"\n)*',
+        re.MULTILINE,
+    )
+    match = pattern.search(text)
+    if match:
+        # Replace existing contents block, keeping the header lines.
+        text = (
+            text[: match.start()]
+            + match.group(1)
+            + new_block
+            + "\n"
+            + text[match.end() :]
+        )
+    else:
+        # First run: insert contents block right after the file: line.
+        insert_pattern = re.compile(
+            r'(        - text: "Use library features"\n'
+            r"          file: developer/how-to/feature-overview\.qmd\n)",
+            re.MULTILINE,
+        )
+        insert_match = insert_pattern.search(text)
+        if not insert_match:
+            raise SystemExit(
+                'Could not find "Use library features" entry in sidebar. '
+                "Has the sidebar format changed?"
+            )
+        text = (
+            text[: insert_match.end()]
+            + new_block
+            + "\n"
+            + text[insert_match.end() :]
+        )
+
+    sidebar_path.write_text(text)
+    print(f"Updated {sidebar_path} with {len(subdirs)} how-to directories.")
 
 
 def _split_frontmatter(text: str):
@@ -139,6 +204,7 @@ def main() -> None:
         if (how_to / d).is_dir() and d not in EXCLUDED_DIRS
     )
 
+    update_sidebar(base, subdirs)
     update_feature_overview(base, subdirs)
 
 
