@@ -22,6 +22,7 @@ You need:
 
 - [Quarto CLI](https://quarto.org/docs/get-started/)
 - The Quarto extension for your IDE, such as [VS Code](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
+- To use Cursor to author documentation, the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
 ### Additional dependencies
@@ -40,40 +41,28 @@ Some interactive tables, such as our breaking changes and dependency history rel
 
 If you are creating a pull request, test your changes by rendering or previewing the site. Note that if this is your first time contributing, you will be asked to sign a contributor license agreement (CLA).
 
-### Using the Cursor documentation rule
+### Using the Cursor documentation skill
 
-If you use [Cursor](https://cursor.sh), we have a rule at `.cursor/rules/create-user-documentation.mdc` that helps generate and update documentation by pulling context from multiple sources.
-
-#### Setup
-
-The rule requires MCP (Model Context Protocol) servers configured in your `~/.cursor/mcp.json`:
-
-- **Shortcut MCP** — For story/epic context and acceptance criteria
-- **GitHub MCP** — For PR details and implementation changes  
-- **Notion MCP** (optional) — For feature specifications
-
-See [Cursor's MCP documentation](https://docs.cursor.com/context/model-context-protocol) for setup instructions.
-
-#### How to use
-
-Start a new Cursor chat and provide your typical inputs:
+If you use [Cursor](https://cursor.sh), the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill helps you author content. Start a new Cursor chat and provide your inputs:
 
 ```
 Create documentation for the new webhook notifications feature. 
 The Shortcut story is #1234. I'll attach some screenshots.
 ```
 
-The rule will guide the AI to:
+The skill guides the AI to:
 1. Fetch the Shortcut story for requirements and acceptance criteria
 2. Look up linked GitHub PRs (Shortcut stories often reference backend/frontend PRs)
 3. Use your screenshots to verify UI elements
 4. Apply ValidMind style guide conventions
 5. Generate documentation using the appropriate template
 
+You can also invoke the skill explicitly by typing `/create-user-documentation` in Agent chat.
+
 #### Tips
 
 - **Provide the epic ID if you have it:** Epics often contain richer context than individual stories — including links to backend/frontend PRs, related stories, and broader feature goals. If you know the epic ID, include it for better results.
-- **Finding PRs from Shortcut:** Shortcut stories and epics typically have GitHub PRs linked in descriptions or comments. The AI will automatically look up the parent epic when given a story ID to find these links.
+- **Finding PRs from Shortcut:** Shortcut stories and epics typically have GitHub PRs linked in descriptions or comments. The AI automatically looks up the parent epic when given a story ID to find these links.
 - **Provide screenshots:** Attach screenshots from demos to help the AI verify UI element names and user flows.
 - **Include your notes:** Add bullet points or draft content to guide the output focus.
 - **Specify the doc type:** Mention if you need a task (how-to), concept (explanation), or reference doc.
