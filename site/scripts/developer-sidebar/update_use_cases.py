@@ -79,9 +79,13 @@ def _build_section_yaml(
         # Has subdirectories — build an explicit contents list.
         lines.append(f"{prefix}  contents:")
 
-        # Include top-level notebooks (if any) with a non-recursive glob.
-        if _has_notebooks(full_path):
-            lines.append(f'{prefix}    - "notebooks/use_cases/{rel_path}/*.ipynb"')
+        # List top-level notebooks explicitly (bare glob strings in a YAML
+        # list are not resolved by Quarto).
+        for nb in sorted(
+            f for f in os.listdir(full_path)
+            if f.endswith(".ipynb") and (full_path / f).is_file()
+        ):
+            lines.append(f"{prefix}    - notebooks/use_cases/{rel_path}/{nb}")
 
         # Recurse into each subdirectory.
         for subdir in subdirs:
