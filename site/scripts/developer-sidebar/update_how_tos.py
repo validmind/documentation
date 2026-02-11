@@ -38,6 +38,53 @@ def dir_to_listing_id(dirname: str) -> str:
     return dirname.replace("_", "-")
 
 
+def _has_notebooks(directory: Path) -> bool:
+    """Check if a directory directly contains .ipynb files."""
+    return any(
+        f.endswith(".ipynb")
+        for f in os.listdir(directory)
+        if (directory / f).is_file()
+    )
+
+
+def _build_section_yaml(
+    how_to_base: Path, rel_path: str, dirname: str, indent: int
+) -> list[str]:
+    """Build YAML lines for a how-to section, nesting subdirectories.
+
+    If the directory has subdirectories, each one becomes a nested ``section``
+    (recursively).  Top-level notebooks within the directory are included via a
+    non-recursive glob (``*.ipynb``).  Leaf directories use a recursive glob
+    (``**/*.ipynb``) for simplicity.
+    """
+    full_path = how_to_base / rel_path
+    subdirs = sorted(d for d in os.listdir(full_path) if (full_path / d).is_dir())
+
+    prefix = " " * indent
+    title = dir_to_title(dirname)
+    lines = [f'{prefix}- section: "{title}"']
+
+    if not subdirs:
+        # Leaf directory — simple recursive glob.
+        lines.append(f'{prefix}  contents: "notebooks/how_to/{rel_path}/**/*.ipynb"')
+    else:
+        # Has subdirectories — build an explicit contents list.
+        lines.append(f"{prefix}  contents:")
+
+        # Include top-level notebooks (if any) with a non-recursive glob.
+        if _has_notebooks(full_path):
+            lines.append(f'{prefix}    - "notebooks/how_to/{rel_path}/*.ipynb"')
+
+        # Recurse into each subdirectory.
+        for subdir in subdirs:
+            sub_rel = f"{rel_path}/{subdir}"
+            lines.extend(
+                _build_section_yaml(how_to_base, sub_rel, subdir, indent + 4)
+            )
+
+    return lines
+
+
 def update_sidebar(base: Path, subdirs: list) -> None:
     """Update developer/_sidebar.yaml with how-to subdirectories."""
     sidebar_path = base / "developer" / "_sidebar.yaml"
@@ -45,28 +92,26 @@ def update_sidebar(base: Path, subdirs: list) -> None:
     if not sidebar_path.is_file():
         raise SystemExit(f"Sidebar file not found: {sidebar_path}")
 
+    how_to_base = base / "notebooks" / "how_to"
+
     # Build the new contents block (YAML). Use "section" so Quarto renders
     # expandable accordion items; "text" alone does not expand.
-    lines = [
-        "          contents:",
-    ]
+    lines = ["          contents:"]
     for d in subdirs:
-        title = dir_to_title(d)
-        lines.append(f'            - section: "{title}"')
-        lines.append(f'              contents: "notebooks/how_to/{d}/**/*.ipynb"')
+        lines.extend(_build_section_yaml(how_to_base, d, d, 12))
 
     new_block = "\n".join(lines)
 
     text = sidebar_path.read_text()
 
     # Try to find and replace an existing expanded contents block under
-    # "Use library features" (re-run case).
+    # "Use library features" (re-run case).  Match the header lines then
+    # consume all indented content lines (12+ spaces) that follow.
     pattern = re.compile(
         r'(        - text: "Use library features"\n'
         r"          file: developer/how-to/feature-overview\.qmd\n)"
         r"          contents:\n"
-        r'(            - (?:text|section): "[^"]+"\n'
-        r'              contents: "notebooks/how_to/[^"]+\*\*(?:/\*\.ipynb)?"\n)*',
+        r"(?:[ ]{12,}[^\n]*\n)*",
         re.MULTILINE,
     )
     match = pattern.search(text)
