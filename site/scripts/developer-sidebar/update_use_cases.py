@@ -33,6 +33,66 @@ def dir_to_listing_id(dirname: str) -> str:
     return dirname.replace("_", "-")
 
 
+def _has_notebooks(directory: Path) -> bool:
+    """Check if a directory directly contains .ipynb files."""
+    return any(
+        f.endswith(".ipynb")
+        for f in os.listdir(directory)
+        if (directory / f).is_file()
+    )
+
+
+def _has_notebooks_recursive(directory: Path) -> bool:
+    """Check if a directory or any of its descendants contains .ipynb files."""
+    for _root, _dirs, files in os.walk(directory):
+        if any(f.endswith(".ipynb") for f in files):
+            return True
+    return False
+
+
+def _build_section_yaml(
+    use_cases_base: Path, rel_path: str, dirname: str, indent: int
+) -> list[str]:
+    """Build YAML lines for a use-case section, nesting subdirectories.
+
+    If the directory has subdirectories that contain notebooks, each one
+    becomes a nested ``section`` (recursively).  Subdirectories without any
+    notebooks are ignored.  Top-level notebooks within the directory are
+    included via a non-recursive glob (``*.ipynb``).  Leaf directories use a
+    recursive glob (``**/*.ipynb``) for simplicity.
+    """
+    full_path = use_cases_base / rel_path
+    subdirs = sorted(
+        d
+        for d in os.listdir(full_path)
+        if (full_path / d).is_dir() and _has_notebooks_recursive(full_path / d)
+    )
+
+    prefix = " " * indent
+    title = dir_to_title(dirname)
+    lines = [f'{prefix}- section: "{title}"']
+
+    if not subdirs:
+        # Leaf directory — simple recursive glob.
+        lines.append(f'{prefix}  contents: "notebooks/use_cases/{rel_path}/**/*.ipynb"')
+    else:
+        # Has subdirectories — build an explicit contents list.
+        lines.append(f"{prefix}  contents:")
+
+        # Include top-level notebooks (if any) with a non-recursive glob.
+        if _has_notebooks(full_path):
+            lines.append(f'{prefix}    - "notebooks/use_cases/{rel_path}/*.ipynb"')
+
+        # Recurse into each subdirectory.
+        for subdir in subdirs:
+            sub_rel = f"{rel_path}/{subdir}"
+            lines.extend(
+                _build_section_yaml(use_cases_base, sub_rel, subdir, indent + 4)
+            )
+
+    return lines
+
+
 def update_sidebar(base: Path, subdirs: list) -> None:
     """Update developer/_sidebar.yaml with use case subdirectories."""
     sidebar_path = base / "developer" / "_sidebar.yaml"
@@ -40,15 +100,13 @@ def update_sidebar(base: Path, subdirs: list) -> None:
     if not sidebar_path.is_file():
         raise SystemExit(f"Sidebar file not found: {sidebar_path}")
 
+    use_cases_base = base / "notebooks" / "use_cases"
+
     # Build the new contents block (YAML). Use "section" so Quarto renders
     # expandable accordion items; "text" alone does not expand.
-    lines = [
-        '          contents:',
-    ]
+    lines = ["          contents:"]
     for d in subdirs:
-        title = dir_to_title(d)
-        lines.append(f'            - section: "{title}"')
-        lines.append(f'              contents: "notebooks/use_cases/{d}/**/*.ipynb"')
+        lines.extend(_build_section_yaml(use_cases_base, d, d, 12))
 
     new_block = "\n".join(lines)
 
@@ -63,15 +121,13 @@ def update_sidebar(base: Path, subdirs: list) -> None:
     elif old_single_code_samples in text:
         text = text.replace(old_single_code_samples, new_block, 1)
     else:
-        # Find the contents block and replace it (multi-line).
-        # Match either "Code samples" or "Use cases" as the heading text,
-        # and either code_samples or use_cases in the notebook paths.
+        # Find the contents block and replace it (multi-line).  Match the
+        # header lines then consume all indented content lines (12+ spaces).
         pattern = re.compile(
             r'(        - text: "(?:Code samples|Use cases)"\n'
-            r'          file: developer/samples-jupyter-notebooks\.qmd\n)'
-            r'          contents:\n'
-            r'(            - (?:text|section): "[^"]+"\n'
-            r'              contents: "notebooks/(?:code_samples|use_cases)/[^"]+\*\*(?:/\*\.ipynb)?"\n)*',
+            r"          file: developer/samples-jupyter-notebooks\.qmd\n)"
+            r"          contents:\n"
+            r"(?:[ ]{12,}[^\n]*\n)*",
             re.MULTILINE,
         )
         match = pattern.search(text)

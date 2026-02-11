@@ -47,18 +47,31 @@ def _has_notebooks(directory: Path) -> bool:
     )
 
 
+def _has_notebooks_recursive(directory: Path) -> bool:
+    """Check if a directory or any of its descendants contains .ipynb files."""
+    for _root, _dirs, files in os.walk(directory):
+        if any(f.endswith(".ipynb") for f in files):
+            return True
+    return False
+
+
 def _build_section_yaml(
     how_to_base: Path, rel_path: str, dirname: str, indent: int
 ) -> list[str]:
     """Build YAML lines for a how-to section, nesting subdirectories.
 
-    If the directory has subdirectories, each one becomes a nested ``section``
-    (recursively).  Top-level notebooks within the directory are included via a
-    non-recursive glob (``*.ipynb``).  Leaf directories use a recursive glob
-    (``**/*.ipynb``) for simplicity.
+    If the directory has subdirectories that contain notebooks, each one
+    becomes a nested ``section`` (recursively).  Subdirectories without any
+    notebooks are ignored.  Top-level notebooks within the directory are
+    included via a non-recursive glob (``*.ipynb``).  Leaf directories use a
+    recursive glob (``**/*.ipynb``) for simplicity.
     """
     full_path = how_to_base / rel_path
-    subdirs = sorted(d for d in os.listdir(full_path) if (full_path / d).is_dir())
+    subdirs = sorted(
+        d
+        for d in os.listdir(full_path)
+        if (full_path / d).is_dir() and _has_notebooks_recursive(full_path / d)
+    )
 
     prefix = " " * indent
     title = dir_to_title(dirname)
