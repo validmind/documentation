@@ -326,6 +326,8 @@ notebooks:
 	@rm -rf $(DEST_DIR_NB)/templates
 	@echo "Copying _metadata.yml into notebooks/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
+	@echo "Updating developer/_sidebar.yaml with code_samples directories ..."
+	@python scripts/update_code_samples_sidebar.py
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
