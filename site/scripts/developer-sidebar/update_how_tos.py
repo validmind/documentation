@@ -156,7 +156,7 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
     fm_lines.append(closing)
 
     # --- Build new panel-tabset block ---
-    tabset_lines = ["## How-to guides by topic", "", ":::{.panel-tabset}", ""]
+    tabset_lines = ["## How-to by topic", "", ":::{.panel-tabset}", ""]
     for d in subdirs:
         listing_id = dir_to_listing_id(d)
         title = dir_to_title(d)
@@ -170,9 +170,9 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
 
     new_tabset = "\n".join(tabset_lines)
 
-    # Replace everything from "## How-to guides by topic" to end of body.
+    # Replace everything from "## How-to by topic" to end of body.
     feature_pattern = re.compile(
-        r"## How-to guides by topic\n?.*", re.DOTALL
+        r"## How-to by topic\n?.*", re.DOTALL
     )
     if feature_pattern.search(body):
         body = feature_pattern.sub(new_tabset, body)
