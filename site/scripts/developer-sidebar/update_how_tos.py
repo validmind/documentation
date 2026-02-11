@@ -25,10 +25,6 @@ SPECIAL_TITLES = {
 # dedicated section in the sidebar already).
 SIDEBAR_EXCLUDED_DIRS = {"tests"}
 
-# Directories whose notebooks live in nested subdirectories and need a
-# recursive glob (**/*.ipynb) instead of a flat one (*.ipynb).
-RECURSIVE_GLOB_DIRS = {"tests"}
-
 
 def dir_to_title(dirname: str) -> str:
     """Convert directory name to display title (sentence-style capitalization)."""
@@ -136,7 +132,6 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
     listing_lines = ["listing:"]
     for d in subdirs:
         listing_id = dir_to_listing_id(d)
-        glob = "**/*.ipynb" if d in RECURSIVE_GLOB_DIRS else "*.ipynb"
         listing_lines.append(f"  - id: {listing_id}")
         listing_lines.append(f"    type: grid")
         listing_lines.append(f"    grid-columns: 2")
@@ -144,7 +139,7 @@ def update_feature_overview(base: Path, subdirs: list) -> None:
         listing_lines.append(f"    max-description-length: 350")
         listing_lines.append(f'    image-height: "100%"')
         listing_lines.append(f"    fields: [title, description, reading-time]")
-        listing_lines.append(f'    contents: "../../notebooks/how_to/{d}/{glob}"')
+        listing_lines.append(f'    contents: "../../notebooks/how_to/{d}/**/*.ipynb"')
 
     # --- Update YAML front matter ---
     frontmatter, body = _split_frontmatter(text)
