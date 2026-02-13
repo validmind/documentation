@@ -1,0 +1,74 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Configure analytics exports"
+date: last-modified
+---
+<!-- Shortcut: 14706 -->
+
+Configure scheduled exports of analytics datasets to cloud storage so BI tools such as Tableau, Snowflake, and Looker can consume models, findings, and workflow metrics in your preferred format.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You can manage workspace settings, including integrations.[^1]
+- [x] For cloud destinations, the required credentials exist as secrets (for example, AWS access keys) in Integration Secrets.[^2]
+
+:::
+
+## Open Analytics Exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+   The Analytics Export Configurations page opens. From here you create and manage scheduled exports.
+
+![Settings page with Integrations and Analytics Exports highlighted.](analytics-exports-settings.png){fig-alt="Settings page showing Integrations section with Analytics Exports option highlighted." .screenshot}
+
+## Create an analytics export
+
+1. On the Analytics Exports page, click **{{< fa plus >}} Create Analytics Export**.
+
+2. **Select datasets** — Choose which analytics datasets to export:
+
+   - In **Datasets**, select one or more datasets (for example, Inventory Models, Artifact - Validation Issue, Artifact - Change Management Record, Artifact - Model Limitation, Artifact - Policy Exception).
+   - Click **Next >**.
+
+![Create Analytics Export modal, step 1: Select Datasets with datasets dropdown.](analytics-exports-create-step1-datasets.png){fig-alt="Create Analytics Export modal showing Select Datasets step and datasets dropdown." .screenshot}
+
+3. **Configure destination** — Set the cloud storage destination and output settings:
+
+   - **[destination type]{.smallcaps}** — Choose **Amazon S3**, **Google Cloud Storage**, or **Azure Blob Storage** (when available).
+   - **[access key id]{.smallcaps}** — Select the secret that holds the access key or equivalent credential for the destination.
+   - **[secret access key]{.smallcaps}** — Select the secret that holds the secret key or equivalent credential.
+   - **[bucket]{.smallcaps}** — Enter the bucket or container name (for example, `my-analytics-bucket`).
+   - **[output path]{.smallcaps}** — Optionally edit the path template. The default `exports/{dataset}/{year}/{month}/{day}/{timestamp}` produces paths like `exports/models/2026/02/13/1771000840.parquet`. Supported placeholders include `{dataset}`, `{year}`, `{month}`, `{day}`, and `{timestamp}`.
+   - **[format]{.smallcaps}** — Choose **Parquet**, **CSV**, or **JSON Lines**.
+   - (Optional) Click **Test Connection** to verify the destination.
+   - Click **Next >**.
+
+![Create Analytics Export modal, step 2: Configure Destination with destination type, bucket, output path, and format.](analytics-exports-create-step2-destination.png){fig-alt="Create Analytics Export modal showing Configure Destination step with cloud storage and output settings." .screenshot}
+
+4. **Set schedule** — Define how often to export:
+
+   - **[schedule]{.smallcaps}** — Choose the frequency (for example, **Daily**).
+   - **[time (utc)]{.smallcaps}** — Choose the time of day in UTC (for example, 12:00 am).
+   - Click **Create Analytics Export**.
+
+![Create Analytics Export modal, step 3: Set Schedule with schedule frequency and time in UTC.](analytics-exports-create-step3-schedule.png){fig-alt="Create Analytics Export modal showing Set Schedule step with Daily schedule and 12:00 am UTC." .screenshot}
+
+The export is created and runs on the schedule you set. Data is written to the configured path in your cloud storage so BI tools can read it.
+
+## What's next
+
+- Ensure credentials stay valid by rotating secrets when required and updating the export configuration if you change secrets.[^2]
+- Use your BI tool to connect to the same bucket and path to build reports from the exported datasets.
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+[^2]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
