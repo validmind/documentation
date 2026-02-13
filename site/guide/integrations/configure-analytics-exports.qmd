@@ -7,7 +7,7 @@ date: last-modified
 ---
 <!-- Shortcut: 14706 -->
 
-Configure scheduled exports of analytics datasets to cloud storage so that BI tools such as Tableau, Snowflake, and Looker can consume models, findings, and workflow metrics in your preferred format.
+Configure scheduled exports of analytics datasets to cloud storage so that BI tools such as Tableau, Snowflake, and Looker can consume models, findings, and workflow metrics.
 
 ::: {.attn}
 
@@ -19,7 +19,7 @@ Configure scheduled exports of analytics datasets to cloud storage so that BI to
 
 :::
 
-## Create an analytics export
+## Create analytics exports
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
@@ -27,35 +27,113 @@ Configure scheduled exports of analytics datasets to cloud storage so that BI to
 
 3. On the Analytics Exports page, click **{{< fa plus >}} Create Analytics Export**.
 
-4. **Select datasets** — Choose which analytics datasets to export:
+4. From the **[datasets]{.smallcaps}** dropdown, choose which analytics datasets to export:
 
-   - In **Datasets**, select one or more datasets (for example, Inventory Models, Artifact - Validation Issue, Artifact - Change Management Record, Artifact - Model Limitation, Artifact - Policy Exception).
-   - Click **Next >**.
+   - Artifact - Change Management Record
+   - Artifact - Model Limitation
+   - Artifact - Policy Exception
+   - Artifact - Validation Issue
+   - Inventory Models
 
+::: {.column-margin}
 ![Create Analytics Export modal, step 1: Select Datasets with datasets dropdown.](analytics-exports-create-step1-datasets.png){fig-alt="Create Analytics Export modal showing Select Datasets step and datasets dropdown." .screenshot}
+:::
 
-5. **Configure destination** — Set the cloud storage destination and output settings:
+5. Click **Next** {{< fa angle-right >}}.
+
+6. Configure the cloud storage destination and output settings:
 
    - **[destination type]{.smallcaps}** — Choose **Amazon S3**, **Google Cloud Storage**, or **Azure Blob Storage** (when available).
-   - **[access key id]{.smallcaps}** — Select the secret that holds the access key or equivalent credential for the destination.
+   - **[access key id]{.smallcaps}** — Select the secret that holds the access key or equivalent credential.
    - **[secret access key]{.smallcaps}** — Select the secret that holds the secret key or equivalent credential.
-   - **[bucket]{.smallcaps}** — Enter the bucket or container name (for example, `my-analytics-bucket`).
-   - **[output path]{.smallcaps}** — Optionally edit the path template. The default `exports/{dataset}/{year}/{month}/{day}/{timestamp}` produces paths like `exports/models/2026/02/13/1771000840.parquet`. Supported placeholders include `{dataset}`, `{year}`, `{month}`, `{day}`, and `{timestamp}`.
+   - **[bucket]{.smallcaps}** — Enter the bucket or container name (example: `my-analytics-bucket`).
+   - **[output path]{.smallcaps}** — Optionally edit the path template. The default `exports/{dataset}/{year}/{month}/{day}/{timestamp}` produces paths like `exports/models/2026/02/13/1771000840.parquet`.
    - **[format]{.smallcaps}** — Choose **Parquet**, **CSV**, or **JSON Lines**.
-   - (Optional) Click **Test Connection** to verify the destination.
-   - Click **Next >**.
+   - **[test connection]{.smallcaps}** (optional) — Click to verify the destination can be accessed.
 
-![Create Analytics Export modal, step 2: Configure Destination with destination type, bucket, output path, and format.](analytics-exports-create-step2-destination.png){fig-alt="Create Analytics Export modal showing Configure Destination step with cloud storage and output settings." .screenshot}
+7. Click **Next** {{< fa angle-right >}}.
 
-6. **Set schedule** — Define how often to export:
+8. Set how often to export:
 
-   - **[schedule]{.smallcaps}** — Choose the frequency (for example, **Daily**).
-   - **[time (utc)]{.smallcaps}** — Choose the time of day in UTC (for example, 12:00 am).
-   - Click **Create Analytics Export**.
+   - **[schedule]{.smallcaps}** — Choose the frequency: **Every hour**, **Every 12 hours**, **Daily**, or **Weekly**.
+   - **[time (utc)]{.smallcaps}** — Choose the time of day in UTC (example: `12:00 AM`).
 
-![Create Analytics Export modal, step 3: Set Schedule with schedule frequency and time in UTC.](analytics-exports-create-step3-schedule.png){fig-alt="Create Analytics Export modal showing Set Schedule step with Daily schedule and 12:00 am UTC." .screenshot}
+9. Click **Create Analytics Export**.
 
 The export is created and runs on the schedule you set. Data is written to the configured path in your cloud storage so BI tools can read it.
+
+## View details
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Click the export row you want to view, or hover over it and when the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa eye >}} View Details**.
+
+You see the destination, schedule, datasets, and next run for that export.
+
+## Edit analytics exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to change.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa pen >}} Edit**.
+
+5. In the modal, adjust datasets, destination, or schedule as in [Create an analytics export](#create-an-analytics-export), then click **Update**.
+
+## Run analytics exports now
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to run.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa play >}} Run Now**.
+
+A one-off export runs in addition to the scheduled runs.
+
+## View run history
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to inspect.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa history >}} View Run History**.
+
+You see past runs and their status.
+
+## Disable analytics exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to pause.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa bolt >}} Disable**.
+
+The export stops running until you re-enable it from the same menu.
+
+## Delete analytics exports
+
+::: {.callout-warning title="Deleting an export is permanent."}
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to remove.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa trash >}} Delete**.
+
+5. In the confirmation dialog, select **OK** to confirm deletion.
 
 ## What's next
 
