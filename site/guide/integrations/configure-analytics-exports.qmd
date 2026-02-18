@@ -1,0 +1,158 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Configure analytics exports"
+date: last-modified
+---
+<!-- Shortcut: 14706 -->
+
+Configure scheduled exports of analytics datasets to cloud storage so that BI tools such as Tableau, Snowflake, and Looker can consume models, findings, and workflow metrics.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You can manage workspace settings, including integrations.[^1]
+- [x] For cloud destinations, the required credentials exist in Integration Secrets (example: AWS access keys).[^2]
+
+:::
+
+## Create analytics exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. On the Analytics Exports page, click **{{< fa plus >}} Create Analytics Export**.
+
+4. From the **[datasets]{.smallcaps}** dropdown, choose which analytics datasets to export:
+
+   - Artifact - Change Management Record
+   - Artifact - Model Limitation
+   - Artifact - Policy Exception
+   - Artifact - Validation Issue
+   - Inventory Models
+
+::: {.column-margin}
+![Selecting datasets](configure-analytics-export-step-1.png){fig-alt="Create Analytics Export modal showing Select Datasets step and datasets dropdown." .screenshot}
+:::
+
+5. Click **Next** {{< fa angle-right >}}.
+
+6. Configure the cloud storage destination and output settings:
+
+   - **[destination type]{.smallcaps}** — Choose **Amazon S3**, **Google Cloud Storage**, or **Azure Blob Storage** (when available).
+   - **[access key id]{.smallcaps}** — Select the secret that holds the access key or equivalent credential.
+   - **[secret access key]{.smallcaps}** — Select the secret that holds the secret key or equivalent credential.
+   - **[bucket]{.smallcaps}** — Enter the bucket or container name (example: `my-analytics-bucket`).
+   - **[output path]{.smallcaps}** — Optionally edit the path template. The default `exports/{dataset}/{year}/{month}/{day}/{timestamp}` produces paths like `exports/models/2026/02/13/1771000840.parquet`.
+   - **[format]{.smallcaps}** — Choose **Parquet**, **CSV**, or **JSON Lines**.
+   - **[test connection]{.smallcaps}** (optional) — Click to verify the destination can be accessed.
+
+
+::: {.column-margin}
+![Configuring your cloud storage destination](configure-analytics-export-step-2.png){fig-alt="Create Analytics Export modal showing Configure Destination step with cloud storage and output settings." .screenshot}
+:::
+
+7. Click **Next** {{< fa angle-right >}}.
+
+8. Set how often to export:
+
+   - **[schedule]{.smallcaps}** — Choose the frequency: **Every hour**, **Every 12 hours**, **Daily**, or **Weekly**.
+   - **[time (utc)]{.smallcaps}** — Choose the time of day in UTC (example: `12:00 AM`).
+
+
+::: {.column-margin}
+![Setting the schedule](configure-analytics-export-step-3.png){fig-alt="Create Analytics Export modal showing Set Schedule step with Daily schedule and 12:00 am UTC." .screenshot}
+:::
+
+9. Click **Create Analytics Export**.
+
+The export is created and runs on the schedule you set. Data is written to the configured path in your cloud storage so BI tools can read it.
+
+## View details
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Click the export row you want to view, or hover over it and when the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa eye >}} View Details**.
+
+You see the destination, schedule, datasets, and next run for that export.
+
+## Edit analytics exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to change.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa pen >}} Edit**.
+
+5. In the modal, adjust datasets, destination, or schedule, then click **Save Changes**.
+
+## Run analytics exports manually
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to run.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa play >}} Run Now**.
+
+A one-off export runs in addition to the scheduled runs. The status for a run is shown on the export configuration row or in the run history.
+
+## View run history
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to inspect.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa history >}} View Run History**.
+
+You see past runs with their status, start time, duration, rows exported, and files written.
+
+## Disable or enable analytics exports
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to pause.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa bolt >}} Disable** or **{{< fa bolt >}} Enable**, depending on the current setting.
+
+The export stops or starts running depending on the action you take.
+
+## Delete analytics export configurations
+
+::: {.callout-warning title="Deleting an analytics export configuration is permanent."}
+Data you exported previously will remain in the cloud storage destination unchanged.
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under Integrations, select **Analytics Exports**.
+
+3. Hover over the export you want to remove.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **Delete**.
+
+5. In the confirmation dialog, select **OK** to confirm deletion.
+
+## What's next
+
+- Use your BI tool to connect to the same bucket and path to build reports from the exported datasets.
+- Ensure credentials stay valid by rotating secrets when required and updating the export configuration if you change secrets.[^2]
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
