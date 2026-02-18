@@ -59,15 +59,25 @@ jobs:
       with:
         version: ${{ vars.QUARTO_VERSION }}
 
-    - name: Setup R environment
-      uses: ./.github/actions/setup-r
+    - name: Get validmind-library SHA
+      id: lib-sha
+      run: echo "sha=$(git -C site/_source/validmind-library rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+    - name: Cache Python library docs
+      id: cache-python-docs
+      uses: actions/cache@v4
+      with:
+        path: site/validmind
+        key: python-docs-${{ steps.lib-sha.outputs.sha }}
 
     - name: Install Poetry
+      if: steps.cache-python-docs.outputs.cache-hit != 'true'
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
         echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Generate Python library docs
+      if: steps.cache-python-docs.outputs.cache-hit != 'true'
       run: |
         cd site/_source/validmind-library
         make install && make quarto-docs
@@ -83,6 +93,17 @@ jobs:
       run: |
         cp -r site/_source/release-notes/releases site
         rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
+
+    - name: Cache Quarto site output
+      uses: actions/cache@v4
+      with:
+        path: |
+          site/_site
+          site/_freeze
+          site/.quarto
+        key: quarto-site-development-${{ hashFiles('site/_quarto.yml', 'site/_quarto-development.yml', 'site/theme.scss', 'site/styles.css', 'site/**/_sidebar.yaml', 'site/**/_sidebar.yml', 'site/_extensions/**') }}-${{ github.sha }}
+        restore-keys: |
+          quarto-site-development-${{ hashFiles('site/_quarto.yml', 'site/_quarto-development.yml', 'site/theme.scss', 'site/styles.css', 'site/**/_sidebar.yaml', 'site/**/_sidebar.yml', 'site/_extensions/**') }}-
 
     - name: Render demo docs site
       run: |
