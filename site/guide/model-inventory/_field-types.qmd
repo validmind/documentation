@@ -5,6 +5,56 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 :::: {.content-visible unless-format="revealjs"}
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
+Aggregation
+: Automatically compute a value from downstream artifacts linked to this model. Aggregation fields are read-only.
+
+1. Select an **[aggregation function]{.smallcaps}**:
+
+    - **COUNT** — Count the number of matching artifacts.
+    - **MIN** — Return the smallest value from a selected artifact field.
+    - **MAX** — Return the largest value from a selected artifact field.
+
+2. Select an **[artifact type]{.smallcaps}** to aggregate from.^[Available artifact types are determined by your organization's configuration.]
+3. For MIN or MAX, select the **[artifact field]{.smallcaps}** to aggregate on.^[Currently supports date fields.]
+4. Optionally, click **{{< fa plus >}} Add Filter** to narrow which artifacts are included in the aggregation.^[Filters use the same query builder available in other parts of the {{< var validmind.platform >}}.]
+<br><br>
+
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Example — Aggregation Use Cases
+
+##### Count open validation issues
+
+Create an aggregation field that counts related validation issues with a filter for status = `Open`:
+
+- **Function:** COUNT
+- **Artifact type:** Validation Issue
+- **Filter:** Status equals Open
+
+##### Next scheduled review date
+
+Create an aggregation field that finds the earliest upcoming review date across all related model reviews:
+
+- **Function:** MIN
+- **Artifact type:** Model Review
+- **Field:** Scheduled Review Start Date
+
+##### Most recent finding date
+
+Create an aggregation field that returns the latest date a finding was created:
+
+- **Function:** MAX
+- **Artifact type:** Validation Issue
+- **Field:** Created At
+
+:::
+:::
+
+
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 Attachments
 : Upload supporting files for your model.^[[Manage supporting documentation](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
 ::::
@@ -197,6 +247,16 @@ User
 
 
 :::: {.content-hidden unless-format="revealjs"}
+Aggregation
+: Automatically compute a value from downstream artifacts linked to a model using COUNT, MIN, or MAX functions. Aggregation fields are read-only.
+
+    1. Select an **[aggregation function]{.smallcaps}**: COUNT, MIN, or MAX.
+    2. Select an **[artifact type]{.smallcaps}** to aggregate from.
+    3. For MIN or MAX, select the **[artifact field]{.smallcaps}** to aggregate on.
+    4. Optionally, add filter conditions to narrow which artifacts are included.
+
+    This field type is available on model inventory fields only.
+
 Attachments
 : Upload supporting files for your [model](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} or [artifact](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation){target="_blank"}. Files must be less than 50 MB each in size.
 
