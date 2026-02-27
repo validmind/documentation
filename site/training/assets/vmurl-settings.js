@@ -54,6 +54,14 @@
         link.setAttribute('href', href.replace(URL_PATTERN, customUrl));
       }
     });
+
+    // Rewrite src attributes on iframes
+    document.querySelectorAll('iframe[src*="app.prod.validmind.ai"]').forEach(function(iframe) {
+      const src = iframe.getAttribute('src');
+      if (src) {
+        iframe.setAttribute('src', src.replace(URL_PATTERN, customUrl));
+      }
+    });
   }
 
   // Create and show the settings modal
