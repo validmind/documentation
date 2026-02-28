@@ -17,7 +17,7 @@
   // Save custom URL to localStorage
   function setCustomUrl(url) {
     if (url && url.trim()) {
-      localStorage.setItem(STORAGE_KEY, url.trim());
+      localStorage.setItem(STORAGE_KEY, url.trim().replace(/\/+$/, ''));
     } else {
       localStorage.removeItem(STORAGE_KEY);
     }
