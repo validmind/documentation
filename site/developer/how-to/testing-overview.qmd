@@ -69,9 +69,137 @@ listing:
     contents:
     - feature-overview.qmd
     - ../samples-jupyter-notebooks.qmd
+format:
+  html:
+    mermaid-format: svg
 ---
 
 {{< var vm.product >}} provides many built-in tests and test suites, which help you produce documentation during stages of the model lifecycle, where you need to ensure that your work satisfies regulatory and risk management requirements.
+
+## Key concepts
+ 
+::: {.panel-tabset}
+
+## Running a test 
+
+<!-- NR workaround for https://github.com/quarto-dev/quarto-cli/issues/5145: Switch to SVG output for mermaid and then nacgyver the SCSS to get the size right. Don't judge. ;-) -->
+<style>
+figure.figure svg.flowchart {
+  width: 840px !important;
+  height: 323px !important;
+}
+</style>
+
+```{mermaid}
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#FAFBFB', 'primaryTextColor': '#083E44', 'primaryBorderColor': '#083E44', 'lineColor': '#083E44', 'secondaryColor': '#FAFBFB', 'tertiaryColor': '#FAFBFB'}}}%%
+flowchart LR
+    subgraph Identify
+        TestID[Test ID]
+        ResultID[Result ID]
+    end
+    
+    subgraph Configure
+        Inputs[Inputs]
+        Params[Parameters]
+    end
+    
+    subgraph Run
+        RunTest["run_test()"]
+    end
+    
+    subgraph LogResults[Outputs & log results]
+        Output[Tables, plots, etc.]
+        Log[".log()"]
+    end
+    
+    TestID --> RunTest
+    ResultID -.-> RunTest
+    Inputs --> RunTest
+    Params --> RunTest
+    RunTest --> Output
+    Output --> Log
+    Log --> Platform[Platform]
+```
+
+**Test ID**
+: Each test has a unique identifier like `validmind.data_validation.ClassImbalance`. Use `vm.tests.list_tests()` to browse available tests.
+
+**Result ID**
+: When running the same test multiple times with different parameters, add a `:suffix` to distinguish results, such as `validmind.data_validation.ClassImbalance:custom_threshold`.
+
+**Inputs**
+: The datasets and models your test analyzes. Pass these via `inputs={}`:
+
+    - `dataset` — A VM dataset object
+    - `model` — A VM model object
+    - `datasets` / `models` — For tests comparing multiple datasets or models
+
+**Parameters**
+: Configuration that customizes how the test runs. Pass these via `params={}`:
+
+    - Thresholds, such as `min_percent_threshold`, `disparity_tolerance`
+    - Metrics to compute, such as `metrics=["fnr", "fpr", "tpr"]`
+    - Any setting that isn't a dataset or model
+
+Use `vm.tests.describe_test("test_id")` or check the [test descriptions](/developer/test-descriptions.qmd) page to see what parameters a test accepts.
+
+**Outputs**
+: Tests return results like tables and plots. Tables can be lists of dictionaries or pandas DataFrames; plots can be matplotlib or plotly figures.
+
+**Logging results**
+: Call `.log()` on a test result to send it to the {{< var validmind.platform >}}.
+
+## Running a test suite
+
+```{mermaid}
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#FAFBFB', 'primaryTextColor': '#083E44', 'primaryBorderColor': '#083E44', 'lineColor': '#083E44', 'secondaryColor': '#FAFBFB', 'tertiaryColor': '#FAFBFB'}}}%%
+flowchart LR
+    subgraph SuiteIdentify[Identify]
+        SuiteID[Test suite ID]
+    end
+    
+    subgraph SuiteConfigure[Configure]
+        SuiteInputs[Inputs]
+        SuiteConfig[Config]
+    end
+    
+    subgraph SuiteRun[Run]
+        RunSuite["run_test_suite()"]
+    end
+    
+    subgraph SuiteLogResults[Outputs & log results]
+        SuiteOutput[Tables, plots, etc.]
+        SuiteLog[".log()"]
+    end
+    
+    SuiteID --> RunSuite
+    SuiteInputs --> RunSuite
+    SuiteConfig --> RunSuite
+    RunSuite --> SuiteOutput
+    SuiteOutput --> SuiteLog
+    SuiteLog --> SuitePlatform[Platform]
+```
+
+**Test suite ID**
+: Test suites are collections of tests that run together. Each has an identifier like `classifier_full_suite`. Use `vm.tests.list_test_suites()` to browse available test suites.
+
+**Inputs**
+: The datasets and models the test suite analyzes. Pass these via `inputs={}`:
+
+    - `dataset` — A VM dataset object
+    - `model` — A VM model object
+    - `datasets` / `models` — For suites comparing multiple datasets or models
+
+**Config**
+: A dictionary of parameters to pass to the tests in the suite. Use `vm.get_test_suite().get_default_config()` to see the default configuration for all tests.
+
+**Outputs**
+: Test suites return results from all tests — tables and plots. Results are automatically logged to the platform unless `send=False`.
+
+**Logging results**
+: By default, `run_test_suite()` logs all results automatically. Set `send=False` to run without logging.
+
+:::
 
 ## Explore tests
 
@@ -167,3 +295,4 @@ Learn more about using the other features of the {{< var validmind.developer >}}
 
 :::{#testing-next}
 :::
+
