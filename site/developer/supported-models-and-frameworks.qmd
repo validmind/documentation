@@ -1,0 +1,455 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Supported models and frameworks"
+date: last-modified
+aliases:
+  - /guide/supported-models.html
+  - /developer/model-documentation/supported-models.html
+  - /developer/supported-models.html
+  - /developer/supported-model-frameworks.html
+listing:
+  - id: next-models
+    type: grid
+    grid-columns: 2
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+    - /how-to/testing-overview.qmd
+    - test-descriptions.qmd
+    - /how-to/feature-overview.qmd
+    - samples-jupyter-notebooks.qmd
+---
+
+The {{< var validmind.developer >}} supports a wide range of model frameworks for testing and documentation. This page explains which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
+
+## What does "supported" mean? 
+
+"Supported" here means the library provides dedicated wrappers, install options, and guidance for these models and frameworks. 
+
+You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns. For example, you can wrap any Python callable with `FunctionModel` or pass precomputed predictions when you don't have a model object.
+
+Of note:
+
+- The library is framework-agnostic — Any Python object with a `predict()` method works with {{< var vm.product >}}. Framework-specific wrappers provide enhanced functionality but aren't strictly required.
+
+- Vendor models are supported — {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
+
+## AI systems
+
+::: {.panel-tabset}
+## LLM classifiers
+LLM-based classification models via OpenAI-compatible APIs.
+
+- Test suite: `LLMClassifierFullSuite`
+- Includes prompt validation, text data quality, classifier metrics
+
+## NLP classifiers
+Hugging Face and other NLP classification models.
+
+- Test suite: `NLPClassifierFullSuite`
+- Text classification, sentiment analysis, named entity recognition
+
+## Summarization models
+Models that generate concise summaries from longer texts.
+
+- Test suite: `SummarizationMetrics`
+- BERT, BLEU, METEOR, ROUGE score evaluation
+
+## Embeddings models
+Text and vector embedding models.
+
+- Test suite: `EmbeddingsFullSuite`
+- Similarity metrics, stability analysis, visualization
+
+## RAG systems
+Retrieval-augmented generation pipelines.
+
+- Tests: RAGAS integration
+- See [RAG evaluation](#rag-evaluation) for dataset requirements and available tests
+:::
+
+## Machine learning models
+
+::: {.panel-tabset}
+## Hugging Face-compatible
+NLP and tabular models using Hugging Face Transformers.
+
+- Test suite: `NLPClassifierFullSuite` (for NLP), `ClassifierFullSuite` or `RegressionFullSuite` (for tabular)
+- Text classification, tabular classification/regression
+
+## PyTorch
+Any PyTorch neural network architecture, including LSTM, RNN, CNN, transformers, and custom architectures.
+
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite` (depending on task)
+- Model performance, feature importance, diagnosis
+
+## Tree-based
+Gradient boosting and ensemble tree methods (XGBoost, CatBoost, random forest).
+
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
+- Confusion matrix, ROC/AUC, feature importance, SHAP values
+
+## K-nearest neighbors (KNN)
+Distance-based classification and regression.
+
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
+- Performance metrics, model comparison
+
+## Clustering
+Any sklearn-compatible clustering algorithm, including K-means, DBSCAN, and hierarchical clustering.
+
+- Test suite: `ClusterFullSuite`
+- Silhouette score, homogeneity, completeness, cluster distribution
+:::
+
+
+## Traditional statistical models
+
+::: {.panel-tabset}
+## Linear regression
+Models the relationship between a scalar response and one or more explanatory variables.
+
+- Test suite: `RegressionFullSuite`
+- R² score, regression errors, feature importance
+
+## Logistic regression
+Models the probability of a binary outcome based on one or more predictor variables.
+
+- Test suite: `ClassifierFullSuite`
+- Confusion matrix, ROC/AUC, precision/recall, feature importance
+
+## Time series and forecasting
+ARIMA, VAR, and other statsmodels time series models.
+
+- Test suite: `TimeSeriesModelValidation`
+- Stationarity tests, autocorrelation analysis, forecast evaluation
+:::
+
+
+## Frameworks
+
+The {{< var validmind.developer >}} provides wrapper classes for common frameworks. When you call `vm.init_model()`, the library automatically detects your model's framework from its module, such as `sklearn`, `torch`, or `transformers`, and selects the appropriate wrapper. You don't need to specify the wrapper class manually.
+
+::: {.panel-tabset}
+## CatBoost
+
+Gradient boosting on decision trees with categorical feature support.
+
+- **Wrapper:** `CatBoostModel`
+- **Install:** `pip install validmind`
+
+## Hugging Face Transformers
+
+Pre-trained models for text classification, summarization, translation, and generation from the Hugging Face Transformers library.
+
+- **Wrapper:** `HFModel`
+- **Install:** `pip install validmind[huggingface]`
+- **Supported tasks:** `text_classification`, `text2text_generation` (summarization), `feature_extraction` (embeddings)
+
+## LLMs via API
+
+Access to OpenAI and Azure OpenAI models for text generation and analysis via OpenAI-compatible APIs.
+
+- **Wrapper:** `FoundationModel`
+- **Install:** `pip install validmind[llm]`
+
+## PyTorch
+
+An open-source machine learning library for computer vision and natural language processing.
+
+- **Wrapper:** `PyTorchModel`
+- **Install:** `pip install validmind[pytorch]`
+
+## R models via rpy2
+
+Integrates R's statistical computing with Python via rpy2.
+
+- **Wrapper:** `RModel`
+- **Install:** `pip install validmind rpy2`
+- **Supported model types:** `glm` (including logistic regression), `lm`, `xgb.Booster`
+- **Initialization:** Use `vm.init_r_model(model_path, input_id)` to load R model objects
+
+## scikit-learn
+
+A Python library for machine learning, offering supervised and unsupervised learning algorithms.
+
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
+
+## statsmodels
+
+A Python module for statistical models, tests, and data exploration.
+
+- **Wrapper:** `StatsModelsModel`
+- **Install:** `pip install validmind[stats]`
+
+## XGBoost
+
+An optimized gradient boosting library for classification and regression.
+
+- **Wrapper:** `XGBoostModel`
+- **Install:** `pip install validmind[xgboost]`
+
+## Python callable
+
+Wrap custom prediction functions or models from otherwise unsupported frameworks.
+
+- **Wrapper:** `FunctionModel`
+- **Install:** `pip install validmind`
+:::
+
+To install all optional dependencies:
+
+```bash
+pip install validmind[all]
+```
+
+### Test input requirements
+
+Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
+
+::: {.panel-tabset}
+
+#### When `predict()` is required
+
+Most model tests call your model's `predict()` method to generate predictions. This includes:
+
+- Performance metrics (accuracy, precision, recall, F1)
+- Error analysis tests
+- Robustness tests
+
+#### When `predict_proba()` is needed
+
+Classification metrics that evaluate probability outputs require `predict_proba()`:
+
+- ROC-AUC score
+- Precision-recall curves
+- Calibration tests
+- Probability distribution analysis
+
+If your model doesn't have `predict_proba()`, these tests will be skipped or return an error.
+
+:::
+
+### Test input flow 
+
+```{mermaid}
+flowchart LR
+    subgraph Inputs
+        Model[Model Object]
+        Dataset[Dataset]
+        Precomputed[Precomputed Predictions]
+    end
+    
+    Model --> predict["predict()"]
+    Model --> predict_proba["predict_proba()"]
+    Precomputed --> Dataset
+    
+    subgraph TestTypes[Test Types]
+        ModelTests[Model Tests]
+        DatasetTests[Dataset Tests]
+        ClassificationTests[Classification Metrics]
+    end
+    
+    predict --> ModelTests
+    predict --> DatasetTests
+    predict_proba --> ClassificationTests
+    Dataset --> DatasetTests
+```
+
+### Using precomputed predictions
+
+If you can't provide a model object because your model runs in a separate environment, you can pass precomputed predictions directly to the dataset:
+
+```python
+vm_dataset = vm.init_dataset(
+    dataset=df,
+    target_column="target",
+    prediction_values=predictions,  # numpy array of predictions
+    probability_values=probabilities  # optional: for classification
+)
+```
+
+Alternatively, if predictions are already in your dataframe:
+
+```python
+vm_dataset = vm.init_dataset(
+    dataset=df,
+    target_column="target",
+    prediction_column="predicted",  # column name in df
+    probability_column="probability"  # optional: for classification
+)
+```
+
+### Dataset-only tests
+
+Some tests analyze data quality and don't require a model at all:
+
+- Missing value analysis
+- Class imbalance detection
+- Feature correlation
+- Outlier detection
+- Data drift tests
+
+### Supported dataset formats
+
+The library accepts multiple data formats when initializing datasets with `vm.init_dataset()`:
+
+| Format | Notes |
+|--------|-------|
+| Pandas DataFrame | Primary format, used internally |
+| Polars DataFrame | Converted to pandas internally |
+| NumPy ndarray | Requires column names to be specified |
+| PyTorch TensorDataset | Requires `pip install validmind[pytorch]` |
+
+## Custom model wrappers
+
+For models that don't fit standard framework patterns, use these flexible wrappers:
+
+::: {.panel-tabset}
+### FunctionModel
+
+Wrap any Python callable as a model:
+
+```python
+from validmind.models import FunctionModel
+
+def my_predict(X):
+    # Your prediction logic here
+    return predictions
+
+vm_model = vm.init_model(
+    model=FunctionModel(predict_fn=my_predict),
+    input_id="my_model"
+)
+```
+
+### PipelineModel
+
+Chain multiple models or processing steps:
+
+```python
+from validmind.models import PipelineModel
+
+vm_model = vm.init_model(
+    model=PipelineModel(models=[preprocessor, model]),
+    input_id="my_pipeline"
+)
+```
+
+### MetadataModel
+
+Use when you have model metadata but no inference capability — for example, when documenting a model deployed in an external system:
+
+```python
+from validmind.models import MetadataModel
+
+vm_model = vm.init_model(
+    model=MetadataModel(),
+    input_id="external_model"
+)
+```
+
+With `MetadataModel`, you can still run dataset-only tests and use precomputed predictions.
+
+## Setting up for LLMs and GenAI
+
+This section covers how to configure and test large language models and generative AI systems.
+
+### FoundationModel
+
+Use `FoundationModel` for LLM endpoints:
+
+```python
+from validmind.models import FoundationModel
+from validmind.prompt import Prompt
+
+prompt = Prompt(
+    template="Classify the sentiment: {text}",
+    variables=["text"]
+)
+
+vm_model = vm.init_model(
+    model=FoundationModel(
+        prompt=prompt,
+        model="gpt-4",  # or your model endpoint
+    ),
+    input_id="sentiment_classifier"
+)
+```
+:::
+
+### LLM test suites
+
+Install LLM dependencies:
+
+```bash
+pip install validmind[llm]
+```
+
+Available test suites for LLMs include:
+
+- Prompt injection detection
+- Output consistency
+- Hallucination detection
+- Toxicity analysis
+- Bias evaluation
+
+Tests such as bias, clarity, robustness, and toxicity can be applied to any text-generating model, regardless of type.
+
+## RAG evaluation
+
+For retrieval-augmented generation (RAG) systems, the {{< var validmind.developer >}} integrates with [RAGAS](https://docs.ragas.io/) for comprehensive evaluation.
+
+### Dataset requirements
+
+RAG evaluation requires specific fields in your dataset:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `user_input` | str | The user's query |
+| `response` | str | Model output |
+| `retrieved_contexts` | List[str] | Retrieved context chunks |
+| `reference` | str | Ground truth (required for some tests) |
+
+### Available RAG tests
+
+- **Faithfulness** — Measures how well the response is grounded in retrieved contexts
+- **Context Recall** — Evaluates if relevant information was retrieved
+- **Context Precision** — Measures relevance of retrieved contexts
+- **Answer Relevancy** — Assesses if the response addresses the query
+
+## Python and dependency compatibility
+
+The {{< var validmind.developer >}} requires:
+
+- **Python:** >=3.9, <3.13
+- **Core dependencies:** pandas, numpy, scikit-learn
+
+Optional dependencies for specific frameworks:
+
+| Extra | Includes |
+|-------|----------|
+| `pytorch` | PyTorch, torchvision |
+| `llm` | OpenAI, langchain, ragas, deepeval |
+| `xgboost` | XGBoost |
+| `huggingface` | Transformers, sentencepiece |
+| `nlp` | langdetect, nltk, textblob, evaluate, rouge, bert-score |
+| `stats` | scipy, statsmodels, arch |
+| `explainability` | SHAP |
+| `credit_risk` | scorecardpy |
+| `datasets` | Hugging Face datasets |
+| `pii-detection` | presidio-analyzer, presidio-structured |
+| `all` | All optional dependencies |
+
+## What's next
+
+:::{#next-models}
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [How to run tests and test suites](/developer/how-to/testing-overview.qmd).
