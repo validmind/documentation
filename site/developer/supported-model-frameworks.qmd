@@ -26,7 +26,9 @@ The {{< var validmind.developer >}} supports a wide range of model frameworks fo
 
 ## What does "supported" mean?
 
-"Supported" here means the library provides dedicated wrappers, install options, and guidance for these frameworks. You can still use other code without them. For example, you can wrap any Python callable with [FunctionModel](#functionmodel) or pass [precomputed predictions](#using-precomputed-predictions) when you don't have a model object.
+"Supported" here means the library provides dedicated wrappers, install options, and guidance for these frameworks. 
+
+You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns: for example, wrap any Python callable with [FunctionModel](#functionmodel) or pass [precomputed predictions](#using-precomputed-predictions) when you don't have a model object.
 
 ::: {.callout}
 ## The library is framework-agnostic
@@ -34,9 +36,118 @@ The {{< var validmind.developer >}} supports a wide range of model frameworks fo
 Any Python object with a `predict()` method works with {{< var vm.product >}}. Framework-specific wrappers provide enhanced functionality but aren't strictly required.
 :::
 
+## Supported model types
+
+::: {.column-margin}
+::: {.feature}
+Vendor models
+: {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
+
+:::
+
+:::
+
+### Traditional statistical models
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-30-ns}
+
+#### Linear regression
+Models the relationship between a scalar response and one or more explanatory variables.
+
+:::
+
+::: {.w-30-ns}
+
+#### Logistic regression
+Models the probability of a binary outcome based on one or more predictor variables.
+
+:::
+
+::: {.w-30-ns}
+#### Time series 
+Analyzes data points collected or sequenced over time.
+
+:::
+
+::::
+
+### Machine learning models
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr2}
+#### Hugging Face-compatible models
+- Natural language processing (NLP) text classification — Categorizes text into predefined classes.
+- Tabular classification — Assigns categories to tabular dataset entries.
+- Tabular regression — Predicts continuous outcomes from tabular data.
+
+#### Neural networks
+- Long short-term memory (LSTM) — Processes sequences of data, remembering inputs over long periods.
+- Recurrent neural network (RNN) — Processes sequences by maintaining a state that reflects the history of processed elements.
+- Convolutional neural network (CNN) — Primarily used for processing grid-like data such as images.
+
+
+:::
+
+::: {.w-50-ns .pl2 .pr2}
+
+#### Tree-based models <br> (XGBoost / CatBoost / random forest)
+- Classification — Predicts categorical outcomes using decision trees.
+- Regression — Predicts continuous outcomes using decision trees.
+
+#### K-nearest neighbors (KNN)
+- Classification — Assigns class by majority vote of the k-nearest neighbors.
+- Regression — Predicts value based on the average of the k-nearest neighbors.
+
+#### Clustering
+- K-means — Partitions _n_ observations into _k_ clusters in which each observation belongs to the cluster with the nearest mean.
+
+
+:::
+
+::::
+
+### Generative AI models
+
+#### Large language models (LLMs)
+- Classification — Categorizes input into predefined classes.
+- Text summarization — Generates concise summaries from longer texts.
+
 ## Framework support
 
 The {{< var validmind.developer >}} provides wrapper classes for common frameworks. Choose the wrapper that matches your model's framework:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns}
+
+- **[scikit-learn](https://scikit-learn.org/stable/)** — A Python library for machine learning, offering supervised and unsupervised learning algorithms. Use `SKlearnModel`.
+
+- **[statsmodels](https://www.statsmodels.org/stable/index.html)** — A Python module for statistical models, tests, and data exploration. Use `SKlearnModel`.
+
+- **[PyTorch](https://pytorch.org/)** — An open-source machine learning library for computer vision and natural language processing. Use `PyTorchModel`.
+
+- **[Hugging Face Transformers](https://huggingface.co/docs/transformers/en/index)** — Pre-trained models for text classification, summarization, translation, and generation. Use `HFModel`.
+
+:::
+
+::: {.w-50-ns}
+
+- **[XGBoost](https://xgboost.readthedocs.io/en/stable/)** — An optimized gradient boosting library for classification and regression. Use `SKlearnModel`.
+
+- **[CatBoost](https://catboost.ai/)** — Gradient boosting on decision trees with categorical feature support. Use `SKlearnModel`.
+
+- **[LightGBM](https://lightgbm.readthedocs.io/en/stable/)** — A fast gradient boosting framework for ranking, classification, and regression. Use `SKlearnModel`.
+
+- **R models, via [rpy2](https://rpy2.github.io/)** — Integrates R's statistical computing with Python. Use `RModel`.
+
+- **LLMs, via [OpenAI-compatible APIs](https://platform.openai.com/docs/introduction)** — Access to OpenAI and Azure OpenAI models for text generation and analysis. Use `FoundationModel`.
+
+:::
+
+::::
 
 | Framework | Wrapper Class | Installation |
 |-----------|---------------|--------------|
@@ -73,7 +184,7 @@ classDiagram
 
 ## Test input requirements
 
-Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.
+Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
 
 ### When `predict()` is required
 
@@ -273,3 +384,7 @@ Optional dependencies for specific frameworks:
 
 :::{#next-models}
 :::
+
+<!-- FOOTNOTES -->
+
+[^1]: [How to run tests and test suites](/developer/how-to/testing-overview.qmd).
