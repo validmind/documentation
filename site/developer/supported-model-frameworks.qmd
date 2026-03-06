@@ -26,6 +26,13 @@ The {{< var validmind.developer >}} supports a wide range of model frameworks fo
 
 ## What does "supported" mean?
 
+::: {.column-margin}
+::: {.feature}
+Vendor models
+: {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
+:::
+:::
+
 "Supported" here means the library provides dedicated wrappers, install options, and guidance for these frameworks. 
 
 You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns: for example, wrap any Python callable with [FunctionModel](#functionmodel) or pass [precomputed predictions](#using-precomputed-predictions) when you don't have a model object.
@@ -38,14 +45,9 @@ Any Python object with a `predict()` method works with {{< var vm.product >}}. F
 
 ## Supported model types
 
-::: {.column-margin}
-::: {.feature}
-Vendor models
-: {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
-:::
-:::
-
 ### AI systems
+
+::: {.panel-tabset}
 
 #### LLM classifiers
 LLM-based classification models via OpenAI-compatible APIs.
@@ -77,13 +79,17 @@ Retrieval-augmented generation pipelines.
 - Tests: RAGAS integration
 - Faithfulness, context recall/precision, answer relevancy
 
-::: {.callout-note}
-## Prompt validation tests
+:::
+
+::: {.column-margin}
+#### Prompt validation tests
 
 Tests such as bias, clarity, robustness, and toxicity can be applied to any text-generating model, regardless of type.
 :::
 
 ### Traditional statistical models
+
+::: {.panel-tabset}
 
 #### Linear regression
 Models the relationship between a scalar response and one or more explanatory variables.
@@ -103,23 +109,26 @@ ARIMA, VAR, and other statsmodels time series models.
 - Test suite: `TimeSeriesModelValidation`
 - Stationarity tests, autocorrelation analysis, forecast evaluation
 
+:::
 
 ### Machine learning models
 
-#### Hugging Face-compatible models
+::: {.panel-tabset}
+
+#### Hugging Face-compatible
 NLP and tabular models using Hugging Face Transformers.
 
 - Test suite: `NLPClassifierFullSuite` (for NLP), `ClassifierFullSuite` or `RegressionFullSuite` (for tabular)
 - Text classification, tabular classification/regression
 
-#### PyTorch models
+#### PyTorch
 Any PyTorch neural network architecture, including LSTM, RNN, CNN, transformers, and custom architectures.
 
 - Test suite: `ClassifierFullSuite` or `RegressionFullSuite` (depending on task)
 - Model performance, feature importance, diagnosis
 
-#### Tree-based models (XGBoost / CatBoost / random forest)
-Gradient boosting and ensemble tree methods.
+#### Tree-based
+Gradient boosting and ensemble tree methods (XGBoost, CatBoost, random forest).
 
 - Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
 - Confusion matrix, ROC/AUC, feature importance, SHAP values
@@ -131,17 +140,18 @@ Distance-based classification and regression.
 - Performance metrics, model comparison
 
 #### Clustering
-Any sklearn-compatible clustering algorithm (K-means, DBSCAN, hierarchical, etc.).
+Any sklearn-compatible clustering algorithm, including K-means, DBSCAN, and hierarchical clustering.
 
 - Test suite: `ClusterFullSuite`
 - Silhouette score, homogeneity, completeness, cluster distribution
 
-#### Embeddings models
+#### Embeddings
 Text and vector embedding models.
 
 - Test suite: `EmbeddingsFullSuite`
 - Similarity metrics, stability analysis, visualization
 
+:::
 ## Framework support
 
 The {{< var validmind.developer >}} provides wrapper classes for common frameworks. Choose the wrapper that matches your model's framework:
@@ -155,7 +165,7 @@ Gradient boosting on decision trees with categorical feature support.
 - **Wrapper:** `SKlearnModel`
 - **Install:** `pip install validmind`
 
-### HF Transformers
+### Hugging Face Transformers
 
 Pre-trained models for text classification, summarization, translation, and generation from the Hugging Face Transformers library.
 
