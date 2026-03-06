@@ -42,121 +42,183 @@ Any Python object with a `predict()` method works with {{< var vm.product >}}. F
 ::: {.feature}
 Vendor models
 : {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
-
+:::
 :::
 
+### AI systems
+
+#### LLM classifiers
+LLM-based classification models via OpenAI-compatible APIs.
+
+- Test suite: `LLMClassifierFullSuite`
+- Includes prompt validation, text data quality, classifier metrics
+
+#### NLP classifiers
+Hugging Face and other NLP classification models.
+
+- Test suite: `NLPClassifierFullSuite`
+- Text classification, sentiment analysis, named entity recognition
+
+#### Summarization models
+Models that generate concise summaries from longer texts.
+
+- Test suite: `SummarizationMetrics`
+- BERT, BLEU, METEOR, ROUGE score evaluation
+
+#### Embeddings models
+Text and vector embedding models.
+
+- Test suite: `EmbeddingsFullSuite`
+- Similarity metrics, stability analysis, visualization
+
+#### RAG systems
+Retrieval-augmented generation pipelines.
+
+- Tests: RAGAS integration
+- Faithfulness, context recall/precision, answer relevancy
+
+::: {.callout-note}
+## Prompt validation tests
+
+Tests such as bias, clarity, robustness, and toxicity can be applied to any text-generating model, regardless of type.
 :::
 
 ### Traditional statistical models
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-30-ns}
-
 #### Linear regression
 Models the relationship between a scalar response and one or more explanatory variables.
 
-:::
-
-::: {.w-30-ns}
+- Test suite: `RegressionFullSuite`
+- R² score, regression errors, feature importance
 
 #### Logistic regression
 Models the probability of a binary outcome based on one or more predictor variables.
 
-:::
+- Test suite: `ClassifierFullSuite`
+- Confusion matrix, ROC/AUC, precision/recall, feature importance
 
-::: {.w-30-ns}
-#### Time series 
-Analyzes data points collected or sequenced over time.
+#### Time series and forecasting
+ARIMA, VAR, and other statsmodels time series models.
 
-:::
+- Test suite: `TimeSeriesModelValidation`
+- Stationarity tests, autocorrelation analysis, forecast evaluation
 
-::::
 
 ### Machine learning models
 
-:::: {.flex .flex-wrap .justify-around}
-
-::: {.w-50-ns .pr2}
 #### Hugging Face-compatible models
-- Natural language processing (NLP) text classification — Categorizes text into predefined classes.
-- Tabular classification — Assigns categories to tabular dataset entries.
-- Tabular regression — Predicts continuous outcomes from tabular data.
+NLP and tabular models using Hugging Face Transformers.
 
-#### Neural networks
-- Long short-term memory (LSTM) — Processes sequences of data, remembering inputs over long periods.
-- Recurrent neural network (RNN) — Processes sequences by maintaining a state that reflects the history of processed elements.
-- Convolutional neural network (CNN) — Primarily used for processing grid-like data such as images.
+- Test suite: `NLPClassifierFullSuite` (for NLP), `ClassifierFullSuite` or `RegressionFullSuite` (for tabular)
+- Text classification, tabular classification/regression
 
+#### PyTorch models
+Any PyTorch neural network architecture, including LSTM, RNN, CNN, transformers, and custom architectures.
 
-:::
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite` (depending on task)
+- Model performance, feature importance, diagnosis
 
-::: {.w-50-ns .pl2 .pr2}
+#### Tree-based models (XGBoost / CatBoost / random forest)
+Gradient boosting and ensemble tree methods.
 
-#### Tree-based models <br> (XGBoost / CatBoost / random forest)
-- Classification — Predicts categorical outcomes using decision trees.
-- Regression — Predicts continuous outcomes using decision trees.
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
+- Confusion matrix, ROC/AUC, feature importance, SHAP values
 
 #### K-nearest neighbors (KNN)
-- Classification — Assigns class by majority vote of the k-nearest neighbors.
-- Regression — Predicts value based on the average of the k-nearest neighbors.
+Distance-based classification and regression.
+
+- Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
+- Performance metrics, model comparison
 
 #### Clustering
-- K-means — Partitions _n_ observations into _k_ clusters in which each observation belongs to the cluster with the nearest mean.
+Any sklearn-compatible clustering algorithm (K-means, DBSCAN, hierarchical, etc.).
 
+- Test suite: `ClusterFullSuite`
+- Silhouette score, homogeneity, completeness, cluster distribution
 
-:::
+#### Embeddings models
+Text and vector embedding models.
 
-::::
-
-### Generative AI models
-
-#### Large language models (LLMs)
-- Classification — Categorizes input into predefined classes.
-- Text summarization — Generates concise summaries from longer texts.
+- Test suite: `EmbeddingsFullSuite`
+- Similarity metrics, stability analysis, visualization
 
 ## Framework support
 
 The {{< var validmind.developer >}} provides wrapper classes for common frameworks. Choose the wrapper that matches your model's framework:
 
-:::: {.flex .flex-wrap .justify-around}
+::: {.panel-tabset}
 
-::: {.w-50-ns}
+### CatBoost
 
-- **[scikit-learn](https://scikit-learn.org/stable/)** — A Python library for machine learning, offering supervised and unsupervised learning algorithms. Use `SKlearnModel`.
+Gradient boosting on decision trees with categorical feature support.
 
-- **[statsmodels](https://www.statsmodels.org/stable/index.html)** — A Python module for statistical models, tests, and data exploration. Use `SKlearnModel`.
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
 
-- **[PyTorch](https://pytorch.org/)** — An open-source machine learning library for computer vision and natural language processing. Use `PyTorchModel`.
+### HF Transformers
 
-- **[Hugging Face Transformers](https://huggingface.co/docs/transformers/en/index)** — Pre-trained models for text classification, summarization, translation, and generation. Use `HFModel`.
+Pre-trained models for text classification, summarization, translation, and generation from the Hugging Face Transformers library.
+
+- **Wrapper:** `HFModel`
+- **Install:** `pip install validmind`
+
+### LightGBM
+
+A fast gradient boosting framework for ranking, classification, and regression.
+
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
+
+### LLMs via API
+
+Access to OpenAI and Azure OpenAI models for text generation and analysis via OpenAI-compatible APIs.
+
+- **Wrapper:** `FoundationModel`
+- **Install:** `pip install validmind[llm]`
+
+### PyTorch
+
+An open-source machine learning library for computer vision and natural language processing.
+
+- **Wrapper:** `PyTorchModel`
+- **Install:** `pip install validmind[pytorch]`
+
+### R models via rpy2
+
+Integrates R's statistical computing with Python.
+
+- **Wrapper:** `RModel`
+- **Install:** `pip install validmind rpy2`
+
+### scikit-learn
+
+A Python library for machine learning, offering supervised and unsupervised learning algorithms.
+
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
+
+### statsmodels
+
+A Python module for statistical models, tests, and data exploration.
+
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
+
+### XGBoost
+
+An optimized gradient boosting library for classification and regression.
+
+- **Wrapper:** `SKlearnModel`
+- **Install:** `pip install validmind`
+
+### Any Python callable
+
+Wrap custom prediction functions or models from unsupported frameworks.
+
+- **Wrapper:** `FunctionModel`
+- **Install:** `pip install validmind`
 
 :::
-
-::: {.w-50-ns}
-
-- **[XGBoost](https://xgboost.readthedocs.io/en/stable/)** — An optimized gradient boosting library for classification and regression. Use `SKlearnModel`.
-
-- **[CatBoost](https://catboost.ai/)** — Gradient boosting on decision trees with categorical feature support. Use `SKlearnModel`.
-
-- **[LightGBM](https://lightgbm.readthedocs.io/en/stable/)** — A fast gradient boosting framework for ranking, classification, and regression. Use `SKlearnModel`.
-
-- **R models, via [rpy2](https://rpy2.github.io/)** — Integrates R's statistical computing with Python. Use `RModel`.
-
-- **LLMs, via [OpenAI-compatible APIs](https://platform.openai.com/docs/introduction)** — Access to OpenAI and Azure OpenAI models for text generation and analysis. Use `FoundationModel`.
-
-:::
-
-::::
-
-| Framework | Wrapper Class | Installation |
-|-----------|---------------|--------------|
-| scikit-learn, XGBoost, CatBoost, LightGBM, StatsModels | `SKlearnModel` | `pip install validmind` |
-| PyTorch | `PyTorchModel` | `pip install validmind[pytorch]` |
-| Hugging Face Transformers | `HFModel` | `pip install validmind` |
-| LLM endpoints (OpenAI, Azure, etc.) | `FoundationModel` | `pip install validmind[llm]` |
-| Any Python callable | `FunctionModel` | `pip install validmind` |
-| R models (via rpy2) | `RModel` | `pip install validmind rpy2` |
 
 To install all optional dependencies:
 
