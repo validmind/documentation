@@ -24,7 +24,7 @@ listing:
 
 The {{< var validmind.developer >}} supports a wide range of model frameworks for testing and documentation. This page explains which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
 
-## What does "supported" mean?
+## What is supported?
 
 ::: {.column-margin}
 ::: {.feature}
@@ -42,8 +42,6 @@ You can also use other code with the {{< var vm.developer >}} for models that do
 
 Any Python object with a `predict()` method works with {{< var vm.product >}}. Framework-specific wrappers provide enhanced functionality but aren't strictly required.
 :::
-
-## Supported model types
 
 ### AI systems
 
@@ -77,7 +75,7 @@ Text and vector embedding models.
 Retrieval-augmented generation pipelines.
 
 - Tests: RAGAS integration
-- Faithfulness, context recall/precision, answer relevancy
+- See [RAG evaluation](#rag-evaluation) for dataset requirements and available tests
 
 :::
 
@@ -236,24 +234,6 @@ To install all optional dependencies:
 pip install validmind[all]
 ```
 
-### Class hierarchy
-
-The following diagram shows how model wrapper classes relate to each other:
-
-```{mermaid}
-classDiagram
-    VMModel <|-- SKlearnModel
-    VMModel <|-- PyTorchModel
-    VMModel <|-- HFModel
-    VMModel <|-- FunctionModel
-    VMModel <|-- RModel
-    SKlearnModel <|-- XGBoostModel
-    SKlearnModel <|-- CatBoostModel
-    SKlearnModel <|-- StatsModelsModel
-    FunctionModel <|-- FoundationModel
-    FunctionModel <|-- PipelineModel
-```
-
 ## Test input requirements
 
 Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
@@ -371,9 +351,9 @@ vm_model = vm.init_model(
 )
 ```
 
-## GenAI and LLM support
+## Setting up for LLMs and GenAI
 
-The {{< var validmind.developer >}} provides specialized support for large language models and generative AI.
+This section covers how to configure and test large language models and generative AI systems.
 
 ### FoundationModel
 
