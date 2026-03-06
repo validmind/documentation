@@ -24,100 +24,93 @@ listing:
 
 The {{< var validmind.developer >}} supports a wide range of model frameworks for testing and documentation. This page explains which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
 
-## What is supported?
+## What does "supported" mean? 
 
-::: {.column-margin}
-::: {.feature}
-Vendor models
-: {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
-:::
-:::
+"Supported" here means the library provides dedicated wrappers, install options, and guidance for these models and frameworks. 
 
-"Supported" here means the library provides dedicated wrappers, install options, and guidance for these frameworks. 
+You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns. For example, you can wrap any Python callable with `FunctionModel` or pass precomputed predictions when you don't have a model object.
 
-You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns: for example, wrap any Python callable with [FunctionModel](#functionmodel) or pass [precomputed predictions](#using-precomputed-predictions) when you don't have a model object.
+Of note:
 
-::: {.callout}
-## The library is framework-agnostic
+- The library is framework-agnostic — Any Python object with a `predict()` method works with {{< var vm.product >}}. Framework-specific wrappers provide enhanced functionality but aren't strictly required.
 
-Any Python object with a `predict()` method works with {{< var vm.product >}}. Framework-specific wrappers provide enhanced functionality but aren't strictly required.
-:::
+- Vendor models are supported — {{< var vm.product >}} supports both first-party models and [third-party vendor models](/about/glossary/glossary.qmd#vendor-model).
 
-### AI systems
+## AI systems
 
 ::: {.panel-tabset}
-#### LLM classifiers
+## LLM classifiers
 LLM-based classification models via OpenAI-compatible APIs.
 
 - Test suite: `LLMClassifierFullSuite`
 - Includes prompt validation, text data quality, classifier metrics
 
-#### NLP classifiers
+## NLP classifiers
 Hugging Face and other NLP classification models.
 
 - Test suite: `NLPClassifierFullSuite`
 - Text classification, sentiment analysis, named entity recognition
 
-#### Summarization models
+## Summarization models
 Models that generate concise summaries from longer texts.
 
 - Test suite: `SummarizationMetrics`
 - BERT, BLEU, METEOR, ROUGE score evaluation
 
-#### Embeddings models
+## Embeddings models
 Text and vector embedding models.
 
 - Test suite: `EmbeddingsFullSuite`
 - Similarity metrics, stability analysis, visualization
 
-#### RAG systems
+## RAG systems
 Retrieval-augmented generation pipelines.
 
 - Tests: RAGAS integration
 - See [RAG evaluation](#rag-evaluation) for dataset requirements and available tests
 :::
 
-::: {.column-margin}
+<!-- ::: {.column-margin}
 #### Prompt validation tests
 
 Tests such as bias, clarity, robustness, and toxicity can be applied to any text-generating model, regardless of type.
-:::
+::: --> 
 
-### Machine learning models
+## Machine learning models
 
 ::: {.panel-tabset}
 
-#### Hugging Face-compatible
+## Hugging Face-compatible
 NLP and tabular models using Hugging Face Transformers.
 
 - Test suite: `NLPClassifierFullSuite` (for NLP), `ClassifierFullSuite` or `RegressionFullSuite` (for tabular)
 - Text classification, tabular classification/regression
 
-#### PyTorch
+## PyTorch
 Any PyTorch neural network architecture, including LSTM, RNN, CNN, transformers, and custom architectures.
 
 - Test suite: `ClassifierFullSuite` or `RegressionFullSuite` (depending on task)
 - Model performance, feature importance, diagnosis
 
-#### Tree-based
+## Tree-based
 Gradient boosting and ensemble tree methods (XGBoost, CatBoost, random forest).
 
 - Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
 - Confusion matrix, ROC/AUC, feature importance, SHAP values
 
-#### K-nearest neighbors (KNN)
+## K-nearest neighbors (KNN)
 Distance-based classification and regression.
 
 - Test suite: `ClassifierFullSuite` or `RegressionFullSuite`
 - Performance metrics, model comparison
 
-#### Clustering
+## Clustering
 Any sklearn-compatible clustering algorithm, including K-means, DBSCAN, and hierarchical clustering.
 
 - Test suite: `ClusterFullSuite`
 - Silhouette score, homogeneity, completeness, cluster distribution
 
-#### Embeddings
+## Embeddings
 Text and vector embedding models.
 
 - Test suite: `EmbeddingsFullSuite`
@@ -125,22 +118,22 @@ Text and vector embedding models.
 :::
 
 
-### Traditional statistical models
+## Traditional statistical models
 
 ::: {.panel-tabset}
-#### Linear regression
+## Linear regression
 Models the relationship between a scalar response and one or more explanatory variables.
 
 - Test suite: `RegressionFullSuite`
 - R² score, regression errors, feature importance
 
-#### Logistic regression
+## Logistic regression
 Models the probability of a binary outcome based on one or more predictor variables.
 
 - Test suite: `ClassifierFullSuite`
 - Confusion matrix, ROC/AUC, precision/recall, feature importance
 
-#### Time series and forecasting
+## Time series and forecasting
 ARIMA, VAR, and other statsmodels time series models.
 
 - Test suite: `TimeSeriesModelValidation`
@@ -148,19 +141,19 @@ ARIMA, VAR, and other statsmodels time series models.
 :::
 
 
-## Framework support
+## Frameworks
 
 The {{< var validmind.developer >}} provides wrapper classes for common frameworks. When you call `vm.init_model()`, the library automatically detects your model's framework from its module, such as `sklearn`, `torch`, or `transformers`, and selects the appropriate wrapper. You don't need to specify the wrapper class manually.
 
 ::: {.panel-tabset}
-### CatBoost
+## CatBoost
 
 Gradient boosting on decision trees with categorical feature support.
 
 - **Wrapper:** `CatBoostModel`
 - **Install:** `pip install validmind`
 
-### Hugging Face Transformers
+## Hugging Face Transformers
 
 Pre-trained models for text classification, summarization, translation, and generation from the Hugging Face Transformers library.
 
@@ -168,21 +161,21 @@ Pre-trained models for text classification, summarization, translation, and gene
 - **Install:** `pip install validmind[huggingface]`
 - **Supported tasks:** `text_classification`, `text2text_generation` (summarization), `feature_extraction` (embeddings)
 
-### LLMs via API
+## LLMs via API
 
 Access to OpenAI and Azure OpenAI models for text generation and analysis via OpenAI-compatible APIs.
 
 - **Wrapper:** `FoundationModel`
 - **Install:** `pip install validmind[llm]`
 
-### PyTorch
+## PyTorch
 
 An open-source machine learning library for computer vision and natural language processing.
 
 - **Wrapper:** `PyTorchModel`
 - **Install:** `pip install validmind[pytorch]`
 
-### R models via rpy2
+## R models via rpy2
 
 Integrates R's statistical computing with Python via rpy2.
 
@@ -191,28 +184,28 @@ Integrates R's statistical computing with Python via rpy2.
 - **Supported model types:** `glm` (including logistic regression), `lm`, `xgb.Booster`
 - **Initialization:** Use `vm.init_r_model(model_path, input_id)` to load R model objects
 
-### scikit-learn
+## scikit-learn
 
 A Python library for machine learning, offering supervised and unsupervised learning algorithms.
 
 - **Wrapper:** `SKlearnModel`
 - **Install:** `pip install validmind`
 
-### statsmodels
+## statsmodels
 
 A Python module for statistical models, tests, and data exploration.
 
 - **Wrapper:** `StatsModelsModel`
 - **Install:** `pip install validmind[stats]`
 
-### XGBoost
+## XGBoost
 
 An optimized gradient boosting library for classification and regression.
 
 - **Wrapper:** `XGBoostModel`
 - **Install:** `pip install validmind[xgboost]`
 
-### Python callable
+## Python callable
 
 Wrap custom prediction functions or models from otherwise unsupported frameworks.
 
@@ -226,13 +219,13 @@ To install all optional dependencies:
 pip install validmind[all]
 ```
 
-## Test input requirements
+### Test input requirements
 
 Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
 
 ::: {.panel-tabset}
 
-### When `predict()` is required
+#### When `predict()` is required
 
 Most model tests call your model's `predict()` method to generate predictions. This includes:
 
@@ -240,7 +233,7 @@ Most model tests call your model's `predict()` method to generate predictions. T
 - Error analysis tests
 - Robustness tests
 
-### When `predict_proba()` is needed
+#### When `predict_proba()` is needed
 
 Classification metrics that evaluate probability outputs require `predict_proba()`:
 
