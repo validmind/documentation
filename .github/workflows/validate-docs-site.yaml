@@ -34,7 +34,7 @@ jobs:
         repository: validmind/validmind-library
         path: site/_source/validmind-library
         token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
-        
+
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
@@ -91,10 +91,6 @@ jobs:
           }
           make generate-sitemap
 
-    - name: Validate LLM markdown render
-      run: bash llm/render.sh
-      working-directory: site
-
     - name: Add robots.txt for PR preview
       run: cp site/environments/robots-staging.txt site/_site/robots.txt
 
@@ -146,6 +142,10 @@ jobs:
             issue_number: context.issue.number,
             body: comment
           });
+
+    - name: Validate LLM markdown render
+      run: bash llm/render.sh && bash llm/clean.sh
+      working-directory: site
 
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
