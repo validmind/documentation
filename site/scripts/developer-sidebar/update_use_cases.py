@@ -162,6 +162,7 @@ def update_notebooks_page(base: Path, subdirs: list) -> None:
         listing_lines.append(f"  - id: {listing_id}")
         listing_lines.append(f'    type: grid')
         listing_lines.append(f'    grid-columns: 2')
+        listing_lines.append(f'    page-size: 4')
         listing_lines.append(f'    image-placeholder: "jupyter-logo-rectangle.svg"')
         listing_lines.append(f'    max-description-length: 350')
         listing_lines.append(f'    image-height: "100%"')
