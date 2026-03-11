@@ -25,25 +25,13 @@ jobs:
           apt_cleanup: "true"
           create_reserve_gb: "3"
 
+      - run: mkdir -p site/_source
+
       - name: Check out validmind-library repository
         uses: actions/checkout@v4
         with:
           repository: validmind/validmind-library
           path: site/_source/validmind-library
-          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
-
-      - name: Check out installation repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/installation
-          path: site/_source/installation
-          token: ${{ secrets.INSTALLATION_RO_PAT }}
-
-      - name: Check out release-notes repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/release-notes
-          path: site/_source/release-notes
           token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
 
       - name: Set up Quarto
@@ -65,14 +53,6 @@ jobs:
           mkdir -p validmind
           rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
         working-directory: site
-
-      - name: Populate installation
-        run: cp -r site/_source/installation/site/installation site/installation
-
-      - name: Populate release notes
-        run: |
-          cp -r site/_source/release-notes/releases site
-          rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
 
       - name: Render LLM markdown
         run: bash llm/render.sh
