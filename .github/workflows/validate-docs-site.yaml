@@ -34,7 +34,7 @@ jobs:
         repository: validmind/validmind-library
         path: site/_source/validmind-library
         token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
-        
+
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
@@ -57,7 +57,7 @@ jobs:
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
       with:
-        version: ${{ vars.QUARTO_VERSION }}
+        version: pre-release
 
     - name: Install Poetry
       run: |
@@ -142,6 +142,10 @@ jobs:
             issue_number: context.issue.number,
             body: comment
           });
+
+    - name: Validate LLM markdown render
+      run: bash llm/render.sh && bash llm/clean.sh
+      working-directory: site
 
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
