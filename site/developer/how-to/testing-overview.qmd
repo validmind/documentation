@@ -69,9 +69,6 @@ listing:
     contents:
     - feature-overview.qmd
     - ../samples-jupyter-notebooks.qmd
-format:
-  html:
-    mermaid-format: svg
 ---
 
 {{< var vm.product >}} provides many built-in tests and test suites, which help you produce documentation during stages of the model lifecycle, where you need to ensure that your work satisfies regulatory and risk management requirements.
@@ -83,42 +80,28 @@ format:
 
 ## Running a test
 
-<!-- NR workaround for https://github.com/quarto-dev/quarto-cli/issues/5145: Switch to SVG output for mermaid and then nacgyver the SCSS to get the size right. Don't judge. ;-) -->
-<style>
-figure.figure svg.flowchart {
-  height: 323px !important;
+```{dot}
+digraph {
+    rankdir=LR
+    bgcolor="transparent"
+    node [shape=box, style="rounded,filled", fillcolor="#FAFBFB", color="#083E44", fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=11, penwidth=1]
+    edge [color="#083E44", penwidth=1]
+    graph [fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=11]
+    
+    subgraph cluster_identify { label="Identify"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; TestID [label="Test ID"]; ResultID [label="Result ID"] }
+    subgraph cluster_configure { label="Configure"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; Inputs; Params [label="Parameters"] }
+    subgraph cluster_run { label="Run"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; RunTest [label="run_test()"] }
+    subgraph cluster_output { label="Outputs & log results"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; Output [label="Tables, plots, etc."]; Log [label=".log()"] }
+    Platform
+    
+    TestID -> RunTest
+    ResultID -> RunTest [style=dashed]
+    Inputs -> RunTest
+    Params -> RunTest
+    RunTest -> Output
+    Output -> Log
+    Log -> Platform
 }
-</style>
-
-```{mermaid}
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#FFFFFF', 'primaryTextColor': '#083E44', 'primaryBorderColor': '#083E44', 'lineColor': '#083E44', 'secondaryColor': '#FFFFFF', 'tertiaryColor': '#FFFFFF'}}}%%
-flowchart LR
-    subgraph Identify
-        TestID[Test ID]
-        ResultID[Result ID]
-    end
-    
-    subgraph Configure
-        Inputs[Inputs]
-        Params[Parameters]
-    end
-    
-    subgraph Run
-        RunTest["run_test()"]
-    end
-    
-    subgraph LogResults[Outputs & log results]
-        Output[Tables, plots, etc.]
-        Log[".log()"]
-    end
-    
-    TestID --> RunTest
-    ResultID -.-> RunTest
-    Inputs --> RunTest
-    Params --> RunTest
-    RunTest --> Output
-    Output --> Log
-    Log --> Platform[Platform]
 ```
 
 **Test ID**
@@ -151,33 +134,27 @@ Use `vm.tests.describe_test("test_id")` or check the [test descriptions](/develo
 
 ## Running a test suite
 
-```{mermaid}
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#FFFFFF', 'primaryTextColor': '#083E44', 'primaryBorderColor': '#083E44', 'lineColor': '#083E44', 'secondaryColor': '#FFFFFF', 'tertiaryColor': '#FFFFFF'}}}%%
-flowchart LR
-    subgraph SuiteIdentify[Identify]
-        SuiteID[Test suite ID]
-    end
+```{dot}
+digraph {
+    rankdir=LR
+    bgcolor="transparent"
+    node [shape=box, style="rounded,filled", fillcolor="#FAFBFB", color="#083E44", fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=11, penwidth=1]
+    edge [color="#083E44", penwidth=1]
+    graph [fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=11]
     
-    subgraph SuiteConfigure[Configure]
-        SuiteInputs[Inputs]
-        SuiteConfig[Config]
-    end
+    subgraph cluster_identify { label="Identify"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; SuiteID [label="Test suite ID"] }
+    subgraph cluster_configure { label="Configure"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; SuiteInputs [label="Inputs"]; SuiteConfig [label="Config"] }
+    subgraph cluster_run { label="Run"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; RunSuite [label="run_test_suite()"] }
+    subgraph cluster_output { label="Outputs & log results"; style="rounded"; color="#083E44"; fillcolor="#FAFBFB"; SuiteOutput [label="Tables, plots, etc."]; SuiteLog [label=".log()"] }
+    Platform
     
-    subgraph SuiteRun[Run]
-        RunSuite["run_test_suite()"]
-    end
-    
-    subgraph SuiteLogResults[Outputs & log results]
-        SuiteOutput[Tables, plots, etc.]
-        SuiteLog[".log()"]
-    end
-    
-    SuiteID --> RunSuite
-    SuiteInputs --> RunSuite
-    SuiteConfig --> RunSuite
-    RunSuite --> SuiteOutput
-    SuiteOutput --> SuiteLog
-    SuiteLog --> SuitePlatform[Platform]
+    SuiteID -> RunSuite
+    SuiteInputs -> RunSuite
+    SuiteConfig -> RunSuite
+    RunSuite -> SuiteOutput
+    SuiteOutput -> SuiteLog
+    SuiteLog -> Platform
+}
 ```
 
 **Test suite ID**
