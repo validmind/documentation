@@ -46,6 +46,9 @@ jobs:
           repository: validmind/installation
           path: site/_source/installation
           token: ${{ secrets.INSTALLATION_RO_PAT }}
+          sparse-checkout: |
+            site/installation
+          sparse-checkout-cone-mode: true
 
       - name: Check out release-notes repository
         uses: actions/checkout@v4
@@ -53,6 +56,9 @@ jobs:
           repository: validmind/release-notes
           path: site/_source/release-notes
           token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+          sparse-checkout: |
+            releases
+          sparse-checkout-cone-mode: true
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
