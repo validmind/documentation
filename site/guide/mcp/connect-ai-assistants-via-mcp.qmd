@@ -6,7 +6,8 @@ title: "Connect AI assistants via MCP"
 date: last-modified
 ---
 
-{{< include /guide/mcp/_mcp-intro.qmd >}}
+The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants like Claude and Cursor to query and manage your model inventory through natural language, providing seamless access to models, artifacts, templates, and custom fields.
+
 
 ::: {.attn}
 
@@ -15,8 +16,8 @@ date: last-modified
 - [x] {{< var link.login >}}
 - [x] You have your API key and secret.[^1]
 - [x] You have a compatible AI assistant installed:
-   - [Claude Desktop](https://claude.ai/download)
-   - [Cursor IDE](https://cursor.com)
+   - Claude[^2]
+   - Cursor IDE[^3]
 
 :::
 
@@ -32,12 +33,12 @@ date: last-modified
 
 ```{mermaid}
 graph LR
-    subgraph ai [AI Assistants]
-        Claude[Claude Desktop]
+    subgraph ai [AI assistants]
+        Claude[Claude]
         Cursor[Cursor IDE]
     end
     
-    subgraph mcp [MCP Layer]
+    subgraph mcp [MCP layer]
         MCPServer[ValidMind MCP Server]
     end
     
@@ -45,12 +46,12 @@ graph LR
         Models[Models]
         Artifacts[Artifacts]
         Templates[Templates]
-        CustomFields[Custom Fields]
+        CustomFields[Custom fields]
     end
     
-    Claude -->|MCP Protocol| MCPServer
-    Cursor -->|MCP Protocol| MCPServer
-    MCPServer -->|API Key Auth| Models
+    Claude --> MCPServer
+    Cursor --> MCPServer
+    MCPServer --> Models
     MCPServer --> Artifacts
     MCPServer --> Templates
     MCPServer --> CustomFields
@@ -95,7 +96,6 @@ The MCP server exposes tools for working with your model inventory:
 **Example queries you can ask:**
 
 - "Show me all models that are high risk"
-- "Which models are deployed in the US? in EU?"
 - "Find all the models I am an owner for"
 - "List my validation artifacts"
 - "What templates are available for credit risk models?"
@@ -104,25 +104,13 @@ The MCP server exposes tools for working with your model inventory:
 
 ::: {.panel-tabset}
 
-### Claude Desktop
+### Claude
 
-1. Locate your Claude Desktop configuration file:
+1. Locate your Claude configuration file:
 
-   ::: {.panel-tabset}
-
-   #### macOS
-
-   ```
-   ~/Library/Application Support/Claude/claude_desktop_config.json
-   ```
-
-   #### Windows
-
-   ```
-   %APPDATA%\Claude\claude_desktop_config.json
-   ```
-
-   :::
+   - On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - On Linux: `~/.config/Claude/claude_desktop_config.json`
 
 2. Add the {{< var vm.product >}} MCP server configuration:
 
@@ -142,11 +130,11 @@ The MCP server exposes tools for working with your model inventory:
 
 3. Replace `YOUR_API_KEY` and `YOUR_API_SECRET` with your ValidMind credentials.[^1]
 
-4. Restart Claude Desktop to apply the configuration.
+4. Restart Claude to apply the configuration.
 
-### Cursor IDE
+### Cursor
 
-1. Open Cursor settings and navigate to the MCP configuration, or create a `.cursor/mcp.json` file in your project or home directory.
+1. Open the Cursor settings and navigate to the MCP configuration, or create a `.cursor/mcp.json` file in your project or home directory.
 
 2. Add the {{< var vm.product >}} MCP server configuration:
 
@@ -172,33 +160,30 @@ The MCP server exposes tools for working with your model inventory:
 
 ## Troubleshooting
 
-::: {.callout collapse="true" appearance="minimal"}
+::: {.panel-tabset}
+
 ### Connection refused or timeout errors
 
-- Verify your network can reach `api.prod.validmind.ai`
-- Check if your organization uses a firewall or proxy that blocks MCP connections
-- Ensure you are using the correct MCP URL for your environment
+- Verify your network can reach `api.prod.validmind.ai`.
+- Check if your organization uses a firewall or proxy that blocks MCP connections.
+- Ensure you are using the correct MCP URL for your environment.
 
-:::
-
-::: {.callout collapse="true" appearance="minimal"}
 ### Authentication errors (401 or 403)
 
-- Confirm your API key and secret are correct
-- Check that your API credentials have not expired
-- Verify your account has the necessary permissions to access the requested resources
+- Confirm your API key and secret are correct.
+- Check that your API credentials have not expired.
+- Verify your account has the necessary permissions to access the requested resources.
 
-:::
-
-::: {.callout collapse="true" appearance="minimal"}
 ### MCP server not appearing in AI assistant
 
-- Ensure the configuration file is in the correct location
-- Validate the JSON syntax in your configuration file
-- Restart your AI assistant after making configuration changes
+- Ensure the configuration file is in the correct location.
+- Validate the JSON syntax in your configuration file.
+- Restart your AI assistant after making configuration changes.
 
 :::
 
 <!-- FOOTNOTES -->
 
 [^1]: [Get your API key and secret](/reference/validmind-rest-api-vm.qmd#get-your-api-key-and-secret)
+[^2]: [Claude](https://claude.ai/download)
+[^3]: [Cursor](https://cursor.com)
