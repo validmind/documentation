@@ -1,0 +1,189 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Connect AI assistants via MCP"
+date: last-modified
+---
+
+The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants like Claude and Cursor to query and manage your model inventory through natural language, providing seamless access to models, artifacts, templates, and custom fields.
+
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You have your API key and secret.[^1]
+- [x] You have a compatible AI assistant installed:
+   - Claude[^2]
+   - Cursor IDE[^3]
+
+:::
+
+## Key concepts
+
+{{< include /about/glossary/mcp/_mcp.qmd >}}
+
+{{< include /about/glossary/mcp/_mcp-server.qmd >}}
+
+{{< include /about/glossary/mcp/_mcp-tool.qmd >}}
+
+### How does {{< var vm.product >}} MCP work?
+
+```{mermaid}
+graph LR
+    subgraph ai [AI assistants]
+        Claude[Claude]
+        Cursor[Cursor IDE]
+    end
+    
+    subgraph mcp [MCP layer]
+        MCPServer[ValidMind MCP Server]
+    end
+    
+    subgraph vm [ValidMind Platform]
+        Models[Models]
+        Artifacts[Artifacts]
+        Templates[Templates]
+        CustomFields[Custom fields]
+    end
+    
+    Claude --> MCPServer
+    Cursor --> MCPServer
+    MCPServer --> Models
+    MCPServer --> Artifacts
+    MCPServer --> Templates
+    MCPServer --> CustomFields
+```
+
+Your AI assistant sends natural language queries through the MCP protocol. The {{< var vm.product >}} MCP server translates these into API calls, authenticates using your API key, and returns data from the {{< var validmind.platform >}}.
+
+### What can I do with {{< var vm.product >}} MCP?
+
+The MCP server exposes tools for working with your model inventory:
+
+:::: {.flex .flex-wrap .justify-around}
+
+::: {.w-50-ns .pr3}
+
+**Model and artifact operations**
+
+- List and get models
+- List and get artifacts
+- Filter by risk level, deployment region, or ownership
+
+**Custom field operations**
+
+- List custom fields for models and artifacts
+- Update custom field values
+
+:::
+
+::: {.w-50-ns .pl3}
+
+**Template operations**
+
+- List available templates
+- Get template details
+- Validate templates
+- Duplicate and update templates
+
+:::
+
+::::
+
+**Example queries you can ask:**
+
+- "Show me all models that are high risk"
+- "Find all the models I am an owner for"
+- "List my validation artifacts"
+- "What templates are available for credit risk models?"
+
+## Configure your AI assistant
+
+::: {.panel-tabset}
+
+### Claude
+
+1. Locate your Claude configuration file:
+
+   - On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - On Linux: `~/.config/Claude/claude_desktop_config.json`
+
+2. Add the {{< var vm.product >}} MCP server configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "validmind": {
+         "url": "https://api.prod.validmind.ai/mcp",
+         "headers": {
+           "x-api-key": "YOUR_API_KEY",
+           "x-api-secret": "YOUR_API_SECRET"
+         }
+       }
+     }
+   }
+   ```
+
+3. Replace `YOUR_API_KEY` and `YOUR_API_SECRET` with your ValidMind credentials.[^1]
+
+4. Restart Claude to apply the configuration.
+
+### Cursor
+
+1. Open the Cursor settings and navigate to the MCP configuration, or create a `.cursor/mcp.json` file in your project or home directory.
+
+2. Add the {{< var vm.product >}} MCP server configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "validmind": {
+         "url": "https://api.prod.validmind.ai/mcp",
+         "headers": {
+           "x-api-key": "YOUR_API_KEY",
+           "x-api-secret": "YOUR_API_SECRET"
+         }
+       }
+     }
+   }
+   ```
+
+3. Replace `YOUR_API_KEY` and `YOUR_API_SECRET` with your ValidMind credentials.[^1]
+
+4. Restart Cursor to apply the configuration.
+
+:::
+
+## Troubleshooting
+
+::: {.panel-tabset}
+
+### Connection refused or timeout errors
+
+- Verify your network can reach `api.prod.validmind.ai`.
+- Check if your organization uses a firewall or proxy that blocks MCP connections.
+- Ensure you are using the correct MCP URL for your environment.
+
+### Authentication errors (401 or 403)
+
+- Confirm your API key and secret are correct.
+- Check that your API credentials have not expired.
+- Verify your account has the necessary permissions to access the requested resources.
+
+### MCP server not appearing in AI assistant
+
+- Ensure the configuration file is in the correct location.
+- Validate the JSON syntax in your configuration file.
+- Restart your AI assistant after making configuration changes.
+
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Get your API key and secret](/reference/validmind-rest-api-vm.qmd#get-your-api-key-and-secret)
+[^2]: [Claude](https://claude.ai/download)
+[^3]: [Cursor](https://cursor.com)
