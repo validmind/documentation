@@ -213,6 +213,26 @@ After you pull in the changes, commit them to this repo as part of the release n
 > [!TIP]
 > **Want to author new code samples?** Refer to our [Jupyter Notebook template Quickstart](https://github.com/validmind/validmind-library/tree/main/notebooks/templates)!
 
+### Permissions documentation
+
+The permissions tables in `site/guide/configuration/manage-permissions.qmd` are auto-generated from the backend source files. To regenerate:
+
+```bash
+python scripts/generate_permissions_docs.py
+```
+
+**Requirements:**
+- The `backend` repo must be cloned at `../backend/` relative to this repo
+- Python 3.9+
+
+The script reads from:
+- `backend/src/backend/templates/platform_resources/data.json` — resource and action definitions
+- `backend/src/backend/templates/platform_resources/org_initials.json` — role permission assignments
+
+Output: `site/guide/configuration/_permissions-generated.qmd`
+
+Run this script when backend permission definitions change to keep documentation in sync.
+
 <!-- September 16, 2024: Need to mention rendered Python `.html` docs and generated `.md` test descriptions -->
 
 ## Local development with Kind
