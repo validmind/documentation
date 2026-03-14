@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
 ### Example — Next review date & days remaining
 
-This example demonstrates how to combine multiple inventory field types — date, single select, and calculation fields — to automatically track model review schedules. You'll create fields that calculate the next review date based on an approval date and validation frequency, then compute the days remaining until that review.
+Combining different inventory field types provides a flexible way to automatically track model review schedules. This example creates fields that calculate the next review date based on approval date and validation frequency, adjusted by risk tier, and then computes the days remaining until that review.
 
 Common date and time field types available in your formulas include:
 
@@ -18,6 +18,8 @@ Common date and time field types available in your formulas include:
 - `datetime` — Python's `datetime.datetime` class
 - `timedelta` — Duration in days, seconds, or microseconds
 - `relativedelta` — Duration in months, years, etc. (from `dateutil`)
+
+Here, we show you how to use `date`, `relativedelta`, and `vm_today`.
 
 #### Calculate the next review date
 
@@ -94,6 +96,15 @@ You can now determine the next review date in workflows by making a workflow dep
 
    ```python
    def formula(params):
+       """
+       Calculate days remaining until the next review.
+   
+       Args:
+           params.nextReviewDate (str): The next review date in ISO format.
+   
+       Returns:
+           str: Days remaining until review (example:"45 days remaining").
+       """
        # Get next review date (stored as ISO format string)
        next_review_date = getattr(params, "nextReviewDate", "")
        if not next_review_date:
