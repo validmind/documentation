@@ -27,7 +27,7 @@ Calculation
 ::: {.callout-button .pl4 .nt4}
 ::: {.callout collapse="true" appearance="minimal"}
 
-### Example — Risk Tier Calculation
+### Example — Risk tier calculation
 
 You have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk.
 
@@ -59,9 +59,11 @@ Your calculated field is grouped under `Model Risk` inventory fields, and can on
 ::: {.callout-button .pl4 .nt2}
 ::: {.callout collapse="true" appearance="minimal"}
 
-### Example — Date and time calculations
+### Example — Next review date & days remaining
 
-Formulas can use date and time field types for scheduling and countdowns. The following field types are available in your formula:
+Formulas can use date and time field types for scheduling and countdowns which can be used to calculate the next review date and the days remaining until the next review.
+
+The following field types are available in formulas:
 
 | Name | Description |
 |------|-------------|
@@ -73,76 +75,105 @@ Formulas can use date and time field types for scheduling and countdowns. The fo
 
 #### Next review date
 
-##### Prerequisite fields
+This example shows how to uses calculation fields to determine the next review date based on an approval date and the frequency of validation.
 
-Create these fields first so they appear in the **[available model fields]{.smallcaps}** dropdown:
+1. Create an `Approved Date` date field.
 
-- **Approved Date** — Date field for when the model was approved,
-- **Risk Tier** — Single-select field with options, for example `Tier 1`, `Tier 2`, and `Tier 3`.
+2. Create a `Frequency of Validation` string field with the following options:
 
-##### Example formula
+  - Weekly
+  - Monthly
+  - Yearly
 
-Add an interval to an approval date based on risk tier:
+3. Create a `Risk Tier` calculation field that depends on the frequency of validation:
+   
+   ```python
+   def formula(params):
+       if params.frequencyOfValidation == "Weekly":
+           return "Tier 1"
+       elif params.frequencyOfValidation == "Monthly":
+           return "Tier 2"
+       elif params.frequencyOfValidation == "Yearly":
+           return "Tier 3"
+       else:
+           return "N/A"
+   ```
 
-```python
-def formula(params):
-    # Get approval date (stored as milliseconds timestamp)
-    approved_date = getattr(params, "dmApprovedDate", "")
-    if not approved_date:
-        return "Not applicable"
-    approved_date = date.fromtimestamp(int(approved_date) / 1000)
-    
-    # Define review intervals based on risk tier
-    review_frequency = {
-        "Tier 1": relativedelta(months=3),
-        "Tier 2": relativedelta(months=6),
-        "Tier 3": relativedelta(years=1),
-    }
-    
-    # Look up frequency for this model's risk tier
-    frequency = review_frequency.get(getattr(params, "dmRiskTier", ""))
-    if not frequency:
-        return "Not applicable"
-    
-    # Calculate and return next review date
-    next_review_date = approved_date + frequency
-    return next_review_date.isoformat()
-```
+4. Create a `Next Review Date` calculation field that depends approved date and risk tier
 
-##### Example Calculation field configuration
-
-
+   ```python
+   def formula(params):
+       """
+       Calculate the next review date based on the approval date and review frequency.
+   
+       Args:
+           params.dmApprovedDate (str): The approval date in 'YYYY-MM-DD' format.
+           params.dmRiskTier (string): The review tier (Tier 1, Tier 2, or Tier 3).
+   
+       Returns:
+           datetime: The next review date.
+       """
+       # Guard against empty dates
+       if params.dmApprovedDate == "":
+           return "N/A"
+   
+       # Convert the approved_on date string to a datetime object
+       approved_date = date.fromtimestamp((int(params.dmApprovedDate))/1000)
+   
+       # Define the review frequency mapping
+       review_frequency = {
+           "Tier 1": relativedelta(months=3),  # Quarterly
+           "Tier 2": relativedelta(months=6),  # Semi-annually
+           "Tier 3": relativedelta(years=1),   # Annually
+       }
+   
+       # Get the appropriate time delta based on the tier
+       frequency = review_frequency.get(params.dmRiskTier)
+       if not frequency:
+           # "Invalid tier. Must be Tier 1, Tier 2, or Tier 3."
+           return "N/A"
+   
+       # Calculate the next review date
+       next_review_date = approved_date + frequency
+       return next_review_date.isoformat()
+   ```
 
 ![Adding a calculation type field that automatically calculates the next review date](calculation-field-next-review-date.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates the next review date" width=90% .screenshot}
 
+6. Make a workflow depend on `Approved Date`.
+
+7. Change the `Approved Date` after the fact and see how `Next Review Date` changes.
+
 #### Days remaining
 
-##### Prerequisite fields
+1. Create an `Approved Date` date field.
 
-Create this field first so it appears in the **[available model fields]{.smallcaps}** dropdown:
+2. Create a `Next Review Date` field that depends approved date + some time delta:
 
-- **Next Review Date** — The Calculation field from the previous example or another Date field
-
-##### Example formula
-
-Use `vm_today` to show a countdown to the next review (formula re-evaluates so the countdown updates over time):
-
-```python
-def formula(params):
-    # Get next review date (stored as ISO format string)
-    next_review_date = getattr(params, "nextReviewDate", "")
-    if not next_review_date:
-        return "Not applicable"
-    next_review = date.fromisoformat(next_review_date)
-    
-    # Calculate days until review using built-in vm_today
-    difference = next_review - vm_today
-    return f"{difference.days} days remaining"
-```
+   ```python
+   def formula(params):
+       """
+       Calculate the next review date based on the approval date and review frequency.
+   
+       Args:
+           params.dmApprovedDate (str): The approval date in 'YYYY-MM-DD' format.
+   
+       Returns:
+           datetime: The next review date.
+       """
+       # Guard against empty dates
+       if params.dmApprovedDate == "":
+           return "N/A"
+   
+       # Convert the approved_on date string to a datetime object
+       approved_date = date.fromtimestamp((int(params.dmApprovedDate))/1000)
+   
+       # Calculate the next review date
+       next_review_date = approved_date + relativedelta(months=3)
+       return next_review_date.isoformat()
+   ```
 
 Date fields are passed into formulas as millisecond timestamps; use `date.fromtimestamp(int(params.fieldName) / 1000)` to convert. Formula results are strings — use `.isoformat()` for date values.
-
-##### Example Calculation field configuration
 
 ![Adding a calculation type field that automatically calculates the days remaining until the next review](calculation-field-days-remaining.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates the days remaining until the next review" width=90% .screenshot}
 
