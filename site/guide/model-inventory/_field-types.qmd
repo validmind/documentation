@@ -59,9 +59,9 @@ Your calculated field is grouped under `Model Risk` inventory fields, and can on
 ::: {.callout-button .pl4 .nt2}
 ::: {.callout collapse="true" appearance="minimal"}
 
-### Example — Date arithmetic and vm_today
+### Example — Date and time calculations
 
-Formulas can use date and time types for scheduling and countdowns. The following are available in your formula:
+Formulas can use date and time field types for scheduling and countdowns. The following field types are available in your formula:
 
 | Name | Description |
 |------|-------------|
@@ -71,37 +71,80 @@ Formulas can use date and time types for scheduling and countdowns. The followin
 | `timedelta` | Duration in days, seconds, or microseconds |
 | `relativedelta` | Duration in months, years, etc. (from `dateutil`) |
 
-**Next review date** — Add an interval to an approval date based on risk tier:
+#### Next review date
+
+##### Prerequisite fields
+
+Create these fields first so they appear in the **[available model fields]{.smallcaps}** dropdown:
+
+- **Approved Date** — Date field for when the model was approved,
+- **Risk Tier** — Single-select field with options, for example `Tier 1`, `Tier 2`, and `Tier 3`.
+
+##### Example formula
+
+Add an interval to an approval date based on risk tier:
 
 ```python
 def formula(params):
-    if params.dmApprovedDate == "":
-        return "N/A"
-    approved_date = date.fromtimestamp(int(params.dmApprovedDate) / 1000)
+    # Get approval date (stored as milliseconds timestamp)
+    approved_date = getattr(params, "dmApprovedDate", "")
+    if not approved_date:
+        return "Not applicable"
+    approved_date = date.fromtimestamp(int(approved_date) / 1000)
+    
+    # Define review intervals based on risk tier
     review_frequency = {
         "Tier 1": relativedelta(months=3),
         "Tier 2": relativedelta(months=6),
         "Tier 3": relativedelta(years=1),
     }
-    frequency = review_frequency.get(params.dmRiskTier)
+    
+    # Look up frequency for this model's risk tier
+    frequency = review_frequency.get(getattr(params, "dmRiskTier", ""))
     if not frequency:
-        return "N/A"
+        return "Not applicable"
+    
+    # Calculate and return next review date
     next_review_date = approved_date + frequency
     return next_review_date.isoformat()
 ```
 
-**Days remaining** — Use `vm_today` to show a countdown to the next review (formula re-evaluates so the countdown updates over time):
+##### Example Calculation field configuration
+
+
+
+![Adding a calculation type field that automatically calculates the next review date](calculation-field-next-review-date.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates the next review date" width=90% .screenshot}
+
+#### Days remaining
+
+##### Prerequisite fields
+
+Create this field first so it appears in the **[available model fields]{.smallcaps}** dropdown:
+
+- **Next Review Date** — The Calculation field from the previous example or another Date field
+
+##### Example formula
+
+Use `vm_today` to show a countdown to the next review (formula re-evaluates so the countdown updates over time):
 
 ```python
 def formula(params):
-    if not params.nextReviewDate:
-        return "N/A"
-    next_review = date.fromisoformat(params.nextReviewDate)
+    # Get next review date (stored as ISO format string)
+    next_review_date = getattr(params, "nextReviewDate", "")
+    if not next_review_date:
+        return "Not applicable"
+    next_review = date.fromisoformat(next_review_date)
+    
+    # Calculate days until review using built-in vm_today
     difference = next_review - vm_today
     return f"{difference.days} days remaining"
 ```
 
-**Note:** Date fields are passed into formulas as millisecond timestamps; use `date.fromtimestamp(int(params.fieldName) / 1000)` to convert. Formula results are strings — use `.isoformat()` for date values.
+Date fields are passed into formulas as millisecond timestamps; use `date.fromtimestamp(int(params.fieldName) / 1000)` to convert. Formula results are strings — use `.isoformat()` for date values.
+
+##### Example Calculation field configuration
+
+![Adding a calculation type field that automatically calculates the days remaining until the next review](calculation-field-days-remaining.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates the days remaining until the next review" width=90% .screenshot}
 
 :::
 :::
