@@ -23,7 +23,7 @@ listing:
     - samples-jupyter-notebooks.qmd
 ---
 
-Learn about the wide range of model frameworks for testing and documentation supported by the {{< var validmind.developer >}}. Understand which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
+Learn about the wide range of models and frameworks for testing and documentation supported by the {{< var validmind.developer >}}. Understand which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
 
 ::: {.attn}
 
@@ -341,31 +341,38 @@ vm_model = vm.init_model(
 
 ### PipelineModel
 
-Chain multiple models or processing steps:
+Chain multiple models or processing steps using the `|` operator between `VMModel` instances:
 
 ```python
 from validmind.models import PipelineModel
 
 vm_model = vm.init_model(
-    model=PipelineModel(models=[preprocessor, model]),
+    model=PipelineModel(vm_preprocessor | vm_model),
     input_id="my_pipeline"
 )
 ```
 
-### MetadataModel
-
-Use when you have model metadata but no inference capability — for example, when documenting a model deployed in an external system:
+Or, pass the pipeline directly:
 
 ```python
-from validmind.models import MetadataModel
+vm_model = vm.init_model(vm_preprocessor | vm_model, input_id="my_pipeline")
+```
 
+### MetadataModel
+
+Use when you have model metadata but no inference capability — for example, when documenting a model deployed in an external system. Calling `vm.init_model()` with `attributes` creates a `MetadataModel` implicitly:
+
+```python
 vm_model = vm.init_model(
-    model=MetadataModel(),
-    input_id="external_model"
+    input_id="external_model",
+    attributes={
+        "architecture": "ExternalModel",
+        "language": "Python",
+    },
 )
 ```
 
-With `MetadataModel`, you can still run dataset-only tests and use precomputed predictions.
+With a metadata-only model, you can still run dataset-only tests and use precomputed predictions.
 
 ## Setting up for LLMs and GenAI
 
@@ -373,23 +380,33 @@ This section covers how to configure and test large language models and generati
 
 ### FoundationModel
 
-Use `FoundationModel` for LLM endpoints:
+Use `FoundationModel` for LLM endpoints which wraps a callable `predict_fn` and a `Prompt`:
 
 ```python
-from validmind.models import FoundationModel
-from validmind.prompt import Prompt
+import validmind as vm
+from openai import OpenAI
+from validmind.models import FoundationModel, Prompt
 
-prompt = Prompt(
-    template="Classify the sentiment: {text}",
-    variables=["text"]
-)
+client = OpenAI()
+def call_model(prompt: str) -> str:
+    return (
+        client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+        )
+        .choices[0]
+        .message.content
+    )
 
 vm_model = vm.init_model(
     model=FoundationModel(
-        prompt=prompt,
-        model="gpt-4",  # or your model endpoint
+        predict_fn=call_model,
+        prompt=Prompt(
+            template="Classify the sentiment: {text}",
+            variables=["text"],
+        ),
     ),
-    input_id="sentiment_classifier"
+    input_id="sentiment_classifier",
 )
 ```
 :::
@@ -418,7 +435,7 @@ For retrieval-augmented generation (RAG) systems, the {{< var validmind.develope
 
 ### Dataset requirements
 
-RAG evaluation requires specific fields in your dataset:
+RAG evaluation expects these logical fields, but you can map your own column names using test parameters:
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -426,6 +443,20 @@ RAG evaluation requires specific fields in your dataset:
 | `response` | str | Model output |
 | `retrieved_contexts` | List[str] | Retrieved context chunks |
 | `reference` | str | Ground truth (required for some tests) |
+
+To map custom column names, pass them as parameters when running the test:
+
+```python
+run_test(
+    "validmind.model_validation.ragas.Faithfulness",
+    inputs={"dataset": vm_test_ds},
+    params={
+        "user_input_column": "question",
+        "response_column": "rag_model_prediction",
+        "retrieved_contexts_column": "retrieval_model_prediction",
+    },
+).log()
+```
 
 ### Available RAG tests
 
