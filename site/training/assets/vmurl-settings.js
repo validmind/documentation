@@ -17,7 +17,7 @@
   // Save custom URL to localStorage
   function setCustomUrl(url) {
     if (url && url.trim()) {
-      localStorage.setItem(STORAGE_KEY, url.trim());
+      localStorage.setItem(STORAGE_KEY, url.trim().replace(/\/+$/, ''));
     } else {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -52,6 +52,14 @@
       const href = link.getAttribute('href');
       if (href) {
         link.setAttribute('href', href.replace(URL_PATTERN, customUrl));
+      }
+    });
+
+    // Rewrite src attributes on iframes
+    document.querySelectorAll('iframe[src*="app.prod.validmind.ai"]').forEach(function(iframe) {
+      const src = iframe.getAttribute('src');
+      if (src) {
+        iframe.setAttribute('src', src.replace(URL_PATTERN, customUrl));
       }
     });
   }
