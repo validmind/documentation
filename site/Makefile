@@ -93,7 +93,7 @@ clone:
 	@echo "\nCloning release-notes repo from $(RELEASE_NOTES_BRANCH) ..."; \
 	git clone --depth 1 -b $(RELEASE_NOTES_BRANCH) git@github.com:validmind/release-notes.git $(SRC_ROOT)/release-notes
 
-	@echo "\nCloning backend repo (sparse) from $(BACKEND_BRANCH) ..."
+	@echo "\nCloning backend repo from $(BACKEND_BRANCH) ..."
 	@git clone --depth 1 --filter=blob:none --sparse -b $(BACKEND_BRANCH) \
 		git@github.com:validmind/backend.git $(SRC_ROOT)/backend
 	@cd $(SRC_ROOT)/backend && \
