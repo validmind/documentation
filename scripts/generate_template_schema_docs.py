@@ -16,6 +16,7 @@ Requirements:
     - Backend repo must be cloned at ../backend/ relative to this repo
     - json-schema-for-humans package installed
 """
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -83,10 +84,16 @@ def main():
             f"<head>\n{stylesheet_links}"
         )
 
-    # Add scoping class to body for CSS specificity
+    # Wrap body content in a div for CSS scoping
+    # (Can't use body class because Quarto merges embedded body with its own)
+    html_content = re.sub(
+        r'(<body[^>]*>)',
+        r'\1<div class="template-schema-docs">',
+        html_content
+    )
     html_content = html_content.replace(
-        '<body',
-        '<body class="template-schema-docs"'
+        '</body>',
+        '</div></body>'
     )
 
     # Copyright header to place before the raw HTML block
