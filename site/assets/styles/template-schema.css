@@ -5,6 +5,42 @@
 /* Override font to match site (Inter instead of Overpass) */
 .template-schema-docs {
   font-family: Inter, sans-serif;
+  margin-bottom: 2rem;
+}
+
+/* Button container alignment (Bootstrap text-right was removed) */
+.template-schema-docs .text-right {
+  text-align: right;
+}
+
+/* Remove body padding from embedded HTML (schema_doc.css sets padding: 40px) */
+.template-schema-docs body,
+body .template-schema-docs {
+  padding: 0;
+}
+
+/* Card styling (Bootstrap CSS was removed to prevent global style pollution) */
+.template-schema-docs .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.template-schema-docs .card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.template-schema-docs .card-header:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 
 .template-schema-docs .breadcrumb {
@@ -31,14 +67,22 @@
 .template-schema-docs .badge {
   display: inline-block;
   padding: .4em .4em .3em .4em;
-  font-size: 75%;
+  font-size: 100%;
   font-weight: 700;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.template-schema-docs .badge.value-type {
+  font-size: 120%;
+  margin-right: 5px;
+  margin-bottom: 10px;
 }
 
 .template-schema-docs .badge-warning {
@@ -68,9 +112,17 @@
 }
 
 .template-schema-docs .btn.btn-primary {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
   background-color: #de257e;
-  border-color: #de257e;
+  border: 1px solid #de257e;
+  border-radius: 0.25rem;
   color: #ffffff;
+  cursor: pointer;
+  margin: 0.25rem;
 }
 
 .template-schema-docs .btn.btn-primary:hover {
@@ -92,12 +144,4 @@
 .template-schema-docs footer,
 .template-schema-docs .generated-by-footer {
   display: none;
-}
-
-/* Style the parent Quarto container when it contains the schema */
-.column-page-inset-right:has(.template-schema-docs) {
-  margin-bottom: 2rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  border: 1px solid #e0e0e0;
 }

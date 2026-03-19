@@ -75,6 +75,30 @@ def main():
     with open(temp_output, "r") as f:
         html_content = f.read()
 
+    # Strip external CSS/JS that affects global page styling
+    # These are included by json-schema-for-humans but break the Quarto page layout
+    html_content = re.sub(
+        r'<link[^>]*href="https://stackpath\.bootstrapcdn\.com/bootstrap/[^"]*"[^>]*>',
+        '',
+        html_content
+    )
+    html_content = re.sub(
+        r'<link[^>]*href="https://fonts\.googleapis\.com/css\?family=Overpass[^"]*"[^>]*>',
+        '',
+        html_content
+    )
+    html_content = re.sub(
+        r'<script[^>]*src="https://use\.fontawesome\.com/[^"]*"[^>]*></script>',
+        '',
+        html_content
+    )
+    # Strip local schema_doc.css which has unscoped global body styles
+    html_content = re.sub(
+        r'<link[^>]*href="schema_doc\.css"[^>]*>',
+        '',
+        html_content
+    )
+
     # Build stylesheet link tags
     stylesheet_links = '\n'.join(
         f'<link href="{href}" rel="stylesheet">'
