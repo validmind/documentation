@@ -59,7 +59,7 @@ def main():
         sys.exit(1)
 
     # Generate HTML documentation
-    print(f"Generating schema documentation from {SCHEMA_FILE}...")
+    print(f"Generating schema documentation from {SCHEMA_FILE}")
     
     # Create temporary output
     temp_output = OUTPUT_FILE.with_suffix(".tmp.html")
