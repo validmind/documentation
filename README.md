@@ -164,24 +164,29 @@ Run this script when backend permission definitions change to keep documentation
 
 #### Template schema documentation
 
-The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. To regenerate:
+The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. CI workflows generate this automatically, but you can also regenerate locally:
 
 ```bash
-pip install json-schema-for-humans
-python scripts/generate_template_schema_docs.py
+cd site
+make get-source  # Clones all repos including backend (sparse checkout)
+make template-schema-docs  # Generates the schema docs
+```
+
+The backend repo is sparse-cloned as part of `make clone` (only the schema directory is fetched). To use a specific backend branch:
+
+```bash
+make clone BACKEND_BRANCH=feature-branch
+make template-schema-docs
 ```
 
 **Requirements:**
-- The `backend` repo must be cloned at `../backend/` relative to this repo
 - Python 3.9+
-- `json-schema-for-humans` package installed
+- SSH access to the backend repository
 
 The script reads from:
 - `backend/src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json` — template schema definition
 
-Output: `site/guide/templates/_template-schema-generated.html`
-
-Run this script when the backend template schema changes to keep documentation in sync.
+Output: `site/guide/templates/_template-schema-generated.qmd`
 
 #### Stylesheet organization (IN PROGRESS)
 

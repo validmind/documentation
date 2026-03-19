@@ -12,10 +12,14 @@ Usage:
     pip install json-schema-for-humans
     python scripts/generate_template_schema_docs.py
 
+    # Or with custom backend path:
+    BACKEND_ROOT=/path/to/backend python scripts/generate_template_schema_docs.py
+
 Requirements:
-    - Backend repo must be cloned at ../backend/ relative to this repo
+    - Backend repo must be cloned (default: ../backend/, or set BACKEND_ROOT)
     - json-schema-for-humans package installed
 """
+import os
 import re
 import subprocess
 import sys
@@ -23,7 +27,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
-BACKEND_ROOT = REPO_ROOT.parent / "backend"
+BACKEND_ROOT = Path(os.environ.get("BACKEND_ROOT", REPO_ROOT.parent / "backend"))
 
 SCHEMA_FILE = BACKEND_ROOT / "src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json"
 OUTPUT_FILE = REPO_ROOT / "site/guide/templates/_template-schema-generated.qmd"
@@ -39,7 +43,7 @@ def main():
     # Verify schema file exists
     if not SCHEMA_FILE.exists():
         print(f"Error: Schema file not found: {SCHEMA_FILE}")
-        print("Make sure the backend repo is cloned at ../backend/")
+        print("Make sure the backend repo is cloned at ../backend/ or set BACKEND_ROOT")
         sys.exit(1)
 
     # Check if json-schema-for-humans is installed
