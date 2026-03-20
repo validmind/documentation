@@ -1,0 +1,195 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Install and initialize ValidMind for R"
+date: last-modified
+listing:
+  - id: whats-next
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    grid-columns: 2
+    contents:
+    - ../supported-models-and-frameworks.qmd
+    - ../how-to/testing-overview.qmd
+---
+
+Use the ValidMind R package to document and validate models built in R. The package interfaces with the {{< var validmind.developer >}} through `reticulate`, giving you access to the full Python API from R.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] The model you want to connect to is registered in the model inventory.[^1]
+- [x] The model document has a template applied.[^2]
+- [x] You are the model owner, model validator, or another model stakeholder with write access to the model's documents.[^3]
+
+:::
+
+## Install R
+
+Download R from [CRAN](https://cran.r-project.org/). On macOS, you can install via Homebrew:
+ 
+```bash
+brew install r
+```
+
+## Install Python dependencies
+
+Install the {{< var validmind.developer >}} and `rpy2` so Python can interface with R models:
+
+```bash
+pip install validmind rpy2
+```
+
+::: {.callout}
+On macOS, if `rpy2` fails to find R libraries, rebuild it from source against your installed R:
+
+```bash
+R_HOME=$(Rscript -e 'cat(R.home())') pip install --no-binary :all: --force-reinstall rpy2
+```
+
+:::
+
+## Install R packages
+
+Open R and install the required packages:
+
+```r
+install.packages(c("reticulate", "dplyr", "caTools", "knitr", "glue", "plotly", "htmltools", "rmarkdown", "DT", "base64enc"))
+```
+
+## Install the ValidMind R package
+
+::: {.panel-tabset}
+### From CRAN
+
+```r
+install.packages("validmind")
+```
+
+### From GitHub
+
+```r
+devtools::install_github("validmind/validmind-library", subdir="r/validmind")
+```
+
+### From source
+
+Clone the repository and run from the `r/validmind` directory:
+
+```r
+devtools::install()
+```
+
+:::
+
+## Initialize ValidMind
+
+Connect to your ValidMind profile by providing your credentials. Point `python_version` to your Python binary — for example, the one in your project's `.venv`:
+
+```r
+vm_r <- vm(
+  api_key = "YOUR_API_KEY",
+  api_secret = "YOUR_API_SECRET",
+  model = "YOUR_MODEL_ID",
+  python_version = "path/to/python",
+  api_host = "{{< var api.host >}}/tracking",
+  document = "documentation"
+)
+```
+
+The `document` parameter specifies which document type to associate with the session:
+
+- `"documentation"` — For model development
+- `"validation-report"` — For model validation
+
+## Key APIs
+
+Since the R package returns the full Python `validmind` module, you can call any Python API directly via `reticulate`:
+
+```r
+# Preview the documentation template
+vm_r$preview_template()
+
+# Initialize datasets
+vm_dataset <- vm_r$init_dataset(
+  dataset = df,
+  input_id = "my_dataset",
+  target_column = "target"
+)
+
+# Initialize R models
+model_path <- save_model(model)
+vm_model <- vm_r$init_r_model(model_path = model_path, input_id = "model")
+
+# Assign predictions
+vm_dataset$assign_predictions(model = vm_model)
+
+# Run the full documentation test suite
+vm_r$run_documentation_tests(config = test_config)
+
+# Run individual tests
+vm_r$tests$run_test(
+  "validmind.data_validation.ClassImbalance",
+  inputs = list(dataset = vm_dataset)
+)$log()
+
+# List available tests
+vm_r$tests$list_tests(tags = list("data_quality"), task = "classification")
+vm_r$tests$list_tasks_and_tags()
+```
+
+## Troubleshooting
+
+::: {.panel-tabset}
+
+### libc++ not found on macOS
+
+When calling `vm()` you may see an error like:
+
+```
+OSError: dlopen(...libllvmlite.dylib...): Library not loaded: @rpath/libc++.1.dylib
+```
+
+This typically means the `libc++` library is installed but R cannot find it. Create a symlink:
+
+```bash
+# Find the path to libc++.1.dylib
+sudo find / -name "libc++.1.dylib" 2>/dev/null
+
+# Create a symlink (adjust the source path based on the find result)
+sudo ln -s /opt/homebrew/Cellar/llvm/.../libc++.1.dylib /Library/Frameworks/R.framework/Resources/lib/libc++.1.dylib
+```
+
+### Numba circular import error
+
+If you see:
+
+```
+ImportError: cannot import name 'NumbaTypeError' from partially initialized module 'numba.core.errors'
+```
+
+Reinstall Numba and restart the R session:
+
+```bash
+pip install -U numba
+```
+
+:::
+
+## What's next
+
+:::{#whats-next}
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)
+
+[^2]: [Working with templates](/guide/templates/working-with-document-templates.qmd)
+
+[^3]: [Manage model stakeholders](/guide/model-inventory/edit-model-inventory-fields.qmd#manage-model-stakeholders)
