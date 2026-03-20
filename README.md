@@ -25,11 +25,17 @@ You need:
 - To use Cursor to author documentation, the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
-### Additional dependencies
+### Fetching required repositories
 
-Some interactive tables, such as our breaking changes and dependency history rely you have R and some R packages installed in order for you to be able to preview or render certain pages of the docs site locally.
+Before previewing or rendering the docs site, run:
 
-**Refer to the [Breaking changes and deprecations](site/releases/breaking-changes/README.md) guide** for more information on how to install R and set up these tables.
+```bash
+cd site
+make get-source
+```
+
+This make action clones required repositories and generates documentation from source. Without this step, Quarto will return warnings or errors related to our installation guides, release notes, library docs, and template schema reference.
+
 
 ## How to contribute
 
