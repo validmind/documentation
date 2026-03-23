@@ -29,7 +29,7 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 BACKEND_ROOT = Path(os.environ.get("BACKEND_ROOT", REPO_ROOT.parent / "backend"))
 
-SCHEMA_FILE = BACKEND_ROOT / "src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json"
+SCHEMA_FILE = BACKEND_ROOT / "src/backend/templates/documentation/model_documentation/mdd_template_schema_v5_ui.json"
 OUTPUT_FILE = REPO_ROOT / "site/guide/templates/_template-schema-generated.qmd"
 
 # CSS stylesheets to link in the generated HTML
