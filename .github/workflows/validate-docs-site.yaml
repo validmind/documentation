@@ -34,13 +34,16 @@ jobs:
         repository: validmind/validmind-library
         path: site/_source/validmind-library
         token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
-        
+
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
         repository: validmind/installation
         path: site/_source/installation
-        token: ${{ secrets.INSTALLATION_RO_PAT }}
+        token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+        sparse-checkout: |
+          site/installation
+        sparse-checkout-cone-mode: true
 
     - name: Check out release-notes repository
       uses: actions/checkout@v4
@@ -48,6 +51,19 @@ jobs:
         repository: validmind/release-notes
         path: site/_source/release-notes
         token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+        sparse-checkout: |
+          releases
+        sparse-checkout-cone-mode: true
+
+    - name: Check out backend repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/backend
+        path: site/_source/backend
+        token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+        sparse-checkout: |
+          src/backend/templates/documentation/model_documentation
+        sparse-checkout-cone-mode: true
 
     - name: Verify copyright headers
       run: |
@@ -57,7 +73,7 @@ jobs:
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
       with:
-        version: ${{ vars.QUARTO_VERSION }}
+        version: pre-release
 
     - name: Install Poetry
       run: |
@@ -72,6 +88,11 @@ jobs:
         rm -rf validmind
         mkdir -p validmind
         rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+
+    - name: Generate template schema docs
+      run: |
+        pip install json-schema-for-humans
+        BACKEND_ROOT=site/_source/backend python scripts/generate_template_schema_docs.py
 
     - name: Populate installation
       run: cp -r site/_source/installation/site/installation site/installation
@@ -143,6 +164,15 @@ jobs:
             body: comment
           });
 
+    - name: Install pandoc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
+
+    - name: Validate LLM markdown render
+      run: bash llm/render.sh && bash llm/clean.sh
+      working-directory: site
+
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
       if: always()
@@ -152,6 +182,7 @@ jobs:
         remove_paths: |
           site/_source/installation
           site/_source/release-notes
+          site/_source/backend
           site/render_errors.log
           site/_freeze
           dev.env

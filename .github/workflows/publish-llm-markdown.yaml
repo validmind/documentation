@@ -1,0 +1,109 @@
+name: Publish LLM markdown
+
+on:
+  push:
+    branches:
+      - main
+      - prod
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out documentation repository
+        uses: actions/checkout@v4
+
+      - name: Free space + create reserve
+        uses: ./.github/actions/free-disk-space
+        with:
+          remove_dotnet: "true"
+          remove_android: "true"
+          remove_haskell: "true"
+          prune_docker: "true"
+          apt_cleanup: "true"
+          create_reserve_gb: "3"
+
+      - run: mkdir -p site/_source
+
+      - name: Check out validmind-library repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/validmind-library
+          path: site/_source/validmind-library
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ vars.QUARTO_VERSION }}
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Generate Python library docs
+        run: |
+          cd _source/validmind-library
+          make install && make quarto-docs
+          cd ../../
+          rm -rf validmind
+          mkdir -p validmind
+          rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+        working-directory: site
+
+      - name: Install pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Render LLM markdown
+        run: bash llm/render.sh
+        working-directory: site
+
+      - name: Set archive name
+        id: archive
+        run: |
+          BRANCH="${GITHUB_REF_NAME//\//-}"
+          echo "name=docs-markdown-${BRANCH}.tar.gz" >> "$GITHUB_OUTPUT"
+
+      - name: Create tar.gz archive
+        run: |
+          cd site/llm/_llm-output
+          tar -czf "/tmp/${{ steps.archive.outputs.name }}" .
+
+      # main → staging bucket (us-west-2), prod → prod bucket (us-east-1)
+      - name: Configure AWS credentials
+        run: |
+          if [ "${{ github.ref_name }}" = "prod" ]; then
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+            aws configure set default.region us-east-1
+          else
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+            aws configure set default.region us-west-2
+          fi
+
+      - name: Upload to S3
+        run: |
+          if [ "${{ github.ref_name }}" = "prod" ]; then
+            BUCKET="s3://validmind-docs-prod/site/llm/${{ steps.archive.outputs.name }}"
+          else
+            BUCKET="s3://validmind-docs-staging/site/llm/${{ steps.archive.outputs.name }}"
+          fi
+          aws s3 cp "/tmp/${{ steps.archive.outputs.name }}" "$BUCKET"
+          echo "Uploaded to $BUCKET"
+
+      - name: Release reserve & shrink
+        if: always()
+        uses: ./.github/actions/free-disk-space
+        with:
+          release_reserve: "true"
+          remove_paths: |
+            site/_source/installation
+            site/_source/release-notes
+            site/render_errors.log
+            site/_freeze

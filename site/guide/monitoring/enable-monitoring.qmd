@@ -6,12 +6,7 @@ title: "Enable monitoring"
 date: last-modified
 ---
 
-To start uploading ongoing monitoring results for a model to {{< var vm.product >}}, you enable monitoring in your code snippet and then select a monitoring template. You can enable monitoring for both new and existing models. 
-
-Enable monitoring with two steps:
-
-1. [Add `monitoring=True` to your code snippet](#add-monitoringtrue-to-your-code-snippet)
-2. [Select a monitoring template](#select-a-monitoring-template)
+To start uploading ongoing monitoring results for a model to {{< var vm.product >}}, enable monitoring in your code snippet within the {{< var validmind.platform >}} and then select a monitoring template. You can enable monitoring for both new and existing models.
 
 ::: {.callout title="To try out monitoring, check out the code sample for ongoing monitoring of models."}
 [Quickstart for ongoing monitoring of models with {{< var vm.product >}} {{< fa hand-point-right >}}](/notebooks/use_cases/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.ipynb)
@@ -27,87 +22,120 @@ Enable monitoring with two steps:
 
 :::
 
-## Add `monitoring=True` to your code snippet 
+## Steps
 
-{{< var vm.product >}} generates a unique _code snippet_ for each registered model to connect with your developer environment. You initialize the {{< var validmind.developer >}} with this code snippet, which ensures that your documentation and tests are uploaded to the correct model when you run the notebook. 
+::: {.panel-tabset}
 
-To enable ongoing monitoring for a model, add `monitoring=True` to your code snippet: 
+### 1. Get monitoring code snippet
 
-1. In the {{< var validmind.platform >}}, either register a new model[^2] or locate an existing model:
+{{< include /developer/model-documentation/_code-snippet.qmd >}}
+
+To enable ongoing monitoring for a model, add `monitoring=True` to your code snippet:
+
+a. In the {{< var validmind.platform >}}, either register a new model[^2] or locate an existing model:
 
    - In the left sidebar, click **{{< fa cubes >}} Inventory**.
    - Select a model or find your model by applying a filter or searching for it.[^3]
 
-2. Copy the code snippet for the model: 
+b. Copy the code snippet for the model:
 
    - In the left sidebar that appears for your model, click **{{< fa rocket >}} Getting Started**.
-   - Locate the code snippet and set **[enable ongoing monitoring]{.smallcaps}[?]{.smallercaps}** to true.
-   - Click **{{< fa regular copy >}} Copy snippet to clipboard**. 
+   - Select a Monitoring document type from the **[document]{.smallcaps}** drop-down menu.[^4]
+   - Set **[enable monitoring]{.smallcaps}[?]{.smallercaps}** to true.
+   - Click **{{< fa regular copy >}} Copy snippet to clipboard**.
 
-3. Paste the snippet into your development source code.[^4]
+### 2. Select monitoring template
 
-   Confirm that `monitoring=True` is present in the `vm.init` method, similar to this example:
-   
+Before you can start sending ongoing monitoring data using the {{< var validmind.developer >}} to the {{< var validmind.platform >}}, you must select a monitoring template:
+
+a. In the {{< var validmind.platform >}}, click **{{< fa cubes >}} Inventory** in the left sidebar.
+
+b. Select a model or find your model by applying a filter or searching for it.[^6]
+
+c. In the left sidebar that appears for your model, click **{{< fa file >}} Documents** and select the **Latest** tab.[^7]
+
+d. Click on a Monitoring type file.[^8]
+
+e. From the **[template]{.smallcaps}** drop-down, select one of the available monitoring templates.
+
+f. Click **Use Template** to apply your desired template.
+
+   - After you select a template, the initial document where your ongoing monitoring results will be stored becomes available.
+   - Review this documents structure to confirm that it meets your requirements, then start running your code to populate the template with monitoring results.
+
+### 3. Run code snippet
+
+a. Paste the code snippet into your Jupyter Notebook or other development environment.
+
+b. Confirm that `monitoring=True` is present in the `vm.init` method, similar to this example:
+
    ```python
    import validmind as vm
-   
+
    vm.init(
        api_host="https://api.prod.validmind.ai/api/v1/tracking",
        api_key="...",
        api_secret="...",
        model="...",
+       document="monitoring", # Unique key for your monitoring document
        monitoring=True
    )
    ```
+   <br>
 
-::: {.column-margin}
-To enable monitoring when you are storing credentials in an `.env` file:^[[Store model credentials in `.env` files](/developer/model-documentation/store-credentials-in-env-file.qmd)]
+   ::: {.callout-button .pl4 .nt4}
+   ::: {.callout collapse="true" appearance="minimal"}
+   ### How do I enable monitoring when I am storing credentials in an `.env` file?
 
-```python
-%load_ext dotenv
-%dotenv .env
+   :::: {.flex .flex-wrap .justify-around}
 
-import validmind as vm
+   ::: {.w-60-ns .pr3}
 
-vm.init(
-   monitoring=True
-)
-```
+   Load your model credentials from your `.env` file, then remove the inline credentials from `vm.init()` after importing the {{< var vm.developer >}}.
+
+   You'll still need to include your document key and the monitoring flag.
+
+   [Store model credentials in `.env` files](/developer/model-documentation/store-credentials-in-env-file.qmd){.button .button-green}
+
+   :::
+
+   ::: {.w-40-ns}
+
+   ```python
+   %load_ext dotenv
+   %dotenv .env
+
+   import validmind as vm
+
+   vm.init(
+      document="monitoring",
+      monitoring=True
+   )
+   ```
+
+   :::
+
+   ::::
+
+
+   :::
+   :::
+
+c. Run the code snippet to initialize the {{< var validmind.developer >}} and connect to the selected monitoring document for your model in the {{< var validmind.platform >}}.[^5]
+
+::: {.callout}
+## A template must already be applied to your selected document to populate monitoring test results in the {{< var validmind.platform >}}.
+
+Attempting to initialize the {{< var vm.developer >}} with a document that does not have a template applied will result in an error.
 
 :::
 
-## Select a monitoring template
-
-Before you can start sending ongoing monitoring data from your developer environment to {{< var vm.product >}}, you must select a monitoring template:
-
-1. In the {{< var validmind.platform >}}, click **{{< fa cubes >}} Inventory** in the left sidebar.
-
-2. Select a model or find your model by applying a filter or searching for it.[^5]
-
-3. In the left sidebar that appears for your model, click **{{< fa file >}} Documents** and select the **Latest** tab.[^6]
-
-4. Click on a Ongoing Monitoring type file.[^7]
-
-5. From the **[template]{.smallcaps}** drop-down, select one of the available monitoring templates. 
-
-6. Click **Use Template** to apply your desired template.
-
-   - After you select a template, the initial document where your ongoing monitoring results will be stored becomes available. 
-   - Review this documents structure to confirm that it meets your requirements, then start running your code to populate the template with monitoring results. 
-
-
-## Troubleshooting
-
-If you see errors similar to this one when running your code, make sure that you have selected your monitoring template and then re-run your code: 
-
-```bash
-APIRequestError: Please select an ongoing monitoring template on the {{< var validmind.platform >}} first
-```
+:::
 
 
 ## What's next
 
-After you have enabled ongoing monitoring and run your code to generate some output, you can start reviewing the monitoring results.[^8]
+After you have enabled ongoing monitoring and run your code to generate some output, you can start reviewing the monitoring results.[^9]
 
 
 <!-- FOOTNOTES -->
@@ -118,12 +146,14 @@ After you have enabled ongoing monitoring and run your code to generate some out
 
 [^3]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
 
-[^4]: [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd)
+[^4]: Selecting a **[document]{.smallcaps}** to connect to requires {{< var validmind.developer >}} version >=2.12.0.
 
-[^5]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
+[^5]: [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd)
 
-[^6]: [Work with document versions](/guide/model-documentation/work-with-document-versions.qmd)
+[^6]: [Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd#search-filter-and-sort-models)
 
-[^7]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
+[^7]: [Work with document versions](/guide/model-documentation/work-with-document-versions.qmd)
 
-[^8]: [Review monitoring results](review-monitoring-results.qmd)
+[^8]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
+
+[^9]: [Review monitoring results](review-monitoring-results.qmd)

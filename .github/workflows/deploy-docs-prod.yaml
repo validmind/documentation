@@ -45,7 +45,10 @@ jobs:
         with:
           repository: validmind/installation
           path: site/_source/installation
-          token: ${{ secrets.INSTALLATION_RO_PAT }}
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+          sparse-checkout: |
+            site/installation
+          sparse-checkout-cone-mode: true
 
       - name: Check out release-notes repository
         uses: actions/checkout@v4
@@ -53,6 +56,19 @@ jobs:
           repository: validmind/release-notes
           path: site/_source/release-notes
           token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+          sparse-checkout: |
+            releases
+          sparse-checkout-cone-mode: true
+
+      - name: Check out backend repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/backend
+          path: site/_source/backend
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+          sparse-checkout: |
+            src/backend/templates/documentation/model_documentation
+          sparse-checkout-cone-mode: true
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -72,6 +88,11 @@ jobs:
           rm -rf validmind
           mkdir -p validmind
           rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+
+      - name: Generate template schema docs
+        run: |
+          pip install json-schema-for-humans
+          BACKEND_ROOT=site/_source/backend python scripts/generate_template_schema_docs.py
 
       - name: Populate installation
         run: cp -r site/_source/installation/site/installation site/installation
@@ -96,7 +117,7 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }} && aws configure set default.region us-east-1
 
       - name: Deploy docs prod site
-        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" --exclude "llm/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager
 
       # Release headroom and shrink before final lightweight steps & post-job
       - name: Release reserve & shrink
@@ -107,6 +128,7 @@ jobs:
           remove_paths: |
             site/_source/installation
             site/_source/release-notes
+            site/_source/backend
             site/render_errors.log
             site/_freeze
             dev.env
