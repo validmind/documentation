@@ -25,11 +25,17 @@ You need:
 - To use Cursor to author documentation, the [`create-user-documentation`](https://github.com/validmind/skills/tree/main/create-user-documentation) skill
 - For Windows operating systems, install the `make` command via [Cygwin](https://cygwin.com/install.html)
 
-### Additional dependencies
+### Fetching required repositories
 
-Some interactive tables, such as our breaking changes and dependency history rely you have R and some R packages installed in order for you to be able to preview or render certain pages of the docs site locally.
+Before previewing or rendering the docs site, run:
 
-**Refer to the [Breaking changes and deprecations](site/releases/breaking-changes/README.md) guide** for more information on how to install R and set up these tables.
+```bash
+cd site
+make get-source
+```
+
+This make action clones required repositories and generates documentation from source. Without this step, Quarto will return warnings or errors related to our installation guides, release notes, library docs, and template schema reference.
+
 
 ## How to contribute
 
@@ -137,6 +143,36 @@ These directories may have sub-directories depending on their size and grouped s
 - `internal` — For internal testing only.
 - `notebooks` — This is where notebooks retrieved from the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
 - `tests` — This is where test descriptions generated from the Python source in the [`validmind-library` repo](https://github.com/validmind/validmind-library) live.
+
+### Generated documentation
+
+Some documentation content is auto-generated from backend source files. These scripts ensure the docs stay in sync with the codebase.
+
+#### Template schema documentation
+
+The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. CI workflows generate this automatically, but you can also regenerate locally:
+
+```bash
+cd site
+make get-source  # Clones all repos including backend (sparse checkout)
+make template-schema-docs  # Generates the schema docs
+```
+
+The backend repo is sparse-cloned as part of `make clone` (only the schema directory is fetched). To use a specific backend branch:
+
+```bash
+make clone BACKEND_BRANCH=feature-branch
+make template-schema-docs
+```
+
+**Requirements:**
+- Python 3.9+
+- SSH access to the backend repository
+
+The script reads from:
+- `backend/src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json` — template schema definition
+
+Output: `site/guide/templates/_template-schema-generated.qmd`
 
 #### Stylesheet organization (IN PROGRESS)
 

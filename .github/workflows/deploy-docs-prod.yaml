@@ -45,7 +45,7 @@ jobs:
         with:
           repository: validmind/installation
           path: site/_source/installation
-          token: ${{ secrets.INSTALLATION_RO_PAT }}
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
           sparse-checkout: |
             site/installation
           sparse-checkout-cone-mode: true
@@ -58,6 +58,16 @@ jobs:
           token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
           sparse-checkout: |
             releases
+          sparse-checkout-cone-mode: true
+
+      - name: Check out backend repository
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/backend
+          path: site/_source/backend
+          token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
+          sparse-checkout: |
+            src/backend/templates/documentation/model_documentation
           sparse-checkout-cone-mode: true
 
       - name: Set up Quarto
@@ -78,6 +88,11 @@ jobs:
           rm -rf validmind
           mkdir -p validmind
           rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+
+      - name: Generate template schema docs
+        run: |
+          pip install json-schema-for-humans
+          BACKEND_ROOT=site/_source/backend python scripts/generate_template_schema_docs.py
 
       - name: Populate installation
         run: cp -r site/_source/installation/site/installation site/installation
@@ -113,6 +128,7 @@ jobs:
           remove_paths: |
             site/_source/installation
             site/_source/release-notes
+            site/_source/backend
             site/render_errors.log
             site/_freeze
             dev.env
