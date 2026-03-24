@@ -54,6 +54,11 @@ jobs:
           rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
         working-directory: site
 
+      - name: Install pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
       - name: Render LLM markdown
         run: bash llm/render.sh
         working-directory: site

@@ -80,33 +80,7 @@ listing:
 
 ## Running a test
 
-```{dot}
-digraph {
-    rankdir=LR
-    bgcolor="transparent"
-    margin=0
-    pad=0.1
-    ranksep=0.5
-    nodesep=0.8
-    node [shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#083E44", fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=10, penwidth=0.7, margin="0.24,0.3"]
-    edge [color="#083E44", penwidth=0.7]
-    graph [fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=10]
-    
-    subgraph cluster_identify { label="Identify"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; TestID [label="Test ID"]; ResultID [label="Result ID"] }
-    subgraph cluster_configure { label="Configure"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; Inputs; Params [label="Parameters"] }
-    subgraph cluster_run { label="Run"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; RunTest [label="run_test()"] }
-    subgraph cluster_output { label="Outputs & log results"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; Output [label="Tables, plots, etc."]; Log [label=".log()"] }
-    Platform
-    
-    TestID -> RunTest
-    ResultID -> RunTest [style=dashed]
-    Inputs -> RunTest
-    Params -> RunTest
-    RunTest -> Output
-    Output -> Log
-    Log -> Platform
-}
-```
+![](testing-overview_files/figure-commonmark/dot-figure-1.png)
 
 **Test ID**
 : Each test has a unique identifier like `validmind.data_validation.ClassImbalance`. Use `vm.tests.list_tests()` to browse available tests.
@@ -138,32 +112,7 @@ Use `vm.tests.describe_test("test_id")` or check the [test descriptions](/develo
 
 ## Running a test suite
 
-```{dot}
-digraph {
-    rankdir=LR
-    bgcolor="transparent"
-    margin=0
-    pad=0.1
-    ranksep=0.5
-    nodesep=0.8
-    node [shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#083E44", fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=10, penwidth=0.7, margin="0.24,0.3"]
-    edge [color="#083E44", penwidth=0.7]
-    graph [fontcolor="#36454F", fontname="Arial,Helvetica,sans-serif", fontsize=10]
-    
-    subgraph cluster_identify { label="Identify"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; SuiteID [label="Test suite ID"] }
-    subgraph cluster_configure { label="Configure"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; SuiteInputs [label="Inputs"]; SuiteConfig [label="Config"] }
-    subgraph cluster_run { label="Run"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; RunSuite [label="run_test_suite()"] }
-    subgraph cluster_output { label="Outputs & log results"; style="rounded"; color="#083E44"; fillcolor="#FFFFFF"; margin=6; SuiteOutput [label="Tables, plots, etc."]; SuiteLog [label=".log()"] }
-    Platform
-    
-    SuiteID -> RunSuite
-    SuiteInputs -> RunSuite
-    SuiteConfig -> RunSuite
-    RunSuite -> SuiteOutput
-    SuiteOutput -> SuiteLog
-    SuiteLog -> Platform
-}
-```
+![](testing-overview_files/figure-commonmark/dot-figure-2.png)
 
 **Test suite ID**
 : Test suites are collections of tests that run together. Each has an identifier like `classifier_full_suite`. Use `vm.tests.list_test_suites()` to browse available test suites.

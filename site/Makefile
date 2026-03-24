@@ -14,7 +14,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes template-schema-docs test-descriptions verify-copyright yearly-releases
+.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes render-llm template-schema-docs test-descriptions verify-copyright yearly-releases
 
 # Help section
 help:
@@ -52,6 +52,7 @@ help:
 	@echo "  release-notes TAG=<tag>  Clone and copy release notes for the specified tag or repo/tag"
 	@echo "                           Examples: TAG=cmvm/25.07 or TAG=validmind-library/v2.8.22"
 	@echo "  template-schema-docs     Generate template schema documentation from backend"
+	@echo "  render-llm               Render site to GFM markdown for LLM ingestion (mirrors CI)"
 	@echo "  test-descriptions        Copy the ValidMind tests docs into tests/"
 	@echo "  verify-copyright         Verify that all .qmd and .yml/.yaml files have copyright headers"
 	@echo "  yearly-releases          Collate releases by year into a listing landing and update releases sidebar"
@@ -449,3 +450,9 @@ yearly-releases:
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview
+
+# Render site to GFM markdown for LLM ingestion
+render-llm:
+	@echo "\nRendering site to GFM markdown for LLM ingestion ..."
+	@bash llm/render.sh && bash llm/clean.sh
+	@echo "\nOutput in llm/_llm-output/"

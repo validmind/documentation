@@ -40,7 +40,7 @@ jobs:
       with:
         repository: validmind/installation
         path: site/_source/installation
-        token: ${{ secrets.INSTALLATION_RO_PAT }}
+        token: ${{ secrets.RELEASE_NOTES_RO_PAT }}
         sparse-checkout: |
           site/installation
         sparse-checkout-cone-mode: true
@@ -164,6 +164,11 @@ jobs:
             issue_number: context.issue.number,
             body: comment
           });
+
+    - name: Install pandoc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
 
     - name: Validate LLM markdown render
       run: bash llm/render.sh && bash llm/clean.sh
