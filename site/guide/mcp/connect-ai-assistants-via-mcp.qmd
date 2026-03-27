@@ -6,7 +6,7 @@ title: "Connect AI assistants via MCP"
 date: last-modified
 ---
 
-The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants like Claude and Cursor to query and manage your model inventory through natural language, providing seamless access to models, artifacts, templates, and custom fields.
+The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants to query and manage your model inventory through natural language, providing seamless access to models, artifacts, templates, and custom fields.
 
 
 ::: {.attn}
@@ -16,8 +16,8 @@ The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assist
 - [x] {{< var link.login >}}
 - [x] You have your API key and secret.[^1]
 - [x] You have a compatible AI assistant installed:
-   - Claude[^2]
-   - Cursor IDE[^3]
+   - Cursor IDE[^2]
+   - Claude Code[^3]
 
 :::
 
@@ -34,7 +34,7 @@ The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assist
 ```{mermaid}
 graph LR
     subgraph ai [AI assistants]
-        Claude[Claude]
+        Claude[Claude Code]
         Cursor[Cursor IDE]
     end
     
@@ -104,35 +104,7 @@ The MCP server exposes tools for working with your model inventory:
 
 ::: {.panel-tabset}
 
-### Claude
-
-1. Locate your Claude configuration file:
-
-   - On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-   - On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - On Linux: `~/.config/Claude/claude_desktop_config.json`
-
-2. Add the {{< var vm.product >}} MCP server configuration:
-
-   ```json
-   {
-     "mcpServers": {
-       "validmind": {
-         "url": "https://api.prod.validmind.ai/mcp",
-         "headers": {
-           "x-api-key": "YOUR_API_KEY",
-           "x-api-secret": "YOUR_API_SECRET"
-         }
-       }
-     }
-   }
-   ```
-
-3. Replace `YOUR_API_KEY` and `YOUR_API_SECRET` with your ValidMind credentials.[^1]
-
-4. Restart Claude to apply the configuration.
-
-### Cursor
+### Cursor IDE
 
 1. Open the Cursor settings (**Cursor > Settings > Cursor Settings**) and navigate to the **MCP** section.
 
@@ -160,6 +132,38 @@ The MCP server exposes tools for working with your model inventory:
 
 6. Return to **Cursor Settings > MCP** and verify that the ValidMind server appears. If it shows as disabled, click the toggle to enable it.
 
+7. Try asking Cursor questions like:
+
+   - "What models do I own?"
+   - "Show me all tier 1 models"
+   - "Register a new model called Customer Churn"
+
+### Claude Code
+
+1. Add the {{< var vm.product >}} MCP server:
+
+   ```bash
+   claude mcp add --transport http validmind https://api.prod.validmind.ai/mcp \
+     --header "x-api-key:YOUR_API_KEY" \
+     --header "x-api-secret:YOUR_API_SECRET"
+   ```
+
+2. Replace `YOUR_API_KEY` and `YOUR_API_SECRET` with your ValidMind credentials.[^1]
+
+3. Verify the connection:
+
+   ```bash
+   claude mcp list
+   ```
+
+   You should see `validmind` with status `✓ Connected`.
+
+4. Start Claude Code and try asking questions like:
+
+   - "What models do I own?"
+   - "Show me all tier 1 models"
+   - "Register a new model called Customer Churn"
+
 :::
 
 ## Troubleshooting
@@ -178,17 +182,17 @@ The MCP server exposes tools for working with your model inventory:
 - Check that your API credentials have not expired.
 - Verify your account has the necessary permissions to access the requested resources.
 
-### MCP server not appearing in AI assistant
+### MCP server not appearing in Cursor
 
-- Ensure the configuration file is in the correct location.
+- Ensure the configuration file is saved at `~/.cursor/mcp.json`.
 - Validate the JSON syntax in your configuration file.
-- Reload your AI assistant after making configuration changes.
-- For Cursor: Check **Cursor Settings > MCP** to verify the server appears and is enabled. You may need to manually toggle the server on after adding it to the configuration.
+- Reload Cursor after making configuration changes.
+- Check **Cursor Settings > MCP** to verify the server appears and is enabled. You may need to manually toggle the server on after adding it to the configuration.
 
 :::
 
 <!-- FOOTNOTES -->
 
 [^1]: [Get your API key and secret](/reference/validmind-rest-api-vm.qmd#get-your-api-key-and-secret)
-[^2]: [Claude](https://claude.ai/download)
-[^3]: [Cursor](https://cursor.com)
+[^2]: [Cursor](https://cursor.com)
+[^3]: [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
