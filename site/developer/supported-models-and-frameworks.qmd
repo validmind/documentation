@@ -81,6 +81,12 @@ Retrieval-augmented generation pipelines.
 
 - Tests: RAGAS integration
 - Refer to [RAG evaluation](#rag-evaluation) for dataset requirements and available tests
+
+## Agentic AI
+LLM-based agents that use tools and multi-step reasoning.
+
+- Scorers: DeepEval integration
+- Refer to [Agentic AI evaluation](#agentic-ai-evaluation) for available scorers
 :::
 
 ## Machine learning models
@@ -464,6 +470,28 @@ run_test(
 - **Context Recall** — Evaluates if relevant information was retrieved
 - **Context Precision** — Measures relevance of retrieved contexts
 - **Answer Relevancy** — Assesses if the response addresses the query
+
+## Agentic AI evaluation
+
+For agentic AI systems, the {{< var validmind.developer >}} integrates with [DeepEval](https://docs.confident-ai.com/) for trace-based evaluation of tool usage and reasoning.
+
+### Available agentic scorers
+
+- **TaskCompletion** — Assesses whether the agent achieves the requested outcome
+- **PlanQuality** — Measures if generated plans are logical, complete, and efficient
+- **PlanAdherence** — Evaluates whether the agent follows its plan during execution
+- **ToolCorrectness** — Validates that the agent invokes the expected tools
+- **ArgumentCorrectness** — Checks if arguments passed to tools are correct
+
+### Scorer requirements
+
+| Scorer | Requires model | Parameters |
+|--------|----------------|------------|
+| TaskCompletion | Yes (`predict_fn`) | `input_column` |
+| PlanQuality | Yes (`predict_fn`) | `input_column` |
+| PlanAdherence | Yes (`predict_fn`) | `input_column` |
+| ToolCorrectness | No | `input_column`, `expected_tools_called_column`, `actual_tools_called_column` |
+| ArgumentCorrectness | No | `input_column`, `actual_tools_called_column` |
 
 ## Python and dependency compatibility
 
