@@ -150,7 +150,7 @@ Some documentation content is auto-generated from backend source files. These sc
 
 #### Template schema documentation
 
-The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. CI workflow generation is pending PAT access to the backend repo — for now, regenerate locally and commit:
+The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema, overwriting any baseline output checked into this repo. You can also regenerate locally and commit:
 
 ```bash
 cd site
