@@ -33,7 +33,7 @@ SCHEMA_FILE = BACKEND_ROOT / "src/backend/templates/documentation/model_document
 TARGET_FILE = REPO_ROOT / "site/guide/templates/_template-schema-generated.qmd"
 
 # Minimum expected file size in bytes (sanity check for valid output)
-MIN_OUTPUT_SIZE = 1000
+MIN_OUTPUT_SIZE = 40000
 
 # CSS stylesheets to link in the generated HTML
 STYLESHEETS = [
