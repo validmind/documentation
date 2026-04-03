@@ -117,7 +117,7 @@ jobs:
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }} && aws configure set default.region us-east-1
 
       - name: Deploy docs prod site
-        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" --exclude "llm/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager
+        run: aws s3 sync site/_site s3://validmind-docs-prod/site --delete --exclude "installation/omnibus/*" --exclude "installation/helm-repo/*" --exclude "notebooks/EXECUTED/*" --exclude "llm/*" && aws cloudfront create-invalidation --distribution-id E2BGG3USKQTR9W --paths "/*" --no-cli-pager
 
       # Release headroom and shrink before final lightweight steps & post-job
       - name: Release reserve & shrink
