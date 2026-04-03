@@ -150,7 +150,7 @@ Some documentation content is auto-generated from backend source files. These sc
 
 #### Template schema documentation
 
-The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema. CI workflows generate this automatically, but you can also regenerate locally:
+The template schema reference in `site/guide/templates/customize-document-templates.qmd` is auto-generated from the backend JSON Schema, overwriting any baseline output checked into this repo. You can also regenerate locally and commit:
 
 ```bash
 cd site
@@ -172,7 +172,7 @@ make template-schema-docs
 The script reads from:
 - `backend/src/backend/templates/documentation/model_documentation/mdd_template_schema_v5.json` — template schema definition
 
-Output: `site/guide/templates/_template-schema-generated.qmd`
+Output: Content is injected directly into `site/guide/templates/customize-document-templates.qmd` between marker comments.
 
 #### Stylesheet organization (IN PROGRESS)
 
