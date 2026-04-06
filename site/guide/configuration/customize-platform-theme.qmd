@@ -9,6 +9,9 @@ date: last-modified
 
 Customize the look and feel of the {{< var validmind.platform >}} using a JSON theme override.
 
+
+The {{< var validmind.platform >}} is built with Chakra UI. Theme customization works by supplying a JSON **object** that describes only the parts of the Chakra theme you want to change—such as color scales (`colors`), typography (`fonts`), light/dark semantic mappings (`semanticTokens`), or per-component styles (`components`). When you save, that object is **merged** into the product’s default theme using Chakra’s `extendTheme`: anything you omit keeps the standard value, and nested keys are combined rather than replaced wholesale.
+
 ::: {.callout-important title="Theme overrides are stored locally in your browser."}
 
 - Theme overrides apply only in the browser where you save them. Log ins via other browsers, profiles, or devices do not inherit any theme overrides.
@@ -31,26 +34,20 @@ Customize the look and feel of the {{< var validmind.platform >}} using a JSON t
 
 2. Under {{< fa user >}} Your Account, select **Theme Customization**.
 
-3. In **[theme override (json)]{.smallcaps}**, enter a single JSON object (not an array) describing the parts of the Chakra UI theme you want to change. The object is merged into the default theme using `extendTheme` (see the [Chakra UI theme documentation](https://chakra-ui.com/docs/styled-system/theme)).
+3. In **[theme override (json)]{.smallcaps}**, enter one JSON **object** (not an array) in the Chakra theme shape described in the introduction. For field names, nesting, and component style patterns, use the [Chakra UI v2 customize theme guide](https://v2.chakra-ui.com/docs/styled-system/customize-theme).
 
     Fix any errors shown under the field until the helper text indicates valid JSON.
 
 4. Click **Save Changes** to apply the override immediately across the {{< var vm.platform >}} in your browser.
 
-<!-- ::: {.callout}
-
-**Save Changes** stays disabled while JSON is invalid or when the editor matches what is already saved. **Reset to Default** is disabled when no override is stored.
-
-So: cache-only or cookies-only is usually safe for the theme; anything that explicitly clears site data or local storage for the ValidMind app URL can clear it. If you want this spelled out in customize-platform-theme.qmd, say the word and we can add a short callout.
-
-::: -->
+## Limitations
 
 - Incorrect or extreme values can make parts of the UI hard to read or interact with; keep a known-good JSON copy before experimenting.
 - This workflow does **not** replace your personal light or dark preference on the Profile screen. See [Manage your profile](/guide/configuration/manage-your-profile.qmd).
 
-### JSON schema reference
+## JSON schema reference
 
-Overrides follow the shape of a [Chakra UI theme](https://chakra-ui.com/docs/styled-system/theme) object. You can supply any subset of keys; unspecified values keep the product defaults.
+Overrides follow the shape of a [Chakra UI theme](https://v2.chakra-ui.com/docs/styled-system/customize-theme) object. You can supply any subset of keys; unspecified values keep the product defaults.
 
 | Top-level key | Typical use |
 | --- | --- |
