@@ -7,3 +7,118 @@ title: "Customize ValidMind Platform theme"
 date: last-modified
 ---
 
+Tune colors, fonts, and Chakra UI component styles on the {{< var validmind.platform >}} using a JSON theme override. Changes apply immediately in this browser and stay in local storage—not your profile. Theme Customization appears under Settings only when your organization enables it.
+
+::: {.callout-important}
+
+## Local storage only
+
+Unlike most options under [Personalize ValidMind](/guide/configuration/personalize-validmind.qmd), theme overrides are **not** saved to your account. They stay in this browser until you reset them or clear site data. Backend persistence may be added later.
+
+:::
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Access to **Theme Customization** in Settings (if the menu item is missing, contact your administrator—the feature is enabled per deployment).
+
+:::
+
+## Open Theme Customization
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under **YOUR ACCOUNT**, select **Theme Customization**.
+
+   If you do not see **Theme Customization**, the feature is not enabled for your environment.
+
+## Edit and save a theme override
+
+1. In **[theme override (json)]{.smallcaps}**, enter a single JSON **object** (not an array) describing the parts of the Chakra UI theme you want to change. The object is merged into the default theme using `extendTheme` (see the [Chakra UI theme documentation](https://chakra-ui.com/docs/styled-system/theme)).
+
+2. Fix any errors shown under the field until the helper text indicates valid JSON.
+
+3. Optional: Click **Show Example** to view a full sample override, then **Hide Example** when you are done.
+
+4. Click **Save Changes** to apply the override immediately across the {{< var vm.platform >}} in this browser.
+
+5. To discard customizations and return to defaults, click **Reset to Default**.
+
+::: {.callout}
+
+**Save Changes** stays disabled while JSON is invalid or when the editor matches what is already saved. **Reset to Default** is disabled when no override is stored.
+
+:::
+
+## Schema reference
+
+Overrides follow the shape of a [Chakra UI theme](https://chakra-ui.com/docs/styled-system/theme) object. You can supply any subset of keys; unspecified values keep the product defaults.
+
+| Top-level key | Typical use |
+| --- | --- |
+| `colors` | Scales such as `brand`, `brandSecondary`, and `neutral` (for example `500`, `base`, `950`). |
+| `fonts` | `heading` and `body` font stacks. |
+| `radii` | Corner radii (for example `sm`, `md`). |
+| `semanticTokens` | Light and dark mappings for semantic colors (for example `background.page`, `text.primary`, `border.base`). |
+| `components` | `baseStyle`, `variants`, and sizes for Chakra components (for example `Button`). |
+
+Minimal example:
+
+```json
+{
+  "colors": {
+    "brand": {
+      "500": "#6B3077",
+      "base": "#6B3077"
+    }
+  },
+  "fonts": {
+    "heading": "Roboto, system-ui, sans-serif",
+    "body": "Roboto, system-ui, sans-serif"
+  }
+}
+```
+
+The in-app **Show Example** demonstrates a larger override (including `semanticTokens` and `components`) you can copy and adapt.
+
+## Use cases
+
+- Piloting brand colors or typography before asking administrators for a wider rollout
+- Demos or training environments where a distinct palette improves recognition
+- Tweaking semantic tokens for contrast or readability while staying within the supported theme system
+
+## Limitations
+
+- Overrides apply **only in the browser** where you save them; other browsers, profiles, or devices do not inherit them.
+- Clearing site data or local storage for the {{< var vm.platform >}} removes the override.
+- The feature is controlled per environment; not every deployment shows **Theme Customization**.
+- Incorrect or extreme values can make parts of the UI hard to read or interact with; keep a known-good JSON copy before experimenting.
+- This workflow does **not** replace your personal light or dark preference on the Profile screen. See [Manage your profile](/guide/configuration/manage-your-profile.qmd).
+
+## Troubleshooting
+
+**I do not see Theme Customization under Settings.**
+
+: Your organization may not have enabled the feature. Ask an administrator to confirm it is turned on for your environment.
+
+**Save Changes is grayed out.**
+
+: Either the JSON is invalid, or the textarea already matches the saved override. Resolve any error message under the field, or change the JSON and try again.
+
+**I see “Invalid JSON” or “Theme override must be a JSON object.”**
+
+: Ensure the document parses as JSON (double quotes on keys, no trailing commas) and that the root value is an object `{ ... }`, not an array.
+
+**My theme looks wrong after saving.**
+
+: Click **Reset to Default**, reload the page, and reapply a smaller change set. Compare with the **Show Example** structure and the schema table above.
+
+**Colleagues still see the default theme.**
+
+: Expected. Overrides are stored locally in your browser only, not for the whole organization.
+
+**Overrides disappeared.**
+
+: Local storage may have been cleared, or you are using a different browser or device. Re-enter or restore your JSON from a backup.
