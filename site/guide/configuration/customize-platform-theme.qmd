@@ -9,13 +9,14 @@ date: last-modified
 
 Customize the look and feel of the {{< var validmind.platform >}} using a JSON theme override.
 
-Theme customization does not replace your personal light or dark preference set under your personal profile.^*
+Theme overrides allow you to supply a JSON object describing parts of the theme you want to change. Your customizations are merged into the default theme — anything you omit keeps the standard value, and nested keys are combined rather than replaced wholesale.
 
-::: {.callout-important title="Theme overrides are stored locally in your browser."}
+Note that theme customization does not replace your personal light or dark mode settings under your profile.[^1]
 
-- Custom themes apply only to you and do not affect other users.
-- Theme overrides apply only in the browser where you save them. Log ins via other browsers, profiles, or devices do not inherit any theme overrides.
-- Clearing site data or local storage for the {{< var validmind.platform >}} removes any applied theme overrides.
+::: {.callout-important title="Custom themes apply only to you and do not affect other users."}
+
+- Theme overrides are stored locally in your browser. Log ins via other browsers, profiles, or devices do not inherit any theme overrides.
+- Clearing site data or local storage for the {{< var validmind.platform >}} removes any applied theme overrides. We recommend keeping backups of custom working JSON.
 
 :::
 
@@ -24,13 +25,11 @@ Theme customization does not replace your personal light or dark preference set 
 ## Prerequisites
 
 - [x] {{< var link.login >}}
-- [x] Theme customization has been enabled by your organization's administrators.^
+- [x] Theme customization has been enabled by your organization's administrators.
 
 :::
 
 ## Apply JSON theme overrides
-
-Powered by Chakra UI,^ custom theming allows you to supply a JSON object describing parts of the theme you want to override. Your customizations are merged into the product's default theme — anything you omit keeps the standard value, and nested keys are combined rather than replaced wholesale.
 
 To apply a JSON theme override:
 
@@ -38,23 +37,17 @@ To apply a JSON theme override:
 
 2. Under {{< fa user >}} Your Account, select **Theme Customization**.
 
-3. In **[theme override (json)]{.smallcaps}**, enter one root JSON **object** (not an array) following the shape of a [Chakra UI theme](https://v2.chakra-ui.com/docs/styled-system/customize-theme) object.^
+3. In **[theme override (json)]{.smallcaps}**, enter one root JSON object (not an array) following the shape of a Chakra UI theme object.[^2]
 
-    <!-- Fix any errors shown under the field until the helper text indicates valid JSON. -->
-
-4. Click **Save Changes** to apply the override immediately across the {{< var vm.platform >}} in your browser.^
-
-<br>
+4. Click **Save Changes** to apply the override immediately across the {{< var validmind.platform >}} in your browser.[^3]
 
 ::: {.callout-button .pl4 .nt4}
 ::: {.callout collapse="true" appearance="minimal"}
 ### What are best practices for creating theme overrides?
 
-- Keep a known-good JSON copy before experimenting with overrides.
-- Incorrect or extreme values can make parts of the UI hard to read or interact with.
-- Keep your overrides small and focused.
-- Use the smallest possible change set to achieve your desired effect.
-
+- Keep a known-good JSON copy before experimenting with new overrides.
+- Keep your overrides small and focused. Use the smallest possible change set to achieve your desired effect.
+- Avoid extreme values as they can make the interface hard to read or interact with.
 
 :::
 :::
@@ -62,19 +55,28 @@ To apply a JSON theme override:
 ## Troubleshooting
 
 I cannot locate Theme Customization under **{{< fa gear >}} Settings**.
-: Your organization may not have enabled the feature. Confirm with an administrator whether or not you should have access.
+: Your organization may not have enabled theme customization. Confirm with an administrator whether or not you should have access.
 
 **Save Changes** is grayed out.
-: Either your JSON is invalid, or the inputted override already matches the saved override. Resolve any error messages, or change the JSON and try again.
+: Either your JSON is invalid, or the input already matches the saved override. Resolve any error messages, or change the JSON and try again.
 
 I receive error messages regarding my input.
 : Ensure the document parses as JSON (double quotes on keys, no trailing commas) and that the root value is an object `{ ... }`, not an array.
 
-My theme looks wrong after saving.
-: Click **Reset to Default**, reload the page, and reapply a smaller change set.
+My theme looks wrong after saving. How do I undo the changes?
+: Click **Reset to Default**, and reload the page to revert to the default theme.
 
 Other users in my organization still see the default theme.
-: Expected. Overrides are stored locally in your browser only, not for the whole organization.
+: This is as expected — overrides are stored locally in your browser, not applied across the whole organization.
 
 My theme overrides disappeared.
 : Local storage may have been cleared, or you are using a different browser or device. Re-enter or restore your JSON from a backup.
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#user-interface-preferences)
+
+[^2]: **Chakra UI**: [Customize Theme](https://v2.chakra-ui.com/docs/styled-system/customize-theme)
+
+[^3]: If there are errors in your JSON, the **Save Changes** button will be grayed out.
