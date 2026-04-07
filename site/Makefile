@@ -427,7 +427,7 @@ release-notes:
 template-schema-docs:
 	@echo "\nGenerating template schema documentation ..."
 	@if [ ! -d "$(SRC_ROOT)/backend" ]; then echo "Error: Backend not cloned. Run 'make clone' first."; exit 1; fi
-	@pip install -q json-schema-for-humans
+	@python -m pip install -q json-schema-for-humans
 	@BACKEND_ROOT=$(SRC_ROOT)/backend python ../scripts/generate_template_schema_docs.py
 
 test-descriptions:
