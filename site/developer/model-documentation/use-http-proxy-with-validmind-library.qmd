@@ -12,11 +12,11 @@ listing:
     fields: [title, description]
     grid-columns: 2
     contents:
-    - ../how-to/testing-overview.qmd
-    - ../how-to/feature-overview.qmd
+    - ../../notebooks/quickstart/quickstart_model_documentation.ipynb
+    - ../../notebooks/quickstart/quickstart_model_validation.ipynb
 ---
 
-The {{< var validmind.developer >}} does not provide a `proxy` argument on `vm.init()`. Outbound HTTPS traffic to the ValidMind API relies on standard Python HTTP clients that honor proxy-related environment variables, which lets you work behind corporate or regional proxies without custom library configuration.
+Outbound HTTPS traffic to the ValidMind API relies on standard Python HTTP clients that honor proxy-related environment variables, which lets you work behind corporate or regional proxies without custom library configuration.
 
 ::: {.attn}
 
@@ -28,7 +28,21 @@ The {{< var validmind.developer >}} does not provide a `proxy` argument on `vm.i
 
 :::
 
-## 1. Set proxy environment variables
+## What do I need to know?
+
+### Underlying behavior
+
+The {{< var validmind.developer >}} does not provide a `proxy` argument on `vm.init()`: proxy handling is implemented by the underlying HTTP stacks (including aiohttp and requests for ValidMind API traffic, and httpx in some third-party clients). Precedence between `ALL_PROXY` and scheme-specific variables, and exact `NO_PROXY` matching rules, can vary by library version. 
+
+If results differ from what you expect, refer to the documentation for those libraries or your HTTP client.[^2]
+
+### Other outbound traffic
+
+Features that generate text with OpenAI or Azure OpenAI use those vendors’ Python SDKs. Those clients usually respect the same `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` values, but authentication, regional endpoints, and enterprise policies can add requirements. 
+
+Consult your provider’s documentation when something works for the ValidMind API but not for LLM calls.[^3]
+
+## Step 1: Set proxy environment variables
 
 Set the variables **before** you start the Python process or Jupyter kernel so the process inherits them when the library opens HTTP connections.
 
@@ -51,19 +65,9 @@ export NO_PROXY=localhost,127.0.0.1,.corp.example.com
 
 If your organization assigns these values automatically when you log in, confirm they are visible in the same environment where you launch Jupyter or your IDE.
 
-## 2. Restart your notebook or Python session
+## Step 2: Restart your notebook or Python session
 
 If you change proxy variables after a session has already started, restart the kernel or Python interpreter so every library reload sees the updated environment.
-
-## What do I need to know?
-
-### Other outbound traffic
-
-Features that generate text with OpenAI or Azure OpenAI use those vendors’ Python SDKs. Those clients usually respect the same `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` values, but authentication, regional endpoints, and enterprise policies can add requirements. Consult your provider’s documentation when something works for the ValidMind API but not for LLM calls.[^2]
-
-### Underlying behavior
-
-Proxy handling is implemented by the underlying HTTP stacks (including aiohttp and requests for ValidMind API traffic, and httpx in some third-party clients). Precedence between `ALL_PROXY` and scheme-specific variables, and exact `NO_PROXY` matching rules, can vary by library version. If results differ from what you expect, refer to the documentation for those libraries or your HTTP client.[^3]
 
 ## Troubleshooting
 
@@ -81,6 +85,6 @@ Proxy handling is implemented by the underlying HTTP stacks (including aiohttp a
 
 [^1]: If you have not installed the library yet, start with [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd).
 
-[^2]: See for example [OpenAI](https://platform.openai.com/docs/guides/production-best-practices) and [Azure OpenAI](https://learn.microsoft.com/azure/ai-services/openai/) for service-specific networking guidance.
+[^2]: For example, [aiohttp client advanced topics](https://docs.aiohttp.org/en/stable/client_advanced.html#proxy-support), [Requests proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies), and [HTTPX proxies](https://www.python-httpx.org/advanced/proxies/).
 
-[^3]: For example, [aiohttp client advanced topics](https://docs.aiohttp.org/en/stable/client_advanced.html#proxy-support), [Requests proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies), and [HTTPX proxies](https://www.python-httpx.org/advanced/proxies/).
+[^3]: See for example [OpenAI](https://platform.openai.com/docs/guides/production-best-practices) and [Azure OpenAI](https://learn.microsoft.com/azure/ai-services/openai/) for service-specific networking guidance.
