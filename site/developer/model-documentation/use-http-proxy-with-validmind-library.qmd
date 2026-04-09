@@ -55,6 +55,10 @@ Common variables:
 | `ALL_PROXY` | Fallback when a scheme-specific variable is not set (behavior depends on the client library). |
 | `NO_PROXY` | Comma-separated hostnames, domains, or IP ranges that should **not** use the proxy (for example `localhost`, `127.0.0.1`, or an internal API hostname). |
 
+::: {.callout}
+Many tools and Linux environments use lowercase names instead: `http_proxy`, `https_proxy`, and `no_proxy`. On Unix-like systems, Python and common HTTP clients often treat uppercase and lowercase as equivalent for these variables, but some scripts or containers only read one convention. Use the names your organization or image already exports, or standardize on a single case for your team.
+:::
+
 Example for a POSIX shell:
 
 ```bash
@@ -71,9 +75,10 @@ If you change proxy variables after a session has already started, restart the k
 
 ## Troubleshooting
 
-- You see connection timeouts or “connection refused” when calling `vm.init()` or logging results — verify `HTTPS_PROXY` matches your proxy URL and that the host running Python can reach the proxy host and port.
-- Traffic should bypass the proxy for a specific API host — add that host or domain to `NO_PROXY` and restart the session.
-- Variables do not appear to apply — in a notebook, run `import os` and `print(os.environ.get("HTTPS_PROXY"))` in a fresh cell after restart; if it is empty, the variables were not set for that process (for example, they were only set in a different terminal).
+- If you see SSL or certificate verification errors when calling `vm.init()` behind a proxy: refer to our troubleshooting guide.[^4]
+- If you see connection timeouts or “connection refused” when calling `vm.init()` or logging results: verify `HTTPS_PROXY` matches your proxy URL and that the host running Python can reach the proxy host and port.
+- If traffic should bypass the proxy for a specific API host: add that host or domain to `NO_PROXY` and restart the session.
+- If variables do not appear to apply: in a notebook, run `import os` and `print(os.environ.get("HTTPS_PROXY"))` in a fresh cell after restart; if it is empty, the variables were not set for that process (for example, they were only set in a different terminal).
 
 ## What's next
 
@@ -85,6 +90,8 @@ If you change proxy variables after a session has already started, restart the k
 
 [^1]: If you have not installed the library yet, start with [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd).
 
-[^2]: For example, [aiohttp client advanced topics](https://docs.aiohttp.org/en/stable/client_advanced.html#proxy-support), [Requests proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies), and [HTTPX proxies](https://www.python-httpx.org/advanced/proxies/).
+[^2]: For example, refer to [aiohttp client advanced topics](https://docs.aiohttp.org/en/stable/client_advanced.html#proxy-support), [Requests proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies), and [HTTPX proxies](https://www.python-httpx.org/advanced/proxies/).
 
-[^3]: See for example [OpenAI](https://platform.openai.com/docs/guides/production-best-practices) and [Azure OpenAI](https://learn.microsoft.com/azure/ai-services/openai/) for service-specific networking guidance.
+[^3]: For example, refer to [OpenAI](https://platform.openai.com/docs/guides/production-best-practices) and [Azure OpenAI](https://learn.microsoft.com/azure/ai-services/openai/) for service-specific networking guidance.
+
+[^4]: Refer to [SSL verification errors when initializing the library](/support/troubleshooting.qmd#ssl-verification-when-initializing-library).
