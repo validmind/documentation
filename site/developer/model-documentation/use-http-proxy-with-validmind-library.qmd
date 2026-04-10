@@ -1,0 +1,99 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Use an HTTP proxy with the ValidMind Library"
+date: last-modified
+listing:
+  - id: whats-next
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    grid-columns: 2
+    contents:
+    - ../../notebooks/quickstart/quickstart_model_documentation.ipynb
+    - ../../notebooks/quickstart/quickstart_model_validation.ipynb
+---
+
+Outbound HTTPS traffic to the ValidMind API relies on standard Python HTTP clients that honor proxy-related environment variables, which lets you work behind corporate or regional proxies without custom library configuration.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You can set environment variables for the user or service account that runs Python or Jupyter.[^1]
+- [x] You have proxy connection details from your network administrator, such as the host, port, and authentication rules.
+
+:::
+
+## What do I need to know?
+
+### Underlying behavior
+
+Proxy handling is implemented by the underlying HTTP stacks, including aiohttp and requests for ValidMind API traffic, and httpx in some third-party clients. The {{< var validmind.developer >}} itself does not provide a way to set a proxy on `vm.init()`. 
+
+Precedence between `ALL_PROXY` and scheme-specific variables, and exact `NO_PROXY` matching rules, can vary by library version. If results differ from what you expect, refer to the documentation for those libraries or your HTTP client.[^2]
+
+### Other outbound traffic
+
+Features that generate text with OpenAI or Azure OpenAI use the Python SDKs provided by those vendors. These clients usually respect the same `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` values, but authentication, regional endpoints, and enterprise policies can add requirements. 
+
+Consult your provider’s documentation when something works for the ValidMind API but not for LLM calls.[^3]
+
+## Step 1: Set proxy environment variables
+
+Set the variables before you start the Python process or Jupyter kernel, so that the process inherits them when the library opens HTTP connections.
+
+Common variables include:
+
+| Variable | Purpose |
+|----------|---------|
+| `HTTP_PROXY` | Proxy URL for `http` requests. |
+| `HTTPS_PROXY` | Proxy URL for `https` requests typically used for the ValidMind API. |
+| `ALL_PROXY` | Fallback when a scheme-specific variable is not set. Behavior depends on the client library. |
+| `NO_PROXY` | Comma-separated hostnames, domains, or IP ranges that should NOT use the proxy. For example: `localhost`, `127.0.0.1`, or an internal API hostname. |
+
+Many tools and Linux environments use lowercase names, such as `http_proxy` or `https_proxy`. On Unix-like systems, Python and common HTTP clients often treat uppercase and lowercase as equivalent for these variables, but some scripts or containers only read one convention. 
+
+If your organization assigns these values automatically when you log in, confirm they are visible in the same environment where you launch Jupyter or your IDE.
+
+::: {.callout}
+**Tip**: Use the names your organization or image already exports, or standardize on a single case for your team.
+:::
+
+### Example for a POSIX shell
+
+```bash
+export HTTPS_PROXY=http://proxy.example.com:8080
+export HTTP_PROXY=http://proxy.example.com:8080
+export NO_PROXY=localhost,127.0.0.1,.corp.example.com
+```
+
+## Step 2: Restart your notebook or Python session
+
+If you change proxy variables after a session has already started, restart the kernel or Python interpreter, so that every library reload sees the updated environment.
+
+## Troubleshooting
+
+- If you see SSL or certificate verification errors when calling `vm.init()` behind a proxy: refer to our troubleshooting guide.[^4]
+- If you see connection timeouts or “connection refused” when calling `vm.init()` or logging results: verify `HTTPS_PROXY` matches your proxy URL and that the host running Python can reach the proxy host and port.
+- If traffic should bypass the proxy for a specific API host: add that host or domain to `NO_PROXY` and restart the session.
+- If variables do not appear to apply: in a notebook, run `import os` and `print(os.environ.get("HTTPS_PROXY"))` in a fresh cell after restart; if it is empty, the variables were not set for that process (for example, they were only set in a different terminal).
+
+## What's next
+
+:::{#whats-next}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: If you have not installed the library yet, start with [Install and initialize the {{< var validmind.developer >}}](/developer/model-documentation/install-and-initialize-validmind-library.qmd).
+
+[^2]: For example, refer to [aiohttp client advanced topics](https://docs.aiohttp.org/en/stable/client_advanced.html#proxy-support), [Requests proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies), and [HTTPX proxies](https://www.python-httpx.org/advanced/proxies/).
+
+[^3]: For example, refer to [OpenAI](https://platform.openai.com/docs/guides/production-best-practices) and [Azure OpenAI](https://learn.microsoft.com/azure/ai-services/openai/) for service-specific networking guidance.
+
+[^4]: Refer to [SSL verification errors when initializing the library](/support/troubleshooting.qmd#ssl-verification-when-initializing-library).
