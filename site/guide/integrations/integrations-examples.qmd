@@ -23,7 +23,7 @@ Adapt these usage examples for your own workflows or connections to interact wit
 - [x] {{< var link.login >}}
 - [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure workflows.[^1]
 - [x] You understand how to configure workflows and add steps to workflows.[^2]
-- [x] Secrets are configured for any external systems that require authentication.[^3]
+- [x] Secrets are configured for any external systems that require authentication: integration secrets for connections, webhook secrets for HTTP Request step headers.[^3]
 - [x] Connections are configured for any external systems you plan to integrate with.[^4]
 - [x] You have admin access to the external systems you plan to integrate with.
 
@@ -31,11 +31,11 @@ Adapt these usage examples for your own workflows or connections to interact wit
 
 ## Workflow examples
 
-These examples use HTTP request or webhooks to integrate with external systems:
+These examples use HTTP requests or webhooks to integrate with external systems:
 
-- An *HTTP request* step sends data from {{< var vm.product >}} to another service. A workflow can notify a partner tool when a model reaches a certain state or request an update in an external system. This pattern is useful when {{< var vm.product >}} owns the event and needs to push it outward.
+- An _HTTP request_ step sends data from {{< var vm.product >}} to another service. A workflow can notify a partner tool when a model reaches a certain state or request an update in an external system. This pattern is useful when {{< var vm.product >}} owns the event and needs to push it outward.
 
-- A *webhook* step does the opposite. Another system sends a POST request to  start a {{< var vm.product >}} workflow or to continue a workflow that is paused while waiting for a webhook to continue. This lets external tools trigger actions inside {{< var vm.product >}} when an event occurs on their side.
+- A _webhook_ step does the opposite. Another system sends a POST request to  start a {{< var vm.product >}} workflow or to continue a workflow that is paused while waiting for a webhook to continue. This lets external tools trigger actions inside {{< var vm.product >}} when an event occurs on their side.
 
 ### Create a Jira ticket
 
@@ -64,6 +64,11 @@ To create a Jira ticket when model validation requires attention:
    - **[headers]{.smallcaps}** — Add:
      - `Content-Type`: `application/json`
      - `Authorization`: `Bearer {{Jira Personal Access Token}}`
+   
+   ::: {.callout-tip title="Use webhook secrets for credentials"}
+   Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. See [Manage secrets](manage-secrets.qmd#webhook-secrets).
+   :::
+   
    - **[body type]{.smallcaps}** — JSON
    - **[body]{.smallcaps}** — Use the following JSON payload:
    
@@ -110,6 +115,11 @@ To create a ServiceNow incident when a data drift issue is detected during ongoi
     - **[headers]{.smallcaps}** — Add:
       - `Content-Type`: `application/json`
       - `Authorization`: `Basic {{ServiceNow Credentials}}`
+    
+   ::: {.callout-tip title="Use webhook secrets for credentials"}
+   Instead of entering credentials in plaintext, use a webhook secret: `Basic {{secret:servicenow_creds}}`. See [Manage secrets](manage-secrets.qmd#webhook-secrets).
+   :::
+    
     - **[body type]{.smallcaps}** — JSON
     - **[body]{.smallcaps}** — Use the following JSON payload:
 
