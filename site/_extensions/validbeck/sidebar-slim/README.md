@@ -21,6 +21,15 @@ sidebar-slim: true
 
 Any `.qmd` under that directory inherits this unless overridden in the file.
 
+### Default to collapsed (narrow) sidebar
+
+Use **`sidebar-narrow: true`** so the first visit in a tab starts **collapsed** (until the user toggles). Preference is stored in `sessionStorage` (`1` = collapsed, `0` = expanded).
+
+```yaml
+sidebar-slim: true
+sidebar-narrow: true
+```
+
 ## Per-page override
 
 In a single document’s YAML:

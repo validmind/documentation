@@ -4,21 +4,37 @@
   var STORAGE_KEY = "validbeck:quarto:sidebar-slim-collapsed";
   var MQ = "(min-width: 992px)";
 
-  function readCollapsed() {
+  function getConfig() {
+    var el = document.getElementById("validbeck-sidebar-slim-config");
+    if (!el) {
+      return { sidebarNarrow: false };
+    }
     try {
-      return window.sessionStorage.getItem(STORAGE_KEY) === "1";
+      var cfg = JSON.parse(el.textContent || "{}");
+      return { sidebarNarrow: !!cfg.sidebarNarrow };
     } catch (_e) {
-      return false;
+      return { sidebarNarrow: false };
+    }
+  }
+
+  /**
+   * "1" = collapsed, "0" = expanded (explicit user choice).
+   * Missing key = use default from sidebar-narrow metadata.
+   */
+  function readCollapsed(cfg) {
+    try {
+      var v = window.sessionStorage.getItem(STORAGE_KEY);
+      if (v === "1") return true;
+      if (v === "0") return false;
+      return !!cfg.sidebarNarrow;
+    } catch (_e) {
+      return !!cfg.sidebarNarrow;
     }
   }
 
   function writeCollapsed(collapsed) {
     try {
-      if (collapsed) {
-        window.sessionStorage.setItem(STORAGE_KEY, "1");
-      } else {
-        window.sessionStorage.removeItem(STORAGE_KEY);
-      }
+      window.sessionStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0");
     } catch (_e) {
       /* ignore */
     }
@@ -64,7 +80,8 @@
     function setupDesktop() {
       teardown();
       document.body.classList.add("quarto-sidebar-slim-enabled");
-      var collapsed = readCollapsed();
+      var cfg = getConfig();
+      var collapsed = readCollapsed(cfg);
       applyCollapsed(document.body, collapsed);
 
       var toolbar = document.createElement("div");
