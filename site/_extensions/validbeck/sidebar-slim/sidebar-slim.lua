@@ -44,7 +44,7 @@ function Pandoc(doc)
 
   quarto.doc.add_html_dependency({
     name = "validbeck-sidebar-slim",
-    version = "1.0.1",
+    version = "1.0.2",
     stylesheets = { "sidebar-slim.css" },
     scripts = { "sidebar-slim.js" },
   })
