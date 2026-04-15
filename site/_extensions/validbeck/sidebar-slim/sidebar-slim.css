@@ -28,12 +28,56 @@
     order: -1;
   }
 
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed #quarto-sidebar.sidebar {
-    width: 2.75rem !important;
-    min-width: 2.75rem !important;
+  /*
+    Quarto docked/floating sidebars use CSS grid: the sidebar spans several named
+    tracks (e.g. screen-start / body-start). Shrinking width alone leaves those
+    tracks allocated, so main content does not grow. When collapsed, we (1) give
+    the sidebar a shorter span and (2) start main content at the same line where
+    the slim sidebar ends, so the article column absorbs the freed width.
+    Line names match Quarto’s docked-wide / float-wide templates (≥ lg).
+  */
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
+    #quarto-sidebar.sidebar {
+    grid-column: screen-start / page-start-inset;
+    width: 100% !important;
     max-width: 2.75rem !important;
-    flex: 0 0 2.75rem !important;
+    min-width: 0 !important;
+    justify-self: start;
     overflow: hidden;
+  }
+
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
+    #quarto-sidebar.sidebar {
+    grid-column: page-start / page-start-inset;
+    width: 100% !important;
+    max-width: 2.75rem !important;
+    min-width: 0 !important;
+    justify-self: start;
+    overflow: hidden;
+  }
+
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
+    #quarto-content.page-columns
+    .content,
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
+    #quarto-content.page-columns
+    .page-navigation,
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
+    #quarto-content.page-columns
+    .column-body {
+    grid-column: page-start-inset / body-content-end;
+  }
+
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
+    #quarto-content.page-columns
+    .content,
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
+    #quarto-content.page-columns
+    .page-navigation,
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
+    #quarto-content.page-columns
+    .column-body {
+    grid-column: page-start-inset / body-content-end;
   }
 
   body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed
