@@ -29,55 +29,16 @@
   }
 
   /*
-    Quarto docked/floating sidebars use CSS grid: the sidebar spans several named
-    tracks (e.g. screen-start / body-start). Shrinking width alone leaves those
-    tracks allocated, so main content does not grow. When collapsed, we (1) give
-    the sidebar a shorter span and (2) start main content at the same line where
-    the slim sidebar ends, so the article column absorbs the freed width.
-    Line names match Quarto’s docked-wide / float-wide templates (≥ lg).
+    Collapsed: narrow the sidebar element inside its grid cell only — do not change
+    grid-column on the sidebar or main content, so the article column does not widen.
   */
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed
     #quarto-sidebar.sidebar {
-    grid-column: screen-start / page-start-inset;
     width: 100% !important;
     max-width: 2.75rem !important;
     min-width: 0 !important;
     justify-self: start;
     overflow: hidden;
-  }
-
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
-    #quarto-sidebar.sidebar {
-    grid-column: page-start / page-start-inset;
-    width: 100% !important;
-    max-width: 2.75rem !important;
-    min-width: 0 !important;
-    justify-self: start;
-    overflow: hidden;
-  }
-
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
-    #quarto-content.page-columns
-    .content,
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
-    #quarto-content.page-columns
-    .page-navigation,
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.docked
-    #quarto-content.page-columns
-    .column-body {
-    grid-column: page-start-inset / body-content-end;
-  }
-
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
-    #quarto-content.page-columns
-    .content,
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
-    #quarto-content.page-columns
-    .page-navigation,
-  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed.floating
-    #quarto-content.page-columns
-    .column-body {
-    grid-column: page-start-inset / body-content-end;
   }
 
   /*

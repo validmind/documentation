@@ -54,5 +54,5 @@ sidebar-slim: true
 
 - Only runs for **HTML** (`html:js`) output when `sidebar-slim` is truthy.
 - Toolbar appears at **≥992px** width; below that, Quarto’s own responsive sidebar behavior applies and this extension removes its UI.
-- When collapsed, **main content is widened** by adjusting Quarto’s **CSS grid** placement (docked and floating layouts at the `lg` breakpoint): the sidebar span is shortened and `.content` / `.page-navigation` / `.column-body` start at `page-start-inset` so they use the space the full sidebar used. If a Quarto theme changes grid line names, these rules may need updating.
+- When collapsed, the **main column width stays the same**; only the sidebar UI narrows inside its layout area (the grid tracks for the article are unchanged).
 - Does not replace Quarto’s built-in **reader mode** (`website: reader-mode`); you can use either or both.
