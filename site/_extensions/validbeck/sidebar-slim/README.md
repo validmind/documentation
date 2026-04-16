@@ -4,7 +4,7 @@ When `sidebar-slim: true` is set, users can collapse the docked side navigation 
 
 ## Usage
 
-### 1. Setup
+### Setup
 
 Enable the filter globally in the project `format` section (`site/_quarto.yml`) so that its functionality can be called:
 
@@ -25,12 +25,6 @@ In the `.qmd` YAML frontmatter set:
 
 ```yaml
 sidebar-slim: true
-```
-
-To turn it **off** for one page when the project or parent directory defaults to on:
-
-```yaml
-sidebar-slim: false
 ```
 
 #### Enable for an entire section (directory)
@@ -56,7 +50,7 @@ metadata:
 
 Per-directory `_metadata.yml` or a single document’s YAML can still override this (for example, `sidebar-slim: false` on one page).
 
-### Additional options
+### Configuration
 
 #### Default to collapsed (narrow) sidebar
 
@@ -65,9 +59,10 @@ Use **`sidebar-narrow: true`** so the first visit in a tab starts **collapsed** 
 Example:
 
 ```yaml
-sidebar-slim: true
 sidebar-narrow: true
 ```
+
+This is the functionality currently set on `site/guide/guides.qmd`.
 
 ## Notes
 
