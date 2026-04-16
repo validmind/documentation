@@ -1,10 +1,12 @@
 # Sidebar slim
 
-Optional **site sidebar** control: on large viewports, readers can collapse the Quarto **docked** sidebar to a narrow vertical strip and expand it again. State is kept for the browser tab (`sessionStorage`).
+When `sidebar-slim: true` is set, users can collapse the docked side navigation to a narrow vertical strip to reduce visual clutter. State is kept for the browser tab (`sessionStorage`).
 
-## Enable for a section (directory)
+## Usage
 
-**1. Register the filter once** in the project `format` section (e.g. `site/_quarto.yml`):
+### 1. Setup
+
+Enable the filter globally in the project `format` section (`site/_quarto.yml`) so that its functionality can be called:
 
 ```yaml
 filters:
@@ -13,46 +15,63 @@ filters:
   - validbeck/sidebar-slim
 ```
 
-**2. Opt in** with directory metadata, e.g. `some/section/_metadata.yml`:
+This is the currently applied functionality.
+
+### Enabling
+
+#### Enable for a single page
+
+In the `.qmd` YAML frontmatter set:
 
 ```yaml
 sidebar-slim: true
 ```
 
-Any `.qmd` under that directory inherits this unless overridden in the file.
+To turn it **off** for one page when the project or parent directory defaults to on:
 
-### Default to collapsed (narrow) sidebar
+```yaml
+sidebar-slim: false
+```
+
+#### Enable for an entire section (directory)
+
+In that directory's `_metadata.yml` set:
+
+```yaml
+sidebar-slim: true
+```
+
+Any `.qmd` under that directory inherits this unless overridden per file.
+
+This is the current functionality that applies to `site/guide/`.
+
+#### Enable for the entire project
+
+In the project configuration (`site/_quarto.yml`), set default metadata so every page inherits it:
+
+```yaml
+metadata:
+  sidebar-slim: true
+```
+
+Per-directory `_metadata.yml` or a single document’s YAML can still override this (for example, `sidebar-slim: false` on one page).
+
+### Additional options
+
+#### Default to collapsed (narrow) sidebar
 
 Use **`sidebar-narrow: true`** so the first visit in a tab starts **collapsed** (until the user toggles). Preference is stored in `sessionStorage` (`1` = collapsed, `0` = expanded).
+
+Example:
 
 ```yaml
 sidebar-slim: true
 sidebar-narrow: true
 ```
 
-## Per-page override
-
-In a single document’s YAML:
-
-```yaml
-sidebar-slim: false
-```
-
-## Alternative: filter only in a directory
-
-If you do not want a global filter entry, add both lines under the same `_metadata.yml`:
-
-```yaml
-filters:
-  - validbeck/sidebar-slim
-sidebar-slim: true
-```
-
-(Confirm how your Quarto version merges `filters` lists with the project; you may need to repeat other project filters.)
-
 ## Notes
 
-- Only runs for **HTML** (`html:js`) output when `sidebar-slim` is truthy.
+- Extension only applies to **HTML** (`html:js`) output.
 - Toolbar appears at **≥992px** width; below that, Quarto’s own responsive sidebar behavior applies and this extension removes its UI.
 - When collapsed, the **main column width stays the same**; only the sidebar UI narrows inside its layout area (the grid tracks for the article are unchanged).
 - Does not replace Quarto’s built-in **reader mode** (`website: reader-mode`); you can use either or both.
