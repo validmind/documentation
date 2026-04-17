@@ -218,7 +218,7 @@ When constructing filepaths, including while using [Quarto's Includes](https://q
 
 | Correct | Incorrect |
 |---|---|
-| `[Register models in the inventory](/guide/model-inventory/register-models-in-inventory.qmd)` | `[Register models in the inventory](../../register-models-in-inventory.qmd)` |
+| `[Register models in the inventory](/guide/inventory/register-models-in-inventory.qmd)` | `[Register models in the inventory](../../register-models-in-inventory.qmd)` |
 
 ### Column layouts
 
