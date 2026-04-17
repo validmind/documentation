@@ -1,0 +1,89 @@
+/*
+  Collapsible site sidebar: narrows to a slim vertical strip (desktop).
+  Activated when sidebar-slim metadata is true (see sidebar-slim.lua).
+*/
+
+@media (min-width: 992px) {
+  .quarto-sidebar-slim-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: 0.35rem 0.4rem 0.45rem;
+    flex-shrink: 0;
+  }
+
+  body.quarto-sidebar-slim-enabled #quarto-sidebar.sidebar {
+    display: flex;
+    flex-direction: column;
+    transition:
+      width 0.22s ease,
+      min-width 0.22s ease,
+      max-width 0.22s ease,
+      flex 0.22s ease;
+  }
+
+  body.quarto-sidebar-slim-enabled #quarto-sidebar .quarto-sidebar-slim-toolbar {
+    order: -1;
+  }
+
+  /*
+    Collapsed: narrow the sidebar element inside its grid cell only — do not change
+    grid-column on the sidebar or main content, so the article column does not widen.
+  */
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed
+    #quarto-sidebar.sidebar {
+    width: 100% !important;
+    max-width: 2.75rem !important;
+    min-width: 0 !important;
+    justify-self: start;
+    overflow: hidden;
+  }
+
+  /*
+    #quarto-sidebar is <nav class="sidebar sidebar-navigation"> — hide every direct
+    child except our injected toolbar so only the expand control shows when collapsed.
+  */
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed
+    #quarto-sidebar.sidebar
+    > *:not(.quarto-sidebar-slim-toolbar) {
+    display: none !important;
+  }
+
+  body.quarto-sidebar-slim-enabled.quarto-sidebar-slim-collapsed .quarto-sidebar-slim-toolbar {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .quarto-sidebar-slim-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0.2rem;
+    border: none;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: #196972;
+    cursor: pointer;
+    font: inherit;
+    line-height: 1;
+  }
+
+  .quarto-sidebar-slim-toggle:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .quarto-sidebar-slim-toggle:focus-visible {
+    outline: 2px solid #196972;
+    outline-offset: 2px;
+  }
+
+  .quarto-sidebar-slim-icon {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 600;
+    user-select: none;
+  }
+}
