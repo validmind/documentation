@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
 Aggregation
-: Automatically compute a read-only value from downstream artifacts^[[Working with artifacts](/guide/model-validation/working-with-artifacts.qmd)] linked to this model.
+: Automatically compute a read-only value from downstream artifacts^[[Working with artifacts](/guide/model-validation/working-with-artifacts.qmd)] linked to this record.
 
 1. Select the type of **[artifacts]{.smallcaps}** to aggregate from.^[[Manage artifact types](/guide/model-validation/manage-artifact-types.qmd)]
 
@@ -26,7 +26,7 @@ Aggregation
 
 ##### Open validation issue count
 
-For an aggregation field that returns a count of open validation issues on the related model:
+For an aggregation field that returns a count of open validation issues on the related record:
 
 - **[artifacts]{.smallcaps}** — Validation Issue
 - **[aggregation function]{.smallcaps}** — COUNT - Count matching entities
@@ -57,7 +57,7 @@ For an aggregation field that returns the most recent date a policy exception wa
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
 Attachments
-: Upload supporting files for your model.^[[Manage supporting documentation](/guide/inventory/edit-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
+: Upload supporting files for your record.^[[Manage supporting documentation](/guide/inventory/edit-inventory-fields.qmd#manage-supporting-documentation)] Files must be less than 50 MB each in size.
 ::::
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
@@ -66,10 +66,10 @@ Attachments
 ::::
 
 Calculation
-: Define a `formula(params)` function that automatically calculates and returns a read-only value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+: Define a `formula(params)` function that automatically calculates and returns a read-only value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory record fields.
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-1. Select from the drop-down of **[available model fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+1. Select from the drop-down of **[available record fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[**Stick to basic operations**.<br>Keep your code simple and avoid complex logic and imports.]
 3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
 4. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
@@ -80,7 +80,7 @@ Calculation
 
 ### Example — Risk tier calculation
 
-You have numeric model inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk.
+You have numeric inventory fields of `materiality` and `complexity`, where a larger value indicates a lower risk.
 
 ##### Example formula
 
@@ -100,7 +100,7 @@ You want a calculated field that automatically returns a risk score based on `ma
 
 ##### Example Calculation field configuration
 
-Your calculated field is grouped under `Model Risk` inventory fields, and can only be manually overridden by that model's Model Validators:
+Your calculated field is grouped under `Model Risk` inventory fields, and can only be manually overridden by that record's Model Validators:
 
 ![Adding a calculation type field that automatically calculates risk tier](calculation-field.png){fig-alt="A screenshot showing the screen for adding a calculation type field that automatically calculates risk tier" width=90% .screenshot}
 
@@ -110,7 +110,7 @@ Your calculated field is grouped under `Model Risk` inventory fields, and can on
 ::::
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
-1. Select from the drop-down of **[available artifact fields]{.smallcaps}** and **[model fields available via]{.smallcaps} `params.model`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+1. Select from the drop-down of **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params.model`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[**Stick to basic operations**.<br>Keep your code simple and avoid complex logic and imports.]
 4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
 5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
@@ -164,10 +164,10 @@ else:
 return base_days * urgency_multiplier
 ```
 
-#### Custom fields & parent model data
+#### Custom fields & parent record data
 
 ```python
-# Combine artifact types with custom fields and parent model data
+# Combine artifact types with custom fields and parent record data
 
 risk_factor = custom_field_risk_score or 1.0
 model_criticality = params.model.get("criticality_level", "medium")
@@ -248,12 +248,12 @@ User
 
 :::: {.content-hidden unless-format="revealjs"}
 Attachments
-: Upload supporting files for your [model](/guide/inventory/edit-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} or [artifact](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation){target="_blank"}. Files must be less than 50 MB each in size.
+: Upload supporting files for your [record](/guide/inventory/edit-inventory-fields.qmd#manage-supporting-documentation){target="_blank"} or [artifact](/guide/model-validation/add-manage-artifacts.qmd#manage-supporting-documentation){target="_blank"}. Files must be less than 50 MB each in size.
 
 Calculation
-: Define a `formula(params)` function that automatically calculates and returns a read-only value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory model fields.
+: Define a `formula(params)` function that automatically calculates and returns a read-only value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory record fields.
 
-    1. Select from the drop-down of **[available model fields]{.smallcaps}** (model inventory fields), or **[available artifact fields]{.smallcaps}** and **[model fields available via]{.smallcaps} `params.model`** (artifact fields) to allow your formula access to the field's values.
+    1. Select from the drop-down of **[available record fields]{.smallcaps}**, or **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params.model`** (artifact fields) to allow your formula access to the field's values.
     2. Replace the demonstration formula with your own in the code box provided.
     4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
     5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
