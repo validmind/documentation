@@ -677,30 +677,45 @@ body::before {
 }
 
 
+/* Do not force a wide min-width here — it squeezed later sections (Training/Support overlap) */
 .footer-user-guides {
-  flex: 4 1 0;       /* Make center section much wider */
-  min-width: 300px;
-  max-width: 600px;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
 }
 
+/* Inner two-column gap for Guides & ValidMind Library (keep in sync) */
 .footer-user-guides-columns {
   display: flex;
-  gap: 1rem;
+  gap: 0.65rem;
 }
 
 .footer-user-guides-column-1 {
-  min-width: 120px;
-  flex: 0.9 1 0;
+  min-width: 0;
+  flex: 1 1 0;
 }
 
+/* Wider: holds "Documents & templates" and other long labels */
 .footer-user-guides-column-2 {
-  min-width: 200px;
-  flex: 1.35 1 0;
+  min-width: 220px;
+  flex: 1.45 1 0;
 }
 
-.footer-user-guides-column-3 {
-  min-width: 120px;
-  flex: 0.9 1 0;
+/* ValidMind Library: inner columns sized by content (not equal fifths); wrap long links */
+.footer-library .footer-user-guides-columns {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.footer-library .footer-user-guides-column-1,
+.footer-library .footer-user-guides-column-2 {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+.footer-library .footer-user-guides-column-1 a,
+.footer-library .footer-user-guides-column-2 a {
+  overflow-wrap: break-word;
 }
 
 .page-footer ul,
@@ -711,46 +726,83 @@ body::before {
   padding-left: 0 !important;
 }
 
-/* Make Quarto's footer slots align at the top and reduce spacing */
+/* One gutter for: left | center | right, and between the five center sections */
 .nav-footer {
+  --footer-gutter: 1.25rem;
   display: flex !important;
   align-items: flex-start !important;
-  justify-content: space-between !important;
-  gap: 0 !important;
+  justify-content: flex-start !important;
+  gap: var(--footer-gutter) !important;
   width: 100%;
   padding: 20px 0px;
   background: #26818B;
 }
 
-/* Remove default padding/margin from slot containers */
-.nav-footer-left, .nav-footer-center, .nav-footer-right {
-  margin: 0.5rem !important;
-  padding: 0.5rem !important;
+.nav-footer-left,
+.nav-footer-right {
+  margin: 0 !important;
+  padding: 0.35rem 0 !important;
   display: flex !important;
   flex-direction: row !important;
   align-items: flex-start !important;
   min-width: 0;
-  margin-right: 0.25rem;
+  flex: 0 0 auto !important;
+}
+
+/*
+ * Center footer: base gap between sections + per-pair tweaks (column widths unchanged).
+ * Green: tighter Guides ↔ Library. Red: more air Get started↔Guides, Library↔Training, Training↔Support.
+ */
+.nav-footer-center {
+  --footer-center-gap: 0.72rem;
+  margin: 0 !important;
+  padding: 0.35rem 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: var(--footer-center-gap) !important;
+  min-width: 0;
   flex: 0 1 auto !important;
-  min-width: 0 !important;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
-.nav-footer-center .nav-item {
-  margin-right: 1.5rem;
+.nav-footer-center .nav-item,
+.nav-footer-right .nav-item {
+  padding-right: 0 !important; /* override global .nav-item 20px padding */
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  flex: 0 0 auto;
 }
 
-.nav-footer-center .nav-item:last-child {
-  margin-right: 0;
+.nav-footer-center .nav-item:nth-child(1) {
+  margin-right: 2rem !important; /* Get started ↔ Guides */
 }
 
-/* Remove extra spacing from the User Guides section since it handles its own internal spacing */
-.nav-footer-center .nav-item:first-child {
-  margin-right: 0;
+.nav-footer-center .nav-item:nth-child(2) {
+  margin-right: -0.62rem !important; /* green: Guides ↔ Library tighter */
 }
 
-/* Remove any extra margin from User Guides section */
-.footer-user-guides {
-  margin-right: -0.5rem;
+.nav-footer-center .nav-item:nth-child(3) {
+  margin-right: 1.95rem !important; /* ValidMind Library ↔ Training */
+}
+
+.nav-footer-center .nav-item:nth-child(4) {
+  margin-right: 2.1rem !important; /* Training ↔ Support */
+}
+
+/* Keep left, center, and right on one row; center grows so gaps stay even */
+@media (min-width: 1125px) {
+  .nav-footer {
+    flex-wrap: nowrap !important;
+  }
+
+  .nav-footer-center {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+  }
 }
 
 .footer-section {
