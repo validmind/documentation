@@ -24,6 +24,14 @@ This page explains:
 | Training | `/site/training/` | Courses and learning paths |
 | Support | `/site/support/` | Help resources and troubleshooting |
 
+## In-app assistant
+
+If you are an AI agent embedded in ValidMind, your capabilities are documented here:
+
+**[Chatbot capabilities](/site/guide/chatbot-capabilities.qmd)**
+
+This page describes what the assistant can and cannot do, including context-aware features and current limitations.
+
 ## File format
 
 Documentation is written in Quarto Markdown (`.qmd`). Key conventions:
