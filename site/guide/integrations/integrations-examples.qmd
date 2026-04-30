@@ -14,6 +14,7 @@ Adapt these usage examples for your own workflows or connections to interact wit
 - [Add webhook step triggers](#add-webhook-step-triggers)
 - [Synchronize models with AWS SageMaker](#synchronize-models-with-aws-sagemaker)
 - [Synchronize models with AWS Bedrock](#synchronize-models-with-aws-bedrock)
+- [Synchronize models with Databricks](#synchronize-models-with-databricks)
 - [Synchronize models with GitLab](#synchronize-models-with-gitlab)
 
 ::: {.attn}
@@ -377,6 +378,75 @@ This builds a complete dependency graph showing how your AI applications relate 
 
 9. Click **Link Model**.
 
+### Synchronize models with Databricks
+
+The Databricks integration lets you link {{< var vm.product >}} inventory records to models, datasets, and agents in Databricks Unity Catalog. This supports governance across your ML ecosystem and enables bidirectional metadata synchronization.
+
+Databricks Unity Catalog provides a unified governance solution for all data and AI assets across your Databricks workspaces. The integration exposes three primary resource types:
+
+- **Models** — Registered ML models in Unity Catalog's model registry.
+- **Datasets** — Tables and datasets managed by Unity Catalog.
+- **Agents** — AI agents and applications built on Databricks.
+
+#### Configure the connection
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+
+3. Click **{{< fa plus >}} Add Connection**.
+
+4. In the modal that opens, select **Databricks**.
+
+5. Complete:
+
+   - **[integration name]{.smallcaps}** — How other admins can identify the connection.
+   - **[description]{.smallcaps}** (optional) — The intended usage or additional details.
+   - **[databricks host]{.smallcaps}** — The URL of your Databricks workspace, such as `https://yourcompany.cloud.databricks.com`.
+   - **[client id]{.smallcaps}** — The secret that stores the OAuth client ID for service principal authentication.
+   - **[client secret]{.smallcaps}** — The secret that stores the OAuth client secret for service principal authentication.
+   - **[initial status]{.smallcaps}** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
+
+6. Click **Save Integration**.
+
+7. Test the connection:
+
+   a. Hover over the Databricks connection you just created.
+   b. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
+
+   If the test is successful, the message **{{< fa check-circle >}} Connection successful** displays.
+
+#### Link records to Databricks
+
+Once the connection is configured, you can link {{< var vm.product >}} inventory records to your Databricks Unity Catalog resources:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a record by clicking on it or find your record by applying a filter or searching for it.[^15]
+
+3. Scroll down until you locate the **Databricks** connection box in the right sidebar.
+
+4. Hover over the Databricks box.
+
+5. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa link >}} Link Model**.
+
+6. In the modal that opens, use the tabs to filter by resource type:
+
+   - **All** — View all available Unity Catalog resources.
+   - **Models** — Registered models in Unity Catalog's model registry.
+   - **Datasets** — Tables and datasets managed by Unity Catalog.
+   - **Agents** — AI agents built on Databricks.
+
+7. Click **[select model]{.smallcaps}** to choose the specific Unity Catalog resource to link.
+
+8. Optional: Click **Test Connection** to ensure the connection is working as expected.
+
+   If the test is successful, the message **{{< fa check-circle >}} Connection Test Successful** displays.
+
+9. Click **Link Model**.
+
+After linking, metadata from the Unity Catalog resource syncs to {{< var vm.product >}}. You can use linked fields in custom calculated fields to surface Databricks metadata directly in your inventory views.
+
 ### Synchronize models with GitLab
 
 Synchronize GitLab model registry with ValidMind model inventory for comprehensive model tracking.
@@ -462,3 +532,5 @@ Synchronize GitLab model registry with ValidMind model inventory for comprehensi
 [^13]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
 
 [^14]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^15]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
