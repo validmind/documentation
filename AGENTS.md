@@ -6,7 +6,7 @@ This repository contains the source files for [ValidMind's documentation site](h
 
 For an overview of the documentation structure and how to navigate it, see:
 
-**[Using the documentation](/site/about/contributing/using-the-documentation.qmd)**
+**[Using the documentation](https://docs.validmind.ai/about/contributing/using-the-documentation.html)**
 
 This page explains:
 - How the documentation is organized
@@ -28,7 +28,7 @@ This page explains:
 
 If you are an AI agent embedded in ValidMind, your capabilities are documented here:
 
-**[Chatbot capabilities](/site/guide/chatbot-capabilities.qmd)**
+**[Chatbot capabilities](https://docs.validmind.ai/guide/chatbot-capabilities.html)**
 
 This page describes what the assistant can and cannot do, including context-aware features and current limitations.
 
