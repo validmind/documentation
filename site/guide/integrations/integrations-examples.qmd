@@ -380,7 +380,7 @@ This builds a complete dependency graph showing how your AI applications relate 
 
 ### Synchronize models with Databricks
 
-The Databricks integration lets you link {{< var vm.product >}} inventory records to models, datasets, and agents in Databricks Unity Catalog. This supports governance across your ML ecosystem and enables bidirectional metadata synchronization.
+The Databricks integration lets you link {{< var vm.product >}} inventory records to models, datasets, and agents in Databricks Unity Catalog. This supports governance across your ML ecosystem and enables bidirectional metadata synchronization. You can also run validation notebooks directly against Databricks-hosted data.
 
 Databricks Unity Catalog provides a unified governance solution for all data and AI assets across your Databricks workspaces. The integration exposes three primary resource types:
 
@@ -444,6 +444,54 @@ Once the connection is configured, you can link {{< var vm.product >}} inventory
 9. Click **Link Model**.
 
 After linking, metadata from the Unity Catalog resource syncs to {{< var vm.product >}}. You can use linked fields in custom calculated fields to surface Databricks metadata directly in your inventory views.
+
+#### Run validations on Databricks data
+
+::: {.column-margin}
+[Databricks quickstart](https://docs.validmind.ai/notebooks/databricks/validmind_databricks_quickstart.html){.button}
+:::
+
+After linking your inventory record to Databricks, you can run validation tests directly against data hosted in Unity Catalog.
+
+```{mermaid}
+%%| fig-cap: "Data flow between Databricks and ValidMind"
+flowchart LR
+    subgraph databricks [Databricks]
+        UC[Unity Catalog]
+        Data[Tables/Datasets]
+    end
+    
+    subgraph notebook [Validation Notebook]
+        SDK[ValidMind SDK]
+    end
+    
+    subgraph validmind [ValidMind Platform]
+        Report[Validation Report]
+        Inventory[Inventory Record]
+    end
+    
+    UC --> Data
+    Data --> SDK
+    SDK --> Report
+    Report --> Inventory
+    Inventory -.->|linked| UC
+```
+
+The notebook demonstrates how to:
+
+1. Connect to your Databricks workspace and load data from Unity Catalog tables
+2. Initialize ValidMind datasets from Databricks DataFrames:
+
+   ```python
+   vm_train_ds = vm.init_dataset(
+       dataset=train_df,
+       input_id="train_dataset",
+       target_column=TARGET_COLUMN,
+   )
+   ```
+
+3. Register your model and assign predictions
+4. Run the test suite to generate validation documentation
 
 ### Synchronize models with GitLab
 
