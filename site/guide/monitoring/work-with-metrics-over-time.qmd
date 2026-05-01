@@ -67,6 +67,54 @@ Learn how to log metrics over time, set thresholds, and analyze model performanc
 
     ![Example F1 Score — Metric Over Time visualization](example-f1-score.png){fig-alt="A screenshot showing an example F1 Score — Metric Over Time visualization" .screenshot group="time-metric"}
 
+## Add integration metrics
+
+You can add metrics from external integrations such as Amazon Bedrock directly to your monitoring documents. This feature enables you to track evaluation results from Bedrock agents alongside your other model metrics.
+
+::: {.callout title="Integration metrics require a configured connection."}
+Before you can add metrics from an integration, ensure that the connection is configured and the model is linked to the external system.[^11]
+:::
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a model or find your model by applying a filter or searching for it.[^12]
+
+3. In the left sidebar, click **Monitoring** to open the monitoring report.
+
+4. Hover your mouse over the space where you want your new block to go until a horizontal line with a {{< fa square-plus >}} sign appears.
+
+5. Click {{< fa square-plus >}} and then select **Metric Over Time**.
+
+6. In the modal that opens, select the **From Integration** tab.
+
+7. Select your integration under [integration source]{.smallcaps}, then choose from the **Evaluators** list — such as Goal Success Rate, Correctness, or Helpfulness.
+
+8. Select one or more evaluation metrics to add. For each metric, you can optionally configure:
+
+   - **[threshold (lower)]{.smallcaps}** — Set a lower threshold value to flag when metrics fall below acceptable limits.
+   - **[threshold (upper)]{.smallcaps}** — Set an upper threshold value to flag when metrics exceed acceptable limits.
+   - **[time range]{.smallcaps}** — Define the time range for querying metric data. Choose to inherit from the document, use a relative preset, or specify a custom date range.
+
+9. Click **Insert # Metric(s) Over Time to Document** when you are ready.
+
+After the metrics sync, data from the integration appears in your document alongside any metrics logged via the {{< var validmind.developer >}}.
+
+## Use the global time range
+
+When working with monitoring documents that contain multiple time-based metrics, use the global time range to coordinate the time range across all relevant content.
+
+1. Navigate to a monitoring document with metrics over time.
+
+2. Locate the {{< fa clock >}} time range button at the top of the document.
+
+3. Select the desired time range from the available options:
+
+   - **All Time** — Show all available data
+   - Relative presets (Last 7 days, Last 30 days, etc.)
+   - **Custom range** — Specify exact start and end dates
+
+The selected time range applies to all metrics in the document that support time-based filtering, providing a consistent view of your model's performance over the chosen period. This setting is only visible to you and does not affect other users.
+
 ## View metric over time metadata
 
 After you have added metrics over time to your document, you can view the following information attached to the result:
@@ -113,3 +161,7 @@ After you have added metrics over time to your document, you can view the follow
 [^9]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
 
 [^10]: [Working with model documents](/guide/templates/working-with-model-documents.qmd)
+
+[^11]: [Configure connections](/guide/integrations/configure-connections.qmd) and [Link external models](/guide/integrations/link-external-models.qmd)
+
+[^12]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
