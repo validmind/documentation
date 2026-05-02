@@ -36,7 +36,7 @@ Creates a button that performs an action on behalf of the user.
 |---:|---|
 | [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#user-action)]  |
 | [action button label]{.smallcaps} | Text that displays on your action button. |
-| [requested fields]{.smallcaps} (optional) | Include inventory fields alongside your action.[^step-types-1] |
+| [requested fields]{.smallcaps} (optional) | Include model or artifact fields alongside your action.[^user-action] |
 | [user action deadline]{.smallcaps} (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
 : **{{< fa arrow-pointer >}} User Action** step configuration {.hover tbl-colwidths="[40,60]"}
 
@@ -46,12 +46,12 @@ Creates a button that performs an action on behalf of the user.
 Display a preconfigured message to users in the selected **[approval group]{.smallcaps}**.
 
 - Select from either **User Roles**, **Model Stakeholder Types**, or either **User Role** or **User Type** inventory field.^[[Conditional requirements](/guide/workflows/conditional-requirements.qmd#approval-required)]
-- Must be connected to both a rejection and approval {{< fa cube >}} Model Stage Change step.[^step-types-2]
+- Must be connected to both a rejection and approval {{< fa cube >}} Model Stage Change step.[^approval-1]
 
 | Field | Description |
 |---:|---|
 | [approval group]{.smallcaps}  | Select the roles, stakeholders, or user fields responsible for approval. |
-| [fields to review]{.smallcaps} (optional) | Select the model inventory fields shown to approvers for read-only review. |
+| [fields to review]{.smallcaps} (optional) | Select the model or artifact fields shown to approvers for read-only review.[^approval-2] |
 | Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps} is shown this message.^[Enter in a **[title]{.smallcaps}** and a **[message]{.smallcaps}** to display.] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
@@ -64,8 +64,8 @@ Display a preconfigured message to users in the selected **[approval group]{.sma
 | Field | Description |
 |---:|---|
 | Select roles  | Select the **Model Stakeholder Types** or **User Roles** to receive the email. |
-| [subject]{.smallcaps} | Enter the subject of the email. |
-| [message]{.smallcaps} | Enter the body of the email.[^step-types-3] |
+| [subject]{.smallcaps} | Enter the subject of the email.[^broadcast] |
+| [message]{.smallcaps} | Enter the body of the email. |
 : **{{< fa bullhorn >}} Broadcast** step configuration {.hover tbl-colwidths="[25,75]"}
 
 ### {{< fa maximize >}} Condition Branch
@@ -104,10 +104,10 @@ To configure a wait step, select when you would like to [resume workflow]{.small
 
 | Option | Required field(s) | Description |
 |---:|---|---|
-| After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time. Applies to all models under the workflow. |
-| At Specified Date | [wait until]{.smallcaps} | Wait until a specific timestamp. Applies to all models under the workflow. If the milestone date inputted is in the past, the next workflow step will display immediately. |
-| At Specified Date on Model Field | [model field]{.smallcaps}^[[Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd#inventory-field-types)] | Wait until a specific timestamp as defined by a model inventory field on a per model basis. If the selected field is empty^[Make model inventory fields **[required when creating models]{.smallcaps}** to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
-| Time Delta from Specified Date on Model Field | [model field]{.smallcaps}, [time delta direction]{.smallcaps}, [wait duration]{.smallcaps} | Wait for a calculated time relative to a date in a model field on a per model basis. If the selected field is empty^[Make model inventory fields **[required when creating models]{.smallcaps}** to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
+| After Time Interval  | [wait duration]{.smallcaps} | Wait for a set amount of time. Applies to all models or artifacts under the workflow. |
+| At Specified Date | [wait until]{.smallcaps} | Wait until a specific timestamp. Applies to all models or artifacts under the workflow. If the milestone date inputted is in the past, the next workflow step will display immediately. |
+| At Specified Date on Custom Field | [custom field]{.smallcaps}[^wait] | Wait until a specific timestamp as defined by a model or artifact field on a per model or per artifact basis. If the selected field is empty^[Make model or artifact fields required on registration to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
+| Time Delta from Specified Date on Custom Field | [custom field]{.smallcaps}, [time delta direction]{.smallcaps}, [wait duration]{.smallcaps} | Wait for a calculated time relative to a date in a model or artifact field on a per model or per artifact basis. If the selected field is empty^[Make model or artifact fields required on registration to ensure necessary fields have valid values.] or the milestone date inputted is in the past, the next workflow step will display immediately. |
 : **{{< fa clock >}} Wait** step configuration {.hover tbl-colwidths="[30,15,45]"}
 
 ### {{< fa arrow-right-arrow-left >}} Run Workflow
@@ -130,7 +130,7 @@ When a workflow reaches a webhook step, the workflow will pause. Listen for a `P
 
 #### 2. Configure and copy payload
 
-1. Under [select target model for payload]{.smallcaps}, choose a model from your inventory^[[Working with the model inventory](/guide/model-inventory/working-with-model-inventory.qmd)] to populate the target for the payload.
+1. Under [select target model for payload]{.smallcaps}, choose a model from your inventory^[[Working with the inventory](/guide/inventory/working-with-the-inventory.qmd)] to populate the target for the payload.
 
 2. Click **{{< fa copy >}} Copy** to the right of Payload to copy the payload to your clipboard.
 
@@ -172,25 +172,35 @@ Sends a HTTP request with optional additional conditions.^[[Conditional requirem
 
 <!-- ADDITIONAL FOOTNOTES -->
 
-[^step-types-1]:
+[^user-action]:
 
-    - Select from the drop-down to add it to your User Action step.
-    - [Manage model inventory fields](/guide/model-inventory/manage-model-inventory-fields.qmd)
+    Select from the drop-down to add it to your User Action step. Users must have write permissions for the field in order to enter values.
+    <br><br>
 
-    Users must have write permissions for the field in order to enter values.
+    - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
+    - [Manage artifact fields](/guide/model-validation/manage-artifact-fields.qmd)
 
-
-[^step-types-2]: **[Configure workflows](/guide/workflows/configure-workflows.qmd#create-custom-workflows):**<br><br>
+[^approval-1]: **[Configure workflows](/guide/workflows/configure-workflows.qmd#create-custom-workflows):**<br><br>
 
     1. Configure two **{{< fa cube >}} Model Stage Change** steps for your associated rejection and approval stages.
     2. Then, from the bottom of your **{{< fa users >}} Approval** step:
         a. Connect the left [**{{< fa circle >}}**]{.red} (red) to your rejection step.
         b. Connect the right [**{{< fa circle >}}**]{.green} (green) to your approval step.
 
-[^step-types-3]: Use the rich text editor to compose your message:
+[^approval-2]:
 
-    1. Include optional details about the model the workflow is running on using the **{ } Insert Variable** drop-down.
-    2. Click on the **Preview** tab and choose a model under **[select model for preview]{.smallcaps}** to confirm how the notification will appear when rendered.
+    - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
+    - [Manage artifact fields](/guide/model-validation/manage-artifact-fields.qmd)
+
+[^broadcast]: Use the rich text editor to compose your **[subject]{.smallcaps}** and **[message]{.smallcaps}**:
+
+    1. Include optional details about the model or artifact the workflow is running on using the **{ } Insert Variable** drop-down.
+    2. Click on the **Preview** tab and choose a model or artifact under **[select {model/artifact} for preview]{.smallcaps}** to confirm how the notification will appear when rendered.
+
+[^wait]:
+
+    - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd#inventory-field-types)
+    - [Manage artifact fields](/guide/model-validation/manage-artifact-fields.qmd#artifact-field-types)
 
 [^request-types]: `PUT` and `POST` requests have additional configuration fields:
 
@@ -203,6 +213,8 @@ Sends a HTTP request with optional additional conditions.^[[Conditional requirem
 
     1. Click **{{< fa plus >}} Add Header** to enter a header.
     2. Provide a **Header Name** and **Header Value**.
+    
+    To avoid storing credentials in plaintext, use webhook secrets: enter `{{secret:name}}` as the header value. At runtime, the workflow engine replaces the placeholder with the stored secret value. See [Manage secrets](/guide/integrations/manage-secrets.qmd#webhook-secrets).
 
 
 

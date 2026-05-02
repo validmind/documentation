@@ -42,9 +42,9 @@ Value editor
 2. From the field selector dropdown, select one of:
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-- **[model information]{.smallcaps}** — One of the model inventory fields always created by {{< var vm.product >}}, such as the Business Unit.
-- **[stakeholders]{.smallcaps}** — Owner, Developer, or Validator, or custom stakeholders if applicable.
-- **[model inventory fields]{.smallcaps}** — One of the organization-specific model inventory fields you added for your own use.
+- **[record information]{.smallcaps}** — One of the inventory record fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[stakeholders]{.smallcaps}** — Record Owner, Record Developer, or Record Validator, or custom stakeholders if applicable.
+- **[record fields]{.smallcaps}** — One of the organization-specific inventory record fields you added for your own use.
 
 ::::
 
@@ -55,28 +55,40 @@ Value editor
 
 ::::
 
-:::: {.content-visible when-format="html" when-meta="includes.both"}
+:::: {.content-visible when-format="html" when-meta="includes.workflows"}
+- **[workflow fields]{.smallcaps}** — Workflow properties, such as the workflow status, trigger, workflow target (type of workflow), or target type (subcategory of workflow target).
+
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.all"}
 :::: {.columns}
 
 ::: {.column width="50%" .pl4 .pr2}
-[Model Inventory Filters]{.small-text}
+[Inventory Filters]{.small-text}
 
-- **[model information]{.smallcaps}** — One of the model inventory fields always created by {{< var vm.product >}}, such as the Business Unit.
-- **[stakeholders]{.smallcaps}** — Owner, Developer, or Validator, or custom stakeholders if applicable.
-- **[model inventory fields]{.smallcaps}** — One of the organization-specific model inventory fields you added for your own use.
+- **[record information]{.smallcaps}** — One of the inventory record fields always created by {{< var vm.product >}}, such as the Business Unit.
+- **[stakeholders]{.smallcaps}** — Record Owner, Record Developer, or Record Validator, or custom stakeholders if applicable.
+- **[record fields]{.smallcaps}** — One of the organization-specific inventory record fields you added for your own use.
 :::
 
 ::: {.column width="50%" .pl4 .pr3}
-
 [Artifact Filters]{.small-text}
 
 - **[artifact information]{.smallcaps}** — One of the artifact fields always created by {{< var vm.product >}}, such as the Business Unit.
 - **[assignees]{.smallcaps}** — User assigned to the Validation Issue type artifact.
 - **[artifact fields]{.smallcaps}** — One of the organization-specific artifact fields you added for your own use.
+
 :::
 
 
 ::::
+
+::: {.column width="100%" .pl4 .pr3}
+[Workflow Filters]{.small-text}
+
+- **[workflow fields]{.smallcaps}** — Workflow properties, such as the workflow status, trigger, workflow target (type of workflow), or target type (subcategory of workflow target).
+
+:::
 
 ::::
 
@@ -131,7 +143,7 @@ Select/multi-select
 
 ::: {.column width="30%" .pl3}
 Entity fields
-: Dropdown with search for users or models
+: Dropdown with search for users or records
 :::
 
 ::::
@@ -212,13 +224,13 @@ Click the {{< fa xmark >}} icon on any filter chip to remove that specific filte
 
 ### Simple single rule
 
-Show models where _Model Inventory Field: `Risk Level` is `High`_ (requires that you have a custom select field called `Risk Level`):
+Show records where _Record Field: `Risk Level` is `High`_ (requires that you have a custom select field called `Risk Level`):
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
 2. Click **{{< fa plus >}} Add Rule**:
 
-    - Field = `Model Inventory Field: Risk Level`
+    - Field = `Record Field: Risk Level`
     - Operator = `equals`
     - Value = `High`
 
@@ -226,13 +238,13 @@ Show models where _Model Inventory Field: `Risk Level` is `High`_ (requires that
 
 ### Simple AND query
 
-Show models that are _Model Stage: In Production AND in Business Unit: Risk Management_:
+Show records that are  _Stage: In Production AND in Business Unit: Risk Management_:
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
 2. On the Select Your Filters dialog that opens, click **{{< fa plus >}} Add Rule**:
 
-    - Field = `Model Stage`
+    - Field = `Stage`
     - Operator = `in`
     - Value = `In Production`
 
@@ -246,14 +258,14 @@ Show models that are _Model Stage: In Production AND in Business Unit: Risk Mana
 
 ### OR query with groups
 
-Show models that are _(Model Stage: In Production AND in Business Unit: Risk Management) OR (Model Stage: In Production AND in Use: Attrition/Churn Management)_:
+Show records that are _(Stage: In Production AND in Business Unit: Risk Management) OR (Stage: In Production AND in Use: Attrition/Churn Management)_:
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
 2. Click **{{< fa plus >}} Add Rule** to add your rules:
 
     a. First rule:
-        - Field = `Model Stage`
+        - Field = `Stage`
         - Operator = `in`
         - Value = `In Production`
     b. Second rule:
@@ -267,7 +279,7 @@ Show models that are _(Model Stage: In Production AND in Business Unit: Risk Man
     b. In the new group, click **{{< fa plus >}} Add Rule** to add:
 
         i. First rule:
-            - Field = `Model Stage`
+            - Field = `Stage`
             - Operator = `in`
             - Value = `In Production`
         ii. Second rule:
@@ -279,18 +291,18 @@ Show models that are _(Model Stage: In Production AND in Business Unit: Risk Man
 
 ### Complex nested query
 
-Show models where _(Model Stage: Active OR In Periodic Review) AND (Risk Level: High OR Medium) AND Owner: John Doe_:
+Show records where _(Stage: Active OR In Periodic Review) AND (Risk Level: High OR Medium) AND Owner: John Doe_:
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
 2. Click **{{< fa folder-plus >}} Add Group** to add your groups:
 
     a. First group:
-        - Field = `Model Stage`
+        - Field = `Stage`
         - Operator = `in`
         - Value = `In Production`, `In Periodic Review`
     b. Second group:
-        - Field = `Model Inventory Field: Risk Level`
+        - Field = `Record Field: Risk Level`
         - Operator = `equals`
         - Value = `High`, `Medium`
 
@@ -306,7 +318,7 @@ Show models where _(Model Stage: Active OR In Periodic Review) AND (Risk Level: 
 
 ### Date range filter
 
-Show models _implemented between January 1, 2025 and January 31, 2025_:
+Show records _implemented between January 1, 2025 and January 31, 2025_:
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
@@ -322,7 +334,7 @@ Show models _implemented between January 1, 2025 and January 31, 2025_:
 
 ### Filter by owner and PDF attachments
 
-Show _models owned by a specific user that have `.pdf` attachments_:
+Show _records owned by a specific user that have `.pdf` attachments_:
 
 1. On the Inventory page, click **{{< fa filter >}} Filter**.
 
