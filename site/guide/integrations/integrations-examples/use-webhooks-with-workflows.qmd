@@ -1,0 +1,128 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Use webhooks with workflows"
+date: last-modified
+---
+
+Use webhooks to let external systems start {{< var vm.product >}} workflows or trigger paused workflows to continue.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure workflows.[^1]
+- [x] You understand how to configure workflows and add steps to workflows.[^2]
+- [x] You have admin access to the external system that will send webhook requests.
+
+:::
+
+## Start a workflow via webhook
+
+Start a {{< var vm.product >}} workflow from an external system by sending a POST request to trigger a new workflow.
+
+::: {.panel-tabset}
+
+### a. Configure workflow in {{< var vm.product >}}
+
+1. Add a new workflow, selecting the **Via Webhook** workflow start option.[^3]
+
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step[^4] onto the canvas, then connect it to your workflow.
+
+3. Double-click the step to open the **Webhook Step Trigger** modal.
+
+4. Copy or select the webhook details:
+
+   - **URL** — Click **{{< fa regular copy >}} Copy** for the unique POST webhook URL to use when configuring your external system.
+   - **[select target model for payload]{.smallcaps}** — Select the model that is associated with the webhook payload from the dropdown.
+   - **Payload** — Click **{{< fa regular copy >}} Copy** for the JSON payload that external systems must send in their POST request, where the value for `target_cuid` is shown after you select a target:
+   
+     ```json
+     {
+       "action": "run_workflow",
+       "target": "<target_cuid>",
+       "entity_name": "InventoryModel"
+     }
+     ```
+
+   - For the required authentication headers, click **{{< fa regular copy >}} Copy** for each of the following key-value pairs and paste them into your external system:
+     - `x-api-key`: `{{API Key}}`
+     - `x-api-secret`: `{{API Secret}}`
+   - **[wait for webhook trigger when reached]{.smallcaps}** — When enabled, the workflow pauses execution when it reaches this step and waits for the external system to send the POST request.
+
+5. Click **Save**.
+
+### b. Start workflow from external system
+
+Send a POST request to the webhook URL with a JSON payload that includes the `run_workflow` action for the target model CUID:
+
+```bash
+curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx -H 'Content-Type`: `application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
+  "action": "run_workflow",
+  "target": "<target_cuid>",
+  "entity_name": "InventoryModel"
+}'
+```
+:::
+
+## Trigger a paused workflow to continue
+
+Trigger a waiting {{< var vm.product >}} workflow step to continue from an external system. Use this pattern when a workflow pauses at a webhook step and waits for external input before proceeding.
+
+::: {.panel-tabset}
+
+### a. Configure workflow in {{< var vm.product >}}
+
+1. Open the workflow you want to configure, or add a new workflow.[^3]
+
+2. From the **Workflow Steps** modal, drag and drop a **Webhook** step[^4] onto the canvas, then connect the step to your workflow.
+
+3. Double-click the step to open the **Webhook Step Trigger** modal.
+
+4. Copy or select the webhook details:
+
+   - **URL** — Click **{{< fa regular copy >}} Copy** for the unique POST webhook URL to use when configuring your external system.
+   - **[select target model for payload]{.smallcaps}** — Select the model that is associated with the webhook payload from the dropdown.
+   - **Payload** — Click **{{< fa regular copy >}} Copy** for the JSON payload that external systems must send in their POST request, where the value for `target_cuid` is shown after you select a target:
+
+     ```json
+     {
+       "action": "run_step",
+       "target": "<target_cuid>",
+       "entity_name": "InventoryModel"
+     }
+     ```
+
+   - For the required authentication headers, click **{{< fa regular copy >}} Copy** for each of the following key-value pairs and paste them into your external system:
+     - `x-api-key`: `{{API Key}}`
+     - `x-api-secret`: `{{API Secret}}`
+
+5. Click **Update Step** to save your configuration.
+
+When the workflow reaches this step, it pauses and waits for the external system.
+
+### b. Trigger workflow to continue from external system
+
+Send a POST request to the webhook URL with a JSON payload containing the `run_step` action for the model CUID:
+
+```bash
+curl -X POST https://api.prod.vm.validmind.ai/vm/api/v1/webhooks/xxxxxxxxxxxxxxxxxxxxxxxxx/xxxx  -H 'Content-Type`: `application/json' -H 'x-api-key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' -H 'x-api-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' --data '{
+  "action": "run_step",
+  "target": "<target_cuid>",
+  "entity_name": "InventoryModel"
+}'
+```
+
+:::
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](../../configuration/manage-permissions.qmd)
+
+[^2]: [Introduction to workflows](../../workflows/introduction-to-workflows.qmd)
+
+[^3]: [Add new workflows](../../workflows/configure-workflows.qmd#add-new-workflows)
+
+[^4]: [Workflow step types](../../workflows/workflow-step-types.qmd#webhook)
