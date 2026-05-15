@@ -31,7 +31,7 @@ You can also create custom document types and associated templates to suit your 
 
 ## Can templates be customized for our use cases?
 
-Yes, the {{< var validmind.platform >}}[^2] allows you to configure versioned templates based on document requirements for each record (model) or lifecycle use case.
+Yes, the {{< var validmind.platform >}}[^2] allows you to configure versioned templates based on document requirements for each record (such as a model) or lifecycle use case.
 
 - {{< var vm.product >}}'s templates are fully customizable,[^3] and are complemented by the ability to manage validation guidelines.
 - You can swap between different versions of templates or apply another version of the current template.[^4]
@@ -46,12 +46,12 @@ Yes, you can work with documentation, validation reports, ongoing monitoring rep
 1. Add and edit text on any document within the {{< var vm.platform >}} using our content editing toolbar.[^7]
 2. Using the {{< var vm.developer >}}, execute test suites and generate the corresponding supporting results. These results can then be added to your documents within the {{< var vm.platform >}}.[^8]
 
-## Can I run tests and log documentation without a record (model)?
+## Can I run tests and log documentation without a record?
 <span id="no-available-model"><span>
-Yes! If you do not have a record ready, or your record can't be loaded directly, or you only have access to predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the predictions.
+Yes! If you do not have a record (such as a model) ready, or your record can't be loaded directly, or you only have access to predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the predictions.
 
 - Use `assign_predictions()`[^9] to load predictions from a separate file or a dataset with predictions.
-- Call `init_model()`[^10] but instead of a trained model instance, pass an `input_id` and model metadata. `ModelMetadata()`[^11] will use the provided metadata instead of trying to calculate it from the model's library. 
+- Call `init_model()`[^10] to create a model object, but instead of a trained instance, pass an `input_id` and model metadata. `ModelMetadata()`[^11] will use the provided metadata instead of trying to calculate it from the model's library.
 
 
 ::: {.column-margin}
@@ -65,8 +65,10 @@ Yes! If you do not have a record ready, or your record can't be loaded directly,
 ```
 :::
 
-::: {.callout title="If neither a trained model instance nor metadata is provided, `init_model()` will return an error.  "}
-However, tests that need a trained model will not work with "empty" models.
+::: {.callout title="If neither a trained instance nor metadata is provided, `init_model()` will return an error."}
+- However, tests that need a trained model will not work with "empty" models.
+- Despite the naming convention, model objects can be any type of record you want to test, document, validate, or monitor with {{< var vm.product >}}.
+
 :::
 
 {{< include _faq-attachments.qmd >}}
