@@ -59,7 +59,7 @@ help:
 
 add-copyright:
 	@echo "\nAdding copyright headers to .qmd and .yml/.yaml files ..."
-	@cd .. && python site/scripts/add_copyright.py
+	@cd .. && uv run python site/scripts/add_copyright.py
 
 # Clean up source directory
 clean:
@@ -337,9 +337,9 @@ notebooks:
 	@echo "Copying _metadata.yml into notebooks/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Updating developer/_sidebar.yaml with use_cases directories ..."
-	@python scripts/developer-sidebar/update_use_cases.py
+	@uv run python scripts/developer-sidebar/update_use_cases.py
 	@echo "Updating developer/_sidebar.yaml with how-to directories ..."
-	@python scripts/developer-sidebar/update_how_tos.py
+	@uv run python scripts/developer-sidebar/update_how_tos.py
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
@@ -427,12 +427,11 @@ release-notes:
 template-schema-docs:
 	@echo "\nGenerating template schema documentation ..."
 	@if [ ! -d "$(SRC_ROOT)/backend" ]; then echo "Error: Backend not cloned. Run 'make clone' first."; exit 1; fi
-	@python -m pip install -q json-schema-for-humans
-	@BACKEND_ROOT=$(SRC_ROOT)/backend python ../scripts/generate_template_schema_docs.py
+	@BACKEND_ROOT=$(SRC_ROOT)/backend uv run --with json-schema-for-humans python ../scripts/generate_template_schema_docs.py
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
+	@cd _source/validmind-library && make install && uv run python scripts/extract_descriptions.py validmind/tests
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
@@ -442,11 +441,11 @@ test-descriptions:
 
 verify-copyright:
 	@echo "\nVerifying copyright headers in .qmd and .yml/.yaml files ..."
-	@cd .. && python site/scripts/verify_copyright_qmd.py
+	@cd .. && uv run python site/scripts/verify_copyright_qmd.py
 
 # Collate yearly releases
 yearly-releases:
-	@python ../release-scripts/yearly_cleanup.py
+	@uv run python ../release-scripts/yearly_cleanup.py
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview
