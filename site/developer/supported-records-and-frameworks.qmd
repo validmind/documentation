@@ -2,15 +2,16 @@
 # Copyright © 2023-2026 ValidMind Inc. All rights reserved.
 # Refer to the LICENSE file in the root of this repository for details.
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
-title: "Supported models and frameworks"
+title: "Supported records and frameworks"
 date: last-modified
 aliases:
   - /guide/supported-models.html
   - /developer/model-documentation/supported-models.html
   - /developer/supported-models.html
   - /developer/supported-model-frameworks.html
+  - /developer/supported-models-and-frameworks.html
 listing:
-  - id: next-models
+  - id: whats-next
     type: grid
     grid-columns: 2
     max-description-length: 250
@@ -23,15 +24,15 @@ listing:
     - samples-jupyter-notebooks.qmd
 ---
 
-Learn about the wide range of models and frameworks for testing and documentation supported by the {{< var validmind.developer >}}. Understand which frameworks are supported, what your model needs to provide for tests to run, and how to work with models that don't fit standard patterns.
+Learn about the wide range of records (such as models) and frameworks for testing and documentation supported by the {{< var validmind.developer >}}. Understand which frameworks are supported, what your record needs to provide for tests to run, and how to work with records that don't fit standard patterns.
 
 ::: {.attn}
 
-## What does _supported_ mean? 
+## What does _supported_ mean?
 
-_Supported_ here means the {{< var validmind.developer >}} provides dedicated wrappers, install options, and guidance for these models and frameworks. 
+_Supported_ here means the {{< var validmind.developer >}} provides dedicated wrappers, install options, and guidance for these records and frameworks.
 
-You can also use other code with the {{< var vm.developer >}} for models that don't fit standard framework patterns. For example, you can wrap any Python callable with `FunctionModel` or pass precomputed predictions when you don't have a model object.
+You can also use other code with the {{< var vm.developer >}} for records that don't fit standard framework patterns. For example, you can wrap any Python callable with `FunctionModel` or pass precomputed predictions when you don't have a traditional model object.
 
 :::: {.columns}
 
@@ -41,8 +42,8 @@ Framework-agnostic support
 :::
 
 ::: {.column width="50%" .pl3}
-Vendor model compatibility
-: Works with both first-party models you create and third-party models from external vendors, enabling flexible integration with both proprietary and external sources.
+Vendor record compatibility
+: Works with both first-party record you create and third-party records from external vendors, enabling flexible integration with both proprietary and external sources.
 :::
 
 ::::
@@ -149,7 +150,7 @@ ARIMA, VAR, and other statsmodels time series models.
 
 ## Frameworks
 
-The {{< var validmind.developer >}} provides wrapper classes for common frameworks. When you call `vm.init_model()`, the library automatically detects your model's framework from its module, such as `sklearn`, `torch`, or `transformers`, and selects the appropriate wrapper. You don't need to specify the wrapper class manually.
+The {{< var validmind.developer >}} provides wrapper classes for common frameworks. When you call `vm.init_model()`, the library automatically detects your record's framework from its module, such as `sklearn`, `torch`, or `transformers`, and selects the appropriate wrapper. You don't need to specify the wrapper class manually.
 
 ::: {.panel-tabset}
 ## CatBoost
@@ -227,13 +228,13 @@ pip install validmind[all]
 
 ### Test input requirements
 
-Different tests require different inputs from your model and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
+Different tests require different inputs from your record and dataset. Understanding these requirements helps you run the right tests for your use case.[^1]
 
 ::: {.panel-tabset}
 
 #### When `predict()` is required
 
-Most model tests call your model's `predict()` method to generate predictions. This includes:
+Most record tests call your record's `predict()` method to generate predictions. This includes:
 
 - Performance metrics (accuracy, precision, recall, F1)
 - Error analysis tests
@@ -248,7 +249,7 @@ Classification metrics that evaluate probability outputs require `predict_proba(
 - Calibration tests
 - Probability distribution analysis
 
-If your model doesn't have `predict_proba()`, these tests will be skipped or return an error.
+If your record doesn't have `predict_proba()`, these tests will be skipped or return an error.
 
 :::
 
@@ -280,7 +281,7 @@ flowchart LR
 
 ### Using precomputed predictions
 
-If you can't provide a model object because your model runs in a separate environment, you can pass precomputed predictions directly to the dataset:
+If you can't provide a model object because your record runs in a separate environment, you can pass precomputed predictions directly to the dataset:
 
 ```python
 vm_dataset = vm.init_dataset(
@@ -304,7 +305,7 @@ vm_dataset = vm.init_dataset(
 
 ### Dataset-only tests
 
-Some tests analyze data quality and don't require a model at all:
+Some tests analyze data quality and don't require a record at all:
 
 - Missing value analysis
 - Class imbalance detection
@@ -325,7 +326,7 @@ The library accepts multiple data formats when initializing datasets with `vm.in
 
 ## Custom model wrappers
 
-For models that don't fit standard framework patterns, use these flexible wrappers:
+For records that don't fit standard framework patterns, use these flexible wrappers:
 
 ::: {.panel-tabset}
 ### FunctionModel
@@ -518,7 +519,7 @@ Optional dependencies for specific frameworks:
 
 ## What's next
 
-:::{#next-models}
+:::{#whats-next}
 :::
 
 <!-- FOOTNOTES -->
