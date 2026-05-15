@@ -65,6 +65,9 @@ jobs:
           src/backend/templates/documentation/model_documentation
         sparse-checkout-cone-mode: true
 
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+
     - name: Verify copyright headers
       run: |
         cd site
@@ -74,14 +77,6 @@ jobs:
       uses: quarto-dev/quarto-actions/setup@v2
       with:
         version: pre-release
-
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-    - name: Set up uv
-      uses: astral-sh/setup-uv@v5
 
     - name: Generate Python library docs
       run: |
@@ -94,8 +89,7 @@ jobs:
 
     - name: Generate template schema docs
       run: |
-        pip install json-schema-for-humans
-        BACKEND_ROOT=site/_source/backend python scripts/generate_template_schema_docs.py
+        BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
 
     - name: Populate installation
       run: cp -r site/_source/installation/site/installation site/installation
