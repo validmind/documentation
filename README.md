@@ -379,24 +379,22 @@ Similarly, http://localhost:4444/ in your browsers should show an all green logo
 
 ## Configuring Lighthouse checks
 
-Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites to enable a better, accessible documentation for everyone.
+Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites after the **Validate docs site** workflow deploys a preview.
 
-By default, Lighthouse checks only the top-level pages in our site navigation, such as `/index.html`, `/guide/guides.html`, `/developer/validmind-library.html`, and so forth. You can configure this behavior in the workflow:
+**Default (every PR):** Lighthouse audits only HTML pages that correspond to files changed under `site/` in the pull request. If you change shared layout files (`_quarto.yml`, `theme.scss`, `_variables.yml`, `_extensions/`, and similar), it falls back to the root navigation pages (`index.html`, `guide/guides.html`, and so on).
 
-```sh
-env:
-  # To change the default depth level:
-  # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
-  # 1 — All first-level subdirectories (e.g. /guide/*.html)
-  # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
-  # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-  DEFAULT_DEPTH: '0'
-```
+**Thorough audit:**
+
+- Add the `lighthouse:full` label to a PR to run a depth-2 sitemap audit on the next successful validate run.
+- Or run the **Lighthouse check** workflow manually from Actions → **Run workflow**, set the PR number, and choose depth `0` (root pages), `1` (first-level sections), or `2` (second-level). Depths above zero can take hours; use them on feature branches only.
+
+The PR comment lists audited URLs, the commit SHA, and accessibility scores (required: ≥ 0.9 per page).
 
 **Tips:**
 
-- On the first run, the workflow waits for a preview site to become available. For subsequent runs, it checks the currently available site, which may be behind HEAD. The PR comment shows which commit SHA was checked — rerun the check if needed.
-- Use folder depths greater than zero only on working branches when you need a thorough site audit. Deeper checks take 2-12 hours to complete and significantly slow down the CI/CD pipeline. Do not merge depth changes to `main`.
+- Lighthouse starts only after validate succeeds, so it no longer polls for up to 45 minutes.
+- If a PR changes only CI or repo metadata (no `site/` pages), Lighthouse skips with an informational comment.
+- Re-run validate (or push a commit) if the preview comment SHA does not match the commit you expect audited.
 
 ## Monitoring
 

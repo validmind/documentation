@@ -1,598 +1,453 @@
 name: Lighthouse check
 
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
+  workflow_run:
+    workflows: ["Validate docs site (render, test, and deploy)"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      depth:
+        description: "Sitemap depth for thorough audit (0–2)"
+        required: true
+        default: "0"
+        type: choice
+        options:
+          - "0"
+          - "1"
+          - "2"
+      pr_number:
+        description: "Pull request number to audit"
+        required: true
+        type: string
 
 permissions:
+  contents: read
   issues: write
   pull-requests: write
-
-env:
-  # To change the default depth level:
-  # 0 — Top-level navigation only (e.g. /index.html, /guide/guides.html, /developer/validmind-library.html, etc.)
-  # 1 — All first-level subdirectories (e.g. /guide/*.html)
-  # 2 — All second-level subdirectories (e.g. /guide/attestation/*.html)
-  # Note: While the crawler technically supports deeper levels, expect the workflow to take >2-12 hours to complete
-  DEFAULT_DEPTH: '0'
+  actions: read
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: |
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'pull_request') ||
+      github.event_name == 'workflow_dispatch'
     steps:
-    - name: Wait for validation workflow to complete
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const maxWaitTime = 45 * 60 * 1000; // 45 minutes in milliseconds
-          const pollInterval = 60 * 1000; // 60 seconds in milliseconds
-          const startTime = Date.now();
-          
-          console.log(`Waiting for "Validate docs site" workflow to complete for PR #${context.issue.number}`);
-          console.log(`Head SHA: ${context.payload.pull_request.head.sha}`);
-          
-          while (Date.now() - startTime < maxWaitTime) {
-            try {
-              // Get workflow runs for the validate-docs-site workflow
-              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'validate-docs-site.yaml',
-                head_sha: context.payload.pull_request.head.sha,
-                per_page: 5
+      - name: Resolve PR context
+        id: pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            async function getPr(prNumber) {
+              const { data: pr } = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: prNumber,
               });
-              
-              console.log(`Found ${runs.workflow_runs.length} workflow runs for this commit`);
-              
-              if (runs.workflow_runs.length > 0) {
-                // Get the most recent run
-                const latestRun = runs.workflow_runs[0];
-                console.log(`Latest run: ${latestRun.id}, status: ${latestRun.status}, conclusion: ${latestRun.conclusion}`);
-                
-                if (latestRun.status === 'completed') {
-                  if (latestRun.conclusion === 'success') {
-                    console.log('✅ Validation workflow completed successfully');
-                    break;
-                  } else {
-                    throw new Error(`❌ Validation workflow failed with conclusion: ${latestRun.conclusion}`);
-                  }
-                } else if (latestRun.status === 'in_progress' || latestRun.status === 'queued') {
-                  console.log(`⏳ Validation workflow is ${latestRun.status}, continuing to wait...`);
-                } else {
-                  console.log(`⚠️  Unexpected status: ${latestRun.status}`);
-                }
-              } else {
-                console.log('⏳ No workflow runs found yet, validation may not have started...');
+              if (pr.draft) {
+                core.setFailed('Skipping Lighthouse for draft PR');
+                return null;
               }
-              
-              console.log(`Elapsed time: ${Math.round((Date.now() - startTime) / 1000 / 60)} minutes`);
-              await new Promise(resolve => setTimeout(resolve, pollInterval));
-              
-            } catch (error) {
-              console.error('Error checking workflow status:', error);
-              throw error;
+              const labels = (pr.labels || []).map(l => l.name);
+              const fullAudit = labels.includes('lighthouse:full');
+              return {
+                number: pr.number,
+                head_ref: pr.head.ref,
+                head_sha: pr.head.sha,
+                base_ref: pr.base.ref,
+                full_audit: fullAudit,
+              };
             }
+
+            if (context.eventName === 'workflow_dispatch') {
+              const prNumber = parseInt('${{ inputs.pr_number }}', 10);
+              const info = await getPr(prNumber);
+              if (!info) return;
+              core.setOutput('number', String(info.number));
+              core.setOutput('head_ref', info.head_ref);
+              core.setOutput('head_sha', info.head_sha);
+              core.setOutput('base_ref', info.base_ref);
+              core.setOutput('mode', 'depth');
+              core.setOutput('depth', '${{ inputs.depth }}');
+              core.setOutput('full_audit', String(info.full_audit));
+              return;
+            }
+
+            const run = context.payload.workflow_run;
+            let prNumber = null;
+            if (run.pull_requests && run.pull_requests.length > 0) {
+              prNumber = run.pull_requests[0].number;
+            } else {
+              const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: run.head_sha,
+              });
+              if (prs.length > 0) {
+                prNumber = prs[0].number;
+              }
+            }
+
+            if (!prNumber) {
+              core.setFailed('Could not resolve PR for workflow_run');
+              return;
+            }
+
+            const info = await getPr(prNumber);
+            if (!info) return;
+
+            let mode = 'changed';
+            let depth = '0';
+            if (info.full_audit) {
+              mode = 'depth';
+              depth = '2';
+            }
+
+            core.setOutput('number', String(info.number));
+            core.setOutput('head_ref', info.head_ref);
+            core.setOutput('head_sha', info.head_sha);
+            core.setOutput('base_ref', info.base_ref);
+            core.setOutput('mode', mode);
+            core.setOutput('depth', depth);
+            core.setOutput('full_audit', String(info.full_audit));
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr.outputs.head_sha }}
+          fetch-depth: 0
+
+      - name: Set environment
+        run: |
+          echo "PREVIEW_URL=https://docs-staging.validmind.ai/pr_previews/${{ steps.pr.outputs.head_ref }}" >> $GITHUB_ENV
+          echo "COMMIT_SHA=${{ steps.pr.outputs.head_sha }}" >> $GITHUB_ENV
+          echo "COMMIT_SHA_SHORT=$(echo ${{ steps.pr.outputs.head_sha }} | cut -c1-7)" >> $GITHUB_ENV
+          echo "LIGHTHOUSE_MODE=${{ steps.pr.outputs.mode }}" >> $GITHUB_ENV
+          echo "LIGHTHOUSE_DEPTH=${{ steps.pr.outputs.depth }}" >> $GITHUB_ENV
+          echo "PR_NUMBER=${{ steps.pr.outputs.number }}" >> $GITHUB_ENV
+
+      - name: Check for PR preview URL
+        id: check_preview
+        run: |
+          check_url() {
+            local url=$1
+            local status
+            status=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" "$url")
+            echo "Checking $url — status: $status"
+            [ "$status" -eq 200 ]
           }
-          
-          // Check if we timed out
-          if (Date.now() - startTime >= maxWaitTime) {
-            throw new Error('⏰ Timed out waiting for validation workflow to complete');
-          }
-          
-    - name: Check out repository
-      uses: actions/checkout@v4
 
-    - name: Get commit SHA
-      id: get_sha
-      run: |
-        echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-        echo "COMMIT_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "Waiting for preview site to become available ..."
+          for i in $(seq 1 30); do
+            if check_url "$PREVIEW_URL/index.html"; then
+              echo "Info: Preview site is now available"
+              break
+            fi
+            if [ "$i" -eq 30 ]; then
+              echo "Error: Preview URL did not become available after 30 minutes"
+              exit 1
+            fi
+            echo "Attempt $i/30: waiting 1 minute..."
+            sleep 60
+          done
 
-    - name: Set PR preview URL
-      id: set_url
-      run: |
-        echo "PREVIEW_URL=https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}" >> $GITHUB_ENV
-        echo "DEPTH=${{ env.DEFAULT_DEPTH }}" >> $GITHUB_ENV
-
-    - name: Check for PR preview URL and sitemap
-      id: check_preview
-      run: |
-        # Function to check if URL returns HTTP 200
-        check_url() {
-          local url=$1
-          local status
-          status=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" "$url")
-          echo "Checking $url — status: $status"
-          [ "$status" -eq 200 ]
-        }
-    
-        echo "Waiting for preview site to become available ..."
-        for i in {1..60}; do
-          if check_url "$PREVIEW_URL/index.html"; then
-            echo "Info: Preview site is now available"
-            break
-          fi
-    
-          if [ $i -eq 60 ]; then
-            echo "Error: Preview URL did not become available after 60 minutes at $PREVIEW_URL/index.html"
+          if ! check_url "$PREVIEW_URL/sitemap.xml"; then
+            echo "Error: Sitemap missing at $PREVIEW_URL/sitemap.xml"
             exit 1
           fi
-    
-          echo "Attempt $i/60: Preview site not ready yet, waiting 1 minute..."
-          sleep 60
-        done
-    
-        if ! check_url "$PREVIEW_URL/sitemap.xml"; then
-          echo "Error: Sitemap does not exist at $PREVIEW_URL/sitemap.xml"
-          exit 1
-        fi
-    
-        echo "Debug: Checking installation page with URL-based auth..."
-        auth_url="https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/installation/index.html"
-        status=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" --anyauth "$auth_url")
-        echo "Checking $auth_url — status: $status"
-        if [ "$status" -ne 200 ]; then
-          echo "Error: Installation page is not accessible with authentication at $auth_url"
-          exit 1
-        fi
-    
-        echo "Info: Successfully accessed password-protected installation page"
-    
-        echo "preview_exists=true" >> $GITHUB_OUTPUT
 
-    - name: Install Lighthouse CI
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      run: npm install -g @lhci/cli
+          echo "preview_exists=true" >> $GITHUB_OUTPUT
 
-    - name: Install required Python packages
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests beautifulsoup4
+      - name: Install Python dependencies
+        if: steps.check_preview.outputs.preview_exists == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
 
-    - name: Generate URLs to check
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      id: generate_urls
-      run: |
-        BASE_URL="$PREVIEW_URL"
-        
-        # Create a Python script to crawl the site
-        cat > crawl.py << 'EOF'
-        import requests
-        from bs4 import BeautifulSoup
-        import sys
-        from urllib.parse import urljoin, urlparse
-        import json
-        import xml.etree.ElementTree as ET
-        import base64
-        import os
+      - name: Generate URLs to check
+        if: steps.check_preview.outputs.preview_exists == 'true'
+        id: generate_urls
+        env:
+          INSTALLATION_USER: ${{ secrets.INSTALLATION_USER }}
+          INSTALLATION_PW: ${{ secrets.INSTALLATION_PW }}
+        run: |
+          cd site/scripts
+          python lighthouse_urls.py \
+            --mode "$LIGHTHOUSE_MODE" \
+            --base-ref "${{ steps.pr.outputs.base_ref }}" \
+            --depth "$LIGHTHOUSE_DEPTH" \
+            --preview-url "$PREVIEW_URL" \
+            --output ../../lhci-urls.txt \
+            --metadata ../../lighthouse-metadata.json \
+            --skip-file ../../lighthouse-skip.txt
 
-        # Define root pages to check
-        ROOT_PAGES = [
-            "index.html",
-            "get-started/get-started.html",
-            "guide/guides.html",
-            "developer/validmind-library.html",
-            "support/support.html",
-            "releases/all-releases.html",
-            "training/training.html"
-        ]
+          if [ -f ../../lighthouse-skip.txt ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "No site pages to audit in this PR."
+            exit 0
+          fi
 
-        def get_auth_headers():
-            # Only use auth for installation pages
-            if 'installation/' in url:
-                # Create auth headers from environment variables
-                auth_string = base64.b64encode(f"{os.environ['INSTALLATION_USER']}:{os.environ['INSTALLATION_PW']}".encode()).decode()
-                return {"Authorization": f"Basic {auth_string}"}
-            return {}
+          if [ ! -s ../../lhci-urls.txt ]; then
+            echo "Error: No URLs were generated."
+            exit 1
+          fi
 
-        def get_url_depth(url):
-            # Parse the URL to get just the path
-            path = urlparse(url).path
-            # Remove .html extension for depth calculation
-            path = path.replace('.html', '')
-            # Remove any leading/trailing slashes
-            path = path.strip('/')
-            
-            # Split into segments and count non-empty ones
-            segments = [x for x in path.split('/') if x]
-            
-            # For PR preview URLs, we need to skip the first 5 segments:
-            # /pr_previews/username/branch/name/
-            if 'pr_previews' in path:
-                # Skip the first 5 segments (pr_previews/username/branch/name/)
-                segments = segments[5:]
-            
-            # Debug the depth calculation
-            # print(f"URL depth calculation - Path: {path}, Segments: {segments}, Depth: {len(segments)}", file=sys.stderr)
-            
-            return len(segments)
+          echo "skip=false" >> $GITHUB_OUTPUT
+          echo "Lighthouse will check:"
+          cat ../../lhci-urls.txt
 
-        def get_urls_from_sitemap(sitemap_url, max_depth):
-            try:
-                print(f"Fetching sitemap from {sitemap_url}", file=sys.stderr)
-                # Don't use auth for sitemap
-                response = requests.get(sitemap_url)
-                print(f"Sitemap response status: {response.status_code}", file=sys.stderr)
-                if response.status_code == 200:
-                    print(f"Sitemap content: {response.text[:500]}...", file=sys.stderr)
-                    root = ET.fromstring(response.content)
-                    # Get all URLs from sitemap
-                    all_urls = set()
-                    
-                    for url in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}url'):
-                        loc = url.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
-                        if loc is not None:
-                            full_url = loc.text
-                            parsed_url = urlparse(full_url)
-                            
-                            # Extract the path part after the base URL
-                            path = parsed_url.path
-                            # Remove leading slash if present
-                            path = path.lstrip('/')
-                            
-                            # Only include .html files
-                            if path.endswith('.html'):
-                                # Check depth
-                                if get_url_depth(path) <= max_depth:
-                                    # Remove any segments that match the PR preview path
-                                    segments = path.split('/')
-                                    # Keep only the segments after the PR preview path
-                                    pr_preview_index = -1
-                                    for i, segment in enumerate(segments):
-                                        if segment == 'pr_previews':
-                                            pr_preview_index = i
-                                            break
-                                    if pr_preview_index >= 0:
-                                        segments = segments[pr_preview_index + 4:]  # Skip pr_previews/username/branch/name
-                                    path = '/'.join(segments)
-                                    all_urls.add(path)
-                                    print(f"Found URL in sitemap: {path}", file=sys.stderr)
-                    
-                    print(f"Found {len(all_urls)} URLs in sitemap:", file=sys.stderr)
-                    for url in sorted(all_urls):
-                        print(f"  {url}", file=sys.stderr)
-                    return sorted(list(all_urls))
-                else:
-                    print(f"Failed to fetch sitemap: {response.status_code}", file=sys.stderr)
-            except Exception as e:
-                print(f"Error processing sitemap {sitemap_url}: {str(e)}", file=sys.stderr)
-            return []
+          # Probe first URL from list (beyond index.html) when in changed mode
+          if [ "$LIGHTHOUSE_MODE" = "changed" ]; then
+            FIRST=$(head -n1 ../../lhci-urls.txt)
+            status=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" "$FIRST")
+            echo "Probe $FIRST — status: $status"
+            if [ "$status" -ne 200 ]; then
+              echo "Error: Changed page not reachable on preview"
+              exit 1
+            fi
+          fi
 
-        def get_links(url, max_depth, visited=None):
-            if visited is None:
-                visited = set()
-            
-            current_depth = get_url_depth(url)
-            print(f"Checking URL {url} at depth {current_depth}", file=sys.stderr)
-            
-            if current_depth > max_depth or url in visited:
-                print(f"Skipping {url} - depth {current_depth} > {max_depth} or already visited", file=sys.stderr)
-                return set()
-            
-            visited.add(url)
-            links = set()
-            
-            try:
-                print(f"Fetching {url}", file=sys.stderr)
-                headers = get_auth_headers()
-                response = requests.get(url, headers=headers)
-                print(f"Response status: {response.status_code}", file=sys.stderr)
-                if response.status_code == 200:
-                    soup = BeautifulSoup(response.text, 'html.parser')
-                    print(f"Found {len(soup.find_all('a', href=True))} links on page", file=sys.stderr)
-                    
-                    for a in soup.find_all('a', href=True):
-                        href = a['href']
-                        print(f"Processing link: {href}", file=sys.stderr)
-                        
-                        # Skip external links and anchors
-                        if href.startswith('#') or href.startswith('http'):
-                            print(f"Skipping external/anchor link: {href}", file=sys.stderr)
-                            continue
-                            
-                        # Convert relative URLs to absolute
-                        full_url = urljoin(url, href)
-                        print(f"Converted to full URL: {full_url}", file=sys.stderr)
-                        
-                        # Only include URLs from the same base domain
-                        if urlparse(full_url).netloc == urlparse(url).netloc:
-                            # Extract just the path part
-                            path = urlparse(full_url).path
-                            # Remove leading slash if present
-                            path = path.lstrip('/')
-                            
-                            # Only include .html files
-                            if path.endswith('.html'):
-                                print(f"Found HTML link: {path}", file=sys.stderr)
-                                links.add(path)
-                                # Only recursively get links if we haven't hit max depth
-                                if get_url_depth(path) < max_depth:
-                                    print(f"Recursively checking {path} at depth {get_url_depth(path)}", file=sys.stderr)
-                                    links.update(get_links(full_url, max_depth, visited))
-                                else:
-                                    print(f"Skipping recursive check for {path} - at max depth", file=sys.stderr)
-                        else:
-                            print(f"Skipping external domain link: {href}", file=sys.stderr)
-            except Exception as e:
-                print(f"Error processing {url}: {str(e)}", file=sys.stderr)
-            
-            return links
+      - name: Verify installation page auth
+        if: |
+          steps.check_preview.outputs.preview_exists == 'true' &&
+          steps.generate_urls.outputs.skip != 'true'
+        run: |
+          if ! grep -q '/installation/' lhci-urls.txt 2>/dev/null; then
+            echo "No installation pages in URL list — skipping auth check"
+            exit 0
+          fi
+          auth_url="https://${{ secrets.INSTALLATION_USER }}:${{ secrets.INSTALLATION_PW }}@docs-staging.validmind.ai/pr_previews/${{ steps.pr.outputs.head_ref }}/installation/index.html"
+          status=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" --anyauth "$auth_url")
+          echo "Checking installation page — status: $status"
+          if [ "$status" -ne 200 ]; then
+            echo "Error: Installation page not accessible with authentication"
+            exit 1
+          fi
 
-        # Get command line arguments
-        base_url = sys.argv[1]
-        max_depth = int(sys.argv[2])
-        
-        print(f"Base URL: {base_url}", file=sys.stderr)
-        print(f"Max depth: {max_depth}", file=sys.stderr)
-
-        # Get all URLs
-        all_urls = set()
-        
-        if max_depth == 0:
-            # For depth 0, only check ROOT_PAGES
-            print("Depth is 0, only checking ROOT_PAGES", file=sys.stderr)
-            for root in ROOT_PAGES:
-                all_urls.add(root)
-                print(f"Added root page: {root}", file=sys.stderr)
-        else:
-            # For depth > 0, use sitemap
-            print(f"Depth is {max_depth}, using sitemap", file=sys.stderr)
-            sitemap_url = f"{base_url}/sitemap.xml"
-            sitemap_urls = get_urls_from_sitemap(sitemap_url, max_depth)
-            print(f"Found {len(sitemap_urls)} URLs in sitemap", file=sys.stderr)
-            all_urls.update(sitemap_urls)
-
-        # Print URLs to stdout, ensuring proper URL construction
-        print(f"Total URLs found: {len(all_urls)}", file=sys.stderr)
-        for url in sorted(all_urls):
-            # Remove any leading slashes from the URL to avoid double slashes
-            url = url.lstrip('/')
-            # Construct the full URL by joining base_url and url with a single slash
-            full_url = f"{base_url.rstrip('/')}/{url}"
-            print(full_url)
-            print(f"Added URL: {full_url}", file=sys.stderr)
-        EOF
-
-        # Run the crawler
-        python crawl.py "$BASE_URL" "$DEPTH" > lhci-urls.txt
-        
-        echo "Lighthouse will check the following URLs:"
-        cat lhci-urls.txt
-        echo -e "\nTotal number of URLs: $(wc -l < lhci-urls.txt)"
-        
-        # Verify we have URLs
-        if [ ! -s lhci-urls.txt ]; then
-          echo "Error: No URLs were generated. Check the debug output above."
-          exit 1
-        fi
-
-    - name: Create Lighthouse config
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      run: |
-        cat > .lighthouserc.js << 'EOF'
-        const fs = require('fs');
-        const urls = fs.readFileSync('lhci-urls.txt', 'utf-8').split('\n').filter(Boolean);
-        
-        // Add auth to installation URLs using the same format as the URL check step
-        const urlsWithAuth = urls.map(url => {
-          if (url.includes('/installation/')) {
-            return `https://${process.env.INSTALLATION_USER}:${process.env.INSTALLATION_PW}@${new URL(url).host}${new URL(url).pathname}`;
-          }
-          return url;
-        });
-        
-        module.exports = {
-          ci: {
-            collect: {
-              url: urlsWithAuth,
-              numberOfRuns: 1,
-              settings: {
-                formFactor: 'desktop',
-                screenEmulation: {
-                  mobile: false,
-                  width: 1350,
-                  height: 940,
-                  deviceScaleFactor: 1,
-                  disabled: false,
-                },
-                throttling: {
-                  rttMs: 40,
-                  throughputKbps: 10240,
-                  cpuSlowdownMultiplier: 1,
-                  requestLatencyMs: 0,
-                  downloadThroughputKbps: 0,
-                  uploadThroughputKbps: 0,
-                },
-              },
-            },
-            assert: {
-              assertions: {
-                'categories:accessibility': ['error', { minScore: 0.9 }],
-              },
-            },
-            upload: {
-              target: 'temporary-public-storage',
-            },
-          },
-        };
-        EOF
-
-    - name: Run Lighthouse audit
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      uses: treosh/lighthouse-ci-action@v11
-      id: lighthouse
-      continue-on-error: true
-      env:
-        INSTALLATION_USER: ${{ secrets.INSTALLATION_USER }}
-        INSTALLATION_PW: ${{ secrets.INSTALLATION_PW }}
-      with:
-        configPath: .lighthouserc.js
-        uploadArtifacts: true
-        temporaryPublicStorage: true
-
-    - name: Check Lighthouse audit result
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      run: |
-        # Check if the manifest exists and is valid JSON
-        if [ -z "${{ steps.lighthouse.outputs.manifest }}" ]; then
-          echo "Error: Lighthouse audit failed - no manifest output"
-          exit 1
-        fi
-        
-        # Try to parse the manifest as JSON
-        if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq . > /dev/null 2>&1; then
-          echo "Error: Lighthouse audit failed - invalid manifest format"
-          exit 1
-        fi
-        
-        # Check if any URLs were successfully audited
-        if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq 'length > 0' > /dev/null 2>&1; then
-          echo "Error: Lighthouse audit failed - no URLs were successfully audited"
-          exit 1
-        fi
-
-    - name: Post Lighthouse results comment
-      if: steps.check_preview.outputs.preview_exists == 'true'
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const runId = context.runId;
-          const baseUrl = process.env.PREVIEW_URL;
-          const commitSha = process.env.COMMIT_SHA;
-          const commitShaShort = process.env.COMMIT_SHA_SHORT;
-
-          // Get artifacts for this run
-          const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            run_id: runId,
-          });
-
-          // Lighthouse artifact
-          const lighthouseArtifact = artifacts.artifacts.find(a => a.name === 'lighthouse-report');
-          const lighthouseArtifactUrl = lighthouseArtifact
-            ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${lighthouseArtifact.id}`
-            : null;
-
-          // Lighthouse
-          const manifest = '${{ steps.lighthouse.outputs.manifest }}';
-          let manifestJson;
-          try {
-            manifestJson = JSON.parse(manifest);
-            if (!Array.isArray(manifestJson) || manifestJson.length === 0) {
-              throw new Error('Invalid manifest format or empty results');
-            }
-          } catch (error) {
-            console.error('Error parsing Lighthouse manifest:', error);
+      - name: Post skip comment
+        if: steps.generate_urls.outputs.skip == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = parseInt(process.env.PR_NUMBER, 10);
+            const body = `## Lighthouse check results\n\n✓ INFO: No site pages to audit in this PR.\n\nCommit SHA: [${process.env.COMMIT_SHA_SHORT}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.COMMIT_SHA})`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `## Lighthouse check results\n\n⚠️ WARN: Failed to parse Lighthouse results. Please check the [workflow run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}) for details.`
+              issue_number: prNumber,
+              body,
             });
-            return;
-          }
-          
-          // Delete old Lighthouse comments
-          const { data: comments } = await github.rest.issues.listComments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
+
+      - name: Install Lighthouse CI
+        if: steps.generate_urls.outputs.skip != 'true' && steps.check_preview.outputs.preview_exists == 'true'
+        run: npm install -g @lhci/cli
+
+      - name: Create Lighthouse config
+        if: steps.generate_urls.outputs.skip != 'true' && steps.check_preview.outputs.preview_exists == 'true'
+        run: |
+          cat > .lighthouserc.js << 'EOF'
+          const fs = require('fs');
+          const urls = fs.readFileSync('lhci-urls.txt', 'utf-8').split('\n').filter(Boolean);
+
+          const urlsWithAuth = urls.map(url => {
+            if (url.includes('/installation/')) {
+              return `https://${process.env.INSTALLATION_USER}:${process.env.INSTALLATION_PW}@${new URL(url).host}${new URL(url).pathname}`;
+            }
+            return url;
           });
-          
-          // Delete any previous comments from this workflow
-          for (const comment of comments) {
-            if (comment.user.login === 'github-actions[bot]' && 
-                comment.body.includes('## Lighthouse check results')) {
-              try {
-                console.log(`Deleting Lighthouse comment ${comment.id}`);
+
+          module.exports = {
+            ci: {
+              collect: {
+                url: urlsWithAuth,
+                numberOfRuns: 3,
+                settings: {
+                  formFactor: 'desktop',
+                  screenEmulation: {
+                    mobile: false,
+                    width: 1350,
+                    height: 940,
+                    deviceScaleFactor: 1,
+                    disabled: false,
+                  },
+                  throttling: {
+                    rttMs: 40,
+                    throughputKbps: 10240,
+                    cpuSlowdownMultiplier: 1,
+                    requestLatencyMs: 0,
+                    downloadThroughputKbps: 0,
+                    uploadThroughputKbps: 0,
+                  },
+                },
+              },
+              assert: {
+                assertions: {
+                  'categories:accessibility': ['error', { minScore: 0.9 }],
+                },
+              },
+              upload: {
+                target: 'temporary-public-storage',
+              },
+            },
+          };
+          EOF
+
+      - name: Run Lighthouse audit
+        if: steps.generate_urls.outputs.skip != 'true' && steps.check_preview.outputs.preview_exists == 'true'
+        uses: treosh/lighthouse-ci-action@v11
+        id: lighthouse
+        env:
+          INSTALLATION_USER: ${{ secrets.INSTALLATION_USER }}
+          INSTALLATION_PW: ${{ secrets.INSTALLATION_PW }}
+        with:
+          configPath: .lighthouserc.js
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Check Lighthouse audit result
+        if: steps.generate_urls.outputs.skip != 'true' && steps.check_preview.outputs.preview_exists == 'true'
+        run: |
+          if [ -z "${{ steps.lighthouse.outputs.manifest }}" ]; then
+            echo "Error: Lighthouse audit failed - no manifest output"
+            exit 1
+          fi
+
+          if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq . > /dev/null 2>&1; then
+            echo "Error: Lighthouse audit failed - invalid manifest format"
+            exit 1
+          fi
+
+          if ! echo '${{ steps.lighthouse.outputs.manifest }}' | jq 'length > 0' > /dev/null 2>&1; then
+            echo "Error: Lighthouse audit failed - no URLs were successfully audited"
+            exit 1
+          fi
+
+          # Fail if any page scored below 0.9 on accessibility
+          below=$(echo '${{ steps.lighthouse.outputs.manifest }}' | jq '[.[] | select(.summary.accessibility < 0.9)] | length')
+          if [ "$below" -gt 0 ]; then
+            echo "Error: $below page(s) scored below 0.9 on accessibility"
+            echo '${{ steps.lighthouse.outputs.manifest }}' | jq -r '.[] | select(.summary.accessibility < 0.9) | "\(.url): \(.summary.accessibility)"'
+            exit 1
+          fi
+
+      - name: Post Lighthouse results comment
+        if: steps.generate_urls.outputs.skip != 'true' && steps.check_preview.outputs.preview_exists == 'true'
+        uses: actions/github-script@v6
+        env:
+          LIGHTHOUSE_MODE: ${{ env.LIGHTHOUSE_MODE }}
+          LIGHTHOUSE_DEPTH: ${{ env.LIGHTHOUSE_DEPTH }}
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = parseInt(process.env.PR_NUMBER, 10);
+            const runId = context.runId;
+            const baseUrl = process.env.PREVIEW_URL;
+            const commitSha = process.env.COMMIT_SHA;
+            const commitShaShort = process.env.COMMIT_SHA_SHORT;
+            const mode = process.env.LIGHTHOUSE_MODE;
+            const depth = process.env.LIGHTHOUSE_DEPTH;
+
+            let metadata = {};
+            try {
+              metadata = JSON.parse(fs.readFileSync('lighthouse-metadata.json', 'utf8'));
+            } catch (e) {
+              console.log('No metadata file:', e.message);
+            }
+
+            const manifest = '${{ steps.lighthouse.outputs.manifest }}';
+            let manifestJson;
+            try {
+              manifestJson = JSON.parse(manifest);
+              if (!Array.isArray(manifestJson) || manifestJson.length === 0) {
+                throw new Error('Invalid manifest');
+              }
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `## Lighthouse check results\n\n⚠️ WARN: Failed to parse Lighthouse results. [Workflow run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId})`,
+              });
+              return;
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            for (const comment of comments) {
+              if (comment.user.login === 'github-actions[bot]' &&
+                  comment.body.includes('## Lighthouse check results')) {
                 await github.rest.issues.deleteComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   comment_id: comment.id,
                 });
-                console.log(`Successfully deleted Lighthouse comment ${comment.id}`);
-              } catch (error) {
-                console.error(`Failed to delete Lighthouse comment ${comment.id}:`, error);
               }
             }
-          }
-          
-          // Calculate average accessibility score
-          const scores = manifestJson.map(run => run.summary.accessibility);
-          const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-          const lighthouseScore = avgScore.toFixed(2);
-          
-          const lighthouseReportUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-          let lighthouseComment = '';
-          if (parseFloat(lighthouseScore) >= 0.9) {
-            lighthouseComment = `✓ INFO: Average accessibility score is **${lighthouseScore}** (required: >0.9) — [View the workflow run](${lighthouseReportUrl})`; 
-          } else {
-            lighthouseComment = `⚠️ WARN: Average accessibility score is **${lighthouseScore}** (required: >0.9) — [Check the workflow run](${lighthouseReportUrl})`;
-          }
 
-          const stripAuth = url => {
-            try {
-              const u = new URL(url);
-              u.username = '';
-              u.password = '';
-              return u.toString();
-            } catch {
-              return url;
+            const scores = manifestJson.map(run => run.summary.accessibility);
+            const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+            const lighthouseReportUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            const lighthouseComment = parseFloat(avgScore) >= 0.9
+              ? `✓ INFO: Average accessibility score is **${avgScore}** (required: ≥0.9) — [View the workflow run](${lighthouseReportUrl})`
+              : `⚠️ WARN: Average accessibility score is **${avgScore}** (required: ≥0.9) — [Check the workflow run](${lighthouseReportUrl})`;
+
+            const stripAuth = url => {
+              try {
+                const u = new URL(url);
+                u.username = '';
+                u.password = '';
+                return u.toString();
+              } catch {
+                return url;
+              }
+            };
+
+            const links = (() => {
+              try {
+                return JSON.parse(`${{ steps.lighthouse.outputs.links }}`);
+              } catch {
+                return {};
+              }
+            })();
+
+            const scoresTable = manifestJson
+              .map(run => {
+                const formatScore = score => score === null ? 'N/A' : score.toFixed(2);
+                const displayPath = stripAuth(run.url).replace(baseUrl, '') || run.url;
+                const reportUrl = links[run.url] || lighthouseReportUrl;
+                return `| [${displayPath}](${reportUrl}) | ${formatScore(run.summary.accessibility)} | ${formatScore(run.summary.performance)} | ${formatScore(run.summary['best-practices'])} | ${formatScore(run.summary.seo)} |`;
+              })
+              .join('\n');
+
+            const modeLine = mode === 'changed'
+              ? `Audit mode: **changed pages** (${metadata.paths?.length || manifestJson.length} URL(s))`
+              : `Audit mode: **depth ${depth}** (sitemap)`;
+
+            let comment = `## Lighthouse check results\n\n`;
+            comment += `${lighthouseComment}\n\n`;
+            comment += `${modeLine}\n\n`;
+            comment += `<details>\n<summary>Show Lighthouse scores</summary>\n\n`;
+            comment += `Commit SHA: [${commitShaShort}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${commitSha})\n\n`;
+            if (metadata.global_fallback) {
+              comment += `_Global site files changed — audited root navigation pages._\n\n`;
             }
-          };
+            comment += `For a thorough audit, run the **Lighthouse check** workflow manually (Actions → Lighthouse check → Run workflow) with depth 0–2, or add the \`lighthouse:full\` label for depth 2 on the next validate run.\n\n`;
+            comment += `| Page | Accessibility | Performance | Best Practices | SEO |\n`;
+            comment += `|------|---------------|-------------|----------------|-----|\n`;
+            comment += `${scoresTable}\n\n`;
+            comment += `</details>\n\n`;
 
-          // Helper to get the public report URL from htmlPath
-          const getReportUrl = (run) => {
-            if (run.report && Array.isArray(run.report)) {
-              // Find the public .report.html URL
-              const htmlReport = run.report.find(r => r.endsWith('.report.html') && r.startsWith('http'));
-              if (htmlReport) return htmlReport;
-              // Fallback: first report if available
-              if (run.report.length > 0) return run.report[0];
-            }
-            // Fallback: just show the workflow run if nothing else
-            return lighthouseReportUrl;
-          };
-
-          // Parse the links output from the Lighthouse step
-          const links = (() => {
-            try {
-              return JSON.parse(`${{ steps.lighthouse.outputs.links }}`);
-            } catch {
-              return {};
-            }
-          })();
-
-          const scoresTable = manifestJson
-            .map(run => {
-              const formatScore = (score) => score === null ? 'N/A' : score.toFixed(2);
-              const displayPath = stripAuth(run.url).replace(baseUrl, '');
-              // Use the public report URL from the links output, fallback to workflow run if missing
-              const reportUrl = links[run.url] || lighthouseReportUrl;
-              return `| [${displayPath}](${reportUrl}) | ${formatScore(run.summary.accessibility)} | ${formatScore(run.summary.performance)} | ${formatScore(run.summary['best-practices'])} | ${formatScore(run.summary.seo)} |`;
-            })
-            .join('\n');
-
-          let comment = `## Lighthouse check results\n\n`;
-          comment += `${lighthouseComment}\n\n`;
-          comment += `<details>\n<summary>Show Lighthouse scores</summary>\n\n`;
-          comment += `Folder depth level checked: **${process.env.DEPTH}**\n\n`;
-          comment += `Commit SHA: [${commitShaShort}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${commitSha})\n\n`;
-          comment += `Modify the workflow to check a different depth:\n`;
-          comment += `- 0: Top-level navigation only — /index.html, /guide/guides.html, ...\n`;
-          comment += `- 1: All first-level subdirectories — /guide/\*.html, /developer/\*.html, ...\n`;
-          comment += `- 2: All second-level subdirectories — /guide/attestation/\*.html, ...\n\n`;
-          comment += `| Page | Accessibility | Performance | Best Practices | SEO |\n`;
-          comment += `|------|---------------|-------------|----------------|-----|\n`;
-          comment += `${scoresTable}\n\n`;
-          comment += `</details>\n\n`;
-
-          await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            body: comment
-          }); 
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: comment,
+            });
