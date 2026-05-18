@@ -379,7 +379,7 @@ Similarly, http://localhost:4444/ in your browsers should show an all green logo
 
 ## Configuring Lighthouse checks
 
-Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites after the **Validate docs site** workflow deploys a preview.
+Lighthouse is an open-source tool that audits web pages for accessibility, performance, best practices, and SEO. We automatically run Lighthouse against PR preview sites when **Validate docs site** finishes deploying a preview (it dispatches the Lighthouse workflow on the PR branch).
 
 **Default (every PR):** Lighthouse audits only HTML pages that correspond to files changed under `site/` in the pull request. If you change shared layout files (`_quarto.yml`, `theme.scss`, `_variables.yml`, `_extensions/`, and similar), it falls back to the root navigation pages (`index.html`, `guide/guides.html`, and so on).
 
