@@ -129,7 +129,14 @@ def git_changed_files(base_ref: str) -> list[str]:
         capture_output=True,
     )
     result = subprocess.run(
-        ["git", "diff", "--name-only", f"origin/{base_ref}...HEAD", "--", "site/"],
+        [
+            "git",
+            "diff",
+            "--name-only",
+            f"origin/{base_ref}...HEAD",
+            "--",
+            ":(top)site/",
+        ],
         check=True,
         capture_output=True,
         text=True,
