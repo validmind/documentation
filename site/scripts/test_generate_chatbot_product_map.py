@@ -46,6 +46,24 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         self.assertFalse(gen.is_user_facing_doc("/_source/release-notes/foo.html"))
         self.assertFalse(gen.is_user_facing_doc("/guide/workflows/_partial.html"))
 
+    def test_collect_all_doc_qmd_paths_sorted(self) -> None:
+        site = Path(__file__).resolve().parents[1]
+        paths = gen.collect_all_doc_qmd_paths(site)
+        self.assertEqual(paths, sorted(paths))
+
+    def test_suggest_related_docs_sorted_and_stable(self) -> None:
+        site = Path(__file__).resolve().parents[1]
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        route = gen.ProductRoute(
+            path="/settings/templates",
+            label="Templates",
+            group="Configuration",
+        )
+        first = gen.suggest_related_docs(route, all_paths)
+        second = gen.suggest_related_docs(route, all_paths)
+        self.assertEqual(first, second)
+        self.assertEqual([r.path for r in first], sorted(r.path for r in first))
+
     def test_frontend_snapshot_roundtrip(self) -> None:
         payload = {
             "version": 1,

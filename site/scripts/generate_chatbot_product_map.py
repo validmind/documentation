@@ -331,7 +331,7 @@ def collect_all_doc_qmd_paths(site_dir: Path) -> list[str]:
             continue
         url = "/" + rel[:-4] + ".html"
         paths.append(url)
-    return paths
+    return sorted(paths)
 
 
 def is_user_facing_doc(path: str) -> bool:
@@ -358,6 +358,7 @@ def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[
         inner = doc_path.lower()
         if any(seg in inner for seg in segments):
             related.append(DocRef(path=doc_path))
+    related.sort(key=lambda r: r.path)
     return related[:6]
 
 

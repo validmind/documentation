@@ -51,4 +51,4 @@ CI does **not** check out `validmind/frontend` (private repo; cross-repo PAT sco
 Commit both `chatbot-product-map.md` and `chatbot-product-map-frontend-snapshot.json` when the snapshot changes. CI fails if either file is out of date after regeneration.
 
 Generator: `site/scripts/generate_chatbot_product_map.py`  
-Tests: `python3 -m unittest site/scripts/test_generate_chatbot_product_map.py` (run from `site/scripts/`).
+Tests: `python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v` (from repo root).
