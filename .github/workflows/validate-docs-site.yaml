@@ -35,6 +35,13 @@ jobs:
         path: site/_source/validmind-library
         token: ${{ secrets.DOCS_CI_RO_PAT }}
 
+    - name: Check out frontend repository (chatbot product map)
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/frontend
+        path: frontend
+        token: ${{ secrets.DOCS_CI_RO_PAT }}
+
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
@@ -166,9 +173,25 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pandoc
 
+    - name: Verify chatbot product map is up to date
+      run: |
+        python3 site/scripts/generate_chatbot_product_map.py
+        git diff --exit-code site/llm/chatbot-product-map.md
+
+    - name: Test chatbot product map generator
+      run: python3 -m unittest site/scripts/test_generate_chatbot_product_map.py -v
+
     - name: Validate LLM markdown render
       run: bash llm/render.sh && bash llm/clean.sh
       working-directory: site
+
+    - name: Verify LLM corpus includes product map and docs IA hub
+      run: |
+        test -f site/llm/_llm-output/chatbot-product-map.md
+        test -f site/llm/_llm-output/AGENTS.md
+        test -f site/llm/_llm-output/about/contributing/using-the-documentation.md
+        test ! -f site/llm/_llm-output/about/contributing/validmind-community.md
+        test ! -d site/llm/_llm-output/about/contributing/style-guide
 
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink
