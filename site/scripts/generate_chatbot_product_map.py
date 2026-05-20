@@ -8,8 +8,12 @@ Generate a product-to-documentation map for the in-app chatbot (LanceDB / RAG).
 Correlates frontend routes and help links with documentation pages and headings.
 
 Usage (from documentation repo root):
+    # CI / default: build map from committed frontend snapshot (no frontend checkout)
     python site/scripts/generate_chatbot_product_map.py
-    python site/scripts/generate_chatbot_product_map.py --frontend-root ../frontend
+
+    # Refresh snapshot + map when frontend sources change (local frontend checkout)
+    python site/scripts/generate_chatbot_product_map.py --from-frontend
+    python site/scripts/generate_chatbot_product_map.py --from-frontend --frontend-root ../frontend
 """
 
 from __future__ import annotations
@@ -18,6 +22,7 @@ import argparse
 import json
 import re
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
 try:
@@ -356,6 +361,84 @@ def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[
     return related[:6]
 
 
+DEFAULT_SNAPSHOT_NAME = "chatbot-product-map-frontend-snapshot.json"
+
+
+def doc_ref_to_dict(ref: DocRef) -> dict[str, str | None]:
+    return {"path": ref.path, "anchor": ref.anchor}
+
+
+def doc_ref_from_dict(data: dict[str, str | None]) -> DocRef:
+    return DocRef(path=data["path"], anchor=data.get("anchor"))
+
+
+def route_to_dict(route: ProductRoute) -> dict:
+    return {
+        "path": route.path,
+        "label": route.label,
+        "group": route.group,
+        "primary_docs": [doc_ref_to_dict(d) for d in route.primary_docs],
+    }
+
+
+def route_from_dict(data: dict) -> ProductRoute:
+    return ProductRoute(
+        path=data["path"],
+        label=data["label"],
+        group=data.get("group"),
+        primary_docs=[doc_ref_from_dict(d) for d in data.get("primary_docs", [])],
+    )
+
+
+def extract_frontend_snapshot(frontend_root: Path) -> dict:
+    """Extract route/help-link data from frontend for vendoring in the docs repo."""
+    settings = parse_settings_index(frontend_root)
+    nav = parse_sidebar_nav(frontend_root)
+    file_links = scan_frontend_doc_links(frontend_root)
+    return {
+        "version": 1,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "settings": [route_to_dict(r) for r in settings],
+        "nav": [route_to_dict(r) for r in nav],
+        "file_links": {
+            path: [doc_ref_to_dict(d) for d in refs]
+            for path, refs in sorted(file_links.items())
+        },
+    }
+
+
+def load_frontend_snapshot(snapshot_path: Path) -> tuple[list[ProductRoute], list[ProductRoute], dict[str, list[DocRef]]]:
+    data = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    settings = [route_from_dict(r) for r in data.get("settings", [])]
+    nav = [route_from_dict(r) for r in data.get("nav", [])]
+    file_links = {
+        path: [doc_ref_from_dict(d) for d in refs]
+        for path, refs in data.get("file_links", {}).items()
+    }
+    return settings, nav, file_links
+
+
+def write_frontend_snapshot(snapshot_path: Path, payload: dict) -> None:
+    snapshot_path.parent.mkdir(parents=True, exist_ok=True)
+    snapshot_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def resolve_frontend_root(repo_root: Path, explicit: Path | None) -> Path:
+    if explicit is not None:
+        candidate = explicit.resolve()
+        if candidate.is_dir():
+            return candidate
+        raise SystemExit(f"Frontend root not found: {candidate}")
+
+    for candidate in (repo_root / "frontend", repo_root.parent / "frontend"):
+        if candidate.is_dir():
+            return candidate.resolve()
+    raise SystemExit(
+        "Frontend root not found. Use --from-frontend with a local checkout, or rely on "
+        f"the committed snapshot at site/llm/{DEFAULT_SNAPSHOT_NAME}."
+    )
+
+
 def merge_routes(
     settings: list[ProductRoute],
     nav: list[ProductRoute],
@@ -508,10 +591,21 @@ def render_markdown(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate chatbot product-to-docs map")
     parser.add_argument(
+        "--from-frontend",
+        action="store_true",
+        help="Re-extract route/help-link data from frontend and update the committed snapshot",
+    )
+    parser.add_argument(
         "--frontend-root",
         type=Path,
         default=None,
-        help="Path to validmind/frontend (default: <repo>/../frontend)",
+        help="Path to validmind/frontend (only with --from-frontend)",
+    )
+    parser.add_argument(
+        "--snapshot",
+        type=Path,
+        default=None,
+        help=f"Frontend snapshot JSON (default: site/llm/{DEFAULT_SNAPSHOT_NAME})",
     )
     parser.add_argument(
         "--site-dir",
@@ -529,24 +623,32 @@ def main() -> int:
         "--json-output",
         type=Path,
         default=None,
-        help="Optional JSON output path",
+        help="Optional JSON output of merged routes (debug/tooling)",
     )
     args = parser.parse_args()
 
     repo_root = find_repo_root()
     site_dir = (args.site_dir or repo_root / "site").resolve()
-    frontend_root = (args.frontend_root or repo_root / "frontend").resolve()
-    if not frontend_root.is_dir():
-        frontend_root = (repo_root.parent / "frontend").resolve()
+    snapshot_path = (
+        args.snapshot or site_dir / "llm" / DEFAULT_SNAPSHOT_NAME
+    ).resolve()
     output_path = (args.output or site_dir / "llm/chatbot-product-map.md").resolve()
     llm_output = site_dir / "llm/_llm-output"
 
-    if not frontend_root.is_dir():
-        raise SystemExit(f"Frontend root not found: {frontend_root}")
+    if args.from_frontend:
+        frontend_root = resolve_frontend_root(repo_root, args.frontend_root)
+        payload = extract_frontend_snapshot(frontend_root)
+        write_frontend_snapshot(snapshot_path, payload)
+        print(f"Wrote {snapshot_path}")
+        settings, nav, file_links = load_frontend_snapshot(snapshot_path)
+    elif snapshot_path.is_file():
+        settings, nav, file_links = load_frontend_snapshot(snapshot_path)
+    else:
+        raise SystemExit(
+            f"Frontend snapshot not found: {snapshot_path}\n"
+            "Run with --from-frontend and a local validmind/frontend checkout to create it."
+        )
 
-    settings = parse_settings_index(frontend_root)
-    nav = parse_sidebar_nav(frontend_root)
-    file_links = scan_frontend_doc_links(frontend_root)
     routes = merge_routes(settings, nav, file_links)
     all_doc_paths = collect_all_doc_qmd_paths(site_dir)
 
@@ -560,13 +662,13 @@ def main() -> int:
             path: {
                 "label": r.label,
                 "group": r.group,
-                "primary_docs": [{"path": d.path, "anchor": d.anchor} for d in r.primary_docs],
-                "related_docs": [{"path": d.path, "anchor": d.anchor} for d in r.related_docs],
+                "primary_docs": [doc_ref_to_dict(d) for d in r.primary_docs],
+                "related_docs": [doc_ref_to_dict(d) for d in r.related_docs],
                 "notes": r.notes,
             }
             for path, r in sorted(routes.items())
         }
-        args.json_output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        args.json_output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         print(f"Wrote {args.json_output}")
 
     return 0

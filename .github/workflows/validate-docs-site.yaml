@@ -35,13 +35,6 @@ jobs:
         path: site/_source/validmind-library
         token: ${{ secrets.DOCS_CI_RO_PAT }}
 
-    - name: Check out frontend repository (chatbot product map)
-      uses: actions/checkout@v4
-      with:
-        repository: validmind/frontend
-        path: frontend
-        token: ${{ secrets.DOCS_CI_RO_PAT }}
-
     - name: Check out installation repository
       uses: actions/checkout@v4
       with:
@@ -176,7 +169,7 @@ jobs:
     - name: Verify chatbot product map is up to date
       run: |
         python3 site/scripts/generate_chatbot_product_map.py
-        git diff --exit-code site/llm/chatbot-product-map.md
+        git diff --exit-code site/llm/chatbot-product-map.md site/llm/chatbot-product-map-frontend-snapshot.json
 
     - name: Test chatbot product map generator
       run: python3 -m unittest site/scripts/test_generate_chatbot_product_map.py -v

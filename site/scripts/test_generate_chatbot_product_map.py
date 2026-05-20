@@ -46,6 +46,37 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         self.assertFalse(gen.is_user_facing_doc("/_source/release-notes/foo.html"))
         self.assertFalse(gen.is_user_facing_doc("/guide/workflows/_partial.html"))
 
+    def test_frontend_snapshot_roundtrip(self) -> None:
+        payload = {
+            "version": 1,
+            "settings": [
+                {
+                    "path": "/settings/workflows",
+                    "label": "Workflows",
+                    "group": "Governance",
+                    "primary_docs": [
+                        {
+                            "path": "/guide/workflows/setting-up-workflows.html",
+                            "anchor": None,
+                        }
+                    ],
+                }
+            ],
+            "nav": [],
+            "file_links": {},
+        }
+        site = Path(__file__).resolve().parents[1]
+        snapshot_path = site / "llm" / ".test-snapshot.json"
+        try:
+            gen.write_frontend_snapshot(snapshot_path, payload)
+            settings, nav, file_links = gen.load_frontend_snapshot(snapshot_path)
+            self.assertEqual(len(settings), 1)
+            self.assertEqual(settings[0].path, "/settings/workflows")
+            self.assertEqual(nav, [])
+            self.assertEqual(file_links, {})
+        finally:
+            snapshot_path.unlink(missing_ok=True)
+
 
 if __name__ == "__main__":
     unittest.main()
