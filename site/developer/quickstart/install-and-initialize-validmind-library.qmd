@@ -1,0 +1,170 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+# USING THE VARIABLE IN THE TITLE MESSES UP THE BREADCRUMB
+title: "Install and initialize the ValidMind Library"
+date: last-modified
+aliases:
+  - install-and-initialize-validmind.html
+  - /guide/install-and-initialize-validmind-library.html
+  - /guide/install-and-initialize-developer-framework.html
+  - install-and-initialize-client-library.html
+  - /developer/model-documentation/install-and-initialize-validmind-library.html
+listing:
+  - id: whats-next
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    grid-columns: 2
+    contents:
+    - store-credentials-in-env-file.qmd
+    - ../how-to/testing-overview.qmd
+---
+
+{{< include _code-snippet.qmd >}}
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] The record you want to connect to is registered in the inventory.[^1]
+- [x] The document you want to connect to has a template applied.[^2]
+- [x] You are the owner, validator, or another inventory record stakeholder with write access to the record's documents.[^3]
+
+::: {.callout}
+The {{< var validmind.developer >}} requires access to the data sources where relevant datasets and record files are stored in order to help you run tests.
+
+:::
+
+
+:::
+
+## Installing the {{< var validmind.developer >}}
+
+In order to upload test results from the {{< var validmind.developer >}} to the {{< var validmind.platform >}}, provide the following information through a code snippet copied from the {{< var vm.platform >}}:
+
+| Argument      | Description                        |
+|---------------|------------------------------------|
+| `api_host`    | The location of the {{< var vm.product >}} API  |
+| `api_key`     | The account API key                |
+| `api_secret`  | The account secret key             |
+| `document`  | The record document identifier key             |
+| `model`     | The record identifier             |
+
+### Get your code snippet
+
+Retrieve your code snippet for your record's selected document from the {{< var validmind.platform >}}:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Under the [record type]{.smallcaps} drop-down, select the type of record you want to retrieve the code snippet for.[^4]
+
+3. Select a record by clicking on it or find your record by applying a filter or searching for it.[^5]
+
+4. In the left sidebar that appears for your record, click **{{< fa rocket >}} Getting Started**.
+
+5. Select the **[document]{.smallcaps}** you want to automatically upload test results to.[^6]
+
+6. Click **{{< fa regular copy >}} Copy snippet to clipboard**.
+
+::: {.callout}
+## Selecting a **[document]{.smallcaps}** to connect to requires {{< var validmind.developer >}} version >=2.12.0.[^7]
+
+A template must already be applied to your selected document to populate test results in the {{< var validmind.platform >}}. Attempting to initialize the {{< var vm.developer >}} with a document that does not have a template applied will result in an error.
+
+:::
+
+<span id="install-validmind"></span>
+
+### Install the {{< var vm.developer >}}
+
+To install the {{< var vm.developer >}}:
+
+```python
+%pip install validmind
+```
+
+### Initialize the {{< var vm.developer >}}
+
+To initialize the {{< var vm.developer >}}, paste the code snippet with the client integration details directly into your development source code, replacing this example with your own:
+
+```python
+import validmind as vm
+
+vm.init(
+  api_host = "{{< var api.host >}}/tracking",
+  api_key = "API_KEY",
+  api_secret = "API_SECRET",
+  document="document-key", # requires library >=2.12.0
+  model = "MODEL_IDENTIFIER"
+)
+```
+
+:::{.callout}
+To also enable monitoring, add `monitoring=True` to the `vm.init` method in your code snippet. [^8]
+:::
+
+::: {.feature}
+#### **Automate with {{< var vm.product >}}**
+
+After you run the code snippet in your environment, the {{< var validmind.developer >}} will connect to your record and selected document in the {{< var validmind.platform >}}. Automate your workflow by using the {{< var vm.developer >}} to run tests, then seamlessly upload your test results to the {{< var vm.platform >}}.
+
+:::
+
+<span id="upgrade-validmind"></span>
+
+## Upgrade the {{< var validmind.developer >}}
+
+After installing the {{< var validmind.developer >}},[^9] you'll want to periodically make sure you are on the latest version to access any new features and other enhancements:
+
+1. In your Jupyter Notebook or developer environment, retrieve the information for the currently installed version of the {{< var vm.developer >}}:
+
+    ```python
+    %pip show validmind
+    ```
+
+::: {.column-margin}
+**Example output:**
+```bash
+Name: validmind
+Version: 2.11.0
+...
+```
+:::
+
+2. If the version returned is lower than the version indicated in our production open-source code,[^10] run the following command:
+
+    ```python
+    %pip install --upgrade validmind
+    ```
+
+## What's next
+
+:::{#whats-next}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)
+
+[^2]: [Working with templates](/guide/templates/working-with-document-templates.qmd)
+
+[^3]: [Manage inventory record stakeholders](/guide/inventory/edit-inventory-fields.qmd#manage-inventory-record-stakeholders)
+
+[^4]: [Manage inventory record types](/guide/inventory/manage-inventory-record-types.qmd)
+
+[^5]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^6]: [Working with documents](/guide/templates/working-with-documents.qmd)
+
+[^7]: [Upgrade the {{< var validmind.developer >}}](#upgrade-validmind)
+
+[^8]: [Ongoing monitoring](/guide/monitoring/ongoing-monitoring.qmd)
+
+[^9]: [Install {{< var vm.product >}}](#install-validmind)
+
+[^10]: **ValidMind GitHub:** [validmind-library/validmind/&lowbar;&lowbar;version&lowbar;&lowbar;.py](https://github.com/validmind/validmind-library/blob/prod/validmind/__version__.py)
