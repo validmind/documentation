@@ -19,17 +19,7 @@ Use {{< var vm.product >}}'s AI-assisted tools to streamline your validation wor
 
 :::
 
-## How do evidence mapping and assessment work?
-
-Validation reports require you to link supporting evidence to each guideline and write compliance assessments, a process that can be time-consuming when done manually across dozens of guidelines.
-
-Map Evidence
-: Scans all available evidence from developers and validators, then suggests which items are relevant to each guideline. Instead of searching through evidence blocks yourself, you review AI-suggested matches and approve the ones that apply. Each suggestion includes a relevance score and explanation so you can make informed decisions.
-
-Assess Evidence
-: Analyzes the linked evidence for a guideline and drafts a structured compliance assessment. The generated assessment includes a compliance conclusion, specific observations about gaps or issues, and a technical review of what the evidence demonstrates. You review and approve the draft, and then make edits if needed — saving time while maintaining control over the final content.
-
-Both features are designed to accelerate validation without replacing your judgment. You always review and approve suggestions before they become part of the report.
+{{< include _how-does-mapping-assessment-work.qmd >}}
 
 ::: {.callout}
 ## Currently, automatic mapping and assessment retrieve only content from Development type documents.[^4]
@@ -38,154 +28,9 @@ To manually add and assess evidence for other document types, refer to [Assess c
 
 :::
 
-## Map evidence to guidelines
+{{< include _map-evidence-to-guidelines.qmd >}}
 
-:::: {.column-margin}
-![Map Evidence panel](map-evidence-panel.png){fig-alt="Map Evidence panel showing evidence type toggles for Developer Evidence and Validator Evidence, and a Relevance Threshold slider set to 0.7." .screenshot}
-::::
-
-Map Evidence uses AI to suggest relevant evidence for each validation guideline, helping you find and link supporting documentation from both developers and validators.
-
-1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
-
-2. Select a record or find your record by applying a filter or searching for it.[^5]
-
-3. In the left sidebar that appears for your record, click **{{< fa file >}} Documents** and select the **Latest** tab.[^6]
-
-4. Click on a Validation type file.[^7]
-
-5. Navigate to a section and expand the **Evidence** panel.
-
-6. Click **{{< fa wand-magic-sparkles >}} Map Evidence**.
-
-7. Configure the mapping options:
-   - Toggle **Developer Evidence** to include evidence logged via the {{< var validmind.developer >}}.
-   - Toggle **Validator Evidence** to include evidence uploaded or created by validators.
-   - Adjust the **Relevance Threshold** slider — lower values return more results while higher values show only the most relevant matches.
-
-8. Click **Map Evidence** to run the AI mapping.
-
-   The panel displays how many evidence items are available to review for each guideline in the section.
-
-### Review and approve mapped evidence
-
-After running Map Evidence, you can review and approve suggestions at three levels:
-
-::: {.panel-tabset}
-
-#### For the entire report
-
-1. Open the validation report and look at the right sidebar.
-
-2. The **Map Evidence** panel shows how many items need review across the entire report.
-
-3. Use **Approve All** to link all suggested evidence across all guidelines, or **Reject All** to dismiss all suggestions.
-
-4. To re-run mapping with different settings, click **Remap Evidence**. This lets you adjust the relevance threshold or change which evidence types to include, then generate new suggestions.
-
-#### For an entire section
-
-1. Navigate to a specific section in the validation report.
-
-2. In the section header, click **{{< fa wand-magic-sparkles >}} Map Evidence** to open the mapping panel.
-
-3. Use **Approve All** to link all suggested evidence for guidelines in that section, or **Reject All** to dismiss all section suggestions.
-
-4. To re-run mapping with different settings, click **Remap Evidence**.
-
-#### For individual guidelines
-
-1. Navigate to a specific section in the validation report.
-
-2. Expand the **Evidence** panel for a guideline.
-
-3. Click **{{< fa wand-magic-sparkles >}} Map Evidence** to open the mapping panel for that guideline.
-
-4. Review individual evidence suggestions:
-
-   - Each item shows the evidence block name and a relevance score.
-   - Click **See Relevance Analysis** to view why the evidence was suggested.
-   - Click **Approve** to link an individual item to the guideline.
-   - Click **Reject** to dismiss an individual suggestion.
-
-5. Or use **Approve All** / **Reject All** to handle all suggestions for that guideline at once.
-
-Approved evidence appears in the Evidence panel for that guideline, organized by evidence type (Developer Evidence or Validator Evidence).
-
-:::
-
-## Assess evidence for compliance
-
-:::: {.column-margin}
-![Assess Evidence panel](assess-evidence-panel.png){fig-alt="Assess Evidence panel showing option to identify potential risks and compliance gaps based on linked evidence." .screenshot}
-::::
-
-Assess Evidence analyzes the linked evidence and generates a structured compliance assessment, identifying potential risks and compliance gaps.
-
-1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
-
-2. Select a record or find your record by applying a filter or searching for it.[^8]
-
-3. In the left sidebar that appears for your record, click **{{< fa file >}} Documents** and select the **Latest** tab.[^9]
-
-4. Click on a Validation type file.[^10]
-
-5. Navigate to a section that has linked evidence.
-
-6. Expand the **Evidence** panel.
-
-7. Click **{{< fa wand-magic-sparkles >}} Assess Evidence**.
-
-8. The AI analyzes the linked evidence and generates an **Evidence Assessment** containing:
-
-   - **Guideline Assessment** — A compliance conclusion indicating whether the guideline requirements are fully met, partially met, or not met, with an explanation of the evidence quality.
-
-   - **Validation Observations** — Specific findings about gaps or issues in the evidence, with each observation covering a single concern and suggesting actions for developers.
-
-   - **Evidence Review** — A detailed analysis of what the evidence demonstrates, including references to specific test outputs, documentation, and any limitations.
-
-   The panel displays how many assessments are available to review.
-
-### Review and approve evidence assessments
-
-After running Assess Evidence, you can review and approve assessments at three levels:
-
-::: {.panel-tabset}
-
-#### For the entire report
-
-1. Open the validation report and look at the right sidebar.
-
-2. The **Assess Evidence** panel shows how many assessments need review across the entire report.
-
-3. Use **Approve All** to accept all generated assessments, or **Reject All** to dismiss all assessments.
-
-#### For an entire section
-
-1. Navigate to a specific section in the validation report.
-
-2. In the section header, click **{{< fa wand-magic-sparkles >}} Assess Evidence** to open the assessment panel.
-
-3. Use **Approve All** to accept all generated assessments for that section, or **Reject All** to dismiss them.
-
-4. To regenerate assessments with updated evidence, click **Re-assess Evidence**.
-
-#### For individual guidelines
-
-1. Navigate to a specific section in the validation report.
-
-2. Expand the **Evidence Assessment** panel for a guideline. Assessments pending review show a [Review]{.bubble} status.
-
-3. Review the generated assessment content.
-
-4. Click **Approve** to accept the assessment, or **Reject** to dismiss it.
-
-5. After approving, you can edit the assessment content as needed — changes are auto-saved.
-
-6. To regenerate an assessment, click **{{< fa wand-magic-sparkles >}} Reassess Evidence** to run the AI analysis again with any updated evidence.
-
-:::
-
+{{< include _assess-evidence-for-compliance.qmd >}}
 
 <!-- FOOTNOTES -->
 
@@ -196,15 +41,3 @@ After running Assess Evidence, you can review and approve assessments at three l
 [^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
 [^4]: [Manage document types](/guide/templates/manage-document-types.qmd)
-
-[^5]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
-
-[^6]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
-
-[^7]: [Preparing validation reports](preparing-validation-reports.qmd#validation-overview)
-
-[^8]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
-
-[^9]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
-
-[^10]: [Preparing validation reports](preparing-validation-reports.qmd#validation-overview)
