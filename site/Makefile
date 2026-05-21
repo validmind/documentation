@@ -61,7 +61,7 @@ help:
 
 add-copyright:
 	@echo "\nAdding copyright headers to .qmd and .yml/.yaml files ..."
-	@cd .. && uv run python site/scripts/add_copyright.py
+	@cd .. && python site/scripts/add_copyright.py
 
 # Clean up source directory
 clean:
@@ -179,12 +179,12 @@ execute:
 	elif [ "$$PROFILE_CHOICE" = "3" ]; then PROFILE="exe-prod"; \
 	else echo "Invalid choice"; exit 1; fi; \
 	echo "Select FILE_PATH:"; \
-	echo "1) notebooks/EXECUTED/model_development"; \
-	echo "2) notebooks/EXECUTED/model_validation"; \
+	echo "1) notebooks/EXECUTED/development"; \
+	echo "2) notebooks/EXECUTED/validation"; \
 	echo "3) Enter custom filepath"; \
 	read -p "Enter choice [1-3]: " FILE_CHOICE; \
-	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/model_development"; \
-	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/model_validation"; \
+	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/development"; \
+	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/validation"; \
 	elif [ "$$FILE_CHOICE" = "3" ]; then read -p "Enter custom FILE_PATH: " CUSTOM_FILE_PATH; FILE_PATH="$$CUSTOM_FILE_PATH"; \
 	else echo "Invalid choice"; exit 1; fi; \
 	read -p "Enter VM_API_HOST (default: https://api.prod.validmind.ai/api/v1/tracking): " INPUT_VM_API_HOST; \
@@ -326,12 +326,12 @@ notebooks:
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
-	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
-	@mkdir -p notebooks/EXECUTED/model_development/
-	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
-	@echo "Duplicating all files from notebooks/tutorials/model_validation/ for execution"
-	@mkdir -p notebooks/EXECUTED/model_validation/
-	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
+	@echo "Duplicating all files from notebooks/tutorials/development/ for execution"
+	@mkdir -p notebooks/EXECUTED/development/
+	@cp -r notebooks/tutorials/development/* notebooks/EXECUTED/development/
+	@echo "Duplicating all files from notebooks/tutorials/validation/ for execution"
+	@mkdir -p notebooks/EXECUTED/validation/
+	@cp -r notebooks/tutorials/validation/* notebooks/EXECUTED/validation/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
@@ -339,9 +339,9 @@ notebooks:
 	@echo "Copying _metadata.yml into notebooks/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Updating developer/_sidebar.yaml with use_cases directories ..."
-	@uv run python scripts/developer-sidebar/update_use_cases.py
+	@python scripts/developer-sidebar/update_use_cases.py
 	@echo "Updating developer/_sidebar.yaml with how-to directories ..."
-	@uv run python scripts/developer-sidebar/update_how_tos.py
+	@python scripts/developer-sidebar/update_how_tos.py
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
@@ -429,11 +429,12 @@ release-notes:
 template-schema-docs:
 	@echo "\nGenerating template schema documentation ..."
 	@if [ ! -d "$(SRC_ROOT)/backend" ]; then echo "Error: Backend not cloned. Run 'make clone' first."; exit 1; fi
-	@BACKEND_ROOT=$(SRC_ROOT)/backend uv run --with json-schema-for-humans python ../scripts/generate_template_schema_docs.py
+	@python -m pip install -q json-schema-for-humans
+	@BACKEND_ROOT=$(SRC_ROOT)/backend python ../scripts/generate_template_schema_docs.py
 
 test-descriptions:
 	@echo "\nUpdating test descriptions source ..."
-	@cd _source/validmind-library && make install && uv run python scripts/extract_descriptions.py validmind/tests
+	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
 	@cd ../../
 	@rm -rf $(DEST_DIR_TESTS)
 	@mkdir -p $(DEST_DIR_TESTS)
@@ -443,11 +444,11 @@ test-descriptions:
 
 verify-copyright:
 	@echo "\nVerifying copyright headers in .qmd and .yml/.yaml files ..."
-	@cd .. && uv run python site/scripts/verify_copyright_qmd.py
+	@cd .. && python site/scripts/verify_copyright_qmd.py
 
 # Collate yearly releases
 yearly-releases:
-	@uv run python ../release-scripts/yearly_cleanup.py
+	@python ../release-scripts/yearly_cleanup.py
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview

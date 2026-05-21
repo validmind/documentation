@@ -76,7 +76,7 @@ jobs:
         echo VM_API_MODEL=${{ secrets.PLATFORM_VALID_MODEL }} >> valid.env
 
     # Only execute the demo notebooks for training if .env files are created
-    - name: Execute demo ValidMind for model development and validation series
+    - name: Execute demo ValidMind for development and validation series
       if: ${{ vars.ENABLE_DEMO_NOTEBOOK == 'true' && steps.create_dev_env.outcome == 'success' && steps.create_valid_env.outcome == 'success' }}
       uses: ./.github/actions/demo-notebook
       id: execute_demo_notebook
@@ -99,8 +99,8 @@ jobs:
       with:
         script: |
           const base = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}`;
-          const devUrl = `${base}/notebooks/EXECUTED/model_development/1-set_up_validmind.html`;
-          const valUrl = `${base}/notebooks/EXECUTED/model_validation/1-set_up_validmind_for_validation.html`;
+          const devUrl = `${base}/notebooks/EXECUTED/development/1-set_up_validmind.html`;
+          const valUrl = `${base}/notebooks/EXECUTED/validation/1-set_up_validmind_for_validation.html`;
 
           // Delete old preview comments
           const { data: comments } = await github.rest.issues.listComments({
@@ -120,8 +120,8 @@ jobs:
 
           let comment = `## Execute training notebooks for PRs\n\n`;
           comment += `✓ INFO: Live previews are available —\n\n`;
-          comment += `- [Open model development series](${devUrl})\n`;
-          comment += `- [Open model validation series](${valUrl})\n`;
+          comment += `- [Open development series](${devUrl})\n`;
+          comment += `- [Open validation series](${valUrl})\n`;
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,
