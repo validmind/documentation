@@ -51,12 +51,6 @@ EOF
 echo "=== Rendering site to GFM markdown ==="
 quarto render --to gfm
 
-# AGENTS.md lives at the repo root so IDE/agent tooling finds it there, but it
-# must also reach the LLM output so the docs chatbot can ingest it.
-echo ""
-echo "=== Copying AGENTS.md from repo root into LLM output ==="
-cp ../AGENTS.md llm/_llm-output/AGENTS.md
-
 echo ""
 echo "=== Post-processing markdown files ==="
 bash llm/clean.sh
