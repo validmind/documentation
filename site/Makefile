@@ -428,16 +428,6 @@ template-schema-docs:
 	@python -m pip install -q json-schema-for-humans
 	@BACKEND_ROOT=$(SRC_ROOT)/backend python ../scripts/generate_template_schema_docs.py
 
-test-descriptions:
-	@echo "\nUpdating test descriptions source ..."
-	@cd _source/validmind-library && make install && poetry run python scripts/extract_descriptions.py validmind/tests
-	@cd ../../
-	@rm -rf $(DEST_DIR_TESTS)
-	@mkdir -p $(DEST_DIR_TESTS)
-	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
-	@echo "Copying _metadata.yml into tests/ ..."
-	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
-
 verify-copyright:
 	@echo "\nVerifying copyright headers in .qmd and .yml/.yaml files ..."
 	@cd .. && python site/scripts/verify_copyright_qmd.py
