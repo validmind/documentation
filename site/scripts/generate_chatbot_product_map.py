@@ -254,7 +254,7 @@ def file_to_route_hint(file_path: Path) -> str | None:
     if not rest:
         return None
     if rest[0] == "Settings":
-        if len(rest) == 1:
+        if len(rest) == 1 or (len(rest) == 2 and rest[1] == "index.tsx"):
             return "/settings"
         # Settings/Workflows/index.tsx -> /settings/workflows
         slug = rest[1].replace("_", "-")

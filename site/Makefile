@@ -9,12 +9,11 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 DEST_DIR_NB := notebooks
 DEST_DIR_PYTHON := validmind
-DEST_DIR_TESTS := tests
 SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-chatbot-product-map refresh-chatbot-product-map generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes render-llm template-schema-docs test-descriptions verify-copyright yearly-releases
+.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-chatbot-product-map refresh-chatbot-product-map generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes render-llm template-schema-docs verify-copyright yearly-releases
 
 # Help section
 help:
@@ -44,7 +43,7 @@ help:
 	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
 	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
 	@echo "  get-api-json             Download Swagger JSON specs from ValidMind APIs into reference/"
-	@echo "  get-source               Get all source files (clean, clone, copy-installation, copy-release-notes, notebooks, python-docs, test-descriptions, get-api-json)"
+	@echo "  get-source               Get all source files (clean, clone, copy-installation, copy-release-notes, notebooks, python-docs, get-api-json)"
 	@echo "  kind-serve               Set up Kind cluster for ValidMind docs"
 	@echo "  kind-stop                Stop Kind cluster for ValidMind docs"
 	@echo "  kind-restart             Restart Kind cluster for ValidMind docs"
@@ -55,13 +54,12 @@ help:
 	@echo "                           Examples: TAG=cmvm/25.07 or TAG=validmind-library/v2.8.22"
 	@echo "  template-schema-docs     Generate template schema documentation from backend"
 	@echo "  render-llm               Render site to GFM markdown for LLM ingestion (mirrors CI)"
-	@echo "  test-descriptions        Copy the ValidMind tests docs into tests/"
 	@echo "  verify-copyright         Verify that all .qmd and .yml/.yaml files have copyright headers"
 	@echo "  yearly-releases          Collate releases by year into a listing landing and update releases sidebar"
 
 add-copyright:
 	@echo "\nAdding copyright headers to .qmd and .yml/.yaml files ..."
-	@cd .. && uv run python site/scripts/add_copyright.py
+	@cd .. && python site/scripts/add_copyright.py
 
 # Clean up source directory
 clean:
@@ -179,12 +177,12 @@ execute:
 	elif [ "$$PROFILE_CHOICE" = "3" ]; then PROFILE="exe-prod"; \
 	else echo "Invalid choice"; exit 1; fi; \
 	echo "Select FILE_PATH:"; \
-	echo "1) notebooks/EXECUTED/model_development"; \
-	echo "2) notebooks/EXECUTED/model_validation"; \
+	echo "1) notebooks/EXECUTED/development"; \
+	echo "2) notebooks/EXECUTED/validation"; \
 	echo "3) Enter custom filepath"; \
 	read -p "Enter choice [1-3]: " FILE_CHOICE; \
-	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/model_development"; \
-	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/model_validation"; \
+	if [ "$$FILE_CHOICE" = "1" ]; then FILE_PATH="notebooks/EXECUTED/development"; \
+	elif [ "$$FILE_CHOICE" = "2" ]; then FILE_PATH="notebooks/EXECUTED/validation"; \
 	elif [ "$$FILE_CHOICE" = "3" ]; then read -p "Enter custom FILE_PATH: " CUSTOM_FILE_PATH; FILE_PATH="$$CUSTOM_FILE_PATH"; \
 	else echo "Invalid choice"; exit 1; fi; \
 	read -p "Enter VM_API_HOST (default: https://api.prod.validmind.ai/api/v1/tracking): " INPUT_VM_API_HOST; \
@@ -286,7 +284,7 @@ get-api-json:
 	@curl -s -o reference/rapidoc-min.js "https://unpkg.com/rapidoc/dist/rapidoc-min.js" || echo "Failed to fetch RapiDoc library"
 
 # Get all source files
-get-source: clean clone copy-installation copy-release-notes notebooks python-docs test-descriptions template-schema-docs
+get-source: clean clone copy-installation copy-release-notes notebooks python-docs template-schema-docs
 
 # Requires that you've run `make docker-build`
 kind-serve:
@@ -326,12 +324,12 @@ notebooks:
 	@rm -f notebooks.zip
 	@rm -rf $(DEST_DIR_NB)/ && mkdir -p $(DEST_DIR_NB)
 	@cp -r $(SRC_DIR)/notebooks/. $(DEST_DIR_NB)/
-	@echo "Duplicating all files from notebooks/tutorials/model_development/ for execution"
-	@mkdir -p notebooks/EXECUTED/model_development/
-	@cp -r notebooks/tutorials/model_development/* notebooks/EXECUTED/model_development/
-	@echo "Duplicating all files from notebooks/tutorials/model_validation/ for execution"
-	@mkdir -p notebooks/EXECUTED/model_validation/
-	@cp -r notebooks/tutorials/model_validation/* notebooks/EXECUTED/model_validation/
+	@echo "Duplicating all files from notebooks/tutorials/development/ for execution"
+	@mkdir -p notebooks/EXECUTED/development/
+	@cp -r notebooks/tutorials/development/* notebooks/EXECUTED/development/
+	@echo "Duplicating all files from notebooks/tutorials/validation/ for execution"
+	@mkdir -p notebooks/EXECUTED/validation/
+	@cp -r notebooks/tutorials/validation/* notebooks/EXECUTED/validation/
 	@echo "Copying LICENSE into notebooks ..."
 	@cp -r $(SRC_DIR)/LICENSE $(DEST_DIR_NB)/
 	@rm -rf $(DEST_DIR_NB)/code_sharing
@@ -339,9 +337,9 @@ notebooks:
 	@echo "Copying _metadata.yml into notebooks/ ..."
 	@cp developer/_metadata.yml $(DEST_DIR_NB)/_metadata.yml
 	@echo "Updating developer/_sidebar.yaml with use_cases directories ..."
-	@uv run python scripts/developer-sidebar/update_use_cases.py
+	@python scripts/developer-sidebar/update_use_cases.py
 	@echo "Updating developer/_sidebar.yaml with how-to directories ..."
-	@uv run python scripts/developer-sidebar/update_how_tos.py
+	@python scripts/developer-sidebar/update_how_tos.py
 	@echo "Zip up notebooks.zip ..."
 	@zip -r notebooks.zip $(DEST_DIR_NB) > /dev/null 2>&1
 
@@ -429,25 +427,16 @@ release-notes:
 template-schema-docs:
 	@echo "\nGenerating template schema documentation ..."
 	@if [ ! -d "$(SRC_ROOT)/backend" ]; then echo "Error: Backend not cloned. Run 'make clone' first."; exit 1; fi
-	@BACKEND_ROOT=$(SRC_ROOT)/backend uv run --with json-schema-for-humans python ../scripts/generate_template_schema_docs.py
-
-test-descriptions:
-	@echo "\nUpdating test descriptions source ..."
-	@cd _source/validmind-library && make install && uv run python scripts/extract_descriptions.py validmind/tests
-	@cd ../../
-	@rm -rf $(DEST_DIR_TESTS)
-	@mkdir -p $(DEST_DIR_TESTS)
-	@cp -r $(SRC_DIR)/build/_test_descriptions/validmind/tests/. $(DEST_DIR_TESTS)
-	@echo "Copying _metadata.yml into tests/ ..."
-	@cp developer/_metadata.yml $(DEST_DIR_TESTS)/_metadata.yml
+	@python -m pip install -q json-schema-for-humans
+	@BACKEND_ROOT=$(SRC_ROOT)/backend python ../scripts/generate_template_schema_docs.py
 
 verify-copyright:
 	@echo "\nVerifying copyright headers in .qmd and .yml/.yaml files ..."
-	@cd .. && uv run python site/scripts/verify_copyright_qmd.py
+	@cd .. && python site/scripts/verify_copyright_qmd.py
 
 # Collate yearly releases
 yearly-releases:
-	@uv run python ../release-scripts/yearly_cleanup.py
+	@python ../release-scripts/yearly_cleanup.py
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview

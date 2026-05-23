@@ -10,7 +10,10 @@
 
 #### `/settings` — Settings
 
-- *No direct help link; content may be covered under scattered guide sections.*
+**Docs (primary):**
+
+- `/guide/configuration/managing-users.html`
+  - Sections: Key concepts; Key terms; Default roles; User management
 
 ### Governance
 
@@ -220,15 +223,6 @@
 
 - `/guide/configuration/manage-users.html`
   - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
-- `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
-
-### Main navigation
-
-#### `/settings/index.tsx` — /settings/index.tsx
-
-**Docs (primary):**
-
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management
 

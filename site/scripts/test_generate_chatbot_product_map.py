@@ -64,6 +64,16 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual([r.path for r in first], sorted(r.path for r in first))
 
+    def test_file_to_route_hint_settings_index(self) -> None:
+        self.assertEqual(
+            gen.file_to_route_hint(Path("src/pages/Settings/index.tsx")),
+            "/settings",
+        )
+        self.assertEqual(
+            gen.file_to_route_hint(Path("src/pages/Settings/Workflows/index.tsx")),
+            "/settings/workflows",
+        )
+
     def test_frontend_snapshot_roundtrip(self) -> None:
         payload = {
             "version": 1,
