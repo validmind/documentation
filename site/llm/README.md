@@ -16,7 +16,7 @@ make render-llm
 
 This runs `llm/render.sh` (temporary minimal `_quarto.yml`, Quarto → GFM) and `llm/clean.sh` (Pandoc cleanup). Equivalent to the **Validate LLM markdown render** step in `.github/workflows/validate-docs-site.yaml`.
 
-Excluded from the LLM render (among others): notebooks, internal pages, contributor style guide, and most of `about/contributing/`. **Included:** `about/contributing/using-the-documentation.qmd` (docs IA hub for agents).
+Excluded from the LLM render (among others): notebooks, internal pages, contributor style guide, and most of `about/contributing/`. **Included:** `about/using-the-documentation.qmd` (docs IA hub for agents).
 
 Copied into `_llm-output/` after render:
 
@@ -24,7 +24,7 @@ Copied into `_llm-output/` after render:
 |------|--------|
 | `AGENTS.md` | Repo root |
 | `chatbot-product-map.md` | Generated (see below) |
-| `about/contributing/using-the-documentation.md` | Quarto render |
+| `about/using-the-documentation.md` | Quarto render |
 
 See also [`AGENTS.md`](../../AGENTS.md) for how agents should use the corpus.
 
