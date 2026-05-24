@@ -517,7 +517,7 @@ def render_markdown(
         "",
         "> Auto-generated. Maps in-product routes to documentation URLs and key sections.",
         "> For how documentation is organized by topic, see `AGENTS.md` and",
-        "> [Using the documentation](/about/contributing/using-the-documentation.html).",
+        "> [Using the documentation](/about/using-the-documentation.html).",
         "",
     ]
 
@@ -581,7 +581,7 @@ def render_markdown(
     lines.append("## Documentation index (human-oriented)")
     lines.append("")
     lines.append(
-        "See `AGENTS.md` and `about/contributing/using-the-documentation.md` in the "
+        "See `AGENTS.md` and `about/using-the-documentation.md` in the "
         "LLM corpus for guides organized by feature area (Configuration, Workflows, "
         "Inventory, etc.)."
     )

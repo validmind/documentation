@@ -2,7 +2,7 @@
 
 > Auto-generated. Maps in-product routes to documentation URLs and key sections.
 > For how documentation is organized by topic, see `AGENTS.md` and
-> [Using the documentation](/about/contributing/using-the-documentation.html).
+> [Using the documentation](/about/using-the-documentation.html).
 
 ## Settings
 
@@ -577,4 +577,4 @@
 
 ## Documentation index (human-oriented)
 
-See `AGENTS.md` and `about/contributing/using-the-documentation.md` in the LLM corpus for guides organized by feature area (Configuration, Workflows, Inventory, etc.).
+See `AGENTS.md` and `about/using-the-documentation.md` in the LLM corpus for guides organized by feature area (Configuration, Workflows, Inventory, etc.).

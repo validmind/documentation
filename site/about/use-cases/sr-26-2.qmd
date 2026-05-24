@@ -1,0 +1,210 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "SR 26-2"
+date: last-modified
+aliases:
+  - /about/use-cases/sr-11-7.html
+---
+
+Implement SR 26-2 compliance using {{< var vm.product >}}.
+
+{{< include _use-case-summary.qmd >}}
+
+## Overview
+
+SR 26-2 (*Interagency Guidance on Model Risk Management for Banking Organizations*)[^1] was issued jointly by the Board of Governors of the Federal Reserve System, the Federal Deposit Insurance Corporation, and the Office of the Comptroller of the Currency. It supersedes SR 11-7 and reframes U.S. banking agencies’ expectations for model risk management (MRM).
+
+SR 26-2 keeps core themes from prior guidance — sound development, independent validation, governance, and effective challenge — while emphasizing a risk-based posture: a narrower definition of what counts as a model, an explicit materiality framework, stronger ongoing monitoring and outcomes analysis, and an enterprise model inventory that supports concentration and dependency visibility.
+
+::: {.callout title="Generative and agentic AI"}
+SR 26-2 explicitly excludes generative AI and agentic AI from its scope because these technologies are novel and rapidly evolving. Underlying MRM principles — including materiality, ongoing monitoring, and effective challenge — still apply when you govern those systems alongside traditional models.
+:::
+
+This guide organizes platform actions around four priorities that align with SR 26-2:
+
+1. **Distinguish models from non-models** — Focus MRM on *complex quantitative methods* that apply statistical, economic, or financial theory, rather than on simple arithmetic, purely deterministic rules, or software without substantive theoretical underpinning.
+
+2. **Assess and tier models by materiality** — Use model exposure and model purpose so high-materiality models receive commensurate rigor while lower-materiality models can use more automated governance where appropriate.
+
+3. **Emphasize ongoing monitoring and outcomes analysis** — Treat continuous performance tracking, outcomes testing, and escalation as first-class obligations, not only point-in-time validation events.
+
+4. **Maintain a comprehensive model inventory** — Keep enterprise visibility into models, dependencies, concentrations, and aggregate risk.
+
+## 1. Distinguish models from non-models
+
+#### Purpose
+
+Apply a clear, documented definition of *model* versus *non-model* so MRM effort targets SR 26-2 scope.
+
+### Steps
+
+1. Document inclusion and exclusion criteria:
+
+   - Define which methods count as models under SR 26-2’s narrowed definition.
+   - Record exclusions (for example, simple spreadsheets, deterministic rules without quantitative theory) and the rationale.
+
+2. Align inventory registration rules:[^2]
+
+   - Configure inventory fields that capture model type, theoretical basis, and intended analytical use.
+   - Ensure non-models are not inadvertently treated as in-scope models.
+
+3. Review the portfolio periodically:
+
+   - Re-evaluate borderline tools when business use or complexity changes.
+   - Update documentation when classification decisions change.
+
+## 2. Assess and tier models by materiality
+
+#### Purpose
+
+Implement SR 26-2’s materiality lens — combining exposure and purpose — so controls scale with risk.
+
+### Steps
+
+1. Configure materiality and tiering fields:[^2]
+
+   - Map organizational tiers to exposure and purpose dimensions.
+   - Align tiering to validation depth, monitoring frequency, and approval paths.
+
+2. Document purpose and business use:[^3]
+
+   - Capture how each model affects decisions, capital, liquidity, or customers.
+   - Link materiality to reporting and committee oversight where required.
+
+3. Apply tier-aware workflows:[^10]
+
+   - Automate reminders and approvals based on tier.
+   - Route high-materiality models to stricter documentation and validation templates.
+
+## 3. Ongoing monitoring, testing, and outcomes analysis
+
+#### Purpose
+
+Meet SR 26-2’s heightened expectations for continuous insight into model performance and outcomes, complementing periodic validation.
+
+### Steps
+
+1. Run automated testing in the {{< var validmind.developer >}}:[^6]
+
+   - Execute accuracy, robustness, and stability tests on a defined cadence.
+   - Store results as evidence for monitoring and review.
+
+2. Configure monitoring and alerts:[^9]
+
+   - Define metrics, thresholds, and escalation paths by materiality tier.
+   - Integrate outcomes analysis (for example, performance drift, decision quality) into review cycles.
+
+3. Schedule periodic reviews with monitoring context:[^10]
+
+   - Combine monitoring dashboards, incidents, and validation history in each review.
+   - Document conclusions and required actions.
+
+## 4. Model development documentation
+
+#### Purpose
+
+Document models so development choices, data, theory, and limitations are transparent and reviewable.
+
+### Steps
+
+1. Configure document templates:[^4]
+
+   - Align sections to SR 26-2 expectations for purpose, design, theory, and logic.
+   - Tier template depth by materiality.
+
+2. Document purpose, design, theory, and logic:[^5]
+
+   - State intended use and decisions supported.
+   - Explain methodology, key assumptions, and known limitations.
+
+3. Document data quality and relevance:
+
+   - Record data sources, transformations, and quality assessments.
+   - Highlight data gaps that affect reliability.
+
+## 5. Independent validation (effective challenge)
+
+#### Purpose
+
+Preserve effective challenge for in-scope models — independent validation that identifies limitations and supports sound use.
+
+### Steps
+
+1. Configure validation workflows:
+
+   - Define independence rules and scope by materiality.
+   - Trigger validation when models change tier or materiality drivers shift.
+
+2. Prepare validation reports:[^7]
+
+   - Use templates that capture findings, limitations, and conditions of use.
+   - Tie conclusions to monitoring metrics where applicable.
+
+3. Track findings and remediation:[^8]
+
+   - Assign owners, due dates, and retest evidence.
+   - Close the loop into monitoring and inventory metadata.
+
+## 6. Governance, policies, and controls
+
+#### Purpose
+
+Operate a governance framework — policies, roles, approvals, and auditability — that matches SR 26-2’s risk-based MRM program.
+
+### Steps
+
+1. Configure role-based access:[^11]
+
+   - Map the three lines of defense to platform roles.
+   - Enforce segregation of duties for high-materiality models.
+
+2. Configure approval workflows:[^12]
+
+   - Encode model approvals, exceptions, and retirements.
+   - Maintain an audit trail for supervisory and internal review.
+
+3. Enable audit trail and compliance reporting:[^12]
+
+   - Use activity logs and analytics for evidence of control operation.
+   - Export reports for committees and audits.
+
+## Implementation checklist
+
+- [x] Model versus non-model criteria documented and reflected in the inventory
+- [x] Materiality and tiering configured with purpose and exposure fields
+- [x] Ongoing monitoring, alerts, and outcomes analysis in place
+- [x] Development documentation templates aligned to SR 26-2
+- [x] Validation workflows and effective challenge operating by tier
+- [x] Governance roles, approvals, and audit evidence configured
+
+
+<!-- FOOTNOTES -->
+
+[^1]:
+
+   **Board of Governors of the Federal Reserve System, FDIC, and OCC:**<br>
+   [SR 26-2: Interagency Guidance on Model Risk Management for Banking Organizations](https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm) (April 17, 2026; supersedes SR 11-7)
+
+[^2]: [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
+
+[^3]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd)
+
+[^4]: [Working with document templates](/guide/templates/working-with-document-templates.qmd)
+
+[^5]: [Working with documentation](/guide/documentation/working-with-documentation.qmd)
+
+[^6]: [Run tests and test suites](/developer/how-to/testing-overview.qmd)
+
+[^7]: [Preparing validation reports](/guide/validation/preparing-validation-reports.qmd)
+
+[^8]: [Working with artifacts](/guide/validation/working-with-artifacts.qmd)
+
+[^9]: [Ongoing monitoring](/guide/monitoring/ongoing-monitoring.qmd)
+
+[^10]: [Setting up workflows](/guide/workflows/setting-up-workflows.qmd)
+
+[^11]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^12]: [Working with analytics](/guide/reporting/working-with-analytics.qmd)
