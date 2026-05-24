@@ -32,6 +32,16 @@ If you are an AI agent embedded in ValidMind, your capabilities are documented h
 
 This page describes what the assistant can and cannot do, including context-aware features and current limitations.
 
+## Product UI mapping
+
+The in-app assistant (Valerie) also ingests **`chatbot-product-map.md`** in the LLM corpus. That file maps **platform routes** (for example `/settings/workflows`, `/model-inventory`, `/dashboard`) to documentation URLs and section hints.
+
+Route and help-link data from the product UI is vendored as **`site/llm/chatbot-product-map-frontend-snapshot.json`**. Regenerate it with `make -C site refresh-chatbot-product-map` when frontend routes or `helpLink` values change (requires a local `validmind/frontend` checkout).
+
+Use the map when the user’s question is tied to where they are in the product — especially **Settings**, where the UI groups features differently than the documentation sidebars (Configuration, Workflows, Inventory, and so on).
+
+For documentation organized by topic, continue to use **Using the documentation** (above) and the section table in this file.
+
 ## File format
 
 Documentation is written in Quarto Markdown (`.qmd`). Key conventions:

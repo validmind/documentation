@@ -24,8 +24,9 @@ listing:
     sort: false
     fields: [title, description]
     contents:
-    - test-sandbox.qmd
-    - ../test-descriptions.qmd
+    - title: "{{< var vm.product >}} test sandbox"
+      description: "Tests that are available as part of the {{< var validmind.developer >}}, grouped by type of validation or monitoring test."
+      path: test-sandbox.qmd
   - id: test-basics
     type: grid
     grid-columns: 2
@@ -33,8 +34,8 @@ listing:
     sort: false
     fields: [title, description]
     contents:
-    - ../../notebooks/how_to/tests/run_tests/1_run_dataset_based_tests.ipynb
-    - ../../notebooks/how_to/tests/run_tests/2_run_comparison_tests.ipynb
+    - ../../notebooks/how_to/tests/run_tests/1-run_dataset-based_tests.ipynb
+    - ../../notebooks/how_to/tests/run_tests/2-run_comparison_tests.ipynb
   - id: configure-tests
     type: grid
     grid-columns: 2
@@ -71,7 +72,7 @@ listing:
     - ../samples-jupyter-notebooks.qmd
 ---
 
-{{< var vm.product >}} provides many built-in tests and test suites, which help you produce documentation during stages of the model lifecycle, where you need to ensure that your work satisfies regulatory and risk management requirements.
+{{< var vm.product >}} provides many built-in tests and test suites, which help you produce documentation during stages of your risk management lifecycle, where you need to ensure that your work satisfies regulatory and risk management requirements.
 
 ::: {.callout-important collapse="false" appearance="minimal"}
 ## Quick reference
@@ -89,10 +90,10 @@ listing:
 : When running the same test multiple times with different parameters, add a `:suffix` to distinguish results, such as `validmind.data_validation.ClassImbalance:custom_threshold`.
 
 **Inputs**
-: The datasets and models your test analyzes. Pass these via `inputs={}`:
+: The datasets and records (models) your test analyzes. Pass these via `inputs={}`:
 
     - `dataset` — A VM dataset object
-    - `model` — A VM model object
+    - `model` — A VM model object, which can be any type of record
     - `datasets` / `models` — For tests comparing multiple datasets or models
 
 **Parameters**
@@ -100,9 +101,7 @@ listing:
 
     - Thresholds, such as `min_percent_threshold`, `disparity_tolerance`
     - Metrics to compute, such as `metrics=["fnr", "fpr", "tpr"]`
-    - Any setting that isn't a dataset or model
-
-Use `vm.tests.describe_test("test_id")` or check the [test descriptions](/developer/test-descriptions.qmd) page to see what parameters a test accepts.
+    - Any setting that isn't a dataset or model[^1]
 
 **Outputs**
 : Tests return results like tables and plots. Tables can be lists of dictionaries or pandas DataFrames; plots can be matplotlib or plotly figures.
@@ -118,10 +117,10 @@ Use `vm.tests.describe_test("test_id")` or check the [test descriptions](/develo
 : Test suites are collections of tests that run together. Each has an identifier like `classifier_full_suite`. Use `vm.tests.list_test_suites()` to browse available test suites.
 
 **Inputs**
-: The datasets and models the test suite analyzes. Pass these via `inputs={}`:
+: The datasets and records (models) the test suite analyzes. Pass these via `inputs={}`:
 
     - `dataset` — A VM dataset object
-    - `model` — A VM model object
+    - `model` — A VM model object, which can be any type of record
     - `datasets` / `models` — For suites comparing multiple datasets or models
 
 **Config**
@@ -168,9 +167,9 @@ To document and validate your dataset:
 - For generic tabular datasets: use the [`tabular_dataset`](/validmind/validmind/test_suites/tabular_datasets.qmd){target="_blank"} test suite.
 - For time-series datasets: use the [`time_series_dataset`](/validmind/validmind/test_suites/time_series.qmd#timeseriesdataset){target="_blank"} test suite.
 
-### Model testing
+### Record (model) testing
 
-To document and validate your model:
+To document and validate your record:
 
 - For binary classification models: use the [`classifier`](/validmind/validmind/test_suites/classifier.qmd){target="_blank"} test suite.
 - For time series models: use the [`timeseries`](/validmind/validmind/test_suites/time_series.qmd){target="_blank"} test suite.
@@ -186,7 +185,7 @@ Use the [`classifier_full_suite`](/validmind/validmind/test_suites/classifier.qm
 
 ## Run tests
 
-Next, learn how to use the {{< var validmind.developer >}} to run tests on datasets and models:
+Next, learn how to use the {{< var validmind.developer >}} to run tests on datasets and records (models):
 
 ::: {.panel-tabset}
 
@@ -231,4 +230,8 @@ Learn more about using the other features of the {{< var validmind.developer >}}
 
 :::{#testing-next}
 :::
+
+<!-- FOOTNOTES -->
+
+[^1]: Use `vm.tests.describe_test("test_id")` for programmatic parameter details, or browse the [{{< var vm.product >}} test sandbox](test-sandbox.qmd).
 
