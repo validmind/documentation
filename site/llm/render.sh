@@ -30,7 +30,8 @@ project:
     - "**/*.qmd"
     - "!notebooks/"
     - "!404.qmd"
-    - "!about/contributing/"
+    - "!about/contributing/validmind-community.qmd"
+    - "!about/contributing/style-guide/"
     - "!about/deployment/"
     - "!about/fine-print/"
     - "!llm/"
@@ -50,6 +51,20 @@ EOF
 
 echo "=== Rendering site to GFM markdown ==="
 quarto render --to gfm
+
+# AGENTS.md lives at the repo root so IDE/agent tooling finds it there, but it
+# must also reach the LLM output so the docs chatbot can ingest it.
+echo ""
+echo "=== Generating chatbot product map ==="
+python3 scripts/generate_chatbot_product_map.py
+
+echo ""
+echo "=== Copying AGENTS.md from repo root into LLM output ==="
+cp ../AGENTS.md llm/_llm-output/AGENTS.md
+
+echo ""
+echo "=== Copying chatbot product map into LLM output ==="
+cp llm/chatbot-product-map.md llm/_llm-output/chatbot-product-map.md
 
 echo ""
 echo "=== Post-processing markdown files ==="

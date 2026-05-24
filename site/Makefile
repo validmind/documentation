@@ -13,7 +13,7 @@ SRC_ROOT := _source
 SRC_DIR := $(SRC_ROOT)/validmind-library
 
 # Define .PHONY target for help section
-.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes render-llm template-schema-docs verify-copyright yearly-releases
+.PHONY: help add-copyright clean clone copy-installation copy-release-notes delete-demo-branch deploy-demo-branch deploy-prod deploy-staging docker-build docker-serve docker-site docker-site-lite docs-site execute generate-chatbot-product-map refresh-chatbot-product-map generate-sitemap get-api-json get-source kind-serve kind-stop kind-restart kind-logs notebooks python-docs release-notes render-llm template-schema-docs verify-copyright yearly-releases
 
 # Help section
 help:
@@ -38,6 +38,8 @@ help:
 	@echo "  docker-site              Get source, render site with Docker profile, execute notebooks"
 	@echo "  docker-site-lite         Get source and render site with Docker profile (skips notebook execution)"
 	@echo "  docs-site                Get all source files and render the production docs site with Quarto"
+	@echo "  generate-chatbot-product-map  Generate product-to-docs map (from committed frontend snapshot)"
+	@echo "  refresh-chatbot-product-map   Re-extract frontend snapshot + map (requires ../frontend)"
 	@echo "  generate-sitemap         Generate a sitemap for the static HTML site"
 	@echo "  execute                  Execute a Jupyter Notebook or notebook directory"
 	@echo "  get-api-json             Download Swagger JSON specs from ValidMind APIs into reference/"
@@ -438,6 +440,14 @@ yearly-releases:
 	cd ../
 	git status | grep -v 'release-scripts/'
 	quarto preview
+
+# Generate product-to-documentation map for chatbot RAG (uses committed frontend snapshot)
+generate-chatbot-product-map:
+	@python3 scripts/generate_chatbot_product_map.py
+
+# Refresh vendored frontend snapshot from a local validmind/frontend checkout
+refresh-chatbot-product-map:
+	@python3 scripts/generate_chatbot_product_map.py --from-frontend
 
 # Render site to GFM markdown for LLM ingestion
 render-llm:
