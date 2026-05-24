@@ -6,7 +6,7 @@ This repository contains the source files for [ValidMind's documentation site](h
 
 For an overview of the documentation structure and how to navigate it, see:
 
-**[Using the documentation](https://docs.validmind.ai/about/contributing/using-the-documentation.html)**
+**[Using the documentation](https://docs.validmind.ai/about/using-the-documentation.html)**
 
 This page explains:
 - How the documentation is organized
