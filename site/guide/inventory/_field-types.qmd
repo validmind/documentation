@@ -68,6 +68,19 @@ Attachments
 Calculation
 : Define a `formula(params)` function that automatically calculates and returns a read-only value based on the params dictionary, which includes selected custom field keys retrieved from your other inventory record fields.
 
+##### Params dictionary
+
+In addition to custom field keys you add from the **available fields** drop-down, formulas can read built-in keys on the `params` object:
+
+| Param | Applies to | Availability | Description |
+|---|---|---|---|
+| `params.<fieldKey>` | Inventory records and artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params.model_stage` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params.model_stage == "Production"`. |
+| `params.stakeholders` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
+| `params.integrations` | Inventory records and artifacts | Reference `params.integrations` in the formula source | Linked external integration data keyed by service (for example, `params.integrations.mlflow`). Empty when integrations are not configured or not referenced. |
+| `params.finding_type` | Artifacts | Always available on artifact formulas | Artifact type metadata with `.tag` (technical identifier) and `.name` (display name). |
+| `params.model` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params.model.criticality_level`). |
+
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
 1. Select from the drop-down of **[available record fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[**Stick to basic operations**.<br>Keep your code simple and avoid complex logic and imports.]
