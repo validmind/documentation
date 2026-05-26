@@ -452,7 +452,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific model for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
@@ -474,7 +474,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific model for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
@@ -561,7 +561,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific model for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
