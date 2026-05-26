@@ -174,6 +174,19 @@ The script reads from:
 
 Output: Content is injected directly into `site/guide/templates/customize-document-templates.qmd` between marker comments.
 
+#### Chatbot product map and LLM corpus
+
+The in-app assistant (Valerie) uses generated files under `site/llm/`, including `chatbot-product-map.md` (platform routes mapped to docs URLs and section headings). CI regenerates that map and fails if it is out of date with your changes.
+
+If you edit `.qmd` files that affect linked docs or headings (for example FAQ or guide pages referenced from the product UI), regenerate and commit the map before opening or updating a pull request:
+
+```bash
+cd site
+make generate-chatbot-product-map
+```
+
+If product routes or in-app help links changed, use `make refresh-chatbot-product-map` instead (requires a local `validmind/frontend` checkout). See [`site/llm/README.md`](site/llm/README.md) for the full LLM render pipeline, snapshot maintenance, and when to refresh each artifact.
+
 #### Stylesheet organization (IN PROGRESS)
 
 The site uses a modular stylesheet architecture to maintain organized and maintainable styles:
