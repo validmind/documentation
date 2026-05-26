@@ -175,20 +175,46 @@ def formula(params):
 
 ::::
 
+
+
 ::: {.panel-tabset}
 
 #### Params dictionary
 
 In addition to custom field keys you add from the **available fields** drop-down, formulas can read built-in keys on the `params` dictionary:
 
+<!-- VISIBLE ONLY ON PAGES THAT HAVE A CUSTOM METADATA TAG:
+
+```includes:
+    inventory: true
+``` -->
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 | Param | Applies to | Availability | Description |
 |---|---|---|---|
-| `params["<fieldKey>"]` | Inventory records and artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
 | `params["model_stage"]` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params["model_stage"] == "Production"`. |
 | `params["stakeholders"]` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
-| `params["integrations"]` | Inventory records and artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+| `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+
+::::
+
+<!-- VISIBLE ONLY ON PAGES THAT **DO NOT** HAVE A CUSTOM METADATA TAG:
+
+```includes:
+    inventory: true
+``` -->
+
+:::: {.content-visible when-format="html" unless-meta="includes.inventory"}
+| Param | Applies to | Availability | Description |
+|---|---|---|---|
+| `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
 | `params["finding_type"]` | Artifacts | Always available on artifact formulas | Artifact type metadata with `["tag"]` (technical identifier) and `["name"]` (display name). |
 | `params["model"]` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params["model"]["criticality_level"]`). |
+
+::::
+
 
 #### Available helpers
 
@@ -211,6 +237,7 @@ Reference these helpers in your formulas — they cover the date, number, and li
 | `zfill(value, width)` | `string` | Zero-pads `value` to `width` characters. |
 
 :::
+
 
 Checkbox
 : A `true`/`false` value set by a toggle.
@@ -283,7 +310,7 @@ Calculation
     1. Select from the drop-down of **[available record fields]{.smallcaps}**, or **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params["model"]`** (artifact fields) to allow your formula access to the field's values.
     2. Replace the demonstration formula with your own in the code box provided.
     4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+    5. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
 Checkbox
 : A `true`/`false` value set by a toggle.
