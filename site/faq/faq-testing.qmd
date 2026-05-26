@@ -15,30 +15,32 @@ listing:
     fields: [title, description]
     contents:
     - ../developer/how-to/testing-overview.qmd
-    - ../developer/test-descriptions.qmd
+    - title: "{{< var vm.product >}} test sandbox"
+      description: "Tests that are available as part of the {{< var validmind.developer >}}, grouped by type of validation or monitoring test."
+      path: ../developer/how-to/test-sandbox.qmd
     - ../guide/monitoring/ongoing-monitoring.qmd
-categories: ["testing", "model documentation", "customization", "custom data", "explainability", "ongoing monitoring", "validmind library"]
+categories: ["testing", "documentation", "customization", "custom data", "explainability", "ongoing monitoring", "validmind library"]
 ---
 
 ## How do the out-of-the-box tests developed by {{< var vm.product >}} work?
 
 All the default tests are developed using open-source Python and R libraries.
 
-The {{< var validmind.developer >}}[^1] test interface is a light wrapper that defines utility functions to agnostically interact with different dataset and model backends, and contains functions to collect and post results to the {{< var validmind.platform >}}[^2] using a generic results schema.
+The {{< var validmind.developer >}}[^1] test interface is a light wrapper that defines utility functions to agnostically interact with different dataset and record (model) backends, and contains functions to collect and post results to the {{< var validmind.platform >}}[^2] using a generic results schema.
 
-## When do I use tests and tests suites?
+## When do I use tests and test suites?
 
 While you have the flexibility to decide when to use which {{< var vm.product >}} tests, here are a few typical scenarios:[^3]
 
 - **Dataset testing** — To document and validate your dataset.
-- **Model testing** — To document and validate your model.
+- **Model testing** — To document and validate your record, such as a model.
 - **End-to-end testing** — To document a binary classification model and the relevant dataset end-to-end.
 
 ## Can we configure, customize, or add our own tests?
 
 Yes, {{< var vm.product >}} allows tests to be manipulated at several levels:
 
-- You can configure which tests are required to run programmatically depending on the model use case.[^4]
+- You can configure which tests are required to run programmatically depending on the record's use case.[^4]
 - You can change the thresholds and parameters for default tests already available in the {{< var vm.developer >}} — for instance, changing the threshold parameter for the class imbalance flag.[^5]
 - You can also connect your own custom tests with the {{< var validmind.developer >}}. These custom tests are configurable and are able to run programmatically, just like the rest of the {{< var vm.developer >}}.[^6]
 - Personalize tests further for your use case by using {{< var vm.product >}}'s `RawData` feature[^7] to customize the output of tests.
@@ -49,32 +51,32 @@ In addition to custom tests, you can also add use case and test-specific context
 
 ## How do I log tests as a developer?
 
-You use the {{< var validmind.developer >}} to run and log tests during model development, the results of which are then inserted your model documentation within the {{< var validmind.platform >}}.[^9] The {{< var vm.developer >}} also automatically generates draft test descriptions for your test results — generations that can be modified for your custom use cases.[^10]
+You use the {{< var validmind.developer >}} to run and log tests during development, the results of which are then inserted into your documentation within the {{< var validmind.platform >}}.[^9] The {{< var vm.developer >}} also automatically generates draft test descriptions for your test results — generations that can be modified for your custom use cases.[^10]
 
 To log tests as a developer with the {{< var validmind.developer >}}:
 
-- You must have the [{{< fa code >}} Developer]{.bubble} role[^11] or another role with sufficient permissions to create and own models, and to work with model documentation.
-- You must be the model owner or model developer, but not the model validator,[^12] for the model you want to log tests and update documentation for.
+- You must have the [{{< fa code >}} Developer]{.bubble} role[^11] or another role with sufficient permissions to create and own records (models), and to work with documentation.
+- You must be the record owner or record developer, but not the record validator,[^12] for the record you want to log tests and update documentation for.
 
 ::: {.callout}
 ## Want to learn how to use {{< var vm.product >}} as a developer?
 
-Check out our introductory series — [**{{< var vm.product >}} for model development**](/developer/validmind-library.qmd#for-model-development)
+Check out our introductory series — [**{{< var vm.product >}} for development**](/developer/validmind-library.qmd#development)
 :::
 
 ## How do I log tests as a validator?
 
-You use the {{< var validmind.developer >}} to run and log tests during model validation, the results of which are then inserted your validation report within the {{< var validmind.platform >}}.[^13] The {{< var vm.developer >}} also automatically generates draft test descriptions for your test results — generations that can be modified for your custom use cases.[^14]
+You use the {{< var validmind.developer >}} to run and log tests during validation, the results of which are then inserted into your validation report within the {{< var validmind.platform >}}.[^13] The {{< var vm.developer >}} also automatically generates draft test descriptions for your test results — generations that can be modified for your custom use cases.[^14]
 
 To log tests as a validator with the {{< var validmind.developer >}}:
 
-- You must have the [{{< fa circle-check >}} Validator]{.bubble} role[^15] or another role with sufficient permissions to access models for validation, to review model documentation, and to work with validation reports and model artifacts.
-- You must be the model validator, but not the model owner or model developer,[^16] for the model you want to log tests and update documentation for.
+- You must have the [{{< fa circle-check >}} Validator]{.bubble} role[^15] or another role with sufficient permissions to access records (models) for validation, to review documentation, and to work with validation reports and artifacts.
+- You must be the record validator, but not the record owner or record developer,[^16] for the record you want to log tests and update documentation for.
 
 ::: {.callout}
 ## Want to learn how to use {{< var vm.product >}} as a validator?
 
-Check out our introductory series — [**{{< var vm.product >}} for model validation**](/developer/validmind-library.qmd#for-model-validation)
+Check out our introductory series — [**{{< var vm.product >}} for validation**](/developer/validmind-library.qmd#validation)
 :::
 
 {{< include _faq-explainability.qmd >}}
@@ -115,7 +117,7 @@ Check out our introductory series — [**{{< var vm.product >}} for model valida
 
 [^12]: [Manage record stakeholder types](/guide/configuration/manage-record-stakeholder-types.qmd)
 
-[^13]: [Assess compliance](/guide/validation/assess-compliance.qmd#link-validator-evidence)
+[^13]: [Assess compliance](/guide/validation/assess-compliance.qmd#map-evidence)
 
 [^14]: [Can we configure, customize, or add our own tests?](#can-we-configure-customize-or-add-our-own-tests)
 

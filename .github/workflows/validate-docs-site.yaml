@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, ready_for_review]
 
 permissions:
+  actions: write
   issues: write
   pull-requests: write
 
@@ -65,6 +66,9 @@ jobs:
           src/backend/templates/documentation/model_documentation
         sparse-checkout-cone-mode: true
 
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+
     - name: Verify copyright headers
       run: |
         cd site
@@ -74,11 +78,6 @@ jobs:
       uses: quarto-dev/quarto-actions/setup@v2
       with:
         version: pre-release
-
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Generate Python library docs
       run: |
@@ -91,8 +90,7 @@ jobs:
 
     - name: Generate template schema docs
       run: |
-        pip install json-schema-for-humans
-        BACKEND_ROOT=site/_source/backend python scripts/generate_template_schema_docs.py
+        BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
 
     - name: Populate installation
       run: cp -r site/_source/installation/site/installation site/installation
@@ -164,14 +162,47 @@ jobs:
             body: comment
           });
 
+    - name: Trigger Lighthouse check
+      uses: actions/github-script@v6
+      with:
+        script: |
+          await github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'lighthouse-check.yaml',
+            ref: context.payload.pull_request.head.ref,
+            inputs: {
+              mode: 'changed',
+              depth: '0',
+              pr_number: String(context.issue.number),
+            },
+          });
+          console.log(`Dispatched Lighthouse check for PR #${context.issue.number}`);
+
     - name: Install pandoc
       run: |
         sudo apt-get update
         sudo apt-get install -y pandoc
 
+    - name: Verify chatbot product map is up to date
+      run: |
+        python3 site/scripts/generate_chatbot_product_map.py
+        git diff --exit-code site/llm/chatbot-product-map.md site/llm/chatbot-product-map-frontend-snapshot.json
+
+    - name: Test chatbot product map generator
+      run: python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v
+
     - name: Validate LLM markdown render
       run: bash llm/render.sh && bash llm/clean.sh
       working-directory: site
+
+    - name: Verify LLM corpus includes product map and docs IA hub
+      run: |
+        test -f site/llm/_llm-output/chatbot-product-map.md
+        test -f site/llm/_llm-output/AGENTS.md
+        test -f site/llm/_llm-output/about/using-the-documentation.md
+        test ! -f site/llm/_llm-output/about/contributing/validmind-community.md
+        test ! -d site/llm/_llm-output/about/contributing/style-guide
 
     # Release headroom and shrink before final lightweight steps & post-job
     - name: Release reserve & shrink

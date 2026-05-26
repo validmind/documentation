@@ -16,6 +16,18 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 | [set inventory record stage to]{.smallcaps} | Select the record stage to transition to. |
 : **{{< fa cube >}} Inventory Record Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
+### {{< fa tag >}} Artifact Status Change
+<span id="artifact-status-change">
+
+- Transitions an artifact into another status.
+- Requires available artifact type statuses associated with the workflow.^[[Manage artifact types](/guide/validation/manage-artifact-types.qmd#manage-artifact-type-statuses)]
+
+| Field | Description |
+|---:|---|
+| [when these conditions are met]{.smallcaps} (optional) | Add conditional requirements to qualify for this step.^[ [Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#artifact-status-change)]  |
+| [set artifact status to]{.smallcaps} | Select the artifact type status to transition to. |
+: **{{< fa tag >}} Artifact Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
+
 ### {{< fa wifi >}} Workflow State Change
 <span id="workflow-state-change">
 
@@ -35,6 +47,7 @@ Creates a button that performs an action on behalf of the user.
 | Field | Description |
 |---:|---|
 | [display action button when]{.smallcaps}  (optional) | Add conditional requirements for displaying this step.^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#user-action)]  |
+| [step title]{.smallcaps} (optional) | Text that displays at the top of the modal that opens when users click the action button. |
 | [action button label]{.smallcaps} | Text that displays on your action button. |
 | [requested fields]{.smallcaps} (optional) | Include record or artifact fields alongside your action.[^user-action] |
 | [user action deadline]{.smallcaps} (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
@@ -52,7 +65,7 @@ Display a preconfigured message to users in the selected **[approval group]{.sma
 |---:|---|
 | [approval group]{.smallcaps}  | Select the roles, stakeholders, or user fields responsible for approval. |
 | [fields to review]{.smallcaps} (optional) | Select the record or artifact fields shown to approvers for read-only review.[^approval-2] |
-| Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps} is shown this message.^[Enter in a **[title]{.smallcaps}** and a **[message]{.smallcaps}** to display.] |
+| Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected [approval group]{.smallcaps} is shown this message.^[Enter a **[title]{.smallcaps}** and a **[message]{.smallcaps}** to display.] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
 ### {{< fa bullhorn >}} Broadcast
@@ -81,7 +94,7 @@ Workflows cannot be saved until condition branches are connected to other steps.
 To configure a condition branch:
 
 1. On the Configure Condition Branch modal, click **{{< fa plus >}} Add Branch**.
-2. Enter in the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#condition-branch-required)] that apply to this path.
+2. Enter the **[path name]{.smallcaps}** and designate the **[conditions]{.smallcaps}**^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#condition-branch-required)] that apply to this path.
 3. Continue with steps 1 and 2 until your conditional branch logic is complete.
 
     To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
@@ -130,7 +143,7 @@ When a workflow reaches a webhook step, the workflow will pause. Listen for a `P
 
 #### 2. Configure and copy payload
 
-1. Under [select target record for payload]{.smallcaps}, choose a record from your inventory^[[Working with the inventory](/guide/inventory/working-with-the-inventory.qmd)] to populate the target for the payload.
+1. Under [select target {record-type} record for payload]{.smallcaps}, choose a record from your inventory^[[Working with the inventory](/guide/inventory/working-with-the-inventory.qmd)] to populate the target for the payload.
 
 2. Click **{{< fa copy >}} Copy** to the right of Payload to copy the payload to your clipboard.
 
@@ -153,9 +166,9 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 
 | Field | Description |
 |---:|---|
-| [url]{.smallcaps} | Enter in the URL to send the HTTP request to. |
+| [url]{.smallcaps} | Enter the URL to send the HTTP request to. |
 | [method]{.smallcaps} | Select the HTTP request method: `GET`, `POST`, `PUT`, `DELETE`[^request-types] |
-| [timeout (seconds)]{.smallcaps} | Enter in a request timeout in seconds.[^request-timeout] |
+| [timeout (seconds)]{.smallcaps} | Enter a request timeout in seconds.[^request-timeout] |
 | [fail on non-]{.smallcaps}[2]{.smallercaps}[xx]{.smallcaps}  (optional) | Toggle whether or not the request will be considered failed if the response status code is not in the `2xx` range. |
 | [allow invalid certificates]{.smallcaps} (optional) | Toggle whether or not the request will be allowed to use invalid certificates. |
 | [follow redirects]{.smallcaps} (optional) | Toggle whether or not the request will follow redirects. |
@@ -174,7 +187,7 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 
 [^user-action]:
 
-    Select from the drop-down to add it to your User Action step. Users must have write permissions for the field in order to enter values.
+    Select a field from the the drop-down to add it to your User Action step — click **Add All** to add all fields in that group. Users must have write permissions for the field in order to enter values.
     <br><br>
 
     - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
@@ -205,7 +218,7 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 [^request-types]: `PUT` and `POST` requests have additional configuration fields:
 
     - **[body type]{.smallcaps}** — Select whether the body is `JSON` or `Text`.
-    - **[body]{.smallcaps}** — Enter in your payload.
+    - **[body]{.smallcaps}** — Enter your payload.
 
 [^request-timeout]: Max 300 seconds, or enter `0` to disable timeout.
 
@@ -226,7 +239,12 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 :::: {.content-hidden unless-format="revealjs"}
 
 #### {{< fa cube >}} Inventory Record Stage Change
+
 Transitions a record into another stage.
+
+#### {{< fa tag >}} Artifact Status Change
+
+Transitions an artifact into another status.
 
 #### {{< fa wifi >}} Workflow State Change
 
