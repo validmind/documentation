@@ -72,39 +72,6 @@ Calculation
 {{< var vm.product >}} runs calculated field formulas on the Starlark formula engine. Formulas authored on earlier releases were written in Python and have been migrated to Starlark automatically. When creating or editing formulas, you now must use the Starlark syntax.
 :::
 
-##### Params dictionary
-
-In addition to custom field keys you add from the **available fields** drop-down, formulas can read built-in keys on the `params` dictionary:
-
-| Param | Applies to | Availability | Description |
-|---|---|---|---|
-| `params["<fieldKey>"]` | Inventory records and artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
-| `params["model_stage"]` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params["model_stage"] == "Production"`. |
-| `params["stakeholders"]` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
-| `params["integrations"]` | Inventory records and artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
-| `params["finding_type"]` | Artifacts | Always available on artifact formulas | Artifact type metadata with `["tag"]` (technical identifier) and `["name"]` (display name). |
-| `params["model"]` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params["model"]["criticality_level"]`). |
-
-##### Available helpers
-
-Reference these helpers in your formulas — they cover the date, number, and list operations the engine does not expose directly:
-
-| Helper | Returns | Description |
-|---|---|---|
-| `today()` | `"YYYY-MM-DD"` | Current date as an ISO string. |
-| `safe_parse_date(value, default=None)` | `"YYYY-MM-DD"` or `default` | Parses ISO dates/datetimes or millisecond/second epoch timestamps. |
-| `to_iso(value)` | `"YYYY-MM-DD"` or `None` | Alias for `safe_parse_date` with no default. |
-| `add_days(date, n)` | `"YYYY-MM-DD"` or `None` | Adds `n` days to an ISO date. |
-| `add_months(date, n)` | `"YYYY-MM-DD"` or `None` | Adds `n` months to an ISO date. |
-| `days_between(a, b)` | `int` or `None` | Days between two ISO dates (`a` − `b`). |
-| `days_since(date)` | `int` or `None` | Days from `date` to today. |
-| `months_between(a, b)` | `int` or `None` | Full-month difference between two ISO dates. |
-| `get_year(date)` / `get_month(date)` / `get_day(date)` | `int` or `None` | Components of an ISO date. |
-| `safe_int(value, default=0)` | `int` | Tolerates strings and missing values. |
-| `safe_float(value, default=0.0)` | `float` | Tolerates strings and missing values. |
-| `list_count(list, value)` | `int` | Number of times `value` appears in `list`. |
-| `zfill(value, width)` | `string` | Zero-pads `value` to `width` characters. |
-
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
 1. Select from the drop-down of **[available record fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` — and use the available helpers for date and number work.]
@@ -139,9 +106,9 @@ def formula(params):
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
 1. Select from the drop-down of **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params["model"]`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
-2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` and `params["model"]["fieldKey"]` for parent inventory record data — and use the available helpers for date and number work.
-4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` and `params["model"]["fieldKey"]` for parent inventory record data — and use the available helpers for date and number work.]
+3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+4. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 <br><br>
 
 ::: {.callout-button .pl4 .nt4}
@@ -207,6 +174,43 @@ def formula(params):
 :::
 
 ::::
+
+::: {.panel-tabset}
+
+#### Params dictionary
+
+In addition to custom field keys you add from the **available fields** drop-down, formulas can read built-in keys on the `params` dictionary:
+
+| Param | Applies to | Availability | Description |
+|---|---|---|---|
+| `params["<fieldKey>"]` | Inventory records and artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params["model_stage"]` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params["model_stage"] == "Production"`. |
+| `params["stakeholders"]` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
+| `params["integrations"]` | Inventory records and artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+| `params["finding_type"]` | Artifacts | Always available on artifact formulas | Artifact type metadata with `["tag"]` (technical identifier) and `["name"]` (display name). |
+| `params["model"]` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params["model"]["criticality_level"]`). |
+
+#### Available helpers
+
+Reference these helpers in your formulas — they cover the date, number, and list operations the engine does not expose directly:
+
+| Helper | Returns | Description |
+|---|---|---|
+| `today()` | `"YYYY-MM-DD"` | Current date as an ISO string. |
+| `safe_parse_date(value, default=None)` | `"YYYY-MM-DD"` or `default` | Parses ISO dates/datetimes or millisecond/second epoch timestamps. |
+| `to_iso(value)` | `"YYYY-MM-DD"` or `None` | Alias for `safe_parse_date` with no default. |
+| `add_days(date, n)` | `"YYYY-MM-DD"` or `None` | Adds `n` days to an ISO date. |
+| `add_months(date, n)` | `"YYYY-MM-DD"` or `None` | Adds `n` months to an ISO date. |
+| `days_between(a, b)` | `int` or `None` | Days between two ISO dates (`a` − `b`). |
+| `days_since(date)` | `int` or `None` | Days from `date` to today. |
+| `months_between(a, b)` | `int` or `None` | Full-month difference between two ISO dates. |
+| `get_year(date)` / `get_month(date)` / `get_day(date)` | `int` or `None` | Components of an ISO date. |
+| `safe_int(value, default=0)` | `int` | Tolerates strings and missing values. |
+| `safe_float(value, default=0.0)` | `float` | Tolerates strings and missing values. |
+| `list_count(list, value)` | `int` | Number of times `value` appears in `list`. |
+| `zfill(value, width)` | `string` | Zero-pads `value` to `width` characters. |
+
+:::
 
 Checkbox
 : A `true`/`false` value set by a toggle.
