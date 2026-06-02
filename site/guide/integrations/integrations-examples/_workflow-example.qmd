@@ -1,0 +1,75 @@
+<!-- Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+Refer to the LICENSE file in the root of this repository for details.
+SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa shield >}} Governance, select **Workflows**.
+
+3. Click **{{< fa plus >}} Add Workflow**:^[[Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)]
+
+4. Under [workflow target]{.smallcaps} type, select **Inventory Record**.
+
+5. Enter a **[title]{.smallcaps}** and a **[description]{.smallcaps}** for the workflow.
+
+6. Select the **[record type]{.smallcaps}** this workflow applies to.
+
+7. Under **[workflow start]{.smallcaps}**, select when the workflow should be initiated.
+
+8. Under **[workflow expected duration]{.smallcaps}**, define the SLA for the workflow based on the start date in days, weeks, months, or years.
+
+9. Click **Save Draft** to save your blank workflow.
+
+10. Configure the rest of your workflow steps, then drag and drop an **{{< fa cloud-arrow-up >}}  HTTP Request** step^[[Workflow step types](/guide/workflows/workflow-step-types.qmd#http-request)] onto the canvas and connect it to your workflow.
+
+11. Double-click the step to open the **Configure HTTP Request** modal.
+
+:::: {.content-visible when-format="html" when-meta="includes.jira"}
+12. Configure the required fields for Jira,[^configure-jira] replacing the placeholder values with your own:
+
+    - **[url]{.smallcaps}** — `https://yourcompany.atlassian.net/rest/api/3/issue`
+    - **[method]{.smallcaps}** — POST
+    - **[headers]{.smallcaps}** — Add:
+      - `Content-Type`: `application/json`
+      - `Authorization`: `Bearer {{Jira Personal Access Token}}`
+    
+    ::: {.callout-tip title="Use webhook secrets for credentials"}
+    Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. See [Manage secrets](../manage-secrets.qmd#webhook-secrets).
+    :::
+    
+    - **[body type]{.smallcaps}** — JSON
+    - **[body]{.smallcaps}** — Use the following JSON payload:
+    
+    ```json
+    {
+      "fields": {
+        "project": {
+          "key": "MODEL"
+        },
+        "summary": "Model validation failed: {{Model Name}}",
+        "description": "The model [{{Model Name}}|{{Model URL}}] failed validation. Review artifacts in ValidMind.",
+        "issuetype": {
+          "name": "Bug"
+        }
+      }
+    }
+    ```
+
+[^configure-jira]:
+
+    ![Create a Jira issue](integrations-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 12." .screenshot}
+
+::::
+
+:::: {.content-visible when-format="html" unless-meta="includes.jira"}
+12. Configure the required fields for ServiceNow, replacing the placeholder values with your own:
+
+
+::::
+
+13. Click **Update Step** to save your configuration.
+
+14. Configure and link any additional workflow steps, then save your workflow to apply your changes.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#link-workflow-together)]
+
+15. Publish your workflow to make it available for use.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#publish-workflow)]
+

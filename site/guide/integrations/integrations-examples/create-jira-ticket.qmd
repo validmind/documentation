@@ -4,9 +4,11 @@
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
 title: "Create a Jira ticket"
 date: last-modified
+includes:
+    jira: true
 ---
 
-Create a Jira ticket when model validation requires attention using an HTTP request workflow step.
+Create a Jira ticket when validation requires attention using an HTTP request workflow step.
 
 ::: {.attn}
 
@@ -22,64 +24,17 @@ Create a Jira ticket when model validation requires attention using an HTTP requ
 
 ## Configure the workflow step
 
-::: {.column-margin}
-![Create a Jira issue](integrations-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 4." .screenshot}
-:::
-
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
-
-2. Under {{< fa shield >}} Governance, select **Workflows**.
-
-3. Select the **Model Workflows** tab.
-
-4. Click on a workflow to modify or click **{{< fa plus >}} Add Model Workflow**[^4] to create a new workflow.
-
-5. From the **Workflow Steps** modal, drag and drop an **HTTP Request** step[^5] onto the canvas, then connect it to your workflow.
-
-6. Double-click the step to open the **Configure HTTP Request** modal.
-
-7. Configure the required fields, replacing the placeholder values with your own:
-
-   - **[url]{.smallcaps}** — `https://yourcompany.atlassian.net/rest/api/3/issue`
-   - **[method]{.smallcaps}** — POST
-   - **[headers]{.smallcaps}** — Add:
-     - `Content-Type`: `application/json`
-     - `Authorization`: `Bearer {{Jira Personal Access Token}}`
-   
-   ::: {.callout-tip title="Use webhook secrets for credentials"}
-   Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. See [Manage secrets](../manage-secrets.qmd#webhook-secrets).
-   :::
-   
-   - **[body type]{.smallcaps}** — JSON
-   - **[body]{.smallcaps}** — Use the following JSON payload:
-   
-   ```json
-   {
-     "fields": {
-       "project": {
-         "key": "MODEL"
-       },
-       "summary": "Model validation failed: {{Model Name}}",
-       "description": "The model [{{Model Name}}|{{Model URL}}] failed validation. Review artifacts in ValidMind.",
-       "issuetype": {
-         "name": "Bug"
-       }
-     }
-   }
-   ```
-
-8. Click **Update Step** to save your configuration.
+{{< include /guide/integrations/integrations-examples/_workflow-example.qmd >}}
 
 The HTTP request to create the Jira ticket is sent when the workflow executes the step.
 
+
 <!-- FOOTNOTES -->
 
-[^1]: [Manage permissions](../../configuration/manage-permissions.qmd)
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^2]: [Introduction to workflows](../../workflows/introduction-to-workflows.qmd)
+[^2]: [Setting up workflows](/guide/workflows/setting-up-workflows.qmd)
 
-[^3]: [Manage secrets](../manage-secrets.qmd)
+[^3]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
 
-[^4]: [Add new workflows](../../workflows/configure-workflows.qmd#add-new-workflows)
 
-[^5]: [Workflow step types](../../workflows/workflow-step-types.qmd#http-request)
