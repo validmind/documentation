@@ -8,7 +8,7 @@ date: last-modified
 
 Connect {{< var vm.product >}} to third-party systems that aren't supported out of the box by building custom integrations using our reference API.
 
-Custom integrations let you link resources, such as AI systems or models, from internal registries, proprietary platforms, or any service you control to the {{< var vm.product >}} model inventory.
+Custom integrations let you link resources, such as AI systems or records such as models, from internal registries, proprietary platforms, or any service you control to the {{< var vm.product >}} inventory.
 
 ::: {.attn}
 
@@ -29,7 +29,7 @@ To create a custom integration, you build a service that implements the referenc
 1. Build a service that implements the required endpoints and connects to your data sources.
 2. Deploy your service at a URL accessible to {{< var vm.product >}}.
 3. Configure a custom integration in {{< var vm.product >}} that points to your service URL.
-4. After implementation, your users can browse and link resources from your system to records in the model inventory.
+4. After implementation, your users can browse and link resources from your system to records in the {{< var vm.product >}} inventory.
 
 Data flows bidirectionally — {{< var vm.product >}} reads your data and can write back metadata to enable linking.
 
@@ -56,10 +56,10 @@ A reference implementation with sample code is available. Contact your ValidMind
 Your service must expose these endpoints at the `/api/v1` base path:
 
 **List models**
-: `GET /models` — Returns all models from your system. Supports optional `?resource_type=` filter.
+: `GET /models` — Returns all records from your system. Supports optional `?resource_type=` filter.
 
 **Get model**
-: `GET /models/{id}` — Returns a specific model by its unique identifier.
+: `GET /models/{id}` — Returns a specific record by its unique identifier.
 
 **Update model** (optional)
 : `PUT /models/{id}` — Accepts metadata updates from {{< var vm.product >}}, enabling bidirectional sync.
@@ -101,7 +101,7 @@ Your models endpoint should return objects with these fields:
 
 ### Bidirectional sync
 
-When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} model identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
+When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} record identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
 
 ::: {.callout collapse="true" title="Code examples"}
 
@@ -202,11 +202,11 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 
 ### Link resources
 
-After configuring your custom integration, link resources to models in the inventory:
+After configuring your custom integration, link resources to records in the inventory:
 
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
-2. Select a model by clicking on it.
+2. Select a record or find your record by applying a filter or searching for it.[^3]
 
 3. In the right sidebar, locate your custom integration connection.
 
@@ -223,3 +223,5 @@ After configuring your custom integration, link resources to models in the inven
 [^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
 [^2]: [Manage secrets](manage-secrets.qmd)
+
+[^3]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
