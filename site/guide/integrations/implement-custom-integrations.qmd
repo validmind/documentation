@@ -10,19 +10,7 @@ Connect {{< var vm.product >}} to third-party systems that aren't supported out 
 
 Custom integrations let you link resources, such as AI systems or records such as models, from internal registries, proprietary platforms, or any service you control to the {{< var vm.product >}} inventory.
 
-::: {.attn}
-
-## Prerequisites
-
-- [x] {{< var link.login >}}
-- [x] You are assigned a role that can manage permissions.[^1]
-- [x] Your integration service is deployed and accessible from {{< var vm.product >}}.
-- [x] You have the endpoint URL and API key for your integration service.
-- [x] A secret containing your API key exists in integration secrets.[^2]
-
-:::
-
-## How custom integrations work
+### How do custom integrations work?
 
 To create a custom integration, you build a service that implements the reference API endpoints:
 
@@ -43,13 +31,26 @@ flowchart LR
     API <--> DATA
 ```
 
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are assigned a role that can manage permissions.[^1]
+- [x] Your integration service is deployed and accessible from {{< var vm.product >}}.
+- [x] You have the endpoint URL and API key for your integration service.
+- [x] A secret containing your API key exists in integration secrets.[^2]
+
+:::
+
 ## Reference API
 
 The reference API defines the HTTP endpoints your service must implement. {{< var vm.product >}} calls these endpoints to discover and synchronize resources.
 
-::: {.callout title="Reference implementation"}
-A reference implementation with sample code is available. Contact your ValidMind representative for access.
-:::
+Bidirectional sync
+: When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} record identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
+
+::: {.panel-tabset}
 
 ### Required endpoints
 
@@ -99,18 +100,13 @@ Your `/models` (records) endpoint should return objects with these fields:
 
 {{< var vm.product >}} authenticates requests using the `X-API-Key` header. Your service should validate this key and return `401 Unauthorized` if invalid or missing.
 
-### Bidirectional sync
-
-When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} record identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
-
-<br>
-
-::: {.callout-button .pl4 .nt4}
-::: {.callout collapse="true" appearance="minimal"}
+:::
 
 ### Code examples
 
-**GET /models response**
+::: {.panel-tabset}
+
+#### `GET /models` response
 
 ```json
 [
@@ -129,7 +125,9 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 ]
 ```
 
-**PUT /models/{id} request body** (what {{< var vm.product >}} sends)
+#### `PUT /models/{id}` request body
+
+What {{< var vm.product >}} sends:
 
 ```json
 {
@@ -137,7 +135,7 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 }
 ```
 
-**Health check response**
+#### Health check response
 
 ```json
 {
@@ -145,7 +143,7 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 }
 ```
 
-**Error response format**
+#### Error response format
 
 ```json
 {
@@ -154,6 +152,9 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 ```
 
 :::
+
+::: {.callout title="Reference implementation"}
+A reference implementation with sample code is available. Contact your {{< var vm.product >}} representative for access.
 :::
 
 ## Set up custom integrations
