@@ -15,7 +15,7 @@ Custom integrations let you link resources, such as AI systems or records such a
 ## Prerequisites
 
 - [x] {{< var link.login >}}
-- [x] You can manage permissions.[^1]
+- [x] You are assigned a role that can manage permissions.[^1]
 - [x] Your integration service is deployed and accessible from {{< var vm.product >}}.
 - [x] You have the endpoint URL and API key for your integration service.
 - [x] A secret containing your API key exists in integration secrets.[^2]
@@ -38,7 +38,7 @@ flowchart LR
     VM[ValidMind Platform]
     API[Your API service]
     DATA[Your data sources]
-    
+
     VM <-->|Reference API| API
     API <--> DATA
 ```
@@ -103,7 +103,12 @@ Your `/models` (records) endpoint should return objects with these fields:
 
 When linking resources, {{< var vm.product >}} can write metadata back to your system via `PUT` requests. This bidirectional sync enables you to store the {{< var vm.product >}} record identifier (`vm_cuid`) alongside your external records, creating a two-way link between systems.
 
-::: {.callout collapse="true" title="Code examples"}
+<br>
+
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Code examples
 
 **GET /models response**
 
@@ -148,6 +153,7 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 }
 ```
 
+:::
 :::
 
 ## Set up custom integrations
@@ -204,19 +210,59 @@ When linking resources, {{< var vm.product >}} can write metadata back to your s
 
 After configuring your custom integration, link resources to records in the inventory:
 
+:::: {.panel-tabset}
+
+### Link Model
+
+Use this flow for custom integrations configured as a **Record Registry** or with **Model Registry** selected as an integration type:
+
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
 2. Select a record or find your record by applying a filter or searching for it.[^3]
 
-3. In the right sidebar, locate your custom integration connection.
+3. Click the **Integrations** tab.
 
-4. Hover over the connection.
+4. Locate your custom integration connection.
 
 5. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa link >}} Link Model**.
 
-6. In the modal that opens, select the resource from your external system.
+6. In the **Link to External System** modal, select the external model.
 
-7. Click **Link Model**.
+   If your integration exposes multiple resource types, select the resource type first to filter the available models.
+
+7. Select a **Sync Frequency**.
+
+8. Click **Test Connection** to verify the binding configuration.
+
+9. Click **Link Model**.
+
+### Link Ticket
+
+Use this flow for custom integrations configured as an **Artifact / Ticket Source**:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the record that contains the finding you want to link.
+
+3. Open the finding.
+
+4. Click the **Integrations** tab.
+
+5. Locate your custom integration connection.
+
+6. When the **{{< fa ellipsis-vertical >}}** menu appears, click it and select **{{< fa link >}} Link Artifact**.
+
+7. In the **Link to External System** modal, search for or select the external ticket.
+
+   If the ticket isn't available in the list, enter the ticket or issue ID from the external system.
+
+8. Select a **Sync Frequency**.
+
+9. Click **Test Connection** to verify the binding configuration.
+
+10. Click **Link Ticket**.
+
+::::
 
 <!-- FOOTNOTES -->
 
