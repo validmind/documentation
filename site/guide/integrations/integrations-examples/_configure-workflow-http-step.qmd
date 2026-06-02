@@ -2,30 +2,12 @@
 Refer to the LICENSE file in the root of this repository for details.
 SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
+a. Configure the rest of your workflow steps, then drag and drop an **{{< fa cloud-arrow-up >}}  HTTP Request** step^[[Workflow step types](/guide/workflows/workflow-step-types.qmd#http-request)] onto the canvas and connect it to your workflow.
 
-2. Under {{< fa shield >}} Governance, select **Workflows**.
-
-3. Click **{{< fa plus >}} Add Workflow**:^[[Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)]
-
-4. Under [workflow target]{.smallcaps} type, select **Inventory Record**.
-
-5. Enter a **[title]{.smallcaps}** and a **[description]{.smallcaps}** for the workflow.
-
-6. Select the **[record type]{.smallcaps}** this workflow applies to.
-
-7. Under **[workflow start]{.smallcaps}**, select when the workflow should be initiated.
-
-8. Under **[workflow expected duration]{.smallcaps}**, define the SLA for the workflow based on the start date in days, weeks, months, or years.
-
-9. Click **Save Draft** to save your blank workflow.
-
-10. Configure the rest of your workflow steps, then drag and drop an **{{< fa cloud-arrow-up >}}  HTTP Request** step^[[Workflow step types](/guide/workflows/workflow-step-types.qmd#http-request)] onto the canvas and connect it to your workflow.
-
-11. Double-click the step to open the **Configure HTTP Request** modal.
+b. Double-click the step to open the **Configure HTTP Request** modal.
 
 :::: {.content-visible when-format="html" when-meta="includes.jira"}
-12. Configure the required fields for Jira,[^configure-jira] replacing the placeholder values with your own:
+c. Configure the required fields for Jira,[^configure-jira] replacing the placeholder values with your own:
 
     - **[url]{.smallcaps}** — `https://yourcompany.atlassian.net/rest/api/3/issue`
     - **[method]{.smallcaps}** — POST
@@ -33,9 +15,9 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
       - `Content-Type`: `application/json`
       - `Authorization`: `Bearer {{Jira Personal Access Token}}`
     
-    ::: {.callout title="Use webhook secrets for credentials"}
-    Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
-    :::
+   ::: {.callout title="Use webhook secrets for credentials"}
+   Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
+   :::
     
     - **[body type]{.smallcaps}** — JSON
     - **[body]{.smallcaps}** — Use the following JSON payload:
@@ -55,6 +37,8 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
     }
     ```
 
+d. Click **Update Step** to save your configuration.
+
 [^configure-jira]:
 
     ![Create a Jira issue](integrations-examples-http-request-open-jira-ticket.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a Jira ticket, showing the required fields described in step 12." .screenshot}
@@ -62,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 ::::
 
 :::: {.content-visible when-format="html" unless-meta="includes.jira"}
-12. Configure the required fields for ServiceNow,[^configure-servicenow] replacing the placeholder values with your own:
+c. Configure the required fields for ServiceNow,[^configure-servicenow] replacing the placeholder values with your own:
 
     - **[url]{.smallcaps}** — `https://yourinstance.service-now.com/api/now/table/incident`
     - **[method]{.smallcaps}** — POST
@@ -70,9 +54,9 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
       - `Content-Type`: `application/json`
       - `Authorization`: `Basic {{ServiceNow Credentials}}`
     
-    ::: {.callout title="Use webhook secrets for credentials"}
-    Instead of entering credentials in plaintext, use a webhook secret: `Basic {{secret:servicenow_creds}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
-    :::
+   ::: {.callout title="Use webhook secrets for credentials"}
+   Instead of entering credentials in plaintext, use a webhook secret: `Basic {{secret:servicenow_creds}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
+   :::
     
     - **[body type]{.smallcaps}** — JSON
     - **[body]{.smallcaps}** — Use the following JSON payload:
@@ -86,15 +70,14 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
     }
     ```
 
+d. Click **Update Step** to save your configuration.
+
 [^configure-servicenow]:
 
     ![Create a ServiceNow incident](integrations-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 12." .screenshot}
 
 ::::
 
-13. Click **Update Step** to save your configuration.
-
-14. Configure and link any additional workflow steps, save your workflow to apply your changes, then publish your workflow to make it available for use.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#link-workflow-together)]
 
 
 
