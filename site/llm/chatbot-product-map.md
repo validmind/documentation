@@ -128,6 +128,25 @@
 - `/guide/templates/working-with-document-templates.html`
   - Sections: What's next
 
+#### `/settings/documents/general` — General
+
+**Docs (related):**
+
+- `/guide/templates/customize-document-checker.html`
+  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+- `/guide/templates/customize-document-templates.html`
+  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+- `/guide/templates/manage-document-templates.html`
+  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/templates/manage-text-block-library.html`
+  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
+
+- *No direct help link in frontend; related docs inferred from keywords.*
+
 ### Organization
 
 #### `/settings/email-notifications` — Email Notifications
@@ -247,14 +266,12 @@
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
-#### `/settings/integrations/data-exports` — Analytics Exports
+#### `/settings/integrations/data-exports` — Data Exports
 
 **Docs (related):**
 
 - `/faq/faq-integrations.html`
   - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; Learn more
-- `/faq/faq-reporting.html`
-  - Sections: What analytic features are offered by }?; Learn more
 - `/guide/configuration/configure-aws-privatelink.html`
   - Sections: Prerequisites; VPC service information; Steps; What's next
 - `/guide/configuration/configure-azure-private-link.html`
@@ -263,6 +280,8 @@
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
 - `/guide/configuration/customize-your-dashboard.html`
   - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+- `/guide/configuration/manage-groups.html`
+  - Sections: Prerequisites; View group details; Add new groups; Remove groups; Add or remove group members
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -366,6 +385,25 @@
 
 - `/guide/model-validation/manage-validation-guidelines.html`
   - Note: no matching `.qmd` source found
+
+#### `/settings/risk-tier-templates` — Risk Tier Templates
+
+**Docs (related):**
+
+- `/guide/templates/customize-document-checker.html`
+  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+- `/guide/templates/customize-document-templates.html`
+  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+- `/guide/templates/manage-document-templates.html`
+  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/templates/manage-text-block-library.html`
+  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 ### Users & Access
 
@@ -487,6 +525,10 @@
   - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 ## Main application
+
+#### `/activity` — Activity
+
+- *No direct help link; content may be covered under scattered guide sections.*
 
 #### `/analytics` — sidebar.analytics
 
