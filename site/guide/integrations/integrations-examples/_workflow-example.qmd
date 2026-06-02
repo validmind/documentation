@@ -33,8 +33,8 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
       - `Content-Type`: `application/json`
       - `Authorization`: `Bearer {{Jira Personal Access Token}}`
     
-    ::: {.callout-tip title="Use webhook secrets for credentials"}
-    Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. See [Manage secrets](../manage-secrets.qmd#webhook-secrets).
+    ::: {.callout title="Use webhook secrets for credentials"}
+    Instead of entering credentials in plaintext, use a webhook secret: `Bearer {{secret:jira_pat}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
     :::
     
     - **[body type]{.smallcaps}** — JSON
@@ -62,14 +62,39 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 ::::
 
 :::: {.content-visible when-format="html" unless-meta="includes.jira"}
-12. Configure the required fields for ServiceNow, replacing the placeholder values with your own:
+12. Configure the required fields for ServiceNow,[^configure-servicenow] replacing the placeholder values with your own:
 
+    - **[url]{.smallcaps}** — `https://yourinstance.service-now.com/api/now/table/incident`
+    - **[method]{.smallcaps}** — POST
+    - **[headers]{.smallcaps}** — Add:
+      - `Content-Type`: `application/json`
+      - `Authorization`: `Basic {{ServiceNow Credentials}}`
+    
+    ::: {.callout title="Use webhook secrets for credentials"}
+    Instead of entering credentials in plaintext, use a webhook secret: `Basic {{secret:servicenow_creds}}`. To learn more, refer to [Manage secrets](../manage-secrets.qmd#webhook-secrets).
+    :::
+    
+    - **[body type]{.smallcaps}** — JSON
+    - **[body]{.smallcaps}** — Use the following JSON payload:
+
+    ```json
+    {
+      "short_description": "Data drift issue detected: {{Model Name}}",
+      "description": "A potential issue has been identified for model {{Model Name}} (link: [{{Model URL}}]({{Model URL}})). Please review the ongoing monitoring documentation in ValidMind.",
+      "urgency": "2",
+      "category": "Model Risk"
+    }
+    ```
+
+[^configure-servicenow]:
+
+    ![Create a ServiceNow incident](integrations-examples-http-request-open-servicenow-incident.png){width=80% fig-alt="Screenshot of the HTTP request step configured to create a ServiceNow incident, showing the required fields described in step 12." .screenshot}
 
 ::::
 
 13. Click **Update Step** to save your configuration.
 
-14. Configure and link any additional workflow steps, then save your workflow to apply your changes.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#link-workflow-together)]
+14. Configure and link any additional workflow steps, save your workflow to apply your changes, then publish your workflow to make it available for use.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#link-workflow-together)]
 
-15. Publish your workflow to make it available for use.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#publish-workflow)]
+
 
