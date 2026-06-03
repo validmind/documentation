@@ -227,11 +227,11 @@ If the test is successful, the message **{{< fa check-circle >}} Connection succ
 
 ::: {.panel-tabset}
 
-### Monitor connection health
+## Monitor connection health
 
 The Connections page provides visibility into the health of your integrations at a glance.
 
-#### Health indicators
+### Health indicators
 
 Each connection displays a status indicator:
 
@@ -239,7 +239,7 @@ Each connection displays a status indicator:
 - [Needs Attention]{.bubble .orange-bg} — The connection has issues that need to be resolved.
 - [Disabled]{.bubble} — The connection has been manually disabled.
 
-#### View connections requiring attention
+### View connections requiring attention
 
 Connections with errors or warnings display a status indicator, such as [{{< fa triangle-exclamation >}} 1 link with sync errors]{.bubble .yellow-bg}. Review these connections to:
 
@@ -248,7 +248,7 @@ Connections with errors or warnings display a status indicator, such as [{{< fa 
 3. Verify the external service is accessible.
 4. Test the connection after making changes.
 
-#### View linked records
+### View linked records
 
 To see which records (models) use a specific connection:
 
@@ -260,7 +260,7 @@ To see which records (models) use a specific connection:
 
 4. Review the linked records table, which shows the **VM Model** ({{< var vm.product >}} inventory record) and **External Name** (the linked external record) for each connection.
 
-#### View metric sources
+### View metric sources
 
 For connections that provide monitoring metrics, such as Amazon Bedrock:
 
@@ -270,11 +270,23 @@ For connections that provide monitoring metrics, such as Amazon Bedrock:
 
 3. These metrics can be added to monitoring documents for records linked to this connection.[^5]
 
-### View monitoring data
+## View monitoring data
 
 Some integrations, such as Amazon Bedrock, can provide metrics that sync into {{< var vm.product >}} for use in monitoring documents. Metric sources define which external evaluations or metrics are available for a linked record.
 
-#### Access the Monitoring tab
+### How do metric sources work?
+
+When a record in the {{< var vm.product >}} inventory is linked to an external resource, such as a Bedrock agent, available evaluations from that resource become metric sources. These metrics:
+
+- Sync automatically on a scheduled interval.
+- Appear in the **From Integration** tab when adding metrics over time to monitoring documents.[^6]
+- Support threshold configuration for alerting when values exceed acceptable limits.
+
+::: {.callout title="Bedrock Agent Evaluations"}
+For Amazon Bedrock connections, metric sources include agent evaluation results such as accuracy, helpfulness, and other assessment metrics. Link a record to a Bedrock agent to enable these metrics.[^7]
+:::
+
+### Access the Monitoring tab
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
@@ -286,23 +298,11 @@ Some integrations, such as Amazon Bedrock, can provide metrics that sync into {{
 
    This section lists all configured metric sources, their sync status, and when they last synced.
 
-#### How metric sources work
-
-When a record in the {{< var vm.product >}} inventory is linked to an external resource, such as a Bedrock agent, available evaluations from that resource become metric sources. These metrics:
-
-- Sync automatically on a scheduled interval.
-- Appear in the **From Integration** tab when adding metrics over time to monitoring documents.[^5]
-- Support threshold configuration for alerting when values exceed acceptable limits.
-
-::: {.callout title="Bedrock Agent Evaluations"}
-For Amazon Bedrock connections, metric sources include agent evaluation results such as accuracy, helpfulness, and other assessment metrics. Link a record to a Bedrock agent to enable these metrics.[^6]
-:::
-
 :::
 
 ## Delete connections
 
-::: {.callout-important title="Deleting a connection is permanent."}
+::: {.callout-important title="Deleting a connection is permanent and cannot be undone."}
 :::
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
@@ -325,6 +325,8 @@ For Amazon Bedrock connections, metric sources include agent evaluation results 
 
 [^4]: [Implement custom integrations](implement-custom-integrations.qmd)
 
-[^5]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd#add-integration-metrics)
+[^5]: [Link external records](link-external-records.qmd)
 
-[^6]: [Link external records](link-external-records.qmd)
+[^6]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd#add-integration-metrics)
+
+[^7]: [Synchronize records with AWS Bedrock](integrations-examples/synchronize-aws-bedrock.qmd)
