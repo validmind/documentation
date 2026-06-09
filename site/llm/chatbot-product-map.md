@@ -13,7 +13,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 
 ### Governance
 
@@ -69,7 +69,7 @@
 **Docs (related):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage document defaults; Tracked changes; Numbered table and figure captions; Organization setup
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
 
 ### Documents
 
@@ -92,8 +92,8 @@
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/working-with-document-templates.html`
-  - Sections: What's next
+- `/guide/templates/managing-documents.html`
+  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Main navigation
 
@@ -125,8 +125,8 @@
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
-- `/guide/templates/working-with-document-templates.html`
-  - Sections: What's next
+- `/guide/templates/managing-documents.html`
+  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Organization
 
@@ -135,12 +135,12 @@
 **Docs (primary):**
 
 - `/guide/configuration/manage-platform-notifications.html` (section: #customize-email-notifications)
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications; What's next
 
 **Docs (related):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage document defaults; Tracked changes; Numbered table and figure captions; Organization setup
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
 
 ### Artifacts
 
@@ -224,7 +224,7 @@
 - `/guide/configuration/manage-users.html`
   - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 
 ### Integrations
 
@@ -292,7 +292,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html` (section: #manage-user-invitations)
   - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
 
@@ -303,7 +303,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage document defaults; Tracked changes; Numbered table and figure captions; Organization setup
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
 
 ### Users & Access
 
@@ -319,7 +319,7 @@
 - `/guide/configuration/manage-users.html`
   - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 
 ### Main navigation
 
@@ -374,7 +374,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-roles.html`
   - Sections: Prerequisites; Add or update roles; Two special default roles provided by } have unique characteristics.; Manage role permissions; Manage role users; Rename existing roles
 
@@ -420,8 +420,8 @@
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
-- `/guide/templates/working-with-document-templates.html`
-  - Sections: What's next
+- `/guide/templates/managing-documents.html`
+  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Your Account
 
@@ -436,7 +436,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-users.html`
-  - Sections: Key concepts; Key terms; Default roles; User management
+  - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
   - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
 
