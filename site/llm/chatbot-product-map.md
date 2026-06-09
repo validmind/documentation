@@ -30,7 +30,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Prerequisites; Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 
@@ -55,7 +55,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Prerequisites; Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
 
 ### Organization
 
@@ -454,7 +454,7 @@
 - `/faq/faq-workflows.html`
   - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-  - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
+  - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
@@ -476,7 +476,7 @@
 - `/faq/faq-workflows.html`
   - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-  - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
+  - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
@@ -539,7 +539,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Prerequisites; Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -563,7 +563,7 @@
 - `/faq/faq-workflows.html`
   - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-  - Sections: Prerequisites; Start a workflow via webhook; a. Configure workflow in }; b. Start workflow from external system; Trigger a paused workflow to continue; a. Configure workflow in }; b. Trigger workflow to continue from external system
+  - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`

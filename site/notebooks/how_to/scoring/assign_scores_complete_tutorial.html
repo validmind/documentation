@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Intro to Assign Scores – ValidMind</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../notebooks/how_to/qualitative_text/qualitative_text_generation.html" rel="prev">
+<link href="../../../favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff1312480722ca58acc87f83de16b102.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/quarto-contrib/tachyons-4.12.0/tachyons.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/tachyons-4.12.0/quarto-resets.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-S46CKWPNSS"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S46CKWPNSS', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"express",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<!-- Start of validmindhelp Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=4589b973-eb1c-4b47-bae6-5a76416b78dd"> </script>
+<!-- End of validmindhelp Zendesk Widget script -->
+<meta name="robots" content="noindex, nofollow">
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../../../validmind/validmind.css">
+<link rel="stylesheet" href="../../../developer/developer.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-xl " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../../logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-book-open--documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text"><i class="fa-solid fa-book-open" aria-label="book-open"></i> Documentation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-fa-book-open--documentation">    
+        <li>
+    <a class="dropdown-item" href="../../../about/overview.html">
+ <span class="dropdown-text">About ​ValidMind</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../get-started/get-started.html">
+ <span class="dropdown-text">Get Started</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../guide/guides.html">
+ <span class="dropdown-text">Guides</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../support/support.html">
+ <span class="dropdown-text">Support</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../releases/all-releases.html">
+ <span class="dropdown-text">Releases</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../../developer/validmind-library.html">
+ <span class="dropdown-text">ValidMind Library</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../validmind/validmind.html">
+ <span class="dropdown-text">Python API</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../reference/validmind-rest-api-vm.html">
+ <span class="dropdown-text">Public REST API</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../../training/training.html">
+ <span class="dropdown-text">Training Courses</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://app.dev.vm.validmind.ai/"> 
+<span class="menu-text">Log In</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../developer/how-to/feature-overview.html">Use library features</a></li><li class="breadcrumb-item"><a href="../../../notebooks/how_to/scoring/assign_scores_complete_tutorial.html">Scoring</a></li><li class="breadcrumb-item"><a href="../../../notebooks/how_to/scoring/assign_scores_complete_tutorial.html">Intro to Assign Scores</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/validmind-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ValidMind Library</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/supported-records-and-frameworks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Supported records and frameworks</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">Quickstart</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/quickstart/quickstart_documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/quickstart/quickstart_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for validation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Install and initialize ValidMind</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/quickstart/install-and-initialize-validmind-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize the library</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/quickstart/install-and-initialize-validmind-for-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install and initialize the library for R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/quickstart/use-http-proxy-with-validmind-library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Use an HTTP proxy with the library</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/quickstart/store-credentials-in-env-file.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Store credentials in <code>.env</code> files</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">End-to-End Tutorials</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Development</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/development/1-set_up_validmind.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1 — Set up ValidMind Library</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/development/2-start_development_process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2 — Start the development process</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/development/3-integrate_custom_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3 — Integrate custom tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/development/4-finalize_testing_documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4 — Finalize testing &amp; documentation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/validation/1-set_up_validmind_for_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1 — Set up ValidMind Library for validation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/validation/2-start_validation_process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2 — Start the validation process</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/validation/3-developing_potential_challenger.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3 — Developing a challenger</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/tutorials/validation/4-finalize_validation_reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4 — Finalize validation &amp; reporting</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">How-To</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/how-to/testing-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run tests &amp; test suites</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Explore tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/explore_tests/explore_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Explore tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/explore_tests/explore_test_suites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Explore test suites</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Run tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/1-run_dataset-based_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run dataset-based tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/2-run_comparison_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run comparison tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Configuring tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/configure_judge_llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure judge LLM and judge embeddings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/customize_test_result_descriptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customize test result descriptions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/enable_pii_detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Enable PII detection in tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/filter_input_columns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataset Column Filters when Running Tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/run_tests_that_require_multiple_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run tests with multiple datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/configure_tests/understand_utilize_rawdata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understand and utilize <code>RawData</code> in ValidMind tests</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Using tests in documentation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/documentation_tests/document_multiple_results_for_the_same_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document multiple results for the same test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/documentation_tests/run_documentation_sections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run individual documentation sections</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/run_tests/documentation_tests/run_documentation_tests_with_config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run documentation tests with custom configurations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
+ <span class="menu-text">Custom tests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/custom_tests/implement_custom_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implement custom tests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/tests/custom_tests/integrate_external_test_providers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Integrate external test providers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/how-to/feature-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Use library features</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data and datasets</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/data_and_datasets/use_dataset_model_objects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to ValidMind Dataset and Model Objects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Dataset inputs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/data_and_datasets/dataset_inputs/configure_dataset_features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure dataset features</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/data_and_datasets/dataset_inputs/load_datasets_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load dataset predictions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Metrics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/metrics/log_metrics_over_time.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Log metrics over time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/metrics/run_unit_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro to Unit Metrics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Qualitative text</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/qualitative_text/qualitative_text_generation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generate qualitative text with the ValidMind library</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Scoring</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/how_to/scoring/assign_scores_complete_tutorial.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Intro to Assign Scores</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">Notebooks</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../developer/samples-jupyter-notebooks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code samples</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
+ <span class="menu-text">Agents</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/agents/document_agentic_ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an agentic AI system</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Capital markets</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/capital_markets/quickstart_option_pricing_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for knockout option pricing model documentation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/capital_markets/quickstart_option_pricing_models_quantlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for Heston option pricing model using QuantLib</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">Code explainer</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/code_explainer/quickstart_code_explainer_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for model code documentation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Credit risk</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/credit_risk/application_scorecard_executive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an application scorecard model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/credit_risk/application_scorecard_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an application scorecard model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/credit_risk/application_scorecard_with_bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a credit risk model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/credit_risk/application_scorecard_with_ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an application scorecard model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/credit_risk/document_excel_application_scorecard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document an Excel-based application scorecard model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">NLP and LLM</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/foundation_models_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment analysis of financial data using a large language model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/foundation_models_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of financial data using a large language model (LLM)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/hugging_face_integration_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sentiment analysis of financial data using Hugging Face NLP models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/hugging_face_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarization of financial data using Hugging Face NLP models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/llm_summarization_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automate news summarization using LLMs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/prompt_validation_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prompt validation for large language models (LLMs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/rag_benchmark_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RAG Model Benchmarking Demo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/nlp_and_llm/rag_documentation_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RAG Model Documentation Demo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="false">
+ <span class="menu-text">Ongoing monitoring</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/ongoing_monitoring/application_scorecard_ongoing_monitoring.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ongoing Monitoring for Application Scorecard</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/ongoing_monitoring/quickstart_customer_churn_ongoing_monitoring.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart for ongoing monitoring of models with ValidMind</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">Regression</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/regression/quickstart_regression_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a California Housing Price Prediction regression model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Time series</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/time_series/quickstart_time_series_full_suite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a time series forecasting model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/time_series/quickstart_time_series_high_code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document a time series forecasting model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false">
+ <span class="menu-text">Validation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../notebooks/use_cases/validation/validate_application_scorecard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validate an application scorecard model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+ <span class="menu-text">Reference</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../developer/how-to/test-sandbox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">​ValidMind test sandbox</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../validmind/validmind.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ValidMind Library Python API</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../reference/validmind-rest-api-vm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ValidMind Public REST API</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#about-validmind" id="toc-about-validmind" class="nav-link active" data-scroll-target="#about-validmind">About ValidMind</a>
+  <ul class="collapse">
+  <li><a href="#before-you-begin" id="toc-before-you-begin" class="nav-link" data-scroll-target="#before-you-begin">Before you begin</a></li>
+  <li><a href="#new-to-validmind" id="toc-new-to-validmind" class="nav-link" data-scroll-target="#new-to-validmind">New to ValidMind?</a></li>
+  </ul></li>
+  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up">Setting up</a>
+  <ul class="collapse">
+  <li><a href="#install-the-validmind-library" id="toc-install-the-validmind-library" class="nav-link" data-scroll-target="#install-the-validmind-library">Install the ValidMind Library</a></li>
+  <li><a href="#initialize-the-validmind-library" id="toc-initialize-the-validmind-library" class="nav-link" data-scroll-target="#initialize-the-validmind-library">Initialize the ValidMind Library</a></li>
+  </ul></li>
+  <li><a href="#load-the-demo-dataset" id="toc-load-the-demo-dataset" class="nav-link" data-scroll-target="#load-the-demo-dataset">Load the demo dataset</a></li>
+  <li><a href="#train-models-for-testing" id="toc-train-models-for-testing" class="nav-link" data-scroll-target="#train-models-for-testing">Train models for testing</a></li>
+  <li><a href="#initialize-validmind-objects" id="toc-initialize-validmind-objects" class="nav-link" data-scroll-target="#initialize-validmind-objects">Initialize ValidMind objects</a></li>
+  <li><a href="#assign-predictions" id="toc-assign-predictions" class="nav-link" data-scroll-target="#assign-predictions">Assign predictions</a></li>
+  <li><a href="#using-assign_scores" id="toc-using-assign_scores" class="nav-link" data-scroll-target="#using-assign_scores">Using assign_scores()</a>
+  <ul class="collapse">
+  <li><a href="#basic-usage" id="toc-basic-usage" class="nav-link" data-scroll-target="#basic-usage">Basic Usage</a></li>
+  <li><a href="#single-scorer-assignment" id="toc-single-scorer-assignment" class="nav-link" data-scroll-target="#single-scorer-assignment">Single Scorer Assignment</a></li>
+  <li><a href="#a-scorer-returns-complex-object" id="toc-a-scorer-returns-complex-object" class="nav-link" data-scroll-target="#a-scorer-returns-complex-object">A Scorer returns complex object</a></li>
+  <li><a href="#multiple-scorers-assignment" id="toc-multiple-scorers-assignment" class="nav-link" data-scroll-target="#multiple-scorers-assignment">Multiple Scorers Assignment</a></li>
+  <li><a href="#passing-parameters-to-scorer" id="toc-passing-parameters-to-scorer" class="nav-link" data-scroll-target="#passing-parameters-to-scorer">Passing Parameters to Scorer</a></li>
+  <li><a href="#multi-model-scorers" id="toc-multi-model-scorers" class="nav-link" data-scroll-target="#multi-model-scorers">Multi-Model scorers</a></li>
+  <li><a href="#scorer-metrics" id="toc-scorer-metrics" class="nav-link" data-scroll-target="#scorer-metrics">Scorer Metrics</a></li>
+  <li><a href="#custom-scorer" id="toc-custom-scorer" class="nav-link" data-scroll-target="#custom-scorer">Custom Scorer</a></li>
+  </ul></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a>
+  <ul class="collapse">
+  <li><a href="#work-with-your-documentation" id="toc-work-with-your-documentation" class="nav-link" data-scroll-target="#work-with-your-documentation">Work with your documentation</a></li>
+  <li><a href="#discover-more-learning-resources" id="toc-discover-more-learning-resources" class="nav-link" data-scroll-target="#discover-more-learning-resources">Discover more learning resources</a></li>
+  </ul></li>
+  <li><a href="#upgrade-validmind" id="toc-upgrade-validmind" class="nav-link" data-scroll-target="#upgrade-validmind">Upgrade ValidMind</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/validmind/documentation/blob/main/site/notebooks/how_to/scoring/assign_scores_complete_tutorial.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../developer/how-to/feature-overview.html">Use library features</a></li><li class="breadcrumb-item"><a href="../../../notebooks/how_to/scoring/assign_scores_complete_tutorial.html">Scoring</a></li><li class="breadcrumb-item"><a href="../../../notebooks/how_to/scoring/assign_scores_complete_tutorial.html">Intro to Assign Scores</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Intro to Assign Scores</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<link rel="stylesheet" href="../../../site_libs/quarto-contrib/quarto-project/nrichers/preview/preview.css">
+<p>The <code>assign_scores()</code> method is a powerful feature that allows you to compute and add scorer scores as new columns in your dataset. This method takes a model and metric(s) as input, computes the specified metrics from the ValidMind scorer library, and adds them as new columns. The computed metrics provide per-row values, giving you granular insights into model performance at the individual prediction level.</p>
+<p>In this interactive notebook, we demonstrate how to use the <code>assign_scores()</code> method effectively. We'll walk through a complete example using a customer churn dataset, showing how to compute and assign row-level metrics (like Brier Score and Log Loss) that provide detailed performance insights for each prediction. You'll learn how to work with single and multiple scorers, pass custom parameters, and handle different metric types - all while maintaining a clean, organized dataset structure. Currently, assign_scores() supports all metrics available in the validmind.scorer module.</p>
+<p><strong>The Power of Row-Level Scoring</strong></p>
+<p>Traditional model evaluation workflows often focus on aggregate metrics that provide overall performance summaries. The <code>assign_scores()</code> method complements this by providing granular, row-level insights that help you:</p>
+<ul>
+<li><strong>Identify Problematic Predictions</strong>: Spot individual cases where your model performs poorly</li>
+<li><strong>Understand Model Behavior</strong>: Analyze how model performance varies across different types of inputs</li>
+<li><strong>Enable Detailed Analysis</strong>: Perform targeted investigations on specific subsets of your data</li>
+<li><strong>Support Model Debugging</strong>: Pinpoint exactly where and why your model makes errors</li>
+</ul>
+<p><strong>Understanding assign_scores()</strong></p>
+<p>The <code>assign_scores()</code> method computes row metrics for a given model-dataset combination and adds the results as new columns to your dataset. Each new column follows the naming convention: <code>{model.input_id}_{metric_name}</code>, ensuring clear identification of which model and metric combination generated each score.</p>
+<p>Key features:</p>
+<ul>
+<li><strong>Row-Level Focus</strong>: Computes per-prediction metrics rather than aggregate scores</li>
+<li><strong>Flexible Input</strong>: Accepts single metrics or lists of metrics</li>
+<li><strong>Parameter Support</strong>: Allows passing additional parameters to underlying metric implementations</li>
+<li><strong>Multi-Model Support</strong>: Can assign scores from multiple models to the same dataset</li>
+<li><strong>Type Agnostic</strong>: Works with classification, regression, and other model types</li>
+</ul>
+<p>This approach provides detailed insights into your model's performance at the individual prediction level, enabling more sophisticated analysis and debugging workflows.</p>
+<!-- jn-toc-notebook-config
+    numbering=false
+    anchor=true
+    flat=false
+    minLevel=2
+    maxLevel=4
+    /jn-toc-notebook-config -->
+<!-- THIS CELL WILL BE REPLACED ON TOC UPDATE. DO NOT WRITE YOUR TEXT IN THIS CELL -->
+<p><a id="toc1__"></a></p>
+<section id="about-validmind" class="level2">
+<h2 class="anchored" data-anchor-id="about-validmind">About ValidMind</h2>
+<p>ValidMind is a suite of tools for managing risk, including risk associated with AI and statistical models.</p>
+<p>You use the ValidMind Library to automate documentation and validation tests, and then use the ValidMind Platform to collaborate on documentation. Together, these products simplify risk management, facilitate compliance with regulations and institutional standards, and enhance collaboration between yourself and validators.</p>
+<p><a id="toc1_1__"></a></p>
+<section id="before-you-begin" class="level3">
+<h3 class="anchored" data-anchor-id="before-you-begin">Before you begin</h3>
+<p>This notebook assumes you have basic familiarity with Python, including an understanding of how functions work. If you are new to Python, you can still run the notebook but we recommend further familiarizing yourself with the language.</p>
+<p>If you encounter errors due to missing modules in your Python environment, install the modules with <code>pip install</code>, and then re-run the notebook. For more help, refer to <a href="https://docs.python.org/3/installing/index.html">Installing Python Modules</a>.</p>
+<p><a id="toc1_2__"></a></p>
+</section>
+<section id="new-to-validmind" class="level3">
+<h3 class="anchored" data-anchor-id="new-to-validmind">New to ValidMind?</h3>
+<p>If you haven't already seen our documentation on the <a href="https://docs.validmind.ai/developer/validmind-library.html">ValidMind Library</a>, we recommend you begin by exploring the available resources in this section. There, you can learn more about documenting records such as models and running tests, as well as find code samples and our Python Library API reference.</p>
+<div class="alert alert-block alert-info" style="background-color: #B5B5B510; color: black; border: 1px solid #083E44; border-left-width: 5px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);border-radius: 5px;">
+<span style="color: #083E44;"><b>For access to all features available in this notebook, you'll need access to a ValidMind account.</b></span> <br><br> <a href="https://docs.validmind.ai/guide/access/register-with-validmind.html" style="color: #DE257E;"><b>Register with ValidMind</b></a>
+</div>
+<p><a id="toc2__"></a></p>
+</section>
+</section>
+<section id="setting-up" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up">Setting up</h2>
+<p><a id="toc2_1__"></a></p>
+<section id="install-the-validmind-library" class="level3">
+<h3 class="anchored" data-anchor-id="install-the-validmind-library">Install the ValidMind Library</h3>
+<p>To install the library:</p>
+<div id="cell-7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q validmind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc2_2__"></a></p>
+</section>
+<section id="initialize-the-validmind-library" class="level3">
+<h3 class="anchored" data-anchor-id="initialize-the-validmind-library">Initialize the ValidMind Library</h3>
+<p><a id="toc2_2_1__"></a></p>
+<section id="register-sample-model" class="level4">
+<h4 class="anchored" data-anchor-id="register-sample-model">Register sample model</h4>
+<p>Let's first register a sample record (model) for use with this notebook:</p>
+<ol type="1">
+<li><p>In a browser, <a href="https://docs.validmind.ai/guide/access/log-in-to-validmind.html">log in to ValidMind</a>.</p></li>
+<li><p>In the left sidebar, select <strong>Inventory</strong>.</p></li>
+<li><p>Under the <strong>RECORD TYPE</strong> drop-down, select <code>Model</code> and click <strong>+ Register Model</strong>. (Learn more: <a href="https://docs.validmind.ai/guide/inventory/register-records-in-inventory.html">Register records in the inventory</a>)</p></li>
+<li><p>Enter the model details and click <strong>Next &gt;</strong> to continue to assignment of inventory record stakeholders.</p></li>
+<li><p>Select your own name under the <strong>RECORD OWNER</strong> drop-down.</p></li>
+<li><p>Click <strong>Register Model</strong> to add the model to your inventory.</p></li>
+</ol>
+<p><a id="toc2_2_2__"></a></p>
+</section>
+<section id="apply-documentation-template" class="level4">
+<h4 class="anchored" data-anchor-id="apply-documentation-template">Apply documentation template</h4>
+<p>Once you've registered your model, let's select a documentation template. A template predefines sections for your documentation and provides a general outline to follow, making the documentation process much easier.</p>
+<ol type="1">
+<li><p>In the left sidebar that appears for your model, click <strong>Documents</strong> and select <strong>Development</strong>.</p>
+<p>If you cannot locate your Development document, make sure Development type documents are enabled for model records and create a new document. (<strong>Learn more:</strong> <a href="https://docs.validmind.ai/guide/templates/manage-documents.html#add-record-documents">Manage documents</a>)</p></li>
+<li><p>Under <strong>TEMPLATE</strong>, select <code>Binary classification</code>.</p></li>
+<li><p>Click <strong>Use Template</strong> to apply the template.</p></li>
+</ol>
+<p><a id="toc2_2_3__"></a></p>
+</section>
+<section id="get-your-code-snippet" class="level4">
+<h4 class="anchored" data-anchor-id="get-your-code-snippet">Get your code snippet</h4>
+<p>Initialize the ValidMind Library with the <em>code snippet</em> unique to each record per document, ensuring your test results are uploaded to the correct record and automatically populated in the right document in the ValidMind Platform when you run the Library.</p>
+<ol type="1">
+<li><p>On the left sidebar that appears for your model, select <strong>Getting Started</strong> and select <code>Development</code> from the <strong>DOCUMENT</strong> drop-down menu.</p></li>
+<li><p>Click <strong>Copy snippet to clipboard</strong>.</p></li>
+<li><p>Next, <a href="https://docs.validmind.ai/developer/quickstart/store-credentials-in-env-file.html">load your model identifier credentials from an <code>.env</code> file</a> or replace the placeholder with your own code snippet:</p></li>
+</ol>
+<div id="cell-12" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your model identifier credentials from an `.env` file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext dotenv</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>dotenv .env</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Or replace with your code snippet</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> validmind <span class="im">as</span> vm</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>vm.init(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    api_host<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    api_key<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    api_secret<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"..."</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># document="documentation",</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc3__"></a></p>
+</section>
+</section>
+</section>
+<section id="load-the-demo-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-demo-dataset">Load the demo dataset</h2>
+<p>In this example, we load a demo dataset to demonstrate the assign_scores functionality with customer churn prediction models.</p>
+<div id="cell-14" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.datasets.classification <span class="im">import</span> customer_churn <span class="im">as</span> demo_dataset</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Loaded demo dataset with: </span><span class="ch">\n\n\t</span><span class="ss">• Target column: '</span><span class="sc">{</span>demo_dataset<span class="sc">.</span>target_column<span class="sc">}</span><span class="ss">' </span><span class="ch">\n\t</span><span class="ss">• Class labels: </span><span class="sc">{</span>demo_dataset<span class="sc">.</span>class_labels<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>raw_df <span class="op">=</span> demo_dataset.load_data()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>raw_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc4__"></a></p>
+</section>
+<section id="train-models-for-testing" class="level2">
+<h2 class="anchored" data-anchor-id="train-models-for-testing">Train models for testing</h2>
+<p>We'll train two different customer churn models to demonstrate the assign_scores functionality with multiple models.</p>
+<div id="cell-16" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess the data</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>train_df, validation_df, test_df <span class="op">=</span> demo_dataset.preprocess(raw_df)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare training data</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> train_df.drop(demo_dataset.target_column, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_df[demo_dataset.target_column]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>x_val <span class="op">=</span> validation_df.drop(demo_dataset.target_column, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>y_val <span class="op">=</span> validation_df[demo_dataset.target_column]</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Train XGBoost model</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(early_stopping_rounds<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>xgb_model.set_params(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span>[<span class="st">"error"</span>, <span class="st">"logloss"</span>, <span class="st">"auc"</span>],</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>xgb_model.fit(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    eval_set<span class="op">=</span>[(x_val, y_val)],</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Train Random Forest model</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>rf_model.fit(x_train, y_train)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Models trained successfully!"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"XGBoost training accuracy: </span><span class="sc">{</span>xgb_model<span class="sc">.</span>score(x_train, y_train)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random Forest training accuracy: </span><span class="sc">{</span>rf_model<span class="sc">.</span>score(x_train, y_train)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc5__"></a></p>
+</section>
+<section id="initialize-validmind-objects" class="level2">
+<h2 class="anchored" data-anchor-id="initialize-validmind-objects">Initialize ValidMind objects</h2>
+<p>We initialize ValidMind <code>dataset</code> and <code>model</code> objects. The <code>input_id</code> parameter is crucial for the assign_scores functionality as it determines the column naming convention for assigned scores.</p>
+<div id="cell-18" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize datasets</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>vm_train_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"train_dataset"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_df,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds <span class="op">=</span> vm.init_dataset(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    input_id<span class="op">=</span><span class="st">"test_dataset"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_df,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    target_column<span class="op">=</span>demo_dataset.target_column,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize models with descriptive input_ids</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>vm_xgb_model <span class="op">=</span> vm.init_model(model<span class="op">=</span>xgb_model, input_id<span class="op">=</span><span class="st">"xgboost_model"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>vm_rf_model <span class="op">=</span> vm.init_model(model<span class="op">=</span>rf_model, input_id<span class="op">=</span><span class="st">"random_forest_model"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ValidMind objects initialized successfully!"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"XGBoost model ID: </span><span class="sc">{</span>vm_xgb_model<span class="sc">.</span>input_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random Forest model ID: </span><span class="sc">{</span>vm_rf_model<span class="sc">.</span>input_id<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc6__"></a></p>
+</section>
+<section id="assign-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="assign-predictions">Assign predictions</h2>
+<p>Before we can use assign_scores(), we need to assign predictions to our datasets. This step is essential as many unit metrics require both actual and predicted values.</p>
+<div id="cell-20" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign predictions for both models to both datasets</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(model<span class="op">=</span>vm_xgb_model)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vm_train_ds.assign_predictions(model<span class="op">=</span>vm_rf_model)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(model<span class="op">=</span>vm_xgb_model)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_predictions(model<span class="op">=</span>vm_rf_model)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Predictions assigned successfully!"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test dataset now has </span><span class="sc">{</span><span class="bu">len</span>(vm_test_ds.df.columns)<span class="sc">}</span><span class="ss"> columns"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7__"></a></p>
+</section>
+<section id="using-assign_scores" class="level2">
+<h2 class="anchored" data-anchor-id="using-assign_scores">Using assign_scores()</h2>
+<p>Now we'll explore the various ways to use the assign_scores() method to integrate performance metrics directly into your dataset.</p>
+<p><a id="toc7_1__"></a></p>
+<section id="basic-usage" class="level3">
+<h3 class="anchored" data-anchor-id="basic-usage">Basic Usage</h3>
+<p>The assign_scores() method has a simple interface:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dataset.assign_scores(model, metrics, <span class="op">**</span>kwargs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>model</strong>: A ValidMind model object</li>
+<li><strong>metrics</strong>: Single metric ID or list of metric IDs (can use short names or full IDs)</li>
+<li><strong>kwargs</strong>: Additional parameters passed to the underlying metric implementations</li>
+</ul>
+<p>Let's first check what columns we currently have in our test dataset:</p>
+<div id="cell-23" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Current columns in test dataset:"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(vm_test_ds.df.columns, <span class="dv">1</span>):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">:2d}</span><span class="ss">. </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Dataset shape: </span><span class="sc">{</span>vm_test_ds<span class="sc">.</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_2__"></a></p>
+</section>
+<section id="single-scorer-assignment" class="level3">
+<h3 class="anchored" data-anchor-id="single-scorer-assignment">Single Scorer Assignment</h3>
+<p>Let's start by assigning a single Scorer - the Brier Score - for our XGBoost model on the test dataset.</p>
+<div id="cell-25" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign Brier Score for XGBoost model</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"validmind.scorers.classification.BrierScore"</span>, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"After assigning Brier Score:"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"New column added: </span><span class="sc">{</span>vm_test_ds<span class="sc">.</span>df<span class="sc">.</span>columns<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the metric values</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_3__"></a></p>
+</section>
+<section id="a-scorer-returns-complex-object" class="level3">
+<h3 class="anchored" data-anchor-id="a-scorer-returns-complex-object">A Scorer returns complex object</h3>
+<p>The OutlierScore scorer demonstrates how scorers can return complex objects. It returns a dictionary containing per-row outlier detection results. For each row, it includes: - is_outlier: Boolean indicating if the row is an outlier - anomaly_score: Numerical score indicating degree of outlierness - isolation_path: Length of isolation path in the tree</p>
+<p>When assigned to a dataset, these dictionary values are automatically unpacked into separate columns with appropriate prefixes.</p>
+<div id="cell-27" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign Brier Score for XGBoost model</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"validmind.scorers.classification.OutlierScore"</span>, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"After assigning Score With Confidence:"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"New column added: </span><span class="sc">{</span>vm_test_ds<span class="sc">.</span>df<span class="sc">.</span>columns<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the metric values</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-28" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign Brier Score for XGBoost model</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(<span class="st">"validmind.scorers.classification.OutlierScore"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"After assigning Score With Confidence:"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"New column added: </span><span class="sc">{</span>vm_test_ds<span class="sc">.</span>df<span class="sc">.</span>columns<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the metric values</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_4__"></a></p>
+</section>
+<section id="multiple-scorers-assignment" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-scorers-assignment">Multiple Scorers Assignment</h3>
+<p>We can assign multiple metrics at once by passing a list of Scorer names. This is more efficient than calling assign_scores() multiple times.</p>
+<div id="cell-30" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign multiple classification metrics for the Random Forest model</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>scorer <span class="op">=</span> [</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.BrierScore"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.LogLoss"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.Confidence"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> scorer, model <span class="op">=</span> vm_rf_model)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"After assigning multiple row metrics for Random Forest:"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>rf_columns <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> vm_test_ds.df.columns <span class="cf">if</span> <span class="st">'random_forest_model'</span> <span class="kw">in</span> col]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random Forest columns: </span><span class="sc">{</span>rf_columns<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the metric values</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df[rf_columns].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_5__"></a></p>
+</section>
+<section id="passing-parameters-to-scorer" class="level3">
+<h3 class="anchored" data-anchor-id="passing-parameters-to-scorer">Passing Parameters to Scorer</h3>
+<p>Many row metrics accept additional parameters that are passed through to the underlying implementations. Let's demonstrate this with the LogLoss metric.</p>
+<div id="cell-32" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign LogLoss</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"validmind.scorers.classification.LogLoss"</span>, model <span class="op">=</span> vm_xgb_model, eps <span class="op">=</span> <span class="fl">1e-16</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We can also assign with different parameters by calling assign_scores again</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: This will overwrite the previous column with the same name</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"LogLoss assigned successfully"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's also assign BrierScore and Confidence</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> [<span class="st">"validmind.scorers.classification.BrierScore"</span>,<span class="st">"validmind.scorers.classification.Confidence"</span>], model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"BrierScore and Confidence assigned successfully"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display current XGBoost metric columns</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>xgb_columns <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> vm_test_ds.df.columns <span class="cf">if</span> <span class="st">'xgboost_model'</span> <span class="kw">in</span> col]</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">XGBoost model columns: </span><span class="sc">{</span>xgb_columns<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>vm_test_ds.df[xgb_columns].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_6__"></a></p>
+</section>
+<section id="multi-model-scorers" class="level3">
+<h3 class="anchored" data-anchor-id="multi-model-scorers">Multi-Model scorers</h3>
+<p>One of the powerful features of assign_scores() is the ability to assign scores from multiple models to the same dataset, enabling detailed model comparison at the prediction level.</p>
+<div id="cell-34" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's assign a comprehensive set of metrics for both models</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>comprehensive_metrics <span class="op">=</span> [</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.BrierScore"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.LogLoss"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.Confidence"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"validmind.scorers.classification.Correctness"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign for XGBoost model</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> comprehensive_metrics, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign for Random Forest model}</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> comprehensive_metrics, model <span class="op">=</span> vm_rf_model)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Row-level metrics assigned for both models!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_7__"></a></p>
+</section>
+<section id="scorer-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="scorer-metrics">Scorer Metrics</h3>
+<p>The next section demonstrates how to assign individual metrics that compute scores per row, rather than aggregate metrics. We'll use several important row metrics:</p>
+<ul>
+<li>Brier Score: Measures how well calibrated the model's probability predictions are for each individual prediction</li>
+<li>Log Loss: Evaluates how well the predicted probabilities match the true labels on a per-prediction basis</li>
+<li>Confidence: Measures the model's confidence in its predictions for each row</li>
+<li>Correctness: Indicates whether each prediction is correct (1) or incorrect (0)</li>
+</ul>
+<p>All these metrics provide granular insights into model performance at the individual prediction level.</p>
+<div id="cell-36" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's add some individual metrics that compute per-row scores</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Adding individual metrics..."</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Brier Score - measures accuracy of probabilistic predictions per row</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"validmind.scorers.classification.BrierScore"</span>, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Added Brier Score - lower values indicate better calibrated probabilities"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Log Loss - measures how well the predicted probabilities match true labels per row</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"validmind.scorers.classification.LogLoss"</span>, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Added Log Loss - lower values indicate better probability estimates"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a comparison summary showing first few rows of individual metrics</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">First few rows of individual metrics:"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>individual_metrics <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> vm_test_ds.df.columns <span class="cf">if</span> <span class="bu">any</span>(m <span class="kw">in</span> col <span class="cf">for</span> m <span class="kw">in</span> [<span class="st">'BrierScore'</span>, <span class="st">'LogLoss'</span>, <span class="st">'Confidence'</span>, <span class="st">'Correctness'</span>])]</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vm_test_ds.df[individual_metrics].head())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-37" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vm_test_ds._df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc7_8__"></a></p>
+</section>
+<section id="custom-scorer" class="level3">
+<h3 class="anchored" data-anchor-id="custom-scorer">Custom Scorer</h3>
+<p>Let's see how to create your own custom scorers using the <code>@scorer</code> decorator.</p>
+<p>The example below demonstrates a scorer that looks at the class balance in the neighborhood around each data point. For each row, it will give you a score from 0 to 1, where a score closer to 1 means there's a nice even balance of classes in that area of your data. This can help you identify regions where your classes are well-mixed vs regions dominated by a single class.</p>
+<div id="cell-39" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> validmind.scorer <span class="im">import</span> scorer</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">@scorer</span>(<span class="st">"my_scorers.TestScorer"</span>) </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_scorer(model, dataset):</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom scorer that calculates class balance ratio.</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">        model: Not used in this scorer</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">        dataset: The dataset to analyze</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">        numpy.ndarray: Array of class balance ratios between 0 and 1,</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">        where values closer to 1 indicate better class balance in the local neighborhood</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get target values</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset.df[dataset.target_column].values</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate local class balance in sliding windows</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    window_size <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    balance_scores <span class="op">=</span> []</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(y)):</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        start_idx <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, i <span class="op">-</span> window_size<span class="op">//</span><span class="dv">2</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>        end_idx <span class="op">=</span> <span class="bu">min</span>(<span class="bu">len</span>(y), i <span class="op">+</span> window_size<span class="op">//</span><span class="dv">2</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        window <span class="op">=</span> y[start_idx:end_idx]</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate ratio of minority class</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        class_ratio <span class="op">=</span> np.mean(window)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Adjust to be symmetric around 0.5</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>        balance_score <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="bu">abs</span>(<span class="fl">0.5</span> <span class="op">-</span> class_ratio) <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        balance_scores.append(balance_score)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(balance_scores)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign the class balance scores to the dataset</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>vm_test_ds.assign_scores(metrics <span class="op">=</span> <span class="st">"my_scorers.TestScorer"</span>, model <span class="op">=</span> vm_xgb_model)</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a id="toc8__"></a></p>
+</section>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
+<p>You can explore the assigned scores right in the notebook as demonstrated above. However, there's even more value in using the ValidMind Platform to work with your model documentation and monitoring.</p>
+<p><a id="toc8_1__"></a></p>
+<section id="work-with-your-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="work-with-your-documentation">Work with your documentation</h3>
+<ol type="1">
+<li><p>From the <strong>Inventory</strong> in the ValidMind Platform, go to the model you registered earlier. (Learn more: <a href="https://docs.validmind.ai/guide/inventory/working-with-the-inventory.html">Working with the inventory</a>)</p></li>
+<li><p>In the left sidebar that appears for your model, click <strong>Development</strong> under Documents.</p></li>
+</ol>
+<p>What you see is the full draft of your documentation in a more easily consumable version. From here, you can make qualitative edits to documentation, view guidelines, collaborate with validators, and submit your documentation for approval when it's ready. (<strong>Learn more:</strong> <a href="https://docs.validmind.ai/guide/documentation/working-with-documentation.html">Working with documentation</a>)</p>
+<p><a id="toc8_2__"></a></p>
+</section>
+<section id="discover-more-learning-resources" class="level3">
+<h3 class="anchored" data-anchor-id="discover-more-learning-resources">Discover more learning resources</h3>
+<p>We offer many interactive notebooks to help you work with model scoring and evaluation:</p>
+<ul>
+<li><a href="https://docs.validmind.ai/developer/model-testing/testing-overview.html">Run unit metrics</a></li>
+<li><a href="https://docs.validmind.ai/developer/samples-jupyter-notebooks.html">Assign predictions</a></li>
+<li><a href="https://docs.validmind.ai/developer/samples-jupyter-notebooks.html">Model comparison workflows</a></li>
+</ul>
+<p>Or, visit our <a href="https://docs.validmind.ai/">documentation</a> to learn more about ValidMind.</p>
+<p><a id="toc9__"></a></p>
+</section>
+</section>
+<section id="upgrade-validmind" class="level2">
+<h2 class="anchored" data-anchor-id="upgrade-validmind">Upgrade ValidMind</h2>
+<div class="alert alert-block alert-info" style="background-color: #B5B5B510; color: black; border: 1px solid #083E44; border-left-width: 5px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);border-radius: 5px;">
+After installing ValidMind, you'll want to periodically make sure you are on the latest version to access any new features and other enhancements.
+</div>
+<p>Retrieve the information for the currently installed version of ValidMind:</p>
+<p>%pip show validmind</p>
+<p>If the version returned is lower than the version indicated in our <a href="https://github.com/validmind/validmind-library/blob/prod/validmind/__version__.py">production open-source code</a>, restart your notebook and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">%pip</span> install <span class="at">--upgrade</span> validmind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You may need to restart your kernel after running the upgrade package for changes to be applied.</p>
+<!-- VALIDMIND COPYRIGHT -->
+<p><small></small></p><small>
+<hr>
+</small><p><small>Copyright © 2023-2026 ValidMind Inc. All rights reserved.<br> Refer to <a href="https://github.com/validmind/validmind-library/blob/main/LICENSE">LICENSE</a> for details.<br> SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial</small></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("^https:\/\/(docs\.validmind\.ai|docs-staging\.validmind\.ai|docs-demo\.vm\.validmind\.ai)\/.*");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../notebooks/how_to/qualitative_text/qualitative_text_generation.html" class="pagination-link" aria-label="Generate qualitative text with the ValidMind library">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Generate qualitative text with the ValidMind library</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <div class="footer-section footer-logo-info">
+  <a href="https://validmind.com" target="_blank" rel="noopener" class="footer-logo-link">
+    <img src="../../../assets/home-page/ValidMind MASTER Brand Assets_Logo-White R 2.svg" alt="ValidMind Logo" class="footer-logo">
+  </a>
+  <div class="footer-logo-column">
+    <div>©</div>
+    <div class="footer-company-info">
+      <div>Copyright 2026 ValidMind Inc.</div>
+      <div>All Rights Reserved.</div>
+      <div><a id="open_preferences_center" class="cookie-preferences-link" href="#">Cookie preferences</a></div>
+      <div><a href="https://validmind.com/legal/" class="footer-company-legal external" target="_blank" rel="noopener">Legal</a></div>
+    </div>
+  </div>
+</div>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <div class="footer-section">
+  <div class="footer-heading">Get started</div>
+  <div class="footer-user-guides-columns">
+    <ul class="footer-user-guides-column-1">
+      <li><a href="../../../get-started/developer/quickstart-developer.html">Development</a></li>
+      <li><a href="../../../get-started/validator/quickstart-validator.html">Validation</a></li>
+      <li><a href="../../../get-started/administrator/quickstart-administrator.html">Setup &amp; admin</a></li>
+    </ul>
+  </div>
+</div>
+  </li>  
+    <li class="nav-item">
+ <div class="footer-section footer-user-guides">
+  <div class="footer-heading">Guides</div>
+  <div class="footer-user-guides-columns">
+    <ul class="footer-user-guides-column-1">
+      <li><a href="../../../guide/guides.html#access">Access</a></li>
+      <li><a href="../../../guide/guides.html#configuration">Configuration</a></li>
+      <li><a href="../../../guide/guides.html#integrations">Integrations</a></li>
+      <li><a href="../../../guide/guides.html#workflows">Workflows</a></li>
+      <li><a href="../../../guide/guides.html#inventory">Inventory</a></li>
+    </ul>
+    <ul class="footer-user-guides-column-2">
+      <li><a href="../../../guide/guides.html#documents-templates">Documents &amp; templates</a></li>
+      <li><a href="../../../guide/guides.html#documentation">Documentation</a></li>
+      <li><a href="../../../guide/guides.html#validation">Validation</a></li>
+      <li><a href="../../../guide/guides.html#reporting-auditing">Reporting &amp; auditing</a></li>
+      <li><a href="../../../guide/guides.html#monitoring">Monitoring</a></li>
+      <li><a href="../../../guide/guides.html#attestation">Attestation</a></li>
+    </ul>
+  </div>
+</div>
+  </li>  
+    <li class="nav-item">
+ <div class="footer-section footer-library">
+  <div class="footer-heading">ValidMind Library</div>
+  <div class="footer-user-guides-columns">
+    <ul class="footer-user-guides-column-1">
+      <li><a href="../../../developer/validmind-library.html#quickstart">Quickstarts</a></li>
+      <li><a href="../../../developer/validmind-library.html#development">Development tutorial</a></li>
+      <li><a href="../../../developer/validmind-library.html#validation">Validation tutorial</a></li>
+    </ul>
+    <ul class="footer-user-guides-column-2">
+      <li><a href="../../../developer/how-to/testing-overview.html">Run tests &amp; test suites</a></li>
+      <li><a href="../../../developer/how-to/feature-overview.html">Use library features</a></li>
+      <li><a href="../../../developer/samples-jupyter-notebooks.html">Code samples</a></li>
+      <li><a href="../../../validmind/validmind.html">Python API</a></li>
+      <li><a href="../../../reference/validmind-rest-api-vm.html">Public REST API</a></li>
+    </ul>
+  </div>
+</div>
+  </li>  
+    <li class="nav-item">
+ <div class="footer-section">
+  <div class="footer-heading">Training</div>
+  <ul>
+    <li><a href="../../../training/program/learning-paths.html">Learning paths</a></li>
+    <li><a href="../../../training/training.html#available-courses">Courses</a></li>
+    <li><a href="../../../training/training.html#available-videos">Videos</a></li>
+  </ul>
+</div>
+  </li>  
+    <li class="nav-item">
+ <div class="footer-section">
+  <div class="footer-heading">Support</div>
+  <ul>
+    <li><a href="../../../support/troubleshooting.html">Troubleshooting</a></li>
+    <li><a href="../../../faq/faq.html">FAQ</a></li>
+    <li><a href="../../../support/support.html">Get help</a></li>
+  </ul>
+</div>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/validmind/documentation/blob/main/site/notebooks/how_to/scoring/assign_scores_complete_tutorial.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/validmind/documentation/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <div class="footer-section">
+  <div class="footer-heading">Community</div>
+  <ul>
+    <li><a href="https://github.com/validmind/documentation"><i class="fa-brands fa-github"></i> GitHub</a></li>
+    <li><a href="https://www.linkedin.com/company/validmind"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+    <li><a href="https://validmind.com/events/"><i class="fa-solid fa-calendar-check"></i> Events</a></li>
+    <li><a href="https://validmind.com/blog/"><i class="fa-solid fa-blog"></i> Blog</a></li>
+  </ul>
+</div>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
