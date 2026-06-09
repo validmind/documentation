@@ -9,14 +9,15 @@ aliases:
 listing:
   - id: faq-documentation
     type: grid
-    grid-columns: 2
+    grid-columns: 3
     max-description-length: 250
     sort: false
     fields: [title, description]
     contents:
+    - ../guide/templates/managing-documents.qmd
     - ../guide/templates/working-with-document-templates.qmd
     - ../guide/documentation/working-with-documentation.qmd
-categories: ["templates", "documents", "documentation","customization", "images", "validmind platform", "validmind library"]
+categories: ["templates", "documents", "documentation", "customization", "images", "attachments","validmind platform", "validmind library"]
 ---
 
 ## What kind of templates are provided by {{< var vm.product >}}?
@@ -27,31 +28,33 @@ categories: ["templates", "documents", "documentation","customization", "images"
 - Validation (validation reports)
 - Monitoring (ongoing monitoring reports)
 
-You can also create custom document types and associated templates to suit your organization's unique needs.
+You can also create custom document types and associated templates to suit your organization's unique needs.[^2]
 
 ## Can templates be customized for our use cases?
 
-Yes, the {{< var validmind.platform >}}[^2] allows you to configure versioned templates based on document requirements for each record (such as a model) or lifecycle use case.
+Yes, the {{< var validmind.platform >}}[^3] allows you to configure versioned templates based on document requirements for each record (such as a model) or lifecycle use case.
 
-- {{< var vm.product >}}'s templates are fully customizable,[^3] and are complemented by the ability to manage validation guidelines.
-- You can swap between different versions of templates or apply another version of the current template.[^4]
+- {{< var vm.product >}}'s templates are fully customizable,[^4] and are complemented by the ability to manage validation guidelines.
+- You can swap between different versions of templates or apply another version of the current template.[^5]
 - Template outlines can be modified right in the {{< var validmind.platform >}}. We also offer an advanced raw YAML editor, enabling you to make detailed changes.
 
-By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^5] has sufficient permissions to manage document templates, and you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap document templates.
+By default, the [{{< fa hand >}} Customer Admin]{.bubble} role[^6] has sufficient permissions to manage document templates, and you must be a [{{< fa code >}} Developer]{.bubble} or [{{< fa circle-check >}} Validator]{.bubble} to be able to swap document templates.
+
+{{< include _faq-library-blocks.qmd >}}
 
 ## Can documents be created right in the {{< var validmind.platform >}}?
 
-Yes, you can work with documentation, validation reports, ongoing monitoring reports, or any other document type directly in the {{< var validmind.platform >}}, without having to first generate anything using the {{< var validmind.developer >}}.[^6]
+Yes, you can work with documentation, validation reports, ongoing monitoring reports, or any other document type directly in the {{< var validmind.platform >}}, without having to first generate anything using the {{< var validmind.developer >}}.[^7]
 
-1. Add and edit text on any document within the {{< var vm.platform >}} using our content editing toolbar.[^7]
-2. Using the {{< var vm.developer >}}, execute test suites and generate the corresponding supporting results. These results can then be added to your documents within the {{< var vm.platform >}}.[^8]
+1. Add and edit text on any document within the {{< var vm.platform >}} using our content editing toolbar.[^8]
+2. Using the {{< var vm.developer >}}, execute test suites and generate the corresponding supporting results. These results can then be added to your documents within the {{< var vm.platform >}}.[^9]
 
 ## Can I run tests and log documentation without a record?
 <span id="no-available-model"></span>
 Yes! If you do not have a record (such as a model) ready, or your record can't be loaded directly, or you only have access to predictions, you can still run tests and log documentation using the {{< var validmind.developer >}} as long as you're able to load the predictions.
 
-- Use `assign_predictions()`[^9] to load predictions from a separate file or a dataset with predictions.
-- Call `init_model()`[^10] to create a model object, but instead of a trained instance, pass an `input_id` and model metadata. `ModelMetadata()`[^11] will use the provided metadata instead of trying to calculate it from the model's library.
+- Use `assign_predictions()`[^10] to load predictions from a separate file or a dataset with predictions.
+- Call `init_model()`[^11] to create a model object, but instead of a trained instance, pass an `input_id` and model metadata. `ModelMetadata()`[^12] will use the provided metadata instead of trying to calculate it from the model's library.
 
 
 ::: {.column-margin}
@@ -75,18 +78,13 @@ Yes! If you do not have a record (such as a model) ready, or your record can't b
 
 {{< include _faq-images.qmd >}}
 
+{{< include _faq-document-updates.qmd >}}
+
+{{< include _faq-pdf-upload.qmd >}}
+
+{{< include _faq-document-checker.qmd >}}
+
 {{< include _faq-exporting.qmd >}}
-
-<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
-
-<!-- ## Can we leverage content from historical documents? 
-
-{{< var vm.product >}} is in the process of developing features that allow you to benefit from content in historical documents by:
-
-- Allowing users to select definitions and specific documentation artifacts from previous model documentation for particular model use cases
-- Offering users AI-generated content suggestions for specific areas of the documentation (e.g., qualitative sections) based on high-quality historical documentation
-
-These features are currently on the roadmap and under research, no release schedule is set yet. -->
 
 ## Learn more
 
@@ -98,22 +96,24 @@ These features are currently on the roadmap and under research, no release sched
 
 [^1]: [Manage document templates](/guide/templates/manage-document-templates.qmd)
 
-[^2]: [Accessing {{< var vm.product >}}](/guide/access/accessing-validmind.qmd)
+[^2]: [Manage document types](/guide/templates/manage-document-types.qmd)
 
-[^3]: [Customize document templates](/guide/templates/customize-document-templates.qmd)
+[^3]: [Accessing {{< var vm.product >}}](/guide/access/accessing-validmind.qmd)
 
-[^4]: [Manage document templates](/guide/templates/manage-document-templates.qmd)
+[^4]: [Customize document templates](/guide/templates/customize-document-templates.qmd)
 
-[^5]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+[^5]: [Manage document templates](/guide/templates/manage-document-templates.qmd)
 
-[^6]: [{{< var validmind.developer >}}](/developer/validmind-library.qmd)
+[^6]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^7]: [Work with content blocks](/guide/documentation/work-with-content-blocks.qmd)
+[^7]: [{{< var validmind.developer >}}](/developer/validmind-library.qmd)
 
-[^8]: [Work with test results](/guide/documentation/work-with-test-results.qmd)
+[^8]: [Work with content blocks](/guide/documentation/work-with-content-blocks.qmd)
 
-[^9]: [`assign_predictions()`](/validmind/validmind/vm_models.qmd#assign_predictions)
+[^9]: [Work with test results](/guide/documentation/work-with-test-results.qmd)
 
-[^10]: [`init_model()`](/validmind/validmind.qmd#init_model)
+[^10]: [`assign_predictions()`](/validmind/validmind/vm_models.qmd#assign_predictions)
 
-[^11]: [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.qmd#modelmetadata)
+[^11]: [`init_model()`](/validmind/validmind.qmd#init_model)
+
+[^12]: [`ModelMetadata()`](/validmind/validmind/tests/model_validation/ModelMetadata.qmd#modelmetadata)
