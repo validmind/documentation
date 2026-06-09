@@ -21,6 +21,8 @@
 
 **Docs (related):**
 
+- `/faq/faq-attestations.html`
+  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/manage-attestations.html`
@@ -31,8 +33,6 @@
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
   - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -48,6 +48,8 @@
 
 **Docs (related):**
 
+- `/faq/faq-attestations.html`
+  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/review-attestations.html`
@@ -127,6 +129,25 @@
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 - `/guide/templates/managing-documents.html`
   - Sections: Manage document defaults; Manage document types and documents; What's next
+
+#### `/settings/documents/general` — General
+
+**Docs (related):**
+
+- `/guide/templates/customize-document-checker.html`
+  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+- `/guide/templates/customize-document-templates.html`
+  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+- `/guide/templates/manage-document-templates.html`
+  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/templates/manage-text-block-library.html`
+  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 ### Organization
 
@@ -233,7 +254,7 @@
 **Docs (related):**
 
 - `/faq/faq-integrations.html`
-  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; Learn more
+  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; What third-party integrations are supported by }?; Learn more
 - `/guide/configuration/configure-aws-privatelink.html`
   - Sections: Prerequisites; VPC service information; Steps; What's next
 - `/guide/configuration/configure-azure-private-link.html`
@@ -247,14 +268,12 @@
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
-#### `/settings/integrations/data-exports` — Analytics Exports
+#### `/settings/integrations/data-exports` — Data Exports
 
 **Docs (related):**
 
 - `/faq/faq-integrations.html`
-  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; Learn more
-- `/faq/faq-reporting.html`
-  - Sections: What analytic features are offered by }?; Learn more
+  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; What third-party integrations are supported by }?; Learn more
 - `/guide/configuration/configure-aws-privatelink.html`
   - Sections: Prerequisites; VPC service information; Steps; What's next
 - `/guide/configuration/configure-azure-private-link.html`
@@ -263,6 +282,8 @@
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
 - `/guide/configuration/customize-your-dashboard.html`
   - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+- `/guide/configuration/manage-groups.html`
+  - Sections: Prerequisites; View group details; Add new groups; Remove groups; Add or remove group members
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -271,7 +292,7 @@
 **Docs (related):**
 
 - `/faq/faq-integrations.html`
-  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; Learn more
+  - Sections: Which languages, libraries, and environments do you support?; Currently, we support **Python }** and the most popular AI/ML and data science libraries.; What test ingestion or modeling techniques are supported?; What large language model (LLM) features are offered?; What deployment options are supported by }?; What third-party integrations are supported by }?; Learn more
 - `/guide/configuration/configure-aws-privatelink.html`
   - Sections: Prerequisites; VPC service information; Steps; What's next
 - `/guide/configuration/configure-azure-private-link.html`
@@ -367,6 +388,25 @@
 - `/guide/model-validation/manage-validation-guidelines.html`
   - Note: no matching `.qmd` source found
 
+#### `/settings/risk-tier-templates` — Risk Tier Templates
+
+**Docs (related):**
+
+- `/guide/templates/customize-document-checker.html`
+  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+- `/guide/templates/customize-document-templates.html`
+  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+- `/guide/templates/manage-document-templates.html`
+  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/templates/manage-text-block-library.html`
+  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
+
+- *No direct help link in frontend; related docs inferred from keywords.*
+
 ### Users & Access
 
 #### `/settings/roles` — Roles
@@ -452,7 +492,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
@@ -474,7 +514,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
@@ -487,6 +527,10 @@
   - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 ## Main application
+
+#### `/activity` — Activity
+
+- *No direct help link; content may be covered under scattered guide sections.*
 
 #### `/analytics` — sidebar.analytics
 
@@ -530,6 +574,8 @@
 
 **Docs (related):**
 
+- `/faq/faq-attestations.html`
+  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/manage-attestations.html`
@@ -561,7 +607,7 @@
 **Docs (related):**
 
 - `/faq/faq-workflows.html`
-  - Sections: Can I customize workflows within }?; What statuses are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
+  - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/workflows/conditional-step-requirements.html`
