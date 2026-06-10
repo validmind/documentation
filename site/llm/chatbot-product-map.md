@@ -22,7 +22,7 @@
 **Docs (related):**
 
 - `/faq/faq-attestations.html`
-  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
+  - Sections: Who can submit, review, and approve attestations?; Why aren't attestations displayed right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/manage-attestations.html`
@@ -32,7 +32,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -49,7 +49,7 @@
 **Docs (related):**
 
 - `/faq/faq-attestations.html`
-  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
+  - Sections: Who can submit, review, and approve attestations?; Why aren't attestations displayed right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/review-attestations.html`
@@ -57,7 +57,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
 
 ### Organization
 
@@ -71,7 +71,7 @@
 **Docs (related):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
 
 ### Documents
 
@@ -156,12 +156,12 @@
 **Docs (primary):**
 
 - `/guide/configuration/manage-platform-notifications.html` (section: #customize-email-notifications)
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications; What's next
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications
 
 **Docs (related):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
 
 ### Artifacts
 
@@ -261,10 +261,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configuring-private-connectivity.html`
+  - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
   - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
-- `/guide/configuration/manage-groups.html`
-  - Sections: Prerequisites; View group details; Add new groups; Remove groups; Add or remove group members
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -280,10 +280,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configuring-private-connectivity.html`
+  - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
   - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
-- `/guide/configuration/manage-groups.html`
-  - Sections: Prerequisites; View group details; Add new groups; Remove groups; Add or remove group members
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -299,10 +299,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configuring-private-connectivity.html`
+  - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
   - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
-- `/guide/configuration/manage-groups.html`
-  - Sections: Prerequisites; View group details; Add new groups; Remove groups; Add or remove group members
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -324,7 +324,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Organization setup; What's next
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
 
 ### Users & Access
 
@@ -537,7 +537,7 @@
 **Docs (related):**
 
 - `/faq/faq-reporting.html`
-  - Sections: What analytic features are offered by }?; Learn more
+  - Sections: What analytic features are offered by }?; How can I export platform data on a schedule to cloud storage?; Learn more
 - `/guide/monitoring/enable-monitoring.html`
   - Sections: Prerequisites; Steps; 1. Get monitoring code snippet; 2. Select monitoring template; 3. Run code snippet; A template must already be applied to your selected document to populate monitoring test results in the }.; What's next
 - `/guide/monitoring/ongoing-monitoring.html`
@@ -575,7 +575,7 @@
 **Docs (related):**
 
 - `/faq/faq-attestations.html`
-  - Sections: Who can submit, review, and approve attestations?; Why don't I see attestations in the Attestations area right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
+  - Sections: Who can submit, review, and approve attestations?; Why aren't attestations displayed right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 - `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/manage-attestations.html`
@@ -585,7 +585,7 @@
 - `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
-  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
