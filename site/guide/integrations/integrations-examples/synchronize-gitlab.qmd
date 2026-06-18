@@ -2,11 +2,11 @@
 # Copyright © 2023-2026 ValidMind Inc. All rights reserved.
 # Refer to the LICENSE file in the root of this repository for details.
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
-title: "Synchronize models with GitLab"
+title: "Synchronize records with GitLab"
 date: last-modified
 ---
 
-Synchronize GitLab model registry with ValidMind model inventory for comprehensive model tracking.
+Synchronize your GitLab model registry with the {{< var vm.product >}} inventory for comprehensive tracking.
 
 ::: {.attn}
 
@@ -19,62 +19,70 @@ Synchronize GitLab model registry with ValidMind model inventory for comprehensi
 
 :::
 
-## Configure the connection
+## Sync {{< var vm.product >}} records with GitLab
 
-::: {.column-margin}
-![Configure GitLab connection](integrations-examples-gitlab.png){width=80% fig-alt="Screenshot of the Configure GitLab dialog showing fields for integration name, description, project ID, GitLab instance URL, personal access token, and initial status." .screenshot}
+::: {.panel-tabset}
+
+### 1. Configure GitLab connection
+
+a. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+b. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+
+c. Click **{{< fa plus >}} Add Connection**.
+
+d. In the modal that opens, select **GitLab**.[^3]
+
+e. Complete:
+
+   - **Integration Name** — How other admins can identify the connection.
+   - **Description** (optional) — The intended usage or additional details.
+   - **Project ID** — The GitLab project ID or path containing ML models (required).
+   - **Gitlab Instance URL** (optional) — Leave empty to use GitLab.com, or enter your self-hosted GitLab URL.
+   - **Personal Access Token** — Select a secret containing your GitLab Personal Access Token with `api` or `read_api` scope.
+   - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
+
+f. Click **Save Integration**.
+
+g. Test the connection:
+
+   i. Hover over the GitLab connection you just created.
+   ii. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
+
+   If the test is successful, the message **{{< fa check-circle >}} Connection successful** is displayed.
+
+### 2. Link records to GitLab
+
+a. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+b. Select a record or find your record by applying a filter or searching for it.[^4]
+
+c. Scroll down until you locate the **GitLab** connection box in the right sidebar.
+
+d. Hover over the GitLab box.
+
+e. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa link >}} Link Model**.
+
+f. In the modal that opens, click the **Select Model** dropdown to pick the GitLab model to link.
+
+g. (Optional) Click **Test Connection** to ensure the connection is working as expected.
+
+   If the test is successful, the message **{{< fa check-circle >}} Connection Test Successful** is displayed.
+
+h. Click **Link Model**.
+
 :::
 
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
-
-2. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
-
-3. Click **{{< fa plus >}} Add Connection**.
-
-4. In the modal that opens, select **GitLab**.
-
-5. Complete:
-
-   - **[integration name]{.smallcaps}** — How other admins can identify the connection.
-   - **[description]{.smallcaps}** (optional) — The intended usage or additional details.
-   - **[project id]{.smallcaps}** — The GitLab project ID or path containing ML models (required).
-   - **[gitlab instance url]{.smallcaps}** (optional) — Leave empty to use GitLab.com, or enter your self-hosted GitLab URL.
-   - **[personal access token]{.smallcaps}** — Select a secret containing your GitLab Personal Access Token with `api` or `read_api` scope.
-   - **[initial status]{.smallcaps}** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
-
-6. Click **Save Integration**.
-
-7. Test the connection:
-
-   a. Hover over the GitLab connection you just created.
-   b. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
-
-   If the test is successful, the message **{{< fa check-circle >}} Connection successful** displays.
-
-## Link the models
-
-1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
-
-2. Select a model by clicking on it or find your model by applying a filter or searching for it.[^3]
-
-3. Scroll down until you locate the **GitLab** connection box in the right sidebar.
-
-4. Hover over the GitLab box.
-
-5. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa link >}} Link Model**.
-
-6. In the modal that opens, click the [select model]{.smallcaps} dropdown to pick the GitLab model to link.
-
-7. Optional: Click **Test Connection** to ensure the connection is working as expected.
-
-   If the test is successful, the message **{{< fa check-circle >}} Connection Test Successful** displays.
-
-8. Click **Link Model**.
 
 <!-- FOOTNOTES -->
 
-[^1]: [Manage permissions](../../configuration/manage-permissions.qmd)
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^2]: [Manage secrets](../manage-secrets.qmd)
+[^2]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
 
-[^3]: [Working with the inventory](../../inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+[^3]:
+
+   ![Configure GitLab connection](integrations-examples-gitlab.png){width=80% fig-alt="Screenshot of the Configure GitLab dialog showing fields for integration name, description, project ID, GitLab instance URL, personal access token, and initial status." .screenshot}
+
+
+[^4]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
