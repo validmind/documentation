@@ -17,21 +17,9 @@ listing:
         description: "Install the {{< var validmind.developer >}}, load data from a Unity Catalog table via Spark, train a simple classification model, and run ValidMind tests to send results to the {{< var validmind.platform >}}."
 ---
 
-Link {{< var vm.product >}} inventory records to models, datasets, and agents in Databricks Unity Catalog for governance across your ML ecosystem and bidirectional metadata synchronization. 
+Link {{< var vm.product >}} inventory records to models, datasets, and agents in Databricks Unity Catalog for governance across your ML ecosystem and bidirectional metadata synchronization.
 
 You can also run validation notebooks directly against Databricks-hosted data.
-
-::: {.attn}
-
-## Prerequisites
-
-- [x] {{< var link.login >}}
-- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure connections.[^1]
-- [x] A secret is configured for your Databricks Personal Access Token.[^2]
-- [x] You have admin access to your Databricks workspace.
-
-:::
-
 
 ## How does the integration with Databricks work?
 
@@ -68,72 +56,88 @@ flowchart LR
 ```
 
 
-## Configure the connection
+::: {.attn}
 
-::: {.column-margin .pt6}
-![Configure the Databricks connection](configure-databricks.png){width=80% fig-alt="Screenshot of the Configure Databricks connection dialog showing the required fields described in step 5." .screenshot}
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure connections.[^1]
+- [x] A secret is configured for your Databricks Personal Access Token.[^2]
+- [x] You have admin access to your Databricks workspace.
+
 :::
 
-1. In the left sidebar, click **{{< fa gear >}} Settings**.
+## Sync {{< var vm.product >}} records with Databricks
 
-2. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+::: {.panel-tabset}
 
-3. Click **{{< fa plus >}} Add Connection**.
+### 1. Configure Databricks connection
 
-4. In the modal that opens, select **Databricks**.
+a. In the left sidebar, click **{{< fa gear >}} Settings**.
 
-5. Complete:
+b. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
 
-   - **[integration name]{.smallcaps}** — How other admins can identify the connection.
-   - **[description]{.smallcaps}** (optional) — The intended usage or additional details.
-   - **[workspace url]{.smallcaps}** — Your Databricks workspace URL, found in the browser address bar, such as `https://adb-1234567890.azuredatabricks.net`.
-   - **[sql warehouse id]{.smallcaps}** — The ID of your SQL Warehouse, found in SQL Warehouses settings.
-   - **[personal access token]{.smallcaps}** — Select a secret containing your Databricks Personal Access Token.
-   - **[initial status]{.smallcaps}** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
+c. Click **{{< fa plus >}} Add Connection**.
 
-6. Click **Save Integration**.
+d. In the modal that opens, select **Databricks**.[^3]
 
-7. Test the connection:
+e. Complete:
 
-   a. Hover over the Databricks connection you just created.
-   b. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
+   - **Integration Name** — How other admins can identify the connection.
+   - **Description** (optional) — The intended usage or additional details.
+   - **Workspace URL** — Your Databricks workspace URL, found in the browser address bar, such as `https://adb-1234567890.azuredatabricks.net`.
+   - **SQL Warehouse ID** — The ID of your SQL Warehouse, found in SQL Warehouses settings.
+   - **Personal Access Token** — Select a secret containing your Databricks Personal Access Token.
+   - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
 
-   If the test is successful, the message **{{< fa check-circle >}} Connection successful** displays.
+f. Click **Save Integration**.
 
-## Link records to Databricks
+g. Test the connection:
+
+   i. Hover over the Databricks connection you just created.
+   ii. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
+
+   If the test is successful, the message **{{< fa check-circle >}} Connection successful** is displayed.
+
+### 2. Link records to Databricks
 
 Once the connection is configured, you can link {{< var vm.product >}} inventory records to your Databricks Unity Catalog resources:
 
-1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+a. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
-2. Select a record by clicking on it or find your record by applying a filter or searching for it.[^3]
+b. Select a record by clicking on it or find your record by applying a filter or searching for it.[^4]
 
-3. Scroll down until you locate the **Databricks** connection box in the right sidebar.
+c. Scroll down until you locate the **Databricks** connection box in the right sidebar.
 
-4. Hover over the Databricks box.
+d. Hover over the Databricks box.
 
-5. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa link >}} Link Model**.
+e. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa link >}} Link Model**.
 
-6. In the modal that opens:
+f. In the modal that opens:
 
-   - **[select model]{.smallcaps}** — Choose the Databricks model to link from the dropdown.
-   - **[sync frequency]{.smallcaps}** — Set how often ValidMind automatically syncs data from the external system.
+   - **Select Model** — Choose the Databricks model to link from the dropdown.
+   - **Sync Frequency** — Set how often ValidMind automatically syncs data from the external system.
 
-7. Click **Link Model** to complete the link.
-
-8. Click **Link Model**.
+g. Click **Link Model** to complete the link.
 
 After linking, metadata from the Unity Catalog resource syncs to {{< var vm.product >}}. You can use linked fields in custom calculated fields to surface Databricks metadata directly in your inventory views.
+
+:::
 
 ## What's next
 
 :::{#whats-next}
 :::
 
+
 <!-- FOOTNOTES -->
 
-[^1]: [Manage permissions](../../configuration/manage-permissions.qmd)
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
 
-[^2]: [Manage secrets](../manage-secrets.qmd)
+[^2]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
 
-[^3]: [Working with the inventory](../../inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+[^3]:
+
+  ![Configure the Databricks connection](configure-databricks.png){width=80% fig-alt="Screenshot of the Configure Databricks connection dialog showing the required fields described in step 5." .screenshot}
+
+[^4]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
