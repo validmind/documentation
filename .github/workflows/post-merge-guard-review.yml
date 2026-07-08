@@ -1,0 +1,122 @@
+name: Post merge-guard review
+
+on:
+  repository_dispatch:
+    types: [post-merge-guard-review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post CHANGES_REQUESTED review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const payload = context.payload.client_payload;
+            const pr_number = payload.pr_number;
+            const owner = 'validmind';
+            const repo = 'documentation';
+
+            const existing = await github.rest.pulls.listReviews({
+              owner,
+              repo,
+              pull_number: pr_number,
+            });
+            const already = existing.data.some(
+              (r) => r.user.login === 'github-actions[bot]' && r.state === 'CHANGES_REQUESTED',
+            );
+            if (already) {
+              core.info(
+                `CHANGES_REQUESTED review already present on PR #${pr_number} — skipping`,
+              );
+              return;
+            }
+
+            let commitSha = payload.commit_sha;
+            let headRef = payload.preview_branch;
+            try {
+              const prResp = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: pr_number,
+              });
+              commitSha = prResp.data.head.sha;
+              headRef = prResp.data.head.ref;
+            } catch (e) {
+              core.warning(
+                `Could not re-fetch PR HEAD; using payload values: ${e.message}`,
+              );
+            }
+
+            let lineNumber = payload.line_number;
+            if (payload.workflow_rel && headRef && payload.ref) {
+              try {
+                const fileResp = await github.rest.repos.getContent({
+                  owner,
+                  repo,
+                  path: payload.workflow_rel,
+                  ref: headRef,
+                });
+                const text = Buffer.from(fileResp.data.content, 'base64').toString();
+                const needle = `ref: ${payload.ref}`;
+                const idx = text.split('\n').findIndex((l) => l.trim() === needle);
+                if (idx !== -1) {
+                  lineNumber = idx + 1;
+                }
+              } catch (e) {
+                core.warning(
+                  `Could not re-read workflow file to verify line number: ${e.message}`,
+                );
+              }
+            }
+
+            const comments =
+              payload.workflow_rel && lineNumber && payload.inline_body
+                ? [
+                    {
+                      path: payload.workflow_rel,
+                      line: lineNumber,
+                      side: 'RIGHT',
+                      body: payload.inline_body,
+                    },
+                  ]
+                : [];
+
+            try {
+              await github.rest.pulls.createReview({
+                owner,
+                repo,
+                pull_number: pr_number,
+                commit_id: commitSha,
+                event: 'CHANGES_REQUESTED',
+                body: payload.body,
+                comments,
+              });
+              core.info(
+                `CHANGES_REQUESTED review posted on PR #${pr_number} by github-actions[bot]`,
+              );
+            } catch (e) {
+              if (e.status === 422 && comments.length > 0) {
+                core.warning(
+                  `Inline comment caused 422; retrying body-only: ${e.message}`,
+                );
+                await github.rest.pulls.createReview({
+                  owner,
+                  repo,
+                  pull_number: pr_number,
+                  commit_id: commitSha,
+                  event: 'CHANGES_REQUESTED',
+                  body: payload.body,
+                });
+                core.info(
+                  `CHANGES_REQUESTED review posted (body only) on PR #${pr_number}`,
+                );
+              } else {
+                throw e;
+              }
+            }
