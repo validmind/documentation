@@ -31,15 +31,69 @@ BACKEND_ROOT = Path(os.environ.get("BACKEND_ROOT", REPO_ROOT.parent / "backend")
 
 SCHEMA_FILE = BACKEND_ROOT / "src/backend/templates/documentation/model_documentation/mdd_template_schema_v5_ui.json"
 TARGET_FILE = REPO_ROOT / "site/guide/templates/_template-schema-generated.qmd"
+EMBED_SCRIPT = "/guide/templates/schema_doc-embed.js"
 
 # Minimum expected file size in bytes (sanity check for valid output)
 MIN_OUTPUT_SIZE = 40000
 
-# CSS stylesheets to link in the generated HTML
-STYLESHEETS = [
-    '/styles.css',
-    '/assets/styles/template-schema.css',
-]
+
+def strip_global_assets(html_content: str) -> str:
+    """Remove CSS/JS that pollutes the Quarto page or is replaced by embed script."""
+    patterns = [
+        r'<link[^>]*href="https://stackpath\.bootstrapcdn\.com/bootstrap/[^"]*"[^>]*>',
+        r'<link[^>]*href="https://fonts\.googleapis\.com/css\?family=Overpass[^"]*"[^>]*>',
+        r'<script[^>]*src="https://use\.fontawesome\.com/[^"]*"[^>]*></script>',
+        r'<link[^>]*href="schema_doc\.css"[^>]*>',
+        r'<script[^>]*src="https://code\.jquery\.com/jquery[^"]*"[^>]*></script>',
+        r'<script[^>]*src="https://stackpath\.bootstrapcdn\.com/bootstrap/[^"]*"[^>]*></script>',
+        r'<script[^>]*src="schema_doc\.min\.js"[^>]*></script>',
+        r'\s*<title>[^<]*</title>\s*',
+        r'<h1>[^<]*</h1>',
+    ]
+    for pattern in patterns:
+        html_content = re.sub(pattern, '', html_content)
+    return re.sub(r'\n{3,}', '\n\n', html_content)
+
+
+def scope_collapse_selectors(html_content: str) -> str:
+    """Scope Expand/Collapse all buttons to the schema wrapper."""
+    return html_content.replace(
+        'data-target=".collapse:not(.show)"',
+        'data-target=".template-schema-docs .collapse:not(.show)"',
+    ).replace(
+        'data-target=".collapse.show"',
+        'data-target=".template-schema-docs .collapse.show"',
+    )
+
+
+def extract_body_inner(html_content: str) -> str:
+    """Extract inner HTML from the generated document body."""
+    body_match = re.search(r'<body[^>]*>(.*)</body>', html_content, re.DOTALL | re.IGNORECASE)
+    if not body_match:
+        raise ValueError("Generated HTML does not contain a <body> element")
+    return body_match.group(1).strip()
+
+
+def build_fragment(body_inner: str) -> str:
+    """Wrap schema markup in a scoped container and attach the embed script."""
+    body_inner = scope_collapse_selectors(body_inner)
+    # Drop legacy wrapper if a previous generator pass already added it.
+    if body_inner.startswith('<div class="template-schema-docs">'):
+        body_inner = re.sub(
+            r'^<div class="template-schema-docs">\s*',
+            '',
+            body_inner,
+            count=1,
+        )
+        if body_inner.endswith('</div>'):
+            body_inner = body_inner[:-6].rstrip()
+
+    return (
+        f'<div class="template-schema-docs">\n'
+        f'{body_inner}\n'
+        f'</div>\n'
+        f'<script src="{EMBED_SCRIPT}"></script>'
+    )
 
 
 def main():
@@ -63,10 +117,9 @@ def main():
 
     # Generate HTML documentation
     print(f"Generating schema documentation from {SCHEMA_FILE}")
-    
-    # Create temporary output
+
     temp_output = TARGET_FILE.with_suffix(".tmp.html")
-    
+
     subprocess.run([
         "generate-schema-doc",
         "--config", "expand_buttons=true",
@@ -74,77 +127,13 @@ def main():
         str(temp_output)
     ], check=True)
 
-    # Read generated HTML and inject stylesheet links
     with open(temp_output, "r") as f:
         html_content = f.read()
 
-    # Strip external CSS/JS that affects global page styling
-    # These are included by json-schema-for-humans but break the Quarto page layout
-    html_content = re.sub(
-        r'<link[^>]*href="https://stackpath\.bootstrapcdn\.com/bootstrap/[^"]*"[^>]*>',
-        '',
-        html_content
-    )
-    html_content = re.sub(
-        r'<link[^>]*href="https://fonts\.googleapis\.com/css\?family=Overpass[^"]*"[^>]*>',
-        '',
-        html_content
-    )
-    html_content = re.sub(
-        r'<script[^>]*src="https://use\.fontawesome\.com/[^"]*"[^>]*></script>',
-        '',
-        html_content
-    )
-    # Strip local schema_doc.css which has unscoped global body styles
-    html_content = re.sub(
-        r'<link[^>]*href="schema_doc\.css"[^>]*>',
-        '',
-        html_content
-    )
-    # Strip the title tag (not needed when embedded in Quarto page)
-    html_content = re.sub(
-        r'\s*<title>[^<]*</title>\s*',
-        '\n',
-        html_content
-    )
-    # Strip h1 headings (the page already has a heading from Quarto)
-    html_content = re.sub(
-        r'<h1>[^<]*</h1>',
-        '',
-        html_content
-    )
-    # Clean up multiple consecutive blank lines
-    html_content = re.sub(r'\n{3,}', '\n\n', html_content)
+    html_content = strip_global_assets(html_content)
+    body_inner = extract_body_inner(html_content)
+    fragment = build_fragment(body_inner).strip()
 
-    # Build stylesheet link tags
-    stylesheet_links = '\n'.join(
-        f'<link href="{href}" rel="stylesheet">'
-        for href in STYLESHEETS
-    )
-
-    # Insert stylesheet links after the opening <head> tag
-    if "<head>" in html_content:
-        html_content = html_content.replace(
-            "<head>",
-            f"<head>\n{stylesheet_links}"
-        )
-
-    # Wrap body content in a div for CSS scoping
-    # (Can't use body class because Quarto merges embedded body with its own)
-    html_content = re.sub(
-        r'(<body[^>]*>)',
-        r'\1<div class="template-schema-docs">',
-        html_content
-    )
-    html_content = html_content.replace(
-        '</body>',
-        '</div></body>'
-    )
-
-    # Strip leading/trailing whitespace from HTML content
-    html_content = html_content.strip()
-
-    # Build the output content (raw HTML block for Quarto include)
     output_content = f"""<!-- Copyright © 2023-2026 ValidMind Inc. All rights reserved.
 Refer to the LICENSE file in the root of this repository for details.
 SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
@@ -156,26 +145,22 @@ Source: {SCHEMA_FILE.relative_to(BACKEND_ROOT.parent)}
 -->
 
 ```{{=html}}
-{html_content}
+{fragment}
 ```
 """
 
-    # Validate output before writing
     if len(output_content) < MIN_OUTPUT_SIZE:
         print(f"Error: Generated output is too small ({len(output_content)} bytes)")
         print("This likely indicates a generation failure.")
         temp_output.unlink(missing_ok=True)
         sys.exit(1)
 
-    if "<html" not in html_content or "</html>" not in html_content:
-        print("Error: Generated output does not contain valid HTML structure")
+    if 'class="template-schema-docs"' not in fragment:
+        print("Error: Generated output does not contain template-schema-docs wrapper")
         temp_output.unlink(missing_ok=True)
         sys.exit(1)
 
-    # Write to target file
     TARGET_FILE.write_text(output_content)
-
-    # Clean up temp file
     temp_output.unlink()
 
     print(f"Generated template schema documentation: {TARGET_FILE}")
