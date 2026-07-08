@@ -26,9 +26,16 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge in main branch
+      - name: Merge in main branch (prefer main on conflicts)
         run: |
-          git merge --no-ff origin/main
+          if ! git merge -X theirs --no-edit origin/main; then
+            echo "::warning::Merge reported conflicts; taking main's version for unresolved paths."
+            git diff --name-only --diff-filter=U | while IFS= read -r file; do
+              git checkout --theirs -- "$file"
+              git add -- "$file"
+            done
+            git commit --no-edit
+          fi
 
       # NEW: detect the PR that triggered this push to main (if any)
       - name: Determine source PR (if any)

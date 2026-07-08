@@ -133,7 +133,7 @@ jobs:
       run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
 
     - name: Deploy PR preview
-      run: aws s3 sync site/_site s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }} --delete --exclude "notebooks/EXECUTED/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+      run: aws s3 sync site/_site s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }} --delete --exclude "notebooks/EXECUTED/*" --cache-control "no-cache, max-age=0, must-revalidate" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
 
     - name: Post comment with preview URL
       uses: actions/github-script@v6

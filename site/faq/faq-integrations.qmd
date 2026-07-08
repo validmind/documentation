@@ -9,7 +9,7 @@ aliases:
 listing:
   - id: faq-integrations
     type: grid
-    grid-columns: 3
+    grid-columns: 2
     max-description-length: 250
     sort: false
     fields: [title, description]
@@ -17,12 +17,13 @@ listing:
     - ../developer/supported-records-and-frameworks.qmd
     - ../about/overview-llm-features.qmd
     - ../about/deployment/deployment-options.qmd
+    - ../guide/integrations/managing-integrations.qmd
 categories: ["supported libraries", "supported languages", "integrations", "images", "large language models", "explainability", "deployment options", "validmind library"]
 ---
 
 ## Which languages, libraries, and environments do you support?
 
-- The {{< var validmind.developer >}}[^1] is designed to be platform-agnostic and compatible with most popular open-source programming languages and model development environments in Python and R,[^2] from XGBoost to more sophisticated libraries such as Pytorch and TensorFlow — and many more.
+- The {{< var validmind.developer >}}[^1] is designed to be platform-agnostic and compatible with most popular open-source programming languages and development environments in Python and R,[^2] from XGBoost to more sophisticated libraries such as Pytorch and TensorFlow — and many more.
 - We directly support Matplotlib[^3] and Plotly[^4] plotting libraries for visual representations, and you're able to return images from other libraries as bytes-like objects.[^5]
 
 ::: {.callout}
@@ -35,18 +36,18 @@ Support for commercial and closed-source programming languages such as SAS and M
 ## What test ingestion or modeling techniques are supported?
 
 - {{< var vm.product >}} supports ingesting test results from your training and evaluation pipeline, such as using batch prediction or online prediction mechanisms.[^6]
-- We are also offer standard documentation via the {{< var vm.developer >}} for additional modeling techniques.[^7] 
+- We also offer standard documentation via the {{< var vm.developer >}} for additional modeling techniques.[^7]
 
 {{< include _faq-images.qmd >}}
 
 ## What large language model (LLM) features are offered?
 
-{{< var vm.product >}} offers several specialized features that use large language models (LLMs) to streamline model risk management and ensure regulatory compliance:
- 
+{{< var vm.product >}} offers several specialized features that use large language models (LLMs) to streamline risk management and ensure regulatory compliance:
+
 - **Test interpretation** — Interprets results from tests run within {{< var vm.product >}}.
-- **Qualitative checks** — Leverages metadata from the model inventory, test outcomes, and additional data provided to create qualitative sections within model documentation.
-- **Risk assessment** — Using data from test results, generates a tailored risk assessment for each section of model documentation.
-- **{{< var validmind.checker >}}**[^8] — Reviews documents such as model documentation or validation reports to ensure documents aligns with relevant regulatory requirements.
+- **Qualitative checks** — Leverages metadata from the inventory, test outcomes, and additional data provided to create qualitative sections within documentation.
+- **Risk assessment** — Using data from test results, generates a tailored risk assessment for each section of documentation.
+- **{{< var validmind.checker >}}**[^8] — Reviews documents such as documentation or validation reports to ensure they align with relevant regulatory requirements.
 
 {{< include _faq-explainability.qmd >}}
 
@@ -54,23 +55,21 @@ Support for commercial and closed-source programming languages such as SAS and M
 
 {{< include /about/deployment/_deployment-available-options.qmd >}}
 
-<!-- BELOW REMOVED AFTER ANDRES CONFIRMED WE DON'T SUPPORT DATA DICTIONARIES IN A WAY OUR USERS WOULD EXPECT - BC (Nov 27, 2024) -->
+## What third-party integrations are supported by {{< var vm.product >}}?
 
-<!-- ## Does {{< var vm.product >}} support data dictionaries?
+{{< var vm.product >}} supports integrations across inventory synchronization, workflow automation, data exports, service integrations, API access, testing and documentation, and AI assistants.[^9]
 
-Yes, you can pass data dictionaries to {{< var vm.product >}} via the {{< var vm.developer >}}, such as in CSV format. -->
+Supported connections include:[^10]
 
-<!-- BELOW REMOVED ON REQUEST AS PER SC-6528 -->
+- **Inventory and model registries** — AWS SageMaker,[^11] AWS Bedrock,[^12] Databricks,[^13] MLflow, GitLab,[^14] and custom integrations.[^15]
+- **Service and ticketing systems** — Atlassian Jira[^16] and ServiceNow.[^17]
+- **Analytics and reporting** — Microsoft Power BI, plus scheduled data exports to cloud storage for use with external BI and reporting tools.[^18]
+- **Workflow automation** — HTTP requests from {{< var vm.product >}} to external services and webhooks from external systems into {{< var vm.product >}}.[^19]
+- **Testing and documentation** — {{< var validmind.developer >}} integrations with development platforms, including MLflow and AWS SageMaker.[^20]
+- **AI assistants** — Claude Desktop and Cursor IDE through the Model Context Protocol (MCP).[^21]
 
-<!-- ## Can you integrate with JIRA to connect with our Model Development pipeline?
+If your system isn't supported out-of-the-box, you can build a custom integration that implements the {{< var vm.product >}} reference API.[^22]
 
-{{< var vm.product >}} is planning to provide integration with JIRA tickets via the JIRA Python API. You will be able to configure {{< var vm.product >}} to update the status of a particular JIRA ticket when a specific state or approval is triggered from the workflow (roadmap item – Q3’2023). -->
-
-<!-- ## Do you support integration with data lakes and ETL solutions?
-
-Support for connecting to data lakes and data processing or ETL pipelines is on our roadmap (Q3’2023+).
-
-We will be implementing connector interfaces allowing extraction of relationships between raw data sources and final post-processed datasets for preloaded session instances received from Spark and Snowflake. -->
 
 ## Learn more
 
@@ -88,10 +87,38 @@ We will be implementing connector interfaces allowing extraction of relationship
 
 [^4]: [Plotly](https://plotly.com/)
 
-[^5]: [Do you support including images in model documents?](#images)
+[^5]: [Do you support including images in documents?](#images)
 
 [^6]: [Load dataset predictions](/notebooks/how_to/data_and_datasets/dataset_inputs/load_datasets_predictions.ipynb)
 
-[^7]: [Do you include explainability-related testing and documentation?](#explanability)
+[^7]: [Do you include explainability-related testing and documentation?](#explainability)
 
 [^8]: [Customize {{< var validmind.checker >}}](/guide/templates/customize-document-checker.qmd)
+
+[^9]: [Managing integrations](/guide/integrations/managing-integrations.qmd)
+
+[^10]: [Configure connections](/guide/integrations/configure-connections.qmd)
+
+[^11]: [Synchronize records with AWS SageMaker](/guide/integrations/integrations-examples/synchronize-aws-sagemaker.qmd)
+
+[^12]: [Synchronize records with AWS Bedrock](/guide/integrations/integrations-examples/synchronize-aws-bedrock.qmd)
+
+[^13]: [Synchronize with Databricks](/guide/integrations/integrations-examples/synchronize-with-databricks.qmd)
+
+[^14]: [Synchronize records with GitLab](/guide/integrations/integrations-examples/synchronize-gitlab.qmd)
+
+[^15]: [Implement custom integrations](/guide/integrations/implement-custom-integrations.qmd)
+
+[^16]: [Create a Jira ticket](/guide/integrations/integrations-examples/create-jira-ticket.qmd)
+
+[^17]: [Create a ServiceNow incident](/guide/integrations/integrations-examples/create-servicenow-incident.qmd)
+
+[^18]: [Configure data exports](/guide/integrations/configure-data-exports.qmd)
+
+[^19]: [Use webhooks with workflows](/guide/integrations/integrations-examples/use-webhooks-with-workflows.qmd)
+
+[^20]: [{{< var validmind.developer >}}](/developer/validmind-library.qmd)
+
+[^21]: [Connect AI assistants via MCP](/guide/mcp/connect-ai-assistants-via-mcp.qmd)
+
+[^22]: [Implement custom integrations](/guide/integrations/implement-custom-integrations.qmd)

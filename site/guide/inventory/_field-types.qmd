@@ -8,15 +8,15 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 Aggregation
 : Automatically compute a read-only value from downstream artifacts^[[Working with artifacts](/guide/validation/working-with-artifacts.qmd)] linked to this record.
 
-1. Select the type of **[artifacts]{.smallcaps}** to aggregate from.^[[Manage artifact types](/guide/validation/manage-artifact-types.qmd)]
+1. Select the type of **Artifacts** to aggregate from.^[[Manage artifact types](/guide/validation/manage-artifact-types.qmd)]
 
-2. Select an **[aggregation function]{.smallcaps}**:^[For MIN or MAX, also select the Date type **[artifact field]{.smallcaps}** to aggregate on.]
+2. Select an **Aggregation Function**:^[For MIN or MAX, also select the Date type **Artifact Field** to aggregate on.]
 
     - **COUNT - Count matching entities** — Count the number of matching artifacts for that type.
     - **MIN - Earliest/minimum value** — Return the least recent value from a selected Date type artifact field for that type.
     - **MAX - Latest/maximum value** — Return the most recent value from a selected Date type artifact field for that type.
 
-4. (Optional) Click **{{< fa plus >}} Add Rule** under [filters]{.smallcaps} to narrow which artifacts are included in the aggregation.
+4. (Optional) Click **{{< fa plus >}} Add Rule** under **Filters** to narrow which artifacts are included in the aggregation.
 <!-- <br><br> -->
 
 ::: {.callout-button .pl4 .nt4}
@@ -28,26 +28,26 @@ Aggregation
 
 For an aggregation field that returns a count of open Validation Issues on the related record:
 
-- **[artifacts]{.smallcaps}** — Validation Issue
-- **[aggregation function]{.smallcaps}** — COUNT - Count matching entities
-- **[filters]{.smallcaps}** — Status IN `open`
+- **Artifacts** — Validation Issue
+- **Aggregation Function** — COUNT - Count matching entities
+- **Filters** — Status IN `open`
 
 ##### Earliest logged Model Limitation
 
 For an aggregation field that returns the earliest date a Model Limitation was first logged:
 
-- **[artifacts]{.smallcaps}** — Model Limitation
-- **[aggregation function]{.smallcaps}** — MIN - Earliest/minimum value
-- **[artifact field]{.smallcaps}** — Created At
+- **Artifacts** — Model Limitation
+- **Aggregation Function** — MIN - Earliest/minimum value
+- **Artifact Field** — Created At
 
 
 ##### Most recent Policy Exception
 
 For an aggregation field that returns the most recent date a Policy Exception was updated:
 
-- **[artifacts]{.smallcaps}** — Policy Exception
-- **[aggregation function]{.smallcaps}** — MAX - Latest/maximum value
-- **[artifact field]{.smallcaps}** — Updated At
+- **Artifacts** — Policy Exception
+- **Aggregation Function** — MAX - Latest/maximum value
+- **Artifact Field** — Updated At
 
 :::
 :::
@@ -62,7 +62,7 @@ Attachments
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
 Attachments
-: Upload supporting files for your artifact.^[[Manage attachments on artifacts](/guide/validation/add-manage-artifacts.qmd#manage-attachments)] Files must be less than 50 MB each in size.
+: Upload supporting files for your artifact.^[[Manage attachments on artifacts](/guide/validation/update-artifacts.qmd#manage-attachments)] Files must be less than 50 MB each in size.
 ::::
 
 Calculation
@@ -73,7 +73,7 @@ Calculation
 :::
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-1. Select from the drop-down of **[available record fields]{.smallcaps}** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+1. Select from the drop-down of **Available Record Fields** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` — and use the available helpers for date and number work.]
 3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
 4. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
@@ -105,7 +105,7 @@ def formula(params):
 ::::
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
-1. Select from the drop-down of **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params["model"]`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+1. Select from the drop-down of **Available Artifact Fields** and **Record Fields Available Via** `params["model"]`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
 2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` and `params["model"]["fieldKey"]` for parent inventory record data — and use the available helpers for date and number work.]
 3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
 4. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
@@ -175,20 +175,46 @@ def formula(params):
 
 ::::
 
+
+
 ::: {.panel-tabset}
 
 #### Params dictionary
 
 In addition to custom field keys you add from the **available fields** drop-down, formulas can read built-in keys on the `params` dictionary:
 
+<!-- VISIBLE ONLY ON PAGES THAT HAVE A CUSTOM METADATA TAG:
+
+```includes:
+    inventory: true
+``` -->
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
 | Param | Applies to | Availability | Description |
 |---|---|---|---|
-| `params["<fieldKey>"]` | Inventory records and artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
 | `params["model_stage"]` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params["model_stage"] == "Production"`. |
 | `params["stakeholders"]` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
-| `params["integrations"]` | Inventory records and artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+| `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+
+::::
+
+<!-- VISIBLE ONLY ON PAGES THAT **DO NOT** HAVE A CUSTOM METADATA TAG:
+
+```includes:
+    inventory: true
+``` -->
+
+:::: {.content-visible when-format="html" unless-meta="includes.inventory"}
+| Param | Applies to | Availability | Description |
+|---|---|---|---|
+| `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
+| `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
 | `params["finding_type"]` | Artifacts | Always available on artifact formulas | Artifact type metadata with `["tag"]` (technical identifier) and `["name"]` (display name). |
 | `params["model"]` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params["model"]["criticality_level"]`). |
+
+::::
+
 
 #### Available helpers
 
@@ -212,18 +238,19 @@ Reference these helpers in your formulas — they cover the date, number, and li
 
 :::
 
+
 Checkbox
 : A `true`/`false` value set by a toggle.
 
 Date
 : - Date value in `yyyy-mm-dd` format. 
 - Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date fields under your profile.^[[Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)]
+- Set the **Date Format** for date fields under your profile.^[[Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)]
 
 Date Time
 : - Date value in `yyyy-mm-dd, 24hr` format.
 - Selection is in the current user's timezone; other users viewing this field will see the value automatically in their timezone. 
-- Set the [date format]{.smallcaps} for date time fields under your profile.^[[Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)]
+- Set the **Date Format** for date time fields under your profile.^[[Manage your profile](/guide/configuration/manage-your-profile.qmd#localization)]
 
 Email
 : Text value in valid email (`user@domain.com`) format.
@@ -235,10 +262,10 @@ Multiple Select
 : Click **{{< fa plus >}} Add Option** to define a list of options. 
 
 Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **Number Type**:
 
-- **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-- **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+- **Simple** — Define the **Decimal Places** that the number should be displayed up to and any **Large Number Abbreviation**s.
+- **Currency** — Define the **Currency** you would like the field to display in, as well as the **Decimal Places** that the number should be displayed up to and any **Large Number Abbreviation**s.
 
 :::: {.flex .flex-wrap .justify-around}
 
@@ -268,22 +295,22 @@ URL
 User
 : 
 - Select list pre-populated with users from your {{< fa book-open >}} User Directory.^[[Manage users](/guide/configuration/manage-users.qmd)]
-- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
+- Toggle **Allow Linking to Multiple Records** on to allow multi-selection of users.
 
 ::::
 
 
 :::: {.content-hidden unless-format="revealjs"}
 Attachments
-: Upload supporting files for your [record](/guide/inventory/edit-inventory-fields.qmd#manage-attachments){target="_blank"} or [artifact](/guide/validation/add-manage-artifacts.qmd#manage-attachments){target="_blank"}. Files must be less than 50 MB each in size.
+: Upload supporting files for your [record](/guide/inventory/edit-inventory-fields.qmd#manage-attachments){target="_blank"} or [artifact](/guide/validation/update-artifacts.qmd#manage-attachments){target="_blank"}. Files must be less than 50 MB each in size.
 
 Calculation
 : Define a `formula(params)` function that reads field values from the `params` dictionary (`params["fieldKey"]`) and returns a read-only value. Formulas are written in Starlark and have access to a set of built-in helpers for dates, numbers, and lists.
 
-    1. Select from the drop-down of **[available record fields]{.smallcaps}**, or **[available artifact fields]{.smallcaps}** and **[record fields available via]{.smallcaps} `params["model"]`** (artifact fields) to allow your formula access to the field's values.
+    1. Select from the drop-down of **Available Record Fields**, or **Available Artifact Fields** and **Record Fields Available Via** `params["model"]`** (artifact fields) to allow your formula access to the field's values.
     2. Replace the demonstration formula with your own in the code box provided.
     4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-    5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+    5. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
 
 Checkbox
 : A `true`/`false` value set by a toggle.
@@ -306,10 +333,10 @@ Multiple Select
 : Click **{{< fa plus >}} Add Option** to define a list of options.
 
 Number
-: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **[number type]{.smallcaps}**:
+: Text value in valid number format. Number display (comma, fullstop, etc.) is determined by your browser's locale. Select a **Number Type**:
 
-    - **Simple** — Define the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
-    - **Currency** — Define the [currency]{.smallcaps} you would like the field to display in, as well as the [decimal places]{.smallcaps} that the number should be displayed up to and any [large number abbreviation]{.smallcaps}s.
+    - **Simple** — Define the **Decimal Places** that the number should be displayed up to and any **Large Number Abbreviation**s.
+    - **Currency** — Define the **Currency** you would like the field to display in, as well as the **Decimal Places** that the number should be displayed up to and any **Large Number Abbreviation**s.
 
 Single Line Text
 : Simple text value.
@@ -323,6 +350,6 @@ URL
 User
 : 
 - Select list pre-populated with users from your [{{< fa book-open >}} User Directory](/guide/configuration/manage-users.qmd){target="_blank"}.
-- Toggle [allow linking to multiple records]{.smallcaps} on to allow multi-selection of users.
+- Toggle **Allow Linking to Multiple Records** on to allow multi-selection of users.
 
 ::::
