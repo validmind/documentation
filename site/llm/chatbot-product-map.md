@@ -243,7 +243,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 
@@ -315,7 +315,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html` (section: #manage-user-invitations)
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
 
 ### Organization
 
@@ -338,7 +338,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 
@@ -421,7 +421,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
 
 ### Main navigation
 
@@ -478,7 +478,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
 
 ### Governance
 
