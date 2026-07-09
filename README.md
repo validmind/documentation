@@ -176,16 +176,20 @@ Output: Content is injected directly into `site/guide/templates/customize-docume
 
 #### Chatbot product map and LLM corpus
 
-The in-app assistant (Valerie) uses generated files under `site/llm/`, including `chatbot-product-map.md` (platform routes mapped to docs URLs and section headings). CI regenerates that map and fails if it is out of date with your changes.
+The in-app assistant (Valerie) uses generated files under `site/llm/`, including `chatbot-product-map.md` (platform routes mapped to docs URLs and section headings). CI regenerates and verifies this map on every pull request.
 
-If you edit `.qmd` files that affect linked docs or headings (for example FAQ or guide pages referenced from the product UI), regenerate and commit the map before opening or updating a pull request:
+On same-repo pull requests, CI auto-commits docs-only map refreshes. Fork pull requests and frontend snapshot changes still require a local regenerate and commit.
+
+If product routes or in-app help links changed, use `make refresh-chatbot-product-map` instead (requires a local `validmind/frontend` checkout).
+
+If you edit `.qmd` files that affect linked docs or headings and need to regenerate locally—for example on a fork PR—run:
 
 ```bash
 cd site
 make generate-chatbot-product-map
 ```
 
-If product routes or in-app help links changed, use `make refresh-chatbot-product-map` instead (requires a local `validmind/frontend` checkout). See [`site/llm/README.md`](site/llm/README.md) for the full LLM render pipeline, snapshot maintenance, and when to refresh each artifact.
+See [`site/llm/README.md`](site/llm/README.md) for the full LLM render pipeline, snapshot maintenance, and when to refresh each artifact.
 
 #### Stylesheet organization (IN PROGRESS)
 

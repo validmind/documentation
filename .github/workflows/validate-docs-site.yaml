@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, ready_for_review]
 
 permissions:
+  contents: write
   actions: write
   issues: write
   pull-requests: write
@@ -17,6 +18,10 @@ jobs:
     steps:
     - name: Check out documentation repository
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     # Reclaim space + create a reserve for deterministic headroom
     - name: Free space + create reserve
@@ -187,8 +192,35 @@ jobs:
 
     - name: Verify chatbot product map is up to date
       run: |
+        set -euo pipefail
         python3 site/scripts/generate_chatbot_product_map.py
-        git diff --exit-code site/llm/chatbot-product-map.md site/llm/chatbot-product-map-frontend-snapshot.json
+
+        map_changed=false
+        snapshot_changed=false
+        git diff --quiet site/llm/chatbot-product-map.md || map_changed=true
+        git diff --quiet site/llm/chatbot-product-map-frontend-snapshot.json || snapshot_changed=true
+
+        if [ "$map_changed" = false ] && [ "$snapshot_changed" = false ]; then
+          echo "chatbot product map is up to date"
+          exit 0
+        fi
+
+        if [ "$snapshot_changed" = true ]; then
+          echo "::error::Frontend snapshot is stale. Run: make -C site refresh-chatbot-product-map (requires ../frontend checkout), then commit site/llm/chatbot-product-map-frontend-snapshot.json and site/llm/chatbot-product-map.md."
+          exit 1
+        fi
+
+        if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+          echo "::error::chatbot-product-map.md is stale for this fork PR. Run: make -C site generate-chatbot-product-map, then commit site/llm/chatbot-product-map.md."
+          exit 1
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add site/llm/chatbot-product-map.md
+        git commit -m "chore: refresh chatbot product map"
+        git push origin "HEAD:${{ github.head_ref }}"
+        echo "Auto-committed refreshed site/llm/chatbot-product-map.md."
 
     - name: Test chatbot product map generator
       run: python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v
