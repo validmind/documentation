@@ -49,6 +49,7 @@ CI does **not** check out `validmind/frontend` (private repo; cross-repo PAT sco
 | Product routes or in-app help links | `make refresh-chatbot-product-map` (requires a sibling `../frontend` checkout) |
 
 Commit both `chatbot-product-map.md` and `chatbot-product-map-frontend-snapshot.json` when the snapshot changes. CI fails if either file is out of date after regeneration.
+For same-repo pull requests, the validate workflow auto-commits docs-only refreshes of `chatbot-product-map.md`. Fork pull requests and any snapshot drift still fail and require a local regenerate + commit.
 
 Generator: `site/scripts/generate_chatbot_product_map.py`  
 Tests: `python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v` (from repo root).
