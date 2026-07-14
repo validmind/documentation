@@ -157,7 +157,11 @@ jobs:
     - name: Seed targeted render from staging
       if: steps.release-preview.outputs.fast == 'true'
       run: |
-        mkdir -p site/_site/releases site/.preview-indexes
+        mkdir -p site/_site/releases site/.preview-indexes site/validmind
+        # The navbar links to this generated source file. The complete rendered
+        # Python API is reused from staging; this placeholder only lets Quarto
+        # resolve the link while rendering release pages.
+        touch site/validmind/validmind.qmd
         aws s3 sync s3://validmind-docs-staging/site/releases site/_site/releases \
           --exclude "*" --include "*.html" --no-progress
         aws s3 cp s3://validmind-docs-staging/site/search.json site/.preview-indexes/search.json --no-progress
