@@ -23,34 +23,6 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    # Reclaim space + create a reserve for deterministic headroom
-    - name: Free space + create reserve
-      uses: ./.github/actions/free-disk-space
-      with:
-        remove_dotnet: "true"
-        remove_android: "true"
-        remove_haskell: "true"
-        prune_docker: "true"
-        apt_cleanup: "true"
-        create_reserve_gb: "3"
-
-    - name: Check out validmind-library repository
-      uses: actions/checkout@v4
-      with:
-        repository: validmind/validmind-library
-        path: site/_source/validmind-library
-        token: ${{ secrets.DOCS_CI_RO_PAT }}
-
-    - name: Check out installation repository
-      uses: actions/checkout@v4
-      with:
-        repository: validmind/installation
-        path: site/_source/installation
-        token: ${{ secrets.DOCS_CI_RO_PAT }}
-        sparse-checkout: |
-          site/installation
-        sparse-checkout-cone-mode: true
-
     - name: Check out release-notes repository
       uses: actions/checkout@v4
       with:
@@ -61,7 +33,70 @@ jobs:
           releases
         sparse-checkout-cone-mode: true
 
+    - name: Detect automated release-notes preview
+      id: release-preview
+      shell: bash
+      run: |
+        set -euo pipefail
+        release_ref=$(git -C site/_source/release-notes for-each-ref \
+          --format='%(refname:strip=3)' --points-at HEAD refs/remotes/origin | head -n 1)
+
+        if [[ "$release_ref" != automated/* ]]; then
+          echo "fast=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        git -C site/_source/release-notes fetch --depth=1 origin main
+        : > .release-preview-targets
+        git -C site/_source/release-notes diff --name-only --diff-filter=ACMRT FETCH_HEAD HEAD -- releases \
+          | awk -F/ 'NF >= 4 { print $1 "/" $2 "/" $3 }' \
+          | sort -u > .release-preview-targets
+
+        if [[ ! -s .release-preview-targets ]]; then
+          echo "No release directories changed; falling back to full validation."
+          echo "fast=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        echo "Automated release-notes ref: $release_ref"
+        echo "Targeted render directories:"
+        cat .release-preview-targets
+        echo "fast=true" >> "$GITHUB_OUTPUT"
+
+    # Full validation needs generated sources and extra disk headroom. Automated
+    # release-note previews reuse the already validated staging build instead.
+    - name: Free space + create reserve
+      if: steps.release-preview.outputs.fast != 'true'
+      uses: ./.github/actions/free-disk-space
+      with:
+        remove_dotnet: "true"
+        remove_android: "true"
+        remove_haskell: "true"
+        prune_docker: "true"
+        apt_cleanup: "true"
+        create_reserve_gb: "3"
+
+    - name: Check out validmind-library repository
+      if: steps.release-preview.outputs.fast != 'true'
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/validmind-library
+        path: site/_source/validmind-library
+        token: ${{ secrets.DOCS_CI_RO_PAT }}
+
+    - name: Check out installation repository
+      if: steps.release-preview.outputs.fast != 'true'
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/installation
+        path: site/_source/installation
+        token: ${{ secrets.DOCS_CI_RO_PAT }}
+        sparse-checkout: |
+          site/installation
+        sparse-checkout-cone-mode: true
+
     - name: Check out backend repository
+      if: steps.release-preview.outputs.fast != 'true'
       uses: actions/checkout@v4
       with:
         repository: validmind/backend
@@ -72,6 +107,7 @@ jobs:
         sparse-checkout-cone-mode: true
 
     - name: Set up uv
+      if: steps.release-preview.outputs.fast != 'true'
       uses: astral-sh/setup-uv@v5
 
     - name: Verify copyright headers
@@ -84,7 +120,11 @@ jobs:
       with:
         version: pre-release
 
+    - name: Test preview index merge
+      run: python3 -m unittest discover -s .github/scripts -p 'test_merge_quarto_indexes.py' -v
+
     - name: Generate Python library docs
+      if: steps.release-preview.outputs.fast != 'true'
       run: |
         cd site/_source/validmind-library
         make install && make quarto-docs
@@ -94,10 +134,12 @@ jobs:
         rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
 
     - name: Generate template schema docs
+      if: steps.release-preview.outputs.fast != 'true'
       run: |
         BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
 
     - name: Populate installation
+      if: steps.release-preview.outputs.fast != 'true'
       run: cp -r site/_source/installation/site/installation site/installation
 
     - name: Populate release notes
@@ -105,15 +147,63 @@ jobs:
         cp -r site/_source/release-notes/releases site
         rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
 
-    - name: Render demo docs site
+    # The staging HTML lets Quarto resolve descriptions for listings without
+    # re-rendering the other ~1,000 pages. Only HTML and the two global indexes
+    # are downloaded; the final preview is cloned server-side during deployment.
+    - name: Configure AWS credentials
+      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
+
+    - name: Seed targeted render from staging
+      if: steps.release-preview.outputs.fast == 'true'
       run: |
-          cd site
-          quarto render --profile development 2>&1 | tee render_errors.log || {
+        mkdir -p site/_site/releases site/.preview-indexes site/validmind
+        # The navbar links to this generated source file. The complete rendered
+        # Python API is reused from staging; this placeholder only lets Quarto
+        # resolve the link while rendering release pages.
+        touch site/validmind/validmind.qmd
+        aws s3 sync s3://validmind-docs-staging/site/releases site/_site/releases \
+          --exclude "*" --include "*.html" --no-progress
+        aws s3 cp s3://validmind-docs-staging/site/search.json site/.preview-indexes/search.json --no-progress
+        aws s3 cp s3://validmind-docs-staging/site/listings.json site/.preview-indexes/listings.json --no-progress
+
+    - name: Render targeted release preview
+      if: steps.release-preview.outputs.fast == 'true'
+      run: |
+        cd site
+        : > render_errors.log
+        while read -r target; do
+          quarto render --profile development "$target" 2>&1 | tee -a render_errors.log || {
           echo "Quarto render failed immediately";
           cat render_errors.log;
           exit 1;
           }
-          make generate-sitemap
+        done < ../.release-preview-targets
+
+        for target in releases/*.qmd; do
+          [[ "$(basename "$target")" == _* ]] && continue
+          quarto render --profile development "$target" 2>&1 | tee -a render_errors.log || {
+            echo "Quarto render failed immediately";
+            cat render_errors.log;
+            exit 1;
+          }
+        done
+
+        python3 ../.github/scripts/merge_quarto_indexes.py \
+          --base-search .preview-indexes/search.json \
+          --partial-search _site/search.json \
+          --base-listings .preview-indexes/listings.json \
+          --partial-listings _site/listings.json
+
+    - name: Render demo docs site
+      if: steps.release-preview.outputs.fast != 'true'
+      run: |
+        cd site
+        quarto render --profile development 2>&1 | tee render_errors.log || {
+        echo "Quarto render failed immediately";
+        cat render_errors.log;
+        exit 1;
+        }
+        make generate-sitemap
 
     - name: Add robots.txt for PR preview
       run: cp site/environments/robots-staging.txt site/_site/robots.txt
@@ -128,12 +218,21 @@ jobs:
           echo "No warnings or errors detected during Quarto render"
         fi
 
-    # Demo bucket is in us-east-1
-    - name: Configure AWS credentials
-      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
-
     - name: Deploy PR preview
-      run: aws s3 sync site/_site s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }} --delete --exclude "notebooks/EXECUTED/*" --cache-control "no-cache, max-age=0, must-revalidate" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+      run: |
+        preview_path="s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}"
+        if [[ "${{ steps.release-preview.outputs.fast }}" == "true" ]]; then
+          aws s3 sync s3://validmind-docs-staging/site "$preview_path" \
+            --delete --exclude "pr_previews/*" --exclude "notebooks/EXECUTED/*" --no-progress
+          aws s3 sync site/_site "$preview_path" \
+            --exclude "index.html" --exclude "notebooks/EXECUTED/*" --no-progress \
+            --cache-control "no-cache, max-age=0, must-revalidate"
+        else
+          aws s3 sync site/_site "$preview_path" --delete \
+            --exclude "notebooks/EXECUTED/*" \
+            --cache-control "no-cache, max-age=0, must-revalidate"
+        fi
+        aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
 
     - name: Post comment with preview URL
       uses: actions/github-script@v6
@@ -185,11 +284,13 @@ jobs:
           console.log(`Dispatched Lighthouse check for PR #${context.issue.number}`);
 
     - name: Install pandoc
+      if: steps.release-preview.outputs.fast != 'true'
       run: |
         sudo apt-get update
         sudo apt-get install -y pandoc
 
     - name: Verify chatbot product map is up to date
+      if: steps.release-preview.outputs.fast != 'true'
       run: |
         set -euo pipefail
         python3 site/scripts/generate_chatbot_product_map.py
@@ -222,13 +323,16 @@ jobs:
         echo "Auto-committed refreshed site/llm/chatbot-product-map.md."
 
     - name: Test chatbot product map generator
+      if: steps.release-preview.outputs.fast != 'true'
       run: python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v
 
     - name: Validate LLM markdown render
+      if: steps.release-preview.outputs.fast != 'true'
       run: bash llm/render.sh && bash llm/clean.sh
       working-directory: site
 
     - name: Verify LLM corpus includes product map and docs IA hub
+      if: steps.release-preview.outputs.fast != 'true'
       run: |
         test -f site/llm/_llm-output/chatbot-product-map.md
         test -f site/llm/_llm-output/AGENTS.md
