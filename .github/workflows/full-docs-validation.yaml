@@ -1,0 +1,132 @@
+name: Full docs validation
+
+on:
+  merge_group:
+    types: [checks_requested]
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+
+concurrency:
+  group: full-docs-validation-${{ github.event.pull_request.number || github.event.merge_group.head_sha || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  full-docs-validation:
+    name: Full docs validation
+    if: github.event_name != 'pull_request' || github.event.label.name == 'full-validation'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out documentation repository
+        uses: actions/checkout@v4
+
+      - name: Resolve source revisions
+        id: sources
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_CI_RO_PAT }}
+        run: |
+          echo "library=$(gh api repos/validmind/validmind-library/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "installation=$(gh api repos/validmind/installation/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "release_notes=$(gh api repos/validmind/release-notes/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "backend=$(gh api repos/validmind/backend/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+
+      - name: Free space + create reserve
+        uses: ./.github/actions/free-disk-space
+        with:
+          remove_dotnet: "true"
+          remove_android: "true"
+          remove_haskell: "true"
+          prune_docker: "true"
+          apt_cleanup: "true"
+          create_reserve_gb: "3"
+
+      - name: Verify copyright headers
+        run: make -C site verify-copyright
+
+      - name: Build complete production docs site
+        uses: ./.github/actions/build-docs-site
+        with:
+          profile: production
+          docs_ci_ro_pat: ${{ secrets.DOCS_CI_RO_PAT }}
+          quarto_version: ${{ vars.QUARTO_VERSION }}
+          library_ref: ${{ steps.sources.outputs.library }}
+          installation_ref: ${{ steps.sources.outputs.installation }}
+          release_notes_ref: ${{ steps.sources.outputs.release_notes }}
+          backend_ref: ${{ steps.sources.outputs.backend }}
+
+      - name: Test for render warnings or errors
+        run: |
+          if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
+            echo "Warnings or errors detected during Quarto render"
+            cat site/render_errors.log
+            exit 1
+          fi
+          echo "No warnings or errors detected during Quarto render"
+
+      - name: Install pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Verify chatbot product map is up to date
+        run: |
+          set -euo pipefail
+          python3 site/scripts/generate_chatbot_product_map.py
+          git diff --exit-code -- \
+            site/llm/chatbot-product-map.md \
+            site/llm/chatbot-product-map-frontend-snapshot.json
+
+      - name: Test chatbot product map generator
+        run: python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v
+
+      - name: Validate LLM markdown render
+        run: bash llm/render.sh && bash llm/clean.sh
+        working-directory: site
+
+      - name: Verify required LLM corpus content
+        run: |
+          test -f site/llm/_llm-output/chatbot-product-map.md
+          test -f site/llm/_llm-output/AGENTS.md
+          test -f site/llm/_llm-output/about/using-the-documentation.md
+          test ! -f site/llm/_llm-output/about/contributing/validmind-community.md
+          test ! -d site/llm/_llm-output/about/contributing/style-guide
+
+      - name: Determine artifact name
+        id: artifact
+        run: echo "name=docs-production-$(git rev-parse 'HEAD^{tree}')" >> "$GITHUB_OUTPUT"
+
+      - name: Package validated production site
+        run: tar --zstd -cf "$RUNNER_TEMP/docs-production.tar.zst" -C site/_site .
+
+      - name: Upload validated production artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact.outputs.name }}
+          path: ${{ runner.temp }}/docs-production.tar.zst
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Release reserve and shrink
+        if: always()
+        uses: ./.github/actions/free-disk-space
+        with:
+          release_reserve: "true"
+          remove_paths: |
+            site/_source/installation
+            site/_source/release-notes
+            site/_source/backend
+            site/render_errors.log
+            site/_freeze
+            site/llm/_llm-output
+            dev.env
+            valid.env
+
+      - name: Final disk usage
+        if: always()
+        run: df -hT /
