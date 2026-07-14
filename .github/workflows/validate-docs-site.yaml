@@ -27,6 +27,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: validmind/release-notes
+        ref: automated/library-v2.13.5
         path: site/_source/release-notes
         token: ${{ secrets.DOCS_CI_RO_PAT }}
         sparse-checkout: |
@@ -225,7 +226,7 @@ jobs:
           aws s3 sync s3://validmind-docs-staging/site "$preview_path" \
             --delete --exclude "pr_previews/*" --exclude "notebooks/EXECUTED/*" --no-progress
           aws s3 sync site/_site "$preview_path" \
-            --exclude "notebooks/EXECUTED/*" --no-progress \
+            --exclude "index.html" --exclude "notebooks/EXECUTED/*" --no-progress \
             --cache-control "no-cache, max-age=0, must-revalidate"
         else
           aws s3 sync site/_site "$preview_path" --delete \
