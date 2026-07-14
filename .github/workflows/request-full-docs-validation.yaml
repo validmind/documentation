@@ -1,0 +1,57 @@
+name: Request full docs validation
+
+on:
+  pull_request:
+    types: [synchronize]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  request:
+    if: >-
+      github.event_name != 'pull_request_review' ||
+      github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch validation for approved revision
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pullRequest = context.payload.pull_request;
+            const result = await github.graphql(`
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $number) {
+                    reviewDecision
+                  }
+                }
+              }
+            `, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              number: pullRequest.number,
+            });
+
+            const decision = result.repository.pullRequest.reviewDecision;
+            if (decision !== 'APPROVED') {
+              console.log(`PR #${pullRequest.number} is ${decision || 'not approved'}; no full validation requested.`);
+              return;
+            }
+
+            if (pullRequest.head.repo.full_name !== context.payload.repository.full_name) {
+              core.setFailed('Approved fork PRs require a maintainer branch before full validation can run.');
+              return;
+            }
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'full-docs-validation.yaml',
+              ref: pullRequest.head.ref,
+            });
+            console.log(`Requested full validation for PR #${pullRequest.number} at ${pullRequest.head.sha}.`);
