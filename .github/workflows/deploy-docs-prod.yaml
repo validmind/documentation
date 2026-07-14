@@ -37,21 +37,31 @@ jobs:
         run: |
           set -euo pipefail
           name="docs-production-$(git rev-parse 'HEAD^{tree}')"
-          run_id=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=$name&per_page=100" \
-            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | reverse | .[0].workflow_run.id // empty')
-
           echo "name=$name" >> "$GITHUB_OUTPUT"
-          if [[ -n "$run_id" ]]; then
-            echo "Found $name in workflow run $run_id"
-            echo "found=true" >> "$GITHUB_OUTPUT"
-            echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-          else
-            echo "No matching artifact found; falling back to a full production build."
-            echo "found=false" >> "$GITHUB_OUTPUT"
+
+          run_id=""
+          while read -r candidate; do
+            [[ -z "$candidate" ]] && continue
+            run=$(gh api "repos/${{ github.repository }}/actions/runs/$candidate")
+            run_path=$(jq -r .path <<< "$run")
+            conclusion=$(jq -r .conclusion <<< "$run")
+            if [[ "$run_path" == ".github/workflows/deploy-docs-staging.yaml" && "$conclusion" == "success" ]]; then
+              run_id="$candidate"
+              break
+            fi
+            echo "Ignoring $name from untrusted or unsuccessful workflow run $candidate ($run_path: $conclusion)"
+          done < <(gh api "repos/${{ github.repository }}/actions/artifacts?name=$name&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | reverse | .[].workflow_run.id')
+
+          if [[ -z "$run_id" ]]; then
+            echo "::error::No fully validated production artifact named $name was produced by a successful staging workflow. Production was not modified."
+            exit 1
           fi
 
+          echo "Found validated $name in staging workflow run $run_id"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+
       - name: Download prebuilt production docs
-        if: steps.production-artifact.outputs.found == 'true'
         uses: actions/download-artifact@v4
         with:
           name: ${{ steps.production-artifact.outputs.name }}
@@ -61,35 +71,15 @@ jobs:
           run-id: ${{ steps.production-artifact.outputs.run_id }}
 
       - name: Extract prebuilt production docs
-        if: steps.production-artifact.outputs.found == 'true'
         run: |
           mkdir -p site/_site
           tar --zstd -xf "$RUNNER_TEMP/production-artifact/docs-production.tar.zst" -C site/_site
 
-      # Reclaim space only when the prebuilt artifact is unavailable and the
-      # workflow must perform the original full-site build.
-      - name: Free space + create reserve
-        if: steps.production-artifact.outputs.found != 'true'
-        uses: ./.github/actions/free-disk-space
-        with:
-          remove_dotnet: "true"
-          remove_android: "true"
-          remove_haskell: "true"
-          prune_docker: "true"
-          apt_cleanup: "true"
-          create_reserve_gb: "3"
-
-      - name: Build production docs site
-        if: steps.production-artifact.outputs.found != 'true'
-        uses: ./.github/actions/build-docs-site
-        with:
-          profile: production
-          docs_ci_ro_pat: ${{ secrets.DOCS_CI_RO_PAT }}
-          quarto_version: ${{ vars.QUARTO_VERSION }}
-          library_ref: main
-          installation_ref: main
-          release_notes_ref: main
-          backend_ref: main
+      - name: Verify production artifact contents
+        run: |
+          test -s site/_site/index.html
+          test -s site/_site/search.json
+          test -s site/_site/listings.json
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials

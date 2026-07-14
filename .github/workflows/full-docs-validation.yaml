@@ -1,14 +1,12 @@
 name: Full docs validation
 
 on:
-  merge_group:
-    types: [checks_requested]
   pull_request:
     types: [labeled]
   workflow_dispatch:
 
 concurrency:
-  group: full-docs-validation-${{ github.event.pull_request.number || github.event.merge_group.head_sha || github.ref }}
+  group: full-docs-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.label.name || 'run' }}
   cancel-in-progress: true
 
 permissions:
