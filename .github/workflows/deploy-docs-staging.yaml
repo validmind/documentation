@@ -54,6 +54,10 @@ jobs:
     steps:
       - name: Check out documentation repository
         uses: actions/checkout@v4
+        with:
+          # The production build predicts the staging-to-prod merge tree and
+          # therefore needs the shared branch history, not a depth-one clone.
+          fetch-depth: 0
 
       # Production can contain hotfixes that have not flowed back to staging.
       # Build the artifact from the tree that a staging-to-prod merge will
