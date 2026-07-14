@@ -10,6 +10,14 @@ on:
       - completed
   workflow_dispatch:
 
+concurrency:
+  group: deploy-docs-production
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   deploy:
     if: |
@@ -22,95 +30,56 @@ jobs:
       - name: Check out documentation repository
         uses: actions/checkout@v4
 
-      # Reclaim space + create a reserve for deterministic headroom
-      - name: Free space + create reserve
-        uses: ./.github/actions/free-disk-space
-        with:
-          remove_dotnet: "true"
-          remove_android: "true"
-          remove_haskell: "true"
-          prune_docker: "true"
-          apt_cleanup: "true"
-          create_reserve_gb: "3"
-
-      - name: Check out validmind-library repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/validmind-library
-          path: site/_source/validmind-library
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-
-      - name: Check out installation repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/installation
-          path: site/_source/installation
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            site/installation
-          sparse-checkout-cone-mode: true
-
-      - name: Check out release-notes repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/release-notes
-          path: site/_source/release-notes
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            releases
-          sparse-checkout-cone-mode: true
-
-      - name: Check out backend repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/backend
-          path: site/_source/backend
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            src/backend/templates/documentation/model_documentation
-          sparse-checkout-cone-mode: true
-
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: ${{ vars.QUARTO_VERSION }}
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Generate Python library docs
+      - name: Find production artifact for this source tree
+        id: production-artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          cd site/_source/validmind-library
-          make install && make quarto-docs
-          cd ../../
-          rm -rf validmind
-          mkdir -p validmind
-          rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+          set -euo pipefail
+          name="docs-production-$(git rev-parse 'HEAD^{tree}')"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
 
-      - name: Generate template schema docs
+          run_id=""
+          while read -r candidate; do
+            [[ -z "$candidate" ]] && continue
+            run=$(gh api "repos/${{ github.repository }}/actions/runs/$candidate")
+            run_path=$(jq -r .path <<< "$run")
+            conclusion=$(jq -r .conclusion <<< "$run")
+            if [[ "$run_path" == ".github/workflows/deploy-docs-staging.yaml" && "$conclusion" == "success" ]]; then
+              run_id="$candidate"
+              break
+            fi
+            echo "Ignoring $name from untrusted or unsuccessful workflow run $candidate ($run_path: $conclusion)"
+          done < <(gh api "repos/${{ github.repository }}/actions/artifacts?name=$name&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | reverse | .[].workflow_run.id')
+
+          if [[ -z "$run_id" ]]; then
+            echo "::error::No fully validated production artifact named $name was produced by a successful staging workflow. Production was not modified."
+            exit 1
+          fi
+
+          echo "Found validated $name in staging workflow run $run_id"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download prebuilt production docs
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.production-artifact.outputs.name }}
+          path: ${{ runner.temp }}/production-artifact
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ steps.production-artifact.outputs.run_id }}
+
+      - name: Extract prebuilt production docs
         run: |
-          BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
+          mkdir -p site/_site
+          tar --zstd -xf "$RUNNER_TEMP/production-artifact/docs-production.tar.zst" -C site/_site
 
-      - name: Populate installation
-        run: cp -r site/_source/installation/site/installation site/installation
-
-      - name: Populate release notes
+      - name: Verify production artifact contents
         run: |
-          cp -r site/_source/release-notes/releases site
-          rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
-
-      - name: Render prod docs site
-        run: |
-            cd site
-            quarto render --profile production &> render_errors.log || {
-            echo "Quarto render failed immediately";
-            cat render_errors.log;
-            exit 1;
-            }
-            make generate-sitemap
+          test -s site/_site/index.html
+          test -s site/_site/search.json
+          test -s site/_site/listings.json
 
       # Prod bucket is in us-east-1
       - name: Configure AWS credentials
