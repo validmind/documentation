@@ -10,17 +10,64 @@ on:
       - completed
   workflow_dispatch:
 
+concurrency:
+  group: deploy-docs-staging
+  cancel-in-progress: true
+
 jobs:
-  deploy:
+  resolve-sources:
+    name: Resolve source revisions
     if: |
       github.event_name == 'push' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
       github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    outputs:
+      library: ${{ steps.refs.outputs.library }}
+      installation: ${{ steps.refs.outputs.installation }}
+      release_notes: ${{ steps.refs.outputs.release_notes }}
+      backend: ${{ steps.refs.outputs.backend }}
+    steps:
+      - name: Resolve source revisions
+        id: refs
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_CI_RO_PAT }}
+        run: |
+          echo "library=$(gh api repos/validmind/validmind-library/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "installation=$(gh api repos/validmind/installation/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "release_notes=$(gh api repos/validmind/release-notes/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+          echo "backend=$(gh api repos/validmind/backend/commits/main --jq .sha)" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.profile }} docs site
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: resolve-sources
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [staging, production]
 
     steps:
       - name: Check out documentation repository
         uses: actions/checkout@v4
+
+      # Production can contain hotfixes that have not flowed back to staging.
+      # Build the artifact from the tree that a staging-to-prod merge will
+      # produce, so its key matches the eventual prod merge commit.
+      - name: Prepare prospective production tree
+        if: matrix.profile == 'production'
+        run: |
+          set -euo pipefail
+          source_sha=$(git rev-parse HEAD)
+          git fetch origin prod
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git switch --detach origin/prod
+          git merge --no-commit --no-ff "$source_sha"
 
       # Reclaim space + create a reserve for deterministic headroom
       - name: Free space + create reserve
@@ -33,94 +80,49 @@ jobs:
           apt_cleanup: "true"
           create_reserve_gb: "3"
 
-      - name: Check out validmind-library repository
-        uses: actions/checkout@v4
+      - name: Build docs site
+        uses: ./.github/actions/build-docs-site
         with:
-          repository: validmind/validmind-library
-          path: site/_source/validmind-library
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-
-      - name: Check out installation repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/installation
-          path: site/_source/installation
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            site/installation
-          sparse-checkout-cone-mode: true
-
-      - name: Check out release-notes repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/release-notes
-          path: site/_source/release-notes
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            releases
-          sparse-checkout-cone-mode: true
-
-      - name: Check out backend repository
-        uses: actions/checkout@v4
-        with:
-          repository: validmind/backend
-          path: site/_source/backend
-          token: ${{ secrets.DOCS_CI_RO_PAT }}
-          sparse-checkout: |
-            src/backend/templates/documentation/model_documentation
-          sparse-checkout-cone-mode: true
-
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: ${{ vars.QUARTO_VERSION }}
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Generate Python library docs
-        run: |
-          cd site/_source/validmind-library
-          make install && make quarto-docs
-          cd ../../
-          rm -rf validmind
-          mkdir -p validmind
-          rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
-
-      - name: Generate template schema docs
-        run: |
-          BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
-
-      - name: Populate installation
-        run: cp -r site/_source/installation/site/installation site/installation
-
-      - name: Populate release notes
-        run: |
-          cp -r site/_source/release-notes/releases site
-          rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
-
-      - name: Render staging docs site
-        run: |
-            cd site
-            quarto render --profile staging &> render_errors.log || {
-            echo "Quarto render failed immediately";
-            cat render_errors.log;
-            exit 1;
-            }
-            make generate-sitemap
+          profile: ${{ matrix.profile }}
+          docs_ci_ro_pat: ${{ secrets.DOCS_CI_RO_PAT }}
+          quarto_version: ${{ vars.QUARTO_VERSION }}
+          library_ref: ${{ needs.resolve-sources.outputs.library }}
+          installation_ref: ${{ needs.resolve-sources.outputs.installation }}
+          release_notes_ref: ${{ needs.resolve-sources.outputs.release_notes }}
+          backend_ref: ${{ needs.resolve-sources.outputs.backend }}
 
       - name: Add robots.txt for staging
+        if: matrix.profile == 'staging'
         run: cp site/environments/robots-staging.txt site/_site/robots.txt
 
       # Staging bucket is in us-west-2
       - name: Configure AWS credentials
+        if: matrix.profile == 'staging'
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
 
       - name: Deploy docs staging site
+        if: matrix.profile == 'staging'
         run: aws s3 sync site/_site s3://validmind-docs-staging/site --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" --exclude "notebooks/EXECUTED/*" --exclude "llm/*" --cache-control "no-cache, max-age=0, must-revalidate" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+
+      - name: Determine production artifact name
+        if: matrix.profile == 'production'
+        id: production-artifact
+        shell: bash
+        run: echo "name=docs-production-$(git write-tree)" >> "$GITHUB_OUTPUT"
+
+      - name: Package production docs site
+        if: matrix.profile == 'production'
+        run: tar --zstd -cf "$RUNNER_TEMP/docs-production.tar.zst" -C site/_site .
+
+      - name: Upload production docs artifact
+        if: matrix.profile == 'production'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.production-artifact.outputs.name }}
+          path: ${{ runner.temp }}/docs-production.tar.zst
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 14
 
       # Release headroom and shrink before final lightweight steps & post-job
       - name: Release reserve & shrink
