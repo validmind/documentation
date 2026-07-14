@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 import argparse
-import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
@@ -21,6 +21,14 @@ UNSAFE_TOP_LEVEL = {
     "environments",
     "llm",
     "scripts",
+}
+STATUS_MAP = {
+    "added": "A",
+    "modified": "M",
+    "removed": "D",
+    "renamed": "R",
+    "copied": "C",
+    "changed": "T",
 }
 
 
@@ -67,24 +75,15 @@ def select(changes: list[tuple[str, tuple[str, ...]]]) -> Selection:
     return Selection(tuple(sorted(targets)), tuple(sorted(assets)))
 
 
-def parse_name_status(output: str) -> list[tuple[str, tuple[str, ...]]]:
+def parse_changed_files(output: str) -> list[tuple[str, tuple[str, ...]]]:
     changes: list[tuple[str, tuple[str, ...]]] = []
     for line in output.splitlines():
         fields = line.split("\t")
         if len(fields) < 2:
-            raise ValueError(f"Unexpected git diff line: {line!r}")
-        changes.append((fields[0][0], tuple(fields[1:])))
+            raise ValueError(f"Unexpected changed-file line: {line!r}")
+        status = STATUS_MAP.get(fields[0], fields[0][0].upper())
+        changes.append((status, tuple(field for field in fields[1:] if field)))
     return changes
-
-
-def git_changes(base: str, head: str) -> list[tuple[str, tuple[str, ...]]]:
-    result = subprocess.run(
-        ["git", "diff", "--name-status", "--find-renames", f"{base}...{head}"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    return parse_name_status(result.stdout)
 
 
 def write_lines(path: Path, values: tuple[str, ...]) -> None:
@@ -93,13 +92,17 @@ def write_lines(path: Path, values: tuple[str, ...]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base", required=True)
-    parser.add_argument("--head", default="HEAD")
+    parser.add_argument("--changes", default="-")
     parser.add_argument("--targets", type=Path, required=True)
     parser.add_argument("--assets", type=Path, required=True)
     args = parser.parse_args()
 
-    selection = select(git_changes(args.base, args.head))
+    if args.changes == "-":
+        changed_files = sys.stdin.read()
+    else:
+        changed_files = Path(args.changes).read_text()
+
+    selection = select(parse_changed_files(changed_files))
     if not selection.is_targeted:
         print(f"Full render required: {selection.fallback_reason}")
         return 3

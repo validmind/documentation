@@ -3,7 +3,7 @@
 
 import unittest
 
-from select_docs_preview_targets import parse_name_status, select
+from select_docs_preview_targets import parse_changed_files, select
 
 
 class SelectDocsPreviewTargetsTest(unittest.TestCase):
@@ -50,13 +50,13 @@ class SelectDocsPreviewTargetsTest(unittest.TestCase):
         self.assertFalse(result.is_targeted)
 
     def test_parses_renames_for_safe_fallback(self):
-        changes = parse_name_status(
-            "R100\tsite/guide/old.qmd\tsite/guide/new.qmd\n"
+        changes = parse_changed_files(
+            "renamed\tsite/guide/new.qmd\tsite/guide/old.qmd\n"
         )
 
         self.assertEqual(
             changes,
-            [("R", ("site/guide/old.qmd", "site/guide/new.qmd"))],
+            [("R", ("site/guide/new.qmd", "site/guide/old.qmd"))],
         )
         self.assertFalse(select(changes).is_targeted)
 
