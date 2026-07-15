@@ -1,0 +1,217 @@
+name: Release notes preview
+
+run-name: Release notes preview | ${{ github.event.client_payload.correlation_id || inputs.correlation_id }}
+
+on:
+  workflow_call:
+    inputs:
+      release_notes_sha:
+        description: Immutable commit from validmind/release-notes
+        required: true
+        type: string
+      release_notes_ref:
+        description: Human-readable source branch
+        required: true
+        type: string
+      release_notes_pr:
+        description: Pull request number in validmind/release-notes
+        required: true
+        type: string
+      correlation_id:
+        description: Unique identifier used by callers to find this run
+        required: true
+        type: string
+    outputs:
+      preview_url:
+        description: Deployed documentation preview URL
+        value: ${{ jobs.preview.outputs.preview_url }}
+    secrets:
+      docs_ci_ro_pat:
+        required: true
+      aws_access_key_id_staging:
+        required: true
+      aws_secret_access_key_staging:
+        required: true
+  repository_dispatch:
+    types: [release-notes-preview]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-notes-preview-${{ github.event.client_payload.release_notes_pr || inputs.release_notes_pr }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    outputs:
+      preview_url: ${{ steps.source.outputs.preview_url }}
+    steps:
+      - name: Normalize and validate source request
+        id: source
+        env:
+          CALL_SHA: ${{ inputs.release_notes_sha }}
+          CALL_REF: ${{ inputs.release_notes_ref }}
+          CALL_PR: ${{ inputs.release_notes_pr }}
+          DISPATCH_SHA: ${{ github.event.client_payload.release_notes_sha }}
+          DISPATCH_REF: ${{ github.event.client_payload.release_notes_ref }}
+          DISPATCH_PR: ${{ github.event.client_payload.release_notes_pr }}
+          GH_TOKEN: ${{ secrets.DOCS_CI_RO_PAT || secrets.docs_ci_ro_pat }}
+        run: |
+          set -euo pipefail
+          sha="${DISPATCH_SHA:-$CALL_SHA}"
+          ref="${DISPATCH_REF:-$CALL_REF}"
+          pr="${DISPATCH_PR:-$CALL_PR}"
+
+          [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid release-notes SHA"; exit 1; }
+          [[ "$pr" =~ ^[0-9]+$ ]] || { echo "Invalid release-notes PR number"; exit 1; }
+          [[ "$ref" == automated/* || "$ref" == codex/* ]] || {
+            echo "Release-notes preview refs must use an approved branch prefix"
+            exit 1
+          }
+
+          actual_sha=$(gh api "repos/validmind/release-notes/pulls/$pr" --jq .head.sha)
+          actual_ref=$(gh api "repos/validmind/release-notes/pulls/$pr" --jq .head.ref)
+          actual_repo=$(gh api "repos/validmind/release-notes/pulls/$pr" --jq .head.repo.full_name)
+          state=$(gh api "repos/validmind/release-notes/pulls/$pr" --jq .state)
+          [[ "$actual_sha" == "$sha" && "$actual_ref" == "$ref" ]] || {
+            echo "Dispatch payload does not match release-notes PR #$pr"
+            exit 1
+          }
+          [[ "$actual_repo" == "validmind/release-notes" && "$state" == "open" ]] || {
+            echo "Only open, same-repository release-notes PRs may deploy previews"
+            exit 1
+          }
+
+          preview_key="release-notes/pr-$pr"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+          echo "preview_key=$preview_key" >> "$GITHUB_OUTPUT"
+          echo "preview_url=https://docs-staging.validmind.ai/pr_previews/$preview_key/index.html" >> "$GITHUB_OUTPUT"
+
+      - name: Check out documentation repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Check out release-notes revision
+        uses: actions/checkout@v4
+        with:
+          repository: validmind/release-notes
+          ref: ${{ steps.source.outputs.sha }}
+          path: site/_source/release-notes
+          token: ${{ secrets.DOCS_CI_RO_PAT || secrets.docs_ci_ro_pat }}
+          sparse-checkout: |
+            releases
+          sparse-checkout-cone-mode: true
+
+      - name: Select changed release directories
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_CI_RO_PAT || secrets.docs_ci_ro_pat }}
+        run: |
+          set -euo pipefail
+          git -C site/_source/release-notes fetch --depth=1 origin main
+          git -C site/_source/release-notes diff --name-only --diff-filter=ACMRT \
+            FETCH_HEAD HEAD -- releases \
+            | awk -F/ 'NF >= 4 { print $1 "/" $2 "/" $3 }' \
+            | sort -u > .release-preview-targets
+          if [[ ! -s .release-preview-targets ]]; then
+            echo "No changed release directories found"
+            exit 1
+          fi
+          echo "Targeted release directories:"
+          cat .release-preview-targets
+
+      - name: Verify copyright headers
+        run: make -C site verify-copyright
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: pre-release
+
+      - name: Test preview index merge
+        run: python3 -m unittest discover -s .github/scripts -p 'test_merge_quarto_indexes.py' -v
+
+      - name: Populate release notes
+        run: |
+          cp -r site/_source/release-notes/releases site
+          rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
+
+      - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.aws_access_key_id_staging }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.aws_secret_access_key_staging }}
+        run: |
+          aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+          aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+          aws configure set default.region us-east-1
+
+      - name: Seed targeted render from staging
+        run: |
+          mkdir -p site/_site/releases site/.preview-indexes site/validmind
+          touch site/validmind/validmind.qmd
+          aws s3 cp s3://validmind-docs-staging/site/search.json site/.preview-indexes/search.json --no-progress
+          aws s3 cp s3://validmind-docs-staging/site/listings.json site/.preview-indexes/listings.json --no-progress
+          aws s3 sync s3://validmind-docs-staging/site/releases site/_site/releases \
+            --exclude "*" --include "*.html" --no-progress
+
+      - name: Render targeted release preview
+        run: |
+          set -euo pipefail
+          cd site
+          : > render_errors.log
+          while read -r target; do
+            quarto render --profile development "$target" 2>&1 | tee -a render_errors.log
+          done < ../.release-preview-targets
+
+          for target in releases/*.qmd; do
+            [[ "$(basename "$target")" == _* ]] && continue
+            quarto render --profile development "$target" 2>&1 | tee -a render_errors.log
+          done
+
+          python3 ../.github/scripts/merge_quarto_indexes.py \
+            --base-search .preview-indexes/search.json \
+            --partial-search _site/search.json \
+            --base-listings .preview-indexes/listings.json \
+            --partial-listings _site/listings.json
+
+      - name: Add robots.txt
+        run: cp site/environments/robots-staging.txt site/_site/robots.txt
+
+      - name: Test for warnings or errors
+        run: |
+          if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
+            echo "Warnings or errors detected during Quarto render"
+            cat site/render_errors.log
+            exit 1
+          fi
+          echo "No warnings or errors detected during Quarto render"
+
+      - name: Deploy release-notes preview
+        env:
+          PREVIEW_KEY: ${{ steps.source.outputs.preview_key }}
+        run: |
+          preview_path="s3://validmind-docs-staging/site/pr_previews/$PREVIEW_KEY"
+          aws s3 sync s3://validmind-docs-staging/site "$preview_path" \
+            --delete --exclude "pr_previews/*" --exclude "notebooks/EXECUTED/*" --no-progress
+          aws s3 sync site/_site "$preview_path" \
+            --exclude "index.html" --exclude "notebooks/EXECUTED/*" --no-progress \
+            --cache-control "no-cache, max-age=0, must-revalidate"
+          aws cloudfront create-invalidation \
+            --distribution-id ESWVTZYFL873V --paths "/*" --no-cli-pager
+
+      - name: Publish workflow summary
+        env:
+          PREVIEW_URL: ${{ steps.source.outputs.preview_url }}
+          RELEASE_NOTES_PR: ${{ steps.source.outputs.pr }}
+        run: |
+          {
+            echo "## Release notes preview"
+            echo
+            echo "- Source: validmind/release-notes#$RELEASE_NOTES_PR"
+            echo "- Preview: $PREVIEW_URL"
+          } >> "$GITHUB_STEP_SUMMARY"
