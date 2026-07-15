@@ -69,9 +69,10 @@ Documentation moves through `main` → `staging` → `prod`:
 
 Release-note content is sourced from `validmind/release-notes`, so merging a
 release-notes pull request does not create or merge a documentation pull request.
-Instead, the release-notes repository dispatches the staging deployment directly;
-that deployment uses the current documentation `staging` tree and the latest
-release-notes `main` revision.
+Instead, the release-notes repository dispatches the existing **Merge main into
+staging** workflow. Its successful completion triggers the staging deployment,
+which builds the promoted documentation tree with the latest release-notes
+`main` revision.
 
 The merge-queue `validate` bridge does not render the site again. It records that the pull-request revision passed preview validation; the complete production safety boundary is the post-merge staging artifact.
 
