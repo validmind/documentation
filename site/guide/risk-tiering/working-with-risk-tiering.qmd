@@ -1,0 +1,96 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Working with risk tiering"
+date: last-modified
+description: "Concepts, lifecycle, and roles for classifying inventory records into discrete risk tiers."
+listing:
+  - id: risk-tiering-guides
+    type: grid
+    grid-columns: 3
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    contents:
+      - manage-risk-tier-templates.qmd
+      - configure-risk-tier-calculation.qmd
+      - manage-risk-tier-assessments.qmd
+---
+
+Risk tiering gives your organization a structured, auditable way to classify AI models and other inventory records into discrete risk categories. Instead of relying on informal judgment calls, risk classification follows a defined methodology — configured once by administrators and applied consistently across every record in your inventory.
+
+## Overview
+
+The Risk Tier Engine has two sides that work together:
+
+- **Risk tier templates** define the methodology. Administrators configure the tier levels, risk factors, scoring rules, and assignment logic. Templates are versioned and published, giving your organization a full, immutable history of how its risk classification methodology has evolved.
+- **Risk tier assessments** are the evaluations. Developers apply a published template to a specific record, enter the required field values, review the computed tier suggestion, and publish a final determination. Assessments are also versioned, giving each record a complete history of how its risk tier has changed over time.
+
+## Key concepts
+
+**Risk tier template**
+The complete methodology for evaluating a record's risk. A template defines tier levels, risk factors, components, scoring rules, and the logic used to assign a final tier. Templates follow a Draft → Active → Archived lifecycle and are versioned — every published version is retained for audit purposes.
+
+**Risk tier assessment**
+A formal evaluation of a specific record against a risk tier template. An assessment records the field values entered, the computed scores, the system's suggested tier, any override rules that applied, and the final published determination.
+
+**Tier calculation method**
+Controls how risk factor scores roll up into a final tier:
+
+- **Scorecard (Sum)** — factor scores are summed into a total that falls into a threshold band mapped to a tier.
+- **Scorecard (Weighted)** — same as Sum, but each factor carries a weight (0–1); factor scores are multiplied by their weights before summing. Factor weights are required.
+- **Risk Matrix** — each factor is independently classified into a discrete risk level, and the combination of all factor levels is looked up in a matrix to determine the final tier.
+
+**Risk tier**
+A discrete risk classification outcome — for example: Low, Medium, High, Critical. Risk tiers are defined as part of a template and represent the possible outputs of an assessment.
+
+**Scoring level**
+Scoring levels define the numeric scale used to score each risk factor within a template — for example: Very Low (1), Low (2), Medium (3), High (4), Very High (5).
+
+**Risk factor**
+A dimension of risk being evaluated within a template — for example: Materiality, Complexity, Data Sensitivity. Each factor groups one or more components that feed into it.
+
+**Factor component**
+A specific inventory field that contributes to a risk factor's score. Each factor component includes scoring rules that map field values — or ranges of values — to a numeric scoring level.
+
+**Override rule**
+An optional rule on a template that forces a specific tier outcome when certain field conditions are met, bypassing the computed score entirely.
+
+**Factor aggregation method**
+A per-factor setting that controls how component scores within a factor combine into a single factor score:
+
+- **Sum** — all component scores are added together.
+- **Max** — only the highest component score is used.
+
+**Assessed Risk Tier**
+A system-managed, read-only inventory field that surfaces the risk tier of a record's most recently published assessment. It is automatically updated when an assessment is published and is visible to anyone with access to the record.
+
+## Lifecycle
+
+Both templates and assessments follow the same three lifecycle statuses:
+
+| Status | Description |
+|---|---|
+| **Draft** | Being created or edited. Not yet in effect. Can be freely modified. |
+| **Active** | Published and currently in effect. Read-only. Only one version can be Active at a time. |
+| **Archived** | Superseded or retired. Read-only. Retained permanently for audit purposes. |
+
+Version history is append-only — once a version is published, its configuration is immutable. A new version must be created to make changes. Only one version of a given template can be Active at a time per record type. Only one assessment can be Active per record at a time.
+
+## Who does what
+
+| Role | Responsibilities |
+|---|---|
+| **Governance Admin / Validator** | Creates and publishes risk tier templates; defines tier levels, factors, components, scoring rules, thresholds, and override rules; manages template versions |
+| **Developer** | Creates and publishes risk tier assessments for specific records; enters factor values; reviews the suggested tier; manages assessment versions |
+
+## Where to access risk tiering
+
+- **Risk tier templates** — navigate to **Settings → Governance → Risk Tier Templates**.
+- **Risk tier assessments** — open any record in the model inventory and select the **Risk Tier Assessments** tab.
+
+## What's next
+
+:::{#risk-tiering-guides .intro-listing}
+:::
