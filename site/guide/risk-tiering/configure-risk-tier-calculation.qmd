@@ -1,0 +1,268 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Configure risk tier calculation"
+date: last-modified
+description: "Set up scoring levels, risk factors, components, scoring rules, thresholds, and override rules inside a draft template."
+---
+
+This page covers all calculation configuration inside a risk tier template: scoring levels, risk factors, components, scoring rules, thresholds, and override rules. All configuration requires the template to be in **Draft** status — configuration is locked once a template is published.
+
+For creating a template, defining risk tier levels, and managing its lifecycle, see [Manage risk tier templates](manage-risk-tier-templates.qmd).
+
+## Prerequisites
+
+- Active {{< var vm.product >}} login
+- Governance Admin or Validator role with `manage_risk_tier_template` permission
+- A risk tier template in **Draft** status with the tier calculation method selected and at least one risk tier level defined
+
+## Set up a Scorecard template
+
+### 1. Configure scoring levels
+
+Scoring levels define the numeric scale used to score each risk factor.
+
+1. Open the draft template and go to the **Scoring Levels** section.
+2. Click **Add Scoring Level**.
+3. Enter a **Name**, a numeric **Value**, and choose a **Color**.
+4. Repeat for each level in the scale.
+
+:::{.callout-note}
+Every scoring rule in every component must map to a valid scoring level.
+:::
+
+### 2. Add risk factors
+
+Risk factors are the dimensions scored during a risk assessment — for example: Materiality, Complexity, Data Sensitivity.
+
+1. Go to the **Risk Factors** section.
+2. Click **Add Risk Factor**.
+3. Enter a **Name** and an optional **Description**.
+4. Select the **Factor Aggregation Method**:
+   - **Sum** — adds all component scores in this factor.
+   - **Max** — uses only the highest component score in this factor.
+5. Click **Save**.
+6. Repeat for each risk dimension your methodology requires.
+
+To assign individual weights to factors, enable the **Weight factors individually** toggle. Each factor then carries a weight, and the weighted sum of scores determines the tier. Click **Edit Weights** to open the **Edit Risk Factor Weights** modal — use the sliders or enter values directly. The total must remain 1.00; locked factors stay fixed while other weights rebalance automatically.
+
+:::{.callout-note}
+Different factors in the same template can use different aggregation methods — for example, a Materiality factor using Sum while a Data Sensitivity factor uses Max.
+:::
+
+### 3. Add components and scoring rules
+
+Components link inventory fields to a risk factor and define how their values are scored.
+
+1. Expand a risk factor and click **Add Component**.
+2. Select the **Inventory Field** to evaluate.
+3. Select the **Scoring Type**:
+   - **Numeric range** — maps numeric field values within min/max bands to a scoring level.
+   - **Boolean** — maps a true/false field value to a scoring level.
+   - **Text match** — maps an exact text or option value to a scoring level.
+4. Click **Save**.
+5. Click **Add Rule** to write scoring rules for the component.
+
+A factor cannot have two components referencing the same inventory field.
+
+**Numeric range rules** — use for fields with numeric values (for example: number of input features, model age in months).
+
+1. Enter the **Min value** and **Max value** that define the band.
+2. Select the **Scoring Level** to assign when the field value falls within this band.
+3. Repeat to cover the full expected range. Ranges can be adjacent — for example: 0–10 → Low, 11–50 → Medium, 51+ → High.
+
+**Boolean rules** — use for checkbox fields (for example: "Is the model customer-facing?").
+
+1. Set **Value** to **True** or **False**.
+2. Select the **Scoring Level** to assign.
+3. Add a second rule for the opposite value. A Boolean component typically has two rules.
+
+**Text match rules** — use for single-select or multi-select fields (for example: "Data Classification," "Deployment Region").
+
+1. Enter the **Text value** to match (the exact option string).
+2. Select the **Scoring Level** to assign.
+3. Add one rule per option value you want to score. Values not covered by any rule are unscored.
+
+:::{.callout-note}
+Rules within a component are evaluated in order — the first matching rule wins.
+:::
+
+### 4. Set risk tier thresholds
+
+Set the score range that corresponds to each risk tier. The lowest-risk tier starts at the minimum score and the highest-risk tier ends at the maximum score.
+
+1. Go to the **Risk Tier Thresholds** section.
+2. Click **Edit Thresholds** to open the **Edit Risk Tier Thresholds** modal.
+3. Define the score range for each risk tier. Shared boundaries update automatically to keep ranges aligned.
+
+### 5. Configure override rules
+
+See [Override rules](#override-rules) below.
+
+## Set up a Risk Matrix template
+
+### 1. Configure scoring levels
+
+Scoring levels define the numeric scale used to score each risk factor.
+
+1. Open the draft template and go to the **Scoring Levels** section.
+2. Click **Add Scoring Level**.
+3. Enter a **Name**, a numeric **Value**, and choose a **Color**.
+4. Repeat for each level in the scale.
+
+:::{.callout-note}
+Every scoring rule in every component must map to a valid scoring level.
+:::
+
+### 2. Define factor levels
+
+Factor levels classify each factor's computed score into a discrete risk band — for example: High, Medium, Low.
+
+1. Go to the **Factor Levels** section.
+2. Click **Add Factor Level**.
+3. Enter a **Name**, choose a **Color**, and add an optional **Description**.
+4. Drag and drop to reorder — highest risk at the top, lowest at the bottom.
+5. Repeat for each level in the classification scale.
+
+### 3. Add risk factors
+
+Risk factors are the dimensions scored during a risk assessment — for example: Materiality, Complexity, Data Sensitivity.
+
+1. Go to the **Risk Factors** section.
+2. Click **Add Risk Factor**.
+3. Enter a **Name** and an optional **Description**.
+4. Select the **Factor Aggregation Method**:
+   - **Sum** — adds all component scores in this factor.
+   - **Max** — uses only the highest component score in this factor.
+5. Click **Save**.
+6. Repeat for each risk dimension your methodology requires.
+
+### 4. Add components and scoring rules
+
+Components link inventory fields to a risk factor and define how their values are scored.
+
+1. Expand a risk factor and click **Add Component**.
+2. Select the **Inventory Field** to evaluate.
+3. Select the **Scoring Type**:
+   - **Numeric range** — maps numeric field values within min/max bands to a scoring level.
+   - **Boolean** — maps a true/false field value to a scoring level.
+   - **Text match** — maps an exact text or option value to a scoring level.
+4. Click **Save**.
+5. Click **Add Rule** to write scoring rules for the component.
+
+A factor cannot have two components referencing the same inventory field.
+
+**Numeric range rules** — use for fields with numeric values.
+
+1. Enter the **Min value** and **Max value** for the band.
+2. Select the **Scoring Level** to assign.
+3. Repeat to cover the full expected range.
+
+**Boolean rules** — use for checkbox fields.
+
+1. Set **Value** to **True** or **False**.
+2. Select the **Scoring Level** to assign.
+3. Add a second rule for the opposite value.
+
+**Text match rules** — use for single-select or multi-select fields.
+
+1. Enter the **Text value** to match.
+2. Select the **Scoring Level** to assign.
+3. Add one rule per option value you want to score.
+
+:::{.callout-note}
+Rules within a component are evaluated in order — the first matching rule wins.
+:::
+
+### 5. Set factor level thresholds
+
+Each risk factor requires a score threshold for each factor level, defining the score range that maps to that level.
+
+1. Expand a risk factor and go to the **Factor Level Thresholds** section.
+2. Click **Edit Factor Level Thresholds**.
+3. Define the score range for each factor level. Shared boundaries update automatically to keep ranges aligned.
+4. Repeat for each risk factor.
+
+### 6. Assign tiers to factor level combinations
+
+Tier assignment maps every combination of factor levels to a risk tier.
+
+1. Go to the **Tier Assignment** section.
+2. Click **Edit Tiers**.
+3. Choose a view:
+   - **Matrix** — displays a visual grid with factors on each axis. Use the **Factor**, **At Level**, **Row Axis**, and **Column Axis** dropdowns to navigate combinations. Click a cell to assign a risk tier.
+   - **Table** — lists every factor level combination as a row with an **Assigned Tier** column. Use this view when you have more than two factors.
+4. Assign a risk tier to every combination. All cells must be assigned before the template can be published.
+
+### 7. Configure override rules
+
+See [Override rules](#override-rules) below.
+
+## Override rules
+
+Override rules allow you to hard-code a specific tier outcome for records that match certain field conditions, bypassing the computed score or matrix lookup entirely. If a rule matches, the tier it specifies is used and no further rules or scores are evaluated.
+
+Use override rules when certain field values are disqualifying regardless of the overall score — for example: "if a model processes health data AND is customer-facing, always assign Critical."
+
+### Add an override rule
+
+1. Open the **Override Rules** section of the template.
+2. Click **Add Rule**.
+3. Select the **Target Tier** — the tier to assign when this rule matches.
+4. Select the **Condition Logic**:
+   - **AND** — all conditions must be true for the rule to match.
+   - **OR** — any single condition being true causes the rule to match.
+5. Add one or more **Conditions** (see below).
+6. Click **Save**.
+
+Rules are evaluated in order; the first matching rule wins. New rules are appended at the end.
+
+### Add conditions to a rule
+
+1. Within an override rule, click **Add Condition**.
+2. Select the **Inventory Field** to evaluate. Only supported field types are available (see table below).
+3. Select the **Operator**.
+4. Enter the **Value** to compare against.
+5. Click **Save**.
+
+### Supported field types and operators
+
+| Field type | Available operators |
+|---|---|
+| Number | equals, not equals, greater than, less than, greater than or equal, less than or equal |
+| Checkbox | equals |
+| Single-select | equals, not equals |
+| Multi-select | contains, not contains |
+
+:::{.callout-note}
+Override rules are copied forward when a new template version is created. Removing a tier level that an override rule targets will blank the rule's target tier and block publishing until it is reassigned.
+:::
+
+## Publish readiness checklist
+
+Before publishing, verify:
+
+**Both methods:**
+
+- [ ] At least one risk tier is defined
+- [ ] At least one risk factor is configured
+- [ ] Every factor has at least one component
+- [ ] Every component has at least one scoring rule
+- [ ] All scoring rules map to valid scoring levels
+- [ ] Override rules: all target tiers point to existing tier levels; all conditions reference valid fields
+
+**Scorecard only:**
+
+- [ ] Tier thresholds cover the full score range without gaps
+- [ ] All factor weights sum to 1.00 if **Weight factors individually** is enabled
+
+**Risk Matrix only:**
+
+- [ ] All factor level thresholds are set for every factor
+- [ ] Every factor level combination in the matrix has an assigned tier
+
+## What's next
+
+- [Manage risk tier templates](manage-risk-tier-templates.qmd) — publish, version, and manage the template lifecycle.
+- [Manage risk tier assessments](manage-risk-tier-assessments.qmd) — create assessments and apply the published template to your records.

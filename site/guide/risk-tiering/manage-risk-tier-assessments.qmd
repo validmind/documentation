@@ -1,0 +1,179 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Manage risk tier assessments"
+date: last-modified
+description: "Create, review, publish, and version risk tier assessments for individual inventory records."
+---
+
+A risk tier assessment is a formal evaluation of a specific inventory record against a published risk tier template. It reads the current inventory field values, applies the template's scoring rules, and produces a tier determination — either computed from scores or set by an override rule.
+
+This page covers creating an assessment, reviewing factor scores, publishing, managing versions, and handling stale assessments.
+
+## Prerequisites
+
+- Active {{< var vm.product >}} login
+- A record registered in the model inventory
+- An active risk tier template published for that record's type
+
+## Access risk tier assessments
+
+Open a record from the **Model Inventory** and select the **Risk Tier Assessments** tab. The tab shows:
+
+- **Active Template** — the currently published template displayed at the top of the page. Any new assessment or new version is automatically linked to this template version.
+- The list of assessments for this record, with columns: Name, Template, Status, Tier, Last Updated, Last Updated By.
+
+The list defaults to hiding Archived assessments. Remove the **Status not in Archived** filter to see the full history.
+
+## Create an assessment
+
+1. Click **+ Add Risk Tier Assessment**.
+2. Enter a **Name** — for example: "Annual Review 2025" or "Post-remediation check".
+3. Enter an optional **Description**.
+4. Click **Save**. The assessment is created in **Draft** status and automatically linked to the current Active Template version. The template version is locked in at this point — subsequent template updates do not affect this assessment.
+
+:::{.callout-note}
+If no active template exists for the record's type, a new assessment cannot be created. Contact your administrator to ensure a template has been published for this record type.
+:::
+
+## Review factor scores
+
+The assessment detail page is organized into five sections. Together they show how the record's current inventory field values translate into a risk tier.
+
+### Risk Factors
+
+The **Risk Factors** section lists each factor from the template as a collapsible row, showing the factor name and the number of inventory fields it evaluates.
+
+Expand a factor to see its components. For each component you can see:
+
+- The **inventory field name** and its current value.
+- A scoring explanation — **This value scores X → matches [rule]** — showing which scoring rule matched and what score level it produced.
+- An **ℹ** icon that opens a popover with the field description and **Recent Field Activity** (a log of recent updates to that field with View Details links).
+
+If a field value has changed since the assessment was last published, the updated value and score are reflected immediately.
+
+### Factor Score Breakdown
+
+The **Factor Score Breakdown** table summarizes how each factor's components roll up into a factor score:
+
+| Column | Description |
+|---|---|
+| Risk Factor | Factor name |
+| Current Score | The factor's computed score given the current field values |
+| Components | Number of components in this factor |
+| Aggregation | The factor aggregation method in use (Sum or Max) |
+| Min Score | The lowest possible score for this factor |
+| Max Score | The highest possible score for this factor |
+
+The **Current Total Score** row at the bottom shows the sum across all factors.
+
+### Risk Tier Thresholds
+
+The **Risk Tier Thresholds** table shows the score band for each risk tier. The row corresponding to the current total score is highlighted, indicating where the record lands on the scorecard.
+
+### Override Rules
+
+The **Override Rules** section displays the template's override rules as read-only, evaluated in order against this record. Each rule shows its number, target tier, and condition — for example: "Rule 1 → Tier 1: If Estimated Dollar Exposure ≥ 10000000."
+
+Override rules are part of the template and cannot be modified from within an assessment.
+
+### Calculated Tier
+
+The **Calculated Tier** section shows the final tier determination for this assessment:
+
+- If an override rule matched, the section indicates which rule applied and the tier it assigned.
+- If no override rule matched, the tier is determined by where the current total score falls in the threshold bands.
+
+## Assessment sidebar
+
+The sidebar on the assessment detail page shows:
+
+- **Status** — Draft, Active, or Archived.
+- **Assessment Version** — a dropdown showing the current version (for example: "13 (Latest)"). Use this to navigate to any previous version of the assessment.
+- **Risk Tier Template** — the template name and version this assessment is linked to, with a badge showing the calculation method (Scorecard or Risk Matrix).
+- **Published / Published By** — the publication date and the user who published it (shown once the assessment has been published).
+
+Actions available from the sidebar depend on the assessment's status:
+
+- **Draft** — Publish button to publish the assessment.
+- **Active** — **Create New Version** to start a new draft, and **Archive Assessment** to manually archive.
+
+## Publish an assessment
+
+When you are satisfied with the factor scores and the calculated tier:
+
+1. Click **Publish** in the sidebar.
+2. Confirm the publish. The assessment moves to **Active**, receives a version number (v1, v2, …), and becomes the record's current official risk tier. The record's **Assessed Risk Tier** field is updated automatically — see [Assessed Risk Tier field](#assessed-risk-tier-field) below.
+
+Only one assessment can be Active per record at a time.
+
+:::{.callout-note}
+An assessment can only be published against an **Active** template version. If the template linked to your assessment has since been archived, you must migrate to the current template before publishing (see [Migrate a stale assessment](#migrate-a-stale-assessment)).
+:::
+
+## Assessed Risk Tier field
+
+When an assessment is published, the record's **Assessed Risk Tier** inventory field is automatically updated to reflect the calculated tier. This field is system-managed and read-only — it cannot be edited manually.
+
+The field displays the tier using the same badge style used throughout the Risk Tier Engine. A **See Assessment** link appears directly below it, allowing anyone viewing the record to navigate to the published assessment in one click.
+
+The Assessed Risk Tier field coexists with the legacy **Tier** field on the record. The legacy Tier field remains manually managed and independent of the assessment outcome.
+
+## Create a new version
+
+When a record's risk profile changes and a re-evaluation is needed:
+
+1. Open the active assessment and click **Create New Version** in the sidebar.
+2. A new **Draft** is created, pre-linked to the latest active template. Previously entered values are carried forward for fields that exist in both the old and new template.
+3. Review the factor scores and confirm the calculated tier.
+4. Publish. The new assessment becomes Active and the previous is Archived.
+
+## Archive an assessment
+
+To manually retire the active assessment without publishing a new version:
+
+1. Open the active assessment and click **Archive Assessment** in the sidebar.
+2. Confirm. The assessment moves to **Archived**.
+
+:::{.callout-note}
+Archiving leaves the record without an active assessment. The **Assessed Risk Tier** inventory field will no longer reflect a current determination until a new assessment is published.
+:::
+
+## Understand stale assessments
+
+An assessment becomes **stale** when the template version it was created against has been superseded by a new active version.
+
+- **Active assessments** are never marked stale — a published assessment's methodology is frozen at the version it was published against.
+- **Draft assessments** are marked stale when their linked template version is no longer active.
+- A stale draft **cannot be published** until it is on the current active template version — create a new version to move it there (see [Migrate a stale assessment](#migrate-a-stale-assessment)).
+
+Stale assessments are flagged with a warning banner in the assessment detail view.
+
+## Migrate a stale assessment
+
+There is no in-place "use latest template" action. To move an assessment onto the current active template, create a new version — the new version is automatically linked to the latest active template.
+
+1. Open the assessment and click **Create New Version** in the sidebar (see [Create a new version](#create-a-new-version)).
+2. The new **Draft** is automatically linked to the current active template version. Previously entered values are carried forward for fields that exist in both versions; fields removed from the new template are cleared, and new fields appear as not set.
+3. Review the updated factor scores and calculated tier.
+4. Publish as normal.
+
+## View version history
+
+The **Assessment Version** dropdown in the sidebar gives access to all versions of the current assessment. Remove the Archived filter on the **Risk Tier Assessments** tab to see the full history across all statuses. Archived assessments remain readable at any time for audit and comparison purposes.
+
+## Delete a draft assessment
+
+1. Open the draft assessment and click **Delete**.
+2. Confirm. The assessment is permanently removed.
+
+:::{.callout-note}
+Only **Draft** assessments can be deleted. Active and Archived assessments are permanent audit artifacts and cannot be deleted.
+:::
+
+## What's next
+
+- [Working with risk tiering](working-with-risk-tiering.qmd) — concepts, lifecycle overview, and roles.
+- [Manage risk tier templates](manage-risk-tier-templates.qmd) — how templates are configured and published.
+- [Configure risk tier calculation](configure-risk-tier-calculation.qmd) — how factors, scoring rules, and override rules work.
