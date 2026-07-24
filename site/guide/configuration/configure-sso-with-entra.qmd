@@ -1,0 +1,139 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Configure SSO with Microsoft Entra ID"
+date: last-modified
+---
+
+Connect your organization's Microsoft Entra ID (formerly Azure AD) tenant to {{< var vm.product >}} so your users can sign in with single sign-on (SSO), using the identity provider (IdP) your IT team already manages.
+
+This guide is for customers using the {{< var validmind.platform >}} cloud (SaaS) offering who want to bring their own identity provider. Microsoft Entra ID is currently the identity provider {{< var vm.product >}} supports for self-service SSO on our multi-tenant cloud.
+
+::: {.callout-important title="This is a shared setup"}
+You configure the application registration in your own Entra tenant, then send {{< var vm.product >}} a handful of non-secret values so we can enable SSO for your organization. There's no client secret to exchange — see [Why no client secret?](#why-no-client-secret).
+:::
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} in {{< var vm.product >}}, or you're working with someone who is.[^1]
+- [x] You have Application Administrator (or Global Administrator) access to your organization's Microsoft Entra ID tenant.
+- [x] You know the URL your organization uses to reach {{< var vm.product >}} (for example, `https://yourcompany.validmind.ai/`).
+
+:::
+
+## Step 1: Register an application in Entra ID
+
+1. Sign in to the [Microsoft Entra admin center](https://entra.microsoft.com) with your Entra administrator account.
+
+2. Go to **Identity** > **Applications** > **App registrations**, then click **New registration**.
+
+3. Give the application a name, such as `ValidMind SSO`.
+
+4. Under **Supported account types**, select **Accounts in this organizational directory only (Single tenant)** unless your organization specifically needs multi-tenant sign-in.
+
+5. Under **Redirect URI**, select **Single-page application (SPA)** as the platform, and enter the URL your organization uses to access {{< var vm.product >}}, for example `https://yourcompany.validmind.ai/`.
+
+6. Click **Register**.
+
+::: {.callout-important title="Register the platform as \"Single-page application\", not \"Web\""}
+{{< var vm.product >}}'s login flow uses the Authorization Code Flow with PKCE as a public client — it never uses a client secret. Registering under **Web** instead of **SPA** will cause sign-in to fail with a CORS or token-response error.
+:::
+
+7. Open the app's **Authentication** blade and add the same URL again under **Front-channel logout URL**. This lets {{< var vm.product >}} sign users out of Entra ID cleanly when they log out.
+
+You don't need to configure an "Expose an API" section, an Application ID URI, or any Microsoft Graph API permissions — {{< var vm.product >}} validates the sign-in (ID) token directly and never calls back into Entra ID or Graph.
+
+## Step 2: Configure the claims Entra ID sends to ValidMind
+
+{{< var vm.product >}} reads the following information from the ID token Entra ID issues after sign-in:
+
+| What {{< var vm.product >}} needs | Claim(s) Entra ID can supply (in priority order) |
+| --- | --- |
+| Email address | `email`, then `upn`, then `preferred_username` |
+| Display name | `name`, then `given_name` and `family_name`, then falls back to email |
+| Group membership (for role/group mapping) | `groups` |
+
+1. In your app registration, open **Token configuration** and click **Add optional claim**.
+
+2. Select token type **ID**, then check `email`, `upn`, `given_name`, and `family_name`. Click **Add**.
+
+   If prompted to turn on the Microsoft Graph **email** permission for these claims to appear, accept the prompt.
+
+3. Click **Add groups claim**.
+
+   - Select **Security groups** (or **All groups**, if you also want directory roles or distribution groups available for mapping).
+   - Under **Customize token properties by type**, the default is to emit each group's **Group ID** (an object ID, not its display name) in the ID token. You can leave this as the default, or select a different format such as `sAMAccountName` if your groups are hybrid-synced from on-premises Active Directory — note the format you choose, since you'll enter matching values in {{< var vm.product >}} in [Step 4](#step-4-map-entra-groups-to-validmind-roles).
+   - Click **Add**.
+
+::: {.callout-important title="More than 200 group memberships?"}
+Entra ID only includes a user's group memberships directly in the token up to a limit (200 for JWTs). Users who belong to more groups than that receive an "overage" claim instead of a `groups` claim, which breaks role/group mapping for them. If your users typically belong to many groups, keep the security groups used for {{< var vm.product >}} role mapping to a small, dedicated set. See Microsoft's [documentation on the groups overage claim](https://learn.microsoft.com/en-us/security/zero-trust/develop/configure-tokens-group-claims-app-roles#group-overages) for details.
+:::
+
+## Step 3: Send ValidMind your application details
+
+Once your app registration is configured, [open a support ticket]({{< var link.contact >}}) or email [{{< var support.email >}}](mailto:{{< var support.email >}}?subject=Entra%20ID%20SSO%20setup) with:
+
+- Your **Directory (tenant) ID** and **Application (client) ID**, both shown on the app registration's **Overview** page.
+- Confirmation that the redirect URI and front-channel logout URL are registered under the **Single-page application** platform.
+- Which format your `groups` claim uses (object ID or another identifier), from [Step 2](#step-2-configure-the-claims-entra-id-sends-to-validmind).
+- Optionally, any email domains you'd like sign-in restricted to (for example, `yourcompany.com`), as an extra safeguard.
+- Whether you'd like **Group Sync** enabled in addition to **Role Sync** — role sync maps Entra groups to {{< var vm.product >}} roles, group sync additionally maps Entra groups to {{< var vm.product >}} groups.[^2]
+
+None of these values are secrets, so a support ticket or email is fine — there's no client secret or certificate involved.
+
+{{< var vm.product >}} will confirm once Entra ID SSO (and role/group sync, if requested) has been enabled for your organization.
+
+## Step 4: Map Entra groups to ValidMind roles
+
+Once {{< var vm.product >}} has enabled sync for your organization, a [{{< fa hand >}} Customer Admin]{.bubble} can map Entra groups to {{< var vm.product >}} roles without ValidMind's involvement:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under **Organization**, select **Authentication**.
+
+3. Under **OIDC Role Mappings**, click **Add Mapping** and enter:
+
+   - The group value exactly as it appears in your `groups` claim (typically an object ID, unless you customized the claim format in [Step 2](#step-2-configure-the-claims-entra-id-sends-to-validmind)).
+   - The {{< var vm.product >}} role that group should map to.
+
+4. If Group Sync is enabled for your organization, repeat under **OIDC Group Mappings** to map Entra groups to {{< var vm.product >}} groups.
+
+5. Click **Save Mappings**.
+
+Example:
+
+| Entra security group | ValidMind role |
+| --- | --- |
+| `Data Scientists` | Developer |
+| `Model Risk` | Validator |
+| `IT Admins` | Customer Admin |
+
+## Step 5: Test sign-in
+
+1. Log out of {{< var vm.product >}}, if you're logged in.
+
+2. Go to your {{< var vm.product >}} login page. You should be redirected to the Microsoft sign-in screen.
+
+3. Sign in with an Entra ID account that belongs to one of the groups you mapped.
+
+4. Confirm you're redirected back to {{< var vm.product >}}, logged in, and that your role matches what you'd expect based on your group membership.
+
+## Why no client secret?
+
+{{< var vm.product >}}'s frontend is a single-page application that authenticates directly with Entra ID using the Authorization Code Flow with PKCE. This is the flow Microsoft recommends for browser-based apps, and it doesn't use or store a client secret at all — which is also why the app must be registered under the **Single-page application** platform rather than **Web** in [Step 1](#step-1-register-an-application-in-entra-id).
+
+## What's next
+
+- [Managing users](/guide/configuration/managing-users.qmd)
+- [Access and permissions FAQ](/faq/faq-organizations.qmd)
+- [Support](/support/support.qmd)
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Manage groups](/guide/configuration/manage-groups.qmd)
