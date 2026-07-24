@@ -46,10 +46,11 @@ For a verification-only request, stop after reporting the classification, eviden
 ## 3. Implement an approved update
 
 1. Confirm the worktree and current branch before editing.
-2. Start from current `origin/main` on a `codex/sc-<story-id>-<slug>` branch.
+2. Start from current `origin/main` on an author-prefixed branch, e.g. `<author>/sc-<story-id>-<slug>`.
 3. Update the smallest authoritative source.
 4. Preserve Quarto variables, `.qmd` cross-references, conditional HTML/RevealJS variants, and existing terminology.
-5. If editing an include, find every consumer:
+5. Headings that contain `{{< var >}}` shortcodes get unusable auto-generated ids — add an explicit `{#id}` to any heading used as a link target.
+6. If editing an include, find every consumer:
 
 ```bash
 rg -n "_source-name\\.qmd" site --glob '*.qmd'
