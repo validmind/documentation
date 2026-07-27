@@ -261,10 +261,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -280,10 +280,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -299,10 +299,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
