@@ -1,0 +1,128 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Manage risk tier templates"
+date: last-modified
+description: "Create, publish, version, duplicate, and archive the risk tier templates that define your classification methodology."
+---
+
+Risk tier templates define the methodology your organization uses to classify records into risk tiers. This page covers creating a template, defining its risk tier levels, publishing it, and managing its lifecycle.
+
+For configuring the scoring levels, risk factors, components, thresholds, and override rules that determine how a tier is calculated, see [Configure risk tier calculation](configure-risk-tier-calculation.qmd).
+
+## Prerequisites
+
+- Active {{< var vm.product >}} login
+- Governance Admin or Validator role with `manage_risk_tier_template` permission
+- At least one primary record type configured in your inventory
+
+## Access risk tier templates
+
+Navigate to **Settings → Governance → Risk Tier Templates**. The page lists all templates in your organization across all lifecycle statuses. Use the status filter to view Draft, Active, or Archived templates separately.
+
+## Create a template
+
+1. Click **Add Risk Tier Template**.
+2. Enter a **Name**. Template names must be unique across the entire system — no two templates, even across different version lineages, can share the same name.
+3. Enter an optional **Description**.
+4. Select one or more **Record Types** the template applies to. A separate active template can exist for each record type, allowing your organization to use different risk methodologies for models, agents, or other inventory types.
+5. Optionally link one or more **Regulations** that this template's methodology is designed to support. Regulation links can be added or removed at any time while the template is in Draft.
+6. Click **Save**. The template is created in **Draft** status.
+
+## Select a tier calculation method
+
+On the template detail page, select the **Tier Calculation Method**:
+
+- **Scorecard** — factor scores are summed into a total that falls into a threshold band mapped to a tier. Factor weights can optionally be configured in the Risk Factors section.
+- **Risk Matrix** — each factor is independently classified into a discrete risk level, and the combination of all factor levels is looked up in a matrix to determine the final tier.
+
+Once selected, configure the scoring logic for your chosen method. See [Configure risk tier calculation](configure-risk-tier-calculation.qmd).
+
+## Define risk tier levels
+
+Risk tier levels are the possible classification outcomes the template can produce — for example: Low, Medium, High, Critical.
+
+1. Open the draft template and go to the **Risk Tiers** section.
+2. Click **Add Risk Tier**.
+3. Enter a **Name**, an optional **Description**, and choose a **Color** to visually distinguish the level across the platform.
+4. Drag and drop to reorder — highest risk at the top, lowest at the bottom.
+5. Repeat for each tier your methodology requires.
+
+:::{.callout-note}
+Removing a tier level after thresholds, matrix assignments, or override rules have been set will blank the affected entries and block publishing until they are reassigned.
+:::
+
+## Publish a template
+
+Before publishing, the system validates that the template is complete. See the publish readiness checklist in [Configure risk tier calculation](configure-risk-tier-calculation.qmd#publish-readiness-checklist) for the full list of requirements.
+
+To publish:
+
+1. Open the draft template and click **Publish**.
+2. Review the confirmation — the template will be assigned the next version number (v1, v2, …).
+3. Confirm. The template moves to **Active** and any previously active version for the same record type is automatically **Archived**.
+
+:::{.callout-note}
+Published templates are immutable. To make changes, create a new version.
+:::
+
+## Create a new version
+
+Use a new version to update a published template without disrupting in-progress assessments.
+
+1. Open the active template and click **New Version**.
+2. A new **Draft** is created as a complete copy of the active template, including all scoring configuration and override rules. If a draft already exists, clicking **New Version** returns the existing draft rather than creating a duplicate.
+3. Edit the draft as needed and publish.
+
+:::{.callout-note}
+Active assessments linked to the previous version are not affected. Draft assessments linked to the previous version are flagged as **stale** and must be migrated before they can be published. See [Manage risk tier assessments](manage-risk-tier-assessments.qmd#understand-stale-assessments).
+:::
+
+## Duplicate a template
+
+Duplicating creates an independent copy of an existing template as a new Draft, starting a separate version lineage under a new name.
+
+1. From the template list, open the row menu (**⋯**) on any Active or Archived template.
+2. Select **Duplicate Template**. A new Draft is created with a full copy of the template's configuration.
+3. Open the draft, rename it, and edit as needed.
+4. Publish when ready.
+
+:::{.callout-note}
+If published without renaming, the duplicate joins the same version lineage as the source template.
+:::
+
+## Archive a template
+
+1. Open the active template and click **Archive**.
+2. Confirm. The template moves to **Archived**.
+
+:::{.callout-note}
+Archiving leaves the record type without an active template — new assessments cannot be created until a new template is published. Archived templates are read-only and cannot be directly reactivated.
+:::
+
+## Restore an archived version
+
+1. Open the archived template and click **Restore this version**.
+2. A new **Draft** is created pre-populated with the archived version's configuration.
+3. Review, adjust if needed, and publish.
+
+Restoring does not reactivate the archived version — it always creates a new Draft, preserving the append-only version history.
+
+## Delete a draft template
+
+1. Open the draft template and click **Delete**.
+2. Confirm. The template and all its configuration are permanently removed.
+
+:::{.callout-note}
+Only **Draft** templates can be deleted. Active and Archived templates are permanent audit artifacts and cannot be deleted.
+:::
+
+## View version history
+
+Every template's detail page shows its full version history — all published versions with their version numbers, publication dates, and current status. Archived versions remain readable at any time for audit purposes and can be restored as described above.
+
+## What's next
+
+- [Configure risk tier calculation](configure-risk-tier-calculation.qmd) — set up scoring levels, factors, components, thresholds, and override rules.
+- [Manage risk tier assessments](manage-risk-tier-assessments.qmd) — create and publish assessments for your records against a published template.

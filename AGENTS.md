@@ -49,6 +49,19 @@ Documentation is written in Quarto Markdown (`.qmd`). Key conventions:
 - Cross-references use relative paths ending in `.qmd`
 - Images are stored alongside their `.qmd` files
 
+## Documentation coverage reviews
+
+When validating documentation coverage for a Shortcut story or engineering change:
+
+- Read the full story and inspect the final implementation pull requests. Treat the implemented behavior as authoritative when it differs from the story description, while verifying merge and release state before calling it shipped.
+- Compare that behavior with documentation on current `origin/main` and classify coverage as Covered, Partial, Outdated, Missing, or Source Gap.
+- Search for every consumer of edited Quarto includes and validate all affected formats, including both HTML guides and RevealJS training where applicable.
+- Render affected pages one at a time. Use `skills/validmind-docs-coverage/scripts/render-pages.sh` for multi-page validation.
+- Add direct links to each changed page in the pull request after the ready-for-review `validate` job deploys the preview.
+- Verify current review, validation, and merge state immediately before describing a pull request in Shortcut or a release tracker. Do not update tracker task state unless explicitly requested.
+
+For the complete Shortcut-to-documentation workflow, use [ValidMind documentation coverage](skills/validmind-docs-coverage/SKILL.md).
+
 ## Pull requests and release notes
 
 Documentation pull requests must follow the repository's release-note policy:
