@@ -43,9 +43,7 @@ You configure the application registration in your own Entra tenant, then send {
 {{< var vm.product >}}'s login flow uses the Authorization Code Flow with PKCE as a public client — it never uses a client secret. Registering under **Web** instead of **SPA** will cause sign-in to fail with a CORS or token-response error.
 :::
 
-7. Open the app's **Authentication** blade and add the same URL again under **Front-channel logout URL**. This lets {{< var vm.product >}} sign users out of Entra ID cleanly when they log out.
-
-You don't need to configure an "Expose an API" section, an Application ID URI, or any Microsoft Graph API permissions — {{< var vm.product >}} validates the sign-in (ID) token directly and never calls back into Entra ID or Graph.
+You don't need to configure a **Front-channel logout URL**, an "Expose an API" section, an Application ID URI, or any Microsoft Graph API permissions. {{< var vm.product >}} doesn't implement a front-channel logout receiver — when a user logs out, {{< var vm.product >}} redirects the browser to Entra ID's own logout endpoint (using the redirect URI already registered in step 5), which ends the Entra ID session directly. {{< var vm.product >}} also validates the sign-in (ID) token directly and never calls back into Entra ID or Graph.
 
 ## Step 2: Configure the claims Entra ID sends to ValidMind
 
@@ -78,7 +76,7 @@ Entra ID only includes a user's group memberships directly in the token up to a 
 Once your app registration is configured, [open a support ticket]({{< var link.contact >}}) or email [{{< var support.email >}}](mailto:{{< var support.email >}}?subject=Entra%20ID%20SSO%20setup) with:
 
 - Your **Directory (tenant) ID** and **Application (client) ID**, both shown on the app registration's **Overview** page.
-- Confirmation that the redirect URI and front-channel logout URL are registered under the **Single-page application** platform.
+- Confirmation that the redirect URI is registered under the **Single-page application** platform.
 - Which format your `groups` claim uses (object ID or another identifier), from [Step 2](#step-2-configure-the-claims-entra-id-sends-to-validmind).
 - Optionally, any email domains you'd like sign-in restricted to (for example, `yourcompany.com`), as an extra safeguard.
 - Whether you'd like **Group Sync** enabled in addition to **Role Sync** — role sync maps Entra groups to {{< var vm.product >}} roles, group sync additionally maps Entra groups to {{< var vm.product >}} groups.[^2]
