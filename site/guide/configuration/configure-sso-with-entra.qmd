@@ -21,7 +21,7 @@ You configure the application registration in your own Entra tenant, then send {
 - [x] {{< var link.login >}}
 - [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} in {{< var vm.product >}}, or you're working with someone who is.[^1]
 - [x] You have Application Administrator (or Global Administrator) access to your organization's Microsoft Entra ID tenant.
-- [x] You know the URL your organization uses to reach {{< var vm.product >}} (for example, `https://yourcompany.validmind.ai/`).
+- [x] You know the URL your organization uses to reach {{< var vm.product >}} (for example, `https://mycompany.prod.validmind.ai/`).
 
 :::
 
@@ -35,7 +35,7 @@ You configure the application registration in your own Entra tenant, then send {
 
 4. Under **Supported account types**, select **Accounts in this organizational directory only (Single tenant)** unless your organization specifically needs multi-tenant sign-in.
 
-5. Under **Redirect URI**, select **Single-page application (SPA)** as the platform, and enter the URL your organization uses to access {{< var vm.product >}}, for example `https://yourcompany.validmind.ai/`.
+5. Under **Redirect URI**, select **Single-page application (SPA)** as the platform, and enter the URL your organization uses to access {{< var vm.product >}}, for example `https://mycompany.prod.validmind.ai/`.
 
 6. Click **Register**.
 
@@ -106,11 +106,15 @@ Once {{< var vm.product >}} has enabled sync for your organization, a [{{< fa ha
 
 Example:
 
-| Entra security group | ValidMind role |
+::: {.callout-important title="Use the group's object ID, not its display name"}
+Enter the value exactly as Entra ID sends it in the `groups` claim — normally the group's object ID (a GUID), not the group's display name.
+:::
+
+| Entra security group (object ID) | ValidMind role |
 | --- | --- |
-| `Data Scientists` | Developer |
-| `Model Risk` | Validator |
-| `IT Admins` | Customer Admin |
+| `4b6b3f2a-1234-4c9a-8b21-9e2f5a7c1d3e` (Data Scientists) | Developer |
+| `9d1e7c44-5678-4f3b-9a10-2b6d8e4f7c92` (Model Risk) | Validator |
+| `f2a83b17-9abc-4de5-8f60-3c1a6b9d4e75` (IT Admins) | Customer Admin |
 
 ## Step 5: Test sign-in
 
