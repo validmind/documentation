@@ -351,6 +351,22 @@
 - `/guide/workflows/manage-model-stages.html`
   - Note: no matching `.qmd` source found
 
+#### `/settings/primary-record-types` — Inventory Record Types
+
+**Docs (primary):**
+
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Enable Intake; Enable or disable record types
+- `/guide/inventory/record-intake.html`
+  - Sections: Prerequisites; Enable Intake; Register Intake records; Configure an Intake classification workflow; Change inventory record type; Reject intake; Track Intake activity
+
+**Docs (related):**
+
+- `/guide/workflows/workflow-step-types.html`
+  - Sections: Inventory Record Type Change
+- `/guide/inventory/register-records-in-inventory.html`
+- `/guide/inventory/archive-delete-records.html`
+
 ### Your Account
 
 #### `/settings/profile` — Profile
