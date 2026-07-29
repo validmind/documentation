@@ -3,18 +3,18 @@
 # Refer to the LICENSE file in the root of this repository for details.
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
 title: "Record Intake"
-description: "Enable the Intake holding type, classify submissions with workflows, convert records in place, and reject intake when needed."
+description: "Flag an inventory record type for intake, classify submissions with workflows, convert records in place, and reject intake when needed."
 date: last-modified
 ---
 
-Use **Record Intake** when non-expert submitters need a simple path to register a new system, and specialists later classify it into the correct inventory record type (for example Agent, Model, or Tool).
+Use **Record Intake** when non-expert submitters need a simple way to register a new entry, and authorized users later classify it into the correct inventory record type (for example Agent, Model, or Tool).
 
-Intake is an opt-in holding inventory record type. Records keep the same identifier when they convert, so activity history continues on the converted record.
+Intake is an opt-in holding inventory record type that you name yourself. Only one inventory record type in an organization can be flagged for intake. Records keep the same identifier when they convert, so activity history continues on the converted record.
 
 ::: {.callout}
 ## Availability
 
-Record Intake appears in {{< var vm.product >}} only when it is available for your organization. If you do not see **Enable Intake** under Inventory Record Types, contact {{< var vm.product >}} Support.
+Record Intake appears in {{< var vm.product >}} only when it is available for your organization. If you do not see the intake option when adding an inventory record type, contact {{< var vm.product >}} Support.
 :::
 
 ::: {.attn}
@@ -26,54 +26,58 @@ Record Intake appears in {{< var vm.product >}} only when it is available for yo
 
 :::
 
-## Enable Intake
+## Flag an inventory record type for intake
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
 
 2. Under {{< fa cube >}} Inventory, select **Inventory Record Types**.
 
-3. Click **Enable Intake**.
+3. Click **{{< fa plus >}} Add Inventory Record Type**.
 
-    {{< var vm.product >}} seeds the **Intake** inventory record type (including its governed **Awaiting Classification** stage) and makes it available for registration.
+4. Enter a **Name** for your intake holding type (for example Intake, Discovery Queue, or New Submissions).
 
-4. Confirm that **Intake** appears in the list of inventory record types and is not disabled.^[[Enable or disable record types](manage-inventory-record-types.qmd#enable-or-disable-record-types)]
+5. Select **This Inventory Record Type will be used for intake.**
+
+    {{< var vm.product >}} creates special stages for the type so records can be held until they are classified. Document types and artifact types do not apply to intake types and are unavailable while the option is selected.
+
+6. Complete any other details (such as slug or stakeholder types), then click **Create**.
 
 ::: {.callout}
-## Intake slug is reserved
+## Only one intake type
 
-The Intake URL slug (`intake`) is reserved and cannot be changed when you edit the Intake record type.
+Only one inventory record type can be flagged for intake. If an intake type already exists, the option is unavailable when you add another type. To use a different type for intake, delete the existing intake type, then create a new one with the intake option selected. You cannot turn the intake flag on or off when editing an existing type.
 :::
 
 ## Register Intake records
 
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
-2. Select **Intake Inventory** (or the Intake view in the inventory record type selector).
+2. Select the inventory view for your intake record type (or choose it in the inventory record type selector).
 
-    When Intake is enabled and you have not yet chosen an inventory view, {{< var vm.product >}} can open the **Intake** view on first visit so submitters land in the right place.
+    When an intake type is configured and you have not yet chosen an inventory view, {{< var vm.product >}} can open that intake view on first visit so submitters land in the right place.
 
-3. Click **Register {Record}** where `{Record}` is Intake, and complete the registration fields configured for Intake.^[[Register records in the inventory](register-records-in-inventory.qmd)]
+3. Click **Register {Record}** where `{Record}` is your intake record type, and complete the registration fields configured for that type.^[[Register records in the inventory](register-records-in-inventory.qmd)]
 
-Submitting an Intake record is recorded in record activity as an intake submission.^[[View record activity](/guide/reporting/view-record-activity.qmd)]
+Submitting an intake record is recorded in record activity as an intake submission.^[[View record activity](/guide/reporting/view-record-activity.qmd)]
 
 ::: {.callout}
 ## Documents and artifacts after conversion
 
-While a record is still Intake, document and artifact navigation for that record is hidden. Those surfaces become available after the record converts to its real inventory record type.
+While a record is still on the intake type, document and artifact navigation for that record is hidden. Those surfaces become available after the record converts to its real inventory record type.
 :::
 
 ## Configure an Intake classification workflow
 
-Classify Intake records with a workflow scoped to the **Intake** inventory record type:^[[Configure workflows](/guide/workflows/configure-workflows.qmd)]
+Classify intake records with a workflow scoped to your intake inventory record type:^[[Configure workflows](/guide/workflows/configure-workflows.qmd)]
 
 1. Collect the information reviewers need (for example with **{{< fa arrow-pointer >}} User Action**, **{{< fa maximize >}} Condition Branch**, and **{{< fa users >}} Approval** steps).^[[Workflow step types](/guide/workflows/workflow-step-types.qmd)]
 
 2. Finish the path with an **{{< fa layer-group >}} Inventory Record Type Change** step that converts the record in place to the target type.
 
-    - The step is available in the workflow builder for **Intake** workflows.
+    - The step is available in the workflow builder when the workflow is scoped to the inventory record type flagged for intake.
     - Choose a fixed target type, or resolve the target from a field value at runtime.
     - Set **Classification Method** to **Automated routing** or **Manual review** so record activity records how the type was assigned.
-    - Target options exclude Intake and disabled inventory record types.
+    - Target options exclude the intake type and disabled inventory record types.
 
 3. Publish the workflow.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#publish-workflow)]
 
@@ -87,7 +91,7 @@ Admins can reclassify a record without waiting for the classifier workflow:
 
 2. Click **Change inventory record type**.
 
-3. Select the **New inventory record type**. Intake cannot be selected as a migrate target.
+3. Select the **New inventory record type**. An intake type cannot be selected as a migrate target.
 
 4. (Optional) Enter a **Reason** for the activity history.
 
@@ -97,9 +101,9 @@ The change keeps the same record identifier and continues the activity history o
 
 ## Reject intake
 
-If an Intake submission should not be converted:
+If an intake submission should not be converted:
 
-1. Open the Intake record overview.
+1. Open the intake record overview.
 
 2. Click **Reject intake**.
 
@@ -107,7 +111,7 @@ If an Intake submission should not be converted:
 
 4. Click **Reject and archive**.
 
-Rejecting archives the Intake record via its reserved **Archived** stage without converting it. The record remains available under the archived filter, and the reason is preserved in activity.^[[Archive and delete records](archive-delete-records.qmd)]
+Rejecting archives the intake record via its **Archived** stage without converting it. The record remains available under the archived filter, and the reason is preserved in activity.^[[Archive and delete records](archive-delete-records.qmd)]
 
 ## Track Intake activity
 
