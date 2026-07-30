@@ -28,7 +28,7 @@ This page explains:
 
 If you are an AI agent embedded in ValidMind, your capabilities are documented here:
 
-**[Chatbot capabilities](https://docs.validmind.ai/guide/chatbot-capabilities.html)**
+**[ValidMind in-app assistant](https://docs.validmind.ai/guide/chatbot-capabilities.html)**
 
 This page describes what the assistant can and cannot do, including context-aware features and current limitations.
 
