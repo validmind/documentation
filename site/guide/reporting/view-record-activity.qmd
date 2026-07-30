@@ -11,7 +11,7 @@ aliases:
   - /guide/inventory/view-record-activity.html
 ---
 
-Track information events associated with a specific record. Audit a history of updates made to the record, including stage or workflow transitions, updates on associated documents, activity on logged artifacts, and more.
+Track information events for inventory records across your organization or for a single record. Audit updates such as stage or workflow transitions, document changes, logged artifact activity, and more.
 
 ## What is tracked on record activity?
 
@@ -26,13 +26,29 @@ Track information events associated with a specific record. Audit a history of u
 
 :::
 
-## View record activity
+## View record activity {#view-record-activity}
+
+:::: {.panel-tabset}
+
+### Organization-wide Record Activity
+
+Use the organization **{{< fa wifi >}} Activity** page to review record and artifact updates across all inventory records you can access:
+
+1. In the left sidebar, click **{{< fa wifi >}} Activity**.
+
+2. Select the **Record Activity** tab.
+
+The feed shows recent record and artifact events organization-wide. For configuration and settings changes, use the **Settings Activity** tab.[^settings-activity]
+
+### Activity for a specific record
 
 {{< include _view-record-activity-steps.qmd >}}
 
+::::
+
 ### View individual field activity
 
-To view activity for individual inventory fields:[^2]
+To view activity for individual inventory fields on a specific record:[^2]
 
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
@@ -44,9 +60,56 @@ To view activity for individual inventory fields:[^2]
 
 5. Hover over **{{< fa circle-info >}}** to view individual activity for that field.
 
-## Filter record activity
+## Filter record activity {#filter-record-activity}
 
-Filter to narrow down record activity by category or specific values:
+Narrow activity by event dimensions, record or artifact attributes, or both. Available filters differ between the organization-wide feed and a single record's Activity page.
+
+:::: {.panel-tabset}
+
+### Organization-wide filters
+
+On **{{< fa wifi >}} Activity** → **Record Activity**, click **{{< fa filter >}} Filter** to open the filter popover. The popover has two tabs; rules from both tabs combine with AND when you apply them:
+
+::: {.panel-tabset}
+
+### Activity Filter
+
+Filter by dimensions of the activity event itself:
+
+- **Event Category** — Category of the activity event.
+- **Actor** — User who performed the activity.
+- **Artifact Type** — Type of artifact involved in the event.
+- **Changed Field** — Inventory or artifact field that changed.
+- **Document** — Document associated with the event.
+- **Workflow** — Workflow associated with the event.
+
+### Record/Artifact Filter
+
+Filter by the **current** values of related inventory records and artifacts. Grouped fields include:
+
+- **Record** — For example Business Unit, Group, Model ID, Model Stage, Name, Inventory Record Type, Purpose, Tier, Use, and vendor fields.
+- **Finding** — For example Severity, Status, Owner, Created on, and Due date.
+- **Workflow** — For example Workflow name, Status, and Started on.
+- **Document** — For example Owner and Last updated.
+- **User** — For example Name and Email for the acting user.
+
+:::
+
+::: {.callout-note}
+## Record filters include downstream artifact activity
+
+Filtering by a record attribute (for example **Business Unit**) returns activity on matching records **and** on artifacts logged to those records, such as validation issues.
+:::
+
+1. Click **{{< fa plus >}} Add Rule** (or add a group) to build your filter conditions in either tab.
+
+2. Click **Apply Filters**.
+
+Active filters appear as chips. Click {{< fa xmark >}} on a chip to remove that filter, or clear all filters from the popover. Organization-wide filters persist in the URL (`qbfilters`), so you can share or bookmark a filtered view.
+
+### Filters for a specific record
+
+On a record's **{{< fa wifi >}} Activity** page, filter by category or specific values:
 
 1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
 
@@ -92,7 +155,7 @@ Filter to narrow down record activity by category or specific values:
 
    (Optional) Add more rules by repeating steps 5 and 6. Multiple rules combine with AND logic.[^22]
 
-6. Click **Apply Filters** to apply your filter rules.
+8. Click **Apply Filters** to apply your filter rules.
 
 #### Remove active filters
 
@@ -101,6 +164,8 @@ After applying filters, active conditions appear as chips below the header. Clic
 #### Share filtered views
 
 Filters persist in the URL, so you can share or bookmark a filtered view.
+
+::::
 
 <!-- FOOTNOTES -->
 
@@ -151,3 +216,5 @@ Filters persist in the URL, so you can share or bookmark a filtered view.
 [^21]: [Manage users](/guide/configuration/manage-users.qmd)
 
 [^22]: For example, filter by an event category AND a specific user to see only that user's activity in that category.
+
+[^settings-activity]: [View settings activity](/guide/reporting/view-settings-activity.qmd)
