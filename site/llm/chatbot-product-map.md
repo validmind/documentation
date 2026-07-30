@@ -530,7 +530,16 @@
 
 #### `/activity` — Activity
 
-- *No direct help link; content may be covered under scattered guide sections.*
+**Docs (related):**
+
+- `/guide/reporting/tracking-organization-activity.html`
+  - Sections: What's next
+- `/guide/reporting/view-record-activity.html`
+  - Sections: What is tracked on record activity?; Prerequisites; View record activity; Organization-wide Record Activity; Activity for a specific record; View individual field activity; Filter record activity; Organization-wide filters
+- `/guide/reporting/view-settings-activity.html`
+  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 #### `/analytics` — sidebar.analytics
 
