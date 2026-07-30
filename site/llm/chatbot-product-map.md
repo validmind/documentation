@@ -91,7 +91,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -124,7 +124,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
 - `/guide/templates/manage-text-block-library.html`
@@ -141,7 +141,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -181,7 +181,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -203,7 +203,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -225,7 +225,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -399,7 +399,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -455,7 +455,7 @@
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
@@ -571,7 +571,7 @@
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
