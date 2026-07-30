@@ -38,14 +38,26 @@ This version of the API is **v1**, specified in the path (`/vm/api/v1`). Future 
 
 ## Authentication
 
-### Required headers
+You can authenticate Public REST API requests with **API keys** or, when your organization enables it, an **OIDC bearer access token**.
 
-All API endpoints require authentication using two headers that must be included with every request:
+::: {.callout-note}
+## Availability of OIDC
+
+OIDC bearer auth for the Public REST API depends on your organization's API connectivity settings. If bearer requests return `403`, your organization may require API keys only — contact your ValidMind administrator.
+:::
+
+::: {.panel-tabset}
+
+### API key
+
+#### Required headers
+
+Include both headers with every request:
 
 - `x-api-key`: Your ValidMind API key
-- `x-api-secret`: Your ValidMind API secret 
+- `x-api-secret`: Your ValidMind API secret
 
-### Request example
+#### Request example
 
 To use this cURL example, replace `API_KEY` and `API_SECRET` with your own credentials:
 
@@ -56,7 +68,7 @@ curl -X GET "https://api.prod.validmind.ai/vm/api/v1/models" \
   -H 'x-api-secret: API_SECRET'
 ```
 
-### Get your API key and secret
+#### Get your API key and secret {#get-your-api-key-and-secret}
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**. 
 
@@ -66,6 +78,39 @@ curl -X GET "https://api.prod.validmind.ai/vm/api/v1/models" \
 
    - Locate **API Key** and click **{{< fa clipboard >}} Copy to Clipboard**.
    - Locate **Secret Key** and click **{{< fa clipboard >}} Copy to Clipboard**.
+
+### OIDC bearer token
+
+#### Required headers
+
+Include an OIDC access token obtained from your organization's identity provider (for example via the OAuth 2.0 device authorization flow):
+
+- `Authorization: Bearer <access_token>`
+
+If your user belongs to **more than one** organization, also include:
+
+- `X-Organization-Id: <organization-cuid>`
+
+When you belong to exactly one organization, you can omit `X-Organization-Id` and the API uses that membership.
+
+::: {.callout}
+Do not send API key headers together with a bearer token for the same request. Use one authentication mode at a time.
+:::
+
+#### Request example
+
+```
+curl -X GET "https://api.prod.validmind.ai/vm/api/v1/models" \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ACCESS_TOKEN' \
+  -H 'X-Organization-Id: ORGANIZATION_CUID'
+```
+
+Replace `ACCESS_TOKEN` with a valid OIDC access token for your ValidMind deployment, and `ORGANIZATION_CUID` when you need to select an organization.
+
+For library sessions that use the same device-flow pattern in Python notebooks, see [Authenticate with OIDC device flow](/developer/quickstart/authenticate-with-oidc-device-flow.qmd). Public API callers obtain and refresh tokens with their IdP client, then pass the access token in the `Authorization` header as shown above.
+
+:::
 
 ## Data formats
 
