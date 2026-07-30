@@ -16,6 +16,31 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 | **Set Inventory Record Stage To** | Select the record stage to transition to. |
 : **{{< fa cube >}} Inventory Record Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
+### {{< fa layer-group >}} Inventory Record Type Change
+<span id="inventory-record-type-change">
+
+- Converts a record to a different inventory record type in place (same record identifier; activity history continues).^[[Record Intake](/guide/inventory/record-intake.qmd)]
+- Available when configuring workflows for the inventory record type flagged for intake.
+- Target options exclude the intake type and disabled inventory record types.
+
+| Field | Description |
+|---:|---|
+| **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step.^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#inventory-record-type-change)] |
+| **Target Inventory Record Type** | Select the fixed inventory record type to convert to. |
+| **Classification Method** | Select **Automated routing** or **Manual review**. Labels how the type was assigned in record activity. Both options convert the record immediately when this step runs — **Manual review** does not pause the workflow or open a review UI on this step. |
+: **{{< fa layer-group >}} Inventory Record Type Change** step configuration {.hover tbl-colwidths="[40,60]"}
+
+::: {.callout}
+## Classification Method is audit metadata
+
+**Classification Method** is author-declared on the step because the runtime cannot reliably infer whether a human reviewed the selection.
+
+- **Automated routing** — Same in-place conversion; activity records the assignment as automated routing.
+- **Manual review** — Same in-place conversion; activity records the assignment as after manual review.
+
+Typical **Manual review** pattern: earlier in the intake workflow, a reviewer chooses the path (for example with a **{{< fa arrow-pointer >}} User Action** or **{{< fa maximize >}} Condition Branch**). Configure each path's **Inventory Record Type Change** step with the matching fixed target type and **Manual review** so activity labels the conversion as after manual review.
+:::
+
 ### {{< fa tag >}} Artifact Status Change
 <span id="artifact-status-change">
 
@@ -260,6 +285,10 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 #### {{< fa cube >}} Inventory Record Stage Change
 
 Transitions a record into another stage.
+
+#### {{< fa layer-group >}} Inventory Record Type Change
+
+Converts a record to a different inventory record type in place (for example Intake → Agent).
 
 #### {{< fa tag >}} Artifact Status Change
 
