@@ -62,14 +62,14 @@ flowchart LR
 
 - [x] {{< var link.login >}}
 - [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure connections.[^1]
-- [x] A secret is configured for your Databricks Personal Access Token.[^2]
-- [x] You have admin access to your Databricks workspace.
+- [x] You have access to your Databricks workspace and can authorize the connection (OAuth) or create a personal access token (PAT).
+- [x] For **Personal Access Token** authentication only: a secret is configured for your Databricks PAT.[^2]
 
 :::
 
-## Sync {{< var vm.product >}} records with Databricks
+## Sync {{< var vm.product >}} records with Databricks {#sync-records-with-databricks}
 
-::: {.panel-tabset}
+:::: {.panel-tabset}
 
 ### 1. Configure Databricks connection
 
@@ -81,16 +81,33 @@ c. Click **{{< fa plus >}} Add Connection**.
 
 d. In the modal that opens, select **Databricks**.[^3]
 
-e. Complete:
+e. Complete the shared fields:
 
    - **Integration Name** — How other admins can identify the connection.
    - **Description** (optional) — The intended usage or additional details.
+   - **Authentication Method** — Choose **OAuth (user login)** (recommended) or **Personal Access Token**.
    - **Workspace URL** — Your Databricks workspace URL, found in the browser address bar, such as `https://adb-1234567890.azuredatabricks.net`.
-   - **SQL Warehouse ID** — The ID of your SQL Warehouse, found in SQL Warehouses settings.
-   - **Personal Access Token** — Select a secret containing your Databricks Personal Access Token.
+   - **SQL Warehouse ID** (optional) — The ID of your SQL Warehouse, found in SQL Warehouses settings. Required only when querying table row data via SQL.
    - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
 
-f. Click **Save Integration**.
+f. Complete the fields for your authentication method:
+
+   ::: {.panel-tabset}
+
+   ### OAuth (user login)
+
+   - **OAuth Client ID** (optional) — Leave blank to use the default ValidMind partner OAuth app, or enter a client ID from your own Databricks OAuth application.
+   - **OAuth Client Secret** (optional) — Select a secret only for confidential OAuth apps. Leave blank for the ValidMind partner app or public PKCE apps.
+
+   Click **Connect with Databricks**. You are redirected to Databricks to sign in and authorize access. After you authorize, you return to Connections with the new connection created. Access and refresh tokens are stored securely and are never shown in the form.
+
+   ### Personal Access Token
+
+   - **Personal Access Token** — Select a secret containing your Databricks Personal Access Token.[^2]
+
+   Click **Save Integration**.
+
+   :::
 
 g. Test the connection:
 
@@ -98,6 +115,12 @@ g. Test the connection:
    ii. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
 
    If the test is successful, the message **{{< fa check-circle >}} Connection successful** is displayed.
+
+::: {.callout-note}
+## Reconnect OAuth connections
+
+To refresh OAuth tokens later, edit the Databricks connection and click **Reconnect with Databricks**. Complete the Databricks sign-in flow again. Switching an existing connection from Personal Access Token to OAuth also requires reconnecting.
+:::
 
 ### 2. Link records to Databricks
 
@@ -122,7 +145,7 @@ g. Click **Link Model** to complete the link.
 
 After linking, metadata from the Unity Catalog resource syncs to {{< var vm.product >}}. You can use linked fields in custom calculated fields to surface Databricks metadata directly in your inventory views.
 
-:::
+::::
 
 ## What's next
 
@@ -138,6 +161,6 @@ After linking, metadata from the Unity Catalog resource syncs to {{< var vm.prod
 
 [^3]:
 
-  ![Configure the Databricks connection](configure-databricks.png){width=80% fig-alt="Screenshot of the Configure Databricks connection dialog showing the required fields described in step 5." .screenshot}
+  ![Configure the Databricks connection](configure-databricks.png){width=80% fig-alt="Screenshot of the Configure Databricks connection dialog. Choose Authentication Method (OAuth user login or Personal Access Token), then complete Workspace URL and optional SQL Warehouse ID. OAuth continues with Connect with Databricks; Personal Access Token uses a stored secret and Save Integration." .screenshot}
 
 [^4]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
