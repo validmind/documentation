@@ -75,7 +75,7 @@ Classify intake records with a workflow scoped to your intake inventory record t
 2. Finish the path with an **{{< fa layer-group >}} Inventory Record Type Change** step that converts the record in place to the target type.
 
     - The step is available in the workflow builder when the workflow is scoped to the inventory record type flagged for intake.
-    - Choose a fixed target type, or resolve the target from a field value at runtime.
+    - Select a fixed target inventory record type.
     - Set **Classification Method** to **Automated routing** or **Manual review**. This labels how the type was assigned in record activity; it does not change whether the conversion runs when the step executes.
     - Target options exclude the intake type and disabled inventory record types.
 
@@ -94,7 +94,7 @@ When the step runs (with either method), {{< var vm.product >}}:
 - Writes an activity event labeled as automated routing or after manual review
 - Can start matching target-type workflows that listen for a record-type-changed trigger (best effort)
 
-Use **Manual review** when an earlier step collected a human selection — typically a **{{< fa arrow-pointer >}} User Action** that sets a field — and this step applies that selection (often with **From a field value**). Use **Automated routing** when the workflow itself decides the target (for example via conditions or a fixed type).^[[Inventory Record Type Change](/guide/workflows/workflow-step-types.qmd#inventory-record-type-change)]
+Use **Manual review** when an earlier step collected a human decision — typically a **{{< fa arrow-pointer >}} User Action** or **{{< fa maximize >}} Condition Branch** that routes to a path with the matching fixed target type. Use **Automated routing** when the workflow itself decides the target (for example via conditions that lead to a fixed type).^[[Inventory Record Type Change](/guide/workflows/workflow-step-types.qmd#inventory-record-type-change)]
 :::
 
 After conversion, the record URL updates to the new inventory record type so you stay on the converted record instead of seeing a "not found" error.
