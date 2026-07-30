@@ -1,0 +1,152 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Authenticate with OIDC device flow"
+date: last-modified
+listing:
+  - id: whats-next
+    type: grid
+    max-description-length: 250
+    sort: false
+    fields: [title, description]
+    grid-columns: 2
+    contents:
+    - store-credentials-in-env-file.qmd
+    - ../../notebooks/quickstart/quickstart_model_documentation_oidc_device_flow.ipynb
+---
+
+Authenticate the {{< var validmind.developer >}} with your organization's identity provider using the OAuth 2.0 / OIDC **device authorization flow** ([RFC 8628](https://datatracker.ietf.org/doc/html/rfc8628)), instead of long-lived API keys.
+
+When OIDC is enabled for your organization, `vm.init()` opens a browser sign-in flow (verification URL and user code), then uses a bearer access token for ValidMind API calls. Cached tokens are reused and refreshed when possible.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Your organization has OIDC library connectivity enabled.[^1]
+- [x] You have {{< var validmind.developer >}} version **2.13** or later.[^2]
+- [x] The record you want to connect to is registered in the inventory.[^3]
+- [x] The document you want to connect to has a template applied.[^4]
+
+:::
+
+## When should I use OIDC?
+
+Use the device flow when your organization prefers interactive IdP sign-in over API keys — for example, notebook or local CLI work under SSO policies.
+
+::: {.callout-note}
+## API keys and OIDC are mutually exclusive
+
+Pass **either** `api_key` and `api_secret` **or** `issuer` and `client_id` (via arguments or environment variables). Mixing both raises an authentication error.
+
+:::
+
+::: {.callout}
+## Current scope
+
+- Supported for the **Python** {{< var validmind.developer >}} via `vm.init()`.
+- Device authorization flow only. Redirect-based OAuth and client-credentials (machine-to-machine) grants are not supported by the library.
+- Availability depends on your organization's library connectivity settings. If Getting Started only shows an API key snippet, use [Install and initialize the {{< var validmind.developer >}}](install-and-initialize-validmind-library.qmd).
+
+:::
+
+## Authenticate with OIDC
+
+### 1. Get your OIDC code snippet
+
+When your organization allows device-flow connectivity, the {{< var validmind.platform >}} can show an OIDC snippet on the record **Getting Started** page:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a record by clicking on it or find your record by applying a filter or searching for it.[^5]
+
+3. In the left sidebar that appears for your record, click **{{< fa rocket >}} Getting Started**.
+
+4. Select the **Document** you want to automatically upload test results to.[^6]
+
+5. Under the OIDC connectivity section, click **{{< fa regular copy >}} Copy snippet to clipboard**.
+
+::: {.callout}
+If you see a message asking you to contact an administrator to set OIDC connectivity, your organization allows OIDC but the device-flow client settings are not configured yet. Ask your ValidMind administrator to complete that setup.
+
+:::
+
+### 2. Initialize the {{< var validmind.developer >}}
+
+Paste the snippet into your notebook or script. A typical OIDC `vm.init()` looks like this:
+
+```python
+import validmind as vm
+
+vm.init(
+    api_host="{{< var api.host >}}/tracking",
+    issuer="https://login.microsoftonline.com/<tenant-id>/v2.0",
+    client_id="<oauth-public-client-id>",
+    audience="<api-audience-or-resource>",  # often required
+    document="document-key",  # requires library >=2.12.0
+    model="MODEL_IDENTIFIER",
+)
+```
+
+| Argument | Environment variable | Description |
+|----------|----------------------|-------------|
+| `issuer` | `VM_OIDC_ISSUER` | OpenID Provider issuer URL used for discovery |
+| `client_id` | `VM_OIDC_CLIENT_ID` | Public OAuth client ID registered for device flow |
+| `audience` | `VM_OIDC_AUDIENCE` | API audience / resource identifier (often required so tokens are accepted by ValidMind) |
+| `scope` | `VM_OIDC_SCOPE` | Optional. Defaults to `openid profile email offline_access` |
+| `api_host` | `VM_API_HOST` | Location of the {{< var vm.product >}} tracking API |
+| `model` | `VM_API_MODEL` | Record identifier |
+| `document` | — | Document to receive uploaded test results |
+
+When you run the cell, the library may print a **verification URL** and **user code**. Open the URL, enter the code, and complete sign-in with your identity provider. The notebook or script waits until authorization finishes.
+
+::: {.callout}
+To also enable monitoring, add `monitoring=True` to `vm.init()`.[^7]
+:::
+
+### 3. (Optional) Store OIDC settings in an `.env` file
+
+You can keep OIDC settings out of source code the same way you store API credentials:[^8]
+
+```bash
+VM_API_HOST=https://api.prod.validmind.ai/api/v1/tracking
+VM_OIDC_ISSUER=https://login.microsoftonline.com/<tenant-id>/v2.0
+VM_OIDC_CLIENT_ID=<oauth-public-client-id>
+VM_OIDC_AUDIENCE=<api-audience-or-resource>
+VM_API_MODEL=<model>
+```
+
+Then call `vm.init()` with only the values that should stay in the notebook, such as `document=` or `monitoring=True`.
+
+## What happens after you sign in?
+
+1. The library discovers your IdP from `{issuer}/.well-known/openid-configuration`.
+2. It starts the device authorization flow and waits for you to complete browser sign-in.
+3. Access (and refresh, when issued) tokens are cached under `~/.validmind/credentials.json`.
+4. Later `vm.init()` calls reuse or refresh cached tokens when possible.
+5. API requests use `Authorization: Bearer <access_token>` instead of API key headers.
+
+Treat the credentials file like other secrets on shared machines.
+
+## Try it in a notebook
+
+For a full documentation walkthrough that uses OIDC instead of API keys, see [Quickstart for model documentation (OIDC device flow)](/notebooks/quickstart/quickstart_model_documentation_oidc_device_flow.ipynb).
+
+## What's next
+
+:::{#whats-next}
+:::
+
+
+<!-- FOOTNOTES -->
+
+[^1]: Your ValidMind administrator configures library connectivity and the OIDC device-flow client for your organization.
+[^2]: [Upgrade the {{< var validmind.developer >}}](install-and-initialize-validmind-library.qmd#upgrade-validmind)
+[^3]: [Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)
+[^4]: [Working with templates](/guide/templates/working-with-document-templates.qmd)
+[^5]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+[^6]: [Managing documents](/guide/templates/managing-documents.qmd)
+[^7]: [Enable monitoring](/guide/monitoring/enable-monitoring.qmd)
+[^8]: [Store record credentials in `.env` files](store-credentials-in-env-file.qmd)
