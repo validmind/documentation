@@ -1,0 +1,152 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Record Intake"
+description: "Flag an inventory record type for intake, classify submissions with workflows, convert records in place, and reject intake when needed."
+date: last-modified
+---
+
+Use **Record Intake** when non-expert submitters need a simple way to register a new entry, and authorized users later classify it into the correct inventory record type (for example Agent, Model, or Tool).
+
+Intake is an opt-in holding inventory record type that you name yourself. Only one inventory record type in an organization can be flagged for intake. Records keep the same identifier when they convert, so activity history continues on the converted record.
+
+::: {.callout}
+## Availability
+
+Record Intake appears in {{< var vm.product >}} only when it is available for your organization. If you do not see the intake option when adding an inventory record type, contact {{< var vm.product >}} Support.
+:::
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^1]
+
+:::
+
+## Flag an inventory record type for intake
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cube >}} Inventory, select **Inventory Record Types**.
+
+3. Click **{{< fa plus >}} Add Inventory Record Type**.
+
+4. Enter a **Name** for your intake holding type (for example Intake, Discovery Queue, or New Submissions).
+
+5. Select **This Inventory Record Type will be used for intake.**
+
+    {{< var vm.product >}} creates special stages for the type so records can be held until they are classified. Document types and artifact types do not apply to intake types and are unavailable while the option is selected.
+
+6. Complete any other details (such as slug or stakeholder types), then click **Create**.
+
+::: {.callout}
+## Only one intake type
+
+Only one inventory record type can be flagged for intake. If an intake type already exists, the option is unavailable when you add another type. To use a different type for intake, delete the existing intake type, then create a new one with the intake option selected. You cannot turn the intake flag on or off when editing an existing type.
+:::
+
+## Register Intake records
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the inventory view for your intake record type (or choose it in the inventory record type selector).
+
+    When an intake type is configured and you have not yet chosen an inventory view, {{< var vm.product >}} can open that intake view on first visit so submitters land in the right place.
+
+3. Click **Register {Record}** where `{Record}` is your intake record type, and complete the registration fields configured for that type.^[[Register records in the inventory](register-records-in-inventory.qmd)]
+
+Submitting an intake record is recorded in record activity as an intake submission.^[[View record activity](/guide/reporting/view-record-activity.qmd)]
+
+::: {.callout}
+## Documents and artifacts after conversion
+
+While a record is still on the intake type, document and artifact navigation for that record is hidden. Those surfaces become available after the record converts to its real inventory record type.
+:::
+
+## Configure an Intake classification workflow
+
+Classify intake records with a workflow scoped to your intake inventory record type:^[[Configure workflows](/guide/workflows/configure-workflows.qmd)]
+
+1. Collect the information reviewers need (for example with **{{< fa arrow-pointer >}} User Action**, **{{< fa maximize >}} Condition Branch**, and **{{< fa users >}} Approval** steps).^[[Workflow step types](/guide/workflows/workflow-step-types.qmd)]
+
+2. Finish the path with an **{{< fa layer-group >}} Inventory Record Type Change** step that converts the record in place to the target type.
+
+    - The step is available in the workflow builder when the workflow is scoped to the inventory record type flagged for intake.
+    - Select a fixed target inventory record type.
+    - Set **Classification Method** to **Automated routing** or **Manual review**. This labels how the type was assigned in record activity; it does not change whether the conversion runs when the step executes.
+    - Target options exclude the intake type and disabled inventory record types.
+
+3. Publish the workflow.^[[Configure workflows](/guide/workflows/configure-workflows.qmd#publish-workflow)]
+
+::: {.callout}
+## Automated routing vs Manual review
+
+Selecting **Manual review** on **Inventory Record Type Change** does **not** pause the workflow or open a review UI on that step. It only records that a human chose the type.
+
+When the step runs (with either method), {{< var vm.product >}}:
+
+- Converts the intake record in place to the target inventory record type (same record identifier)
+- Remaps the record to the target type's initial stage
+- Keeps custom field values; fields that apply to the new type become available
+- Writes an activity event labeled as automated routing or after manual review
+- Can start matching target-type workflows that listen for a record-type-changed trigger (best effort)
+
+Use **Manual review** when an earlier step collected a human decision — typically a **{{< fa arrow-pointer >}} User Action** or **{{< fa maximize >}} Condition Branch** that routes to a path with the matching fixed target type. Use **Automated routing** when the workflow itself decides the target (for example via conditions that lead to a fixed type).^[[Inventory Record Type Change](/guide/workflows/workflow-step-types.qmd#inventory-record-type-change)]
+:::
+
+After conversion, the record URL updates to the new inventory record type so you stay on the converted record instead of seeing a "not found" error.
+
+## Change inventory record type
+
+Admins can reclassify a record without waiting for the classifier workflow:
+
+1. Open the record overview.
+
+2. Click **Change inventory record type**.
+
+3. Select the **New inventory record type**. An intake type cannot be selected as a migrate target.
+
+4. (Optional) Enter a **Reason** for the activity history.
+
+5. Review the compatibility preview, acknowledge any warnings, and confirm **Change inventory record type**.
+
+The change keeps the same record identifier and continues the activity history on the new type.
+
+## Reject intake
+
+If an intake submission should not be converted:
+
+1. Open the intake record overview.
+
+2. Click **Reject intake**.
+
+3. Enter a **Reason** (for example duplicate or out of scope).
+
+4. Click **Reject and archive**.
+
+Rejecting archives the intake record via its **Archived** stage without converting it. The record remains available under the archived filter, and the reason is preserved in activity.^[[Archive and delete records](archive-delete-records.qmd)]
+
+## Track Intake activity
+
+On the record **{{< fa wifi >}} Activity** page, Intake lifecycle events can include:^[[View record activity](/guide/reporting/view-record-activity.qmd)]
+
+- Submitted for intake
+- Classified or reclassified (from type → to type), including whether assignment used automated routing, manual review, or an admin change, and how many fields carried over
+- Rejected and archived, with the reason
+
+When classification ran through a workflow, use **View workflow execution** to open the related execution on the record's Workflows tab.
+
+## What's next
+
+- [Manage inventory record types](manage-inventory-record-types.qmd)
+- [Workflow step types](/guide/workflows/workflow-step-types.qmd#inventory-record-type-change)
+- [Configure workflows](/guide/workflows/configure-workflows.qmd)
+- [View record activity](/guide/reporting/view-record-activity.qmd)
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
