@@ -110,6 +110,11 @@ RELATED_DOC_KEYWORDS: dict[str, list[str]] = {
     "profile": ["configuration/manage-your-profile", "configuration/personalizing-validmind"],
     "analytics": ["reporting", "monitoring"],
     "dashboard": ["configuration/customize-your-dashboard"],
+    "activity": [
+        "reporting/view-record-activity",
+        "reporting/view-settings-activity",
+        "reporting/tracking-organization-activity",
+    ],
 }
 
 
