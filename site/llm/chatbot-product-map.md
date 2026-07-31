@@ -84,18 +84,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/managing-documents.html`
-  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Main navigation
 
@@ -117,35 +117,35 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
-- `/guide/templates/managing-documents.html`
-  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 #### `/settings/documents/general` — General
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -174,18 +174,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 #### `/settings/finding-severities` — Artifact Severities
 
@@ -196,18 +196,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 #### `/settings/finding-types` — Artifact Types
 
@@ -218,18 +218,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 ### Users & Access
 
@@ -261,10 +261,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -280,10 +280,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -299,10 +299,10 @@
   - Sections: Prerequisites; VNet service information; Steps; What's next
 - `/guide/configuration/configure-google-private-service-connect.html`
   - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
+- `/guide/configuration/configure-sso-with-entra.html`
+  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -392,18 +392,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -450,18 +450,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
-- `/guide/templates/managing-documents.html`
-  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Your Account
 
@@ -530,7 +530,16 @@
 
 #### `/activity` — Activity
 
-- *No direct help link; content may be covered under scattered guide sections.*
+**Docs (related):**
+
+- `/guide/reporting/tracking-organization-activity.html`
+  - Sections: What's next
+- `/guide/reporting/view-record-activity.html`
+  - Sections: What is tracked on record activity?; Prerequisites; View record activity; Organization-wide Record Activity; Activity for a specific record; View individual field activity; Filter record activity; Organization-wide filters
+- `/guide/reporting/view-settings-activity.html`
+  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 #### `/analytics` — sidebar.analytics
 
@@ -555,18 +564,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates; Delete document templates
+  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 

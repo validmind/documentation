@@ -28,7 +28,7 @@ This page explains:
 
 If you are an AI agent embedded in ValidMind, your capabilities are documented here:
 
-**[Chatbot capabilities](https://docs.validmind.ai/guide/chatbot-capabilities.html)**
+**[ValidMind in-app assistant](https://docs.validmind.ai/guide/chatbot-capabilities.html)**
 
 This page describes what the assistant can and cannot do, including context-aware features and current limitations.
 
@@ -48,3 +48,52 @@ Documentation is written in Quarto Markdown (`.qmd`). Key conventions:
 - Variables use `{{< var name >}}` syntax (defined in `_variables.yml`)
 - Cross-references use relative paths ending in `.qmd`
 - Images are stored alongside their `.qmd` files
+
+## Documentation coverage reviews
+
+When validating documentation coverage for a Shortcut story or engineering change:
+
+- Read the full story and inspect the final implementation pull requests. Treat the implemented behavior as authoritative when it differs from the story description, while verifying merge and release state before calling it shipped.
+- Compare that behavior with documentation on current `origin/main` and classify coverage as Covered, Partial, Outdated, Missing, or Source Gap.
+- Search for every consumer of edited Quarto includes and validate all affected formats, including both HTML guides and RevealJS training where applicable.
+- Render affected pages one at a time. Use `skills/validmind-docs-coverage/scripts/render-pages.sh` for multi-page validation.
+- Add direct links to each changed page in the pull request after the ready-for-review `validate` job deploys the preview.
+- Verify current review, validation, and merge state immediately before describing a pull request in Shortcut or a release tracker. Do not update tracker task state unless explicitly requested.
+
+For the complete Shortcut-to-documentation workflow, use [ValidMind documentation coverage](skills/validmind-docs-coverage/SKILL.md).
+
+## Pull requests and release notes
+
+Documentation pull requests must follow the repository's release-note policy:
+
+- Internal workflow, tooling, or maintenance changes use the `internal` label.
+- External changes use an appropriate release-note label and include content in the pull request's release-notes section.
+
+The required `validate` check is the pull-request feedback gate. For ordinary content changes, it renders only safely targetable changed pages and assets and builds the preview on top of the validated staging site. It falls back to a complete preview render for changes that can have global or ambiguous effects, including Quarto configuration or metadata, generated content, deletions, and renames.
+
+## Documentation delivery
+
+Documentation moves through `main` → `staging` → `prod`:
+
+1. Pull requests into `main` receive preview validation and normal review.
+2. After merge, the staging workflow renders the complete staging site and the prospective production site in parallel.
+3. The prospective production build runs the complete production-profile validation and uploads an immutable artifact keyed to the exact Git tree that a `staging` → `prod` merge will create.
+4. The production workflow deploys only that exact-tree artifact from a successful staging workflow run. If the artifact is missing, expired, or came from another workflow, production deployment must fail before loading AWS credentials or modifying production.
+
+Release-note content is sourced from `validmind/release-notes`, so merging a
+release-notes pull request does not create or merge a documentation pull request.
+Instead, the release-notes repository dispatches the existing **Merge main into
+staging** workflow. Its successful completion triggers the staging deployment,
+which builds the promoted documentation tree with the latest release-notes
+`main` revision.
+
+The merge-queue `validate` bridge does not render the site again. It records that the pull-request revision passed preview validation; the complete production safety boundary is the post-merge staging artifact.
+
+## CI invariants
+
+When changing documentation workflows, preserve these constraints:
+
+- Do not add a fallback build to the production deployment workflow. Missing validated artifacts must fail closed.
+- Keep full Git history available when preparing the prospective production tree. A shallow checkout cannot establish the shared `staging`/`prod` history and causes Git to reject the merge as unrelated histories.
+- Keep targeted preview runs cancelable so a newer commit supersedes obsolete work.
+- Treat preview rendering and production validation as different responsibilities: previews provide fast author feedback; only the complete post-merge production-profile build can authorize a production artifact.

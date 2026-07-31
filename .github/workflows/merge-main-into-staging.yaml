@@ -1,9 +1,13 @@
 name: Merge main into staging
 
+run-name: Merge main into staging | ${{ github.event.client_payload.correlation_id || github.sha }}
+
 on:
   push:
     branches:
       - main
+  repository_dispatch:
+    types: [release-notes-published]
 
 permissions:
   contents: write

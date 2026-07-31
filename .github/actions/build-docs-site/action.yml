@@ -1,0 +1,114 @@
+name: Build docs site
+description: Populate generated sources and render a complete documentation site
+
+inputs:
+  profile:
+    description: Quarto profile to render
+    required: true
+  docs_ci_ro_pat:
+    description: Read-only token for private source repositories
+    required: true
+  quarto_version:
+    description: Quarto version to install
+    required: true
+  library_ref:
+    description: validmind-library revision to build
+    required: true
+  installation_ref:
+    description: installation revision to build
+    required: true
+  release_notes_ref:
+    description: release-notes revision to build
+    required: true
+  backend_ref:
+    description: backend revision to build
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Check out validmind-library repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/validmind-library
+        ref: ${{ inputs.library_ref }}
+        path: site/_source/validmind-library
+        token: ${{ inputs.docs_ci_ro_pat }}
+
+    - name: Check out installation repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/installation
+        ref: ${{ inputs.installation_ref }}
+        path: site/_source/installation
+        token: ${{ inputs.docs_ci_ro_pat }}
+        sparse-checkout: |
+          site/installation
+        sparse-checkout-cone-mode: true
+
+    - name: Check out release-notes repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/release-notes
+        ref: ${{ inputs.release_notes_ref }}
+        path: site/_source/release-notes
+        token: ${{ inputs.docs_ci_ro_pat }}
+        sparse-checkout: |
+          releases
+        sparse-checkout-cone-mode: true
+
+    - name: Check out backend repository
+      uses: actions/checkout@v4
+      with:
+        repository: validmind/backend
+        ref: ${{ inputs.backend_ref }}
+        path: site/_source/backend
+        token: ${{ inputs.docs_ci_ro_pat }}
+        sparse-checkout: |
+          src/backend/templates/documentation/model_documentation
+        sparse-checkout-cone-mode: true
+
+    - name: Set up Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: ${{ inputs.quarto_version }}
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+
+    - name: Generate Python library docs
+      shell: bash
+      run: |
+        cd site/_source/validmind-library
+        make install && make quarto-docs
+        cd ../../
+        rm -rf validmind
+        mkdir -p validmind
+        rsync -av --exclude '_build' --exclude 'templates' _source/validmind-library/docs/ validmind/
+
+    - name: Generate template schema docs
+      shell: bash
+      run: BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
+
+    - name: Populate installation
+      shell: bash
+      run: cp -r site/_source/installation/site/installation site/installation
+
+    - name: Populate release notes
+      shell: bash
+      run: |
+        cp -r site/_source/release-notes/releases site
+        rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
+
+    - name: Render docs site
+      shell: bash
+      env:
+        QUARTO_PROFILE: ${{ inputs.profile }}
+      run: |
+        cd site
+        quarto render --profile "$QUARTO_PROFILE" &> render_errors.log || {
+          echo "Quarto render failed immediately"
+          cat render_errors.log
+          exit 1
+        }
+        make generate-sitemap

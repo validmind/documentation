@@ -6,7 +6,7 @@ title: "Connect AI assistants via MCP"
 date: last-modified
 ---
 
-The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants to query and manage your inventory through natural language, providing seamless access to records (models), artifacts (findings), templates, and custom fields.
+The {{< var vm.product >}} MCP (Model Context Protocol) server enables AI assistants to query and manage your inventory through natural language. Assistants can work with records (models and other inventory types), artifacts (findings), templates, custom fields, and the supporting lookups needed to create and update those objects safely.
 
 ## Key concepts
 
@@ -30,21 +30,23 @@ graph LR
     end
     
     subgraph vm [ValidMind Platform]
-        Models[Models]
+        Records[Records]
         Artifacts[Artifacts]
         Templates[Templates]
-        CustomFields[Custom fields]
+        Fields[Custom fields]
+        Lookups[Schemas and lookups]
     end
     
     Claude --> MCPServer
     Cursor --> MCPServer
-    MCPServer --> Models
+    MCPServer --> Records
     MCPServer --> Artifacts
     MCPServer --> Templates
-    MCPServer --> CustomFields
+    MCPServer --> Fields
+    MCPServer --> Lookups
 ```
 
-Your AI assistant sends natural language queries through the MCP protocol. The {{< var vm.product >}} MCP server translates these into API calls, authenticates using your API key, and returns data from the {{< var validmind.platform >}}.
+Your AI assistant sends natural language queries through the MCP protocol. The {{< var vm.product >}} MCP server translates these into API calls, authenticates using your API credentials, and returns data from the {{< var validmind.platform >}}.
 
 ### What can I do with {{< var vm.product >}} MCP?
 
@@ -52,18 +54,23 @@ The MCP server exposes tools for working with your {{< var vm.product >}} invent
 
 ::: {.panel-tabset}
 
-#### Record and artifact operations
+#### Records and artifacts
 
-- List and get records (models)
-- List and get artifacts (findings)
-- Filter by risk level, deployment region, or ownership
+- List, get, and summarize records across inventory record types
+- Create and update records
+- List, get, and summarize artifacts (currently findings)
+- Create and update findings linked to a record
+- Filter records by search text, tiering, status, use case, business unit, owners, developers, validators, and related flags
+- Filter artifacts by severity, status, assignee, risk area, due date, and related criteria
 
-#### Custom field operations
+#### Schemas and lookups
 
-- List custom fields for records and artifacts
-- Update custom field values
+- Discover primary record types, use cases, business units, groups, model stages, and organization users
+- Read core field schemas and artifact types
+- Discover custom field schemas for records and artifacts
+- Read and update custom field values on records and artifacts
 
-#### Template operations
+#### Templates
 
 - List available templates
 - Get template details
@@ -73,11 +80,21 @@ The MCP server exposes tools for working with your {{< var vm.product >}} invent
 :::
 
 ::: {.callout title="Example queries you can ask"}
-- "Show me all model-type records that are high risk"
+- "Show me all tier 1 model-type records"
 - "Find all the records I am an owner for"
-- "List my validation artifacts"
+- "Summarize findings by severity for this model"
+- "Register a new model-type record called Customer Churn"
+- "Create a finding on that record and assign it to me"
 - "What templates are available for credit risk models?"
 
+:::
+
+::: {.callout-note}
+## Current limitations
+
+- The MCP server covers inventory records, artifacts, templates, custom fields, and supporting schemas or lookups. It does not write documentation content or run ValidMind Library tests.
+- Artifact operations currently support the `finding` artifact type only.
+- Requests may be rate limited depending on your environment.
 :::
 
 ::: {.attn}
@@ -93,6 +110,14 @@ The MCP server exposes tools for working with your {{< var vm.product >}} invent
 :::
 
 ## Configure your AI assistant
+
+For {{< var vm.product >}} Cloud production, use:
+
+```text
+https://api.prod.validmind.ai/mcp
+```
+
+If your organization uses a different cloud host or a private deployment, use the MCP URL provided for your environment.
 
 ::: {.panel-tabset}
 
@@ -164,9 +189,9 @@ The MCP server exposes tools for working with your {{< var vm.product >}} invent
 
 ### Connection refused or timeout errors
 
-- Verify your network can reach `api.prod.validmind.ai`.
+- Verify your network can reach `api.prod.validmind.ai` (or your environment's MCP host).
 - Check if your organization uses a firewall or proxy that blocks MCP connections.
-- Ensure you are using the correct MCP URL for your environment.
+- Ensure you are using the correct MCP URL for your environment. For {{< var vm.product >}} Cloud production, use `https://api.prod.validmind.ai/mcp`.
 
 ### Authentication errors (401 or 403)
 
@@ -180,6 +205,11 @@ The MCP server exposes tools for working with your {{< var vm.product >}} invent
 - Validate the JSON syntax in your configuration file.
 - Reload Cursor after making configuration changes.
 - Check **Cursor Settings > MCP** to verify the server appears and is enabled. You may need to manually toggle the server on after adding it to the configuration.
+
+### Rate limiting or unexpected denials
+
+- If requests fail intermittently under heavy use, wait briefly and retry.
+- Confirm your credentials still have access to the records, artifacts, or templates you are requesting.
 
 :::
 

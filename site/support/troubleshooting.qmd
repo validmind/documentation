@@ -68,6 +68,24 @@ Make sure that you are using the correct initialization credentials for the reco
 
 Follow the steps in [Install and initialize the {{< var validmind.developer >}}](/developer/quickstart/install-and-initialize-validmind-library.qmd) for detailed instructions on how to integrate the {{< var vm.developer >}} and upload to the {{< var vm.platform >}}.
 
+If your organization uses OIDC instead of API keys, initialize with `issuer` and `client_id` (or the matching `VM_OIDC_*` environment variables). See [Authenticate with OIDC device flow](/developer/quickstart/authenticate-with-oidc-device-flow.qmd).
+
+## OIDC authentication errors when initializing the {{< var validmind.developer >}}
+
+### Issue
+
+When you run `vm.init()` with OIDC settings, sign-in fails, token refresh fails, or API calls return `401` / `403` after device authorization completes.
+
+### Fix
+
+- Confirm you are on {{< var validmind.developer >}} version **2.13** or later.
+- Pass **either** API key credentials **or** OIDC settings — not both.
+- Verify `issuer`, `client_id`, and (when required) `audience` match the values configured for your organization.
+- Complete the browser device-flow prompt when the library prints a verification URL and user code.
+- If tokens were previously cached for a different client or audience, remove or update `~/.validmind/credentials.json` and run `vm.init()` again.
+
+For setup details, see [Authenticate with OIDC device flow](/developer/quickstart/authenticate-with-oidc-device-flow.qmd).
+
 ## SSL verification errors when initializing the {{< var validmind.developer >}} {#ssl-verification-when-initializing-library} 
 
 ### Issue
