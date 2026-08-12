@@ -69,7 +69,7 @@ A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] in a breach-triggered workfl
 
 | Variable | Description |
 |---:|---|
-| Breached Metric Name | The display name of the metric that breached. |
+| Breached Metric Name | The metric that breached, named as it appears when you select it: its display name followed by its full key, unless the two are the same. Two metrics can share a display name, so the key is what tells them apart. |
 | Breached Metric Key | The full key of the metric, as logged. |
 | Breached Metric Value | The value recorded for the breaching reading. |
 | Breached Metric Thresholds | The thresholds defined for that metric. |
@@ -77,6 +77,17 @@ A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] in a breach-triggered workfl
 : **Monitoring Breach** broadcast variables {.hover tbl-colwidths="[35,65]"}
 
 Since these variables can be resolved only for a workflow started by a breach, they are offered for this trigger only.
+
+## What a breach sends
+
+The alert email and the workflow follow different rhythms, so it is worth knowing what a breach produces before you add a [{{< fa bullhorn >}} Broadcast]{.bubble} step to a breach-triggered workflow:
+
+- The **alert email** is sent for every breaching reading.[^1] A metric that keeps failing keeps sending it.
+- The **workflow** starts only on the transition into breach. A metric that was already failing does not start it again.
+
+One person can therefore receive three things for a single breach: the alert email, the broadcast email your workflow sends, and the in-app broadcast notification.
+
+To reduce that, a [{{< fa hand >}} Customer Admin]{.bubble} can turn off **Monitoring breach** or **Broadcast notifications** under {{< fa gear >}} Settings.[^6] Two limits are worth knowing: the toggles apply to your whole organization rather than to a single record or workflow, and they suppress emails only — the in-app notification is unaffected.
 
 ## What's next
 
@@ -94,3 +105,5 @@ Since these variables can be resolved only for a workflow started by a breach, t
 [^4]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
 
 [^5]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#broadcast)
+
+[^6]: [Customize email notifications](/guide/configuration/manage-platform-notifications.qmd#customize-email-notifications)
