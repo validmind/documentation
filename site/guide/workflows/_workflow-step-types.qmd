@@ -41,6 +41,37 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 Typical **Manual review** pattern: earlier in the intake workflow, a reviewer chooses the path (for example with a **{{< fa arrow-pointer >}} User Action** or **{{< fa maximize >}} Condition Branch**). Configure each path's **Inventory Record Type Change** step with the matching fixed target type and **Manual review** so activity labels the conversion as after manual review.
 :::
 
+### {{< fa expand >}} Create Artifact
+<span id="create-artifact">
+
+- Creates an artifact on the inventory record the workflow is running against.
+- Available on **inventory record workflows only**. An artifact created by this step starts its own artifact workflow, so artifact workflows cannot themselves create artifacts.
+- Requires an artifact type that applies to the workflow's inventory record type.^[[Manage artifact types](/guide/validation/manage-artifact-types.qmd)]
+
+| Field | Description |
+|---:|---|
+| **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step.^[ [Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#create-artifact)]  |
+| **Artifact Type** (required) | The type of artifact to create. |
+| **Title** (required) | The artifact's title. |
+| **Description** (required) | The artifact's description. |
+| **Severity** (optional) | The severity assigned to the artifact. |
+| **Assignee** (optional) | Who the artifact is assigned to. Defaults to the user the workflow runs as. |
+| **Field Values** (optional) | Values for the artifact type's fields. |
+: **{{< fa expand >}} Create Artifact** step configuration {.hover tbl-colwidths="[40,60]"}
+
+::: {.callout-important title="This step creates a new artifact every time it is reached"}
+If the workflow runs repeatedly while the same situation persists, each run creates another artifact.
+
+Whether that is right depends on what your condition means:
+
+- **A continuing state** — such as *no validator is assigned* — stays true until someone fixes it. A monthly workflow would raise the same artifact every month, so you want only the first one.
+- **A recurring event** — such as *the quarterly attestation was missed* — happens separately each time. Two missed quarters are two separate failures, each closed on its own terms, so you want one artifact per occurrence.
+
+To raise only one artifact while a state persists, add a **When These Conditions Are Met** condition on this step that checks a field counting open artifacts of that type — see [Raise only one artifact while a condition persists](/guide/workflows/workflow-configuration-examples.qmd#raise-only-one-artifact-while-a-condition-persists).
+:::
+
+An artifact created by this step shows the workflow as its creator in the activity feed, and its detail page shows a **Source** section naming the workflow that raised it.
+
 ### {{< fa tag >}} Artifact Status Change
 <span id="artifact-status-change">
 
