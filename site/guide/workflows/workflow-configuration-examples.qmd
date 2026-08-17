@@ -259,54 +259,7 @@ In this example, the workflow is designated to stop after running an additional 
 ::::
 
 
-## Raise only one artifact while a condition persists
-<span id="raise-only-one-artifact-while-a-condition-persists">
-
-The **{{< fa expand >}} Create Artifact** step creates a new artifact every time the workflow reaches it. When your workflow runs on a schedule and the situation it detects has not been resolved yet, that means a new artifact on every run.
-
-Whether you want that depends on what your condition means:
-
-| Your condition describes | Example | What you want |
-|---|---|---|
-| A **state** that stays true until fixed | *This inventory record has no validator assigned* | One artifact, until it is resolved |
-| An **event** that happens separately each time | *The Q1 attestation was missed* | A new artifact each time it happens |
-
-For the **event** case, no extra configuration is needed — the step already behaves this way.
-
-For the **state** case, tell the step to run only when there is not already an open artifact. This takes two parts, and the first is usually done by an administrator:
-
-**1. Add a field that counts open artifacts**
-
-Add an aggregate inventory field[^20] on the inventory record that counts its artifacts, filtered to the ones you care about — for example:
-
-> **Open Validator Issues** — count of *Validator Issue* artifacts with status *Open*
-
-Every inventory record now carries that count, and ValidMind keeps it up to date as artifacts are created and closed.
-
-**2. Add the condition to the step**
-
-Open the **{{< fa expand >}} Create Artifact** step and, under **When These Conditions Are Met**, add:
-
-> **Open Validator Issues** is **0**
-
-The workflow now creates the artifact the first time the situation is detected. On later runs, while that artifact is still open, the count is no longer `0`, the condition does not pass, the step does not run, and no duplicate is created. Once someone closes the artifact, the count returns to `0` and a fresh artifact can be raised if the situation happens again.
-
-::: {.callout-tip}
-Because this is an ordinary condition, you are not limited to "none open". You can require that fewer than a certain number are open, or combine the count with other inventory record fields.
-:::
-
-### When to use a Condition Branch instead
-
-The condition on the step decides whether *that step* runs. When it does not pass, the workflow does not continue past that point — it stops there without reaching an **{{< fa circle-stop >}} End** step.
-
-That is usually fine for a workflow whose only job is to raise an artifact when needed. Use a **{{< fa maximize >}} Condition Branch** ahead of the step instead when:
-
-- something else should happen when no artifact is raised — a notification, a field update, another step; or
-- you want the workflow to finish cleanly on both paths, by routing the other branch to an **{{< fa circle-stop >}} End** step.
-
 <!-- FOOTNOTES -->
-
-[^20]: [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
 
 [^1]: ![Adding a workflow that initiates on model registration](example_model-registration.png){fig-alt="A screenshot showing the modal for adding a workflow that initiates on model registration" .screenshot group="model-registration"}
 

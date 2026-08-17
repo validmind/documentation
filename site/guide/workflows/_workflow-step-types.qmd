@@ -56,18 +56,17 @@ Typical **Manual review** pattern: earlier in the intake workflow, a reviewer ch
 | **Description** (required) | The artifact's description. |
 | **Severity** (optional) | The severity assigned to the artifact. |
 | **Assignee** (optional) | Who the artifact is assigned to. Defaults to the user the workflow runs as. |
-| **Field Values** (optional) | Values for the artifact type's fields. |
+| **Artifact Fields** (optional) | Values for the artifact type's fields. |
 : **{{< fa expand >}} Create Artifact** step configuration {.hover tbl-colwidths="[40,60]"}
 
 ::: {.callout-important title="This step creates a new artifact every time it is reached"}
 If the workflow runs repeatedly while the same situation persists, each run creates another artifact.
 
-Whether that is right depends on what your condition means:
+This suits conditions describing a **recurring event** — such as *the quarterly attestation was missed* — where each occurrence is a separate failure closed on its own terms, and one artifact per occurrence is what you want.
 
-- **A continuing state** — such as *no validator is assigned* — stays true until someone fixes it. A monthly workflow would raise the same artifact every month, so you want only the first one.
-- **A recurring event** — such as *the quarterly attestation was missed* — happens separately each time. Two missed quarters are two separate failures, each closed on its own terms, so you want one artifact per occurrence.
+Take more care with conditions describing a **continuing state** — such as *no validator is assigned* — which stays true until someone fixes it. A monthly workflow would raise the same artifact every month.
 
-To raise only one artifact while a state persists, add a **When These Conditions Are Met** condition on this step that checks a field counting open artifacts of that type — see [Raise only one artifact while a condition persists](/guide/workflows/workflow-configuration-examples.qmd#raise-only-one-artifact-while-a-condition-persists).
+Note also that when a condition on this step does not pass, the workflow does not continue past that point — it stops there without reaching an **{{< fa circle-stop >}} End** step. Use a **{{< fa maximize >}} Condition Branch** ahead of the step when something else should happen on the other path, or when you want the workflow to finish cleanly either way.
 :::
 
 An artifact created by this step shows the workflow as its creator in the activity feed, and its detail page shows a **Source** section naming the workflow that raised it.
