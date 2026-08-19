@@ -55,8 +55,8 @@ Typical **Manual review** pattern: earlier in the intake workflow, a reviewer ch
 | **Title** (required) | The artifact's title. |
 | **Description** (required) | The artifact's description. |
 | **Severity** (optional) | The severity assigned to the artifact. |
-| **Assignee** (optional) | Who the artifact is assigned to. Defaults to the user the workflow runs as. |
-| **Artifact Fields** (optional) | Values for the artifact type's fields. |
+| **Assignee** (optional) | Who the artifact is assigned to. Leave it empty and the artifact is assigned to the user the workflow runs as — the workflow's author on a scheduled run, or the person whose action triggered it. |
+| **Artifact Fields** (optional) | Values for the artifact type's fields. If the artifact type marks a field as required on registration, give it a value here — the workflow cannot be saved until you do, because an artifact cannot be created without it. |
 : **{{< fa expand >}} Create Artifact** step configuration {.hover tbl-colwidths="[40,60]"}
 
 ::: {.callout-important title="This step creates a new artifact every time it is reached"}
@@ -69,7 +69,7 @@ Take more care with conditions describing a **continuing state** — such as *no
 Note also that when a condition on this step does not pass, the workflow does not continue past that point — it stops there without reaching an **{{< fa circle-stop >}} End** step. Use a **{{< fa maximize >}} Condition Branch** ahead of the step when something else should happen on the other path, or when you want the workflow to finish cleanly either way.
 :::
 
-An artifact created by this step shows the workflow as its creator in the activity feed, and its detail page shows a **Source** section naming the workflow that raised it.
+An artifact created by this step shows the workflow as its creator in the activity feed, and its detail page shows a **Source** section naming the workflow that raised it, what triggered that workflow, when the artifact was raised, and a link to the run that created it.
 
 ### {{< fa tag >}} Artifact Status Change
 <span id="artifact-status-change">
