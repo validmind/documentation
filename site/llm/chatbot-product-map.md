@@ -66,7 +66,7 @@
 **Docs (primary):**
 
 - `/installation/security/configure-single-sign-on-sso.html`
-  - Note: no matching `.qmd` source found
+  - Sections: What is SSO?; Prerequisites; Step 1: Set up Microsoft Entra for SSO; Step 2: Contact ValidMind to enable SSO
 
 **Docs (related):**
 
