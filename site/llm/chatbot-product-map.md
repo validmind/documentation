@@ -66,7 +66,7 @@
 **Docs (primary):**
 
 - `/installation/security/configure-single-sign-on-sso.html`
-  - Sections: What is SSO?; Prerequisites; Step 1: Set up Microsoft Entra for SSO; Step 2: Contact ValidMind to enable SSO
+  - Note: no matching `.qmd` source found
 
 **Docs (related):**
 
@@ -388,6 +388,10 @@
 - `/guide/model-validation/manage-validation-guidelines.html`
   - Note: no matching `.qmd` source found
 
+#### `/settings/risk-tier-stages` — Risk Tier Stages
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
 #### `/settings/risk-tier-templates` — Risk Tier Templates
 
 **Docs (related):**
@@ -463,12 +467,6 @@
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
-### Your Account
-
-#### `/settings/theme-customization` — Theme Customization
-
-- *No direct help link; content may be covered under scattered guide sections.*
-
 ### Users & Access
 
 #### `/settings/user-directory` — User Directory
@@ -495,14 +493,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 #### `/settings/workflows` — Workflows
 
@@ -517,14 +515,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 ## Main application
 
@@ -540,6 +538,30 @@
   - Sections: What is tracked on settings activity?; Prerequisites; View settings activity
 
 - *No direct help link in frontend; related docs inferred from keywords.*
+
+#### `/agent-authority/agents` — Agents
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/charters` — Charters
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/invocations` — Agent Authority
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/rules` — Rules
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/servers` — Servers
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/settings` — Settings
+
+- *No direct help link; content may be covered under scattered guide sections.*
 
 #### `/analytics` — sidebar.analytics
 
@@ -607,6 +629,10 @@
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
+#### `/risk-intelligence` — Risk Intelligence
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
 #### `/validation-issues` — Validation Issues
 
 - *No direct help link; content may be covered under scattered guide sections.*
@@ -619,14 +645,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
