@@ -40,6 +40,20 @@ class MergeQuartoIndexesTest(unittest.TestCase):
                 ],
             )
 
+    def test_absent_partial_leaves_base_as_the_merged_index(self):
+        """A targeted render of pages with no listing writes no partial index."""
+        with tempfile.TemporaryDirectory() as directory:
+            base_path = Path(directory) / "base.json"
+            partial_path = Path(directory) / "partial.json"
+            base_path.write_text(json.dumps([{"listing": "/old", "items": ["a"]}]))
+
+            merge_file(base_path, partial_path, "listing")
+
+            self.assertEqual(
+                json.loads(partial_path.read_text()),
+                [{"listing": "/old", "items": ["a"]}],
+            )
+
     def test_missing_key_is_rejected(self):
         with self.assertRaises(ValueError):
             merge_items([], [{"text": "missing object id"}], "objectID")
