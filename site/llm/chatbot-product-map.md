@@ -495,14 +495,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 #### `/settings/workflows` — Workflows
 
@@ -517,14 +517,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 ## Main application
 
@@ -619,14 +619,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
-- `/guide/workflows/manage-record-stages.html`
-  - Sections: Prerequisites; Add record stages; Edit or delete record stages
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
