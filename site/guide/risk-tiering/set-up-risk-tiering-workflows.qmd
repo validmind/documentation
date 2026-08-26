@@ -13,6 +13,7 @@ Risk tiering workflows let you govern risk tier assessments and templates with t
 
 - Active {{< var vm.product >}} login
 - Customer Admin role or equivalent permissions to manage workflows
+- Governance Admin or Validator role with `manage_risk_tier_template` permission to define governance stages
 - An active risk tier template published for at least one record type[^1]
 - Risk tiering enabled for your organization
 
@@ -53,8 +54,8 @@ To define stages:
 The two tabs are separate stage sets — a stage-change step only offers stages from its matching set. If the stage drop-down in a workflow step is empty, the step names the tab that feeds it so you can tell which set still needs stages.
 :::
 
-::: {.callout-important title="A stage in use by a workflow step cannot be deleted."}
-Remove the stage from the workflow step first, then delete the stage.
+::: {.callout-important title="Deleting a stage does not check workflow steps."}
+A stage cannot be deleted while an assessment or template is currently in that stage. Deleting a stage that a workflow step still references is allowed, and silently breaks that step — the run stops advancing with no error shown. Update or remove the stage-change step before deleting its stage.
 :::
 
 ## Add a risk tiering workflow
@@ -103,9 +104,11 @@ Risk tiering workflows use the same workflow canvas and step types as record and
 
 **Require approvals.** Connect an **{{< fa users >}} Approval** step's rejection and approval paths to stage-change steps, so a vote moves the assessment or template into the matching governance stage.
 
+When your steps are configured, publish the workflow to put it into effect.[^6] A draft workflow never runs — it cannot be started manually, and a publish-triggered draft does not fire when an assessment or template is published.
+
 ## Track governance on the assessment or template
 
-On the assessment detail page[^6] and the template detail page:[^7]
+On the assessment detail page[^7] and the template detail page:[^8]
 
 - The [assessment stage]{.smallcaps} or [template stage]{.smallcaps} badge in the sidebar shows the current governance stage. The badge can also be set directly by users with edit access to the assessment or template.
 - The [active workflows]{.smallcaps} section lists the workflow runs for that assessment or template. Click **See All Workflows** to review available workflows, start a manually triggered workflow, or inspect a run.
@@ -116,7 +119,7 @@ The stage badge and workflow list update live as a workflow advances — includi
 
 Risk tiering workflows are built around one principle: **an approval attests to a specific published version.**
 
-- **One published version = one governance run.** A publish-triggered workflow runs once per published version and stays bound to the exact version it judged. Publishing a new version archives the previous version, ends any of its still-active runs as aborted, and starts a fresh review of the new version — a full re-review, not a resumption.
+- **One published version = one governance run.** A publish-triggered workflow runs once per published version and stays bound to the exact version it judged. Publishing a new version archives the previous version, ends any of its still-active runs as aborted, and starts a fresh review of the new version — a full re-review, not a resumption. An archived version is terminal for governance: no workflow can start on it, so a re-run always targets the current version, not the displaced one.
 - **Approval does not publish.** A workflow moves stages and records approvals, but it never changes the Draft/Active/Archived status. When a review of a draft is approved, a person clicks **Publish** — the publishing decision stays with the author.
 - **Rejection ends the run.** A rejection typically moves the stage to something like *Changes Requested*, and the run ends. To address the feedback, revise and publish a new version — a publish-triggered review re-runs automatically, and a manual review can be re-run on demand.
 - **Publish-triggered and manual reviews are different tools.** Use a publish-triggered workflow as the governance backbone that runs on every publish, and manual workflows for on-demand reviews — such as governing a draft before it is published.
@@ -141,6 +144,8 @@ Risk tiering workflows are built around one principle: **an approval attests to 
 
 [^5]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#risk-assessment-stage-change)
 
-[^6]: [Manage risk tier assessments](manage-risk-tier-assessments.qmd#assessment-sidebar)
+[^6]: [Publish workflow](/guide/workflows/configure-workflows.qmd#publish-workflow)
 
-[^7]: [Manage risk tier templates](manage-risk-tier-templates.qmd)
+[^7]: [Manage risk tier assessments](manage-risk-tier-assessments.qmd#assessment-sidebar)
+
+[^8]: [Manage risk tier templates](manage-risk-tier-templates.qmd)
