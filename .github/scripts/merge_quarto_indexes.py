@@ -27,7 +27,10 @@ def merge_items(
 
 def merge_file(base_path: Path, partial_path: Path, key: str) -> None:
     base = json.loads(base_path.read_text())
-    partial = json.loads(partial_path.read_text())
+    # Quarto only writes listings.json when a rendered page declares a listing,
+    # so a targeted render of pages that carry none produces no partial index.
+    # That is a normal outcome, not a failure: nothing changed, nothing to merge.
+    partial = json.loads(partial_path.read_text()) if partial_path.exists() else []
     if not isinstance(base, list) or not isinstance(partial, list):
         raise ValueError("Quarto indexes must contain JSON arrays")
     partial_path.write_text(
