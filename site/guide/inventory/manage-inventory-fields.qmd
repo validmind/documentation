@@ -110,7 +110,14 @@ To group inventory fields, first create an inventory field group:
 ## Delete inventory fields
 
 ::: {.callout-important title="Inventory field deletion is permanent."}
-Deleting an inventory field will remove it from all records using that field, even if the field has been populated.
+Deleting an inventory field will remove it from all records using that field, even if the field has been populated. A field can only be deleted if it is not actively used by any:
+
+- Active (non-deleted, non-archived) inventory records
+- Active (non-archived) workflows
+- Calculation fields
+- Risk-tier templates
+
+Deleted records and archived workflows no longer block field deletion, even if they contain references to the field.
 :::
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
@@ -121,7 +128,11 @@ Deleting an inventory field will remove it from all records using that field, ev
 
 4. When the **{{< fa ellipsis-vertical >}}** menu appears under the Actions column, click on it and select [**{{< fa trash-can >}} Delete Field**]{.red}.
 
-5. Click **Yes, Delete Field** to confirm permanent deletion.
+5. If the field has any active dependencies (workflows or records), a modal will show which active records or workflows are blocking the deletion. Review these dependencies, and then either:
+   - Resolve the dependency by removing the field from the blocking workflow or records, then retry the deletion.
+   - Or, if you want to keep these dependencies, cancel the deletion.
+
+6. If the field has no active dependencies, click **Yes, Delete Field** to confirm permanent deletion.
 
 
 <!-- FOOTNOTES -->
