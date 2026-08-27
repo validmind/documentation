@@ -1,0 +1,181 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Manage inventory segments"
+date: last-modified
+includes:
+   inventory: true
+---
+
+Save a set of inventory filters as a named, reusable segment that spans every inventory record type, then publish the segment so everyone in your organization can filter the inventory with it.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] There are records registered in the inventory.[^1]
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^2]
+
+:::
+
+## Key concepts
+
+*Inventory segments* are named, reusable filters over your inventory records:
+
+- A segment spans every inventory record type in your organization. Record types added later are automatically in scope, so a segment never needs to be updated when your inventory grows.
+- Matching records are evaluated live — a segment always reflects the current state of your inventory, and users only see the matching records they have permission to view.
+- A segment starts as a personal [Draft]{.bubble}. Publishing it makes it available to your entire organization.
+
+::: {.callout title="Note that segments differ from saved views and grouping."}
+- **Segments** — Named filters managed by administrators in the organization settings, reusable by everyone once published.
+- **Saved views** — Personal or shared table configurations that capture the columns, filters, sorting, and grouping applied to a listing.[^3]
+- **Grouping** — A listing layout option that organizes a table view into collapsible sections by field.[^4]
+:::
+
+## Add segments
+
+::: {.callout}
+By default, only the [{{< fa hand >}} Customer Admin]{.bubble} role can add segments. To let other roles add segments, grant the Add Inventory Segment permission to those roles.[^5]
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cube >}} Inventory, select **Inventory Segments**.
+
+3. Click **{{< fa plus >}} Add Segment**.
+
+4. On the Add New Segment dialog that opens, enter the **Segment Name** and an optional **Description**.
+
+5. Click **Add Segment**.
+
+    The detail page for your new segment opens, where you define the segment conditions.
+
+### Define segment conditions
+
+1. On your segment's detail page, click **{{< fa filter >}} Filter**.
+
+2. On the Edit Segment Conditions dialog that opens, enter the conditions that records must match to belong to the segment:
+
+    - Inventory Record Type is available as a condition, so you can scope a segment to specific record types.
+    - A segment cannot reference another segment, so Segment is not offered as a condition field here.
+
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+### How do I create effective filters?
+
+{{< include /guide/shared/_work-with-filters.qmd >}}
+:::
+:::
+
+3. Click **Apply Filters**.
+
+    Your conditions appear as chips next to Filtered by, and the list of matching records updates live along with the matching record count.
+
+4. In the page header, click **Save Changes** to save the conditions to the segment, or **Cancel** to discard your edits.
+
+::: {.callout-important title="Saving conditions to a published segment changes its results for everyone."}
+A published segment is evaluated live wherever it is used, including inventory filters and analytics datasets. When you save condition changes to a published segment, confirm the change by clicking **Yes, Save Changes**.
+:::
+
+## Publish segments
+
+Publishing makes a segment available to everyone in your organization. You can continue editing a segment after it is published.
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cube >}} Inventory, select **Inventory Segments**.
+
+3. On the actions menu for your segment, click **Publish Segment**.
+
+4. Click **Publish Segment** to confirm.
+
+Each segment shows one of the following statuses:
+
+| Status | Description |
+|--------|-------------|
+| [Draft]{.bubble} | Personal to you — visible only to you and not yet offered where segments are used. |
+| [Published]{.bubble} | Available to everyone in your organization. |
+| [Archived]{.bubble} | Permanently retired — an archived segment cannot be edited, published, or restored. |
+
+: Segment statuses {.hover}
+
+::: {.callout title="Note that your organization starts with an example segment."}
+Every organization includes an All Inventory Records segment managed by {{< var vm.product >}}. This example segment cannot be edited or unpublished, but it can be deleted.
+:::
+
+## Edit segments
+
+To rename a segment or update its description:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cube >}} Inventory, select **Inventory Segments**.
+
+3. On the actions menu for your segment, click **Edit Segment**.
+
+4. Update the **Segment Name** or **Description**, then click **Save Changes**.
+
+To edit the conditions of a segment, open the segment and update its filters.[^6]
+
+## Unpublish, archive, or delete segments
+
+::: {.callout-important}
+Archiving and deletion of segments are permanent.
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cube >}} Inventory, select **Inventory Segments**.
+
+3. On the actions menu for your segment, click one of:
+
+    - **Unpublish Segment** — Returns the segment to a personal draft. The segment is no longer offered where segments are used. Click **Yes, Unpublish Segment** to confirm.
+    - **Archive Segment** — Permanently retires the segment. An archived segment cannot be edited, published, or restored. Click **Yes, Archive Segment** to confirm.
+    - [**Delete Segment**]{.red} — Permanently deletes the segment. The inventory records it matched are not affected. Click **Yes, Delete Segment** to confirm.
+
+## Apply segments as inventory filters
+
+Once a segment is published, anyone in your organization can filter the inventory by it:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Click **{{< fa filter >}} Filter**.
+
+3. Click **{{< fa plus >}} Add Rule**, then select **Segment** from the field selector.
+
+4. Select the segment to filter by.
+
+    You can combine a segment rule with other rules, such as an Inventory Record Type condition, to narrow down results further.[^7]
+
+5. Click **Apply Filters**.
+
+## Use segments in analytics
+
+Published segments are also available as datasets for visualization widgets on your analytics pages, listed under Inventory Segments in the dataset selector.[^8]
+
+## What's next
+
+- [Working with the inventory](working-with-the-inventory.qmd)
+- [Customize inventory layout](customize-inventory-layout.qmd)
+- [Working with analytics](/guide/reporting/working-with-analytics.qmd)
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Register records in the inventory](register-records-in-inventory.qmd)
+
+[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^3]: [Customize inventory layout](customize-inventory-layout.qmd#manage-custom-inventory-views)
+
+[^4]: [Working with the inventory](working-with-the-inventory.qmd#group-records)
+
+[^5]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^6]: [Define segment conditions](#define-segment-conditions)
+
+[^7]: [Working with the inventory](working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^8]: [Working with analytics](/guide/reporting/working-with-analytics.qmd)

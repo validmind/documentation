@@ -174,18 +174,18 @@
 
 **Docs (related):**
 
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
-- `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
-- `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/validation/customize-artifact-layouts.html`
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+- `/guide/validation/log-artifacts.html`
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+- `/guide/validation/manage-artifact-types.html`
+  - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
+- `/guide/validation/update-artifacts.html`
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+- `/guide/validation/view-filter-artifacts.html`
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+- `/guide/validation/working-with-artifacts.html`
+  - Sections: Key concepts; Work with artifacts; What's next
 
 #### `/settings/finding-severities` — Artifact Severities
 
@@ -196,18 +196,18 @@
 
 **Docs (related):**
 
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
-- `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
-- `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/validation/customize-artifact-layouts.html`
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+- `/guide/validation/log-artifacts.html`
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+- `/guide/validation/manage-artifact-types.html`
+  - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
+- `/guide/validation/update-artifacts.html`
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+- `/guide/validation/view-filter-artifacts.html`
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+- `/guide/validation/working-with-artifacts.html`
+  - Sections: Key concepts; Work with artifacts; What's next
 
 #### `/settings/finding-types` — Artifact Types
 
@@ -218,18 +218,18 @@
 
 **Docs (related):**
 
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
-- `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
-- `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/validation/customize-artifact-layouts.html`
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+- `/guide/validation/log-artifacts.html`
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+- `/guide/validation/manage-artifact-types.html`
+  - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
+- `/guide/validation/update-artifacts.html`
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+- `/guide/validation/view-filter-artifacts.html`
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+- `/guide/validation/working-with-artifacts.html`
+  - Sections: Key concepts; Work with artifacts; What's next
 
 ### Users & Access
 
@@ -388,6 +388,10 @@
 - `/guide/model-validation/manage-validation-guidelines.html`
   - Note: no matching `.qmd` source found
 
+#### `/settings/risk-tier-stages` — Risk Tier Stages
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
 #### `/settings/risk-tier-templates` — Risk Tier Templates
 
 **Docs (related):**
@@ -463,12 +467,6 @@
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
-### Your Account
-
-#### `/settings/theme-customization` — Theme Customization
-
-- *No direct help link; content may be covered under scattered guide sections.*
-
 ### Users & Access
 
 #### `/settings/user-directory` — User Directory
@@ -541,6 +539,30 @@
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
+#### `/agent-authority/agents` — Agents
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/charters` — Charters
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/invocations` — Agent Authority
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/rules` — Rules
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/servers` — Servers
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/agent-authority/settings` — Settings
+
+- *No direct help link; content may be covered under scattered guide sections.*
+
 #### `/analytics` — sidebar.analytics
 
 **Docs (related):**
@@ -564,18 +586,18 @@
 
 **Docs (related):**
 
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
-- `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
-- `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+- `/guide/validation/customize-artifact-layouts.html`
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+- `/guide/validation/log-artifacts.html`
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+- `/guide/validation/manage-artifact-types.html`
+  - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
+- `/guide/validation/update-artifacts.html`
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+- `/guide/validation/view-filter-artifacts.html`
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+- `/guide/validation/working-with-artifacts.html`
+  - Sections: Key concepts; Work with artifacts; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -607,9 +629,20 @@
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
-#### `/validation-issues` — Validation Issues
+#### `/risk-intelligence` — Risk Intelligence
 
 - *No direct help link; content may be covered under scattered guide sections.*
+
+#### `/validation-issues` — Validation Issues
+
+**Docs (related):**
+
+- `/guide/validation/customize-artifact-layouts.html`
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+- `/guide/validation/view-filter-artifacts.html`
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 #### `/workflows` — Workflows
 
