@@ -641,7 +641,7 @@
 **Docs (primary):**
 
 - `/guide/workflows/setting-up-workflows.html`
-  - Sections: View, sort, and filter workflows; Sort workflows; Filter workflows; How do I create effective filters?; Set up workflows; What's next
+  - Sections: View, sort, and filter workflows; Search workflows; Sort workflows; Filter workflows; How do I create effective filters?; View workflow details; Review workflow properties; Browse version history
 
 **Docs (related):**
 
