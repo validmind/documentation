@@ -61,6 +61,18 @@ SETTING_LINK_PATTERN = re.compile(
     r'<SettingLink\b[^>]*\btitle="([^"]+)"[^>]*\bpath="([^"]+)"',
 )
 
+# SettingLink whose title comes from the copy dictionary: title={copy('some.key')}
+SETTING_LINK_COPY_PATTERN = re.compile(
+    r"<SettingLink\b[^>]*\btitle=\{copy\('([^']+)'\)\}[^>]*\bpath=\"([^\"]+)\"",
+)
+
+SETTING_GROUP_TITLE_COPY_PATTERN = re.compile(
+    r"<SettingGroup\b[^>]*\btitle=\{copy\('([^']+)'\)\}",
+)
+
+# 'some.key': 'value' entries in src/copy/base.en.ts (values may span lines).
+COPY_ENTRY_PATTERN = re.compile(r"'([\w.]+)':\s*'((?:[^'\\]|\\.)*)'", re.S)
+
 ATTR_PATTERN = re.compile(r'(\w+)=["{`]([^"`}]+)["`}]')
 
 HEADING_PATTERN = re.compile(r"^(#{2,3})\s+(.+)$", re.MULTILINE)
@@ -213,19 +225,36 @@ def resolve_doc_path(path: str) -> str:
     return DOC_PATH_ALIASES.get(path, path)
 
 
+def load_copy_dictionary(frontend_root: Path) -> dict[str, str]:
+    """Parse the frontend copy dictionary so copy('key') titles resolve to labels."""
+    copy_file = frontend_root / "src/copy/base.en.ts"
+    if not copy_file.is_file():
+        return {}
+    text = copy_file.read_text(encoding="utf-8")
+    return {
+        m.group(1): m.group(2).replace("\\'", "'")
+        for m in COPY_ENTRY_PATTERN.finditer(text)
+    }
+
+
 def parse_settings_index(frontend_root: Path) -> list[ProductRoute]:
     settings_file = frontend_root / "src/pages/Settings/index.tsx"
     if not settings_file.is_file():
         return []
 
     content = settings_file.read_text(encoding="utf-8")
+    copy_dictionary = load_copy_dictionary(frontend_root)
     routes: list[ProductRoute] = []
     seen_paths: set[str] = set()
 
     group_positions = [
         (m.start(), m.group(1))
         for m in SETTING_GROUP_TITLE_PATTERN.finditer(content)
+    ] + [
+        (m.start(), copy_dictionary.get(m.group(1).strip(), m.group(1).strip()))
+        for m in SETTING_GROUP_TITLE_COPY_PATTERN.finditer(content)
     ]
+    group_positions.sort(key=lambda item: item[0])
 
     def group_for_position(pos: int) -> str | None:
         title = None
@@ -236,8 +265,15 @@ def parse_settings_index(frontend_root: Path) -> list[ProductRoute]:
                 break
         return title
 
-    for link_match in SETTING_LINK_PATTERN.finditer(content):
-        title = link_match.group(1).strip()
+    link_matches = [
+        (m, m.group(1).strip()) for m in SETTING_LINK_PATTERN.finditer(content)
+    ] + [
+        (m, copy_dictionary.get(m.group(1).strip(), m.group(1).strip()))
+        for m in SETTING_LINK_COPY_PATTERN.finditer(content)
+    ]
+    link_matches.sort(key=lambda item: item[0].start())
+
+    for link_match, title in link_matches:
         path = link_match.group(2).strip()
         if not path.startswith("/settings") or path in seen_paths:
             continue
@@ -368,15 +404,18 @@ def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[
             segments.update(doc_segments)
 
     primary_paths = {d.path for d in route.primary_docs}
-    related: list[DocRef] = []
+    related: list[tuple[int, DocRef]] = []
     for doc_path in all_doc_paths:
         if doc_path in primary_paths or not is_user_facing_doc(doc_path):
             continue
         inner = doc_path.lower()
-        if any(seg in inner for seg in segments):
-            related.append(DocRef(path=doc_path))
-    related.sort(key=lambda r: r.path)
-    return related[:6]
+        # A doc matched by a longer, more specific keyword segment outranks one
+        # matched only by a broad segment, so it survives the cap below.
+        best = max((len(seg) for seg in segments if seg in inner), default=0)
+        if best:
+            related.append((best, DocRef(path=doc_path)))
+    related.sort(key=lambda item: (-item[0], item[1].path))
+    return [ref for _, ref in related[:6]]
 
 
 DEFAULT_SNAPSHOT_NAME = "chatbot-product-map-frontend-snapshot.json"
