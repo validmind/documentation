@@ -631,10 +631,10 @@
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 
 #### `/settings/workflows` — Workflows
 
@@ -653,10 +653,10 @@
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 
 ## Main application
 
@@ -790,10 +790,10 @@
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+- `/guide/workflows/assign-workflow-executions.html`
+  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
