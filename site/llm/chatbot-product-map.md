@@ -627,14 +627,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
-- `/guide/workflows/introduction-to-workflows.html`
-  - Sections: Workflow elements; What's next
 
 #### `/settings/workflows` — Workflows
 
@@ -649,14 +649,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
-- `/guide/workflows/introduction-to-workflows.html`
-  - Sections: Workflow elements; What's next
 
 ## Main application
 
@@ -709,10 +709,10 @@
   - Sections: Prerequisites; Steps; Example monitoring test results; [} Satisfactory]; [} Requires Attention]
 - `/guide/monitoring/set-thresholds-and-alerts.html`
   - Sections: Prerequisites; Use a custom function; Set the `passed` parameter; Output examples; Alert notifications
+- `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/monitoring/work-with-metrics-over-time.html`
   - Sections: **Log metrics over time }**; Prerequisites; Add metrics over time; Add integration metrics; Use the global time range; View metric over time metadata
-- `/faq/faq-reporting.html`
-  - Sections: What analytic features are offered by }?; How can I export platform data on a schedule to cloud storage?; Learn more
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -786,14 +786,14 @@
   - Sections: Can I customize workflows within }?; What record stages are available for use in workflows?; Can we work with disconnected workflows?; You can also leverage the } once you are ready to document a specific record (model) for review and validation.; Learn more
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
+- `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/conditional-step-requirements.html`
   - Sections: Prerequisites; Configure conditional requirements
 - `/guide/workflows/configure-workflows.html`
   - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
-- `/guide/workflows/introduction-to-workflows.html`
-  - Sections: Workflow elements; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
