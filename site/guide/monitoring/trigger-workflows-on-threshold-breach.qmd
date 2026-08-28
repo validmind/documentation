@@ -1,0 +1,109 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Trigger workflows on threshold breach"
+date: last-modified
+---
+
+When an ongoing monitoring metric breaches its threshold, you can start a workflow automatically in addition to the email alert notifications stakeholders already receive.[^1] This lets remediation, review, or escalation begin without anyone having to notice the alert first.
+
+Because the workflow starts from a metric logged against an inventory record, this trigger is available for record workflows only.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] Metrics over time have already been logged via the {{< var validmind.developer >}} for your record.[^2]
+- [x] Your metrics set the `passed` parameter.[^1]
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^3]
+
+:::
+
+## Set up the trigger
+
+Add a record workflow[^4] and under **Workflow Start**, select **On Monitoring Threshold Breach**. Then choose which metrics the workflow watches:
+
+| Option | Description |
+|---:|---|
+| **Any metric breach** | Enabled by default. The workflow starts when any ongoing monitoring metric on the record breaches its threshold. |
+| Specific metrics | Disable **Any metric breach**, then select one or more metrics under **Metrics to monitor**. The workflow starts only for the metrics you select. |
+: **On Monitoring Threshold Breach** configuration {.hover tbl-colwidths="[30,70]"}
+
+The **Metrics to monitor** list offers the metrics already logged by records in your organization, along with metrics included in a monitoring template. Metrics that appear because they are in a template but have no readings yet are marked as not yet recorded — you can still select one, and the workflow starts once that metric is logged and breaches.
+
+::: {.callout}
+More than one workflow can use this trigger, so you can route different metrics to different processes — for example, sending a drift breach to a recalibration workflow and a performance breach to a review workflow.
+:::
+
+## When the workflow starts
+
+The workflow starts when a metric **enters** a breached state, that is when a metric is logged with `passed=False` and the previous reading for that same metric on that same record was not already failing.
+
+This means:
+
+- A metric that goes from passing to failing starts the workflow.
+- The first reading ever logged for a metric starts the workflow if it is already failing.
+- A metric logged as failing again, having already failed, does **not** start the workflow a second time. A monitoring job that runs hourly and keeps reporting the same breach starts one workflow, not one per run.
+- A metric returning to passing and later failing again starts the workflow again.
+
+The trigger reads the `passed` parameter you set and does not re-evaluate your thresholds. A metric that defines thresholds but never sets `passed` does not start a workflow, in the same way that it does not send an alert notification.[^1]
+
+::: {.callout}
+While a workflow started this way is still in progress for a record, a further breach does not start a second run of that same workflow on that record. Later breaches start a new run once the first one completes.
+:::
+
+## Review the breach that started a workflow
+
+For a workflow started by a breach, the execution details show which reading was responsible:
+
+- The metric name and the value that breached
+- The thresholds defined for that metric
+- When the reading was recorded
+- A link to the record's monitoring document
+
+## Include breach details in notifications
+
+A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] in a breach-triggered workflow can include the breach in the email it sends, so recipients know which metric is at fault without opening the record first. When the workflow uses this trigger, these variables become available under **Monitoring Breach**:
+
+| Variable | Description |
+|---:|---|
+| Breached Metric Name | The metric that breached, named as it appears when you select it: its display name followed by its full key, unless the two are the same. Two metrics can share a display name, so the key is what tells them apart. |
+| Breached Metric Key | The full key of the metric, as logged. |
+| Breached Metric Value | The value recorded for the breaching reading. |
+| Breached Metric Thresholds | The thresholds defined for that metric. |
+| Monitoring Document URL | A link to the record's monitoring document. |
+: **Monitoring Breach** broadcast variables {.hover tbl-colwidths="[35,65]"}
+
+Since these variables can be resolved only for a workflow started by a breach, they are offered for this trigger only. For the same reason, once a broadcast message uses one of them, you cannot change the workflow's start trigger to something else — the save is rejected and names the variable to remove or replace first.
+
+## What a breach sends
+
+The alert email and the workflow follow different rhythms, so it is worth knowing what a breach produces before you add a [{{< fa bullhorn >}} Broadcast]{.bubble} step to a breach-triggered workflow:
+
+- The **alert email** is sent for every breaching reading.[^1] A metric that keeps failing keeps sending it.
+- The **workflow** starts only on the transition into breach. A metric that was already failing does not start it again.
+
+One person can therefore receive three things for a single breach: the alert email, the broadcast email your workflow sends, and the in-app broadcast notification.
+
+To reduce that, a [{{< fa hand >}} Customer Admin]{.bubble} can turn off **Monitoring breach** or **Broadcast notifications** under {{< fa gear >}} Settings.[^6] Two limits are worth knowing: the toggles apply to your whole organization rather than to a single record or workflow, and they suppress emails only — the in-app notification is unaffected.
+
+## What's next
+
+- [Set thresholds and alerts](/guide/monitoring/set-thresholds-and-alerts.qmd)
+- [Working with workflows](/guide/workflows/working-with-workflows.qmd)
+
+<!-- FOOTNOTES -->
+
+[^1]: [Set thresholds and alerts](/guide/monitoring/set-thresholds-and-alerts.qmd#alert-notifications)
+
+[^2]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd)
+
+[^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^4]: [Add new workflows](/guide/workflows/configure-workflows.qmd#add-new-workflows)
+
+[^5]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#broadcast)
+
+[^6]: [Customize email notifications](/guide/configuration/manage-platform-notifications.qmd#customize-email-notifications)

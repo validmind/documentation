@@ -87,6 +87,24 @@ For example, if you first search by keyword for `date` under **Title** without c
 
 {{< include /guide/inventory/_add-edit-inventory-fields.qmd >}}
 
+### Insert field variables into a Long Text template
+<span id="insert-field-variables"></span>
+
+Reference other field values from a Long Text template so that every record of that type starts from the same structure — for example, a summary that pulls in a record's owner and tier alongside your own narrative.
+
+1. Add or edit a **Long Text** inventory field, then toggle **Enable rich text formatting** on.[^insert-variables]
+
+2. In the template editor:
+
+{{< include /guide/inventory/_insert-field-variables.qmd >}}
+
+::: {.callout-important title="A template can only reference fields that all of its record types share."}
+Because a template is applied to records of every **Inventory Record Type** you assign the field to, only variables available on all of those types can be inserted. Assign at least one record type before inserting variables.
+
+:::
+
+{{< include /guide/inventory/_field-variable-resolution.qmd >}}
+
 ### Rename custom field keys
 
 To rename the field keys for custom inventory fields:
@@ -110,7 +128,14 @@ To group inventory fields, first create an inventory field group:
 ## Delete inventory fields
 
 ::: {.callout-important title="Inventory field deletion is permanent."}
-Deleting an inventory field will remove it from all records using that field, even if the field has been populated.
+Deleting an inventory field will remove it from all records using that field, even if the field has been populated. A field can only be deleted if it is not actively used by any:
+
+- Active (non-deleted, non-archived) inventory records
+- Active (non-archived) workflows
+- Calculation fields
+- Risk-tier templates
+
+Deleted records and archived workflows no longer block field deletion, even if they contain references to the field.
 :::
 
 1. In the left sidebar, click **{{< fa gear >}} Settings**.
@@ -121,7 +146,11 @@ Deleting an inventory field will remove it from all records using that field, ev
 
 4. When the **{{< fa ellipsis-vertical >}}** menu appears under the Actions column, click on it and select [**{{< fa trash-can >}} Delete Field**]{.red}.
 
-5. Click **Yes, Delete Field** to confirm permanent deletion.
+5. If the field has any active dependencies (workflows or records), a modal will show which active records or workflows are blocking the deletion. Review these dependencies, and then either:
+   - Resolve the dependency by removing the field from the blocking workflow or records, then retry the deletion.
+   - Or, if you want to keep these dependencies, cancel the deletion.
+
+6. If the field has no active dependencies, click **Yes, Delete Field** to confirm permanent deletion.
 
 
 <!-- FOOTNOTES -->
@@ -151,3 +180,5 @@ Deleting an inventory field will remove it from all records using that field, ev
 [^8]: [Manage record stakeholder types](/guide/configuration/manage-record-stakeholder-types.qmd)
 
 [^9]: [Add or edit inventory fields](#add-or-edit-inventory-fields)
+
+[^insert-variables]: [Add or edit inventory fields](#add-edit)
