@@ -64,6 +64,54 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual([r.path for r in first], sorted(r.path for r in first))
 
+    def test_suggest_related_docs_ranks_specific_matches_first(self) -> None:
+        route = gen.ProductRoute(
+            path="/settings/segments",
+            label="Inventory Segments",
+            group="Model Inventory",
+        )
+        all_paths = [
+            "/guide/inventory/archive-delete-records.html",
+            "/guide/inventory/manage-inventory-segments.html",
+            "/faq/faq-inventory.html",
+        ]
+        related = gen.suggest_related_docs(route, all_paths)
+        self.assertEqual(
+            related[0].path, "/guide/inventory/manage-inventory-segments.html"
+        )
+
+    def test_parse_settings_index_resolves_copy_titles(self) -> None:
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "src/pages/Settings").mkdir(parents=True)
+            (root / "src/copy").mkdir(parents=True)
+            (root / "src/copy/base.en.ts").write_text(
+                "export const base = {\n"
+                "  'segments.navLabel': 'Inventory Segments',\n"
+                "  'settings.inventorySectionTitle':\n"
+                "    'Model Inventory',\n"
+                "};\n",
+                encoding="utf-8",
+            )
+            (root / "src/pages/Settings/index.tsx").write_text(
+                "<SettingGroup\n"
+                "  title={copy('settings.inventorySectionTitle')}\n"
+                ">\n"
+                "  <SettingLink\n"
+                "    title={copy('segments.navLabel')}\n"
+                '    path="/settings/segments"\n'
+                "  />\n"
+                "</SettingGroup>\n",
+                encoding="utf-8",
+            )
+            routes = gen.parse_settings_index(root)
+        self.assertEqual(len(routes), 1)
+        self.assertEqual(routes[0].path, "/settings/segments")
+        self.assertEqual(routes[0].label, "Inventory Segments")
+        self.assertEqual(routes[0].group, "Model Inventory")
+
     def test_file_to_route_hint_settings_index(self) -> None:
         self.assertEqual(
             gen.file_to_route_hint(Path("src/pages/Settings/index.tsx")),
