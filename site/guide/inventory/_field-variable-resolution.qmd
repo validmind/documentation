@@ -1,0 +1,21 @@
+<!-- Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+Refer to the LICENSE file in the root of this repository for details.
+SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
+
+Variables resolve when the field is displayed, so a referenced value stays current as the record changes. Inventory exports contain the resolved values rather than the variables.^[[Export inventory](/guide/reporting/export-inventory.qmd)]
+
+Where a value can't be shown, {{< var vm.product >}} displays a marker in place of the variable so that you can tell restricted or unresolvable content apart from an empty field:
+
+{{< fa lock >}} **Access denied**
+: You don't have read permissions for that field.^[[Manage permissions](/guide/configuration/manage-permissions.qmd)] The value is never sent to your browser.
+
+**Circular reference**
+: Two or more fields reference each other in a loop.
+
+**Exceeded max depth**
+: Expansion stopped at two levels. If you reference a Long Text field that itself contains variables, those nested variables resolve one level further — anything beyond that is not expanded.
+
+::: {.callout title="Attestation snapshots keep the values they were captured with."}
+Variables in a snapshot resolve from the snapshot itself, not from the current record, so an attestation continues to show the values as of the time it was captured.^[[Working with attestations](/guide/attestation/working-with-attestations.qmd)]
+
+:::
