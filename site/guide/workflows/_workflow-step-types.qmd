@@ -41,6 +41,36 @@ SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
 Typical **Manual review** pattern: earlier in the intake workflow, a reviewer chooses the path (for example with a **{{< fa arrow-pointer >}} User Action** or **{{< fa maximize >}} Condition Branch**). Configure each path's **Inventory Record Type Change** step with the matching fixed target type and **Manual review** so activity labels the conversion as after manual review.
 :::
 
+### {{< fa expand >}} Create Artifact
+<span id="create-artifact">
+
+- Creates an artifact on the inventory record the workflow is running against.
+- Available on **inventory record workflows only**. An artifact created by this step starts its own artifact workflow, so artifact workflows cannot themselves create artifacts.
+- Requires an artifact type that applies to the workflow's inventory record type.^[[Manage artifact types](/guide/validation/manage-artifact-types.qmd)]
+
+| Field | Description |
+|---:|---|
+| **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step.^[ [Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#create-artifact)]  |
+| **Artifact Type** (required) | The type of artifact to create. |
+| **Title** (required) | The artifact's title. |
+| **Description** (required) | The artifact's description. |
+| **Severity** (optional) | The severity assigned to the artifact. While a step uses a severity, that severity cannot be deleted in settings.^[[Manage artifact severities](/guide/validation/manage-artifact-severities.qmd)] |
+| **Assignee** (optional) | Who the artifact is assigned to. Leave it empty and the artifact is assigned to the user the workflow runs as — the workflow's author on a scheduled run, or the person whose action triggered it. |
+| **Artifact Fields** (optional) | Values for the artifact type's fields. If the artifact type marks a field as required on registration, give it a value here — the workflow cannot be saved until you do, because an artifact cannot be created without it. |
+: **{{< fa expand >}} Create Artifact** step configuration {.hover tbl-colwidths="[40,60]"}
+
+::: {.callout-important title="This step creates a new artifact every time it is reached"}
+If the workflow runs repeatedly while the same situation persists, each run creates another artifact.
+
+This suits conditions describing a **recurring event** — such as *the quarterly attestation was missed* — where each occurrence is a separate failure closed on its own terms, and one artifact per occurrence is what you want.
+
+Take more care with conditions describing a **continuing state** — such as *no validator is assigned* — which stays true until someone fixes it. A monthly workflow would raise the same artifact every month.
+
+Note also that when a condition on this step does not pass, the workflow does not continue past that point — it stops there without reaching an **{{< fa circle-stop >}} End** step. Use a **{{< fa maximize >}} Condition Branch** ahead of the step when something else should happen on the other path, or when you want the workflow to finish cleanly either way.
+:::
+
+An artifact created by this step shows the workflow as its creator in the activity feed, and its detail page shows a **Source** section naming the workflow that raised it, what triggered that workflow, when the artifact was raised, and a link to the run that created it.
+
 ### {{< fa tag >}} Artifact Status Change
 <span id="artifact-status-change">
 
@@ -52,6 +82,32 @@ Typical **Manual review** pattern: earlier in the intake workflow, a reviewer ch
 | **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step.^[ [Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#artifact-status-change)]  |
 | **Set Artifact Status To** | Select the artifact type status to transition to. |
 : **{{< fa tag >}} Artifact Status Change** step configuration {.hover tbl-colwidths="[40,60]"}
+
+### {{< fa flag >}} Risk Assessment Stage Change
+<span id="risk-assessment-stage-change">
+
+- Moves a risk tier assessment into another governance stage.
+- Available on **risk tier assessment workflows only**.
+- Requires **Risk Assessment Stages** defined for the record type's active risk tier template.^[[Set up risk tiering workflows](/guide/risk-tiering/set-up-risk-tiering-workflows.qmd#define-governance-stages)]
+
+| Field | Description |
+|---:|---|
+| **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step. |
+| **Set Assessment Stage To** | Select the governance stage to move the assessment to. |
+: **{{< fa flag >}} Risk Assessment Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
+
+### {{< fa flag >}} Risk Tier Template Stage Change
+<span id="risk-tier-template-stage-change">
+
+- Moves a risk tier template into another governance stage.
+- Available on **risk tier template workflows only**.
+- Requires **Risk Tier Template Stages** defined for the workflow's risk tier template.^[[Set up risk tiering workflows](/guide/risk-tiering/set-up-risk-tiering-workflows.qmd#define-governance-stages)]
+
+| Field | Description |
+|---:|---|
+| **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step. |
+| **Set Template Stage To** | Select the governance stage to move the template to. |
+: **{{< fa flag >}} Risk Tier Template Stage Change** step configuration {.hover tbl-colwidths="[40,60]"}
 
 ### {{< fa wifi >}} Workflow State Change
 <span id="workflow-state-change">
@@ -256,7 +312,8 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 [^broadcast]: Use the rich text editor to compose your **Subject** and **Message**:
 
     1. Include optional details about the record or artifact the workflow is running on using the **{ } Insert Variable** drop-down.
-    2. Click on the **Preview** tab and choose a record or artifact under **Select {inventory record/artifact} for Preview** to confirm how the notification will appear when rendered.
+    2. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds — see [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-notifications).
+    3. Click on the **Preview** tab and choose a record or artifact under **Select {inventory record/artifact} for Preview** to confirm how the notification will appear when rendered.
 
 [^wait]:
 
@@ -293,6 +350,14 @@ Converts a record to a different inventory record type in place (for example Int
 #### {{< fa tag >}} Artifact Status Change
 
 Transitions an artifact into another status.
+
+#### {{< fa flag >}} Risk Assessment Stage Change
+
+Moves a risk tier assessment into another governance stage. Risk tier assessment workflows only.
+
+#### {{< fa flag >}} Risk Tier Template Stage Change
+
+Moves a risk tier template into another governance stage. Risk tier template workflows only.
 
 #### {{< fa wifi >}} Workflow State Change
 
