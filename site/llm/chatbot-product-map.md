@@ -264,7 +264,7 @@
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -283,7 +283,7 @@
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -302,7 +302,7 @@
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
 - `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -323,7 +323,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -385,7 +385,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 #### `/settings/primary-record-types` — Inventory Record Types
 
@@ -402,7 +402,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -421,7 +421,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -542,7 +542,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 #### `/settings/statuses` — Model Stages
 
@@ -564,7 +564,7 @@
 - `/guide/inventory/customize-record-overview-page.html`
   - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Manage attachments on records; Edit fields in bulk for multiple records
+  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
 ### Documents
 
@@ -759,7 +759,7 @@
 **Docs (related):**
 
 - `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
