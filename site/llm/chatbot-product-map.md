@@ -603,7 +603,7 @@
 **Docs (related):**
 
 - `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Manage widgets; Arrange widgets; Add widgets; Remove widgets
+  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
