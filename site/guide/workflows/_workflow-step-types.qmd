@@ -52,7 +52,7 @@ Typical **Manual review** pattern: earlier in the intake workflow, a reviewer ch
 |---:|---|
 | **When These Conditions Are Met** (optional) | Add conditional requirements to qualify for this step.^[ [Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#create-artifact)]  |
 | **Artifact Type** (required) | The type of artifact to create. |
-| **Title** (required) | The artifact's title. |
+| **Title** (required) | The artifact's title.[^artifact-text] |
 | **Description** (required) | The artifact's description. |
 | **Severity** (optional) | The severity assigned to the artifact. While a step uses a severity, that severity cannot be deleted in settings.^[[Manage artifact severities](/guide/validation/manage-artifact-severities.qmd)] |
 | **Assignee** (optional) | Who the artifact is assigned to. Leave it empty and the artifact is assigned to the user the workflow runs as — the workflow's author on a scheduled run, or the person whose action triggered it. |
@@ -312,8 +312,16 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 [^broadcast]: Use the rich text editor to compose your **Subject** and **Message**:
 
     1. Include optional details about the record or artifact the workflow is running on using the **{ } Insert Variable** drop-down.
-    2. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds — see [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-notifications).
+    2. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds — see [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-an-artifact-or-a-notification).
     3. Click on the **Preview** tab and choose a record or artifact under **Select {inventory record/artifact} for Preview** to confirm how the notification will appear when rendered.
+
+[^artifact-text]: Use the rich text editor to compose your **Title** and **Description**:
+
+    1. Include optional details about the record the workflow is running on using the **{ } Insert Variable** drop-down.
+    2. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds — see [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-an-artifact-or-a-notification).
+    3. Variables that cannot be filled in for this step are not offered. There is no recipient here, so no recipient variable is available, and the artifact does not exist yet when its text is composed.
+
+    **Title** is stored as plain text, so any formatting you apply to it is discarded. **Description** keeps its formatting, as it does everywhere else an artifact's description is edited.
 
 [^wait]:
 
