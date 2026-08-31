@@ -628,7 +628,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`
@@ -650,7 +650,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`
@@ -710,7 +710,7 @@
 - `/guide/monitoring/set-thresholds-and-alerts.html`
   - Sections: Prerequisites; Use a custom function; Set the `passed` parameter; Output examples; Alert notifications
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/monitoring/work-with-metrics-over-time.html`
   - Sections: **Log metrics over time }**; Prerequisites; Add metrics over time; Add integration metrics; Use the global time range; View metric over time metadata
 
@@ -787,7 +787,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`
