@@ -63,9 +63,14 @@ For a workflow started by a breach, the execution details show which reading was
 - When the reading was recorded
 - A link to the record's monitoring document
 
-## Include breach details in notifications
+## Include breach details in an artifact or a notification
 
-A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] in a breach-triggered workflow can include the breach in the email it sends, so recipients know which metric is at fault without opening the record first. When the workflow uses this trigger, these variables become available under **Monitoring Breach**:
+Two steps in a breach-triggered workflow can name the breach in the text they produce, so a reader knows which metric is at fault without opening the record first:
+
+- A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] can include it in the email it sends.
+- A [{{< fa expand >}} Create Artifact]{.bubble} step[^7] can include it in the artifact's **Title** and **Description**, so the artifact records the reading that caused it rather than text written before the breach happened.
+
+When the workflow uses this trigger, these variables become available under **Monitoring Breach**:
 
 | Variable | Description |
 |---:|---|
@@ -73,17 +78,19 @@ A [{{< fa bullhorn >}} Broadcast]{.bubble} step[^5] in a breach-triggered workfl
 | Breached Metric Key | The full key of the metric, as logged. |
 | Breached Metric Value | The value recorded for the breaching reading. |
 | Breached Metric Thresholds | The thresholds defined for that metric. |
-| Monitoring Document URL | A link to the record's monitoring document. |
-: **Monitoring Breach** broadcast variables {.hover tbl-colwidths="[35,65]"}
+| Monitoring Document URL | A link to the record's monitoring document. Available to a [{{< fa bullhorn >}} Broadcast]{.bubble} step only. |
+: **Monitoring Breach** variables {.hover tbl-colwidths="[35,65]"}
 
-Since these variables can be resolved only for a workflow started by a breach, they are offered for this trigger only. For the same reason, once a broadcast message uses one of them, you cannot change the workflow's start trigger to something else — the save is rejected and names the variable to remove or replace first.
+A link is written differently for each person who reads it, so the two link variables — **Monitoring Document URL** here and **Record URL** under **Record Details** — are offered to a [{{< fa bullhorn >}} Broadcast]{.bubble} step, which writes its text once per recipient, and not to a [{{< fa expand >}} Create Artifact]{.bubble} step, which writes once and stores the result for everyone.
+
+Since these variables can be resolved only for a workflow started by a breach, they are offered for this trigger only. For the same reason, once a broadcast message or an artifact's title or description uses one of them, you cannot change the workflow's start trigger to something else — the save is rejected and names the step and the variable to remove or replace first.
 
 ## What a breach sends
 
-The alert email and the workflow follow different rhythms, so it is worth knowing what a breach produces before you add a [{{< fa bullhorn >}} Broadcast]{.bubble} step to a breach-triggered workflow:
+The alert email and the workflow follow different rhythms, so it is worth knowing what a breach produces before you add a [{{< fa bullhorn >}} Broadcast]{.bubble} or [{{< fa expand >}} Create Artifact]{.bubble} step to a breach-triggered workflow:
 
 - The **alert email** is sent for every breaching reading.[^1] A metric that keeps failing keeps sending it.
-- The **workflow** starts only on the transition into breach. A metric that was already failing does not start it again.
+- The **workflow** starts only on the transition into breach. A metric that was already failing does not start it again. A [{{< fa expand >}} Create Artifact]{.bubble} step therefore raises one artifact per breach, not one per failing reading.
 
 One person can therefore receive three things for a single breach: the alert email, the broadcast email your workflow sends, and the in-app broadcast notification.
 
@@ -107,3 +114,5 @@ To reduce that, a [{{< fa hand >}} Customer Admin]{.bubble} can turn off **Monit
 [^5]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#broadcast)
 
 [^6]: [Customize email notifications](/guide/configuration/manage-platform-notifications.qmd#customize-email-notifications)
+
+[^7]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#create-artifact)
