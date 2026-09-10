@@ -282,9 +282,20 @@ jobs:
 
     - name: Test for warnings or errors
       run: |
-        if grep -q 'WARN\|WARNING\|ERROR:' site/render_errors.log; then
+        log=site/render_errors.log
+        decide="$log"
+        if [[ "${{ steps.preview.outputs.targeted }}" == 'true' ]]; then
+          # A targeted render builds only the pages this PR changed, so a listing
+          # cannot read its items' descriptions from HTML that was never built.
+          # Unavoidable by construction here, and the full-site render still covers
+          # it. A listing item that genuinely does not exist produces no Quarto
+          # message at all, so this masks nothing that is otherwise detected.
+          grep -v 'Unable to read listing item description' "$log" > "${log}.filtered" || true
+          decide="${log}.filtered"
+        fi
+        if grep -q 'WARN\|WARNING\|ERROR:' "$decide"; then
           echo "Warnings or errors detected during Quarto render"
-          cat site/render_errors.log
+          cat "$log"
           exit 1
         else
           echo "No warnings or errors detected during Quarto render"
