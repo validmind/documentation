@@ -213,6 +213,13 @@ def main() -> None:
                 return ignored
 
             shutil.copytree(site, worker, ignore=ignore)
+            # A full root render uses the root project context for every input.
+            # Directory/file CLI renders would otherwise switch into nested
+            # projects such as site/llm. Disable only their copied entry configs.
+            for name in ("_quarto.yml", "_quarto.yaml"):
+                for config in worker.rglob(name):
+                    if config.parent != worker:
+                        config.unlink()
             # Preserve date:last-modified and repo metadata without copying Git objects.
             git = subprocess.run(
                 ["git", "rev-parse", "--absolute-git-dir"],

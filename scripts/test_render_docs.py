@@ -75,7 +75,7 @@ class RenderTests(unittest.TestCase):
                 '---\ntitle: Home\nlisting:\n  contents: "posts/*.qmd"\n---\n[Guide](guide/page.qmd)\n'
             )
             (site / "_include.qmd").write_text("Shared included text.\n")
-            for directory in ("posts", "guide", "training"):
+            for directory in ("posts", "guide", "training", "nested"):
                 (site / directory).mkdir()
             for i in range(4):
                 (site / f"posts/{i}.qmd").write_text(
@@ -86,6 +86,12 @@ class RenderTests(unittest.TestCase):
             )
             (site / "training/slides.qmd").write_text(
                 "---\ntitle: Slides\nformat: revealjs\n---\n## First\n\n{{< include ../_include.qmd >}}\n"
+            )
+            (site / "nested/_quarto.yml").write_text(
+                "project:\n  type: default\nformat: gfm\n"
+            )
+            (site / "nested/page.qmd").write_text(
+                "---\ntitle: Nested\n---\n{{< include /_include.qmd >}}\n"
             )
             subprocess.run(
                 ["quarto", "render", str(site)], check=True, capture_output=True
