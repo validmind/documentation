@@ -5,11 +5,12 @@
 import json
 from pathlib import Path
 import shutil
+import sys
 import subprocess
 import tempfile
 import unittest
 
-from render_docs import merge_outputs, partition
+from render_docs import dependent_listings, listing_targets, merge_outputs, partition
 
 
 class RenderTests(unittest.TestCase):
@@ -21,6 +22,18 @@ class RenderTests(unittest.TestCase):
                 self.assertEqual(
                     sum(source == t or source.startswith(t + "/") for t in targets), 1
                 )
+
+    def test_listing_batches_cover_every_listing_once(self):
+        inputs = ["index.qmd", "guide/list.qmd", "guide/page.qmd", "large/list.qmd"]
+        inputs += [f"large/{i}.qmd" for i in range(200)]
+        listings = ["index.qmd", "guide/list.qmd", "large/list.qmd"]
+        targets = sum(listing_targets(inputs, listings, 2), [])
+        self.assertIn("guide", targets)
+        self.assertNotIn("large", targets)
+        for page in listings:
+            self.assertEqual(
+                sum(page == t or page.startswith(t + "/") for t in targets), 1
+            )
 
     def test_merge_preserves_all_search_and_listing_entries(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -62,6 +75,38 @@ class RenderTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Conflicting search.json"):
                 merge_outputs(outputs, destination)
 
+    def test_dependent_listing_content_requires_native_render(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp).resolve()
+            output = site / "_site"
+            output.mkdir()
+            (site / "cards.qmd").write_text("Cards")
+            metadata = {
+                "index.qmd": {
+                    "listing": {"contents": "cards.qmd", "fields": ["description"]}
+                },
+                "cards.qmd": {"listing": {"contents": "posts/*.qmd"}},
+            }
+            (output / "cards.html").write_text(
+                "<main><div>Listing placeholder</div></main>"
+            )
+            self.assertTrue(dependent_listings(site, output, metadata, list(metadata)))
+            (output / "cards.html").write_text(
+                "<main><p>Independent introduction.</p></main>"
+            )
+            self.assertFalse(dependent_listings(site, output, metadata, list(metadata)))
+            (output / "cards.html").write_text("<main></main>")
+            # A broad contents glob also matches the listing's own source;
+            # Quarto excludes that page from its own listing.
+            metadata["cards.qmd"]["listing"]["contents"] = "*.qmd"
+            self.assertFalse(
+                dependent_listings(
+                    site, output, {"cards.qmd": metadata["cards.qmd"]}, ["cards.qmd"]
+                )
+            )
+            metadata["cards.qmd"]["description"] = "Explicit summary"
+            self.assertFalse(dependent_listings(site, output, metadata, list(metadata)))
+
     @unittest.skipUnless(shutil.which("quarto"), "Quarto required for integration test")
     def test_real_quarto_matches_serial_links_listings_aliases_and_slides(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -74,9 +119,19 @@ class RenderTests(unittest.TestCase):
             (site / "index.qmd").write_text(
                 '---\ntitle: Home\nlisting:\n  contents: "posts/*.qmd"\n---\n[Guide](guide/page.qmd)\n'
             )
+            # Two listing pages, with one reading the other's rendered summary.
+            (site / "index.qmd").write_text(
+                '---\ntitle: Home\nlisting:\n  contents: ["posts/*.qmd", "guide/cards.qmd"]\n---\n[Guide](guide/page.qmd)\n'
+            )
+            (site / "_quarto-production.yml").write_text(
+                "website:\n  page-footer: Production fixture\n"
+            )
             (site / "_include.qmd").write_text("Shared included text.\n")
             for directory in ("posts", "guide", "training", "nested"):
                 (site / directory).mkdir()
+            (site / "guide/cards.qmd").write_text(
+                '---\ntitle: Cards\nlisting:\n  contents: "../posts/*.qmd"\n---\nCard introduction.\n'
+            )
             for i in range(4):
                 (site / f"posts/{i}.qmd").write_text(
                     f"---\ntitle: Post {i}\n---\nDescription {i}.\n\n[Guide](/guide/page.qmd)\n"
@@ -85,7 +140,7 @@ class RenderTests(unittest.TestCase):
                 '---\ntitle: Guide\naliases: ["/old-guide.html"]\n---\n{{< include ../_include.qmd >}}\n'
             )
             (site / "training/slides.qmd").write_text(
-                "---\ntitle: Slides\nformat: revealjs\n---\n## First\n\n{{< include ../_include.qmd >}}\n"
+                "---\ntitle: Slides\naliases: [old-slides.html]\nformat:\n  revealjs: default\n  html:\n    output-file: _slides.html\n---\n## First\n\n{{< include ../_include.qmd >}}\n"
             )
             (site / "nested/_quarto.yml").write_text(
                 "project:\n  type: default\nformat: gfm\n"
@@ -94,18 +149,22 @@ class RenderTests(unittest.TestCase):
                 "---\ntitle: Nested\n---\n{{< include /_include.qmd >}}\n"
             )
             subprocess.run(
-                ["quarto", "render", str(site)], check=True, capture_output=True
+                ["quarto", "render", str(site), "--profile", "production"],
+                check=True,
+                capture_output=True,
             )
             serial = root / "serial"
             shutil.move(site / "_site", serial)
             result = subprocess.run(
                 [
-                    "python3",
+                    sys.executable,
                     str(Path(__file__).with_name("render_docs.py")),
                     "--site",
                     str(site),
                     "--jobs",
                     "2",
+                    "--profile",
+                    "production",
                 ],
                 capture_output=True,
                 text=True,
@@ -157,7 +216,7 @@ class RenderTests(unittest.TestCase):
             }
             (site / "_markdown/stale.md").write_text("obsolete")
             command = [
-                "python3",
+                sys.executable,
                 str(Path(__file__).with_name("render_docs.py")),
                 "--site",
                 str(site),

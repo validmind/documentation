@@ -117,7 +117,7 @@ delete-demo-branch:
 
 # Deploy PR branch to https://docs-staging.validmind.ai/
 deploy-demo-branch:
-	@python3 ../scripts/render_docs.py --site . --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null;
+	@uv run --with pyyaml python ../scripts/render_docs.py --site . --profile development && aws s3 sync ./_site s3://docs-ci-cd-demo/site/pr_previews/$(GIT_BRANCH)/ --delete && aws cloudfront create-invalidation --distribution-id E38AINJY5CYN6P --paths "/*" --no-cli-pager > /dev/null;
 	@echo "\nDeployed to https://docs-staging.validmind.ai/pr_previews/$(GIT_BRANCH)/index.html"
 
 # Deployment to https://docs.validmind.ai/
@@ -127,7 +127,7 @@ deploy-prod:
 	else \
 		echo "\nDeploying prod site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		python3 ../scripts/render_docs.py --site . --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
+		uv run --with pyyaml python ../scripts/render_docs.py --site . --profile production && aws s3 sync ./_site s3://docs-ci-cd-prod/site/ --delete --exclude "installation/helm-repo/*" && aws cloudfront create-invalidation --distribution-id E2I9R40IH01NW3 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 # Deployment to https://docs-staging.validmind.ai/
@@ -137,7 +137,7 @@ deploy-staging:
 	else \
 		echo "\nDeploying staging site ..."; \
 		cp -r $(SRC_ROOT)/installation/site/installation installation
-		python3 ../scripts/render_docs.py --site . --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
+		uv run --with pyyaml python ../scripts/render_docs.py --site . --profile staging && aws s3 sync ./_site s3://docs-ci-cd-staging/site/ --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" && aws cloudfront create-invalidation --distribution-id E2FB73KGY63MV6 --paths "/*" --no-cli-pager > /dev/null; \
 	fi
 
 docker-build: docker-site-lite
@@ -161,7 +161,7 @@ docker-site-lite: get-source
 # Get all source docs
 docs-site: get-source
 	@echo "\nRendering the static HTML site ..."
-	python3 ../scripts/render_docs.py --site . --profile production
+	uv run --with pyyaml python ../scripts/render_docs.py --site . --profile production
 	@$(MAKE) execute PROFILE=exe-prod
 
 # Execute Juptyer Notebooks with a profile & provided credentials

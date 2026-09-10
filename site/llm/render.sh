@@ -52,7 +52,7 @@ execute:
 EOF
 
 echo "=== Rendering site to GFM markdown ==="
-python3 ../scripts/render_docs.py --site . --to gfm
+uv run --with pyyaml python ../scripts/render_docs.py --site . --to gfm
 
 # AGENTS.md lives at the repo root so IDE/agent tooling finds it there, but it
 # must also reach the LLM output so the docs chatbot can ingest it.

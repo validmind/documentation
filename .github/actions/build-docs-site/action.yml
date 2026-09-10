@@ -102,7 +102,7 @@ runs:
 
     - name: Test complete render orchestration
       shell: bash
-      run: python3 -m unittest discover -s scripts -p test_render_docs.py -v
+      run: uv run --with pyyaml python -m unittest discover -s scripts -p test_render_docs.py -v
 
     - name: Render docs site
       shell: bash
@@ -110,7 +110,7 @@ runs:
         QUARTO_PROFILE: ${{ inputs.profile }}
       run: |
         cd site
-        python3 ../scripts/render_docs.py --site . --profile "$QUARTO_PROFILE" &> render_errors.log || {
+        uv run --with pyyaml python ../scripts/render_docs.py --site . --profile "$QUARTO_PROFILE" &> render_errors.log || {
           echo "Quarto render failed immediately"
           cat render_errors.log
           exit 1

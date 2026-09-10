@@ -12,6 +12,9 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import glob
+from html.parser import HTMLParser
+import yaml
 import filecmp
 import json
 import os
@@ -63,6 +66,30 @@ def partition(inputs: list[str], jobs: int) -> list[list[str]]:
     return [bucket for bucket in buckets if bucket]
 
 
+def listing_targets(
+    inputs: list[str], listings: list[str], jobs: int
+) -> list[list[str]]:
+    """Batch listings with nearby pages to amortize Quarto project finalization."""
+    targets = {}
+    for page in listings:
+        target, size = page, 1
+        for parent in reversed(Path(page).parents):
+            if parent == Path("."):
+                continue
+            count = sum(p.startswith(parent.as_posix() + "/") for p in inputs)
+            if count <= 160:
+                target, size = parent.as_posix(), count
+                break
+        targets[target] = size
+    buckets = [[] for _ in range(jobs)]
+    sizes = [0] * jobs
+    for target, size in sorted(targets.items(), key=lambda item: (-item[1], item[0])):
+        index = min(range(jobs), key=lambda i: sizes[i])
+        buckets[index].append(target)
+        sizes[index] += size
+    return buckets
+
+
 def merge_outputs(outputs: list[Path], destination: Path) -> None:
     """Union indexes and require identical bytes for shared output resources."""
     indexes = {"search.json": "objectID", "listings.json": "listing"}
@@ -112,6 +139,154 @@ def merge_outputs(outputs: list[Path], destination: Path) -> None:
             (destination / name).write_text(json.dumps(list(merged.values())))
 
 
+def page_metadata(content: str) -> dict:
+    front = re.match(
+        r"\A(?:\ufeff)?---\r?\n(.*?)\r?\n---(?:\r?\n|$)", content, re.DOTALL
+    )
+    return (yaml.safe_load(front[1]) or {}) if front else {}
+
+
+def independent_summary(path: Path) -> tuple[bool, bool]:
+    """Whether a deferred listing page has its own paragraph/preview image."""
+
+    class Summary(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.stack = []
+            self.paragraph = self.image = False
+
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            inside = any(t == "main" for t, _ in self.stack)
+            excluded = any(t in {"header", "nav"} for t, _ in self.stack)
+            if inside and not excluded:
+                self.paragraph |= tag == "p"
+                self.image |= tag == "img"
+            if tag not in {"img", "br", "hr", "input", "meta", "link", "source", "wbr"}:
+                self.stack.append((tag, attrs))
+
+        def handle_endtag(self, tag):
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == tag:
+                    del self.stack[i:]
+                    break
+
+    if not path.exists():
+        return False, False
+    summary = Summary()
+    summary.feed(path.read_text())
+    return summary.paragraph, summary.image
+
+
+def descriptors(metadata: dict) -> list[dict]:
+    listing = metadata.get("listing", [])
+    return listing if isinstance(listing, list) else [listing]
+
+
+def dependent_listings(
+    site: Path, output: Path, metadata: dict[str, dict], listings: list[str]
+) -> bool:
+    """Fail back to native ordering when listing content depends on another listing."""
+    members = set(listings)
+    summaries = {
+        p: independent_summary(output / Path(p).with_suffix(".html")) for p in listings
+    }
+    for page in listings:
+        for listing in descriptors(metadata[page]):
+            if not isinstance(listing, dict) or listing.get("template"):
+                return True
+            fields = listing.get("fields", ["description", "image"])
+            contents = listing.get("contents", "*")
+            for item in contents if isinstance(contents, list) else [contents]:
+                spec = item if isinstance(item, str) else item.get("path", "")
+                if spec.startswith(("https://", "http://")):
+                    continue
+                pattern = (
+                    site / spec.lstrip("/")
+                    if spec.startswith("/")
+                    else site / Path(page).parent / spec
+                )
+                for match in glob.glob(str(pattern), recursive=True):
+                    path = Path(match).resolve()
+                    if path.suffix in {".yml", ".yaml"}:
+                        return True  # External listing metadata may hide dependencies.
+                    try:
+                        relative = path.relative_to(site).as_posix()
+                    except ValueError:
+                        continue
+                    if relative == page or relative not in members:
+                        continue
+                    target = {
+                        **metadata[relative],
+                        **(item if isinstance(item, dict) else {}),
+                    }
+                    paragraph, image = summaries[relative]
+                    if (
+                        "description" in fields
+                        and not target.get("description")
+                        and not paragraph
+                    ):
+                        return True
+                    target_has_images = any(
+                        not isinstance(d, dict) or "image" in d.get("fields", ["image"])
+                        for d in descriptors(metadata[relative])
+                    )
+                    if (
+                        "image" in fields
+                        and not target.get("image")
+                        and not image
+                        and target_has_images
+                    ):
+                        return True
+    return False
+
+
+def repair_format_aliases(
+    site: Path, output: Path, metadata: dict[str, dict], flags: list[str]
+) -> None:
+    """Quarto incremental renders prefer HTML for aliases; full renders prefer the primary format."""
+    for page, meta in metadata.items():
+        if (
+            not meta.get("aliases")
+            or not isinstance(meta.get("format"), dict)
+            or len(meta["format"]) < 2
+        ):
+            continue
+        info = json.loads(
+            subprocess.check_output(
+                ["quarto", "inspect", str(site / page), *flags], text=True
+            )
+        )
+        primary = next(iter(info["formats"].values()))
+        filename = primary["pandoc"].get("output-file")
+        if not filename:
+            raise ValueError(f"Cannot determine primary alias output for {page}")
+        destination = output / Path(page).parent / filename
+        for alias in primary["metadata"].get("aliases", []):
+            href, _, anchor = alias.partition("#")
+            if href.endswith("/") or not Path(href).suffix:
+                href = href.rstrip("/") + "/index.html"
+            redirect = (
+                output / href.lstrip("/")
+                if href.startswith("/")
+                else destination.parent / href
+            )
+            content = redirect.read_text()
+            match = re.search(r"var redirects = (.*?);", content)
+            if not match:
+                raise ValueError(f"Cannot update alias {redirect}")
+            targets = json.loads(match[1])
+            targets[anchor] = os.path.relpath(destination, redirect.parent).replace(
+                os.sep, "/"
+            )
+            content = (
+                content[: match.start(1)]
+                + json.dumps(targets, separators=(",", ":"))
+                + content[match.end(1) :]
+            )
+            redirect.write_text(content)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", type=Path, default=Path("site"))
@@ -120,7 +295,7 @@ def main() -> None:
     parser.add_argument(
         "--jobs",
         type=int,
-        default=int(os.environ.get("DOCS_RENDER_JOBS", min(2, os.cpu_count() or 1))),
+        default=int(os.environ.get("DOCS_RENDER_JOBS", min(4, os.cpu_count() or 1))),
     )
     args = parser.parse_args()
     if args.jobs < 1:
@@ -182,6 +357,7 @@ def main() -> None:
         if website
         else []
     )
+    metadata = {p: page_metadata((site / p).read_text()) for p in inputs}
     buckets = partition(inputs, args.jobs)
     print(
         f"Rendering all {len(inputs)} inputs with {len(buckets)} isolated workers",
@@ -244,23 +420,24 @@ def main() -> None:
             worker = workers[index]
             log = root / f"worker-{index}.log"
             with log.open("w") as stream:
-                for target in buckets[index]:
-                    target_started = time.monotonic()
-                    print(f"[worker {index + 1}] {target}", flush=True)
-                    result = subprocess.run(
-                        ["quarto", "render", target, "--use-freezer", *render_flags],
-                        cwd=worker,
-                        stdout=stream,
-                        stderr=subprocess.STDOUT,
-                    )
-                    print(
-                        f"[worker {index + 1}] finished {target} in {time.monotonic() - target_started:.1f}s",
-                        flush=True,
-                    )
-                    if result.returncode:
-                        raise RuntimeError(
-                            f"Worker {index + 1} failed on {target}\n{log.read_text()}"
-                        )
+                print(
+                    f"[worker {index + 1}] rendering {len(buckets[index])} targets",
+                    flush=True,
+                )
+                result = subprocess.run(
+                    [
+                        "quarto",
+                        "render",
+                        *buckets[index],
+                        "--use-freezer",
+                        *render_flags,
+                    ],
+                    cwd=worker,
+                    stdout=stream,
+                    stderr=subprocess.STDOUT,
+                )
+                if result.returncode:
+                    raise RuntimeError(f"Worker {index + 1} failed\n{log.read_text()}")
             # Keep warnings visible to the existing CI warning gate.
             print(log.read_text(), flush=True)
             return worker / output_relative
@@ -272,24 +449,112 @@ def main() -> None:
         merge_outputs(outputs, merged)
         # Listings need all rendered descriptions and thumbnails, so finalize them
         # against the fresh union, never against a previous site's HTML.
+        if listings and dependent_listings(site, merged, metadata, listings):
+            print(
+                "Using native full-project render for dependent listing content",
+                flush=True,
+            )
+            subprocess.run(["quarto", "render", *render_flags], cwd=site, check=True)
+            return
         if listings:
-            final_site = workers[0]
-            for page in listings:
-                shutil.copy2(site / page, final_site / page)
-            shutil.rmtree(final_site / ".quarto", ignore_errors=True)
-            shutil.rmtree(final_site / output_relative)
-            shutil.move(str(merged), final_site / output_relative)
             print(
                 f"Finalizing {len(listings)} listing pages against complete fresh HTML",
                 flush=True,
             )
-            for target in listings:
-                subprocess.run(
-                    ["quarto", "render", target, "--use-freezer", *render_flags],
-                    cwd=final_site,
-                    check=True,
-                )
-            shutil.move(str(final_site / output_relative), merged)
+
+            final_buckets = listing_targets(inputs, listings, len(workers))
+
+            def finalize(index: int) -> Path:
+                worker = workers[index]
+                for page in listings:
+                    shutil.copy2(site / page, worker / page)
+                shutil.rmtree(worker / ".quarto", ignore_errors=True)
+                shutil.rmtree(worker / output_relative)
+                shutil.copytree(merged, worker / output_relative)
+                log = root / f"listings-{index}.log"
+                with log.open("w") as stream:
+                    for target in final_buckets[index]:
+                        # All listings are explicitly covered. Avoid Quarto's
+                        # supplemental pass repeatedly rendering other listings.
+                        shutil.rmtree(worker / ".quarto/listing", ignore_errors=True)
+                        result = subprocess.run(
+                            [
+                                "quarto",
+                                "render",
+                                target,
+                                "--use-freezer",
+                                *render_flags,
+                            ],
+                            cwd=worker,
+                            stdout=stream,
+                            stderr=subprocess.STDOUT,
+                        )
+                        if result.returncode:
+                            raise RuntimeError(
+                                f"Listing render failed\n{log.read_text()}"
+                            )
+                print(log.read_text(), flush=True)
+                delta = root / f"listing-delta-{index}"
+                delta.mkdir()
+                for source in (worker / output_relative).rglob("*"):
+                    if not source.is_file():
+                        continue
+                    relative = source.relative_to(worker / output_relative)
+                    original = merged / relative
+                    if original.exists() and filecmp.cmp(
+                        source, original, shallow=False
+                    ):
+                        continue
+                    target = delta / relative
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    if relative.as_posix() in {"search.json", "listings.json"}:
+                        key = (
+                            "objectID" if relative.name == "search.json" else "listing"
+                        )
+                        base = (
+                            {
+                                item[key]: item
+                                for item in json.loads(original.read_text())
+                            }
+                            if original.exists()
+                            else {}
+                        )
+                        items = [
+                            item
+                            for item in json.loads(source.read_text())
+                            if base.get(item[key]) != item
+                        ]
+                        target.write_text(json.dumps(items))
+                    else:
+                        shutil.copy2(source, target)
+                return delta
+
+            with ThreadPoolExecutor(max_workers=len(workers)) as pool:
+                deltas = list(pool.map(finalize, range(len(workers))))
+            updates = root / "listing-updates"
+            updates.mkdir()
+            merge_outputs(deltas, updates)
+            for source in updates.rglob("*"):
+                if not source.is_file():
+                    continue
+                relative = source.relative_to(updates)
+                target = merged / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if relative.as_posix() in {"search.json", "listings.json"}:
+                    key = "objectID" if relative.name == "search.json" else "listing"
+                    items = (
+                        {item[key]: item for item in json.loads(target.read_text())}
+                        if target.exists()
+                        else {}
+                    )
+                    items.update(
+                        {item[key]: item for item in json.loads(source.read_text())}
+                    )
+                    target.write_text(json.dumps(list(items.values())))
+                else:
+                    shutil.copy2(source, target)
+        if website:
+            repair_format_aliases(site, merged, metadata, flags)
         destination = site / output_relative
         if destination.exists():
             shutil.rmtree(destination)
