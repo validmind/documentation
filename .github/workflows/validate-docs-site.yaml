@@ -266,11 +266,16 @@ jobs:
           --base-listings .preview-indexes/listings.json \
           --partial-listings _site/listings.json
 
+    - name: Test complete render orchestration
+      if: steps.preview.outputs.targeted != 'true'
+      run: python3 -m unittest discover -s scripts -p test_render_docs.py -v
+
     - name: Render demo docs site
       if: steps.preview.outputs.targeted != 'true'
+      shell: bash
       run: |
         cd site
-        quarto render --profile development 2>&1 | tee render_errors.log || {
+        python3 ../scripts/render_docs.py --site . --profile development 2>&1 | tee render_errors.log || {
         echo "Quarto render failed immediately";
         cat render_errors.log;
         exit 1;
@@ -406,7 +411,7 @@ jobs:
 
     - name: Validate LLM markdown render
       if: steps.preview.outputs.targeted != 'true'
-      run: bash llm/render.sh && bash llm/clean.sh
+      run: bash llm/render.sh
       working-directory: site
 
     - name: Verify LLM corpus includes product map and docs IA hub
