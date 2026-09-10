@@ -35,8 +35,9 @@ Custom project hooks (including the Docker profile), inherited listing metadata,
 and native Quarto sitemap configurations use the serial path to preserve their
 full-project behavior. The repository's separate sitemap Make target is unchanged.
 Notebook execution settings and freeze behavior are preserved. `uv` supplies
-PyYAML for reading page metadata. Multi-format training aliases retain the native
-full-render destination (the primary format).
+PyYAML for reading page metadata. Multi-format training aliases consistently target the first configured format.
+Quarto can otherwise choose the alternate HTML output during incremental renders;
+this normalization makes training redirects point to their slide decks.
 
 Run the safety and real-Quarto equivalence tests with:
 

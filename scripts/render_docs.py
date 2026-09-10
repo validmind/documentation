@@ -244,7 +244,7 @@ def dependent_listings(
 def repair_format_aliases(
     site: Path, output: Path, metadata: dict[str, dict], flags: list[str]
 ) -> None:
-    """Quarto incremental renders prefer HTML for aliases; full renders prefer the primary format."""
+    """Normalize multi-format aliases to the first configured format, independent of render order."""
     for page, meta in metadata.items():
         if (
             not meta.get("aliases")
