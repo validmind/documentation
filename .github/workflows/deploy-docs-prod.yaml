@@ -29,6 +29,11 @@ jobs:
     steps:
       - name: Check out documentation repository
         uses: actions/checkout@v4
+        with:
+          # ponytail: the artifact key is prod's tree, so resolve prod
+          # explicitly. On workflow_run and workflow_dispatch the default ref is
+          # the default branch, whose tree no artifact ever matches.
+          ref: prod
 
       - name: Find production artifact for this source tree
         id: production-artifact
