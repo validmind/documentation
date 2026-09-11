@@ -100,15 +100,20 @@ runs:
         cp -r site/_source/release-notes/releases site
         rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
 
+    - name: Test complete render orchestration
+      shell: bash
+      run: uv run --with pyyaml python -m unittest discover -s scripts -p test_render_docs.py -v
+
     - name: Render docs site
       shell: bash
       env:
         QUARTO_PROFILE: ${{ inputs.profile }}
       run: |
         cd site
-        quarto render --profile "$QUARTO_PROFILE" &> render_errors.log || {
+        uv run --with pyyaml python ../scripts/render_docs.py --site . --profile "$QUARTO_PROFILE" &> render_errors.log || {
           echo "Quarto render failed immediately"
           cat render_errors.log
           exit 1
         }
+        grep -E '^Rendering all|^Complete ' render_errors.log || true
         make generate-sitemap
