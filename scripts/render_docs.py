@@ -447,6 +447,7 @@ def main() -> None:
         merged = root / "merged"
         merged.mkdir()
         merge_outputs(outputs, merged)
+        print(f"Complete page pass: {time.monotonic() - started:.1f}s", flush=True)
         # Listings need all rendered descriptions and thumbnails, so finalize them
         # against the fresh union, never against a previous site's HTML.
         if listings and dependent_listings(site, merged, metadata, listings):
