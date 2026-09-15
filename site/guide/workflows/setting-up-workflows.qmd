@@ -32,9 +32,25 @@ To view workflows set up for your organization:
 
 2. Under {{< fa shield >}} Governance, select **Workflows**.
 
-3. Sort and filter the list of workflows to narrow down results:
+    All workflows are listed together in a single table, with a total count of workflows shown beneath the table:
+
+    - **ID** — The unique identifier for the workflow.
+    - **Name** — The title of the workflow.
+    - **Status** — Whether the workflow is a `Draft` workflow or an `Active` workflow.
+    - **Created By** — The user who created the workflow.
+    - **Target** — The type of workflow: `Artifact`, `Inventory Record`
+    - **Target Type** — The subcategory of workflow target. For example: Validation Issue (artifact workflow)
+    - **Description** — The description of the workflow.
+    - **Trigger** — The type of trigger that initiates the workflow.
+    - **Actions** — Menu of actions available for that workflow.
+
+3. Search, sort, and filter the list of workflows to narrow down results:
 
 ::: {.panel-tabset}
+
+### Search workflows
+
+Click **{{< fa magnifying-glass >}}** to search for workflows by name.
 
 ### Sort workflows
 
@@ -64,6 +80,54 @@ Click **{{< fa filter >}} Filter** to filter for workflows using different [work
 
 :::
 
+## View workflow details
+
+Click on a workflow in the list to open that workflow's details page, where you can review the workflow's configuration and monitor its activity before making any changes:[^1]
+
+::: {.panel-tabset}
+
+### Review workflow properties
+
+The right sidebar shows the properties that apply to the workflow as a whole:
+
+- **Target** — The type of workflow: `Artifact`, `Inventory Record`
+- **Target Type** — The subcategory of workflow target. For example: Validation Issue (artifact workflow)
+- **Status** — Whether the workflow is a `Draft` workflow or an `Active` workflow.
+- **Workflow Start** — The trigger that initiates the workflow.
+- **Expected Duration** — The SLA defined for the workflow based on the start date.
+
+The sidebar also lists when and by whom the workflow was created and last updated, along with actions available for that workflow:
+
+- **{{< fa pencil >}} Edit Details** — Edit the workflow's details, such as its title and description.
+- **{{< fa copy >}} Clone Workflow** — Create a copy of the workflow as a new draft workflow.[^2]
+- **{{< fa circle-check >}} Publish Workflow** — For `Draft` workflows, publish the workflow for use.[^3]
+- **{{< fa trash-can >}} Delete Workflow** — Permanently delete the workflow.[^4]
+
+### Browse version history
+
+The details page displays the latest version of the workflow by default. To review a previous version, click on the **Version** drop-down and select the version you'd like to view.
+
+For the selected version, the details page shows who created that version and when, along with the version notes describing the changes — and the workflow diagram and active executions update to reflect that version.
+
+::: {.callout}
+Older versions of a workflow are read-only and cannot be edited or executed on records, artifacts, or risk tier templates or assessments.
+:::
+
+### Preview the workflow diagram
+
+Under Workflow diagram, a read-only preview shows the steps and links that make up the selected version of the workflow.
+
+When viewing the latest version, click **{{< fa pencil >}} Edit Workflow** to open the workflow editor and make changes to the workflow's steps and links.[^5]
+
+### Monitor active executions
+
+Under Active Executions, review the runs of the displayed version that are currently in progress:
+
+- Each row shows the record or artifact the workflow is running on, its current stage, and the record owner.
+- Click on a row to go to that record or artifact.
+
+:::
+
 ## Set up workflows
 
 :::{#workflow-setup}
@@ -73,4 +137,21 @@ Click **{{< fa filter >}} Filter** to filter for workflows using different [work
 
 - [Workflows and lifecycles FAQ](/faq/faq-workflows.qmd)
 - [Working with workflows](working-with-workflows.qmd)
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Configure workflows](configure-workflows.qmd)
+
+[^2]: [Clone existing workflows](configure-workflows.qmd#clone-existing-workflows)
+
+[^3]:
+
+    ::: {.callout-important title="Once a workflow is published, it cannot be reverted to draft status."}
+    You can continue to make changes to published workflows by creating new versions of workflows.
+    :::
+
+[^4]: [Delete existing workflows](configure-workflows.qmd#delete-existing-workflows)
+
+[^5]: [Edit existing workflows](configure-workflows.qmd#edit-existing-workflows)
 

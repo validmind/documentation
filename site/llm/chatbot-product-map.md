@@ -95,7 +95,7 @@
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 
 ### Main navigation
 
@@ -126,7 +126,7 @@
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
@@ -145,7 +145,7 @@
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -481,7 +481,7 @@
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -586,7 +586,7 @@
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents; Delete record documents
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
@@ -628,7 +628,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`
@@ -641,7 +641,7 @@
 **Docs (primary):**
 
 - `/guide/workflows/setting-up-workflows.html`
-  - Sections: View, sort, and filter workflows; Sort workflows; Filter workflows; How do I create effective filters?; Set up workflows; What's next
+  - Sections: View, sort, and filter workflows; Search workflows; Sort workflows; Filter workflows; How do I create effective filters?; View workflow details; Review workflow properties; Browse version history
 
 **Docs (related):**
 
@@ -650,7 +650,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`
@@ -710,7 +710,7 @@
 - `/guide/monitoring/set-thresholds-and-alerts.html`
   - Sections: Prerequisites; Use a custom function; Set the `passed` parameter; Output examples; Alert notifications
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/monitoring/work-with-metrics-over-time.html`
   - Sections: **Log metrics over time }**; Prerequisites; Add metrics over time; Add integration metrics; Use the global time range; View metric over time metadata
 
@@ -787,7 +787,7 @@
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
   - Sections: Prerequisites; Start a workflow via webhook; 1. Configure workflow in }; 2. Start workflow from external system; Trigger a paused workflow to continue; 1. Configure workflow in }; 2. Trigger workflow to continue from external system
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
-  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in notifications; What a breach sends; What's next
+  - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
 - `/guide/workflows/assign-workflow-executions.html`

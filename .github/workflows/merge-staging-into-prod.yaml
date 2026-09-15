@@ -1,0 +1,46 @@
+name: Merge staging into prod
+
+run-name: Merge staging into prod | requested by ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge-staging-into-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ponytail: no local merge — GitHub merges the branches itself, which
+      # keeps the resulting tree identical to the prospective production tree
+      # that the staging workflow built the artifact from. A conflict here
+      # means the staging prediction failed too, so failing is correct.
+      - name: Open staging into prod pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          url=$(gh pr list --repo "$GITHUB_REPOSITORY" --base prod --head staging \
+            --state open --json url --jq '.[0].url // empty')
+          if [[ -z "$url" ]]; then
+            url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base prod --head staging \
+              --title "Merge staging into prod" \
+              --body "Promote staging to production. Triggered by @${{ github.actor }}.")
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Merge pull request (with retries)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in {1..5}; do
+            gh pr merge --repo "$GITHUB_REPOSITORY" --merge "${{ steps.pr.outputs.url }}" && exit 0
+            echo "Merge failed, retrying in 10 seconds ..."
+            sleep 10
+          done
+          echo "::error::Could not merge staging into prod."
+          exit 1
