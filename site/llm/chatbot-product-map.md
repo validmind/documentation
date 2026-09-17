@@ -156,7 +156,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/manage-platform-notifications.html` (section: #customize-email-notifications)
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Document jobs in your inbox; Customize email notifications
 
 **Docs (related):**
 
