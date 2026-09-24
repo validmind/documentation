@@ -87,7 +87,7 @@
 - `/guide/risk-tiering/manage-risk-tier-templates.html`
   - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
@@ -120,7 +120,7 @@
 - `/guide/risk-tiering/manage-risk-tier-templates.html`
   - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
@@ -137,7 +137,7 @@
 - `/guide/risk-tiering/manage-risk-tier-templates.html`
   - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
@@ -473,7 +473,7 @@
 - `/guide/risk-tiering/manage-risk-tier-templates.html`
   - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
@@ -580,7 +580,7 @@
 - `/guide/risk-tiering/manage-risk-tier-templates.html`
   - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments; Add or edit assessment questions; Add assessment questions; Edit assessment questions
+  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-document-types.html`
