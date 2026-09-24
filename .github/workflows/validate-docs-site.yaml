@@ -126,8 +126,8 @@ jobs:
         path: site/_source/validmind-library
         token: ${{ secrets.DOCS_CI_RO_PAT }}
 
+    # The product map references installation pages, including in targeted previews.
     - name: Check out installation repository
-      if: steps.preview.outputs.targeted != 'true'
       uses: actions/checkout@v4
       with:
         repository: validmind/installation
@@ -183,7 +183,6 @@ jobs:
         BACKEND_ROOT=site/_source/backend uv run --with json-schema-for-humans python scripts/generate_template_schema_docs.py
 
     - name: Populate installation
-      if: steps.preview.outputs.targeted != 'true'
       run: cp -r site/_source/installation/site/installation site/installation
 
     - name: Populate release notes
@@ -383,8 +382,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pandoc
 
+    # Targeted guide edits can change the map without requiring a full render.
     - name: Verify chatbot product map is up to date
-      if: steps.preview.outputs.targeted != 'true'
       run: |
         set -euo pipefail
         python3 site/scripts/generate_chatbot_product_map.py
