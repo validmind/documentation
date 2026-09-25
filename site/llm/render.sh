@@ -14,13 +14,15 @@ cd "$SITE_DIR"
 
 cleanup() {
   echo "Restoring _quarto.yml ..."
-  git checkout -- _quarto.yml 2>/dev/null || cp llm/_quarto-backup.yml _quarto.yml
-  rm -f llm/_quarto-backup.yml
+  cp "$QUARTO_BACKUP" _quarto.yml
+  rm -f "$QUARTO_BACKUP"
 }
+# Restore the exact working copy, including uncommitted changes.
+QUARTO_BACKUP=$(mktemp)
+cp _quarto.yml "$QUARTO_BACKUP"
 trap cleanup EXIT
 
-# Backup and replace _quarto.yml
-cp _quarto.yml llm/_quarto-backup.yml
+# Replace _quarto.yml for this render.
 
 cat > _quarto.yml << 'EOF'
 project:
@@ -50,7 +52,7 @@ execute:
 EOF
 
 echo "=== Rendering site to GFM markdown ==="
-quarto render --to gfm
+uv run --with pyyaml python ../scripts/render_docs.py --site . --to gfm
 
 # AGENTS.md lives at the repo root so IDE/agent tooling finds it there, but it
 # must also reach the LLM output so the docs chatbot can ingest it.
