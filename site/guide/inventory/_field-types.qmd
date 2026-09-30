@@ -17,6 +17,8 @@ Aggregation
     - **MAX - Latest/maximum value** — Return the most recent value from a selected Date type artifact field for that type.
 
 4. (Optional) Click **{{< fa plus >}} Add Rule** under **Filters** to narrow which artifacts are included in the aggregation.
+
+Aggregation values are stored on each record and refreshed in the background. You can filter and sort the inventory by them: a COUNT offers number operators, and a MIN or MAX offers date operators.^[[Filter by calculated and aggregation fields](/guide/inventory/working-with-the-inventory.qmd#filter-by-calculated-and-aggregation-fields)]
 <!-- <br><br> -->
 
 ::: {.callout-button .pl4 .nt4}
@@ -73,10 +75,13 @@ Calculation
 :::
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
-1. Select from the drop-down of **Available Record Fields** to allow your formula access to the field's values.^[Fields are grouped by field type.]
-2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` — and use the available helpers for date and number work.]
-3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-4. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+1. Select a **Result Type** for the value your formula returns: **Text**, **Number**, **Date**, or **Boolean**.^[The result type decides which filter operators and sort order the field offers, and how its values are validated. A formula that returns a value of another type is recorded as a type mismatch on that record.]
+2. Select from the drop-down of **Available Record Fields** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+3. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` — and use the available helpers for date and number work.]
+4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+5. Enter sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula. The result shows the type of value your formula returned and warns you if it does not match the selected result type.
+
+Calculated values are stored on each record and refreshed in the background. You can filter and sort the inventory by them using the operators for the field's result type.^[[Filter by calculated and aggregation fields](/guide/inventory/working-with-the-inventory.qmd#filter-by-calculated-and-aggregation-fields)]
 <br><br>
 
 ::: {.callout-button .pl4 .nt4}
@@ -105,10 +110,13 @@ def formula(params):
 ::::
 
 :::: {.content-visible when-format="html" when-meta="includes.artifacts"}
-1. Select from the drop-down of **Available Artifact Fields** and **Record Fields Available Via** `params["model"]`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
-2. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` and `params["model"]["fieldKey"]` for parent inventory record data — and use the available helpers for date and number work.]
-3. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
-4. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula.
+1. Select a **Result Type** for the value your formula returns: **Text**, **Number**, **Date**, or **Boolean**.^[The result type decides which filter operators and sort order the field offers, and how its values are validated. A formula that returns a value of another type is recorded as a type mismatch on that artifact.]
+2. Select from the drop-down of **Available Artifact Fields** and **Record Fields Available Via** `params["model"]`** to allow your formula access to the field's values.^[Fields are grouped by field type.]
+3. Replace the demonstration formula with your own in the code box provided.^[Reference fields with dictionary-style access — `params["fieldKey"]` and `params["model"]["fieldKey"]` for parent inventory record data — and use the available helpers for date and number work.]
+4. Click **Test Calculation {{< fa angle-down >}}** to open the testing area.
+5. Enter in sample values in the testing area then click **{{< fa play >}} Test Calculation** to validate your formula. The result shows the type of value your formula returned and warns you if it does not match the selected result type.
+
+Calculated values are stored on each artifact and refreshed in the background. You can filter the artifact lists by them using the operators for the field's result type.^[[Filter by calculated and aggregation fields](/guide/validation/view-filter-artifacts.qmd#filter-by-calculated-and-aggregation-fields)]
 <br><br>
 
 ::: {.callout-button .pl4 .nt4}
