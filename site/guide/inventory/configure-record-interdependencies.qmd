@@ -34,6 +34,22 @@ affected by or affects other records in your inventory.
     - The currently viewed record is highlighted with a blinking animation.
     - Click and drag to change what area is displayed on the flowchart.
     - To zoom in and out, use your mouse scroll button or zoom trackpad gesture.
+    - Turn on **Display Artifacts** for an artifact type to add that type's artifacts to the flowchart.
+    - When a record-to-record link has a dependency type,[^dep-types] the connecting line is labeled with it, for example `Data Source (Upstream)`.
+
+5. Below the flowchart, the **Interdependencies** table lists the same linked records and artifacts as the flowchart, with a **Type** column showing the record type or artifact type of each row:
+
+    - Click **Manage Columns** to add any core, custom, or stakeholder field of the linked records or artifacts. Columns are labeled `Record:` or `Artifact:` so the same field on each side stays distinct, and a column that does not apply to a row shows a gray dash.
+    - Add the **Dependency Type** column to show the type assigned to each record-to-record link.
+    - Save a combination of columns and displayed artifact types as a view, for yourself or shared with your organization, the same way you save inventory views.[^views]
+
+### View dependencies across the inventory
+
+To see dependencies without opening each record, add the **Upstream Record IDs** and **Downstream Record IDs** columns to the inventory listing with **{{< fa table-columns >}} Manage Columns**.[^inventory-columns] Each shows the comma-delimited IDs of the record's direct dependencies, kept in sync automatically when a dependency is added or removed. Records you do not have access to are left out of the list.
+
+- Filter the listing by these columns with the **in** or **not in** operators to find every record that has a specific record upstream or downstream, for example `Upstream Record IDs in M_5475`. Matching is on the exact ID.
+- Both columns are included in the inventory CSV export[^export] and in scheduled data exports[^data-exports] when selected.
+- In Analytics, the **Inventory Record - Dependencies** dataset has one row per dependency, so you can chart which records are most depended on. Group or filter by **Dependency Direction** so each relationship is counted once.[^analytics]
 
 ## Edit interdependencies
 
@@ -59,9 +75,29 @@ affected by or affects other records in your inventory.
     - **Add** — Select the checkbox for any records that are either upstream or downstream dependent on the current record.
     - **Remove** — Unselect the checkbox for any records previously linked as upstream or downstream dependent on the current record.
 
-8. Click **Save** to apply your changes.
+    Use the search box or **{{< fa filter >}} Filter** to narrow the list with the same rule builder as the inventory listing. The list loads one page at a time; selections you make on one page are kept as you move to another.
+
+8. (Optional) For each selected record, choose a **Dependency Type** from the list your organization has defined.[^dep-types] If your organization requires a dependency type on every link, **Save** stays unavailable until every newly selected record has one.
+
+9. Click **Save** to apply your changes.
 
 Once applied, interdependencies will populate on all linked records.
+
+## Define dependency types
+
+Dependency types describe what kind of relationship a record-to-record link is, such as a data source or a challenger model. They appear on the flowchart, in the **Interdependencies** table, and as a choice in **Manage Dependencies**.
+
+::: {.callout}
+To define dependency types, you must be a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions.[^3]
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa cubes >}} Inventory, select **Interdependencies**.
+
+3. Add, rename, or delete dependency types as needed. Deleting a type keeps the links that used it and removes the label from them.
+
+4. (Optional) Select **Require a dependency type on every link** so that new links cannot be saved without one. Links saved before the requirement stay valid.
 
 
 <!-- FOOTNOTES -->
@@ -79,3 +115,15 @@ Once applied, interdependencies will populate on all linked records.
 [^6]: [Manage inventory record types](manage-inventory-record-types.qmd)
 
 [^7]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^dep-types]: [Define dependency types](#define-dependency-types)
+
+[^views]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^inventory-columns]: [Customize inventory layout](/guide/inventory/customize-inventory-layout.qmd)
+
+[^export]: [Export inventory](/guide/reporting/export-inventory.qmd)
+
+[^data-exports]: [Configure data exports](/guide/integrations/configure-data-exports.qmd)
+
+[^analytics]: [Manage custom reports](/guide/reporting/manage-custom-reports.qmd)
