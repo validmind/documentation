@@ -138,6 +138,14 @@ Changes are automatically saved to your account and do not affect other users.
 
 :::
 
+### Filter by calculated and aggregation fields
+
+The artifact type's own Calculation fields, and the Calculation and Aggregation fields of the parent record that the artifact type displays,[^calc-art-fields] appear in the field selector. The operators follow the value the field produces: number operators for a Number result type or a COUNT aggregation, date operators such as before, after, and between for a Date result type or a MIN or MAX aggregation, and text operators for a Text result type.
+
+These values are stored and refreshed in the background rather than recalculated when you filter. When a rule uses one of these fields, a notice next to the applied filters names the field and reports whether its values are up to date. If they are not, the notice shows how old the oldest stored value is and when the next automatic refresh runs.
+
+Two additional operators check the stored value itself: **has error** finds artifacts where the formula or aggregation failed, shown as `ERR:` in the list, and **has wrong value type** finds artifacts where a Calculation field returned a value that does not match its result type. The second operator is offered only on Calculation fields with a result type. Published artifact segments can also use these fields in their conditions.
+
 ## Group artifacts
 
 Group artifacts to organize the table view into collapsible sections based on the value of a single field, with an artifact count for each section:
@@ -184,3 +192,5 @@ If the grouped field can no longer be grouped by — for example, because the fi
 [^9]: [Manage artifact types](/guide/validation/manage-artifact-types.qmd)
 
 [^10]: [Manage custom artifact views](customize-artifact-layouts.qmd#manage-custom-artifact-views)
+
+[^calc-art-fields]: [Manage artifact fields](manage-artifact-fields.qmd#artifact-field-types)
