@@ -19,7 +19,7 @@ Aggregation
 4. (Optional) Click **{{< fa plus >}} Add Rule** under **Filters** to narrow which artifacts are included in the aggregation.
 
 Aggregation values are stored on each record and refreshed in the background. You can filter and sort the inventory by them: a COUNT offers number operators, and a MIN or MAX offers date operators.^[[Filter by calculated and aggregation fields](/guide/inventory/working-with-the-inventory.qmd#filter-by-calculated-and-aggregation-fields)]
-<!-- <br><br> -->
+<br><br>
 
 ::: {.callout-button .pl4 .nt4}
 ::: {.callout collapse="true" appearance="minimal"}
@@ -198,12 +198,14 @@ In addition to custom field keys you add from the **available fields** drop-down
 ``` -->
 
 :::: {.content-visible when-format="html" when-meta="includes.inventory"}
+::: {.params-table}
 | Param | Applies to | Availability | Description |
-|---|---|---|---|
+|------------|------|----------|-----------------|
 | `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
 | `params["model_stage"]` | Inventory records | Add **Model Stage** from the **available fields** drop-down | Current model stage name as a string (for example, `"Production"`). Returns an empty string when no stage is assigned. Compare directly: `params["model_stage"] == "Production"`. |
 | `params["stakeholders"]` | Inventory records | Add a stakeholder role from the **available fields** drop-down (for example, **Stakeholders — Owners**) | Assigned users by stakeholder role. Default role keys are `owners`, `developers`, and `validators`. Custom stakeholder types use `custom_stakeholder_<cuid>`. Each entry includes `name`, `email`, and `title`. |
 | `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
+:::
 
 ::::
 
@@ -214,12 +216,14 @@ In addition to custom field keys you add from the **available fields** drop-down
 ``` -->
 
 :::: {.content-visible when-format="html" unless-meta="includes.inventory"}
+::: {.params-table}
 | Param | Applies to | Availability | Description |
-|---|---|---|---|
+|------------|------|----------|-----------------|
 | `params["<fieldKey>"]` | Inventory records & artifacts | Add the field from the **available fields** drop-down | Current value of another custom field on the same record or artifact. |
 | `params["integrations"]` | Inventory records & artifacts | Reference `params["integrations"]` in the formula source | Linked external integration data keyed by service (for example, `params["integrations"]["mlflow"]`). Empty when integrations are not configured or not referenced. |
 | `params["finding_type"]` | Artifacts | Always available on artifact formulas | Artifact type metadata with `["tag"]` (technical identifier) and `["name"]` (display name). |
 | `params["model"]` | Artifacts | Always available when the artifact is linked to an inventory record | Parent inventory record custom field values (for example, `params["model"]["criticality_level"]`). |
+:::
 
 ::::
 
