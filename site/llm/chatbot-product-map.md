@@ -156,7 +156,7 @@
 **Docs (primary):**
 
 - `/guide/configuration/manage-platform-notifications.html` (section: #customize-email-notifications)
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Customize email notifications
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
 
 **Docs (related):**
 
@@ -317,7 +317,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -379,7 +379,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -396,7 +396,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -415,7 +415,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -514,7 +514,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -536,7 +536,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
@@ -558,7 +558,7 @@
 - `/guide/inventory/archive-delete-records.html`
   - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
 - `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; Edit interdependencies
+  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
