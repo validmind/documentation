@@ -56,6 +56,36 @@ Use the {{< var vm.product >}} inventory to track comprehensive details for all 
 :::
 :::
 
+### Filter from a table cell
+
+To narrow the inventory to records that share a value you can already see in the table, filter from the cell itself instead of opening the filter panel:
+
+1. Hover over a cell in the inventory table. A **{{< fa filter >}}** icon appears at the right edge of cells whose column supports an equals filter.
+
+2. Click the icon. A rule of the form *field equals this value* is added to your current filters, the listing refreshes, and the rule appears as a chip in the filter bar like any other filter.
+
+3. To remove the filter, remove its chip or click **Clear All Filters** in the filter panel.
+
+Keep in mind:
+
+- Clicking the cell text itself still opens the record.
+- In cells that list several people or several options, such as stakeholder roles, user fields, or multi-select fields, each value has its own icon and filters by that value only.
+- Clicking the same value twice does not add a duplicate rule.
+- The icon is available on Business Unit, Stage, Group, Use Case, Tier, Vendor Name, Is Vendor Model, stakeholder roles, and custom fields of the select, single-line text, short text, email, URL, number, boolean, date, user, and multi-select types. It does not appear on empty cells, the record name, date-time fields, long free text, or attachments.
+
+### Filter by calculated and aggregation fields
+
+Calculation and Aggregation fields[^calc-fields] appear in the field selector alongside your other custom fields. The operators follow the value the field produces: a calculation with a Number result type or a COUNT aggregation offers number operators, a Date result type or a MIN or MAX aggregation offers date operators such as before, after, and between, and a Text result type offers text operators.
+
+These values are stored on each record and refreshed in the background rather than recalculated when you filter. When a rule uses one of these fields, a notice next to the applied filters names the field and reports whether its values are up to date. If they are not, the notice shows how old the oldest stored value is and when the next automatic refresh runs.
+
+Two additional operators check the stored value itself:
+
+- **has error** — Records where the formula or aggregation failed, shown as `ERR:` in the list. Offered on every Calculation and Aggregation field.
+- **has wrong value type** — Records where the formula returned a value that does not match the field's result type. Offered only on Calculation fields with a result type, since Aggregation fields always produce a value of their own type.
+
+Published inventory segments can also use these fields in their conditions.[^5] Attestation inventory scopes cannot.
+
 Changes are automatically saved and affect only your account. To reapply a combination of columns, filters, sorting, and grouping later on, save it as a view.[^4]
 
 ::: {.callout title="Note that searching, filtering, sorting, and grouping of fields stack."}
@@ -123,3 +153,5 @@ If the grouped field can no longer be grouped by — for example, because the fi
 [^8]: [Manage inventory fields](manage-inventory-fields.qmd#add-inventory-field-groups)
 
 [^9]: [Customize inventory layout](customize-inventory-layout.qmd#manage-custom-inventory-views)
+
+[^calc-fields]: [Manage inventory fields](manage-inventory-fields.qmd#inventory-field-types)

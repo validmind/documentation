@@ -1,0 +1,192 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Manage artifact segments"
+date: last-modified
+includes:
+   artifacts: true
+---
+
+Save a set of artifact filters as a named, reusable segment that spans every artifact type, then publish the segment so everyone in your organization can view, filter, and analyze the matching artifacts together.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] There are artifacts logged on records in your inventory.[^1]
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^2]
+
+:::
+
+## Key concepts
+
+*Artifact segments* are named, reusable filters over your artifacts, built the same way as inventory segments:[^3]
+
+- A segment spans every artifact type in your organization, including validation issues. Artifact Type is available as a condition, so you can scope a segment to specific types.
+- Segment conditions use the fields that every artifact type shares. Severity, Assignee, Risk Area, and Due Date count as shared fields only while every active artifact type has them switched on.[^4] If an artifact type is added or reconfigured later so that a saved segment no longer fits the shared fields, the segment is refused with a message wherever it is used until its conditions are updated.
+- Matching artifacts are evaluated live. A segment always reflects the current state of your artifacts, and users only see the matching artifacts they have permission to view.
+- A segment starts as a personal [Draft]{.bubble}. Publishing it makes it available to your entire organization.
+
+::: {.callout title="Note that segments differ from saved views and grouping."}
+- **Segments** — Named filters managed by administrators in the organization settings, reusable by everyone once published.
+- **Saved views** — Personal or shared table configurations that capture the columns, filters, sorting, and grouping applied to an artifact listing.[^8]
+- **Grouping** — A listing layout option that organizes a table view into collapsible sections by field.[^9]
+:::
+
+## Add segments
+
+::: {.callout}
+By default, only the [{{< fa hand >}} Customer Admin]{.bubble} role can add artifact segments. To let other roles add segments, grant the Add Artifact Segment permission to those roles.[^2]
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa expand >}} Artifacts, select **Artifact Segments**.
+
+3. Click **{{< fa plus >}} Add Segment**.
+
+4. On the Add New Segment dialog that opens, enter the **Segment Name** and an optional **Description**.
+
+5. Click **Add Segment**.
+
+    The detail page for your new segment opens, where you define the segment conditions.
+
+### Define segment conditions
+
+1. On your segment's detail page, click **{{< fa filter >}} Filter**.
+
+2. On the Edit Segment Conditions dialog that opens, enter the conditions that artifacts must match to belong to the segment:
+
+    - Artifact Type is available as a condition, so you can scope a segment to specific artifact types.
+    - Only the fields shared by every artifact type are offered. Fields of the parent inventory record and Segment are not available as conditions here.
+    - Shared Calculation fields can be used as conditions. They are evaluated against the stored values, which refresh in the background, and they offer the same operators as in the artifact filters, including **has error**.^[[Filter by calculated and aggregation fields](/guide/validation/view-filter-artifacts.qmd#filter-by-calculated-and-aggregation-fields)]
+
+::: {.callout-button .pl4 .nt2}
+::: {.callout collapse="true" appearance="minimal"}
+### How do I create effective filters?
+
+{{< include /guide/shared/_work-with-filters.qmd >}}
+:::
+:::
+
+3. Click **Apply Filters**.
+
+    Your conditions appear as chips next to Filtered by, and the list of matching artifacts updates live along with the matching artifact count.
+
+4. In the page header, click **Save Changes** to save the conditions to the segment, or **Cancel** to discard your edits.
+
+::: {.callout-important title="Saving conditions to a published segment changes its results for everyone."}
+A published segment is evaluated live wherever it is used, including the Artifacts listing, artifact filters, and analytics datasets. When you save condition changes to a published segment, confirm the change by clicking **Yes, Save Changes**.
+:::
+
+## Publish segments
+
+Publishing makes a segment available to everyone in your organization. You can continue editing a segment after it is published.
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa expand >}} Artifacts, select **Artifact Segments**.
+
+3. On the actions menu for your segment, click **Publish Segment**.
+
+4. Click **Publish Segment** to confirm.
+
+Each segment shows one of the following statuses:
+
+| Status | Description |
+|--------|-------------|
+| [Draft]{.bubble} | Personal to you, visible only to you and not yet offered where segments are used. |
+| [Published]{.bubble} | Available to everyone in your organization. |
+| [Archived]{.bubble} | Permanently retired. An archived segment cannot be edited, published, or restored. |
+
+: Artifact segment statuses {.hover}
+
+## Edit segments
+
+To rename a segment or update its description:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa expand >}} Artifacts, select **Artifact Segments**.
+
+3. On the actions menu for your segment, click **Edit Segment**.
+
+4. Update the **Segment Name** or **Description**, then click **Save Changes**.
+
+To edit the conditions of a segment, open the segment and update its filters.[^5] To see the artifacts a segment currently matches, select **View Matching Artifacts** on its actions menu.
+
+## Unpublish, archive, or delete segments
+
+::: {.callout-important}
+Archiving and deletion of segments are permanent.
+:::
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa expand >}} Artifacts, select **Artifact Segments**.
+
+3. On the actions menu for your segment, click one of:
+
+    - **Unpublish Segment** — Returns the segment to a personal draft. The segment is no longer offered where segments are used. Click **Yes, Unpublish Segment** to confirm.
+    - **Archive Segment** — Permanently retires the segment. An archived segment cannot be edited, published, or restored. Click **Yes, Archive Segment** to confirm.
+    - [**Delete Segment**]{.red} — Permanently deletes the segment. The artifacts it matched are not affected. Click **Yes, Delete Segment** to confirm.
+
+## View a segment as the Artifacts scope
+
+Once a segment is published, anyone in your organization can open it as the scope of the Artifacts listing and work with every matching artifact across artifact types:
+
+1. In the left sidebar, click **{{< fa border-all >}} Artifacts**.
+
+2. Click the page title to open the scope selector. Options are grouped under **Artifact Type** and **Segments**.
+
+3. Select a segment.
+
+    The listing shows every matching artifact you have permission to view, across all artifact types, with the shared fields as columns plus an **Artifact Type** column. Filter, Group By (including by Artifact Type), sorting, and CSV export are available on the shared fields.
+
+Switching between an artifact type and a segment resets the filters, sorting, and grouping, and the listing remembers your last selected scope. Saved views are not available in segment scope. If a segment you open is no longer available to you, for example because it was unpublished or deleted, the listing tells you so and returns to the artifact type view.
+
+## Apply segments as artifact filters
+
+Within a single artifact type's listing, a published segment can also be used as a filter rule:
+
+1. In the left sidebar, click **{{< fa triangle-exclamation >}} Validation Issues** or **{{< fa border-all >}} Artifacts**, and select the artifact type to filter.
+
+2. Click **{{< fa filter >}} Filter**.
+
+3. Click **{{< fa plus >}} Add Rule**, then select **Segment** from the field selector.
+
+4. Select one or more segments to filter by, and combine the rule with other conditions as needed.[^6]
+
+5. Click **Apply Filters**.
+
+## Use segments in analytics
+
+Published artifact segments are available as datasets for visualization widgets on your analytics pages, listed under Artifact Segments in the dataset selector.[^7] A widget built on a segment can be grouped by Artifact Type, and clicking a chart section opens the Artifacts listing in that segment's scope with the matching artifacts.
+
+## What's next
+
+- [Working with artifacts](working-with-artifacts.qmd)
+- [View and filter artifacts](view-filter-artifacts.qmd)
+- [Manage inventory segments](/guide/inventory/manage-inventory-segments.qmd)
+
+<!-- FOOTNOTES -->
+
+[^1]: [Working with artifacts](working-with-artifacts.qmd)
+
+[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^3]: [Manage inventory segments](/guide/inventory/manage-inventory-segments.qmd)
+
+[^4]: [Manage artifact types](manage-artifact-types.qmd)
+
+[^5]: [Define segment conditions](#define-segment-conditions)
+
+[^6]: [View and filter artifacts](view-filter-artifacts.qmd#filter-and-sort-artifacts)
+
+[^7]: [Working with analytics](/guide/reporting/working-with-analytics.qmd)
+
+[^8]: [Manage custom artifact views](customize-artifact-layouts.qmd#manage-custom-artifact-views)
+
+[^9]: [View and filter artifacts](view-filter-artifacts.qmd#group-artifacts)
