@@ -7,7 +7,7 @@ date: last-modified
 description: "Create, review, publish, and version risk tier assessments for individual inventory records."
 ---
 
-A risk tier assessment is a formal evaluation of a specific inventory record against a published risk tier template. It reads the current inventory field values, applies the template's scoring rules, and produces a tier determination — either computed from scores or set by an override rule.
+A risk tier assessment is a formal evaluation of a specific inventory record against a published risk tier template. It reads the current inventory field values, applies the template's scoring rules, and produces a tier determination — computed from scores, assigned by the template's tier assignment rules, or set by an override rule.
 
 This page covers creating an assessment, reviewing factor scores, publishing, managing versions, and handling stale assessments.
 
@@ -39,7 +39,7 @@ If no active template exists for the record's type, a new assessment cannot be c
 
 ## Review factor scores
 
-The assessment detail page is organized into five sections. Together they show how the record's current inventory field values translate into a risk tier.
+The assessment detail page is organized into sections that together show how the record's current inventory field values translate into a risk tier. Which sections appear depends on the template's calculation method: a Rules template shows **Tier Assignment Rules** instead of the **Factor Score Breakdown** and **Risk Tier Thresholds**.
 
 ### Risk Factors
 
@@ -72,6 +72,10 @@ The **Current Total Score** row at the bottom shows the sum across all factors.
 
 The **Risk Tier Thresholds** table shows the score band for each risk tier. The row corresponding to the current total score is highlighted, indicating where the record lands on the scorecard.
 
+### Tier Assignment Rules
+
+For a template that uses the Rules method, the **Tier Assignment Rules** section displays the template's rules as read-only, in the order they are evaluated, followed by the default tier. The rule that set this record's tier is highlighted.
+
 ### Override Rules
 
 The **Override Rules** section displays the template's override rules as read-only, evaluated in order against this record. Each rule shows its number, target tier, and condition — for example: "Rule 1 → Tier 1: If Estimated Dollar Exposure ≥ 10000000."
@@ -83,7 +87,12 @@ Override rules are part of the template and cannot be modified from within an as
 The **Calculated Tier** section shows the final tier determination for this assessment:
 
 - If an override rule matched, the section indicates which rule applied and the tier it assigned.
-- If no override rule matched, the tier is determined by where the current total score falls in the threshold bands.
+- For a Scorecard template, the tier is determined by where the current total score falls in the threshold bands.
+- For a Rules template, the section names the first rule that matches, or states that no rule matched and the default tier applies.
+
+For a Rules template, a **Why** list under the tier shows each condition of the matching rule and whether it held — including conditions that did not, which explain why a less severe rule did not apply. For a **Count of** condition, it shows the count, what the rule needed, and the answers that were counted — for example: "2 scored Critical in Consumer Impact Risk (needs at least 1)."
+
+If required inputs are missing, no tier is calculated and the section lists what to complete. For a Rules template this includes any empty inventory field that a tier assignment rule reads.
 
 ## Assessment sidebar
 
@@ -93,7 +102,7 @@ The sidebar on the assessment detail page shows:
 - **Assessment Stage** — the assessment's current governance stage, shown when risk tiering workflows are in use. The stage tracks review progress separately from the status and updates live as a workflow advances. See [Set up risk tiering workflows](set-up-risk-tiering-workflows.qmd).
 - **Active Workflows** — the workflow runs governing this assessment, shown when risk tiering workflows are in use. Click **See All Workflows** to start a manually triggered workflow or inspect a run.
 - **Assessment Version** — a dropdown showing the current version (for example: "13 (Latest)"). Use this to navigate to any previous version of the assessment.
-- **Risk Tier Template** — the template name and version this assessment is linked to, with a badge showing the calculation method (Scorecard or Risk Matrix).
+- **Risk Tier Template** — the template name and version this assessment is linked to, with a badge showing the calculation method (Scorecard, Risk Matrix, or Rules).
 - **Published / Published By** — the publication date and the user who published it (shown once the assessment has been published).
 
 Actions available from the sidebar depend on the assessment's status:
@@ -109,6 +118,8 @@ When you are satisfied with the factor scores and the calculated tier:
 2. Confirm the publish. The assessment moves to **Active**, receives a version number (v1, v2, …), and becomes the record's current official risk tier. The record's **Assessed Risk Tier** field is updated automatically — see [Assessed Risk Tier field](#assessed-risk-tier-field) below.
 
 Only one assessment can be Active per record at a time.
+
+Publishing is unavailable until every required input is complete and a tier can be calculated.
 
 If a [risk tiering workflow](set-up-risk-tiering-workflows.qmd) is configured to start on publish for this record type, publishing also starts a governance review of the published version. Publishing a new version ends any still-running review of the previous version and starts a fresh one.
 

@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
 title: "Configure risk tier calculation"
 date: last-modified
-description: "Set up scoring levels, risk factors, components, scoring rules, thresholds, and override rules inside a draft template."
+description: "Set up scoring levels, risk factors, components, scoring rules, thresholds, tier assignment rules, and override rules inside a draft template."
 ---
 
-This page covers all calculation configuration inside a risk tier template: scoring levels, risk factors, components, scoring rules, thresholds, and override rules. All configuration requires the template to be in **Draft** status — configuration is locked once a template is published.
+This page covers all calculation configuration inside a risk tier template: scoring levels, risk factors, components, scoring rules, thresholds, tier assignment rules, and override rules. All configuration requires the template to be in **Draft** status — configuration is locked once a template is published.
 
 For creating a template, defining risk tier levels, and managing its lifecycle, see [Manage risk tier templates](manage-risk-tier-templates.qmd).
 
@@ -199,9 +199,55 @@ Tier assignment maps every combination of factor levels to a risk tier.
 
 See [Override rules](#override-rules) below.
 
+## Set up a Rules template {#set-up-a-rules-template}
+
+A Rules template assigns the tier from an ordered list of rules instead of a score. Each rule has one or more conditions and a target tier. Rules are evaluated in order, the first rule that matches sets the tier, and a default tier applies when no rule matches.
+
+Use Rules when your methodology escalates on specific answers rather than on a total — for example: "Critical if more than four answers are critical, or if there is a critical answer in Consumer Impact and another in Fairness."
+
+### 1. Configure scoring levels and risk factors (if needed)
+
+Scoring levels and risk factors are only required if a rule uses a **Count of** condition, which counts how many components scored at chosen levels. Rules that only compare inventory field values need neither.
+
+To use **Count of**, set up scoring levels, risk factors, and components with scoring rules as described in [Set up a Scorecard template](#set-up-a-scorecard-template), steps 1–3. The factor aggregation method and weights are not used under Rules.
+
+### 2. Add tier assignment rules
+
+1. Go to the **Tier Assignment** section and click **Add Rule**.
+2. In **Assign tier to**, select the tier this rule assigns.
+3. Under **When these conditions are met**, click **Add Rule** to add a condition, and choose how conditions combine with **AND** or **OR**.
+4. Click **Add Group** to combine some conditions with a different operator — for example: "A **OR** (B **AND** C)." Groups can be one level deep.
+5. Click **Add Assignment Rule**.
+6. Repeat for each rule. Order rules from the most severe tier to the least severe — the first rule that matches wins.
+
+### 3. Choose condition types
+
+Each condition is one of two types:
+
+- **Field value** — compares one inventory field, picked from the record fields in the field list, using the same field types and operators as [override rules](#supported-field-types-and-operators).
+- **Count of** — counts the components that scored at one or more chosen scoring levels and compares the count to a number, for example: "count of **Critical** is more than 4." Select **Count of** under **Scoring** in the field list, choose the scoring levels to count, the operator and the number, then optionally limit the count with **in** to specific risk factors or individual components. Without a limit, the count covers every component in the template.
+
+:::{.callout-note}
+**Count of** is unavailable until the template has scoring levels and at least one risk factor with a component.
+:::
+
+### 4. Select the default tier
+
+In the **Default** row of the **Tier Assignment** section, select the tier assigned to records that no rule matches. A default tier is required before the template can be published.
+
+### 5. Configure override rules
+
+See [Override rules](#override-rules) below. Override rules are evaluated before the tier assignment rules.
+
+:::{.callout-tip}
+### Express a decision tree as rules
+
+Any decision tree can be written as Rules: each path from the top of the tree to a tier becomes one rule whose conditions are the branch tests along that path, combined with **AND**. Order the rules so the most specific paths come first, and use the default tier for the final branch. Rules do not offer a visual tree editor, and conditions cannot branch on a computed factor score or total.
+:::
+
 ## Override rules
 
-Override rules allow you to hard-code a specific tier outcome for records that match certain field conditions, bypassing the computed score or matrix lookup entirely. If a rule matches, the tier it specifies is used and no further rules or scores are evaluated.
+Override rules allow you to hard-code a specific tier outcome for records that match certain field conditions, bypassing the computed score, matrix lookup, or tier assignment rules entirely. If a rule matches, the tier it specifies is used and no further rules or scores are evaluated.
 
 Use override rules when certain field values are disqualifying regardless of the overall score — for example: "if a model processes health data AND is customer-facing, always assign Critical."
 
@@ -243,10 +289,10 @@ Override rules are copied forward when a new template version is created. Removi
 
 Before publishing, verify:
 
-**Both methods:**
+**All methods:**
 
 - [ ] At least one risk tier is defined
-- [ ] At least one risk factor is configured
+- [ ] At least one risk factor is configured (Rules: only if a rule uses **Count of**)
 - [ ] Every factor has at least one component
 - [ ] Every component has at least one scoring rule
 - [ ] All scoring rules map to valid scoring levels
@@ -261,6 +307,12 @@ Before publishing, verify:
 
 - [ ] All factor level thresholds are set for every factor
 - [ ] Every factor level combination in the matrix has an assigned tier
+
+**Rules only:**
+
+- [ ] At least one tier assignment rule is defined
+- [ ] A default tier is selected
+- [ ] Scoring levels are defined if any rule uses **Count of**
 
 ## What's next
 
