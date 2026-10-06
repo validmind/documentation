@@ -46,7 +46,7 @@ includes:
     - **Artifact Types** lists the active artifact types the field is turned on for.[^9]
     - **Required** lists the artifact types that require the field when creating an artifact.
 
-    **Title** and **Description** apply to all artifact types. Default fields can't be edited or deleted from this page.
+    **Title** and **Description** apply to all artifact types and are always required. You can configure the other default fields for each artifact type,[^10] but default fields can't be renamed or deleted.
 
 3. Narrow down existing artifacts fields available to your artifacts by searching or filtering for results:
 
@@ -79,6 +79,40 @@ b. Click **Apply Filters** to narrow down your results by your configured criter
 
 ::: {.callout title="Note that searching and filtering of fields stack."}
 For example, if you first search by keyword for `Regression` under **Title** without clearing that search, any additional filters applied will only apply to the results returned by that initial search.
+:::
+
+## Configure default artifact fields
+
+For each default field except **Title** and **Description**, choose which artifact types use it and how it behaves when artifacts are created:
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa expand >}} Artifacts,  select **Artifact Fields**.
+
+3. In the **Default Fields** group, hover over the field you want to configure.
+
+4. When the **{{< fa ellipsis-vertical >}}** menu appears under the Actions column, click on it and select **{{< fa sliders >}} Configure**.
+
+5. For each active artifact type, set:
+
+    Enabled
+    : The field appears on artifacts of this type: on the artifact details page, in artifact filters, and in workflow steps. Turning a field off also turns off the two options below.
+
+    Show on creation
+    : The field appears when creating an artifact of this type. When off, the field can still be filled in on the artifact details page after the artifact is created.
+
+    Require on creation
+    : An artifact of this type can't be created without a value for the field, whether in the {{< var validmind.platform >}} or through the {{< var vm.product >}} API.
+
+6. Click **Save Configuration** to apply your changes.
+
+    If you turn a field off for an artifact type that a workflow uses the field on, the workflows affected are listed first. Click **Yes, Disable** followed by the field name to save anyway.
+
+::: {.callout title="Some default fields have fixed rules."}
+- **Risk Area** is always required when it is shown on creation.
+- **Status**, **Attachments**, and **Proposed Remediation Plan** can only be turned on or off. New artifacts start in the default status, and attachments and remediation plans are added on the artifact details page after creation.
+- Turning a field off hides it but keeps the values already saved on existing artifacts. Those values remain available through the {{< var vm.product >}} API and data exports.
+
 :::
 
 ## Add or edit artifact fields
@@ -156,3 +190,5 @@ Deleting an artifact field will remove it from all artifacts using that field, e
 [^8]: [Add or edit artifact fields](#add-or-edit-artifact-fields)
 
 [^9]: [Manage artifact types](/guide/validation/manage-artifact-types.qmd)
+
+[^10]: [Configure default artifact fields](#configure-default-artifact-fields)
