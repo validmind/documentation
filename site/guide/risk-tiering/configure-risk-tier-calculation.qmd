@@ -214,11 +214,14 @@ To use **Count of**, set up scoring levels, risk factors, and components with sc
 ### 2. Add tier assignment rules
 
 1. Go to the **Tier Assignment** section and click **Add Rule**.
-2. In **Assign tier to**, select the tier this rule assigns.
-3. Under **When these conditions are met**, click **Add Rule** to add a condition, and choose how conditions combine with **AND** or **OR**.
-4. Click **Add Group** to combine some conditions with a different operator — for example: "A **OR** (B **AND** C)." Groups can be one level deep.
-5. Click **Add Assignment Rule**.
-6. Repeat for each rule. Order rules from the most severe tier to the least severe — the first rule that matches wins.
+2. Optionally enter a **Name**. A named rule keeps its name in the list wherever it sits; unnamed rules are labelled by position — Rule 1, Rule 2.
+3. In **Assign tier to**, select the tier this rule assigns.
+4. Under **When these conditions are met**, click **Add Rule** to add a condition, and choose how conditions combine with **AND** or **OR**.
+5. Click **Add Group** to combine some conditions with a different operator — for example: "A **OR** (B **AND** C)." Groups can be one level deep.
+6. Click **Add Assignment Rule**.
+7. Repeat for each rule.
+
+Rules are evaluated from top to bottom and the first rule that matches wins, so order them from the most severe tier to the least severe. New rules are added at the bottom. To move a rule, hover over it and drag it by the handle on its left.
 
 ### 3. Choose condition types
 
@@ -262,7 +265,9 @@ Use override rules when certain field values are disqualifying regardless of the
 5. Add one or more **Conditions** (see below).
 6. Click **Save**.
 
-Rules are evaluated in order; the first matching rule wins. New rules are appended at the end.
+Rules are evaluated in order; the first matching rule wins. New rules are appended at the end. To move a rule, hover over it and drag it by the handle on its left.
+
+You can give a rule an optional **Name** when you add or edit it. A named rule keeps its name in the list wherever it sits; unnamed rules are labelled by position.
 
 ### Add conditions to a rule
 
@@ -281,9 +286,19 @@ Rules are evaluated in order; the first matching rule wins. New rules are append
 | Single-select | equals, not equals |
 | Multi-select | contains, not contains |
 
+For a multi-select field, **contains** matches when that option is one of the options selected on the record. A record with nothing selected matches neither **contains** nor **not contains**.
+
 :::{.callout-note}
-Override rules are copied forward when a new template version is created. Removing a tier level that an override rule targets will blank the rule's target tier and block publishing until it is reassigned.
+Override rules and tier assignment rules are copied forward when a new template version is created.
 :::
+
+### What a rule protects from deletion
+
+While a rule depends on something, it cannot be removed or changed underneath the rule. The message names the rule or template to update first.
+
+- A tier that a rule assigns, or the default tier of a Rules template, cannot be deleted.
+- A risk factor or component that a **Count of** condition is limited to cannot be deleted.
+- An inventory field used by a template, in a component or in a rule condition, cannot be deleted and its key cannot be renamed. This applies while any version of the template uses the field, including published and archived versions.
 
 ## Publish readiness checklist
 
@@ -296,7 +311,7 @@ Before publishing, verify:
 - [ ] Every factor has at least one component
 - [ ] Every component has at least one scoring rule
 - [ ] All scoring rules map to valid scoring levels
-- [ ] Override rules: all target tiers point to existing tier levels; all conditions reference valid fields
+- [ ] Override rules and tier assignment rules: every rule has a target tier and at least one condition, and all conditions reference valid fields
 
 **Scorecard only:**
 
