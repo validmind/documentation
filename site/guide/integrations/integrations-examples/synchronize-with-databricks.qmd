@@ -88,6 +88,7 @@ e. Complete the shared fields:
    - **Authentication Method** — Choose **OAuth (user login)** (recommended) or **Personal Access Token**.
    - **Workspace URL** — Your Databricks workspace URL, found in the browser address bar, such as `https://adb-1234567890.azuredatabricks.net`.
    - **SQL Warehouse ID** (optional) — The ID of your SQL Warehouse, found in SQL Warehouses settings. Required only when querying table row data via SQL.
+   - **Job ID** (optional) — The ID of a Databricks Job that already runs your validation notebook. Required only if you want to [run tests in Databricks](#run-tests-in-databricks) from {{< var vm.product >}}.
 
 f. Complete the fields for your authentication method:
 
@@ -147,6 +148,66 @@ After linking, metadata from the Unity Catalog resource syncs to {{< var vm.prod
 
 ::::
 
+## Run tests in Databricks {#run-tests-in-databricks}
+
+You can start a Databricks Job that runs your validation notebook from a record in {{< var vm.product >}}. {{< var vm.product >}} starts the Job through the Databricks Jobs API. Compute, secrets, and concurrency settings stay in Databricks.
+
+When the Job starts, {{< var vm.product >}} passes two notebook parameters: `model_cuid`, which holds the identifier of the record you started the run from, and `triggered_by`, set to `validmind`. Your notebook can read `model_cuid` as a widget to log results to the right record.
+
+::: {.attn}
+
+### Prerequisites {#run-tests-prerequisites}
+
+- [x] A Databricks Job already runs a notebook that uses the {{< var validmind.developer >}} to log test results to {{< var vm.product >}}.
+- [x] The Databricks identity used by the connection has permission to run that Job.
+- [x] The record is linked to Databricks.[^5]
+- [x] You are assigned to the record, or your role has permission to update records.[^1]
+
+:::
+
+### Add the Job ID to the connection
+
+Requires a [{{< fa hand >}} Customer Admin]{.bubble} or another role with sufficient permissions to configure connections.
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+
+3. Click your Databricks connection.
+
+4. In the modal that appears, click **Edit Connection**.
+
+5. Under **Job ID**, enter the numeric ID of your Databricks Job.
+
+6. Click **Update Integration** to save your changes.
+
+### Start a test run
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a record by clicking on it or find your record by applying a filter or searching for it.[^4]
+
+3. In the left sidebar that appears for your record, click **{{< fa database >}} Data**.
+
+4. Select the **Test Results** tab.
+
+5. If the record is linked to more than one Databricks resource, select the link to run under **Databricks link**.
+
+6. Click **Run tests now**.
+
+A confirmation that the run started in Databricks appears, with a **View in Databricks** link that opens the run in your Databricks workspace. While the Job is queued or running, the button shows its progress and you cannot start another run.
+
+When the Job finishes, the date and result of the last run display below the button. If the run failed, the tab also shows the truncated notebook output. Open the run in Databricks to see the full log.
+
+A Job that completes in Databricks does not mean that test results have been logged. Test results appear on the Test Results tab once your notebook logs them to {{< var vm.product >}}.
+
+::: {.callout title="Can't start a run?"}
+- If Run tests now is unavailable, the Databricks connection does not have a Job ID yet. Ask an administrator to [add the Job ID to the connection](#add-the-job-id-to-the-connection).
+- If the button does not display at all, check that the record is linked to Databricks and that you can update the record.
+- If you are asked to reconnect Databricks, an administrator needs to edit the connection and reconnect it.
+- If the Databricks identity cannot run Jobs, check the Job's permissions in Databricks.
+:::
+
 ## What's next
 
 :::{#whats-next}
@@ -164,3 +225,5 @@ After linking, metadata from the Unity Catalog resource syncs to {{< var vm.prod
   ![Configure the Databricks connection](configure-databricks.png){width=80% fig-alt="Screenshot of the Configure Databricks connection dialog with Authentication Method set to OAuth (user login), showing Workspace URL, optional SQL Warehouse ID, optional OAuth Client ID and Client Secret, and the Connect with Databricks button." .screenshot}
 
 [^4]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^5]: [Link records to Databricks](#sync-records-with-databricks)
