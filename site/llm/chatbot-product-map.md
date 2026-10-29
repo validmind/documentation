@@ -245,7 +245,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Integrations
 
@@ -336,7 +336,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html` (section: #manage-user-invitations)
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Organization
 
@@ -361,7 +361,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -438,7 +438,7 @@
 
 - `/guide/configuration/personalizing-validmind.html`
 - `/guide/configuration/manage-your-profile.html`
-  - Sections: Prerequisites; Access your profile; Onboarding; User Interface Preferences; Terms; Localization; Access Keys; To revoke and regenerate keys, click **Revoke & Regenerate Keys**.
+  - Sections: Prerequisites; Access your profile; Profile Details; Onboarding; User Interface Preferences; Terms; Localization; Access Keys
 
 ### Main navigation
 
@@ -499,7 +499,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -610,7 +610,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Governance
 
