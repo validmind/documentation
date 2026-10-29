@@ -1,0 +1,255 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Manage record versions"
+date: last-modified
+---
+
+Create a new version of a record when the record changes enough that you want to govern the change on its own, such as a redevelopment, a new data source, or a response to a validation finding. Each version keeps its own documents, artifacts, and approvals, while all versions share one Record ID.
+
+## How record versions work
+
+Every record in the inventory has at least one version. Records registered before versioning was available, and every record you register, start as `v1`.
+
+- **Version numbers** — Versions are numbered `v1`, `v2`, `v3`, and so on. A new version always gets the highest number plus one, whichever version you create it from.
+- **Labels and reasons** — Each new version has a required reason and an optional label, such as `Q1 Redevelopment`. The record's Overview shows them as Version Label and Version Reason.
+- **Primary version** — Exactly one version of a record is its *Primary version*. The inventory lists each record once, as its Primary version, and most reports count the Primary version only.[^1]
+- **Stages** — Each version moves through the stages of its record type on its own, so more than one version of a record can be in production at the same time.
+- **Archived versions** — A version you no longer work on can be archived. An archived version is read-only and can't be made the Primary version.
+
+### What a new version starts with
+
+When you create a version, {{< var vm.product >}} copies some information from the version you base it on. Everything else stays with the source version and never moves:
+
+| Information | On the source version | On the new version |
+|---|---|---|
+| Inventory fields | Unchanged | Copied |
+| Stakeholders | Unchanged | Copied |
+| Documents and attachments | Unchanged | Empty |
+| Findings, reviews, and artifacts | Unchanged | Empty |
+| Risk tier assessments and monitoring | Unchanged | Empty |
+| Dependencies | Unchanged | Empty |
+| Workflows | Unchanged | From the start |
+: **What a new version starts with** {.hover tbl-colwidths="[40,30,30]"}
+
+- Copies are not kept in sync. Editing a field or a stakeholder on one version does not change the other version.
+- Calculation and aggregation fields are not copied. Their values are calculated again for the new version. Attachment fields are not copied either.
+- The new version starts in the first stage of its record type, and workflows that start when a record is registered also start for the new version.
+- A new version starts with the default documents of its record type and no template selected, the same as a newly registered record. Select a template for each document before you edit it or log test results to it.[^2]
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] There is at least one record in the inventory.[^3]
+- [x] To create a version, you are a stakeholder on the record, of any stakeholder type,[^4] or an administrator.
+- [x] To make a version Primary or archive a version, you can edit the record: you are assigned a role with the Update Model permission.[^5]
+
+:::
+
+## View record versions
+
+### Find which version you are viewing
+
+On every page of a record, such as its Overview, documents, or artifacts, {{< var vm.product >}} shows which version you are looking at:
+
+- A version marker, such as `v2`, sits beside the record name in the page title, in the breadcrumb, and in the record's sidebar. The marker also says `Primary` or `Archived` when that applies, and shows the version's label in the page title.
+- Under the page title, a line says where the version came from, for example `Created from v1 on Oct 29, 2026 by Jane Doe`. The original version reads `original record`. When other versions were created from this one, the line names them.
+- Previous and next buttons beside that line step to the neighboring versions of the record.
+- On any version that is not the Primary version, a banner reads `This is not the Primary version of this {Record}.` Select Go to Primary version in the banner to open the Primary version.
+
+Changes you make on a version apply to that version only.
+
+### Open the version history
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` you want to view by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. On the record's Overview, click the version marker beside the record name.
+
+The Version history dialog opens with a summary, such as `3 versions total • v3 is Primary • v3 is the latest`, and a timeline of the versions from oldest to newest. Each version on the timeline shows its creation date, stage, label, and whether it is the Primary version or archived.
+
+- Click a version on the timeline, or use the buttons under the timeline, to open that version. The dialog stays open so you can keep stepping through versions.
+- Click Manage versions to open the record's Versions tab.
+- Click Create new version from {vN} to create a version based on the one you are viewing.[^8]
+
+### Review all versions on the Versions tab
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` you want to view by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. On the record's Overview, click the **Versions** tab.
+
+When the record has more than one version, a graph at the top shows which version each one was created from. Below it, the All versions table lists every version you can access, newest first:
+
+| Column | Description |
+|---:|---|
+| Version | The version number, marked `Primary` or `Archived` when that applies. |
+| Label | The optional label given when the version was created. |
+| Stage | The version's current stage. |
+| Based On | The version this one was created from. The original version shows a dash. |
+| Created | The date the version was created. |
+| Created By | The user who created the version. |
+| Actions | Make Primary and Archive, when you can edit the record. Archived versions show a {{< fa lock >}} icon instead, as they are view only. |
+: **All versions** table columns {.hover tbl-colwidths="[25,75]"}
+
+Click a version in the graph or a row in the table to open that version.
+
+## Create record versions
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` you want to version by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. Open the Create New Version dialog in one of these ways:
+
+    - Click the version marker beside the record name, then click **{{< fa plus >}} Create new version from {vN}**.
+    - Click the **Versions** tab, then click **{{< fa plus >}} New version**.
+
+5. In the Create New Version dialog, fill in the details:
+
+    | Field | Description |
+    |---:|---|
+    | **Based On** | The version to copy from. Defaults to the version you are viewing. |
+    | **Label** (optional) | A short name for the new version, such as `Q1 Redevelopment`. Up to 60 characters. |
+    | **Reason for New Version** | Why you are creating the version, such as an annual redevelopment. Up to 500 characters. The reason is saved with the new version. |
+    : **Create New Version** fields {.hover tbl-colwidths="[30,70]"}
+
+    The **After you create {vN}** table summarizes what the new version starts with.[^9]
+
+6. (Optional) To stay on the current page, clear **Open {vN} after it is created**.
+
+7. Click **Create {vN}**.
+
+If some information could not be copied, a notice lists it with the reason, for example a stakeholder who no longer holds their role, a calculated or attachment field, or a business unit, use case, or group that is no longer valid. The notice stays until you close it.
+
+You can't create a version of an intake record[^10] or of a record that has been archived.[^11]
+
+## Make a version Primary
+
+Make a version Primary when it should represent the record in the inventory and in reporting, for example after it is approved for production:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. On the record's Overview, click the **Versions** tab.
+
+5. Hover over the version you want to make Primary. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa star >}} Make Primary**.
+
+6. Click **Yes, Make {vN} Primary** to confirm.
+
+The version you selected becomes the Primary version. The previous Primary version stays as a version of the record.
+
+You can't make a version Primary when:
+
+- The version is archived, or it is in the Archived or Deleted stage.
+- The record is an intake record.
+- Another record's Primary version has the same name. Rename one of the two first.
+
+## Archive a version
+
+Archive a version that is no longer in use so that it can't be edited by mistake:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. On the record's Overview, click the **Versions** tab.
+
+5. Hover over the version you want to archive. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa box-archive >}} Archive**.
+
+6. Click **Yes, Archive {vN}** to confirm.
+
+The version becomes read-only. You and your colleagues can still open it and read everything on it. Archiving a version can't be undone.
+
+::: {.callout title="You can't archive the Primary version."}
+To archive the version that is currently Primary, make another version Primary first.
+
+Archiving a version is different from archiving a record. To take a whole record out of use, change its stage to Archived instead.[^11]
+:::
+
+## How versions appear across {{< var vm.product >}} {#versions-across-the-platform}
+
+Inventory
+: The inventory shows one row per record, for its Primary version. To show each record's version number and label, add the Version and Version Label columns with Manage Columns. Both columns are hidden by default.[^12]
+
+Interdependencies
+: A dependency links to one version of another record. The Interdependencies graph shows the version each link targets, and the Interdependencies table offers an optional Version column. When you add a dependency, it links to the Primary version unless you choose another version.[^13] A new version starts without dependencies.
+
+Artifacts
+: Artifacts belong to the version they were logged on. Artifact lists show the version next to the record name.
+
+Record Activity
+: Each version has its own activity. Record Activity shows when a version was created and from which version, when a version was made the Primary version and which version it replaced, and when a version was archived.[^14]
+
+Analytics and data exports
+: Inventory record datasets and the record dependencies dataset include the Primary version of each record only. Artifact datasets, Inventory Record Stages Durations, and Artifact Statuses Durations include every version, with an Inventory Record Version column that tells the versions of a record apart. Record Activity exports include `record_version_number` and `record_is_primary` columns.[^15]
+
+Attestations
+: Attestations cover the Primary version of each record in scope.[^16]
+
+{{< var validmind.developer >}}
+: The code snippet on a version's Getting Started page connects to that version. With {{< var vm.developer >}} version 2.14.0 or later, `vm.init()` prints a warning when you connect to a version that is not the Primary version or that is archived.[^17]
+
+Public REST API
+: You can list a record's versions, create a version, make a version Primary, and archive a version through the API.[^18]
+
+## What's next
+
+- [Working with the inventory](working-with-the-inventory.qmd)
+- [Configure record interdependencies](configure-record-interdependencies.qmd)
+- [View record activity](/guide/reporting/view-record-activity.qmd)
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [How versions appear across {{< var vm.product >}}](#versions-across-the-platform)
+
+[^2]: [Swap document templates](/guide/templates/manage-document-templates.qmd#swap-document-templates)
+
+[^3]: [Register records in the inventory](register-records-in-inventory.qmd)
+
+[^4]: [Manage inventory record stakeholders](/guide/inventory/edit-inventory-fields.qmd#manage-inventory-record-stakeholders)
+
+[^5]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^6]: [Manage inventory record types](manage-inventory-record-types.qmd)
+
+[^7]: [Working with the inventory](working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^8]: [Create record versions](#create-record-versions)
+
+[^9]: [What a new version starts with](#what-a-new-version-starts-with)
+
+[^10]: [Record Intake](record-intake.qmd)
+
+[^11]: [Archive and delete records](archive-delete-records.qmd)
+
+[^12]: [Customize inventory layout](customize-inventory-layout.qmd#customize-table-view)
+
+[^13]: [Configure record interdependencies](configure-record-interdependencies.qmd#edit-interdependencies)
+
+[^14]: [View record activity](/guide/reporting/view-record-activity.qmd)
+
+[^15]: [Configure data exports](/guide/integrations/configure-data-exports.qmd)
+
+[^16]: [Working with attestations](/guide/attestation/working-with-attestations.qmd)
+
+[^17]: [Install and initialize the {{< var validmind.developer >}}](/developer/quickstart/install-and-initialize-validmind-library.qmd)
+
+[^18]: [Public REST API](/reference/validmind-rest-api-vm.qmd)
