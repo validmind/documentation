@@ -167,6 +167,49 @@ Filters persist in the URL, so you can share or bookmark a filtered view.
 
 ::::
 
+## Export record activity {#export-record-activity}
+
+Download record activity as a CSV file to keep an audit trail outside of the {{< var validmind.platform >}}. The export includes every event that matches the filters you applied, across all pages of the feed.
+
+1. Open the activity you want to export:
+
+   - For your whole organization, click **{{< fa wifi >}} Activity** in the left sidebar, then select the **Record Activity** tab.
+   - For a single record, open the record's **{{< fa wifi >}} Activity** page.[^export-view-activity]
+
+2. (Optional) Apply filters to narrow down the events you want to export.[^export-filter-activity]
+
+3. Click **{{< fa download >}} Export CSV** next to the filters.
+
+While the export runs, the button shows Exporting…. When it finishes, your browser downloads a file named `activity-log-<date>.csv`, for example `activity-log-2026-11-03.csv`. Exports for a single record also include the record's unique identifier in the file name.
+
+The export contains the same events you can see in the feed. Changes to fields restricted by permissions[^export-permissions] are left out for users without access to those fields. Settings Activity can't be exported.
+
+### Exported columns
+
+Each row in the CSV file is one activity event, sorted from newest to oldest:
+
+| Column | Contents |
+|---|---|
+| Timestamp (UTC) | Date and time of the event in UTC. |
+| Actor | User or API client that performed the action. Automated events show `System`. |
+| Actor Type | Type of actor, for example User or API Client. |
+| Action | What happened, for example Workflow execution started. |
+| Object Type | Type of item the action was performed on, for example Record, Artifact, or Workflow Execution. |
+| Object | Name of the item the action was performed on. |
+| Target Type | Type of item the action applied to, when there is one. |
+| Target | Name of the item the action applied to, when there is one. |
+| Record | Inventory record the event belongs to. |
+| Details | Additional event details, when available. |
+| Metadata | Additional event data in JSON format, such as previous and new field values. |
+| Event ID | Unique identifier of the event. |
+
+: **Record activity CSV columns** {.hover tbl-colwidths="[25,75]"}
+
+::: {.callout}
+To keep spreadsheet applications from running cell values as formulas, values that start with `=`, `+`, `-`, or `@` are prefixed with an apostrophe (`'`).
+
+:::
+
 <!-- FOOTNOTES -->
 
 [^1]: [Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)
@@ -218,3 +261,9 @@ Filters persist in the URL, so you can share or bookmark a filtered view.
 [^22]: For example, filter by an event category AND a specific user to see only that user's activity in that category.
 
 [^settings-activity]: [View settings activity](/guide/reporting/view-settings-activity.qmd)
+
+[^export-view-activity]: [View record activity](#view-record-activity)
+
+[^export-filter-activity]: [Filter record activity](#filter-record-activity)
+
+[^export-permissions]: [Manage roles](/guide/configuration/manage-roles.qmd#manage-role-permissions)
