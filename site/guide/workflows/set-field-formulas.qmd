@@ -1,0 +1,157 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Set field values with formulas"
+date: last-modified
+---
+
+Use a formula in a {{< fa pen-to-square >}} Set Field workflow step to calculate a field's value from other fields when the step runs, such as a review end date 90 days after the review start date.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] A workflow exists with a {{< fa pen-to-square >}} Set Field step.[^1]
+- [x] The field you want to set is a custom field of a type that accepts a formula result.[^2]
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to perform the tasks in this guide.[^3]
+
+:::
+
+## Add a formula to a Set Field step
+
+1. Open the workflow in the workflow editor and double-click the **{{< fa pen-to-square >}} Set Field** step.[^4]
+
+2. Under **Target Field**, select the custom field to set.
+
+3. Under **Action**, select **Formula**.
+
+4. Under **Fields the Formula Reads**, select each field of the record or artifact that your formula uses.
+
+    On an artifact workflow, the formula can also read fields on the artifact's parent record. Under **Parent Record Fields**, click a field to copy the code that reads it, such as `params.model.get("review_start_date")`, then paste it into your formula. The formula reads the parent record but never changes it.
+
+5. Replace the starter formula in the code box with your own.[^5]
+
+6. Select the **Result Type** for the value your formula returns. Only the result types that fit the target field are offered.
+
+7. Leave **Must produce a value** selected to treat an empty result as a failure. Clear it to leave the field unchanged when the formula returns no value.
+
+8. (Optional) Under **Test with a Record**, or **Test with an Artifact** on an artifact workflow, select a record or artifact and click **Run Test**.
+
+    The test shows the result, whether it fits the target field, and the inputs the formula received. Testing never changes the record or artifact.
+
+9. (Optional) Under **If a Formula Fails, Notify**, select the roles to notify when a formula in this step fails.
+
+    If you select no roles, or nobody holds the selected roles on the record, organization admins are notified instead.
+
+10. Click **Update Step** to apply your changes.
+
+When you save the workflow, {{< var vm.product >}} checks each formula. Saving is blocked if a formula has a syntax error or reads a field you did not add under Fields the Formula Reads.[^6]
+<br><br>
+
+::: {.callout-button .pl4 .nt4}
+::: {.callout collapse="true" appearance="minimal"}
+
+### Example — Review end date
+
+You have date fields named `review_start_date` and `review_end_date`, and you want the review to end 90 days after it starts.
+
+- Target Field: Review End Date
+- Fields the Formula Reads: Review Start Date
+- Result Type: Date
+
+##### Example formula
+
+```python
+def formula(params):
+    return add_days(params.get("review_start_date"), 90)
+```
+
+If Review Start Date is empty on a record, the formula returns no value. With Must produce a value selected, the step fails on that record and the roles you chose are notified.
+
+:::
+:::
+
+### Fields that accept a formula
+
+The Formula action is available for custom fields of these types. Core fields cannot be set with a formula.
+
+| Result Type | Field types it can set |
+|---:|---|
+| Date | Date, Date Time |
+| Number | Number |
+| Boolean | Checkbox |
+| Text | Single Line Text, Long Text, Email, URL, Single Select |
+: Field types that accept a formula result {.hover tbl-colwidths="[25,75]"}
+
+A result must also fit the field's own settings. For example, a Single Select field only accepts one of its options, and a Date Time field needs a result that includes a time, such as `today() + "T09:00:00Z"`.
+
+### Write formulas for a Set Field step
+
+Set Field formulas use the same Starlark syntax and helper functions as calculated fields.[^5] A few differences apply in a workflow step:
+
+- Each field the formula reads must be added under Fields the Formula Reads. Read it with a fixed key, such as `params.get("review_start_date")`.
+- Parent record fields, read with `params.model`, are available on artifact workflows only.
+- On artifact workflows, `params["model_stage"]` and `params["stakeholders"]` are not available.
+- `params["integrations"]` is not available.
+- A formula can be up to 10,000 characters long.
+
+## Set several fields in one step
+
+A {{< fa pen-to-square >}} Set Field step works through its fields from top to bottom, and a formula can read the value that a field above it sets in the same step.
+
+- Use the move up and move down buttons on each field to change the order.
+- If a formula reads a field that is set further down in the step, a warning tells you that the formula gets the value the record has now. Move that field above the formula to use the new value.
+- Values from Generate with AI are generated after the step's other fields are set. A formula that reads a field set by AI in the same step gets the value the record has now.
+
+When a step has more than one field and at least one formula, use Test the Step with a Record, or Test the Step with an Artifact, to preview what each field would be set to in order. A field that fails shows its cause, and the formulas that read it show as not evaluated. Testing never changes the record or artifact.
+
+## What happens when the step runs
+
+The formula is calculated once, when the workflow reaches the step. The value is not recalculated later when the fields it reads change. To keep a value up to date at all times, use a calculated field instead.[^5]
+
+The step sets all of its fields or none of them. Before anything is written, each value is checked against its field. If every value fits, all of them are written:
+
+- The record's activity log shows each field that changed, the step that changed it, and the formula that produced the value.
+- The step's run history shows each field with its formula, the inputs the formula received, and its result.^[[Review workflow histories](/guide/workflows/manage-workflows.qmd#review-workflow-histories)]
+
+### When a formula fails
+
+A formula fails when it returns no value and Must produce a value is selected, or when it returns a value the field cannot store. When a formula fails:
+
+- Nothing in the step is written, including the step's other fields.
+- The workflow continues to its next step.
+- The record's activity log records which field could not be set and why. On an artifact workflow, this entry goes on the artifact's parent record.
+- Each user who holds a role under If a Formula Fails, Notify gets a task in {{< fa inbox >}} My Inbox. If no roles are selected, or nobody holds them on the record, organization admins get the task.
+
+The task names the record, the workflow, the step, and the field that failed, and lists the fields that were not set because of it. Fix the record data, then set those fields by hand or run the workflow again.
+
+- If the step fails again on the same record while the task is open, the task is updated with the number of failures.
+- Mark as Done closes the task for everyone who received it.
+- The task also closes on its own the next time the step runs on that record without failing.
+
+A {{< fa pen-to-square >}} Set Field step that sets only fixed values works the same way: if one value does not fit its field, nothing in the step is written and organization admins get the task. Steps that use Generate with AI and no formula do not follow this rule.
+
+## Changes to fields and roles used by formulas
+
+- When you rename a custom field key, the formulas that read the field are updated to use the new key.^[[Rename custom field keys](/guide/inventory/manage-inventory-fields.qmd#rename-custom-field-keys)]
+- You cannot delete a field that a formula in an active workflow reads, or a role selected under If a Formula Fails, Notify. Remove it from the workflow first.
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Configure workflows](/guide/workflows/configure-workflows.qmd)
+
+[^2]: [Fields that accept a formula](#fields-that-accept-a-formula)
+
+[^3]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^4]: [Configure workflow steps](/guide/workflows/configure-workflows.qmd#configure-workflow-steps)
+
+[^5]: Refer to the Calculation field type for the formula syntax, the `params` dictionary, and the available helpers:
+
+    - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd#inventory-field-types)
+    - [Manage artifact fields](/guide/validation/manage-artifact-fields.qmd#artifact-field-types)
+
+[^6]: Saving is also blocked if a formula has no `return` that produces a value, builds field keys while it runs, or reads fields that are not available in a workflow step.
