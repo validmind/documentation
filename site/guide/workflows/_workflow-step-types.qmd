@@ -125,9 +125,13 @@ Transitions the workflow into another workflow state.^[[Workflow states](/guide/
 
 Automatically sets an inventory record or artifact field value.[^set-field]
 
+- Fields are set from top to bottom. A formula can read the value that a field above it sets in the same step.
+- The step sets all of its fields or none of them. If one value cannot be set, nothing in the step is written, the workflow continues to its next step, and the people to notify get a task in their inbox.^[[Set field values with formulas](/guide/workflows/set-field-formulas.qmd#what-happens-when-the-step-runs)]
+
 | Field | Description |
 |---:|---|
 | Target Field | Select a field to update with a given value.[^set-field-target] |
+| If a Formula Fails, Notify (optional) | Shown when the step has a formula. Select the roles to notify when a formula fails. If none are selected, organization admins are notified. |
 | {{< fa plus >}} Set another field value | Click **{{< fa plus >}} Set another field value** to add another field to update with a given value. |
 : **{{< fa pen-to-square >}} Set Field** step configuration {.hover tbl-colwidths="[30,70]"}
 
@@ -169,9 +173,35 @@ Display a preconfigured message to users in the selected **Approval Group**.
 | Field | Description |
 |---:|---|
 | Select roles  | Select the **Inventory Record Stakeholder Types** or **User Roles** to receive the email. |
-| **Subject** | Enter the subject of the email.[^broadcast] |
+| **Subject** | Enter the subject of the email. |
 | **Message** | Enter the body of the email. |
 : **{{< fa bullhorn >}} Broadcast** step configuration {.hover tbl-colwidths="[25,75]"}
+
+Use the rich text editor to compose your **Subject** and **Message**:
+
+1. Include optional details about the record or artifact the workflow is running on using the **{ } Insert Variable** drop-down. To find a variable quickly, type part of its name in the drop-down's search box.
+2. To include details about the workflow run, such as the outcome and notes of its last approval, use the **Workflow** group. See [Workflow variables](#broadcast-workflow-variables).
+3. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds. See [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-an-artifact-or-a-notification).
+4. Click on the **Preview** tab and choose a record or artifact under **Select {inventory record/artifact} for Preview** to confirm how the notification will appear when rendered.
+
+#### Workflow variables
+<span id="broadcast-workflow-variables">
+
+The Workflow group in the Insert Variable drop-down adds details about the workflow run that sends the notification. Place a Broadcast step after an Approval step to tell recipients what was decided and why, with a link to every vote and note:
+
+| Variable | Resolves to |
+|---:|---|
+| Workflow Name | The name of the workflow. |
+| Workflow Run ID | The ID of the workflow run, for example `W_27_5`. |
+| Workflow Activity URL | A link that opens the record's Workflows tab with this workflow run open on its Activity tab.[^broadcast-activity] |
+| Last Approval Outcome | `Approved` or `Rejected`. |
+| Last Approval Notes | One entry for each vote cast, with the voter's name, their vote and their notes, separated by semicolons. For example: `Ana Lee (Rejected): “Missing the backtest report.”; Bo Kim (Approved)` |
+: Workflow variables for the **{{< fa bullhorn >}} Broadcast** step {.hover tbl-colwidths="[25,75]"}
+
+- The last approval is the Approval step in this workflow run that most recently ended as approved or rejected. If the step ran more than once, for example after a rejection sends the workflow back for revisions, only the votes from the latest round are listed.
+- If no approval in the run has ended yet, Last Approval Outcome and Last Approval Notes are empty.
+- Each value fits on one line, so you can use these variables in the subject as well as in the message.
+- The Preview tab has no workflow run to read from. In the preview, Workflow Activity URL opens the record's Workflows tab and the other Workflow variables are empty.
 
 ### {{< fa maximize >}} Condition Branch
 <span id="condition-branch">
@@ -285,8 +315,9 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
 
 [^set-field-target]: Select from:
 
-    - **Set value** — Enter or configure a static **Value**.
+    - **Set value** — Enter or configure a static **Value**. For a User field, select one user, or several if the field allows multiple users. Only active members of your organization are offered.
     - **Clear field (set to empty)** — Remove the existing field value.
+    - **Formula** — Calculate the value from other fields when the step runs. Available for custom fields of certain types. See [Set field values with formulas](/guide/workflows/set-field-formulas.qmd).
     - **Generate with AI** — Enter a **Prompt** to have {{< var vm.product >}} automatically and dynamically populate a value.
 
 [^user-action]:
@@ -309,11 +340,9 @@ Sends a HTTP request with optional additional conditions.^[[Conditional step req
     - [Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)
     - [Manage artifact fields](/guide/validation/manage-artifact-fields.qmd)
 
-[^broadcast]: Use the rich text editor to compose your **Subject** and **Message**:
-
-    1. Include optional details about the record or artifact the workflow is running on using the **{ } Insert Variable** drop-down.
-    2. In a workflow started by a monitoring threshold breach, a **Monitoring Breach** group also offers the metric that breached, its value, and its thresholds — see [Trigger workflows on threshold breach](/guide/monitoring/trigger-workflows-on-threshold-breach.qmd#include-breach-details-in-an-artifact-or-a-notification).
-    3. Click on the **Preview** tab and choose a record or artifact under **Select {inventory record/artifact} for Preview** to confirm how the notification will appear when rendered.
+[^broadcast-activity]: On the Activity tab, the entry for the ended approval shows its outcome. Click **View Details** on that entry to see every vote in Approved, Rejected and No Vote columns, with each voter's notes and vote time.
+    <br><br>
+    [Manage workflows](/guide/workflows/manage-workflows.qmd#review-workflows)
 
 [^artifact-text]: Use the rich text editor to compose your **Title** and **Description**:
 
