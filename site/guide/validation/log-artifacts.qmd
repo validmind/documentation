@@ -54,6 +54,16 @@ While assessing a record's compliance,[^4] you can add artifacts as you complete
 
 :::
 
+## Bulk upload artifacts {#bulk-upload-artifacts}
+
+To add many artifacts at once, such as validation issues, limitations or policy exceptions from another tool, use the bulk upload artifacts notebook.[^8] It reads a `.xlsx` or `.csv` file with one artifact per row and adds each artifact to the record named in that row, or all of them to one record.
+
+The notebook checks every row in a dry run before creating anything, then creates the artifacts through the {{< var vm.product >}} API. Rows that match an artifact of the same type and title already on the record are skipped, so you can safely run the same file again. The notebook reports the result of each row and saves the failed rows to a file you can fix and upload again.
+
+::: {.callout-important title="Uploaded artifacts start workflows."}
+Each artifact you upload starts any workflow your organization runs when an artifact of that type is created. Check with the workflow's owner before uploading many artifacts at once.
+:::
+
 
 <!-- FOOTNOTES -->
 
@@ -70,3 +80,5 @@ While assessing a record's compliance,[^4] you can add artifacts as you complete
 [^6]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
 
 [^7]: [Preparing validation reports](/guide/validation/preparing-validation-reports.qmd#validation-overview)
+
+[^8]: [Bulk upload artifacts from Excel or CSV](https://github.com/validmind/validmind-library/blob/main/notebooks/how_to/inventory/bulk_upload_artifacts.ipynb)
