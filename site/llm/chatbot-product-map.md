@@ -175,7 +175,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -183,9 +183,9 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 #### `/settings/finding-severities` — Artifact Severities
 
@@ -197,7 +197,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -205,9 +205,9 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 #### `/settings/finding-types` — Artifact Types
 
@@ -219,7 +219,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -227,9 +227,9 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 ### Users & Access
 
@@ -245,7 +245,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Integrations
 
@@ -336,7 +336,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html` (section: #manage-user-invitations)
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Organization
 
@@ -361,7 +361,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -438,7 +438,7 @@
 
 - `/guide/configuration/personalizing-validmind.html`
 - `/guide/configuration/manage-your-profile.html`
-  - Sections: Prerequisites; Access your profile; Onboarding; User Interface Preferences; Terms; Localization; Access Keys; To revoke and regenerate keys, click **Revoke & Regenerate Keys**.
+  - Sections: Prerequisites; Access your profile; Profile Details; Onboarding; User Interface Preferences; Terms; Localization; Access Keys
 
 ### Main navigation
 
@@ -499,7 +499,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -610,7 +610,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Governance
 
@@ -667,7 +667,7 @@
 - `/guide/reporting/tracking-organization-activity.html`
   - Sections: What's next
 - `/guide/reporting/view-settings-activity.html`
-  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity
+  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity; Export settings activity
 - `/guide/reporting/view-record-activity.html`
   - Sections: What is tracked on record activity?; Prerequisites; View record activity; Organization-wide Record Activity; Activity for a specific record; View individual field activity; Filter record activity; Organization-wide filters
 
@@ -721,7 +721,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -729,9 +729,9 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -772,7 +772,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 
