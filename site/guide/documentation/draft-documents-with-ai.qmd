@@ -1,0 +1,226 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Draft documents with AI"
+date: last-modified
+---
+
+Use AI drafting to write your documents from the evidence on your record, such as logged test results, record fields, metrics and attached files. You review every draft before it goes into the document.
+
+## How AI drafting works {#how-ai-drafting-works}
+
+The {{< var vm.product >}} drafting agent reads your record's data and writes text for each section, following the section's guidelines from the document template.[^1] You can draft in two ways:
+
+- Draft Document drafts every section of a Development document in one run, including sections that have no blocks yet.
+- Draft Section drafts one section of a Development, Monitoring or custom type document that you can edit.
+
+The agent reads the following evidence:
+
+- The section's guidelines from the document template
+- Test results logged to the record[^2]
+- Record fields and metrics
+- Files attached to the record, starting with any files you add as context
+- Other sections of the same document
+
+The agent reads the record the way you see it. Fields and files that are hidden from you are left out, so a draft never contains values you can't see.
+
+Test results don't need to be placed in the document as test-driven blocks. The agent reads the results logged to the record and writes about them. Drafts of development documentation compare the results with the acceptance criteria recorded on the record, and state failed tests, missing results and conflicts between record fields and test results plainly.
+
+Every block you insert from a draft keeps a record of who requested it, which AI model wrote it, when it was accepted and which evidence it cites.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] The record you are documenting is registered in the inventory.[^3]
+- [x] The document was created from a template in the {{< var validmind.platform >}} or by the {{< var validmind.developer >}}. Static PDF uploads cannot be drafted.[^4]
+- [x] The record has evidence to draft from, such as test results logged with the {{< var validmind.developer >}}, completed record fields or attached files.[^5]
+- [x] You are a [{{< fa code >}} Developer]{.bubble} or assigned another role with permission to edit the document.[^6]
+
+:::
+
+## Draft a whole document {#draft-a-whole-document}
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a record or find your record by applying a filter or searching for it.[^7]
+
+3. In the left sidebar that appears for your record, click **{{< fa file >}} Documents** and select the **Latest** tab.[^8]
+
+4. Click on the Development document you want to draft.
+
+5. Locate Draft Document on the right, click to expand it, and click **Draft Document**.
+
+   If the document was drafted before, the dialog opens on that draft so you can review it. Click **Start New Draft** to start over.
+
+6. (Optional) Under **Instructions**, add instructions for the draft, such as the tone to use or the points to emphasize.
+
+   The box shows the instructions from the last whole-document draft. You can edit or clear them.
+
+7. (Optional) Add files from the record as extra context.[^9]
+
+8. Click **Draft Document**.
+
+   The agent first plans the blocks for sections that have none, then drafts each section. The dialog shows how many sections are drafted and about how much time is left. Each section opens for review as soon as it is drafted.
+
+You can close the dialog while the draft runs. Until the run ends, the button shows Drafting with a spinner. Click it to reopen the dialog, where you can follow the progress or stop the draft after the current section with Stop Drafting. Sections drafted before you stopped stay available for review.
+
+If a draft is already running for the document, the dialog tells you who started it. Click View progress to follow that draft, or Start new draft anyway to start your own.
+
+## Review and insert drafts {#review-and-insert-drafts}
+
+The Draft Document with AI dialog lists every section of the draft with its status. Nothing changes in your document until you insert a draft.
+
+1. Click a section to expand it, or click **Expand All**.
+
+2. Review each drafted block. If the block already has content in the document, click **Compare with current** to see the current text above the draft.
+
+   Under each section, Sources lists the evidence the section's draft cites. Click a source to preview it. For a test result, the preview shows the version the draft read.
+
+3. Clear the checkbox on any block you don't want to insert, or click **Deselect All**.
+
+   Blocks tagged New Block, and rows that end with "will be added on insert," are blocks the agent proposes for a section that had none. They are added to the document's template when you insert the section.
+
+4. Insert the blocks you kept:
+
+   - To insert one section, click **Insert # Blocks** under that section.
+   - To insert every checked block in the draft, click **Insert all (# blocks)**.
+
+5. If a block you are inserting already has content, click **Yes, Replace Content** to confirm. Replacing content cannot be undone.
+
+Inserted sections show when their blocks were accepted. A section that could not be drafted shows "We couldn't draft this section" with "Start a new draft to try again. If the problem continues, contact your administrator."
+
+## Draft a single section {#draft-a-single-section}
+
+1. Open the document and go to the section you want to draft.
+
+2. Below the section title, click **Draft Section**.
+
+   Draft Section appears on sections that have at least one text or test-driven block. To fill a section that has no blocks, use Draft Document.[^10]
+
+3. (Optional) Under **Instructions**, add instructions for this section.
+
+   The box shows the instructions last used for this section, whether they came from Draft Section or from a whole-document draft.
+
+4. (Optional) Add files from the record as extra context.[^9]
+
+5. Click **Draft Section**.
+
+   While the agent works, the dialog shows the evidence it is reading.
+
+6. Review the drafted blocks. Click **Compare with current** to see the current text of a block above the draft, and clear the checkbox on any block you don't want to insert.
+
+7. Click **Insert into section**, or **Insert # blocks** when the draft has more than one block. To drop the draft, click **Discard**.
+
+8. If a block you are inserting already has content, click **Yes, Replace Content** to confirm.
+
+## Add files as context {#add-files-as-context}
+
+The agent can look through any file attached to the record that it can read. To make sure it uses specific files, such as development documentation, training code or notebooks, add them as context. The agent reads those files first and treats them as primary source material. The option appears when the record has files it can read in an attachments field.[^11]
+
+1. In the **Instructions** box, click **{{< fa plus >}}** and select **Add Files to Context**.
+
+2. Select the files you want the agent to read. Files are grouped by attachments field, with their upload date, uploader and size.
+
+3. Click **Add to Context**.
+
+The selected files show under your instructions. To remove one, click **{{< fa xmark >}}** on the file.
+
+The agent reads PDFs and text files, such as code, notebooks, Markdown, YAML, JSON, CSV and plain text files. It reads notebooks as their text and code cells, without outputs or images. Images, video, audio, zip files and Office files such as `.docx`, `.xlsx` and `.pptx` are not offered. Text files larger than 10 MB are skipped, and only the first 100,000 characters of a long text file are read. If a file can't be read, the draft continues without it.
+
+## Check the evidence behind a drafted block {#check-the-evidence-behind-a-drafted-block}
+
+Each block inserted from a draft shows an AI Draft tag. Click the tag to see:
+
+- The AI model that wrote the draft, who requested it, and when it was accepted. If someone edited the block afterwards, it also says "Edited since drafted with AI."
+- Evidence used — The evidence this block cites, the same items as the Sources list in the review. Click an item to open it. A test result opens the exact version the draft read on the record's Data page.[^14]
+- Evidence reviewed — Everything the agent read while drafting the section, including evidence it did not use.
+
+### Tables and figures in drafted text {#tables-and-figures-in-drafted-text}
+
+A draft can place a table or figure from a test result right where its text discusses that result, with a caption. These tables and figures are live:
+
+- They show the latest values when the test runs again, without a redraft.
+- You can move or delete them in the editor, but not edit them.
+- If the table or figure no longer exists, for example because the test was renamed, a "Result not found" notice shows in its place.
+- Exports include the actual table or figure at that position.[^12]
+
+A draft can also write its own short table with only the values a section discusses, such as precision for each class. The full result stays one click away in the block's evidence.
+
+## Keep drafts current when evidence changes {#keep-drafts-current-when-evidence-changes}
+
+When evidence that a drafted block cites changes, the block's tag turns orange and reads Evidence updated. The same tag shows next to the section in the table of contents, and the Draft Document box on the right says how many sections reference updated evidence. Hover over the tag in the table of contents to see what changed.
+
+For test results and record fields, a block is flagged only when the evidence it rests on changed in content:
+
+- A test result counts as changed when its values changed. A test that runs again with the same values does not flag the block. A result logged for the test under a new result ID also flags the block, and only a redraft picks it up.
+- A block written from record fields is flagged only when one of those fields changes. The reason names the field, such as "Purpose updated 2 hours ago."
+
+Other evidence, such as metrics and attachments, flags the block whenever it is updated, even if the values it cites stay the same. Blocks drafted before evidence tracking are also flagged on any update.
+
+To bring a flagged block up to date:
+
+1. Click the Evidence updated tag on the block and review what changed under Evidence has changed.
+
+2. Choose how to update it:
+
+   - **Update Values** — Keeps the wording and changes only the values whose evidence changed. Review the highlighted changes, then click **Update Block**. If none of the cited values changed, click **Mark Up to Date** instead.
+   - **Redraft Section** — Opens Draft Section for the block's section so you can draft it again.[^10]
+
+Update Values warns you when a redraft is the better choice, for example when a test ran again as a new result or a conclusion may no longer hold. Edits you made by hand are kept. For a block drafted before evidence tracking, or a block that rests on fields you can't see, Update Values can't compare the values and asks you to redraft the section.
+
+To update every flagged section at once, expand the Draft Document box on the right and use Update Values or Regenerate Stale Sections.
+
+## When a section has insufficient source material {#when-a-section-has-insufficient-source-material}
+
+If the agent finds too little evidence for a block, it writes a short note in italics instead of a draft: "Insufficient source material to draft this section." The note names what to add to the record, such as a model purpose or development documentation.
+
+Add the missing information to the record, for example by completing record fields, logging test results or attaching files, then draft the section again. Replace or delete the note before you submit the document.
+
+## Get notified when a draft finishes {#get-notified-when-a-draft-finishes}
+
+When you start a Draft Document run, {{< fa inbox >}} My Inbox shows a Document draft in progress update with the run's live progress. When the run finishes or fails, that update becomes the outcome update below and is marked unread. These updates are not emailed.[^13]
+
+- Document draft is ready for review — Says how many sections had insufficient source material, if any. Click it to open the document with the drafts ready for review.
+- Document draft failed — Gives the reason. A failed Draft Section run also sends this update and names the section.
+
+Stopping a draft sends no update.
+
+## What's next
+
+- [Work with content blocks](/guide/documentation/work-with-content-blocks.qmd)
+- [Check documents for compliance](/guide/documentation/check-documents-for-compliance.qmd)
+- [Documents and templates FAQ](/faq/faq-documentation.qmd)
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Customize document templates](/guide/templates/customize-document-templates.qmd)
+
+[^2]: [Work with test results](/guide/documentation/work-with-test-results.qmd)
+
+[^3]: [Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)
+
+[^4]: [Manage documents](/guide/templates/manage-documents.qmd#add-record-documents)
+
+[^5]: [Run tests and test suites](/developer/how-to/testing-overview.qmd)
+
+[^6]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^7]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
+
+[^8]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
+
+[^9]: [Add files as context](#add-files-as-context)
+
+[^10]: [Draft a single section](#draft-a-single-section)
+
+[^11]: [Edit inventory fields](/guide/inventory/edit-inventory-fields.qmd#manage-attachments-on-records)
+
+[^12]: [Export documents](/guide/reporting/export-documents.qmd)
+
+[^13]: [Manage platform notifications](/guide/configuration/manage-platform-notifications.qmd#available-update-filters)
+
+[^14]: [View record data](/guide/inventory/view-record-data.qmd)
