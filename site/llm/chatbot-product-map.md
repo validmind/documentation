@@ -175,7 +175,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -197,7 +197,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -219,7 +219,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -721,7 +721,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -772,7 +772,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 
