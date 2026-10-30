@@ -175,7 +175,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -197,7 +197,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -219,7 +219,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -245,7 +245,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Integrations
 
@@ -336,7 +336,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html` (section: #manage-user-invitations)
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Organization
 
@@ -361,7 +361,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -438,7 +438,7 @@
 
 - `/guide/configuration/personalizing-validmind.html`
 - `/guide/configuration/manage-your-profile.html`
-  - Sections: Prerequisites; Access your profile; Onboarding; User Interface Preferences; Terms; Localization; Access Keys; To revoke and regenerate keys, click **Revoke & Regenerate Keys**.
+  - Sections: Prerequisites; Access your profile; Profile Details; Onboarding; User Interface Preferences; Terms; Localization; Access Keys
 
 ### Main navigation
 
@@ -499,7 +499,7 @@
 **Docs (related):**
 
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Model Inventory
 
@@ -610,7 +610,7 @@
 - `/guide/configuration/managing-users.html`
   - Sections: Key concepts; Key terms; Default roles; User management; What's next
 - `/guide/configuration/manage-users.html`
-  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; Disable users
+  - Sections: Prerequisites; View and search for users; Manage user invitations; Invite new users; Monitor user invitations; Manage user roles; View and edit user fields; Show user fields in the User Directory
 
 ### Governance
 
@@ -721,7 +721,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/working-with-artifacts.html`
   - Sections: Key concepts; Work with artifacts; What's next
 - `/guide/validation/manage-artifact-types.html`
@@ -772,7 +772,7 @@
 **Docs (related):**
 
 - `/guide/validation/customize-artifact-layouts.html`
-  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views
+  - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 
