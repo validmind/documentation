@@ -1,0 +1,106 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Import records into the inventory"
+date: last-modified
+---
+
+Import many records at once from a spreadsheet your team already keeps, instead of registering each record by hand. Each row of your `.csv` or `.xlsx` file becomes a new record in the inventory.
+
+Importing creates new records. To add files to a record that already exists, add attachments to that record instead.[^1]
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa code >}} Developer]{.bubble} or assigned another role with the Create Model permission.[^2]
+- [x] You have a `.csv` or `.xlsx` file with column names in the first row and one record per row.
+
+:::
+
+## Prepare your file
+
+Your column names and values don't need to match your inventory fields. You review how each column maps to a field before any record is created.
+
+- Include a column with a unique name for each record. Rows without a name, or with a name that already exists in the inventory, are not imported.
+- For an Excel workbook, only the first sheet is imported.
+- For fields that allow several options, separate the values in a cell with commas, semicolons, or line breaks.
+- By default, you can import up to 500 rows and a file of up to 50 MB at a time. Your deployment may set different limits. The import dialog shows the limits that apply to you.
+
+To start from a file that already has your organization's fields as column names, download the template from the import dialog.
+
+### How columns are mapped
+
+Columns whose name matches an inventory field are mapped to that field. When AI capabilities are enabled for your organization, an AI agent proposes a field for the other columns and translates values to the options a field allows, for example `H` to `High`.
+
+When AI capabilities are turned off for your organization, columns are matched by name only and no file content is sent to an AI model. You map the remaining columns yourself, so the template gives the best results.
+
+## Import records
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` you want to import by clicking on **{Record} Inventory**.[^3]
+
+    Imported records are created as this record type, and the fields you can map to are the fields of this record type.
+
+3. Click **{{< fa ellipsis >}} More** and select **{{< fa upload >}} Import**.
+
+    The Import Records dialog opens. Import isn't available while you're viewing an inventory segment.[^4]
+
+4. (Optional) To get a template, click **{{< fa download >}} Download Template**.
+
+    The template is a `.csv` file with one column for each field you can import, required fields first. Fill it in and save it before you continue.
+
+5. Drag and drop your `.csv` or `.xlsx` file into the dialog, or click **choose a file**.
+
+    {{< var vm.product >}} reads the file and maps its columns to your inventory fields.
+
+6. Review the mapping table. Each column in your file is listed with its values and the inventory field it maps to:
+
+    - To change the field for a column, select a different field under **Inventory Field**. Required fields are marked with an asterisk (`*`).
+    - To leave a column out, select **Do not import**.
+    - For fields with a list of options, each value shows the option it becomes, for example `H → High`. Values marked "(no match)" don't match any option and are left empty.
+
+    Map one column to Name. Each record needs its own name, so you can't set one value for Name in the next step.
+
+7. If the dialog shows a Required fields with missing values section, choose a value for each field listed there, or change the mapping in the table.
+
+    Each field shows how many rows have no value, or no value that matches an option. The value you choose is used only for those rows. If no column maps to the field, the value is used for every record.
+
+    The Import _n_ Records button stays disabled until every required field has a value, and while values are still being matched.
+
+8. Click **Import _n_ Records**.
+
+9. Review the results, then click **Done**.
+
+    The dialog shows how many records were created, with links to the new records. Any rows that could not be imported are listed with their row number, name, and the problem, for example `A record with this name already exists.` The other rows are still created.
+
+    Fix the failed rows in your file, then import only those rows again.
+
+
+## Import records via API {#import-records-via-api}
+
+To import records through the {{< var vm.product >}} API instead of the import dialog, use the bulk upload inventory records notebook.[^5] It reads a `.xlsx` or `.csv` file with one record per row, checks every row in a dry run before creating anything, and then creates the records. It reports the result of each row and saves the failed rows to a file you can fix and upload again.
+
+The notebook signs in with your API key and secret.[^6]
+
+To add artifacts to your records the same way, use the bulk upload artifacts notebook.[^7]
+
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage attachments on records](/guide/inventory/edit-inventory-fields.qmd#manage-attachments-on-records)
+
+[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^3]: [Manage inventory record types](/guide/inventory/manage-inventory-record-types.qmd)
+
+[^4]: [Manage inventory segments](/guide/inventory/manage-inventory-segments.qmd)
+
+[^5]: [Bulk upload inventory records from Excel or CSV](https://github.com/validmind/validmind-library/blob/main/notebooks/how_to/inventory/bulk_upload_inventory_records.ipynb)
+
+[^6]: [Manage your profile](/guide/configuration/manage-your-profile.qmd#access-keys)
+
+[^7]: [Log artifacts](/guide/validation/log-artifacts.qmd#bulk-upload-artifacts-via-api)

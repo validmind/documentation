@@ -185,7 +185,7 @@
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 #### `/settings/finding-severities` — Artifact Severities
 
@@ -207,7 +207,7 @@
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 #### `/settings/finding-types` — Artifact Types
 
@@ -229,7 +229,7 @@
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 ### Users & Access
 
@@ -731,7 +731,7 @@
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
-  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts
+  - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
