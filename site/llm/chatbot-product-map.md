@@ -183,7 +183,7 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
   - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
@@ -205,7 +205,7 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
   - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
@@ -227,7 +227,7 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
   - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
@@ -667,7 +667,7 @@
 - `/guide/reporting/tracking-organization-activity.html`
   - Sections: What's next
 - `/guide/reporting/view-settings-activity.html`
-  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity
+  - Sections: What is tracked on settings activity?; Prerequisites; View settings activity; Export settings activity
 - `/guide/reporting/view-record-activity.html`
   - Sections: What is tracked on record activity?; Prerequisites; View record activity; Organization-wide Record Activity; Activity for a specific record; View individual field activity; Filter record activity; Organization-wide filters
 
@@ -729,7 +729,7 @@
 - `/guide/validation/view-filter-artifacts.html`
   - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
 - `/guide/validation/update-artifacts.html`
-  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Track artifact resolution; Delete artifacts
+  - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
   - Sections: Prerequisites; Add artifacts on documentation; Add artifacts on validation reports; Autogenerate validation issues; Manually add artifacts; Bulk upload artifacts via API
 
