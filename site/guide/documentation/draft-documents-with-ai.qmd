@@ -20,7 +20,7 @@ The agent reads the following evidence:
 - The section's guidelines from the document template
 - Test results logged to the record[^2]
 - Record fields and metrics
-- Files you add as context
+- Files attached to the record, starting with any files you add as context
 - Other sections of the same document
 
 The agent reads the record the way you see it. Fields and files that are hidden from you are left out, so a draft never contains values you can't see.
@@ -90,7 +90,7 @@ The Draft Document with AI dialog lists every section of the draft with its stat
 
 5. If a block you are inserting already has content, click **Yes, Replace Content** to confirm. Replacing content cannot be undone.
 
-Inserted sections show when their blocks were accepted. A section that could not be drafted shows "We couldn't draft this section." Start a new draft to try again.
+Inserted sections show when their blocks were accepted. A section that could not be drafted shows "We couldn't draft this section" with "Start a new draft to try again. If the problem continues, contact your administrator."
 
 ## Draft a single section {#draft-a-single-section}
 
@@ -118,7 +118,7 @@ Inserted sections show when their blocks were accepted. A section that could not
 
 ## Add files as context {#add-files-as-context}
 
-You can give the agent files attached to the record, such as development documentation, training code or notebooks, to draft from. The option appears when the record has files it can read in an attachments field.[^11]
+The agent can look through any file attached to the record that it can read. To make sure it uses specific files, such as development documentation, training code or notebooks, add them as context. The agent reads those files first and treats them as primary source material. The option appears when the record has files it can read in an attachments field.[^11]
 
 1. In the **Instructions** box, click **{{< fa plus >}}** and select **Add Files to Context**.
 
@@ -128,7 +128,7 @@ You can give the agent files attached to the record, such as development documen
 
 The selected files show under your instructions. To remove one, click **{{< fa xmark >}}** on the file.
 
-The agent reads PDFs and text files, such as code, notebooks, Markdown, YAML, JSON, CSV and plain text files. It reads notebooks as their text and code cells, without outputs or images. Images, video, audio, Word, Excel, PowerPoint and zip files are not offered. If a file can't be read or is larger than 10 MB, the draft continues without it.
+The agent reads PDFs and text files, such as code, notebooks, Markdown, YAML, JSON, CSV and plain text files. It reads notebooks as their text and code cells, without outputs or images. Images, video, audio, zip files and Office files such as `.docx`, `.xlsx` and `.pptx` are not offered. Text files larger than 10 MB are skipped, and only the first 100,000 characters of a long text file are read. If a file can't be read, the draft continues without it.
 
 ## Check the evidence behind a drafted block {#check-the-evidence-behind-a-drafted-block}
 
@@ -153,10 +153,12 @@ A draft can also write its own short table with only the values a section discus
 
 When evidence that a drafted block cites changes, the block's tag turns orange and reads Evidence updated. The same tag shows next to the section in the table of contents, and the Draft Document box on the right says how many sections reference updated evidence. Hover over the tag in the table of contents to see what changed.
 
-A block is flagged only when the evidence it rests on changed in content:
+For test results and record fields, a block is flagged only when the evidence it rests on changed in content:
 
-- A test result counts as changed when its values changed. A test that runs again with the same values does not flag the block.
+- A test result counts as changed when its values changed. A test that runs again with the same values does not flag the block. A result logged for the test under a new result ID also flags the block, and only a redraft picks it up.
 - A block written from record fields is flagged only when one of those fields changes. The reason names the field, such as "Purpose updated 2 hours ago."
+
+Other evidence, such as metrics, attachments and other sections, flags the block whenever it is updated, even if the values it cites stay the same. Blocks drafted before evidence tracking are also flagged on any update.
 
 To bring a flagged block up to date:
 
@@ -179,7 +181,7 @@ Add the missing information to the record, for example by completing record fiel
 
 ## Get notified when a draft finishes {#get-notified-when-a-draft-finishes}
 
-When a Draft Document run finishes or fails, the person who started it gets an update in {{< fa inbox >}} My Inbox. These updates are not emailed.[^13]
+When you start a Draft Document run, {{< fa inbox >}} My Inbox shows a Document draft in progress update with the run's live progress. When the run finishes or fails, that update becomes the outcome update below and is marked unread. These updates are not emailed.[^13]
 
 - Document draft is ready for review — Says how many sections had insufficient source material, if any. Click it to open the document with the drafts ready for review.
 - Document draft failed — Gives the reason. A failed Draft Section run also sends this update and names the section.
