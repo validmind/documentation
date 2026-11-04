@@ -284,8 +284,7 @@ To configure a wait step, select when you would like to **Resume Workflow**
 | Field | Description |
 |---:|---|
 | **Select Workflow To Run** | Select the workflow to start. |
-| **Wait for Completion** (optional) | Pause this workflow until the workflow started here finishes. Off by default, in which case this workflow moves on as soon as the other workflow starts. |
-| **When it finishes** (optional) | Available when **Wait for Completion** is on. Paths that decide where this workflow goes once the workflow it started has finished. |
+| **Wait for Completion** (optional) | Wait here until the selected workflow finishes. Off by default: this workflow moves on as soon as the selected workflow starts. |
 : **{{< fa arrow-right-arrow-left >}} Run Workflow** step configuration {.hover tbl-colwidths="[40,60]"}
 
 While it waits, the workflow stays **Active**. Its details show which workflow it is waiting for, with a link to that run, and the run it started links back to it. A waiting workflow can't be moved on with **Resume**; it moves on by itself when the workflow it started finishes, including when that workflow waits for a user action or an approval along the way. If the workflow it started is restarted, it waits for the new run instead.
@@ -294,19 +293,10 @@ While it waits, the workflow stays **Active**. Its details show which workflow i
 The waiting workflow stays paused and shows why in its details. To continue, a [{{< fa hand >}} Customer Admin]{.bubble} moves it to a step it has already reached: on the workflow's **Workflow** tab, click that step, then double-click **{{< fa forward >}}** in its **Step Detail** panel. Moving a waiting workflow this way also stops it waiting, so the other workflow finishing later doesn't move it again.
 :::
 
-To send the workflow somewhere other than its next step once the workflow it started finishes:
-
-1. With **Wait for Completion** on, under **When it finishes**, click **{{< fa plus >}} Add Path**.
-2. Enter the **Path Name** and designate the **Conditions**^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd)] that apply to this path, the same way as for a condition branch.
-3. Under **Go to**, select where the workflow goes when the conditions match: another **{{< fa arrow-right-arrow-left >}} Run Workflow** step in this workflow that also has **Wait for Completion** on, or **End**.
-4. Continue with steps 1 to 3 for each path, then click **Update Step** to save your step.
-
-    **Update Step** stays disabled until every path has a name, a condition, and a step to go to. To remove a path, click **{{< fa ellipsis-vertical >}}** and select **{{< fa trash-can >}} Remove Path**.
-
-When the workflow it started finishes, the paths are checked in order. The first path whose conditions match sends the workflow to its step, or ends it, and the workflow's details say which path did so (for example, *Sent back from Approval: Rejected.*). If no path matches, the workflow moves on to its next step.
+To decide where the workflow goes once the workflow it started finishes, add a **{{< fa maximize >}} Condition Branch**^[[Condition Branch](#condition-branch)] right after the **{{< fa arrow-right-arrow-left >}} Run Workflow** step. Its paths read the record or artifact as it is when the other workflow finishes, and a path can lead back to an earlier **{{< fa arrow-right-arrow-left >}} Run Workflow** step to run that phase again.
 
 ::: {.callout title="Share information between workflows through the record's fields."}
-The paths read the record or artifact as it is when the other workflow finishes. For example, an approval workflow can set an **Approval outcome** field on each of its routes, and a path on the waiting step can send the workflow back to an earlier phase when that field is **Rejected**.
+For example, an approval workflow can set an **Approval outcome** field on each of its routes, and a condition branch after the waiting step can send the workflow back to the development phase when that field is **Rejected**.
 :::
 
 Workflows can't be saved if waiting steps would wait on each other in a loop, for example if workflow A waits for workflow B while workflow B waits for workflow A.
@@ -487,7 +477,7 @@ Creates a time condition for displaying next available action.
 
 #### {{< fa arrow-right-arrow-left >}} Run Workflow
 
-Triggers another workflow indicated by **Select Workflow To Run**, allowing you to chain workflows. With **Wait for Completion** on, waits for that workflow to finish, then follows any **When it finishes** paths.
+Triggers another workflow indicated by **Select Workflow To Run**, allowing you to chain workflows. With **Wait for Completion** on, waits for that workflow to finish before moving on.
 
 #### {{< fa circle-nodes >}} Webhook
 
