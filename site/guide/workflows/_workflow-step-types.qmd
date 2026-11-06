@@ -145,7 +145,7 @@ Creates a button that performs an action on behalf of the user.
 | **Display Action Button When**  (optional) | Add conditional requirements for displaying this step.^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#user-action)]  |
 | **Step Title** (optional) | Text that displays at the top of the modal that opens when users click the action button. |
 | **Action Button Label** | Text that displays on your action button. |
-| **Requested Fields** (optional) | Include record or artifact fields, or a document selection, alongside your action.[^user-action] |
+| **Requested Fields** (optional) | Include record or artifact fields, a document selection, or a risk tier assessment alongside your action.[^user-action] |
 | **User Action Deadline** (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
 : **{{< fa arrow-pointer >}} User Action** step configuration {.hover tbl-colwidths="[40,60]"}
 
@@ -179,6 +179,41 @@ After users submit the step, the record's activity names the selection, the docu
 Edit the document selection to choose another document type, or remove it.
 :::
 
+#### Risk tier assessments {#user-action-risk-tier-assessments}
+
+Add a risk tier assessment to Requested Fields when users should risk tier the record as part of its workflow. Users answer the record's risk tier questions on the step, and submitting the step publishes the assessment.^[[Manage risk tier assessments](/guide/risk-tiering/manage-risk-tier-assessments.qmd)] A risk tier assessment can be added on record workflows when risk tiering workflows are enabled for your organization.
+
+1. Under **Requested Fields**, click **{{< fa plus >}} Add** and select **Add Risk Tier Assessment**.
+
+2. Arrange it with your other requested fields. You can reorder it or move it into a step.
+
+A step can have one risk tier assessment. It cannot be made optional or placed in a conditional group: **Submit** stays disabled until every question is answered.
+
+When users perform the action:
+
+- They see the same questions, factor scores and calculated risk tier as on the record's risk tier assessment page, for the active risk tier template of the record's inventory record type.
+- Their answers save to the record as they edit them. Saving a working copy keeps the answers but does not publish the assessment.
+- If the record already has an active assessment, the step warns that submitting archives it and stops any of its workflows that are still in progress.
+- If no risk tier template is published for the record's inventory record type, the step says so and cannot be submitted. Ask an administrator to publish one, then reopen the step.^[[Manage risk tier templates](/guide/risk-tiering/manage-risk-tier-templates.qmd)]
+- If a new version of the template is published while the step is open, **Submit** is refused and the step reloads the updated questions.
+- If a question's field is also a requested field on the step, the answer given in the assessment is submitted unless the user changed it in the field itself.
+
+When users submit the step:
+
+- A new version of the record's current assessment is published, scored against the active template. A record with no assessment yet gets a new one named *Risk tier assessment*.
+- The previously active version is archived, and its workflows that are still in progress end as aborted.
+- The record's **Assessed Risk Tier** field is set to the published tier.
+- Workflows that start **On Risk Assessment Published** do not start: the record workflow already governs this assessment.^[[Set up risk tiering workflows](/guide/risk-tiering/set-up-risk-tiering-workflows.qmd#risk-tier-a-record-from-its-own-workflow)]
+- The record's activity and the step's Step Detail panel name the published assessment, its version and its risk tier.^[[View record activity](/guide/reporting/view-record-activity.qmd)]
+
+::: {.callout-important}
+## Users completing the step publish the assessment on the workflow's behalf.
+
+They do not need permission to publish risk tier assessments themselves. They do need edit access to every field the template's questions use, or they cannot answer them and the step cannot be submitted.
+:::
+
+To show the published assessment to approvers, add it to an **{{< fa users >}} Approval** step's **Fields to Review**. Approvers see the record's current published assessment, read-only. If another version was published after the step, they see that version.
+
 ### {{< fa users >}} Approval
 <span id="approval">
 
@@ -190,7 +225,7 @@ Display a preconfigured message to users in the selected **Approval Group**.
 | Field | Description |
 |---:|---|
 | **Approval Group**  | Select the roles, stakeholders, or user fields responsible for approval. |
-| **Fields to Review** (optional) | Select the record or artifact fields shown to approvers for read-only review.[^approval-2] |
+| **Fields to Review** (optional) | Select the record or artifact fields shown to approvers for read-only review. On record workflows, you can also add the record's risk tier assessment.[^approval-2] |
 | Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected **Approval Group** is shown this message.^[Enter a **Title** and a **Message** to display.] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
