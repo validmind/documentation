@@ -630,7 +630,7 @@
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
-  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; Risk tier a record from its own workflow
 - `/guide/workflows/assign-workflow-executions.html`
   - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
@@ -652,7 +652,7 @@
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
-  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; Risk tier a record from its own workflow
 - `/guide/workflows/assign-workflow-executions.html`
   - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
@@ -789,7 +789,7 @@
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
-  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; Risk tier a record from its own workflow
 - `/guide/workflows/assign-workflow-executions.html`
   - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
 - `/guide/workflows/conditional-step-requirements.html`
