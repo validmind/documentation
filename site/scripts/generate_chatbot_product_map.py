@@ -130,6 +130,7 @@ RELATED_DOC_KEYWORDS: dict[str, list[str]] = {
     "attestation": ["attestation"],
     "regulation": ["templates/customize-virtual-document-validator", "model-validation"],
     "risk": ["model-validation/manage-validation-guidelines"],
+    "tier": ["risk-tiering"],
     "authentication": ["configuration/managing-your-organization"],
     "organization": ["configuration/managing-your-organization"],
     "profile": ["configuration/manage-your-profile", "configuration/personalizing-validmind"],

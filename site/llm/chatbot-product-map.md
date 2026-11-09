@@ -66,7 +66,7 @@
 **Docs (primary):**
 
 - `/installation/security/configure-single-sign-on-sso.html`
-  - Note: no matching `.qmd` source found
+  - Sections: What is SSO?; Prerequisites; Step 1: Set up Microsoft Entra for SSO; Step 2: Contact ValidMind to enable SSO
 
 **Docs (related):**
 
@@ -464,24 +464,37 @@
 
 #### `/settings/risk-tier-stages` — Risk Tier Stages
 
-- *No direct help link; content may be covered under scattered guide sections.*
+**Docs (related):**
+
+- `/guide/risk-tiering/configure-risk-tier-calculation.html`
+  - Sections: Prerequisites; Set up a Scorecard template; 1. Configure scoring levels; 2. Add risk factors; 3. Add components and scoring rules; 4. Set risk tier thresholds; 5. Configure override rules; Set up a Risk Matrix template
+- `/guide/risk-tiering/manage-risk-tier-assessments.html`
+  - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
+- `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+- `/guide/risk-tiering/working-with-risk-tiering.html`
+  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
+
+- *No direct help link in frontend; related docs inferred from keywords.*
 
 #### `/settings/risk-tier-templates` — Risk Tier Templates
 
 **Docs (related):**
 
+- `/guide/risk-tiering/configure-risk-tier-calculation.html`
+  - Sections: Prerequisites; Set up a Scorecard template; 1. Configure scoring levels; 2. Add risk factors; 3. Add components and scoring rules; 4. Set risk tier thresholds; 5. Configure override rules; Set up a Risk Matrix template
+- `/guide/risk-tiering/manage-risk-tier-assessments.html`
+  - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
+- `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+- `/guide/risk-tiering/working-with-risk-tiering.html`
+  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
 - `/guide/templates/customize-document-checker.html`
   - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
-- `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
-- `/guide/templates/manage-document-templates.html`
-  - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
-- `/guide/templates/manage-text-block-library.html`
-  - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 

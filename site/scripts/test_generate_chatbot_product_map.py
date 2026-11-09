@@ -164,6 +164,19 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
                     "/guide/risk-tiering/set-up-risk-tiering-workflows.html", related
                 )
 
+    def test_risk_tier_templates_route_keeps_risk_tiering_guide(self) -> None:
+        """Regression for sc-18087: section ranking must not evict the route's own guide."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        related = [
+            r.path
+            for r in gen.suggest_related_docs(routes["/settings/risk-tier-templates"], all_paths)
+        ]
+        self.assertIn("/guide/risk-tiering/manage-risk-tier-templates.html", related)
+        self.assertEqual(related[0], "/guide/risk-tiering/configure-risk-tier-calculation.html")
+
     def test_parse_settings_index_resolves_copy_titles(self) -> None:
         import tempfile
 
