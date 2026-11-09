@@ -80,6 +80,90 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
             related[0].path, "/guide/inventory/manage-inventory-segments.html"
         )
 
+    def test_same_section_docs_outrank_cross_section_filename_matches(self) -> None:
+        route = gen.ProductRoute(
+            path="/settings/workflows",
+            label="Workflows",
+            group="Governance",
+            primary_docs=[gen.DocRef(path="/guide/workflows/setting-up-workflows.html")],
+        )
+        all_paths = [
+            "/faq/faq-workflows.html",
+            "/guide/integrations/integrations-examples/use-webhooks-with-workflows.html",
+            "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+            "/guide/workflows/setting-up-workflows.html",
+            "/guide/workflows/workflow-states.html",
+        ]
+        related = [r.path for r in gen.rank_related_docs(route, all_paths)]
+        self.assertEqual(
+            related[:2],
+            [
+                "/guide/workflows/manage-record-stages.html",
+                "/guide/workflows/workflow-states.html",
+            ],
+        )
+        self.assertNotIn("/guide/workflows/setting-up-workflows.html", related)
+        self.assertEqual(
+            related[2:],
+            [
+                "/faq/faq-workflows.html",
+                "/guide/integrations/integrations-examples/use-webhooks-with-workflows.html",
+                "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            ],
+        )
+
+    def test_keyword_section_outranks_filename_match_without_primary_docs(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        all_paths = [
+            "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+        ]
+        related = [r.path for r in gen.rank_related_docs(route, all_paths)]
+        self.assertEqual(
+            related,
+            [
+                "/guide/workflows/manage-record-stages.html",
+                "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            ],
+        )
+
+    def test_drop_report_lists_evicted_paths(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        section = [f"/guide/workflows/page-{i}.html" for i in range(gen.RELATED_DOCS_CAP)]
+        outside = "/guide/risk-tiering/set-up-risk-tiering-workflows.html"
+        kept, dropped = gen.split_related_docs(route, section + [outside])
+        self.assertEqual([r.path for r in kept], section)
+        self.assertEqual([r.path for r in dropped], [outside])
+
+        site = Path(__file__).resolve().parents[1]
+        dropped_related: dict[str, list[str]] = {}
+        md = gen.render_markdown(
+            {route.path: route}, site, section + [outside], None, dropped_related
+        )
+        self.assertNotIn(outside, md)
+        self.assertEqual(dropped_related, {"/workflows": [outside]})
+        report = gen.format_dropped_report(dropped_related)
+        self.assertIn("/workflows", report)
+        self.assertIn(outside, report)
+        self.assertEqual(gen.format_dropped_report({}), "")
+
+    def test_workflow_routes_keep_manage_record_stages(self) -> None:
+        """Regression for sc-18087: the cap must not evict manage-record-stages."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        for path in ("/settings/workflows", "/settings/workflow-states", "/workflows"):
+            with self.subTest(route=path):
+                related = [
+                    r.path for r in gen.suggest_related_docs(routes[path], all_paths)
+                ]
+                self.assertIn("/guide/workflows/manage-record-stages.html", related)
+                self.assertNotIn(
+                    "/guide/risk-tiering/set-up-risk-tiering-workflows.html", related
+                )
+
     def test_parse_settings_index_resolves_copy_titles(self) -> None:
         import tempfile
 

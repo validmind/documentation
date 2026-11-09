@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -395,8 +396,48 @@ def is_user_facing_doc(path: str) -> bool:
     return path.startswith(RELATED_DOC_PREFIXES)
 
 
-def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[DocRef]:
-    """Suggest related documentation based on route/title keywords."""
+# Maximum related docs listed per route in the map.
+RELATED_DOCS_CAP = 6
+
+# Rank tiers for related-doc candidates (lower sorts first).
+TIER_SAME_SECTION = 0  # same directory as one of the route's primary docs
+TIER_KEYWORD_SECTION = 1  # keyword names the doc's section, e.g. /guide/workflows/
+TIER_FILENAME_ONLY = 2  # keyword appears only in the filename of another section
+
+
+def _doc_dir(path: str) -> str:
+    """Return the directory of a doc URL path with a trailing slash."""
+    return path.rsplit("/", 1)[0] + "/"
+
+
+def _related_doc_rank(
+    doc_path: str, segments: set[str], primary_dirs: set[str]
+) -> tuple[int, int] | None:
+    """Return (tier, specificity) for a candidate, or None when no keyword matches."""
+    inner = doc_path.lower()
+    matched = [seg for seg in segments if seg in inner]
+    if not matched:
+        return None
+    # A doc matched by a longer, more specific keyword segment outranks one
+    # matched only by a broad segment within the same tier.
+    specificity = max(len(seg) for seg in matched)
+    doc_dir = _doc_dir(inner)
+    if doc_dir in primary_dirs:
+        return TIER_SAME_SECTION, specificity
+    # Segments with a slash name a section explicitly (configuration/manage-roles);
+    # otherwise the keyword must appear in the directory, not just the filename.
+    if any("/" in seg or seg in doc_dir for seg in matched):
+        return TIER_KEYWORD_SECTION, specificity
+    return TIER_FILENAME_ONLY, specificity
+
+
+def rank_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[DocRef]:
+    """Return every related-doc candidate for a route, most relevant first.
+
+    Candidates are ordered by section first (the primary docs' own section, then
+    sections named by a route keyword, then filename-only matches elsewhere), then
+    by keyword specificity, then by path so the order is deterministic.
+    """
     haystack = f"{route.path} {route.label} {route.group or ''}".lower()
     segments: set[str] = set()
     for keyword, doc_segments in RELATED_DOC_KEYWORDS.items():
@@ -404,18 +445,45 @@ def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[
             segments.update(doc_segments)
 
     primary_paths = {d.path for d in route.primary_docs}
-    related: list[tuple[int, DocRef]] = []
+    primary_dirs = {_doc_dir(p.lower()) for p in primary_paths}
+    ranked: list[tuple[int, int, str]] = []
     for doc_path in all_doc_paths:
         if doc_path in primary_paths or not is_user_facing_doc(doc_path):
             continue
-        inner = doc_path.lower()
-        # A doc matched by a longer, more specific keyword segment outranks one
-        # matched only by a broad segment, so it survives the cap below.
-        best = max((len(seg) for seg in segments if seg in inner), default=0)
-        if best:
-            related.append((best, DocRef(path=doc_path)))
-    related.sort(key=lambda item: (-item[0], item[1].path))
-    return [ref for _, ref in related[:6]]
+        rank = _related_doc_rank(doc_path, segments, primary_dirs)
+        if rank is not None:
+            tier, specificity = rank
+            ranked.append((tier, -specificity, doc_path))
+    ranked.sort()
+    return [DocRef(path=doc_path) for _, _, doc_path in ranked]
+
+
+def split_related_docs(
+    route: ProductRoute, all_doc_paths: list[str]
+) -> tuple[list[DocRef], list[DocRef]]:
+    """Return (kept, dropped) related docs for a route under RELATED_DOCS_CAP."""
+    ranked = rank_related_docs(route, all_doc_paths)
+    return ranked[:RELATED_DOCS_CAP], ranked[RELATED_DOCS_CAP:]
+
+
+def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[DocRef]:
+    """Suggest related documentation based on route/title keywords."""
+    kept, _ = split_related_docs(route, all_doc_paths)
+    return kept
+
+
+def format_dropped_report(dropped: dict[str, list[str]]) -> str:
+    """Summarize related docs that the cap left out, one block per route."""
+    if not dropped:
+        return ""
+    lines = [
+        f"Related docs dropped by the {RELATED_DOCS_CAP}-entry cap "
+        f"({len(dropped)} routes):"
+    ]
+    for route_path in sorted(dropped):
+        lines.append(f"  {route_path}")
+        lines.extend(f"    - {doc_path}" for doc_path in dropped[route_path])
+    return "\n".join(lines)
 
 
 DEFAULT_SNAPSHOT_NAME = "chatbot-product-map-frontend-snapshot.json"
@@ -567,7 +635,9 @@ def render_markdown(
     site_dir: Path,
     all_doc_paths: list[str],
     llm_output_dir: Path | None,
+    dropped_related: dict[str, list[str]] | None = None,
 ) -> str:
+    """Render the map. Related docs left out by the cap go into dropped_related."""
     lines = [
         "# ValidMind product-to-documentation map",
         "",
@@ -616,14 +686,13 @@ def render_markdown(
                 for ref in route.primary_docs:
                     lines.append(format_doc_line(ref, site_dir, llm_output_dir))
                 lines.append("")
-            related = route.related_docs or suggest_related_docs(route, all_doc_paths)
-            # Exclude primary from related
-            primary_keys = {d.path for d in route.primary_docs}
-            related = [r for r in related if r.path not in primary_keys]
+            related, dropped = split_related_docs(route, all_doc_paths)
+            if dropped and dropped_related is not None:
+                dropped_related[route.path] = [ref.path for ref in dropped]
             if related:
                 lines.append("**Docs (related):**")
                 lines.append("")
-                for ref in related[:6]:
+                for ref in related:
                     lines.append(format_doc_line(ref, site_dir, llm_output_dir))
                 lines.append("")
             for note in route.notes:
@@ -709,10 +778,20 @@ def main() -> int:
     routes = merge_routes(settings, nav, file_links)
     all_doc_paths = collect_all_doc_qmd_paths(site_dir)
 
-    md = render_markdown(routes, site_dir, all_doc_paths, llm_output if llm_output.is_dir() else None)
+    dropped_related: dict[str, list[str]] = {}
+    md = render_markdown(
+        routes,
+        site_dir,
+        all_doc_paths,
+        llm_output if llm_output.is_dir() else None,
+        dropped_related,
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md, encoding="utf-8")
     print(f"Wrote {output_path} ({len(routes)} routes)")
+    report = format_dropped_report(dropped_related)
+    if report:
+        print(report, file=sys.stderr)
 
     if args.json_output:
         payload = {
