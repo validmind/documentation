@@ -6,7 +6,7 @@ title: "Draft documents with AI"
 date: last-modified
 ---
 
-Use AI drafting to write your documents from the evidence on your record, such as logged test results, record fields, metrics and attached files. You review every draft before it goes into the document.
+Use AI drafting to write your documents from the evidence on your record, such as logged test results, record fields and metrics, plus the files and other documents you add as context. You review every draft before it goes into the document.
 
 ## How AI drafting works {#how-ai-drafting-works}
 
@@ -20,7 +20,8 @@ The agent reads the following evidence:
 - The section's guidelines from the document template
 - Test results logged to the record[^2]
 - Record fields and metrics
-- Files attached to the record, starting with any files you add as context
+- Files attached to the record that you add as context
+- Other documents of the record that you add as context
 - Other sections of the same document
 
 The agent reads the record the way you see it. Fields and files that are hidden from you are left out, so a draft never contains values you can't see.
@@ -59,7 +60,7 @@ Every block you insert from a draft keeps a record of who requested it, which AI
 
    The box shows the instructions from the last whole-document draft. You can edit or clear them.
 
-7. (Optional) Add files from the record as extra context.[^9]
+7. (Optional) Add files or other documents from the record as extra context.[^9]
 
 8. Click **Draft Document**.
 
@@ -104,7 +105,7 @@ Inserted sections show when their blocks were accepted. A section that could not
 
    The box shows the instructions last used for this section, whether they came from Draft Section or from a whole-document draft.
 
-4. (Optional) Add files from the record as extra context.[^9]
+4. (Optional) Add files or other documents from the record as extra context.[^9]
 
 5. Click **Draft Section**.
 
@@ -116,17 +117,22 @@ Inserted sections show when their blocks were accepted. A section that could not
 
 8. If a block you are inserting already has content, click **Yes, Replace Content** to confirm.
 
-## Add files as context {#add-files-as-context}
+## Add files and documents as context {#add-files-as-context}
 
-The agent can look through any file attached to the record that it can read. To make sure it uses specific files, such as development documentation, training code or notebooks, add them as context. The agent reads those files first and treats them as primary source material. The option appears when the record has files it can read in an attachments field.[^11]
+The agent reads only the files and documents you add as context. If you add none, it drafts from the record's test results, fields and metrics and the other sections of the same document. Add the files and documents a draft should use, such as development documentation, training code, notebooks or a related report on the same record. The agent treats them as primary source material.
 
-1. In the **Instructions** box, click **{{< fa plus >}}** and select **Add Files to Context**.
+1. In the **Instructions** box, click **{{< fa plus >}}** and select one of the following:
 
-2. Select the files you want the agent to read. Files are grouped by attachments field, with their upload date, uploader and size.
+   - **Add Files to Context** — Appears when the record has files the agent can read in an attachments field.[^11]
+   - **Add Documents to Context** — Appears when the record has other documents you can open.
+
+2. Select the files or documents you want the agent to read. Files are grouped by attachments field, with their upload date, uploader and size. You can select up to 10 documents.
 
 3. Click **Add to Context**.
 
-The selected files show under your instructions. To remove one, click **{{< fa xmark >}}** on the file.
+The selected files and documents show under your instructions. To remove one, click **{{< fa xmark >}}** on it. The next time you open the dialog, it starts with the files and documents from the last draft: the section's last draft for Draft Section, and the last whole-document draft for Draft Document.
+
+For a document added as context, the agent reads its outline first and then only the sections it needs. A section it cites shows under Sources with the document and section name. Click it to open that section. Only the latest version of each document can be added, and not the document you are drafting. If a document can't be read, such as an uploaded PDF that hasn't been processed yet, the draft continues without it.
 
 The agent reads PDFs and text files, such as code, notebooks, Markdown, YAML, JSON, CSV and plain text files. It reads notebooks as their text and code cells, without outputs or images. Images, video, audio, zip files and Office files such as `.docx`, `.xlsx` and `.pptx` are not offered. Text files larger than 10 MB are skipped, and only the first 100,000 characters of a long text file are read. If a file can't be read, the draft continues without it.
 
@@ -158,7 +164,7 @@ For test results and record fields, a block is flagged only when the evidence it
 - A test result counts as changed when its values changed. A test that runs again with the same values does not flag the block. A result logged for the test under a new result ID also flags the block, and only a redraft picks it up.
 - A block written from record fields is flagged only when one of those fields changes. The reason names the field, such as "Purpose updated 2 hours ago."
 
-Other evidence, such as metrics and attachments, flags the block whenever it is updated, even if the values it cites stay the same. Blocks drafted before evidence tracking are also flagged on any update.
+Other evidence, such as metrics, attachments and documents added as context, flags the block whenever it is updated, even if the values it cites stay the same. For a document, any edit flags the block, not only an edit to the section it cites. Blocks drafted before evidence tracking are also flagged on any update.
 
 To bring a flagged block up to date:
 
@@ -171,13 +177,13 @@ To bring a flagged block up to date:
 
 Update Values warns you when a redraft is the better choice, for example when a test ran again as a new result or a conclusion may no longer hold. Edits you made by hand are kept. For a block drafted before evidence tracking, or a block that rests on fields you can't see, Update Values can't compare the values and asks you to redraft the section.
 
-To update every flagged section at once, expand the Draft Document box on the right and use Update Values or Regenerate Stale Sections.
+To update every flagged section at once, expand the Draft Document box on the right and use Update Values or Regenerate Stale Sections. Regenerate Stale Sections drafts each section with the files and documents it was last drafted with.
 
 ## When a section has insufficient source material {#when-a-section-has-insufficient-source-material}
 
 If the agent finds too little evidence for a block, it writes a short note in italics instead of a draft: "Insufficient source material to draft this section." The note names what to add to the record, such as a model purpose or development documentation.
 
-Add the missing information to the record, for example by completing record fields, logging test results or attaching files, then draft the section again. Replace or delete the note before you submit the document.
+Add the missing information to the record, for example by completing record fields, logging test results or attaching files and adding them as context, then draft the section again. Replace or delete the note before you submit the document.
 
 ## Get notified when a draft finishes {#get-notified-when-a-draft-finishes}
 
@@ -213,7 +219,7 @@ Stopping a draft sends no update.
 
 [^8]: [Work with document versions](/guide/documentation/work-with-document-versions.qmd)
 
-[^9]: [Add files as context](#add-files-as-context)
+[^9]: [Add files and documents as context](#add-files-as-context)
 
 [^10]: [Draft a single section](#draft-a-single-section)
 
