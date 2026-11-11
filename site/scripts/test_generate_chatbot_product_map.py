@@ -144,9 +144,59 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         self.assertNotIn(outside, md)
         self.assertEqual(dropped_related, {"/workflows": [outside]})
         report = gen.format_dropped_report(dropped_related)
-        self.assertIn("/workflows", report)
-        self.assertIn(outside, report)
-        self.assertEqual(gen.format_dropped_report({}), "")
+        self.assertIn("## `/workflows`", report)
+        self.assertIn(f"- `{outside}`", report)
+        self.assertIn("No routes drop related docs.", gen.format_dropped_report({}))
+        self.assertEqual(
+            gen.dropped_report_path(site / "llm" / "chatbot-product-map.md"),
+            site / "llm" / "chatbot-product-map-dropped.md",
+        )
+
+    def test_load_sidebar_order_follows_sidebar_and_skips_comments(self) -> None:
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            site = Path(tmp)
+            (site / "guide").mkdir()
+            (site / "guide" / "_sidebar.yaml").write_text(
+                "website:\n"
+                "  sidebar:\n"
+                "    - id: guides\n"
+                "      contents:\n"
+                "        - file: guide/workflows/introduction-to-workflows.qmd\n"
+                "          contents:\n"
+                "            - guide/workflows/workflow-states.qmd\n"
+                "            # - guide/workflows/workflow-configuration-examples.qmd\n"
+                "            - text: \"Conditional requirements\"\n"
+                "              file: guide/workflows/conditional-step-requirements.qmd\n"
+                "            - guide/workflows/workflow-states.qmd\n",
+                encoding="utf-8",
+            )
+            order = gen.load_sidebar_order(site)
+        self.assertEqual(
+            list(order),
+            [
+                "/guide/workflows/introduction-to-workflows.html",
+                "/guide/workflows/workflow-states.html",
+                "/guide/workflows/conditional-step-requirements.html",
+            ],
+        )
+
+    def test_sidebar_order_breaks_ties_within_a_section(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        listed = [
+            "/guide/workflows/introduction-to-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+        ]
+        unlisted = "/guide/workflows/approve-workflow-steps.html"
+        sidebar_order = {path: i for i, path in enumerate(listed)}
+        related = [
+            r.path
+            for r in gen.rank_related_docs(route, sorted(listed + [unlisted]), sidebar_order)
+        ]
+        # Sidebar position wins over path order, and pages missing from the
+        # sidebar sort after every listed page in the same tier.
+        self.assertEqual(related, listed + [unlisted])
 
     def test_workflow_routes_keep_manage_record_stages(self) -> None:
         """Regression for sc-18087: the cap must not evict manage-record-stages."""
@@ -154,12 +204,24 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
         routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
         all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
         for path in ("/settings/workflows", "/settings/workflow-states", "/workflows"):
             with self.subTest(route=path):
                 related = [
-                    r.path for r in gen.suggest_related_docs(routes[path], all_paths)
+                    r.path
+                    for r in gen.suggest_related_docs(routes[path], all_paths, sidebar_order)
                 ]
-                self.assertIn("/guide/workflows/manage-record-stages.html", related)
+                self.assertIn(
+                    "/guide/workflows/manage-record-stages.html",
+                    related,
+                    msg=(
+                        "manage-record-stages no longer fits in this route's "
+                        f"{gen.RELATED_DOCS_CAP} related-doc slots. Related docs follow the "
+                        "order of site/guide/_sidebar.yaml, so a page added ahead of it in the "
+                        "Workflows section pushes it out. See "
+                        "site/llm/chatbot-product-map-dropped.md and check with the docs team."
+                    ),
+                )
                 self.assertNotIn(
                     "/guide/risk-tiering/set-up-risk-tiering-workflows.html", related
                 )
@@ -170,12 +232,16 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
         routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
         all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
         related = [
             r.path
-            for r in gen.suggest_related_docs(routes["/settings/risk-tier-templates"], all_paths)
+            for r in gen.suggest_related_docs(
+                routes["/settings/risk-tier-templates"], all_paths, sidebar_order
+            )
         ]
         self.assertIn("/guide/risk-tiering/manage-risk-tier-templates.html", related)
-        self.assertEqual(related[0], "/guide/risk-tiering/configure-risk-tier-calculation.html")
+        risk_tiering = [p for p in related if p.startswith("/guide/risk-tiering/")]
+        self.assertEqual(related[: len(risk_tiering)], risk_tiering)
 
     def test_parse_settings_index_resolves_copy_titles(self) -> None:
         import tempfile

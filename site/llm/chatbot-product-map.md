@@ -21,18 +21,18 @@
 
 **Docs (related):**
 
-- `/guide/attestation/approve-attestations.html`
-  - Sections: Prerequisites; Steps
-- `/guide/attestation/manage-attestations.html`
-  - Sections: Prerequisites; Add attestation templates; Test attestation schedules; Edit attestation periods; Cancel attestation periods; View attestations dashboard; Progress; Responses
-- `/guide/attestation/review-attestations.html`
-  - Sections: Prerequisites; Steps
-- `/guide/attestation/submit-attestations.html`
-  - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
   - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/attestation/manage-attestations.html`
+  - Sections: Prerequisites; Add attestation templates; Test attestation schedules; Edit attestation periods; Cancel attestation periods; View attestations dashboard; Progress; Responses
+- `/guide/attestation/submit-attestations.html`
+  - Sections: Prerequisites; Steps
+- `/guide/attestation/review-attestations.html`
+  - Sections: Prerequisites; Steps
+- `/guide/attestation/approve-attestations.html`
+  - Sections: Prerequisites; Steps
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -48,14 +48,14 @@
 
 **Docs (related):**
 
-- `/guide/attestation/approve-attestations.html`
+- `/guide/attestation/working-with-attestations.html`
+  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
+- `/guide/attestation/submit-attestations.html`
   - Sections: Prerequisites; Steps
 - `/guide/attestation/review-attestations.html`
   - Sections: Prerequisites; Steps
-- `/guide/attestation/submit-attestations.html`
+- `/guide/attestation/approve-attestations.html`
   - Sections: Prerequisites; Steps
-- `/guide/attestation/working-with-attestations.html`
-  - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
 - `/faq/faq-attestations.html`
   - Sections: Who can submit, review, and approve attestations?; Why aren't attestations displayed right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 
@@ -84,18 +84,18 @@
 
 **Docs (related):**
 
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
+- `/guide/templates/managing-documents.html`
+  - Sections: Manage document defaults; Manage document types and documents; What's next
 - `/guide/templates/manage-document-types.html`
   - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 - `/guide/templates/manage-documents.html`
   - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
-- `/guide/templates/managing-documents.html`
-  - Sections: Manage document defaults; Manage document types and documents; What's next
 
 ### Main navigation
 
@@ -117,35 +117,35 @@
 
 **Docs (related):**
 
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 - `/guide/templates/managing-documents.html`
   - Sections: Manage document defaults; Manage document types and documents; What's next
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 
 #### `/settings/documents/general` — General
 
 **Docs (related):**
 
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
   - Sections: Prerequisites; Edit template outlines; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
+- `/guide/templates/managing-documents.html`
+  - Sections: Manage document defaults; Manage document types and documents; What's next
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -253,18 +253,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
-- `/guide/configuration/configure-azure-private-link.html`
-  - Sections: Prerequisites; VNet service information; Steps; What's next
-- `/guide/configuration/configure-google-private-service-connect.html`
-  - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
-- `/guide/configuration/configure-sso-with-entra.html`
-  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
+- `/guide/configuration/managing-your-organization.html`
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
+- `/guide/configuration/set-up-your-organization.html`
+  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
+- `/guide/configuration/manage-platform-notifications.html`
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
+- `/guide/configuration/manage-announcements.html`
+  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
+- `/guide/configuration/configure-aws-privatelink.html`
+  - Sections: Prerequisites; VPC service information; Steps; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -272,18 +272,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
-- `/guide/configuration/configure-azure-private-link.html`
-  - Sections: Prerequisites; VNet service information; Steps; What's next
-- `/guide/configuration/configure-google-private-service-connect.html`
-  - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
-- `/guide/configuration/configure-sso-with-entra.html`
-  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
+- `/guide/configuration/managing-your-organization.html`
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
+- `/guide/configuration/set-up-your-organization.html`
+  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
+- `/guide/configuration/manage-platform-notifications.html`
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
+- `/guide/configuration/manage-announcements.html`
+  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
+- `/guide/configuration/configure-aws-privatelink.html`
+  - Sections: Prerequisites; VPC service information; Steps; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -291,18 +291,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
-- `/guide/configuration/configure-azure-private-link.html`
-  - Sections: Prerequisites; VNet service information; Steps; What's next
-- `/guide/configuration/configure-google-private-service-connect.html`
-  - Sections: Prerequisites; VPC service information; Configure your Google Cloud Platform project; Request access from }; Prepare your network for connection; Create an endpoint to connect to }; Steps; Create an endpoint to connect to the } authentication service
-- `/guide/configuration/configure-sso-with-entra.html`
-  - Sections: Prerequisites; Step 1: Register an application in Entra ID; Step 2: Configure the claims Entra ID sends to ValidMind; Step 3: Send ValidMind your application details; Step 4: Map Entra groups to ValidMind roles; Step 5: Test sign-in; Why no client secret?; What's next
+- `/guide/configuration/managing-your-organization.html`
+  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
+- `/guide/configuration/set-up-your-organization.html`
+  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
+- `/guide/configuration/manage-platform-notifications.html`
+  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
+- `/guide/configuration/manage-announcements.html`
+  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
 - `/guide/configuration/configuring-private-connectivity.html`
   - Sections: What's next
-- `/guide/configuration/customize-your-dashboard.html`
-  - Sections: Prerequisites; Manage dashboards; Add dashboards; Edit or remove dashboards; Share a dashboard with your organization; Manage widgets; Arrange widgets; Add widgets
+- `/guide/configuration/configure-aws-privatelink.html`
+  - Sections: Prerequisites; VPC service information; Steps; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -312,18 +312,18 @@
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -374,35 +374,35 @@
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 #### `/settings/primary-record-types` — Inventory Record Types
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -410,18 +410,18 @@
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -466,16 +466,16 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/working-with-risk-tiering.html`
+  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/risk-tiering/configure-risk-tier-calculation.html`
   - Sections: Prerequisites; Set up a Scorecard template; 1. Configure scoring levels; 2. Add risk factors; 3. Add components and scoring rules; 4. Set risk tier thresholds; 5. Configure override rules; Set up a Risk Matrix template
 - `/guide/risk-tiering/manage-risk-tier-assessments.html`
   - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
-- `/guide/risk-tiering/working-with-risk-tiering.html`
-  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -483,18 +483,18 @@
 
 **Docs (related):**
 
+- `/guide/risk-tiering/working-with-risk-tiering.html`
+  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
+- `/guide/risk-tiering/manage-risk-tier-templates.html`
+  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/risk-tiering/configure-risk-tier-calculation.html`
   - Sections: Prerequisites; Set up a Scorecard template; 1. Configure scoring levels; 2. Add risk factors; 3. Add components and scoring rules; 4. Set risk tier thresholds; 5. Configure override rules; Set up a Risk Matrix template
 - `/guide/risk-tiering/manage-risk-tier-assessments.html`
   - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
-- `/guide/risk-tiering/manage-risk-tier-templates.html`
-  - Sections: Prerequisites; Access risk tier templates; Create a template; Select a tier calculation method; Define risk tier levels; Publish a template; Create a new version; Duplicate a template
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
   - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
-- `/guide/risk-tiering/working-with-risk-tiering.html`
-  - Sections: Overview; Key concepts; Lifecycle; Who does what; Where to access risk tiering; What's next
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -522,16 +522,16 @@
 
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -544,18 +544,18 @@
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 #### `/settings/statuses` — Model Stages
 
@@ -566,18 +566,18 @@
 
 **Docs (related):**
 
-- `/guide/inventory/archive-delete-records.html`
-  - Sections: By default, only the Customer Admin role[^1] can access archived records.; Prerequisites; Change record stages; Instead of manually modifying your records' stages,[^4] we recommend manipulating stages via customized workflows.[^5]; Delete records; Record deletion is also permanent and cannot be undone.
-- `/guide/inventory/configure-record-interdependencies.html`
-  - Sections: Prerequisites; View interdependencies; View dependencies across the inventory; Edit interdependencies; Define dependency types
-- `/guide/inventory/customize-inventory-layout.html`
-  - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
-- `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
-- `/guide/inventory/edit-inventory-fields.html`
-  - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
-- `/guide/inventory/import-records-into-inventory.html`
-  - Sections: Prerequisites; Prepare your file; How columns are mapped; Import records; Import records via API
+- `/guide/inventory/setting-up-the-inventory.html`
+  - Sections: What's next
+- `/guide/inventory/manage-inventory-record-types.html`
+  - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
+- `/guide/inventory/manage-inventory-fields.html`
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+- `/guide/inventory/manage-inventory-segments.html`
+  - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
+- `/guide/inventory/record-intake.html`
+  - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
+- `/guide/inventory/working-with-the-inventory.html`
+  - Sections: Prerequisites; Search, filter, and sort records; How do I create effective filters?; Filter from a table cell; Filter by calculated and aggregation fields; Group records; Using the } inventory; What's next
 
 ### Documents
 
@@ -590,18 +590,18 @@
 
 **Docs (related):**
 
-- `/guide/templates/customize-document-checker.html`
-  - Sections: Prerequisites; Manage regulations and policies; Default regulations provided by } cannot be edited.; Archive, restore, or delete default regulations; Archiving and deleting apply to your organization only.; Manage assessments; Default assessments provided by } cannot be edited, only cloned.; Add or clone assessments
+- `/guide/templates/working-with-document-templates.html`
+  - Sections: What's next
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
-- `/guide/templates/manage-document-types.html`
-  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
-- `/guide/templates/manage-documents.html`
-  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 - `/guide/templates/manage-text-block-library.html`
   - Sections: Prerequisites; Add text blocks; Add existing text blocks to library; Duplicate text blocks; Edit text blocks; Delete text blocks
 - `/guide/templates/managing-documents.html`
   - Sections: Manage document defaults; Manage document types and documents; What's next
+- `/guide/templates/manage-document-types.html`
+  - Sections: Prerequisites; Add document types; Edit or delete document types; Development, Validation, and Monitoring document types are stock types and cannot be deleted.
+- `/guide/templates/manage-documents.html`
+  - Sections: Prerequisites; Add record documents; PDF requirements and limits; How do I get the best results when converting PDFs into editable documents?; How can I trust that the conversion is accurate?; Troubleshooting; My PDF conversion is stuck. What can I do?; Edit record documents
 
 ### Organization
 
@@ -636,18 +636,17 @@
 
 **Docs (related):**
 
-- `/guide/workflows/assign-workflow-executions.html`
-  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
-- `/guide/workflows/conditional-step-requirements.html`
-  - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
+- `/guide/workflows/workflow-step-types.html`
+- `/guide/workflows/conditional-step-requirements.html`
+  - Sections: Prerequisites; Configure conditional requirements
+- `/guide/workflows/setting-up-workflows.html`
+  - Sections: View, sort, and filter workflows; Search workflows; Sort workflows; Filter workflows; How do I create effective filters?; View workflow details; Review workflow properties; Browse version history
 - `/guide/workflows/manage-record-stages.html`
   - Sections: Prerequisites; Add record stages; Edit or delete record stages
-- `/guide/workflows/manage-workflow-tasks.html`
-  - Sections: Prerequisites; View workflow tasks; View tasks; Access details; Transition workflows
+- `/guide/workflows/configure-workflows.html`
+  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 
 #### `/settings/workflows` — Workflows
 
@@ -658,18 +657,17 @@
 
 **Docs (related):**
 
-- `/guide/workflows/assign-workflow-executions.html`
-  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
-- `/guide/workflows/conditional-step-requirements.html`
-  - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
+- `/guide/workflows/workflow-step-types.html`
+- `/guide/workflows/conditional-step-requirements.html`
+  - Sections: Prerequisites; Configure conditional requirements
+- `/guide/workflows/workflow-states.html`
+  - Sections: Prerequisites; Manage workflow states
 - `/guide/workflows/manage-record-stages.html`
   - Sections: Prerequisites; Add record stages; Edit or delete record stages
-- `/guide/workflows/manage-workflow-tasks.html`
-  - Sections: Prerequisites; View workflow tasks; View tasks; Access details; Transition workflows
+- `/guide/workflows/configure-workflows.html`
+  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 
 ## Main application
 
@@ -714,18 +712,18 @@
 
 **Docs (related):**
 
-- `/guide/monitoring/enable-monitoring.html`
-  - Sections: Prerequisites; Steps; 1. Get monitoring code snippet; 2. Select monitoring template; 3. Run code snippet; A template must already be applied to your selected document to populate monitoring test results in the }.; What's next
 - `/guide/monitoring/ongoing-monitoring.html`
   - Sections: Monitoring scenarios; Ongoing monitoring plan; Key concepts; Design and implementation; Testing; Manage ongoing monitoring; Code samples; } Available tests
+- `/guide/monitoring/enable-monitoring.html`
+  - Sections: Prerequisites; Steps; 1. Get monitoring code snippet; 2. Select monitoring template; 3. Run code snippet; A template must already be applied to your selected document to populate monitoring test results in the }.; What's next
 - `/guide/monitoring/review-monitoring-results.html`
   - Sections: Prerequisites; Steps; Example monitoring test results; [} Satisfactory]; [} Requires Attention]
+- `/guide/monitoring/work-with-metrics-over-time.html`
+  - Sections: **Log metrics over time }**; Prerequisites; Add metrics over time; Add integration metrics; Use the global time range; View metric over time metadata
 - `/guide/monitoring/set-thresholds-and-alerts.html`
   - Sections: Prerequisites; Use a custom function; Set the `passed` parameter; Output examples; Alert notifications
 - `/guide/monitoring/trigger-workflows-on-threshold-breach.html`
   - Sections: Prerequisites; Set up the trigger; When the workflow starts; Review the breach that started a workflow; Include breach details in an artifact or a notification; What a breach sends; What's next
-- `/guide/monitoring/work-with-metrics-over-time.html`
-  - Sections: **Log metrics over time }**; Prerequisites; Add metrics over time; Add integration metrics; Use the global time range; View metric over time metadata
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -752,16 +750,16 @@
 
 **Docs (related):**
 
-- `/guide/attestation/approve-attestations.html`
-  - Sections: Prerequisites; Steps
-- `/guide/attestation/manage-attestations.html`
-  - Sections: Prerequisites; Add attestation templates; Test attestation schedules; Edit attestation periods; Cancel attestation periods; View attestations dashboard; Progress; Responses
-- `/guide/attestation/review-attestations.html`
-  - Sections: Prerequisites; Steps
-- `/guide/attestation/submit-attestations.html`
-  - Sections: Prerequisites; Steps
 - `/guide/attestation/working-with-attestations.html`
   - Sections: Key concepts; Where do I access attestations?; How does the attestation process work?; How are attestation submissions organized?; How do I create meaningful attestation questionnaires?; Prerequisites; Manage attestations; What's next
+- `/guide/attestation/manage-attestations.html`
+  - Sections: Prerequisites; Add attestation templates; Test attestation schedules; Edit attestation periods; Cancel attestation periods; View attestations dashboard; Progress; Responses
+- `/guide/attestation/submit-attestations.html`
+  - Sections: Prerequisites; Steps
+- `/guide/attestation/review-attestations.html`
+  - Sections: Prerequisites; Steps
+- `/guide/attestation/approve-attestations.html`
+  - Sections: Prerequisites; Steps
 - `/faq/faq-attestations.html`
   - Sections: Who can submit, review, and approve attestations?; Why aren't attestations displayed right after I create them?; Why are my attestations split into multiple submissions?; Can I schedule recurring attestation periods?; Can I start an attestation period in the past?; What happens when an attestation period starts?; What information is captured in an attestation snapshot?; Can I change an attestation after signing off?
 
@@ -795,18 +793,17 @@
 
 **Docs (related):**
 
-- `/guide/workflows/assign-workflow-executions.html`
-  - Sections: Prerequisites; Assign or change a workflow assignee; When starting or rescheduling a workflow; On scheduled, active, or waiting workflows; View workflows by assignee; Filter workflows by assignee; Export workflows by assignee
-- `/guide/workflows/conditional-step-requirements.html`
-  - Sections: Prerequisites; Configure conditional requirements
-- `/guide/workflows/configure-workflows.html`
-  - Sections: Prerequisites; Create custom workflows; 1. Add new workflows; 2. Configure workflow steps; 3. Link workflow together; Workflow steps relationship unclear on your canvas?; 4. Publish workflow; Clone existing workflows
 - `/guide/workflows/introduction-to-workflows.html`
   - Sections: Workflow elements; What's next
+- `/guide/workflows/workflow-step-types.html`
+- `/guide/workflows/conditional-step-requirements.html`
+  - Sections: Prerequisites; Configure conditional requirements
+- `/guide/workflows/workflow-states.html`
+  - Sections: Prerequisites; Manage workflow states
+- `/guide/workflows/setting-up-workflows.html`
+  - Sections: View, sort, and filter workflows; Search workflows; Sort workflows; Filter workflows; How do I create effective filters?; View workflow details; Review workflow properties; Browse version history
 - `/guide/workflows/manage-record-stages.html`
   - Sections: Prerequisites; Add record stages; Edit or delete record stages
-- `/guide/workflows/manage-workflow-tasks.html`
-  - Sections: Prerequisites; View workflow tasks; View tasks; Access details; Transition workflows
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 

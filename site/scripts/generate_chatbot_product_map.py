@@ -21,7 +21,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -405,6 +404,35 @@ TIER_SAME_SECTION = 0  # same directory as one of the route's primary docs
 TIER_KEYWORD_SECTION = 1  # keyword names the doc's section, e.g. /guide/workflows/
 TIER_FILENAME_ONLY = 2  # keyword appears only in the filename of another section
 
+SIDEBAR_PAGE_PATTERN = re.compile(
+    r"""^\s*(?:-\s+)?(?:file:\s*)?["']?([\w./-]+\.(?:qmd|ipynb|md))["']?\s*$"""
+)
+
+
+def load_sidebar_order(site_dir: Path) -> dict[str, int]:
+    """Return {doc URL path: position} from the docs site sidebars.
+
+    Docs writers order each sidebar section by hand (overview first, then
+    how-tos), so this position breaks ties between related docs in the same
+    tier before falling back to path order. Commented-out entries are skipped
+    and the first occurrence of a page wins.
+    """
+    sources = [site_dir / "_quarto.yml", *sorted(site_dir.glob("*/_sidebar.yaml"))]
+    order: dict[str, int] = {}
+    for source in sources:
+        if not source.is_file():
+            continue
+        for line in source.read_text(encoding="utf-8").splitlines():
+            if line.lstrip().startswith("#"):
+                continue
+            match = SIDEBAR_PAGE_PATTERN.match(line)
+            if not match:
+                continue
+            rel = match.group(1)
+            url = "/" + rel.rsplit(".", 1)[0] + ".html"
+            order.setdefault(url, len(order))
+    return order
+
 
 def _doc_dir(path: str) -> str:
     """Return the directory of a doc URL path with a trailing slash."""
@@ -432,13 +460,20 @@ def _related_doc_rank(
     return TIER_FILENAME_ONLY, specificity
 
 
-def rank_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[DocRef]:
+def rank_related_docs(
+    route: ProductRoute,
+    all_doc_paths: list[str],
+    sidebar_order: dict[str, int] | None = None,
+) -> list[DocRef]:
     """Return every related-doc candidate for a route, most relevant first.
 
     Candidates are ordered by section first (the primary docs' own section, then
     sections named by a route keyword, then filename-only matches elsewhere), then
-    by keyword specificity, then by path so the order is deterministic.
+    by keyword specificity, then by position in the docs sidebar (pages missing
+    from the sidebar come last), then by path so the order is deterministic.
     """
+    sidebar_order = sidebar_order or {}
+    unlisted = len(sidebar_order)
     haystack = f"{route.path} {route.label} {route.group or ''}".lower()
     segments: set[str] = set()
     for keyword, doc_segments in RELATED_DOC_KEYWORDS.items():
@@ -447,43 +482,70 @@ def rank_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[Doc
 
     primary_paths = {d.path for d in route.primary_docs}
     primary_dirs = {_doc_dir(p.lower()) for p in primary_paths}
-    ranked: list[tuple[int, int, str]] = []
+    ranked: list[tuple[int, int, int, str]] = []
     for doc_path in all_doc_paths:
         if doc_path in primary_paths or not is_user_facing_doc(doc_path):
             continue
         rank = _related_doc_rank(doc_path, segments, primary_dirs)
         if rank is not None:
             tier, specificity = rank
-            ranked.append((tier, -specificity, doc_path))
+            position = sidebar_order.get(doc_path, unlisted)
+            ranked.append((tier, -specificity, position, doc_path))
     ranked.sort()
-    return [DocRef(path=doc_path) for _, _, doc_path in ranked]
+    return [DocRef(path=doc_path) for *_, doc_path in ranked]
 
 
 def split_related_docs(
-    route: ProductRoute, all_doc_paths: list[str]
+    route: ProductRoute,
+    all_doc_paths: list[str],
+    sidebar_order: dict[str, int] | None = None,
 ) -> tuple[list[DocRef], list[DocRef]]:
     """Return (kept, dropped) related docs for a route under RELATED_DOCS_CAP."""
-    ranked = rank_related_docs(route, all_doc_paths)
+    ranked = rank_related_docs(route, all_doc_paths, sidebar_order)
     return ranked[:RELATED_DOCS_CAP], ranked[RELATED_DOCS_CAP:]
 
 
-def suggest_related_docs(route: ProductRoute, all_doc_paths: list[str]) -> list[DocRef]:
+def suggest_related_docs(
+    route: ProductRoute,
+    all_doc_paths: list[str],
+    sidebar_order: dict[str, int] | None = None,
+) -> list[DocRef]:
     """Suggest related documentation based on route/title keywords."""
-    kept, _ = split_related_docs(route, all_doc_paths)
+    kept, _ = split_related_docs(route, all_doc_paths, sidebar_order)
     return kept
 
 
+DROPPED_REPORT_SUFFIX = "-dropped.md"
+
+
+def dropped_report_path(map_path: Path) -> Path:
+    """Return the sidecar path that lists related docs the cap left out."""
+    return map_path.with_name(map_path.stem + DROPPED_REPORT_SUFFIX)
+
+
 def format_dropped_report(dropped: dict[str, list[str]]) -> str:
-    """Summarize related docs that the cap left out, one block per route."""
-    if not dropped:
-        return ""
+    """Render the related docs that the cap left out, one section per route.
+
+    The file is committed next to the map so a new eviction shows up as a diff
+    during review. It is not copied into the LLM corpus.
+    """
     lines = [
-        f"Related docs dropped by the {RELATED_DOCS_CAP}-entry cap "
-        f"({len(dropped)} routes):"
+        "# Related docs dropped from the chatbot product map",
+        "",
+        "> Auto-generated by `site/scripts/generate_chatbot_product_map.py`. Not part of the LLM corpus.",
+        f"> Each route lists matching docs that did not fit in its {RELATED_DOCS_CAP} related-doc slots,",
+        "> most relevant first. A change here means a route gained or lost a related doc.",
+        "",
     ]
+    if not dropped:
+        lines.append("No routes drop related docs.")
+        lines.append("")
+        return "\n".join(lines)
     for route_path in sorted(dropped):
-        lines.append(f"  {route_path}")
-        lines.extend(f"    - {doc_path}" for doc_path in dropped[route_path])
+        lines.append(f"## `{route_path}`")
+        lines.append("")
+        lines.extend(f"- `{doc_path}`" for doc_path in dropped[route_path])
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -639,6 +701,7 @@ def render_markdown(
     dropped_related: dict[str, list[str]] | None = None,
 ) -> str:
     """Render the map. Related docs left out by the cap go into dropped_related."""
+    sidebar_order = load_sidebar_order(site_dir)
     lines = [
         "# ValidMind product-to-documentation map",
         "",
@@ -671,7 +734,7 @@ def render_markdown(
             lines.append(f"#### `{route.path}` — {route.label}")
             lines.append("")
             if not route.primary_docs:
-                related = suggest_related_docs(route, all_doc_paths)
+                related = suggest_related_docs(route, all_doc_paths, sidebar_order)
                 if related:
                     route.related_docs = related
                     route.notes.append(
@@ -687,7 +750,7 @@ def render_markdown(
                 for ref in route.primary_docs:
                     lines.append(format_doc_line(ref, site_dir, llm_output_dir))
                 lines.append("")
-            related, dropped = split_related_docs(route, all_doc_paths)
+            related, dropped = split_related_docs(route, all_doc_paths, sidebar_order)
             if dropped and dropped_related is not None:
                 dropped_related[route.path] = [ref.path for ref in dropped]
             if related:
@@ -790,9 +853,9 @@ def main() -> int:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md, encoding="utf-8")
     print(f"Wrote {output_path} ({len(routes)} routes)")
-    report = format_dropped_report(dropped_related)
-    if report:
-        print(report, file=sys.stderr)
+    dropped_path = dropped_report_path(output_path)
+    dropped_path.write_text(format_dropped_report(dropped_related), encoding="utf-8")
+    print(f"Wrote {dropped_path} ({len(dropped_related)} routes drop related docs)")
 
     if args.json_output:
         payload = {
