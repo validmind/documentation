@@ -243,6 +243,29 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
         risk_tiering = [p for p in related if p.startswith("/guide/risk-tiering/")]
         self.assertEqual(related[: len(risk_tiering)], risk_tiering)
 
+    def test_integrations_routes_list_their_own_guides(self) -> None:
+        """Regression for sc-18087: integrations screens list integrations guides."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
+        own_guides = {
+            "/settings/integrations/connections": "/guide/integrations/configure-connections.html",
+            "/settings/integrations/secrets": "/guide/integrations/manage-secrets.html",
+            "/settings/integrations/data-exports": "/guide/integrations/configure-data-exports.html",
+        }
+        for route_path, guide in own_guides.items():
+            with self.subTest(route=route_path):
+                related = [
+                    r.path
+                    for r in gen.suggest_related_docs(routes[route_path], all_paths, sidebar_order)
+                ]
+                self.assertIn(guide, related)
+                self.assertTrue(
+                    all(p.startswith("/guide/integrations/") for p in related), related
+                )
+
     def test_parse_settings_index_resolves_copy_titles(self) -> None:
         import tempfile
 

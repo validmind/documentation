@@ -49,25 +49,6 @@
 
 ## `/settings/integrations/connections`
 
-- `/guide/configuration/configure-google-private-service-connect.html`
-- `/guide/configuration/configure-azure-private-link.html`
-- `/guide/configuration/configure-sso-with-entra.html`
-- `/guide/configuration/managing-users.html`
-- `/guide/configuration/manage-users.html`
-- `/guide/configuration/manage-user-fields.html`
-- `/guide/configuration/manage-groups.html`
-- `/guide/configuration/manage-roles.html`
-- `/guide/configuration/manage-record-stakeholder-types.html`
-- `/guide/configuration/manage-permissions.html`
-- `/guide/configuration/personalizing-validmind.html`
-- `/guide/configuration/manage-your-profile.html`
-- `/guide/configuration/customize-your-dashboard.html`
-- `/guide/integrations/managing-integrations.html`
-- `/guide/integrations/manage-secrets.html`
-- `/guide/integrations/manage-service-accounts.html`
-- `/guide/integrations/configure-connections.html`
-- `/guide/integrations/implement-custom-integrations.html`
-- `/guide/integrations/link-external-records.html`
 - `/guide/integrations/configure-data-exports.html`
 - `/guide/integrations/integrations-examples.html`
 - `/guide/integrations/integrations-examples/create-jira-ticket.html`
@@ -77,31 +58,11 @@
 - `/guide/integrations/integrations-examples/synchronize-with-databricks.html`
 - `/guide/integrations/integrations-examples/synchronize-gitlab.html`
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-- `/guide/workflows/workflow-configuration-examples.html`
 - `/faq/faq-integrations.html`
 
 ## `/settings/integrations/data-exports`
 
-- `/guide/configuration/configure-google-private-service-connect.html`
-- `/guide/configuration/configure-azure-private-link.html`
-- `/guide/configuration/configure-sso-with-entra.html`
-- `/guide/configuration/managing-users.html`
-- `/guide/configuration/manage-users.html`
-- `/guide/configuration/manage-user-fields.html`
-- `/guide/configuration/manage-groups.html`
-- `/guide/configuration/manage-roles.html`
-- `/guide/configuration/manage-record-stakeholder-types.html`
-- `/guide/configuration/manage-permissions.html`
-- `/guide/configuration/personalizing-validmind.html`
-- `/guide/configuration/manage-your-profile.html`
-- `/guide/configuration/customize-your-dashboard.html`
-- `/guide/integrations/managing-integrations.html`
-- `/guide/integrations/manage-secrets.html`
-- `/guide/integrations/manage-service-accounts.html`
-- `/guide/integrations/configure-connections.html`
-- `/guide/integrations/implement-custom-integrations.html`
 - `/guide/integrations/link-external-records.html`
-- `/guide/integrations/configure-data-exports.html`
 - `/guide/integrations/integrations-examples.html`
 - `/guide/integrations/integrations-examples/create-jira-ticket.html`
 - `/guide/integrations/integrations-examples/create-servicenow-incident.html`
@@ -110,30 +71,10 @@
 - `/guide/integrations/integrations-examples/synchronize-with-databricks.html`
 - `/guide/integrations/integrations-examples/synchronize-gitlab.html`
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-- `/guide/workflows/workflow-configuration-examples.html`
 - `/faq/faq-integrations.html`
 
 ## `/settings/integrations/secrets`
 
-- `/guide/configuration/configure-google-private-service-connect.html`
-- `/guide/configuration/configure-azure-private-link.html`
-- `/guide/configuration/configure-sso-with-entra.html`
-- `/guide/configuration/managing-users.html`
-- `/guide/configuration/manage-users.html`
-- `/guide/configuration/manage-user-fields.html`
-- `/guide/configuration/manage-groups.html`
-- `/guide/configuration/manage-roles.html`
-- `/guide/configuration/manage-record-stakeholder-types.html`
-- `/guide/configuration/manage-permissions.html`
-- `/guide/configuration/personalizing-validmind.html`
-- `/guide/configuration/manage-your-profile.html`
-- `/guide/configuration/customize-your-dashboard.html`
-- `/guide/integrations/managing-integrations.html`
-- `/guide/integrations/manage-secrets.html`
-- `/guide/integrations/manage-service-accounts.html`
-- `/guide/integrations/configure-connections.html`
-- `/guide/integrations/implement-custom-integrations.html`
-- `/guide/integrations/link-external-records.html`
 - `/guide/integrations/configure-data-exports.html`
 - `/guide/integrations/integrations-examples.html`
 - `/guide/integrations/integrations-examples/create-jira-ticket.html`
@@ -143,7 +84,6 @@
 - `/guide/integrations/integrations-examples/synchronize-with-databricks.html`
 - `/guide/integrations/integrations-examples/synchronize-gitlab.html`
 - `/guide/integrations/integrations-examples/use-webhooks-with-workflows.html`
-- `/guide/workflows/workflow-configuration-examples.html`
 - `/faq/faq-integrations.html`
 
 ## `/settings/inventory-model-custom-fields`

@@ -108,7 +108,13 @@ RELATED_DOC_KEYWORDS: dict[str, list[str]] = {
     "groups": ["configuration/manage-groups", "configuration/managing-users"],
     "users": ["configuration/managing-users", "configuration/manage-users"],
     "invitation": ["configuration/managing-users", "configuration/manage-users"],
-    "integrations": ["integrations", "configuration"],
+    # Integrations settings screens map to /guide/integrations/ only. Pairing it
+    # with "configuration" let the longer segment win on specificity, so these
+    # screens listed organization setup pages and none of their own guides.
+    "integrations": ["integrations"],
+    "connections": ["integrations/configure-connections"],
+    "secrets": ["integrations/manage-secrets"],
+    "data-exports": ["integrations/configure-data-exports"],
     "templates": ["templates", "model-documentation"],
     "document": ["templates", "model-documentation"],
     "inventory": ["inventory", "model-inventory"],

@@ -253,18 +253,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
-- `/guide/configuration/set-up-your-organization.html`
-  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
-- `/guide/configuration/manage-platform-notifications.html`
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
-- `/guide/configuration/manage-announcements.html`
-  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
-- `/guide/configuration/configuring-private-connectivity.html`
-  - Sections: What's next
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
+- `/guide/integrations/configure-connections.html`
+  - Sections: Supported connections; Jira; ServiceNow; Amazon SageMaker; Amazon Bedrock; MLflow; GitLab; Databricks
+- `/guide/integrations/managing-integrations.html`
+  - Sections: Key concepts; What can I do with integrations?; Analytics and reporting; Inventory; Workflows; Public REST API; Testing & documentation; Service integrations
+- `/guide/integrations/manage-secrets.html`
+  - Sections: Prerequisites; Integration secrets; View integration secret details; Add or edit integration secrets; Add integration secrets; Edit integration secrets; Revoke or delete integration secrets; Revoke integration secrets
+- `/guide/integrations/manage-service-accounts.html`
+  - Sections: Prerequisites; View service accounts; Create service accounts; Verify service account clients; How do I request an access token?; Disable or enable service accounts; Disable service accounts; Enable service accounts
+- `/guide/integrations/implement-custom-integrations.html`
+  - Sections: How do custom integrations work?; Prerequisites; Reference API; Required endpoints; Optional endpoints; `/models` response format; Authentication; Code examples
+- `/guide/integrations/link-external-records.html`
+  - Sections: Prerequisites; Link records; Refresh record data; Edit record links; Remove record links
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -272,18 +272,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
-- `/guide/configuration/set-up-your-organization.html`
-  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
-- `/guide/configuration/manage-platform-notifications.html`
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
-- `/guide/configuration/manage-announcements.html`
-  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
-- `/guide/configuration/configuring-private-connectivity.html`
-  - Sections: What's next
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
+- `/guide/integrations/configure-data-exports.html`
+  - Sections: Prerequisites; View data exports; View export details; View export run history; Create data exports; Manage data exports; Edit exports; Disable or enable exports
+- `/guide/integrations/managing-integrations.html`
+  - Sections: Key concepts; What can I do with integrations?; Analytics and reporting; Inventory; Workflows; Public REST API; Testing & documentation; Service integrations
+- `/guide/integrations/manage-secrets.html`
+  - Sections: Prerequisites; Integration secrets; View integration secret details; Add or edit integration secrets; Add integration secrets; Edit integration secrets; Revoke or delete integration secrets; Revoke integration secrets
+- `/guide/integrations/manage-service-accounts.html`
+  - Sections: Prerequisites; View service accounts; Create service accounts; Verify service account clients; How do I request an access token?; Disable or enable service accounts; Disable service accounts; Enable service accounts
+- `/guide/integrations/configure-connections.html`
+  - Sections: Supported connections; Jira; ServiceNow; Amazon SageMaker; Amazon Bedrock; MLflow; GitLab; Databricks
+- `/guide/integrations/implement-custom-integrations.html`
+  - Sections: How do custom integrations work?; Prerequisites; Reference API; Required endpoints; Optional endpoints; `/models` response format; Authentication; Code examples
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -291,18 +291,18 @@
 
 **Docs (related):**
 
-- `/guide/configuration/managing-your-organization.html`
-  - Sections: Prerequisites; Switch between organizations; Change names of organizations; Manage your organization; What's next
-- `/guide/configuration/set-up-your-organization.html`
-  - Sections: Prerequisites; Manage business units; Manage use cases; Add use cases and use case groups; Remove use cases and use case groups; Manage risk areas
-- `/guide/configuration/manage-platform-notifications.html`
-  - Sections: Prerequisites; View platform notifications; Review updates; Mark updates as read; Dismiss updates; Add My Inbox to your dashboard; Document jobs in your inbox; Customize email notifications
-- `/guide/configuration/manage-announcements.html`
-  - Sections: Prerequisites; How announcements work; Create an announcement; Target announcements to roles; Delete a role that an announcement targets; Schedule or publish an announcement; Retire, duplicate, or delete an announcement; Retire
-- `/guide/configuration/configuring-private-connectivity.html`
-  - Sections: What's next
-- `/guide/configuration/configure-aws-privatelink.html`
-  - Sections: Prerequisites; VPC service information; Steps; What's next
+- `/guide/integrations/manage-secrets.html`
+  - Sections: Prerequisites; Integration secrets; View integration secret details; Add or edit integration secrets; Add integration secrets; Edit integration secrets; Revoke or delete integration secrets; Revoke integration secrets
+- `/guide/integrations/managing-integrations.html`
+  - Sections: Key concepts; What can I do with integrations?; Analytics and reporting; Inventory; Workflows; Public REST API; Testing & documentation; Service integrations
+- `/guide/integrations/manage-service-accounts.html`
+  - Sections: Prerequisites; View service accounts; Create service accounts; Verify service account clients; How do I request an access token?; Disable or enable service accounts; Disable service accounts; Enable service accounts
+- `/guide/integrations/configure-connections.html`
+  - Sections: Supported connections; Jira; ServiceNow; Amazon SageMaker; Amazon Bedrock; MLflow; GitLab; Databricks
+- `/guide/integrations/implement-custom-integrations.html`
+  - Sections: How do custom integrations work?; Prerequisites; Reference API; Required endpoints; Optional endpoints; `/models` response format; Authentication; Code examples
+- `/guide/integrations/link-external-records.html`
+  - Sections: Prerequisites; Link records; Refresh record data; Edit record links; Remove record links
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
