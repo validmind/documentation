@@ -80,6 +80,192 @@ class TestGenerateChatbotProductMap(unittest.TestCase):
             related[0].path, "/guide/inventory/manage-inventory-segments.html"
         )
 
+    def test_same_section_docs_outrank_cross_section_filename_matches(self) -> None:
+        route = gen.ProductRoute(
+            path="/settings/workflows",
+            label="Workflows",
+            group="Governance",
+            primary_docs=[gen.DocRef(path="/guide/workflows/setting-up-workflows.html")],
+        )
+        all_paths = [
+            "/faq/faq-workflows.html",
+            "/guide/integrations/integrations-examples/use-webhooks-with-workflows.html",
+            "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+            "/guide/workflows/setting-up-workflows.html",
+            "/guide/workflows/workflow-states.html",
+        ]
+        related = [r.path for r in gen.rank_related_docs(route, all_paths)]
+        self.assertEqual(
+            related[:2],
+            [
+                "/guide/workflows/manage-record-stages.html",
+                "/guide/workflows/workflow-states.html",
+            ],
+        )
+        self.assertNotIn("/guide/workflows/setting-up-workflows.html", related)
+        self.assertEqual(
+            related[2:],
+            [
+                "/faq/faq-workflows.html",
+                "/guide/integrations/integrations-examples/use-webhooks-with-workflows.html",
+                "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            ],
+        )
+
+    def test_keyword_section_outranks_filename_match_without_primary_docs(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        all_paths = [
+            "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+        ]
+        related = [r.path for r in gen.rank_related_docs(route, all_paths)]
+        self.assertEqual(
+            related,
+            [
+                "/guide/workflows/manage-record-stages.html",
+                "/guide/risk-tiering/set-up-risk-tiering-workflows.html",
+            ],
+        )
+
+    def test_drop_report_lists_evicted_paths(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        section = [f"/guide/workflows/page-{i}.html" for i in range(gen.RELATED_DOCS_CAP)]
+        outside = "/guide/risk-tiering/set-up-risk-tiering-workflows.html"
+        kept, dropped = gen.split_related_docs(route, section + [outside])
+        self.assertEqual([r.path for r in kept], section)
+        self.assertEqual([r.path for r in dropped], [outside])
+
+        site = Path(__file__).resolve().parents[1]
+        dropped_related: dict[str, list[str]] = {}
+        md = gen.render_markdown(
+            {route.path: route}, site, section + [outside], None, dropped_related
+        )
+        self.assertNotIn(outside, md)
+        self.assertEqual(dropped_related, {"/workflows": [outside]})
+        report = gen.format_dropped_report(dropped_related)
+        self.assertIn("## `/workflows`", report)
+        self.assertIn(f"- `{outside}`", report)
+        self.assertIn("No routes drop related docs.", gen.format_dropped_report({}))
+        self.assertEqual(
+            gen.dropped_report_path(site / "llm" / "chatbot-product-map.md"),
+            site / "llm" / "chatbot-product-map-dropped.md",
+        )
+
+    def test_load_sidebar_order_follows_sidebar_and_skips_comments(self) -> None:
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            site = Path(tmp)
+            (site / "guide").mkdir()
+            (site / "guide" / "_sidebar.yaml").write_text(
+                "website:\n"
+                "  sidebar:\n"
+                "    - id: guides\n"
+                "      contents:\n"
+                "        - file: guide/workflows/introduction-to-workflows.qmd\n"
+                "          contents:\n"
+                "            - guide/workflows/workflow-states.qmd\n"
+                "            # - guide/workflows/workflow-configuration-examples.qmd\n"
+                "            - text: \"Conditional requirements\"\n"
+                "              file: guide/workflows/conditional-step-requirements.qmd\n"
+                "            - guide/workflows/workflow-states.qmd\n",
+                encoding="utf-8",
+            )
+            order = gen.load_sidebar_order(site)
+        self.assertEqual(
+            list(order),
+            [
+                "/guide/workflows/introduction-to-workflows.html",
+                "/guide/workflows/workflow-states.html",
+                "/guide/workflows/conditional-step-requirements.html",
+            ],
+        )
+
+    def test_sidebar_order_breaks_ties_within_a_section(self) -> None:
+        route = gen.ProductRoute(path="/workflows", label="Workflows")
+        listed = [
+            "/guide/workflows/introduction-to-workflows.html",
+            "/guide/workflows/manage-record-stages.html",
+        ]
+        unlisted = "/guide/workflows/approve-workflow-steps.html"
+        sidebar_order = {path: i for i, path in enumerate(listed)}
+        related = [
+            r.path
+            for r in gen.rank_related_docs(route, sorted(listed + [unlisted]), sidebar_order)
+        ]
+        # Sidebar position wins over path order, and pages missing from the
+        # sidebar sort after every listed page in the same tier.
+        self.assertEqual(related, listed + [unlisted])
+
+    def test_workflow_routes_keep_manage_record_stages(self) -> None:
+        """Regression for sc-18087: the cap must not evict manage-record-stages."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
+        for path in ("/settings/workflows", "/settings/workflow-states", "/workflows"):
+            with self.subTest(route=path):
+                related = [
+                    r.path
+                    for r in gen.suggest_related_docs(routes[path], all_paths, sidebar_order)
+                ]
+                self.assertIn(
+                    "/guide/workflows/manage-record-stages.html",
+                    related,
+                    msg=(
+                        "manage-record-stages no longer fits in this route's "
+                        f"{gen.RELATED_DOCS_CAP} related-doc slots. Related docs follow the "
+                        "order of site/guide/_sidebar.yaml, so a page added ahead of it in the "
+                        "Workflows section pushes it out. See "
+                        "site/llm/chatbot-product-map-dropped.md and check with the docs team."
+                    ),
+                )
+                self.assertNotIn(
+                    "/guide/risk-tiering/set-up-risk-tiering-workflows.html", related
+                )
+
+    def test_risk_tier_templates_route_keeps_risk_tiering_guide(self) -> None:
+        """Regression for sc-18087: section ranking must not evict the route's own guide."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
+        related = [
+            r.path
+            for r in gen.suggest_related_docs(
+                routes["/settings/risk-tier-templates"], all_paths, sidebar_order
+            )
+        ]
+        self.assertIn("/guide/risk-tiering/manage-risk-tier-templates.html", related)
+        risk_tiering = [p for p in related if p.startswith("/guide/risk-tiering/")]
+        self.assertEqual(related[: len(risk_tiering)], risk_tiering)
+
+    def test_integrations_routes_list_their_own_guides(self) -> None:
+        """Regression for sc-18087: integrations screens list integrations guides."""
+        site = Path(__file__).resolve().parents[1]
+        snapshot = site / "llm" / gen.DEFAULT_SNAPSHOT_NAME
+        routes = gen.merge_routes(*gen.load_frontend_snapshot(snapshot))
+        all_paths = gen.collect_all_doc_qmd_paths(site)
+        sidebar_order = gen.load_sidebar_order(site)
+        own_guides = {
+            "/settings/integrations/connections": "/guide/integrations/configure-connections.html",
+            "/settings/integrations/secrets": "/guide/integrations/manage-secrets.html",
+            "/settings/integrations/data-exports": "/guide/integrations/configure-data-exports.html",
+        }
+        for route_path, guide in own_guides.items():
+            with self.subTest(route=route_path):
+                related = [
+                    r.path
+                    for r in gen.suggest_related_docs(routes[route_path], all_paths, sidebar_order)
+                ]
+                self.assertIn(guide, related)
+                self.assertTrue(
+                    all(p.startswith("/guide/integrations/") for p in related), related
+                )
+
     def test_parse_settings_index_resolves_copy_titles(self) -> None:
         import tempfile
 

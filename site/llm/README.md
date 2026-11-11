@@ -36,6 +36,7 @@ Valerie needs routes in the product UI (especially **Settings**) mapped to docum
 |----------|---------|
 | `chatbot-product-map-frontend-snapshot.json` | Vendored extract from `validmind/frontend` (Settings tree, sidebar nav, `helpLink` / docs URLs) |
 | `chatbot-product-map.md` | Retrieval-oriented map: routes → primary/related docs + section headings from `.qmd` |
+| `chatbot-product-map-dropped.md` | Related docs that matched a route but did not fit in its six slots. Committed for review only, not copied into the LLM corpus |
 
 ### Why a frontend snapshot?
 
@@ -49,7 +50,9 @@ CI does **not** check out `validmind/frontend` (private repo; cross-repo PAT sco
 | Product routes or in-app help links | `make refresh-chatbot-product-map` (requires a sibling `../frontend` checkout) |
 
 Commit both `chatbot-product-map.md` and `chatbot-product-map-frontend-snapshot.json` when the snapshot changes. CI fails if either file is out of date after regeneration.
-For same-repo pull requests, the validate workflow auto-commits docs-only refreshes of `chatbot-product-map.md`. Fork pull requests and any snapshot drift still fail and require a local regenerate + commit.
+For same-repo pull requests, the validate workflow auto-commits docs-only refreshes of `chatbot-product-map.md` and `chatbot-product-map-dropped.md`. Fork pull requests and any snapshot drift still fail and require a local regenerate + commit.
+
+Related docs are ranked by section (the route's own docs section, then sections a route keyword names, then filename-only matches), then by position in the docs sidebars, then by path. Each route keeps six. A diff in `chatbot-product-map-dropped.md` means a route gained or lost a related doc, so check it when you add or reorder guide pages.
 
 Generator: `site/scripts/generate_chatbot_product_map.py`  
 Tests: `python3 -m unittest discover -s site/scripts -p 'test_generate_chatbot_product_map.py' -v` (from repo root).
