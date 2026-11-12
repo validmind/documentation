@@ -9,6 +9,7 @@ permissions:
   actions: write
   issues: write
   pull-requests: write
+  id-token: write # assume the docs deployer role through OIDC
 
 concurrency:
   group: validate-docs-${{ github.event.pull_request.number }}
@@ -194,7 +195,10 @@ jobs:
     # re-rendering the other ~1,000 pages. Only HTML and the two global indexes
     # are downloaded; the final preview is cloned server-side during deployment.
     - name: Configure AWS credentials
-      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: arn:aws:iam::014498646868:role/docs-deployer-role
+        aws-region: us-east-1
 
     - name: Seed targeted render from staging
       if: steps.preview.outputs.targeted == 'true'
@@ -304,6 +308,14 @@ jobs:
         else
           echo "No warnings or errors detected during Quarto render"
         fi
+
+    # Role sessions last an hour, and a complete render can run between the
+    # step that seeds from staging and this deploy.
+    - name: Refresh AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: arn:aws:iam::014498646868:role/docs-deployer-role
+        aws-region: us-east-1
 
     - name: Deploy PR preview
       run: |
