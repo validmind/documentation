@@ -13,6 +13,9 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # assume the docs deployer role through OIDC
 
     steps:
       - name: Check out documentation repository
@@ -69,7 +72,10 @@ jobs:
 
       # Staging bucket is in us-west-2
       - name: Configure AWS credentials
-        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-west-2
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::014498646868:role/docs-deployer-role
+          aws-region: us-west-2
 
       - name: Deploy executed notebooks only
         run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/notebooks/EXECUTED --delete --exclude "installation/helm-repo/*" --exclude "pr_previews/*" && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/notebooks/EXECUTED/*" --no-cli-pager
