@@ -7,6 +7,7 @@ on:
 permissions:
   issues: write
   pull-requests: write
+  id-token: write # assume the docs deployer role through OIDC
 
 jobs:
   execute:
@@ -87,18 +88,25 @@ jobs:
     # Demo bucket is in us-east-1
     - name: Configure AWS credentials
       if: steps.execute_demo_notebook.outcome == 'success'
-      run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }} && aws configure set default.region us-east-1
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: arn:aws:iam::014498646868:role/docs-deployer-role
+        aws-region: us-east-1
 
     - name: Deploy executed notebooks only
       if: steps.execute_demo_notebook.outcome == 'success'
-      run: aws s3 sync site/_site/notebooks/EXECUTED s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/pr_previews/${{ github.head_ref }}/notebooks/EXECUTED/*" --no-cli-pager
+      env:
+        HEAD_REF: ${{ github.head_ref }}
+      run: aws s3 sync site/_site/notebooks/EXECUTED "s3://validmind-docs-staging/site/pr_previews/${HEAD_REF}/notebooks/EXECUTED" --delete && aws cloudfront create-invalidation --distribution-id ESWVTZYFL873V --paths "/site/pr_previews/${HEAD_REF}/notebooks/EXECUTED/*" --no-cli-pager
 
     - name: Post comment with preview URLs
       if: steps.execute_demo_notebook.outcome == 'success'
       uses: actions/github-script@v6
+      env:
+        HEAD_REF: ${{ github.head_ref }}
       with:
         script: |
-          const base = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}`;
+          const base = `https://docs-staging.validmind.ai/pr_previews/${process.env.HEAD_REF}`;
           const devUrl = `${base}/notebooks/EXECUTED/development/1-set_up_validmind.html`;
           const valUrl = `${base}/notebooks/EXECUTED/validation/1-set_up_validmind_for_validation.html`;
 

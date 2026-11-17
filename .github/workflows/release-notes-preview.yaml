@@ -28,15 +28,12 @@ on:
     secrets:
       docs_ci_ro_pat:
         required: true
-      aws_access_key_id_staging:
-        required: true
-      aws_secret_access_key_staging:
-        required: true
   repository_dispatch:
     types: [release-notes-preview]
 
 permissions:
   contents: read
+  id-token: write # assume the docs deployer role through OIDC
 
 concurrency:
   group: release-notes-preview-${{ github.event.client_payload.release_notes_pr || inputs.release_notes_pr }}
@@ -149,13 +146,10 @@ jobs:
           rm -f site/releases/backend-releases.qmd site/releases/cmvm-releases.qmd
 
       - name: Configure AWS credentials
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING || secrets.aws_access_key_id_staging }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING || secrets.aws_secret_access_key_staging }}
-        run: |
-          aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
-          aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
-          aws configure set default.region us-east-1
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::014498646868:role/docs-deployer-role
+          aws-region: us-east-1
 
       - name: Seed targeted render from staging
         run: |
