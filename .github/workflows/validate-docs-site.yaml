@@ -318,8 +318,10 @@ jobs:
         aws-region: us-east-1
 
     - name: Deploy PR preview
+      env:
+        HEAD_REF: ${{ github.head_ref }}
       run: |
-        preview_path="s3://validmind-docs-staging/site/pr_previews/${{ github.head_ref }}"
+        preview_path="s3://validmind-docs-staging/site/pr_previews/${HEAD_REF}"
         if [[ "${{ steps.preview.outputs.targeted }}" == "true" ]]; then
           aws s3 sync s3://validmind-docs-staging/site "$preview_path" \
             --delete --exclude "pr_previews/*" --exclude "notebooks/EXECUTED/*" --no-progress
@@ -341,9 +343,11 @@ jobs:
 
     - name: Post comment with preview URL
       uses: actions/github-script@v6
+      env:
+        HEAD_REF: ${{ github.head_ref }}
       with:
         script: |
-          const previewUrl = `https://docs-staging.validmind.ai/pr_previews/${{ github.head_ref }}/index.html`;
+          const previewUrl = `https://docs-staging.validmind.ai/pr_previews/${process.env.HEAD_REF}/index.html`;
 
           // Delete old preview comments
           const { data: comments } = await github.rest.issues.listComments({
@@ -396,6 +400,8 @@ jobs:
 
     # Targeted guide edits can change the map without requiring a full render.
     - name: Verify chatbot product map is up to date
+      env:
+        HEAD_REF: ${{ github.head_ref }}
       run: |
         set -euo pipefail
         python3 site/scripts/generate_chatbot_product_map.py
@@ -424,7 +430,7 @@ jobs:
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git add site/llm/chatbot-product-map.md
         git commit -m "chore: refresh chatbot product map"
-        git push origin "HEAD:${{ github.head_ref }}"
+        git push origin "HEAD:${HEAD_REF}"
         echo "Auto-committed refreshed site/llm/chatbot-product-map.md."
 
     - name: Test chatbot product map generator
