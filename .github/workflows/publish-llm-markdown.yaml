@@ -10,6 +10,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # assume the docs deployer role through OIDC
 
     steps:
       - name: Check out documentation repository
@@ -77,16 +80,10 @@ jobs:
 
       # main → staging bucket (us-west-2), prod → prod bucket (us-east-1)
       - name: Configure AWS credentials
-        run: |
-          if [ "${{ github.ref_name }}" = "prod" ]; then
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
-            aws configure set default.region us-east-1
-          else
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-            aws configure set default.region us-west-2
-          fi
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ github.ref_name == 'prod' && 'arn:aws:iam::014498647012:role/docs-deployer-role' || 'arn:aws:iam::014498646868:role/docs-deployer-role' }}
+          aws-region: ${{ github.ref_name == 'prod' && 'us-east-1' || 'us-west-2' }}
 
       - name: Upload to S3
         run: |
