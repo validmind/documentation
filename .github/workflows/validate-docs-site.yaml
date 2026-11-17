@@ -298,7 +298,13 @@ jobs:
           # Unavoidable by construction here, and the full-site render still covers
           # it. A listing item that genuinely does not exist produces no Quarto
           # message at all, so this masks nothing that is otherwise detected.
-          grep -v 'Unable to read listing item description' "$log" > "${log}.filtered" || true
+          # Likewise the Python API reference (site/validmind/) is generated only
+          # by the full render, so a changed page's links into it cannot resolve
+          # here. The full-site render still checks them.
+          grep -v \
+            -e 'Unable to read listing item description' \
+            -e 'Unable to resolve link target: validmind/' \
+            "$log" > "${log}.filtered" || true
           decide="${log}.filtered"
         fi
         if grep -q 'WARN\|WARNING\|ERROR:' "$decide"; then
