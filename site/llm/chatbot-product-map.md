@@ -321,7 +321,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
@@ -383,7 +383,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
@@ -400,7 +400,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
@@ -419,7 +419,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
@@ -518,7 +518,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -540,7 +540,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
@@ -562,7 +562,7 @@
 - `/guide/inventory/customize-inventory-layout.html`
   - Sections: Prerequisites; Swap between views; Customize table view; Manage custom inventory views
 - `/guide/inventory/customize-record-overview-page.html`
-  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
+  - Sections: Prerequisites; Organize, show, or hide record fields; Highlight inventory record fields; Highlighted workflows; Manage record field layouts; Manage personal record field layouts; Manage organization record field layouts
 - `/guide/inventory/edit-inventory-fields.html`
   - Sections: Prerequisites; Edit fields on individual records; Manage inventory record stakeholders; Insert field variables into a Long Text field; Manage attachments on records; Edit fields in bulk for multiple records
 
