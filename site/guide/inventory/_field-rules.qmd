@@ -1,0 +1,68 @@
+<!-- Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+Refer to the LICENSE file in the root of this repository for details.
+SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial -->
+
+Add rules to a custom **Number**, **Single Line Text**, or **Date** field so that values that break them are refused wherever the field is edited. All rules are optional, and a value must pass every rule you set. An empty value is never refused by a rule. To require a value, make the field required instead.
+
+1. Add or edit a custom field of type **Number**, **Single Line Text**, or **Date**.^[[Add or edit custom fields](#add-edit)]
+
+2. Under **Validation**, set the rules for the field's type:
+
+::: {.panel-tabset}
+
+#### Number
+
+- **Minimum** — The lowest value allowed.
+- **Maximum** — The highest value allowed. It must be greater than or equal to **Minimum**.
+- **Allow Decimals** — On by default. Turn it off to accept whole numbers only. The **Decimal Places** number option only changes how the number is shown.
+- **Allow Negative Values** — On by default. Turn it off to refuse values below zero. While it is off, **Minimum** and **Maximum** can't be negative.
+
+#### Single Line Text
+
+- **Minimum Characters** and **Maximum Characters** — The length allowed. Every character counts, spaces included. Spaces at the start and end of a value are removed before the value is checked. **Maximum Characters** must be at least 1.
+- **Pattern** — The format the whole value must match, for example `ENG-\d{7}` for `ENG-` followed by seven digits. Type a pattern, or select one from **Common Formats**: **Letters only**, **Digits only**, **Letters and digits**, or **Code such as ABC-1234**. The **Means:** line under the pattern reads it back in plain words.^[Supported: literal characters, `.`, `[abc]`, `[a-z]`, `[^0-9]`, `\d`, `\w`, `\s`, `?`, `*`, `+`, `{n}`, `{n,m}`, `( )`, and `|`. A pattern can be up to 200 characters. It can't start or end with a space, because values are trimmed before they're checked. Lookarounds, backreferences, named groups, inline flags, and lazy or possessive quantifiers are not supported, and the message under **Pattern** says which part is not.]
+- **Example** — A value that passes your rules, such as `ENG-1234567`. Users see it as the placeholder in the field and in the line under it.
+
+#### Date
+
+Date rules are available on **Date** fields only, not on **Date Time** fields.
+
+- **Allowed Dates** — Select **Any**, **Past**, or **Future**. **Past** and **Future** both include today. Today is the UTC date.
+- **Earliest** and **Latest** — The first and last dates allowed. Both dates are included. **Latest** must be on or after **Earliest**.
+
+:::
+
+3. (Optional) Enter an **Error Message** of up to 500 characters to show users when a value is refused.
+
+    Leave it blank to use the default message, which states the rule, for example `Enter a whole number between 1 and 100.`, `Enter 11 characters or fewer. Use the format ENG-1234567.`, or `Enter today or an earlier date.`
+
+4. Check your rules under **Preview**, which appears once you set a rule. Type a value in the field as a user would. The preview shows **Accepted**, or **Refused** with the message users would see.
+
+5. Click **Save**.
+
+    **Save** stays disabled while a rule can't be saved, for example when **Minimum** is greater than **Maximum**, the pattern is not supported, or the example breaks your rules.
+
+Values saved before you add or change a rule are not changed. The rule applies the next time the field is edited. If you change the field's type, rules that the new type can't carry are removed.
+
+To compare two fields that users fill in on the same workflow step, for example a completion date that must be on or after a start date, add a step rule to the User Action step.^[[Step rules](/guide/workflows/workflow-step-types.qmd#user-action-step-rules)]
+
+#### Where field rules apply {#where-field-rules-apply}
+
+Under the field, users see the rule in a line such as `Enter a number between 1 and 100.` When a value is refused, your error message replaces that line. On a **Date** field, days outside the rule can't be picked in the calendar.
+
+:::: {.content-visible when-format="html" when-meta="includes.inventory"}
+- **Editing a field on a record** — The field keeps the value you typed and shows the message. Nothing is saved until the value passes.
+- **User Action steps** — When users save or submit the step, a **Some values break a field rule** pop-up lists each field with its message. Nothing is saved. **Back to the form** returns to the form with the values kept and the message under each field.
+- **Set Field steps** — A fixed value is checked against the rule when you configure the step, and a value that breaks it is refused when you save the workflow. Values from a formula or from AI are checked when the step runs.^[[What happens when the step runs](/guide/workflows/set-field-formulas.qmd#what-happens-when-the-step-runs)]
+- **Registration** — The same pop-up lists the field, the form moves to the step that holds it, and your values are kept. The record is not registered until the value passes.^[[Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)]
+- **Bulk edit** — The pop-up lists the fields that were not saved, and the edit returns to the fields step with your values kept. Changes to other fields that were already saved stay saved.^[[Edit fields in bulk for multiple records](/guide/inventory/edit-inventory-fields.qmd#edit-fields-in-bulk-for-multiple-records)]
+- **CSV import** — A row with a value that breaks a rule is refused, and its error names the field.^[[Import records into the inventory](/guide/inventory/import-records-into-inventory.qmd)]
+- **Document intake** — A proposed value that breaks a rule is not written. The record is saved without it, and a pop-up lists the fields to review on the record.^[[Record intake](/guide/inventory/record-intake.qmd)]
+::::
+
+:::: {.content-visible when-format="html" when-meta="includes.artifacts"}
+- **Editing a field on an artifact** — The field keeps the value you typed and shows the message. Nothing is saved until the value passes.
+- **User Action steps** — When users save or submit the step, a **Some values break a field rule** pop-up lists each field with its message. Nothing is saved. **Back to the form** returns to the form with the values kept and the message under each field.
+- **Set Field steps** — A fixed value is checked against the rule when you configure the step, and a value that breaks it is refused when you save the workflow. Values from a formula or from AI are checked when the step runs.^[[What happens when the step runs](/guide/workflows/set-field-formulas.qmd#what-happens-when-the-step-runs)]
+- **Create Artifact steps** — If a value breaks a rule, the step fails and no artifact is created.
+::::
