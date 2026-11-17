@@ -104,7 +104,42 @@ To filter for groups, you first need to define these user groups in your organiz
 ![Filtering for user groups](/guide/attestation/attestations-inventory-scope.png){width=100% fig-alt="A screenshot of the inventory scope editor showing the process of adding a filter condition to filter for Group A, Group B, and Group C." .screenshot}
 :::
 
-### 4. Add attestation fields
+### 4. Set artifact scope
+
+Define which artifacts of the in-scope records are included in the attestation. Inventory Scope is applied first. Artifact Scope then narrows the artifacts of those records. By default, every artifact type is included with all of its artifacts.
+
+::: {.column-margin .callout}
+
+### Tips
+
+- **One tab per artifact type** — Validation Issues comes first, followed by the artifact types linked to the template's inventory record type. If the template applies to all inventory record types, every artifact type has a tab.
+- **Same filters as the artifact tables** — Each tab offers the same filter fields as that artifact type's table, including the inventory record fields the type displays.
+
+___
+
+Changes apply to attestation periods that start after you save. You cannot edit the template while one of its attestation periods is active.
+
+:::
+
+a. Under Artifact Scope, click **Click to edit** below the tabs.
+
+b. Select the tab for the artifact type to configure.
+
+c. To leave this type out of the attestation, turn off **Include [artifact type] in this attestation**. The attestation captures no artifacts of a type that is turned off.
+
+d. To include only some artifacts of this type, under **Include artifacts when**, click **{{< fa plus >}} Add Rule** and set the filter condition. For example, to leave out closed validation issues, on the Validation Issues tab add the rule `Status` `not in` `Closed`.
+
+e. Repeat for other artifact types as needed.
+
+f. Click **Save**. If a condition is incomplete, complete or remove it before you save.
+
+When you turn off a type that has conditions, the conditions are kept and apply again when you turn the type back on.
+
+::: {.callout title="You cannot delete a custom field used in an attestation scope"}
+If an attestation template's Inventory Scope or Artifact Scope uses a custom field, the field's delete dialog lists the template and you cannot delete the field. Remove the condition from the template first, including conditions kept on a type that is turned off.
+:::
+
+### 5. Add attestation fields
 
 By default, attestations include the record name. Add additional inventory record fields as needed:
 
@@ -115,7 +150,7 @@ a. Under Relevant Attestation Fields, drag inventory record fields between colum
 
 b. (Optional) Reorder the fields to change how they display in the attestation.
 
-### 5. Add questionnaire fields
+### 6. Add questionnaire fields
 
 Define the structured fields that submitters fill out as part of the attestation process. Each field becomes a question in the questionnaire and appears as a column in the Responses tab for consolidated reporting.
 
@@ -188,6 +223,16 @@ a. Click **Save**.
 a. Under Inventory Scope, click **{{< fa plus >}} Add Rule** to add a filter condition.
 
 a. Configure your filter rules and groups as needed.
+
+a. Click **Save**.
+
+#### Set artifact scope
+
+a. Under Artifact Scope, click **Click to edit** below the tabs.
+
+a. Select the tab for an artifact type.
+
+a. Turn the **Include [artifact type] in this attestation** switch on or off, and add filter conditions under **Include artifacts when** as needed.
 
 a. Click **Save**.
 
