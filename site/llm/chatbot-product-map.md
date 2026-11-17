@@ -181,7 +181,7 @@
 - `/guide/validation/manage-artifact-types.html`
   - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
 - `/guide/validation/view-filter-artifacts.html`
-  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts; Filter by creation or update date
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
@@ -203,7 +203,7 @@
 - `/guide/validation/manage-artifact-types.html`
   - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
 - `/guide/validation/view-filter-artifacts.html`
-  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts; Filter by creation or update date
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
@@ -225,7 +225,7 @@
 - `/guide/validation/manage-artifact-types.html`
   - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
 - `/guide/validation/view-filter-artifacts.html`
-  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts; Filter by creation or update date
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
@@ -738,7 +738,7 @@
 - `/guide/validation/manage-artifact-types.html`
   - Sections: Can I create custom artifact types?; Prerequisites; Manage artifact type statuses; Archive and delete artifact types
 - `/guide/validation/view-filter-artifacts.html`
-  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts; Filter by creation or update date
 - `/guide/validation/update-artifacts.html`
   - Sections: Prerequisites; Edit fields on artifacts; Comment on artifacts; View artifact activity; View individual field activity; Export artifact activity; Track artifact resolution; Delete artifacts
 - `/guide/validation/log-artifacts.html`
@@ -785,7 +785,7 @@
 - `/guide/validation/customize-artifact-layouts.html`
   - Sections: Prerequisites; Customize artifact layouts by type; Manage custom artifact views; Manage personal artifact views; Manage organization artifact views; Set default artifact views
 - `/guide/validation/view-filter-artifacts.html`
-  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts
+  - Sections: Prerequisites; View artifacts; View all artifacts; View record-specific artifacts; Filter and sort artifacts; Filter all validation issues; How do I create effective filters?; Filter all other artifacts; Filter by creation or update date
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
