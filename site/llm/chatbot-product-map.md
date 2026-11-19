@@ -87,7 +87,7 @@
 - `/guide/templates/working-with-document-templates.html`
   - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/managing-documents.html`
@@ -120,7 +120,7 @@
 - `/guide/templates/working-with-document-templates.html`
   - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-text-block-library.html`
@@ -137,7 +137,7 @@
 - `/guide/templates/working-with-document-templates.html`
   - Sections: What's next
 - `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates
 - `/guide/templates/manage-document-templates.html`
   - Sections: Prerequisites; View document templates; Create document templates; Edit document template outlines; Swap document templates; View currently applied templates; Swap between templates; Duplicate document templates
 - `/guide/templates/manage-text-block-library.html`
@@ -586,7 +586,7 @@
 **Docs (primary):**
 
 - `/guide/templates/customize-document-templates.html`
-  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates; Add text blocks to templates; Add text blocks via template outlines
+  - Sections: Prerequisites; Edit template outlines; Add drafting instructions; How drafting instructions are used; Configure assessment options[^4]; Edit YAML templates; Template schema; Troubleshooting YAML templates
 
 **Docs (related):**
 
