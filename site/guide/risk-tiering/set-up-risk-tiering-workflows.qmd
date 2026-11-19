@@ -124,6 +124,21 @@ Risk tiering workflows are built around one principle: **an approval attests to 
 - **Rejection ends the run.** A rejection typically moves the stage to something like *Changes Requested*, and the run ends. To address the feedback, revise and publish a new version — a publish-triggered review re-runs automatically, and a manual review can be re-run on demand.
 - **Publish-triggered and manual reviews are different tools.** Use a publish-triggered workflow as the governance backbone that runs on every publish, and manual workflows for on-demand reviews — such as governing a draft before it is published.
 
+## Risk tier a record from its own workflow {#risk-tier-a-record-from-its-own-workflow}
+
+Risk tiering workflows govern an assessment after it is published. To have the risk tier set *inside* a record's workflow instead — for example, as part of onboarding a new record — add a risk tier assessment to a **{{< fa arrow-pointer >}} User Action** step in the record workflow.[^9] The step's assignee answers the risk tier questions, and submitting the step publishes the assessment. The workflow can then branch on the record's **Assessed Risk Tier**, notify reviewers, and route an approval that shows the published assessment.
+
+The two approaches govern the same assessment in different ways:
+
+| | Risk tiering workflow | Risk tier assessment in a record workflow |
+|---|---|---|
+| **Runs on** | The published assessment | The record |
+| **Who publishes** | A user with permission to publish, from the assessment page | The step's assignee, on the workflow's behalf |
+| **Starts** | Manually, or when an assessment is published | When the record workflow reaches the step |
+: Two ways to govern risk tiering {.hover tbl-colwidths="[24,38,38]"}
+
+An assessment published from a record workflow does not start a workflow that runs **On Risk Assessment Published** — the record workflow already governs it. Publishing a new version from either place archives the previous version and ends its in-progress workflows as aborted.
+
 ## What's next
 
 - [Working with risk tiering](working-with-risk-tiering.qmd) — concepts, lifecycle overview, and roles.
@@ -149,3 +164,5 @@ Risk tiering workflows are built around one principle: **an approval attests to 
 [^7]: [Manage risk tier assessments](manage-risk-tier-assessments.qmd#assessment-sidebar)
 
 [^8]: [Manage risk tier templates](manage-risk-tier-templates.qmd)
+
+[^9]: [Workflow step types](/guide/workflows/workflow-step-types.qmd#user-action-risk-tier-assessments)

@@ -475,7 +475,7 @@
 - `/guide/risk-tiering/manage-risk-tier-assessments.html`
   - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
-  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; Risk tier a record from its own workflow
 
 - *No direct help link in frontend; related docs inferred from keywords.*
 
@@ -492,7 +492,7 @@
 - `/guide/risk-tiering/manage-risk-tier-assessments.html`
   - Sections: Prerequisites; Access risk tier assessments; Create an assessment; Review factor scores; Risk Factors; Factor Score Breakdown; Risk Tier Thresholds; Tier Assignment Rules
 - `/guide/risk-tiering/set-up-risk-tiering-workflows.html`
-  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; What's next
+  - Sections: Prerequisites; About risk tiering workflows; Define governance stages; Add a risk tiering workflow; Configure risk tiering steps; Track governance on the assessment or template; How governance runs behave; Risk tier a record from its own workflow
 - `/guide/templates/working-with-document-templates.html`
   - Sections: What's next
 
