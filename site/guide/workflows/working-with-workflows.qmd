@@ -40,6 +40,38 @@ Once customized, use workflows to transition your records into their appropriate
 
 {{< include /guide/workflows/_view-workflow-executions.qmd >}}
 
+### Export workflow executions {#export-workflow-executions}
+
+Click **Export** on the Workflows timeline to download the runs in your current search and filters as a CSV file named `global-workflows.csv`. The file downloads automatically once it's ready. Large exports may take a few moments to generate.
+
+An export can include up to 250,000 runs. If your search and filters match more, the export stops with an error and you need to narrow your filters before trying again.
+
+Each row in the file is one workflow run, with these columns:
+
+| Column | Description |
+|---|---|
+| **Record ID** | The ID of the record the run belongs to. For artifact and risk tier assessment runs, the ID of the parent record. |
+| **Record** | The name of that record. |
+| **Record Version** | The record version the run belongs to, for example `2`, marked `(Primary)` or `(Retired)` where that applies.[^3] |
+| **Record Archived** | `Yes` if the record is archived, otherwise `No`. |
+| **Artifact ID** | The artifact's ID for artifact runs. Blank for record runs and risk tier assessment runs. |
+| **Artifact** | The artifact's title for artifact runs, or the risk tier assessment's name for risk tier assessment runs. Blank for record runs. |
+| **Workflow Type** | `Record`, `Artifact`, or `Risk Tiering`. |
+| **Workflow** | The name of the workflow. |
+| **Workflow Archived** | `Yes` if the workflow is archived, otherwise `No`. |
+| **Execution ID** | The ID of the run. |
+| **Workflow Assignee** | The run's assigned stakeholder, if one is set.[^4] |
+| **Workflow Assignee Type** | The stakeholder role of the workflow assignee. |
+| **Status** | The run's status: `scheduled`, `active`, `waiting`, `finished`, or `aborted`. |
+| **Started At (UTC)** | When the run started. |
+| **Expected End At (UTC)** | When the run is expected to end. |
+| **Finished At (UTC)** | When the run finished. |
+| **Workflow State** | The workflow state the run is in, set by the workflow's **Workflow State Change** steps. Finished and aborted runs keep the last state they were set to. Runs that were never set to a state show `No state set`.[^5] |
+| **Record Stage** | The current stage of the record the run belongs to.[^6] For artifact and risk tier assessment runs, the stage of the parent record. Blank when the record has no stage. |
+| **Artifact Status** | For artifact runs, the artifact's status. For risk tier assessment runs, the assessment's review stage, or `Draft` or `Archived` for an assessment that has no review stage. Blank for record runs. |
+
+Dates and times are in UTC.
+
 ### Manage workflow timeline views
 
 Save searches and filters applied to the workflow timeline as a view to reapply at any time:
@@ -69,3 +101,10 @@ Save searches and filters applied to the workflow timeline as a view to reapply 
 [^1]: [Configure workflows](configure-workflows.qmd)
 
 [^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^3]: [Manage record versions](/guide/inventory/manage-record-versions.qmd)
+
+[^4]: [Assign workflow executions](assign-workflow-executions.qmd)
+
+[^5]: [Workflow states](workflow-states.qmd)
+[^6]: [Manage record stages](manage-record-stages.qmd)
