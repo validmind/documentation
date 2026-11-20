@@ -20,9 +20,10 @@ Customize templates for document types to fit your specific case-by-case needs, 
 
 ::: {.callout title="Building templates for AI drafting?"}
 - The drafting agent follows each section's guidelines, so clear guidelines produce better drafts.[^11]
+- Add drafting instructions to the template and its sections to prefill the instructions for every draft.[^12]
 - You don't need to add test-driven blocks. Drafting reads the test results logged to the record and writes the narrative around them.
 - A template with sections and guidelines but no blocks is a good starting point for Draft Document, which plans the blocks for each section.
-- New organizations also get a Binary classification (no tests) template, with the same sections and text blocks as Binary classification and no test-driven blocks.
+- New organizations also get a Binary classification (no tests) template, with the same sections and text blocks as Binary classification and no test-driven blocks. Both templates come with drafting instructions.
 
 :::
 
@@ -43,6 +44,39 @@ Check the **Document Template** section[^3] in the right sidebar.
 ## Edit template outlines
 
 {{< include _customize-document-templates.qmd >}}
+
+## Add drafting instructions {#add-drafting-instructions}
+
+Drafting instructions tell the drafting agent how to write documents that use the template, such as the audience, the tone or what a section must cover.[^11] Add them for the whole template, for individual sections, or both.
+
+1. In the left sidebar, click **{{< fa gear >}} Settings**.
+
+2. Under {{< fa file >}} Documents, select **Templates**.
+
+3. Select the tab for the type of template you want to edit and click the template.
+
+4. On the template details page, click **{{< fa pencil >}} Edit Template**.
+
+5. (Optional) Above the outline, enter instructions for the whole document under **Drafting Instructions**.
+
+6. (Optional) To add instructions for a section, click **{{< fa plus >}}** on the section and select **Drafting Instructions**. Enter the instructions in the field that appears under the section.
+
+   To remove a section's instructions, clear the field.
+
+7. Click **Create New Version** to review your changes, add **Version Notes** and click **Save**.
+
+Each field takes up to 4,000 characters. A heading that only groups subsections and has no blocks of its own can't have drafting instructions. You can also add instructions in the YAML editor with the `instructions` key, at the top level of the template or on a section.[^13]
+
+Drafting instructions are not available when you edit a template outline directly on a document.
+
+### How drafting instructions are used {#how-drafting-instructions-are-used}
+
+Documents use the drafting instructions of their template version. To use new instructions on an existing document, switch the document to the new template version.[^3]
+
+- **Template instructions** — Prefill the **Instructions** box when you draft a whole document with Draft Document. Once someone drafts the whole document with their own instructions, the box shows those instead.
+- **Section instructions** — Prefill the **Instructions** box when you draft that section with Draft Section. Once someone drafts the section with their own instructions, the box shows those instead. In a Draft Document run, the section's instructions apply to that section in addition to the instructions in the box, when its blocks are planned and when it is drafted.
+
+Template instructions don't prefill Draft Section. You can edit or clear prefilled instructions before you draft. If you clear the box and draft with no instructions, the template's instructions show again the next time.
 
 ## Configure assessment options[^4]
 
@@ -177,3 +211,7 @@ c. Finish editing your template, then save a new version.
 [^10]: [Template schema](#template-schema)
 
 [^11]: [Draft documents with AI](/guide/documentation/draft-documents-with-ai.qmd)
+
+[^12]: [Add drafting instructions](#add-drafting-instructions)
+
+[^13]: [Edit YAML templates](#edit-yaml-templates)
