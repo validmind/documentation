@@ -317,7 +317,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`
@@ -379,7 +379,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`
@@ -396,7 +396,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`
@@ -415,7 +415,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`
@@ -527,7 +527,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/record-intake.html`
   - Sections: Availability; Prerequisites; Flag an inventory record type for intake; Only one intake type; Register Intake records; Documents and artifacts after conversion; Configure an Intake classification workflow; Automated routing vs Manual review
 - `/guide/inventory/working-with-the-inventory.html`
@@ -549,7 +549,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`
@@ -571,7 +571,7 @@
 - `/guide/inventory/manage-inventory-record-types.html`
   - Sections: Prerequisites; Add or edit record types; Flag a type for Record Intake; Enable or disable record types
 - `/guide/inventory/manage-inventory-fields.html`
-  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys; Set the order of registration fields
+  - Sections: Prerequisites; Inventory field types; View, search, and filter inventory fields; Add or edit inventory fields; Set field rules; Insert field variables into a Long Text template; Recalculate calculated and aggregation fields; Rename custom field keys
 - `/guide/inventory/manage-inventory-segments.html`
   - Sections: Prerequisites; Key concepts; Add segments; Define segment conditions; How do I create effective filters?; Publish segments; Edit segments; Unpublish, archive, or delete segments
 - `/guide/inventory/record-intake.html`

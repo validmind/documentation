@@ -146,8 +146,54 @@ Creates a button that performs an action on behalf of the user.
 | **Step Title** (optional) | Text that displays at the top of the modal that opens when users click the action button. |
 | **Action Button Label** | Text that displays on your action button. |
 | **Requested Fields** (optional) | Include record or artifact fields, a document selection, or a risk tier assessment alongside your action.[^user-action] |
+| **Step Rules** (optional) | Compare date or number fields requested on this step. Users can't submit the step while a rule fails.^[[Step rules](#user-action-step-rules)] |
 | **User Action Deadline** (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
 : **{{< fa arrow-pointer >}} User Action** step configuration {.hover tbl-colwidths="[40,60]"}
+
+#### Step rules {#user-action-step-rules}
+
+Add step rules when values requested on the same step must agree with each other or with today's date, for example a completion date that must be on or after a start date. Users can't save or submit the step while a rule fails. Rules set on a field itself also apply on the step.^[[Set field rules](/guide/inventory/manage-inventory-fields.qmd#field-rules)]
+
+1. Add the fields you want to compare to **Requested Fields**. Step rules can compare custom **Date**, **Date Time**, and **Number** fields.
+
+2. Under **Step Rules**, click **Add Rule**.
+
+3. On the Add Step Rule modal, set:
+
+    - **Field** — The date or number field to check.
+    - **Must be** — For dates, **before**, **on or before**, **on or after**, or **after**. For numbers, **equal to**, **not equal to**, **less than**, **at most**, **greater than**, or **at least**.
+    - **Compared with** — **Another field on this step** of the same kind. For a number, you can also select **A fixed value**. For a date, you can select **Today** and enter the number of days from today, with a negative number for days before today.
+    - **Error message** — The message users see when the rule fails, up to 500 characters.
+    - **Show the message on** — The field on the step that shows the message. Defaults to **Field**.
+
+4. (Optional) To check the rule before you save it, use **Test with a Record**, or **Test with an Artifact** on an artifact workflow. Select a record or artifact and click **Run Test**.
+
+    The test runs your unsaved rule against the saved values of the record or artifact you selected. Testing never changes it. The result is one of:
+
+    - **Passes** — The step can be submitted. A rule also passes when a field it compares is empty.
+    - **Fails** — The step can't be submitted, and the result shows the message the user would see.
+    - **Not Checked** — The rule does not return True or False on this record, so the step would skip it.
+
+5. Click **Save Rule**, then click **Update User Action** and save your workflow.
+
+Each rule is listed under **Step Rules** in plain words, for example `Validation Completion must be on or after Validation Start`. Click **Edit** or **Delete** next to a rule to change or remove it.
+
+A rule that was not built in this modal, for example one added through the {{< var vm.product >}} API, is listed as **Custom formula:** followed by the formula or its message. Click **Edit** to open it in a formula editor. Custom formulas use the same Starlark syntax as Set Field formulas and return `True` when the values pass and `False` when they don't.^[[Set field values with formulas](/guide/workflows/set-field-formulas.qmd)]
+
+When users perform the action:
+
+- Saving or submitting the step checks every rule before anything is saved. If a rule fails, a **Some values break a field rule** pop-up lists your message. Nothing is saved, and **Back to the form** returns to the form with the values kept and the message under the field you chose.
+- A rule passes when a field it compares is empty.
+- A field that is not shown on the form is read from the record's saved value.
+- If a compared value is not a valid date, the rule fails with `A date this rule compares is not a valid date.`
+- A rule that can't be checked, for example because a field it reads no longer exists, is skipped.
+- Rules are read from the latest saved version of the workflow, so a rule you add also applies to runs that started on an earlier version.
+
+::: {.callout-important}
+## You can't update the User Action while a rule shows its message on a field that is no longer on the step.
+
+Add the field back, show the rule's message on another field, or delete the rule. If the workflow can't be saved because of a rule, the reason is shown under that rule and at the top of its modal.
+:::
 
 #### Document selections {#user-action-document-selections}
 
