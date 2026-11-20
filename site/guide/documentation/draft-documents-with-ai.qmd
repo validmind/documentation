@@ -10,7 +10,7 @@ Use AI drafting to write your documents from the evidence on your record, such a
 
 ## How AI drafting works {#how-ai-drafting-works}
 
-The {{< var vm.product >}} drafting agent reads your record's data and writes text for each section, following the section's guidelines from the document template.[^1] You can draft in two ways:
+The {{< var vm.product >}} drafting agent reads your record's data and writes text for each section, following the section's guidelines and any drafting instructions from the document template.[^1] You can draft in two ways:
 
 - Draft Document drafts every section of a Development document in one run, including sections that have no blocks yet.
 - Draft Section drafts one section of a Development, Monitoring or custom type document that you can edit.
@@ -60,13 +60,13 @@ Every block you insert from a draft keeps a record of who requested it, which AI
 
 6. (Optional) Under **Instructions**, add instructions for the draft, such as the tone to use or the points to emphasize.
 
-   The box shows the instructions from the last whole-document draft. You can edit or clear them.
+   The box shows the instructions from the last whole-document draft. If the document has no earlier draft with instructions, it shows the template's drafting instructions.[^15] You can edit or clear them.
 
 7. (Optional) Add files, other documents or artifacts from the record as extra context.[^9]
 
 8. Click **Draft Document**.
 
-   The agent first plans the blocks for sections that have none, then drafts each section. The dialog shows how many sections are drafted and about how much time is left. Each section opens for review as soon as it is drafted.
+   The agent first plans the blocks for sections that have none, then drafts each section. A section with its own drafting instructions in the template gets them in addition to the instructions in the box, both when its blocks are planned and when it is drafted. The dialog shows how many sections are drafted and about how much time is left. Each section opens for review as soon as it is drafted.
 
 You can close the dialog while the draft runs. Until the run ends, the button shows Drafting with a spinner. Click it to reopen the dialog, where you can follow the progress or stop the draft after the current section with Stop Drafting. Sections drafted before you stopped stay available for review.
 
@@ -101,19 +101,21 @@ Inserted sections show when their blocks were accepted. A section that could not
 
 2. Below the section title, click **Draft Section**.
 
-   Draft Section appears on sections that have at least one text or test-driven block. To fill a section that has no blocks, use Draft Document.[^10]
+   Draft Section appears on sections that have at least one text or test-driven block, and on sections that have no blocks yet. It doesn't appear on a heading that only groups subsections.
 
 3. (Optional) Under **Instructions**, add instructions for this section.
 
-   The box shows the instructions last used for this section, whether they came from Draft Section or from a whole-document draft.
+   The box shows the instructions last used for this section, whether they came from Draft Section or from a whole-document draft. If the section has drafting instructions in the template, the box shows those until someone drafts the section with their own instructions.[^15]
 
 4. (Optional) Add files, other documents or artifacts from the record as extra context.[^9]
 
 5. Click **Draft Section**.
 
-   While the agent works, the dialog shows the evidence it is reading.
+   While the agent works, the dialog shows the evidence it is reading. For a section with no blocks, the agent first plans the section's blocks, then drafts them.
 
 6. Review the drafted blocks. Click **Compare with current** to see the current text of a block above the draft, and clear the checkbox on any block you don't want to insert.
+
+   For a section that had no blocks, the drafted blocks are tagged New Block, and rows that end with "will be added on insert" are planned test or metric blocks. Only the blocks you insert are added to the document's template, together with the planned test and metric blocks.
 
 7. Click **Insert into section**, or **Insert # blocks** when the draft has more than one block. To drop the draft, click **Discard**.
 
@@ -267,3 +269,5 @@ Your text changes only when you click **Replace**. The new text is saved with th
 [^13]: [Manage platform notifications](/guide/configuration/manage-platform-notifications.qmd#available-update-filters)
 
 [^14]: [View record data](/guide/inventory/view-record-data.qmd)
+
+[^15]: [Customize document templates](/guide/templates/customize-document-templates.qmd#add-drafting-instructions)
