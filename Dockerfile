@@ -1,7 +1,7 @@
 # Dockerfile to build the validmind-docs image
 
 # Use the official Nginx image
-FROM nginx:alpine
+FROM nginx:1.31.9-alpine
 
 # Install jq for better JSON handling
 RUN apk add --no-cache jq

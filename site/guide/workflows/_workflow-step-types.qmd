@@ -145,9 +145,55 @@ Creates a button that performs an action on behalf of the user.
 | **Display Action Button When**  (optional) | Add conditional requirements for displaying this step.^[[Conditional step requirements](/guide/workflows/conditional-step-requirements.qmd#user-action)]  |
 | **Step Title** (optional) | Text that displays at the top of the modal that opens when users click the action button. |
 | **Action Button Label** | Text that displays on your action button. |
-| **Requested Fields** (optional) | Include record or artifact fields, or a document selection, alongside your action.[^user-action] |
+| **Requested Fields** (optional) | Include record or artifact fields, a document selection, or a risk tier assessment alongside your action.[^user-action] |
+| **Step Rules** (optional) | Compare date or number fields requested on this step. Users can't submit the step while a rule fails.^[[Step rules](#user-action-step-rules)] |
 | **User Action Deadline** (optional) | Include a deadline for when users should complete this action by.^[Toggle **Enable deadline** on to configure a deadline.] |
 : **{{< fa arrow-pointer >}} User Action** step configuration {.hover tbl-colwidths="[40,60]"}
+
+#### Step rules {#user-action-step-rules}
+
+Add step rules when values requested on the same step must agree with each other or with today's date, for example a completion date that must be on or after a start date. Users can't save or submit the step while a rule fails. Rules set on a field itself also apply on the step.^[[Set field rules](/guide/inventory/manage-inventory-fields.qmd#field-rules)]
+
+1. Add the fields you want to compare to **Requested Fields**. Step rules can compare custom **Date**, **Date Time**, and **Number** fields.
+
+2. Under **Step Rules**, click **Add Rule**.
+
+3. On the Add Step Rule modal, set:
+
+    - **Field** — The date or number field to check.
+    - **Must be** — For dates, **before**, **on or before**, **on or after**, or **after**. For numbers, **equal to**, **not equal to**, **less than**, **at most**, **greater than**, or **at least**.
+    - **Compared with** — **Another field on this step** of the same kind. For a number, you can also select **A fixed value**. For a date, you can select **Today** and enter the number of days from today, with a negative number for days before today.
+    - **Error message** — The message users see when the rule fails, up to 500 characters.
+    - **Show the message on** — The field on the step that shows the message. Defaults to **Field**.
+
+4. (Optional) To check the rule before you save it, use **Test with a Record**, or **Test with an Artifact** on an artifact workflow. Select a record or artifact and click **Run Test**.
+
+    The test runs your unsaved rule against the saved values of the record or artifact you selected. Testing never changes it. The result is one of:
+
+    - **Passes** — The step can be submitted. A rule also passes when a field it compares is empty.
+    - **Fails** — The step can't be submitted, and the result shows the message the user would see.
+    - **Not Checked** — The rule does not return True or False on this record, so the step would skip it.
+
+5. Click **Save Rule**, then click **Update User Action** and save your workflow.
+
+Each rule is listed under **Step Rules** in plain words, for example `Validation Completion must be on or after Validation Start`. Click **Edit** or **Delete** next to a rule to change or remove it.
+
+A rule that was not built in this modal, for example one added through the {{< var vm.product >}} API, is listed as **Custom formula:** followed by the formula or its message. Click **Edit** to open it in a formula editor. Custom formulas use the same Starlark syntax as Set Field formulas and return `True` when the values pass and `False` when they don't.^[[Set field values with formulas](/guide/workflows/set-field-formulas.qmd)]
+
+When users perform the action:
+
+- Saving or submitting the step checks every rule before anything is saved. If a rule fails, a **Some values break a field rule** pop-up lists your message. Nothing is saved, and **Back to the form** returns to the form with the values kept and the message under the field you chose.
+- A rule passes when a field it compares is empty.
+- A field that is not shown on the form is read from the record's saved value.
+- If a compared value is not a valid date, the rule fails with `A date this rule compares is not a valid date.`
+- A rule that can't be checked, for example because a field it reads no longer exists, is skipped.
+- Rules are read from the latest saved version of the workflow, so a rule you add also applies to runs that started on an earlier version.
+
+::: {.callout-important}
+## You can't update the User Action while a rule shows its message on a field that is no longer on the step.
+
+Add the field back, show the rule's message on another field, or delete the rule. If the workflow can't be saved because of a rule, the reason is shown under that rule and at the top of its modal.
+:::
 
 #### Document selections {#user-action-document-selections}
 
@@ -179,6 +225,41 @@ After users submit the step, the record's activity names the selection, the docu
 Edit the document selection to choose another document type, or remove it.
 :::
 
+#### Risk tier assessments {#user-action-risk-tier-assessments}
+
+Add a risk tier assessment to Requested Fields when users should risk tier the record as part of its workflow. Users answer the record's risk tier questions on the step, and submitting the step publishes the assessment.^[[Manage risk tier assessments](/guide/risk-tiering/manage-risk-tier-assessments.qmd)] A risk tier assessment can be added on record workflows when risk tiering workflows are enabled for your organization.
+
+1. Under **Requested Fields**, click **{{< fa plus >}} Add** and select **Add Risk Tier Assessment**.
+
+2. Arrange it with your other requested fields. You can reorder it or move it into a step.
+
+A step can have one risk tier assessment. It cannot be made optional or placed in a conditional group: **Submit** stays disabled until every question is answered.
+
+When users perform the action:
+
+- They see the same questions, factor scores and calculated risk tier as on the record's risk tier assessment page, for the active risk tier template of the record's inventory record type.
+- Their answers save to the record as they edit them. Saving a working copy keeps the answers but does not publish the assessment.
+- If the record already has an active assessment, the step warns that submitting archives it and stops any of its workflows that are still in progress.
+- If no risk tier template is published for the record's inventory record type, the step says so and cannot be submitted. Ask an administrator to publish one, then reopen the step.^[[Manage risk tier templates](/guide/risk-tiering/manage-risk-tier-templates.qmd)]
+- If a new version of the template is published while the step is open, **Submit** is refused and the step reloads the updated questions.
+- If a question's field is also a requested field on the step, the answer given in the assessment is submitted unless the user changed it in the field itself.
+
+When users submit the step:
+
+- A new version of the record's current assessment is published, scored against the active template. A record with no assessment yet gets a new one named *Risk tier assessment*.
+- The previously active version is archived, and its workflows that are still in progress end as aborted.
+- The record's **Assessed Risk Tier** field is set to the published tier.
+- Workflows that start **On Risk Assessment Published** do not start: the record workflow already governs this assessment.^[[Set up risk tiering workflows](/guide/risk-tiering/set-up-risk-tiering-workflows.qmd#risk-tier-a-record-from-its-own-workflow)]
+- The record's activity and the step's Step Detail panel name the published assessment, its version and its risk tier.^[[View record activity](/guide/reporting/view-record-activity.qmd)]
+
+::: {.callout-important}
+## Users completing the step publish the assessment on the workflow's behalf.
+
+They do not need permission to publish risk tier assessments themselves. They do need edit access to every field the template's questions use, or they cannot answer them and the step cannot be submitted.
+:::
+
+To show the published assessment to approvers, add it to an **{{< fa users >}} Approval** step's **Fields to Review**. Approvers see the record's current published assessment, read-only. If another version was published after the step, they see that version.
+
 ### {{< fa users >}} Approval
 <span id="approval">
 
@@ -190,7 +271,7 @@ Display a preconfigured message to users in the selected **Approval Group**.
 | Field | Description |
 |---:|---|
 | **Approval Group**  | Select the roles, stakeholders, or user fields responsible for approval. |
-| **Fields to Review** (optional) | Select the record or artifact fields shown to approvers for read-only review.[^approval-2] |
+| **Fields to Review** (optional) | Select the record or artifact fields shown to approvers for read-only review. On record workflows, you can also add the record's risk tier assessment.[^approval-2] |
 | Approval Message | When your workflow reaches this {{< fa users >}} Approval step, the selected **Approval Group** is shown this message.^[Enter a **Title** and a **Message** to display.] |
 : **{{< fa users >}} Approval** step configuration {.hover tbl-colwidths="[35,65]"}
 
@@ -278,7 +359,28 @@ To configure a wait step, select when you would like to **Resume Workflow**
 ### {{< fa arrow-right-arrow-left >}} Run Workflow
 <span id="run-workflow">
 
-Triggers another workflow indicated by **Select Workflow To Run**, allowing you to chain workflows.
+- Triggers another workflow indicated by **Select Workflow To Run** on the same record or artifact, allowing you to chain workflows.
+- Turn on **Wait for Completion** to pause this workflow until the workflow it started has finished, so that one workflow can run each phase of a process as its own workflow, one after another.^[**Wait for Completion** requires workflow orchestration to be enabled for your organization. If you don't see it on the Run Workflow step, contact [{{< var vm.product >}} support](/support/support.qmd).]
+
+| Field | Description |
+|---:|---|
+| **Select Workflow To Run** | Select the workflow to start. |
+| **Wait for Completion** (optional) | Wait here until the selected workflow finishes. Off by default: this workflow moves on as soon as the selected workflow starts. |
+: **{{< fa arrow-right-arrow-left >}} Run Workflow** step configuration {.hover tbl-colwidths="[40,60]"}
+
+While it waits, the workflow stays **Active**. Its details show which workflow it is waiting for, with a link to that run, and the run it started links back to it. A waiting workflow can't be moved on with **Resume**; it moves on by itself when the workflow it started finishes, including when that workflow waits for a user action or an approval along the way. If the workflow it started is restarted, it waits for the new run instead.
+
+::: {.callout-important title="If the workflow it started is cancelled or cannot start"}
+The waiting workflow stays paused and shows why in its details. To continue, a [{{< fa hand >}} Customer Admin]{.bubble} moves it to a step it has already reached: on the workflow's **Workflow** tab, click that step, then double-click **{{< fa forward >}}** in its **Step Detail** panel. Moving a waiting workflow this way also stops it waiting, so the other workflow finishing later doesn't move it again.
+:::
+
+To decide where the workflow goes once the workflow it started finishes, add a **{{< fa maximize >}} Condition Branch**^[[Condition Branch](#condition-branch)] right after the **{{< fa arrow-right-arrow-left >}} Run Workflow** step. Its paths read the record or artifact as it is when the other workflow finishes, and a path can lead back to an earlier **{{< fa arrow-right-arrow-left >}} Run Workflow** step to run that phase again.
+
+::: {.callout title="Share information between workflows through the record's fields."}
+For example, an approval workflow can set an **Approval outcome** field on each of its routes, and a condition branch after the waiting step can send the workflow back to the development phase when that field is **Rejected**.
+:::
+
+Workflows can't be saved if waiting steps would wait on each other in a loop, for example if workflow A waits for workflow B while workflow B waits for workflow A.
 
 ### {{< fa circle-nodes >}} Webhook
 <span id="webhook">
@@ -456,7 +558,7 @@ Creates a time condition for displaying next available action.
 
 #### {{< fa arrow-right-arrow-left >}} Run Workflow
 
-Triggers another workflow indicated by **Select Workflow To Run**, allowing you to chain workflows.
+Triggers another workflow indicated by **Select Workflow To Run**, allowing you to chain workflows. With **Wait for Completion** on, waits for that workflow to finish before moving on.
 
 #### {{< fa circle-nodes >}} Webhook
 
