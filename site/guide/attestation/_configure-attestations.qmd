@@ -104,9 +104,53 @@ To filter for groups, you first need to define these user groups in your organiz
 ![Filtering for user groups](/guide/attestation/attestations-inventory-scope.png){width=100% fig-alt="A screenshot of the inventory scope editor showing the process of adding a filter condition to filter for Group A, Group B, and Group C." .screenshot}
 :::
 
-### 4. Add attestation fields
+### 4. Set artifact scope
 
-By default, attestations include the record name. Add additional inventory record fields as needed:
+Define which artifacts of the in-scope records are included in the attestation. Inventory Scope is applied first. Artifact Scope then narrows the artifacts of those records. By default, every artifact type is included with all of its artifacts.
+
+::: {.column-margin .callout}
+
+### Tips
+
+- **One tab per artifact type** — Validation Issues comes first, followed by the artifact types linked to the template's inventory record type.
+- **Same filters as the artifact tables** — Each tab offers the same filter fields as that artifact type's table, including the inventory record fields the type displays.
+
+___
+
+Changes apply to attestation periods that start after you save. You cannot edit the template while one of its attestation periods is active.
+
+:::
+
+a. Under Artifact Scope, click **Click to edit** below the tabs.
+
+b. Select the tab for the artifact type to configure.
+
+c. To leave this type out of the attestation, turn off **Include [artifact type] in this attestation**. The attestation captures no artifacts of a type that is turned off.
+
+d. To include only some artifacts of this type, under **Include artifacts when**, click **{{< fa plus >}} Add Rule** and set the filter condition. For example, to leave out closed validation issues, on the Validation Issues tab add the rule `Status` `not in` `Closed`.
+
+e. Repeat for other artifact types as needed.
+
+f. Click **Save**. If a condition is incomplete, complete or remove it before you save.
+
+When you turn off a type that has conditions, the conditions are kept and apply again when you turn the type back on.
+
+::: {.callout title="You cannot delete a custom field used in an attestation scope"}
+If an attestation template's Inventory Scope or Artifact Scope uses a custom field, the field's delete dialog lists the template and you cannot delete the field. Remove the condition from the template first, including conditions kept on a type that is turned off.
+:::
+
+### 5. Add attestation fields
+
+Choose which inventory record fields display in the record snapshots that submitters and reviewers see. Every record snapshot already includes these fields, so you don't need to add them:
+
+- Record name and ID
+- Default fields, such as tier, business unit, and use case, unless the field is disabled for your organization^[[Manage inventory fields](/guide/inventory/manage-inventory-fields.qmd)]
+- All stakeholder types that apply to the record type, including custom ones, with their assigned users^[[Manage record stakeholder types](/guide/configuration/manage-record-stakeholder-types.qmd)]
+- Stage
+
+Record snapshots taken before version 26.12 show the record ID and stakeholders but not default fields.
+
+To add custom inventory record fields:
 
 a. Under Relevant Attestation Fields, drag inventory record fields between columns:
 
@@ -115,7 +159,9 @@ a. Under Relevant Attestation Fields, drag inventory record fields between colum
 
 b. (Optional) Reorder the fields to change how they display in the attestation.
 
-### 5. Add questionnaire fields
+You don't select artifact fields. Artifact snapshots show each artifact's ID and every field that applies to its artifact type, including custom fields. To choose which artifact types and artifacts are included, use Set artifact scope.
+
+### 6. Add questionnaire fields
 
 Define the structured fields that submitters fill out as part of the attestation process. Each field becomes a question in the questionnaire and appears as a column in the Responses tab for consolidated reporting.
 
@@ -154,6 +200,41 @@ e. (Optional) Reorder fields by dragging them to change the order in which they 
 
 Questionnaire fields are available immediately for new attestation instances. Submitters see structured inputs for each field, and responses are collected consistently across all submissions.
 
+### 7. Set status change notes
+
+Choose which status changes require notes. When participants change the status of an attestation, a dialog asks for notes before they click **Confirm**. By default, notes are required for every status change.
+
+a. Under Status Change Notes, click the list of status changes to edit it.
+
+b. Under **Require notes on**, select the status changes that require notes:
+
+   - **Start Attestation**
+   - **Submit for Review**
+   - **Reject**
+   - **Accept**
+   - **Sign Off**
+
+   Clear the checkbox for a status change to make its notes optional. The dialog for that status change then shows **Notes (optional)**, and participants can click **Confirm** without entering notes.
+
+c. Click **Save**.
+
+Changes apply to attestation periods that start after you save. Attestation periods already in progress keep the setting they started with. You can't change this setting while the template has an active attestation period.
+
+### 8. Set questionnaire layout
+
+Choose where the questionnaire appears when participants open an attestation. By default, the questionnaire appears in a side panel.
+
+a. Under Questionnaire Layout, click the layout options to edit them.
+
+b. Under **Show the questionnaire in**, select a layout:
+
+   - **Side panel** — The questionnaire appears in a panel next to the Inventory, Validation Issues, Artifacts, and Activity tabs.
+   - **Tab** — The questionnaire appears as a full-width **Questionnaire** tab. This tab is listed first and opens when participants open the attestation.
+
+c. Click **Save**.
+
+Changes apply to attestation periods that start after you save. Attestation periods already in progress keep the layout they started with. You can't change this setting while the template has an active attestation period.
+
 :::
 
 ::::
@@ -191,7 +272,19 @@ a. Configure your filter rules and groups as needed.
 
 a. Click **Save**.
 
+#### Set artifact scope
+
+a. Under Artifact Scope, click **Click to edit** below the tabs.
+
+a. Select the tab for an artifact type.
+
+a. Turn the **Include [artifact type] in this attestation** switch on or off, and add filter conditions under **Include artifacts when** as needed.
+
+a. Click **Save**.
+
 #### Add attestation fields
+
+Record snapshots always include the record name and ID, default fields that aren't disabled, all stakeholder types that apply to the record type, and stage. To add custom inventory record fields:
 
 a. Under Relevant Attestation Fields, drag inventory record fields between columns:
 
@@ -209,5 +302,19 @@ a. Configure the field type, label, description, help text, and whether it is re
 a. Click **Add Field**.
 
 a. Repeat to add additional fields as needed.
+
+#### Set status change notes
+
+a. Under Status Change Notes, select the status changes that require notes.
+
+a. Clear the checkbox for a status change to make its notes optional.
+
+a. Click **Save**.
+
+#### Set questionnaire layout
+
+a. Under Questionnaire Layout, select **Side panel** or **Tab**.
+
+a. Click **Save**.
 
 ::::

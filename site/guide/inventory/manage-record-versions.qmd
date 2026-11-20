@@ -45,7 +45,7 @@ When you create a version, {{< var vm.product >}} copies some information from t
 - [x] {{< var link.login >}}
 - [x] There is at least one record in the inventory.[^3]
 - [x] To create a version, you are a stakeholder on the record, of any stakeholder type,[^4] or an administrator.
-- [x] To make a version Primary or archive a version, you can edit the record: you are assigned a role with the Update Model permission.[^5]
+- [x] To make a version Primary, archive a version, or edit several versions at once, you can edit the record: you are assigned a role with the Update Model permission.[^5]
 
 :::
 
@@ -58,6 +58,7 @@ On every page of a record, such as its Overview, documents, or artifacts, {{< va
 - A version marker, such as `v2`, sits beside the record name in the page title, in the breadcrumb, and in the record's sidebar. The marker also says `Primary` or `Archived` when that applies, and shows the version's label in the page title.
 - Under the page title, a line says where the version came from, for example `Created from v1 on Oct 29, 2026 by Jane Doe`. The original version reads `original record`. When other versions were created from this one, the line names them.
 - Previous and next buttons beside that line step to the neighboring versions of the record.
+- On the record's Overview, the **Total Versions** field beside **Version Label** shows how many versions the record has. It counts the same versions as the record's **Versions** tab.
 - On any version that is not the Primary version, a banner reads `This is not the Primary version of this {Record}.` Select Go to Primary version in the banner to open the Primary version.
 
 Changes you make on a version apply to that version only.
@@ -183,10 +184,43 @@ To archive the version that is currently Primary, make another version Primary f
 Archiving a version is different from archiving a record. To take a whole record out of use, change its stage to Archived instead.[^11]
 :::
 
+## Edit several versions at once {#edit-several-versions-at-once}
+
+Update an inventory field or a stakeholder role on several versions of a record in one action, instead of editing each version on its own:
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select the type of `{Record}` by clicking on **{Record} Inventory**.[^6]
+
+3. Select a record or find your record by applying a filter or searching for it.[^7]
+
+4. On the record's Overview, click the **Versions** tab.
+
+5. Select the checkbox beside each version you want to edit, or select the checkbox in the table header to select all versions.
+
+    Archived versions can't be selected because they are read-only. Their checkbox is disabled, and selecting all versions skips them.
+
+6. In the action bar that appears, click **Edit**.
+
+7. In the **Edit N Versions** dialog, make your changes:
+
+    - Click an inventory field to set a new value or clear it.
+    - Click a stakeholder role to choose the users who should hold that role on every selected version.
+
+    Fields and roles that differ between the selected versions show **Multiple values**. Stage and Group can't be changed here, and fields that {{< var vm.product >}} manages for you are not offered.
+
+8. Click **Continue** to review your changes. The Review Changes step lists each field with its previous and new value.
+
+9. Click **Save N Changes**.
+
+{{< var vm.product >}} applies the changes to one version after another, oldest first. Each version gets its own entry in its activity, which names the version.[^14]
+
+If every change is saved, a confirmation message shows how many changes were made across how many versions. If some changes can't be saved, the dialog lists each selected version as **Updated**, **Skipped**, or **Partly updated**, with the reason, for example when you don't have permission to edit that version. Changes are saved field by field, so a version can be partly updated when one of its fields is refused. Click **Done** to close the dialog.
+
 ## How versions appear across {{< var vm.product >}} {#versions-across-the-platform}
 
 Inventory
-: The inventory shows one row per record, for its Primary version. To show each record's version number and label, add the Version and Version Label columns with Manage Columns. Both columns are hidden by default.[^12]
+: The inventory shows one row per record, for its Primary version. To show each record's version number and label, add the Version and Version Label columns with Manage Columns. To show how many versions each record has, add the Total Versions column. These columns are hidden by default.[^12] You can sort the inventory by Total Versions from **{{< fa arrow-up-wide-short >}} Sort**, **Low to High** or **High to Low**, or from the column header. Inventory exports can include the Total Versions column.
 
 Interdependencies
 : A dependency links to one version of another record. The Interdependencies graph shows the version each link targets, and the Interdependencies table offers an optional Version column. When you add a dependency, it links to the Primary version unless you choose another version.[^13] A new version starts without dependencies.
