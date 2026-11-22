@@ -1,0 +1,203 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Synchronize records with Microsoft Copilot Studio"
+date: last-modified
+---
+
+Link {{< var vm.product >}} records to the agents your teams build in Microsoft Copilot Studio, and bring the results of their Copilot Studio evaluations into the inventory.
+
+## How does the integration with Microsoft Copilot Studio work?
+
+The integration reads from one Copilot Studio environment and does two things:
+
+- **Agent discovery** — Lists the agents in the environment that are not yet linked to a record, so that you can link each one to an existing record, register a new record for it, send it through intake, or ignore it.
+
+- **Evaluation import** — For a linked agent, imports the results of each finished run of a Copilot Studio test set as pass rate metrics on the record.
+
+The two parts authenticate differently. Agent discovery uses a Microsoft Entra app registration. Microsoft only releases evaluation results to a signed-in person, so evaluation import also needs one Microsoft user to sign in on the connection. Nothing is written back to Copilot Studio.
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure connections.[^1]
+- [x] You have a Microsoft tenant with Copilot Studio, and a Power Platform environment with Dataverse that contains at least one agent.
+- [x] You can create an app registration in Microsoft Entra and grant admin consent.
+- [x] You have the System Administrator role in the Power Platform environment.
+- [x] To import evaluation results: a Microsoft account that can open the agents in Copilot Studio, and Copilot Credits in the environment so that evaluations can run.
+
+:::
+
+## Sync {{< var vm.product >}} records with Microsoft Copilot Studio
+
+Setup spans Microsoft Entra, the Power Platform admin center, Copilot Studio, and {{< var vm.product >}}.
+
+::: {.panel-tabset}
+
+### 1. Set up Microsoft
+
+#### Register an app in Microsoft Entra
+
+a. In the Microsoft Entra admin center, go to **App registrations** and click **New registration**. Choose any name and a single tenant.
+
+b. On the app's **Overview** page, copy the **Application (client) ID** and the **Directory (tenant) ID**.
+
+c. Under **Certificates & secrets**, click **New client secret** and copy the secret's **Value**.
+
+    The value is shown only once. Copy the **Value**, not the **Secret ID**.
+
+#### Allow the app to read evaluation results
+
+Skip these steps if you only need agent discovery and linking.
+
+a. Under **API permissions**, click **Add a permission** and select **APIs my organization uses**.
+
+b. Search for **Power Platform API**.
+
+c. Select **Delegated permissions**, then **CopilotStudio.MakerOperations.Read**, and click **Add permissions**.
+
+d. Click **Grant admin consent**.
+
+#### Add the redirect URI
+
+a. Under **Authentication**, click **Add a platform** and select **Web**.
+
+b. Enter this redirect URI, replacing the first part with the API address of your {{< var vm.product >}} environment:
+
+    ```
+    <API URL>/api/v1/integrations/connections/microsoft/oauth/callback
+    ```
+
+    The address must match exactly. If you use more than one {{< var vm.product >}} environment, add one redirect URI for each.
+
+#### Add the app to the Power Platform environment
+
+a. In the Power Platform admin center, open **Environments** and select your environment.
+
+b. Go to **Settings** > **Users + permissions** > **Application users**.
+
+c. Click **New app user**, select the app registration, and choose the business unit.
+
+d. Add a security role that can read Copilot Studio agents, then create the user.
+
+#### Find the environment details
+
+In Copilot Studio, open **Settings** > **Session details** and copy the **Instance url** and the **Environment ID**.
+
+### 2. Configure Copilot Studio connection
+
+a. Store the client secret:[^2]
+
+    i. In the left sidebar, click **{{< fa gear >}} Settings**.
+    ii. Under {{< fa puzzle-piece >}} Integrations, select **Secrets**.
+    iii. Add a secret that holds the client secret value.
+
+b. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+
+c. Click **{{< fa plus >}} Add Connection**.
+
+d. In the modal that opens, select **Microsoft Copilot Studio**.
+
+e. Complete:
+
+   - **Integration Name** — How other admins can identify the connection.
+   - **Description** (optional) — The intended usage or additional details.
+   - **Tenant ID** — The Directory (tenant) ID of the app registration.
+   - **Client ID** — The Application (client) ID of the app registration.
+   - **Client Secret** — The secret that holds the client secret value.
+   - **Environment URL** — The Instance url from Copilot Studio, for example `https://yourorg.crm.dynamics.com`.
+   - **Environment ID** — The Environment ID from Copilot Studio.
+   - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
+
+f. Click **Save Integration**.
+
+g. Test the connection:
+
+    i. Hover over the Microsoft Copilot Studio connection you just created.
+    ii. When the **{{< fa ellipsis-vertical >}}** menu appears, click on it and select **{{< fa circle-check >}} Test Connection**.
+
+    If the test is successful, the message **{{< fa check-circle >}} Connection successful** displays.
+
+### 3. Link agents to records
+
+a. Click the connection to open its details page.
+
+b. Select the **Unlinked Agents** tab.
+
+    The tab lists the agents in the environment that are not linked to a record yet.
+
+c. Click **{{< fa ellipsis-vertical >}}** next to an agent and choose:
+
+   - **Link to Record** — Link the agent to an existing record. Records of every record type are listed, grouped by type.
+   - **Create Record** — Choose a record type. The registration form opens with the agent's name filled in, and the agent is linked once the record is created.
+   - **Start Intake** — Open the registration form for your intake record type. Available when your organization has an intake record type.
+   - **Ignore for Inventory** — Remove the agent from the list, with an optional reason.
+
+Linked agents appear on the **Links** tab. Ignored agents appear on the **Ignored Agents** tab with the reason, who ignored them and when, and can be restored from there.
+
+To unlink an agent, open the linked record, find the Microsoft Copilot Studio connection box, and select **Remove Link** from its **{{< fa ellipsis-vertical >}}** menu.[^3]
+
+### 4. Import evaluation results
+
+a. In Copilot Studio, open the agent, go to **Evaluation**, create a test set, and run it.
+
+b. In {{< var vm.product >}}, open the connection's details page and select the **Monitoring** tab.
+
+c. Click **Sign in with Microsoft** and sign in with an account that can open the agent in Copilot Studio.
+
+    After you sign in, the tab shows the account that evaluation results are imported as.
+
+d. Click **Add Evaluation Import**.
+
+e. Select a linked agent and one of its test sets, then click **Add**.
+
+Each finished run of the test set is imported on a schedule. To import immediately, click **{{< fa ellipsis-vertical >}}** on the import and select **Sync Now**.
+
+For each run, the record receives:
+
+- An overall pass rate — the share of test cases that passed every test method.
+- A pass rate for each test method the test set uses, such as General quality, Compare meaning, or Text similarity.
+
+Click a metric name on the **Monitoring** tab to open it on the record, where each test set's metrics are grouped together and charted over time.[^4] You can also add them to monitoring documents.[^5]
+
+::: {.callout title="Results follow the link"}
+Evaluation results are written to the record the agent is currently linked to. If you remove the link, the import pauses. If you link the agent to a different record, results are imported to that record.
+:::
+
+:::
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| The Microsoft sign-in page shows `AADSTS650057` | The app registration has no permission for the Power Platform API. | Add the **CopilotStudio.MakerOperations.Read** delegated permission and grant admin consent. |
+| The Microsoft sign-in page shows `AADSTS50011` | The redirect URI is missing or does not match. | Add the redirect URI for this {{< var vm.product >}} environment to the app registration. |
+| Connection test: "The Dataverse environment rejected the app" | The app is not an application user in the environment. | Add the app to the Power Platform environment. |
+| Connection test: "The app has no permission to read agents in this environment" | The application user's security role is too narrow. | Add a security role that can read Copilot Studio agents. |
+| Connection test: "The environment URL did not respond as a Dataverse environment" | The environment URL is wrong. | Use the **Instance url** from Copilot Studio's session details. |
+| The run button on Copilot Studio's **Evaluation** tab is disabled | The environment has no Copilot Credits. | Use an environment with Copilot Credits. |
+| Import: "No finished evaluation runs for this test set yet" | The test set has not been run, or a run is still in progress. | Run the test set in Copilot Studio, then sync again. |
+| Import: "This agent is not linked to a record" | The agent's link was removed. | Link the agent to a record from the **Unlinked Agents** tab. |
+| Import: "The Microsoft sign-in on this connection has expired or was revoked" | Microsoft expires a sign-in that is not used for 90 days, or an admin revoked it. | Click **Sign out** on the **Monitoring** tab, then sign in again. |
+
+## Limitations
+
+- Evaluation import uses one person's Microsoft sign-in. If that person leaves your organization or their access changes, another admin must sign in on the connection.
+- Microsoft keeps evaluation runs for 89 days. Older runs cannot be imported.
+- Pass rates and scores are imported. Individual questions and answers are not.
+- Each connection reads one Copilot Studio environment. Add a connection for each environment you want to govern.
+
+<!-- FOOTNOTES -->
+
+[^1]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^2]: [Manage secrets](/guide/integrations/manage-secrets.qmd)
+
+[^3]: [Link external records](/guide/integrations/link-external-records.qmd)
+
+[^4]: [View record data](/guide/inventory/view-record-data.qmd)
+
+[^5]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd#add-integration-metrics)
