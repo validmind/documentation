@@ -161,7 +161,7 @@ For each run, the record receives:
 - An overall pass rate — the share of test cases that passed every test method.
 - A pass rate for each test method the test set uses, such as General quality, Compare meaning, or Text similarity.
 
-Click a metric name on the **Monitoring** tab to open it on the record. The metrics are listed under **Integration: Copilot Studio**, each named after its test set, for example **Policy Answers Pass Rate**, and charted over time.[^4] You can add them to monitoring documents like any other metric.[^5]
+Click a metric name on the **Monitoring** tab to open it on the record. The metrics are listed under **Integration: Copilot Studio**, each named after its test set, for example **Policy Answers Pass Rate**, and charted over time.[^4] To add them to a monitoring document, use **Metric Over Time** > **From Integration**.[^5]
 
 ::: {.callout title="Results follow the link"}
 Evaluation results are written to the record the agent is currently linked to. If you remove the link, the import pauses. If you link the agent to a different record, results are imported to that record.
@@ -179,6 +179,9 @@ Evaluation results are written to the record the agent is currently linked to. I
 | Connection test: "The app has no permission to read agents in this environment" | The application user's security role is too narrow. | Add a security role that can read Copilot Studio agents. |
 | Connection test: "The environment URL did not respond as a Dataverse environment" | The environment URL is wrong. | Use the **Instance url** from Copilot Studio's session details. |
 | The run button on Copilot Studio's **Evaluation** tab is disabled | The environment has no Copilot Credits. | Use an environment with Copilot Credits. |
+| "The environment ID must be a GUID, or Default-\<tenant ID\> for the default environment" | The connection's environment ID was copied from the wrong field. | Copy the **Environment ID** from Copilot Studio's **Session details** and save the connection. |
+| Import: "Microsoft is busy or unavailable" | Microsoft timed out, throttled the request or returned a server error. | Nothing. The import retries automatically over the next few minutes, and again at the next scheduled sync. |
+| The Microsoft sign-in ends with "The connection was changed while you were signing in" | The connection's tenant ID, client ID, environment URL or environment ID was saved while the sign-in was in progress. | Click **Sign in with Microsoft** again. |
 | Import: "No finished evaluation runs for this test set yet" | The test set has not been run, or a run is still in progress. | Run the test set in Copilot Studio, then sync again. |
 | Import: "This agent is not linked to a record" | The agent's link was removed. | Link the agent to a record from the **Unlinked Agents** tab. |
 | Import: "This agent is now linked to a record that already has an import for this test set" | The agent was linked to another record, which already imports the same test set. | Remove one of the two imports. |
@@ -202,4 +205,4 @@ Evaluation results are written to the record the agent is currently linked to. I
 
 [^4]: [View record data](/guide/inventory/view-record-data.qmd)
 
-[^5]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd#add-metrics-over-time)
+[^5]: [Work with metrics over time](/guide/monitoring/work-with-metrics-over-time.qmd#add-integration-metrics)
