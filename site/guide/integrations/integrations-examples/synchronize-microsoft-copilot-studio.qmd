@@ -16,7 +16,13 @@ The integration reads from one Copilot Studio environment and does two things:
 
 - **Evaluation import** — For a linked agent, imports the results of each finished run of a Copilot Studio test set as pass rate metrics on the record.
 
-The two parts authenticate differently. Agent discovery uses a Microsoft Entra app registration. Microsoft only releases evaluation results to a signed-in person, so evaluation import also needs one Microsoft user to sign in on the connection. Nothing is written back to Copilot Studio.
+A connection authenticates in one of two ways:
+
+- **OAuth (user login)** — You sign in with a Microsoft account, and {{< var vm.product >}} reads the agents and their evaluation results on that account's behalf. There is no app registration to create and no client secret to store.
+
+- **App registration (client secret)** — Your own Microsoft Entra app registration reads the agents. Microsoft only releases evaluation results to a signed-in person, so evaluation import still needs one Microsoft user to sign in on the connection.
+
+Nothing is written back to Copilot Studio.
 
 ::: {.attn}
 
@@ -25,21 +31,30 @@ The two parts authenticate differently. Agent discovery uses a Microsoft Entra a
 - [x] {{< var link.login >}}
 - [x] You are a [{{< fa hand >}} Customer Admin]{.bubble} or assigned another role with sufficient permissions to configure connections.[^1]
 - [x] You have a Microsoft tenant with Copilot Studio, and a Power Platform environment with Dataverse that contains at least one agent.
-- [x] You can create an app registration in Microsoft Entra and grant admin consent.
-- [x] You have the System Administrator role in the Power Platform environment.
-- [x] To import evaluation results: a Microsoft account that can open the agents in Copilot Studio, and Copilot Credits in the environment so that evaluations can run.
+- [x] A Microsoft account that can open the agents in Copilot Studio. With OAuth (user login), this account is used to read the agents and their evaluation results.
+- [x] To connect with OAuth (user login): if your Microsoft tenant requires admin approval for new apps, an administrator who can approve the {{< var vm.product >}} app.
+- [x] To connect with an app registration: you can create an app registration in Microsoft Entra and grant admin consent, and you have the System Administrator role in the Power Platform environment.
+- [x] To import evaluation results: Copilot Credits in the environment so that evaluations can run.
 
 :::
 
 ## Sync {{< var vm.product >}} records with Microsoft Copilot Studio
 
-Setup spans Microsoft Entra, the Power Platform admin center, Copilot Studio, and {{< var vm.product >}}.
+With OAuth (user login), setup takes two values from Copilot Studio and a Microsoft sign-in. With an app registration, it also spans Microsoft Entra and the Power Platform admin center.
 
 ::: {.panel-tabset}
 
 ### 1. Set up Microsoft
 
-#### Register an app in Microsoft Entra
+#### Find the environment details
+
+In Copilot Studio, open **Settings** > **Session details** and copy the **Instance url** and the **Environment ID**.
+
+#### Set up an app registration
+
+Skip the rest of this step if you connect with OAuth (user login).
+
+##### Register an app in Microsoft Entra
 
 a. In the Microsoft Entra admin center, go to **App registrations** and click **New registration**. Choose any name and a single tenant.
 
@@ -49,7 +64,7 @@ c. Under **Certificates & secrets**, click **New client secret** and copy the se
 
     The value is shown only once. Copy the **Value**, not the **Secret ID**.
 
-#### Allow the app to read evaluation results
+##### Allow the app to read evaluation results
 
 Skip these steps if you only need agent discovery and linking.
 
@@ -61,7 +76,7 @@ c. Select **Delegated permissions**, then **CopilotStudio.MakerOperations.Read**
 
 d. Click **Grant admin consent**.
 
-#### Add the redirect URI
+##### Add the redirect URI
 
 a. Under **Authentication**, click **Add a platform** and select **Web**.
 
@@ -73,7 +88,7 @@ b. Enter this redirect URI, replacing the first part with the API address of you
 
     The address must match exactly. If you use more than one {{< var vm.product >}} environment, add one redirect URI for each.
 
-#### Add the app to the Power Platform environment
+##### Add the app to the Power Platform environment
 
 a. In the Power Platform admin center, open **Environments** and select your environment.
 
@@ -83,19 +98,15 @@ c. Click **New app user**, select the app registration, and choose the business 
 
 d. Add a security role that can read Copilot Studio agents, then create the user.
 
-#### Find the environment details
-
-In Copilot Studio, open **Settings** > **Session details** and copy the **Instance url** and the **Environment ID**.
-
 ### 2. Configure Copilot Studio connection
 
-a. Store the client secret:[^2]
+a. If you connect with an app registration, store its client secret:[^2]
 
     i. In the left sidebar, click **{{< fa gear >}} Settings**.
     ii. Under {{< fa puzzle-piece >}} Integrations, select **Secrets**.
     iii. Add a secret that holds the client secret value.
 
-b. Under {{< fa puzzle-piece >}} Integrations, select **Connections**.
+b. In the left sidebar, click **{{< fa gear >}} Settings** and, under {{< fa puzzle-piece >}} Integrations, select **Connections**.
 
 c. Click **{{< fa plus >}} Add Connection**.
 
@@ -105,14 +116,20 @@ e. Complete:
 
    - **Integration Name** — How other admins can identify the connection.
    - **Description** (optional) — The intended usage or additional details.
-   - **Tenant ID** — The Directory (tenant) ID of the app registration.
-   - **Client ID** — The Application (client) ID of the app registration.
-   - **Client Secret** — The secret that holds the client secret value.
+   - **Authentication Method** — Choose **OAuth (user login)** or **App registration (client secret)**.
    - **Environment URL** — The Instance url from Copilot Studio, for example `https://yourorg.crm.dynamics.com`.
    - **Environment ID** — The Environment ID from Copilot Studio.
    - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
 
+    With **App registration (client secret)**, also complete:
+
+   - **Tenant ID** — The Directory (tenant) ID of the app registration.
+   - **Client ID** — The Application (client) ID of the app registration.
+   - **Client Secret** — The secret that holds the client secret value.
+
 f. Click **Save Integration**.
+
+    With **OAuth (user login)**, you are taken to Microsoft to sign in. Sign in with an account that can open the agents in Copilot Studio. You return to the new connection's details page, which shows the account you signed in with.
 
 g. Test the connection:
 
@@ -144,11 +161,14 @@ To unlink an agent, open the linked record, find the Microsoft Copilot Studio co
 
 a. In Copilot Studio, open the agent, go to **Evaluation**, create a test set, and run it.
 
-b. In {{< var vm.product >}}, open the connection's details page and select the **Monitoring** tab.
+b. If the connection uses an app registration, sign in with Microsoft:
 
-c. Click **Sign in with Microsoft** and sign in with an account that can open the agent in Copilot Studio.
+    i. In {{< var vm.product >}}, open the connection's details page and click **Edit this connection to sign in**.
+    ii. In the form that opens, click **Sign in with Microsoft** and sign in with an account that can open the agent in Copilot Studio.
 
-    After you sign in, the tab shows the account that evaluation results are imported as.
+    After you sign in, the connection's details page shows the account that evaluation results are imported as. Connections that use OAuth (user login) are already signed in.
+
+c. On the connection's details page, select the **Monitoring** tab.
 
 d. Click **Add Evaluation Import**.
 
@@ -169,6 +189,16 @@ Evaluation results are written to the record the import was added on, for as lon
 
 :::
 
+## Change the Microsoft sign-in
+
+The connection's details page shows which Microsoft account is signed in. To sign in as someone else, or to sign in again after a sign-in has expired:
+
+1. On the connection's details page, click **Edit**.
+
+2. Click **Sign Out**, then open the form again and click **Sign in with Microsoft**.
+
+Changing the authentication method, the environment URL or the environment ID of a connection signs it out, as does changing the tenant ID or client ID of an app registration.
+
 ## Troubleshooting
 
 | What you see | Cause | What to do |
@@ -181,17 +211,22 @@ Evaluation results are written to the record the import was added on, for as lon
 | The run button on Copilot Studio's **Evaluation** tab is disabled | The environment has no Copilot Credits. | Use an environment with Copilot Credits. |
 | "The environment ID must be a GUID, or Default-\<tenant ID\> for the default environment" | The connection's environment ID was copied from the wrong field. | Copy the **Environment ID** from Copilot Studio's **Session details** and save the connection. |
 | Import: "Microsoft is busy or unavailable" | Microsoft timed out, throttled the request or returned a server error. | Nothing. The import retries automatically over the next few minutes, and again at the next scheduled sync. |
-| The Microsoft sign-in ends with "The connection was changed while you were signing in" | The connection's tenant ID, client ID, environment URL or environment ID was saved while the sign-in was in progress. | Click **Sign in with Microsoft** again. |
+| The Microsoft sign-in ends with "The connection was changed while you were signing in" | The connection's authentication method, tenant ID, client ID, environment URL or environment ID was saved while the sign-in was in progress. | Edit the connection and click **Sign in with Microsoft** again. |
 | Import: "ValidMind could not save the results" | {{< var vm.product >}} was briefly unavailable while the results were being saved. | Nothing. The import retries automatically, and again at the next scheduled sync. |
 | Import: "No finished evaluation runs for this test set yet" | The test set has not been run, or a run is still in progress. | Run the test set in Copilot Studio, then sync again. |
 | Import: "This agent is not linked to a record" | The agent's link was removed. | Link the agent to a record from the **Unlinked Agents** tab. |
 | Import: "This agent is now linked to a record that already has an import for this test set" | The agent was linked to another record, which already imports the same test set. | Remove one of the two imports. |
-| Import: "Sign in with Microsoft on this connection to import evaluation results" | Nobody is signed in: someone signed out, or the connection's tenant ID, client ID, environment URL or environment ID was changed, which signs the connection out. | Click **Sign in with Microsoft** on the **Monitoring** tab. Results resume at the next sync; to import immediately, click **{{< fa ellipsis-vertical >}}** on the import and select **Sync Now**. |
-| Import: "The Microsoft sign-in on this connection has expired or was revoked" | Microsoft expires a sign-in that is not used for 90 days, or an admin revoked it. | Click **Sign Out** on the **Monitoring** tab, then sign in again. Results resume at the next sync, or select **Sync Now** from the import's menu. |
+| Import: "Sign in with Microsoft on this connection to import evaluation results" | Nobody is signed in: someone signed out, or the connection's authentication method, tenant ID, client ID, environment URL or environment ID was changed, which signs the connection out. | Edit the connection and click **Sign in with Microsoft**. Results resume at the next sync; to import immediately, click **{{< fa ellipsis-vertical >}}** on the import and select **Sync Now**. |
+| Import: "The Microsoft sign-in on this connection has expired or was revoked" | Microsoft expires a sign-in that is not used for 90 days, or an admin revoked it. | Edit the connection, click **Sign Out**, then sign in again. Results resume at the next sync, or select **Sync Now** from the import's menu. |
+| "Sign in with Microsoft on this connection to list its agents" | The connection uses OAuth (user login) and nobody is signed in. | Edit the connection and click **Sign in with Microsoft**. |
+| "The Microsoft app has not been granted access to this environment" | The app used to sign in has no consent to read the environment on the signed-in person's behalf. | Ask a Microsoft administrator to approve the app's access to Dynamics CRM (Dataverse), then sign in again. |
+| "The signed-in Microsoft user has no permission to read agents in this environment" | The connection uses OAuth (user login), and the signed-in account cannot read agents in the environment. | Sign in with an account that can open the agents in Copilot Studio. |
+| "Sign-in without an app registration is not set up on this deployment" | OAuth (user login) is not available in your {{< var vm.product >}} environment. | Connect with an app registration instead. |
 
 ## Limitations
 
 - Evaluation import uses one person's Microsoft sign-in. If that person leaves your organization or their access changes, another admin must sign in on the connection.
+- With OAuth (user login), agent discovery uses the same sign-in. The connection lists only the agents that account can see, and stops listing agents while nobody is signed in.
 - Microsoft keeps evaluation runs for 89 days. Older runs cannot be imported.
 - Pass rates and scores are imported. Individual questions and answers are not.
 - Each connection reads one Copilot Studio environment. Add a connection for each environment you want to govern.
