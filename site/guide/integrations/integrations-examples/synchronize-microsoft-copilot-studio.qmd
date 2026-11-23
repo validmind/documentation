@@ -164,7 +164,7 @@ For each run, the record receives:
 Click a metric name on the **Monitoring** tab to open it on the record. The metrics are listed under **Integration: Copilot Studio**, each named after its test set, for example **Policy Answers Pass Rate**, and charted over time.[^4] To add them to a monitoring document, use **Metric Over Time** > **From Integration**.[^5]
 
 ::: {.callout title="Results follow the link"}
-Evaluation results are written to the record the agent is currently linked to. If you remove the link, the import pauses. If you link the agent to a different record, results are imported to that record.
+Evaluation results are written to the record the import was added on, for as long as the agent stays linked to it. If you remove that link, the import pauses. If the agent is linked to another record, results move there once the original link is removed.
 :::
 
 :::
@@ -182,6 +182,7 @@ Evaluation results are written to the record the agent is currently linked to. I
 | "The environment ID must be a GUID, or Default-\<tenant ID\> for the default environment" | The connection's environment ID was copied from the wrong field. | Copy the **Environment ID** from Copilot Studio's **Session details** and save the connection. |
 | Import: "Microsoft is busy or unavailable" | Microsoft timed out, throttled the request or returned a server error. | Nothing. The import retries automatically over the next few minutes, and again at the next scheduled sync. |
 | The Microsoft sign-in ends with "The connection was changed while you were signing in" | The connection's tenant ID, client ID, environment URL or environment ID was saved while the sign-in was in progress. | Click **Sign in with Microsoft** again. |
+| Import: "ValidMind could not save the results" | {{< var vm.product >}} was briefly unavailable while the results were being saved. | Nothing. The import retries automatically, and again at the next scheduled sync. |
 | Import: "No finished evaluation runs for this test set yet" | The test set has not been run, or a run is still in progress. | Run the test set in Copilot Studio, then sync again. |
 | Import: "This agent is not linked to a record" | The agent's link was removed. | Link the agent to a record from the **Unlinked Agents** tab. |
 | Import: "This agent is now linked to a record that already has an import for this test set" | The agent was linked to another record, which already imports the same test set. | Remove one of the two imports. |
