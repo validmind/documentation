@@ -1,0 +1,156 @@
+---
+# Copyright © 2023-2026 ValidMind Inc. All rights reserved.
+# Refer to the LICENSE file in the root of this repository for details.
+# SPDX-License-Identifier: AGPL-3.0 AND ValidMind Commercial
+title: "Export record versions"
+date: last-modified
+---
+
+<!--
+DRAFT for sc-19952 (epic 19941). Not ready to publish.
+Written from the code of backend#4087–#4100 and frontend#3220–#3224, which are not merged.
+Open points for the writer are marked with TODO.
+-->
+
+Export one version of a record from the {{< var vm.product >}} inventory as a ZIP file, so that you can hand a complete, point-in-time copy of the record to an auditor or keep it with your own evidence.
+
+::: {.callout}
+## An export is a copy of what you can read.
+
+- The ZIP contains only the content that the user who starts the export has access to. Content you can't read is left out, and the export tells you what was left out.
+- Only the user who starts an export can download its file.
+- The file is available for 7 days. After that, the file is deleted and the export shows as [Expired]{.bubble}.
+:::
+
+::: {.attn}
+
+## Prerequisites
+
+- [x] {{< var link.login >}}
+- [x] The record you want to export is registered in the inventory.[^1]
+- [x] Record versioning is turned on for your organization. <!-- TODO: link to the record versions page when it exists. -->
+- [x] You hold the `Export Record` permission on the record, or you are assigned a role with that permission.[^2]
+
+:::
+
+## What an export contains
+
+An export covers one version of one record. The ZIP file has these folders:
+
+| Folder | Contents |
+|---|---|
+| `record/` | The field values of the version (`record.json` and `fields.csv`) and the field definitions (`schema.json`) |
+| `activity/` | Every event in the activity log of the version (`events.csv` and `events.json`) |
+| `artifacts/` | One CSV file and one JSON file for each artifact type |
+| `risk-tier-assessments/` | The published risk tier assessments (`assessments.csv` and one JSON file for each assessment) |
+| `documents/` | Each document of the version as a PDF, with its content at the time of the export |
+| `attachments/` | The original attached files, in three subfolders: `record-fields/` for files in the attachment fields of the record, `artifacts/` for files on artifacts, and `documents/` for files and images uploaded to documents |
+
+Two files at the top level describe the export:
+
+- `README.txt` names the record, the version, the user who made the export, and the time of the export.
+- `manifest.json` is the index of the export.
+
+### The manifest
+
+Use `manifest.json` to confirm that an export is complete and unchanged. It contains:
+
+- `record` — The ID, name, and version of the record.
+- `exported_by` — The name and email address of the user who started the export.
+- `export` — The ID of the export and the time it was made.
+- `files` — Every file in the ZIP, with its size in bytes and its SHA-256 checksum.
+- `left_out` — The parts that aren't in the ZIP, with the reason for each.
+- `warnings` — The parts that couldn't be written, such as a document that failed to render or an attached file that is missing.
+
+### What an export doesn't contain
+
+- Content you don't have access to. A field, an artifact type, or a document that you can't read is left out. `left_out` names the artifact types, and gives the type and the number of the documents without their titles; fields you can't read aren't named.
+- Draft risk tier assessments. Only published assessments are exported.
+- Documents that have no template yet. They're named in `left_out`.
+- Saved versions of a document. Each document is exported once, with its current content.
+- Comments on documents.
+- Other versions of the record. Export each version you need.
+- The audit log of your organization.
+
+### Size limit
+
+The attached files of one export can add up to 2 GB. When the limit is reached, the remaining files are left out, the export completes with a warning, and `manifest.json` lists the files that were left out.
+
+<!-- TODO: self-hosted deployments can change the limit with `record_export.max_attachment_bytes`. Decide whether that belongs here or in the deployment docs. -->
+
+## Export a version
+
+1. In the left sidebar, click **{{< fa cubes >}} Inventory**.
+
+2. Select a record or find your record by applying a filter or searching for it.[^3]
+
+3. Open the version you want to export, then click the **Versions** tab. <!-- TODO: confirm the tab name and how a user switches versions. -->
+
+4. On the row of the version you're viewing, open the menu and select **Export version…**.
+
+5. Review the list of what the export includes. The counts show how many field values, events, documents, artifacts, published risk tier assessments, and attached files you have access to.
+
+6. Click **Start Export**.
+
+The export runs in the background and can take a few minutes for a large record. You can leave the page.
+
+::: {.callout title="One export at a time."}
+You can run one export of a version at a time. If your export of the version is still running, the dialog shows its status and you can't start a second one until it completes.
+:::
+
+## Download an export
+
+1. In the left sidebar, click **{{< fa inbox >}} My Inbox**.
+
+2. Locate the export:
+
+   - While the export runs, the row shows its progress. To stop it, click **Cancel Export**.
+   - When the export is complete, the row shows the size of the file and the date until which it's available.
+
+3. Click **Download**.
+
+   If the row shows **Preparing**, the file is still being checked for malware. The download starts when the check completes.
+
+4. If the export completed with warnings, click the warnings link on the row to see which parts failed or were left out.
+
+If an export fails, the row shows the reason. Click **Try Again** to start a new export.
+
+## Review the exports of a version
+
+The Versions tab lists the exports of the version you're viewing, with the user who started each one, when it started, its status, its size, and the date until which the file is available.
+
+Everyone who can export the record sees this list. Only the user who started an export can download or cancel it.
+
+An export has one of these statuses:
+
+- [Queued]{.bubble} — The export is waiting to start.
+- [Running]{.bubble} — The export is in progress.
+- [Completed]{.bubble} — The file is ready to download.
+- [Completed with warnings]{.bubble} — The file is ready, but one or more parts failed or were left out.
+- [Failed]{.bubble} — No file was made.
+- [Cancelled]{.bubble} — The user who started the export stopped it.
+- [Expired]{.bubble} — The file was deleted after 7 days. The row stays as a record that the export was made.
+
+The activity log of the record also shows when an export starts, completes, fails, or is cancelled. <!-- TODO: the Activity feed text for these four events is not built yet. -->
+
+## Give users permission to export
+
+Exporting is controlled by the `Export Record` permission on a record. <!-- TODO: confirm the label the permissions page shows for `export_record`. -->
+
+- In organizations created after this feature is released, the default record roles that can edit a record receive the permission. <!-- TODO: confirm the exact list. The org template grants it through the record-scoped roles (Model Owner, Developer, Validator in the default setup). -->
+- In existing organizations, no role receives the permission automatically. A [{{< fa hand >}} Customer Admin]{.bubble} must add it to the roles or stakeholder types that need it.[^2]
+
+Holding the permission doesn't widen what a user can read. An export still contains only the fields, documents, and artifacts that the user has access to.
+
+## What's next
+
+- [Archive and delete records](/guide/inventory/archive-delete-records.qmd)
+- [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+<!-- FOOTNOTES -->
+
+[^1]: [Register records in the inventory](/guide/inventory/register-records-in-inventory.qmd)
+
+[^2]: [Manage permissions](/guide/configuration/manage-permissions.qmd)
+
+[^3]: [Working with the inventory](/guide/inventory/working-with-the-inventory.qmd#search-filter-and-sort-records)
