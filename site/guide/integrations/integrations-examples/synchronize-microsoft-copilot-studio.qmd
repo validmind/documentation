@@ -18,7 +18,7 @@ The integration reads from one Copilot Studio environment and does two things:
 
 A connection authenticates in one of two ways:
 
-- **OAuth (user login)** — You sign in with a Microsoft account, and {{< var vm.product >}} reads the agents and their evaluation results on that account's behalf. There is no app registration to create and no client secret to store.
+- **OAuth (user login)** — You sign in with a Microsoft account, and {{< var vm.product >}} reads the agents and their evaluation results on that account's behalf. There is no app registration to create and no client secret to store. This method is offered only where it has been set up for your {{< var vm.product >}} environment.
 
 - **App registration (client secret)** — Your own Microsoft Entra app registration reads the agents. Microsoft only releases evaluation results to a signed-in person, so evaluation import still needs one Microsoft user to sign in on the connection.
 
@@ -116,7 +116,7 @@ e. Complete:
 
    - **Integration Name** — How other admins can identify the connection.
    - **Description** (optional) — The intended usage or additional details.
-   - **Authentication Method** — Choose **OAuth (user login)** or **App registration (client secret)**.
+   - **Authentication Method** — Choose **OAuth (user login)** or **App registration (client secret)**. If only **App registration (client secret)** is listed, OAuth (user login) is not set up for your environment.
    - **Environment URL** — The Instance url from Copilot Studio, for example `https://yourorg.crm.dynamics.com`.
    - **Environment ID** — The Environment ID from Copilot Studio.
    - **Initial Status** — Set to `Operational` to enable immediately or `Disabled` if you plan to finish setup later.
@@ -153,11 +153,11 @@ c. Click **{{< fa ellipsis-vertical >}}** next to an agent and choose:
    - **Link to Record** — Link the agent to an existing record. Records of every record type are listed, grouped by type.
    - **Create Record** — Choose a record type. The registration form opens with the agent's name filled in, and the agent is linked once the record is created.
    - **Start Intake** — Open the registration form for your intake record type. Available when your organization has an intake record type.
-   - **Ignore for Inventory** — Remove the agent from the list, with an optional reason.
+   - **Ignore Agent** — Remove the agent from the list, with an optional reason.
 
 Linked agents appear on the **Links** tab. Ignored agents appear on the **Ignored Agents** tab with the reason, who ignored them and when, and can be restored from there.
 
-To unlink an agent, open the linked record, find the Microsoft Copilot Studio connection box, and select **Remove Link** from its **{{< fa ellipsis-vertical >}}** menu.[^3]
+To unlink an agent, open the linked record's **Integrations** tab, find the **Microsoft Copilot Studio** group, and select **Remove Link** from its **{{< fa ellipsis-vertical >}}** menu.[^3]
 
 ### 4. Import evaluation results
 
@@ -199,7 +199,7 @@ The connection's details page shows which Microsoft account is signed in. To sig
 
 2. Click **Sign Out**, then open the form again and click **Sign in with Microsoft**.
 
-Changing the authentication method, the environment URL or the environment ID of a connection signs it out, as does changing the tenant ID or client ID of an app registration.
+Changing the authentication method, the environment URL or the environment ID of a connection signs it out, as does changing the tenant ID or client ID of an app registration. Deleting a connection also removes its Microsoft sign-in.
 
 ## Troubleshooting
 
@@ -218,12 +218,12 @@ Changing the authentication method, the environment URL or the environment ID of
 | Import: "No finished evaluation runs for this test set yet" | The test set has not been run, or a run is still in progress. | Run the test set in Copilot Studio, then sync again. |
 | Import: "This agent is not linked to a record" | The agent's link was removed. | Link the agent to a record from the **Unlinked Agents** tab. |
 | Import: "This agent is now linked to a record that already has an import for this test set" | The agent was linked to another record, which already imports the same test set. | Remove one of the two imports. |
-| Import: "Sign in with Microsoft on this connection to import evaluation results" | Nobody is signed in: someone signed out, or the connection's authentication method, tenant ID, client ID, environment URL or environment ID was changed, which signs the connection out. | Edit the connection and click **Sign in with Microsoft**. Results resume at the next sync; to import immediately, click **{{< fa ellipsis-vertical >}}** on the import and select **Sync Now**. |
-| Import: "The Microsoft sign-in on this connection has expired or was revoked" | Microsoft expires a sign-in that is not used for 90 days, or an admin revoked it. | Edit the connection, click **Sign Out**, then sign in again. Results resume at the next sync, or select **Sync Now** from the import's menu. |
+| Import: "Sign in with Microsoft on this connection to import evaluation results" | Nobody is signed in: someone signed out, or the connection's authentication method, tenant ID, client ID, environment URL or environment ID was changed, which signs the connection out. | Edit the connection and click **Sign in with Microsoft**. Results resume within about a minute of signing in. |
+| Import: "The Microsoft sign-in on this connection has expired or was revoked" | Microsoft expires a sign-in that is not used for 90 days, or an admin revoked it. | Edit the connection, click **Sign Out**, then sign in again. Results resume within about a minute of signing in. |
 | "Sign in with Microsoft on this connection to list its agents" | The connection uses OAuth (user login) and nobody is signed in. | Edit the connection and click **Sign in with Microsoft**. |
 | "The Microsoft app has not been granted access to this environment" | The app used to sign in has no consent to read the environment on the signed-in person's behalf. | Ask a Microsoft administrator to approve the app's access to Dynamics CRM (Dataverse), then sign in again. |
 | "The signed-in Microsoft user has no permission to read agents in this environment" | The connection uses OAuth (user login), and the signed-in account cannot read agents in the environment. | Sign in with an account that can open the agents in Copilot Studio. |
-| "Sign-in without an app registration is not set up on this deployment" | OAuth (user login) is not available in your {{< var vm.product >}} environment. | Connect with an app registration instead. |
+| "Sign-in without an app registration is not set up on this deployment" | The connection uses OAuth (user login), which is no longer set up for your {{< var vm.product >}} environment. | Edit the connection and switch to an app registration. |
 
 ## Limitations
 
